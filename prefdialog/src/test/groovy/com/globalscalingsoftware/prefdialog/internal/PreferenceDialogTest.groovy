@@ -28,7 +28,6 @@ class PreferenceDialogTest extends GroovyTestCase {
 		def owner = { new JFrame() } as IPreferencesDialogOwner
 		def dialog = new UiPreferencesDialog(owner)
 		dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE)
-		dialog.setDefaultCloseOperation JFrame.DISPOSE_ON_CLOSE
 		
 		def preferenceDialog = new PreferenceDialog(dialog, null, null, null)
 		def prefereceController = new PreferenceDialogController(
@@ -44,7 +43,6 @@ class PreferenceDialogTest extends GroovyTestCase {
 		def owner = { new JFrame() } as IPreferencesDialogOwner
 		def dialog = new UiPreferencesDialog(owner)
 		dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE)
-		dialog.setDefaultCloseOperation JFrame.DISPOSE_ON_CLOSE
 		
 		def preferenceDialog = new PreferenceDialog(dialog, null, null, null)
 		def prefereceController = new PreferenceDialogController(
