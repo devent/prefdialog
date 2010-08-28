@@ -13,12 +13,26 @@ class PreferenceDialogTest extends GroovyTestCase {
 		assert preferenceDialog != null
 	}
 	
-	void testOpenNoPreferences() {
+	void testOpenNoController() {
 		def owner = { new JFrame() } as IPreferencesDialogOwner
 		def dialog = new UiPreferencesDialog(owner)
 		dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE)
 		
 		def preferenceDialog = new PreferenceDialog(dialog, null, null, null)
+		preferenceDialog.open()
+	}
+	
+	void testOpenNoControllerWithActions() {
+		def owner = { new JFrame() } as IPreferencesDialogOwner
+		def dialog = new UiPreferencesDialog(owner)
+		dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE)
+		
+		def okAction = new DefaultAction("Ok")
+		def restoreAction = new DefaultAction("Restore")
+		def cancelAction = new DefaultAction("Cancel")
+		
+		def preferenceDialog = new PreferenceDialog(dialog, 
+				okAction, restoreAction, cancelAction)
 		preferenceDialog.open()
 	}
 	

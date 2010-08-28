@@ -109,6 +109,7 @@ public class UiPreferencesDialog extends javax.swing.JDialog {
 						new double[][] {
 								{ TableLayout.FILL, TableLayout.PREFERRED,
 										TableLayout.PREFERRED,
+										TableLayout.PREFERRED,
 										TableLayout.PREFERRED },
 								{ TableLayout.PREFERRED } });
 				buttonsPanelLayout.setHGap(5);
@@ -117,17 +118,17 @@ public class UiPreferencesDialog extends javax.swing.JDialog {
 				getContentPane().add(getButtonsPanel(), BorderLayout.SOUTH);
 				{
 					cancelButton = new JButton();
-					buttonsPanel.add(getCancelButton(), "3, 0");
+					buttonsPanel.add(cancelButton, "4, 0");
 					cancelButton.setText("Cancel");
 				}
 				{
 					restoreButton = new JButton();
-					buttonsPanel.add(restoreButton, "0, 0");
+					buttonsPanel.add(restoreButton, "2, 0");
 					restoreButton.setText("Restore");
 				}
 				{
 					okButton = new JButton();
-					buttonsPanel.add(getOkButton(), "1, 0");
+					buttonsPanel.add(okButton, "1, 0");
 					okButton.setText("Ok");
 				}
 			}
