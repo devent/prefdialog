@@ -1,96 +1,86 @@
 package com.globalscalingsoftware.prefdialog.internal;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
+import java.awt.Component;
 
-import javax.swing.JPanel;
+import javax.swing.AbstractAction;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
-import com.globalscalingsoftware.prefdialog.Child;
+import com.globalscalingsoftware.prefdialog.Event;
 import com.globalscalingsoftware.prefdialog.ICancelAction;
 import com.globalscalingsoftware.prefdialog.IOkAction;
 import com.globalscalingsoftware.prefdialog.IRestoreAction;
 import com.google.inject.Inject;
 
-public class PreferenceDialog implements TreeSelectionListener {
+public class PreferenceDialog {
 
+	private final IOkAction okAction;
+	private final IRestoreAction restoreAction;
+	private final ICancelAction cancelAction;
 	private final UiPreferencesDialog uiPreferencesDialog;
-	private final AnnotationDiscovery annotationDiscovery;
-	private final AnnotationsFilter annotationsFilter;
-
-	private final Map<Object, JPanel> preferencePanels;
+	private Event<Object> childSelected;
 
 	@Inject
-	PreferenceDialog(AnnotationDiscovery annotationDiscovery,
-			AnnotationsFilter annotationsFilter,
-			UiPreferencesDialog uiPreferencesDialog, IOkAction okAction,
-			IRestoreAction restoreAction, ICancelAction cancelAction) {
-		this.annotationDiscovery = annotationDiscovery;
-		this.annotationsFilter = annotationsFilter;
+	PreferenceDialog(UiPreferencesDialog uiPreferencesDialog,
+			IOkAction okAction, IRestoreAction restoreAction,
+			ICancelAction cancelAction) {
 		this.uiPreferencesDialog = uiPreferencesDialog;
-		preferencePanels = new HashMap<Object, JPanel>();
+		this.okAction = okAction;
+		this.restoreAction = restoreAction;
+		this.cancelAction = cancelAction;
 	}
 
-	public void open(Object preferences) {
-		final DefaultMutableTreeNode top = new DefaultMutableTreeNode("root");
+	public void open() {
+		uiPreferencesDialog.getOkButton().setAction((AbstractAction) okAction);
+		uiPreferencesDialog.getRestoreButton().setAction(
+				(AbstractAction) restoreAction);
+		uiPreferencesDialog.getCancelButton().setAction(
+				(AbstractAction) cancelAction);
+
 		uiPreferencesDialog.getPreferencesTree().setRootVisible(false);
 		uiPreferencesDialog.getPreferencesTree().getSelectionModel()
 				.setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-		uiPreferencesDialog.getPreferencesTree().addTreeSelectionListener(this);
+		uiPreferencesDialog.getPreferencesTree().addTreeSelectionListener(
+				new TreeSelectionListener() {
 
-		discoverAnnotations(preferences, top);
-		uiPreferencesDialog.getPreferencesTree().setModel(
-				new DefaultTreeModel(top));
+					@Override
+					public void valueChanged(TreeSelectionEvent e) {
+						if (childSelected == null) {
+							return;
+						}
+
+						Object pathComponent = uiPreferencesDialog
+								.getPreferencesTree()
+								.getLastSelectedPathComponent();
+						if (pathComponent == null) {
+							return;
+						}
+
+						DefaultMutableTreeNode node = (DefaultMutableTreeNode) pathComponent;
+						Object nodeInfo = node.getUserObject();
+						childSelected.call(nodeInfo);
+
+					}
+				});
 
 		uiPreferencesDialog.setModal(true);
 		uiPreferencesDialog.pack();
 		uiPreferencesDialog.setVisible(true);
 	}
 
-	private void discoverAnnotations(Object preferences,
-			final DefaultMutableTreeNode top) {
-		DiscoveredListener listener = new DiscoveredListener() {
-
-			@Override
-			public void fieldAnnotationDiscovered(Field field, Object value,
-					Annotation a) {
-				if (a instanceof Child) {
-					MutableTreeNode node = new DefaultMutableTreeNode(value);
-					top.add(node);
-
-					JPanel panel = new PreferencePanel(field, value);
-					preferencePanels.put(value, panel);
-				}
-			}
-		};
-		try {
-			annotationDiscovery.discover(preferences, annotationsFilter,
-					listener);
-		} catch (AnnotationDiscoveryException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public void setRootNode(DefaultMutableTreeNode root) {
+		uiPreferencesDialog.getPreferencesTree().setModel(
+				new DefaultTreeModel(root));
 	}
 
-	@Override
-	public void valueChanged(TreeSelectionEvent e) {
-		DefaultMutableTreeNode node = (DefaultMutableTreeNode) uiPreferencesDialog
-				.getPreferencesTree().getLastSelectedPathComponent();
+	public void setChildSelected(Event<Object> childSelected) {
+		this.childSelected = childSelected;
+	}
 
-		if (node == null)
-			// Nothing is selected.
-			return;
-
-		Object nodeInfo = node.getUserObject();
-		JPanel panel = preferencePanels.get(nodeInfo);
-
-		uiPreferencesDialog.getMainSplitPane().setRightComponent(panel);
+	public void setChildPanel(Component comp) {
+		uiPreferencesDialog.getMainSplitPane().setRightComponent(comp);
 	}
 }

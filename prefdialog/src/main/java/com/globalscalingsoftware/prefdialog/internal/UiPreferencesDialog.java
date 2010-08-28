@@ -12,6 +12,8 @@ import javax.swing.JSplitPane;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
 
+import com.globalscalingsoftware.prefdialog.IPreferencesDialogOwner;
+
 /**
  * This code was edited or generated using CloudGarden's Jigloo SWT/Swing GUI
  * Builder, which is free for non-commercial use. If Jigloo is being used
@@ -22,6 +24,7 @@ import javax.swing.SwingUtilities;
  * PURCHASED FOR THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED LEGALLY FOR
  * ANY CORPORATE OR COMMERCIAL PURPOSE.
  */
+@SuppressWarnings("serial")
 public class UiPreferencesDialog extends javax.swing.JDialog {
 	private JSplitPane mainSplitPane;
 	private JScrollPane jScrollPane1;
@@ -57,8 +60,12 @@ public class UiPreferencesDialog extends javax.swing.JDialog {
 		});
 	}
 
-	public UiPreferencesDialog(JFrame frame) {
-		super(frame);
+	public UiPreferencesDialog(IPreferencesDialogOwner owner) {
+		this(owner.getFrame());
+	}
+
+	public UiPreferencesDialog(JFrame owner) {
+		super(owner);
 		initGUI();
 	}
 
@@ -115,7 +122,7 @@ public class UiPreferencesDialog extends javax.swing.JDialog {
 				}
 				{
 					restoreButton = new JButton();
-					buttonsPanel.add(getRestoreButton(), "2, 0");
+					buttonsPanel.add(restoreButton, "0, 0");
 					restoreButton.setText("Restore");
 				}
 				{
