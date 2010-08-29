@@ -18,7 +18,7 @@ class PreferenceDialogTest extends GroovyTestCase { {
 	
 	
 	void testConstructor() {
-		def preferenceDialog = new PreferenceDialog(null, null, null, null)
+		def preferenceDialog = new PreferenceDialog(null, null, null)
 		assert preferenceDialog != null
 	}
 	
@@ -27,7 +27,7 @@ class PreferenceDialogTest extends GroovyTestCase { {
 		def dialog = new UiPreferencesDialog(owner)
 		dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE)
 		
-		def preferenceDialog = new PreferenceDialog(dialog, null, null, null)
+		def preferenceDialog = new PreferenceDialog(dialog, null, null)
 		preferenceDialog.open()
 	}
 	
@@ -41,27 +41,32 @@ class PreferenceDialogTest extends GroovyTestCase { {
 		def cancelAction = new DefaultAction("Cancel")
 		
 		def preferenceDialog = new PreferenceDialog(dialog, 
-				okAction, restoreAction, cancelAction)
+				okAction, cancelAction)
 		preferenceDialog.open()
 	}
 	
 	void testOpenWithController() {
-		def annotationDiscovery = new AnnotationDiscovery()
+		def toolbox = new ReflectionToolbox()
+		def annotationDiscovery = new AnnotationDiscovery(toolbox)
 		def annotationsFilter = new AnnotationsFilter()
 		def owner = { new JFrame() } as IPreferencesDialogOwner
 		def dialog = new UiPreferencesDialog(owner)
 		dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE)
 		
-		def preferenceDialog = new PreferenceDialog(dialog, null, null, null)
+		def preferenceDialog = new PreferenceDialog(dialog, null, null)
+		def preferencePanel = new PreferencePanelCreator(
+				annotationDiscovery, annotationsFilter, null, null)
 		def prefereceController = new PreferenceDialogController(
-				annotationDiscovery, annotationsFilter, preferenceDialog)
+				annotationDiscovery, annotationsFilter, preferenceDialog, 
+				preferencePanel)
 		
 		preferenceDialog.open()
 	}
 	
 	void testOpenWithControllerAndPreferences() {
 		def demoPreferences = new Preferences()
-		def annotationDiscovery = new AnnotationDiscovery()
+		def toolbox = new ReflectionToolbox()
+		def annotationDiscovery = new AnnotationDiscovery(toolbox)
 		def annotationsFilter = new AnnotationsFilter()
 		def owner = { new JFrame() } as IPreferencesDialogOwner
 		def dialog = new UiPreferencesDialog(owner)

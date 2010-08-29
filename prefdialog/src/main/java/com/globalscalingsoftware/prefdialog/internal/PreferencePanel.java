@@ -61,23 +61,18 @@ public class PreferencePanel {
 	}
 
 	private void discoverAnnotations(Object value) {
-		try {
-			annotationDiscovery.discover(value, annotationsFilter,
-					new DiscoveredListener() {
+		annotationDiscovery.discover(value, annotationsFilter,
+				new DiscoveredListener() {
 
-						@Override
-						public void fieldAnnotationDiscovered(Field field,
-								Object value, Annotation a) {
-							if (a instanceof TextField) {
-								createTextField(field, value);
-							}
-
+					@Override
+					public void fieldAnnotationDiscovered(Field field,
+							Object value, Annotation a) {
+						if (a instanceof TextField) {
+							createTextField(field, value);
 						}
-					});
-		} catch (AnnotationDiscoveryException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+					}
+				});
 	}
 
 	private void createTextField(Field field, Object value) {

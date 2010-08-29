@@ -11,7 +11,8 @@ public class AnnotationsTest extends GroovyTestCase {
 	
 	void testDiscoverChildAnnotation() {
 		def preferences = new Preferences()
-		def discovery = new AnnotationDiscovery()
+		def toolbox = new ReflectionToolbox()
+		def discovery = new AnnotationDiscovery(toolbox)
 		
 		def childAnnotationCount = 0
 		def filter = { a -> a instanceof Child } as Filter
@@ -25,7 +26,8 @@ public class AnnotationsTest extends GroovyTestCase {
 	
 	void testDiscoverTextFieldAnnotation() {
 		def preferences = new Preferences()
-		def discovery = new AnnotationDiscovery()
+		def toolbox = new ReflectionToolbox()
+		def discovery = new AnnotationDiscovery(toolbox)
 		
 		def annotationCount = 0
 		def filter = { a -> 
@@ -45,7 +47,8 @@ public class AnnotationsTest extends GroovyTestCase {
 	
 	void testAnnotationsFilter() {
 		def preferences = new Preferences()
-		def discovery = new AnnotationDiscovery()
+		def toolbox = new ReflectionToolbox()
+		def discovery = new AnnotationDiscovery(toolbox)
 		
 		def annotationCount = 0
 		def filter = new AnnotationsFilter()

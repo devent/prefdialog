@@ -24,7 +24,8 @@ public class PreferenceDialogController {
 	@Inject
 	PreferenceDialogController(AnnotationDiscovery annotationDiscovery,
 			AnnotationsFilter annotationsFilter,
-			PreferenceDialog preferenceDialog, PreferencePanelCreator preferencePanel) {
+			PreferenceDialog preferenceDialog,
+			PreferencePanelCreator preferencePanel) {
 		this.annotationDiscovery = annotationDiscovery;
 		this.annotationsFilter = annotationsFilter;
 		this.preferenceDialog = preferenceDialog;
@@ -62,13 +63,7 @@ public class PreferenceDialogController {
 				}
 			}
 		};
-		try {
-			annotationDiscovery.discover(preferences, annotationsFilter,
-					listener);
-		} catch (AnnotationDiscoveryException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		annotationDiscovery.discover(preferences, annotationsFilter, listener);
 	}
 
 }
