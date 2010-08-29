@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
@@ -28,8 +29,8 @@ import com.globalscalingsoftware.prefdialog.IPreferencesDialogOwner;
 public class UiPreferencesDialog extends javax.swing.JDialog {
 	private JSplitPane mainSplitPane;
 	private JScrollPane jScrollPane1;
+	private JSeparator jSeparator1;
 	private JButton okButton;
-	private JButton restoreButton;
 	private JButton cancelButton;
 	private JPanel buttonsPanel;
 	private JPanel childPanel;
@@ -87,14 +88,10 @@ public class UiPreferencesDialog extends javax.swing.JDialog {
 					{
 						jScrollPane1 = new JScrollPane();
 						jPanel1.add(jScrollPane1, BorderLayout.CENTER);
-						jScrollPane1.setPreferredSize(new java.awt.Dimension(
-								627, 675));
+						jScrollPane1.setOpaque(false);
 						{
 							preferencesTree = new JTree();
 							jScrollPane1.setViewportView(getPreferencesTree());
-							preferencesTree
-									.setPreferredSize(new java.awt.Dimension(
-											304, 671));
 						}
 					}
 				}
@@ -109,27 +106,26 @@ public class UiPreferencesDialog extends javax.swing.JDialog {
 						new double[][] {
 								{ TableLayout.FILL, TableLayout.PREFERRED,
 										TableLayout.PREFERRED,
-										TableLayout.PREFERRED,
-										TableLayout.PREFERRED },
-								{ TableLayout.PREFERRED } });
+										TableLayout.MINIMUM },
+								{ TableLayout.FILL, TableLayout.PREFERRED,
+										TableLayout.MINIMUM } });
 				buttonsPanelLayout.setHGap(5);
 				buttonsPanelLayout.setVGap(5);
 				buttonsPanel.setLayout(buttonsPanelLayout);
 				getContentPane().add(getButtonsPanel(), BorderLayout.SOUTH);
 				{
 					cancelButton = new JButton();
-					buttonsPanel.add(cancelButton, "4, 0");
+					buttonsPanel.add(cancelButton, "2, 1");
 					cancelButton.setText("Cancel");
 				}
 				{
-					restoreButton = new JButton();
-					buttonsPanel.add(restoreButton, "2, 0");
-					restoreButton.setText("Restore");
+					okButton = new JButton();
+					buttonsPanel.add(okButton, "1, 1");
+					okButton.setText("Ok");
 				}
 				{
-					okButton = new JButton();
-					buttonsPanel.add(okButton, "1, 0");
-					okButton.setText("Ok");
+					jSeparator1 = new JSeparator();
+					buttonsPanel.add(jSeparator1, "0, 0, 2, 0");
 				}
 			}
 			this.setSize(721, 703);
@@ -156,10 +152,6 @@ public class UiPreferencesDialog extends javax.swing.JDialog {
 
 	public JButton getCancelButton() {
 		return cancelButton;
-	}
-
-	public JButton getRestoreButton() {
-		return restoreButton;
 	}
 
 	public JButton getOkButton() {
