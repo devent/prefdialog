@@ -19,19 +19,23 @@ public class PreferencePanelCreator {
 
 	private final IRestoreAction restoreAction;
 
+	private final ReflectionToolbox reflectionToolbox;
+
 	@Inject
 	PreferencePanelCreator(AnnotationDiscovery annotationDiscovery,
-			AnnotationsFilter annotationsFilter, IApplyAction applyAction,
+			AnnotationsFilter annotationsFilter,
+			ReflectionToolbox reflectionToolbox, IApplyAction applyAction,
 			IRestoreAction restoreAction) {
 		this.annotationDiscovery = annotationDiscovery;
 		this.annotationsFilter = annotationsFilter;
+		this.reflectionToolbox = reflectionToolbox;
 		this.applyAction = applyAction;
 		this.restoreAction = restoreAction;
 	}
 
 	public JPanel createPanel(Field field, Object value) {
 		PreferencePanel panel = new PreferencePanel(annotationDiscovery,
-				annotationsFilter);
+				annotationsFilter, reflectionToolbox);
 		panel.setApplyAction((Action) applyAction);
 		panel.setRestoreAction((Action) restoreAction);
 		return panel.getPanel(field, value);

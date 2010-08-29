@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.globalscalingsoftware.prefdialog.Child;
+import com.globalscalingsoftware.prefdialog.FormattedTextField;
 import com.globalscalingsoftware.prefdialog.Parsed;
 import com.globalscalingsoftware.prefdialog.TextField;
 import com.globalscalingsoftware.prefdialog.Validated;
@@ -18,6 +19,7 @@ public class AnnotationsFilter implements Filter {
 		annotations.add(Child.class);
 		annotations.add(Parsed.class);
 		annotations.add(TextField.class);
+		annotations.add(FormattedTextField.class);
 		annotations.add(Validated.class);
 	}
 

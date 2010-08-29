@@ -42,7 +42,7 @@ public class AnnotationsTest extends GroovyTestCase {
 				] as DiscoveredListener 
 		
 		discovery.discover(preferences, filter, listener)
-		assert annotationCount == 2
+		assert annotationCount == 1
 	}
 	
 	void testAnnotationsFilter() {

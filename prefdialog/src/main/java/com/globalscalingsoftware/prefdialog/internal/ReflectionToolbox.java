@@ -17,4 +17,16 @@ public class ReflectionToolbox {
 		return name;
 	}
 
+	private String getSetterName(Field field) {
+		String name = field.getName().substring(0, 1).toUpperCase();
+		name = "set" + name + field.getName().substring(1);
+		return name;
+	}
+
+	public void setValueTo(Field field, Object object, Object value) {
+		String name = getSetterName(field);
+		method(name).withParameterTypes(field.getType()).in(object)
+				.invoke(value);
+	}
+
 }

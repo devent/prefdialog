@@ -5,7 +5,7 @@ import com.globalscalingsoftware.prefdialog.*;
 
 class General {
 	
-	@TextField
+	@FormattedTextField
 	@Parsed(parserClass=IntegerParser.class)
 	int fields = 4
 	
