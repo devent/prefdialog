@@ -11,22 +11,21 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.globalscalingsoftware.prefdialog.TextField;
+import com.google.inject.Inject;
 
 public class PreferencePanel {
 
 	@SuppressWarnings("serial")
-	public class PreferencePanelInteral extends JPanel {
-
-		private final Object parentValue;
+	public class PreferencePanelInternal extends UiPreferencePanel {
 
 		private final TableLayout layout;
 
-		public PreferencePanelInteral(Object parentValue) {
+		public PreferencePanelInternal(Field parentField, Object parentValue) {
+			getChildTitleLabel().setText(parentValue.toString());
 			double[] cols = { TableLayout.PREFERRED, TableLayout.FILL };
 			double[] rows = {};
 			layout = new TableLayout(cols, rows);
-			setLayout(layout);
-			this.parentValue = parentValue;
+			getBottomPanel().setLayout(layout);
 			discoverAnnotations(parentValue);
 		}
 
@@ -54,15 +53,18 @@ public class PreferencePanel {
 			int index = layout.getNumRow();
 			layout.insertRow(index, TableLayout.PREFERRED);
 			JTextField textfield = new JTextField();
-			JLabel label = new JLabel(field.getName());
-			add(label, format("0, %d", index));
-			add(textfield, format("1, %d", index));
+			JLabel label = new JLabel(field.getName() + ": ");
+			label.setLabelFor(textfield);
+			getBottomPanel().add(label, format("0, %d", index));
+			getBottomPanel().add(textfield, format("1, %d", index));
 		}
 	}
 
 	private final AnnotationDiscovery annotationDiscovery;
+
 	private final AnnotationsFilter annotationsFilter;
 
+	@Inject
 	PreferencePanel(AnnotationDiscovery annotationDiscovery,
 			AnnotationsFilter annotationsFilter) {
 		this.annotationDiscovery = annotationDiscovery;
@@ -70,7 +72,6 @@ public class PreferencePanel {
 	}
 
 	public JPanel createPanel(Field field, Object value) {
-		return new PreferencePanelInteral(value);
+		return new PreferencePanelInternal(field, value);
 	}
-
 }

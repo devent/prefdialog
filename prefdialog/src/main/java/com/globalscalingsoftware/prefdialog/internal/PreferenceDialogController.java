@@ -19,14 +19,16 @@ public class PreferenceDialogController {
 	private final AnnotationsFilter annotationsFilter;
 	private final Map<Object, JPanel> preferencePanels;
 	private final PreferenceDialog preferenceDialog;
+	private final PreferencePanel preferencePanel;
 
 	@Inject
 	PreferenceDialogController(AnnotationDiscovery annotationDiscovery,
 			AnnotationsFilter annotationsFilter,
-			PreferenceDialog preferenceDialog) {
+			PreferenceDialog preferenceDialog, PreferencePanel preferencePanel) {
 		this.annotationDiscovery = annotationDiscovery;
 		this.annotationsFilter = annotationsFilter;
 		this.preferenceDialog = preferenceDialog;
+		this.preferencePanel = preferencePanel;
 		preferencePanels = new HashMap<Object, JPanel>();
 	}
 
@@ -55,7 +57,7 @@ public class PreferenceDialogController {
 					MutableTreeNode node = new DefaultMutableTreeNode(value);
 					root.add(node);
 
-					JPanel panel = new PreferencePanel(field, value);
+					JPanel panel = preferencePanel.createPanel(field, value);
 					preferencePanels.put(value, panel);
 				}
 			}

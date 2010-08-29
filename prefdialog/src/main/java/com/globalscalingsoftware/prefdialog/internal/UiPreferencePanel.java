@@ -2,8 +2,7 @@ package com.globalscalingsoftware.prefdialog.internal;
 
 import info.clearthought.layout.TableLayout;
 
-import java.awt.BorderLayout;
-
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -23,21 +22,9 @@ import javax.swing.WindowConstants;
  */
 public class UiPreferencePanel extends javax.swing.JPanel {
 
-	{
-		// Set Look & Feel
-		try {
-			javax.swing.UIManager
-					.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	private JPanel topPanel;
 	private JLabel childTitleLabel;
 	private JButton restoreButton;
 	private JButton applyButton;
-	private JPanel buttonPanel;
 	private JPanel bottomPanel;
 	private JSeparator jSeparator1;
 
@@ -59,66 +46,51 @@ public class UiPreferencePanel extends javax.swing.JPanel {
 
 	private void initGUI() {
 		try {
-			BorderLayout thisLayout = new BorderLayout();
+			TableLayout thisLayout = new TableLayout(new double[][] {
+					{ TableLayout.FILL, 100.0, 100.0 },
+					{ TableLayout.PREFERRED, TableLayout.PREFERRED,
+							TableLayout.FILL, TableLayout.PREFERRED } });
+			thisLayout.setHGap(5);
+			thisLayout.setVGap(5);
 			this.setLayout(thisLayout);
 			this.setPreferredSize(new java.awt.Dimension(514, 406));
+			this.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 			{
-				buttonPanel = new JPanel();
-				TableLayout buttonPanelLayout = new TableLayout(new double[][] {
-						{ TableLayout.FILL, TableLayout.PREFERRED,
-								TableLayout.PREFERRED, TableLayout.MINIMUM },
-						{ TableLayout.MINIMUM, TableLayout.FILL,
-								TableLayout.MINIMUM } });
-				buttonPanelLayout.setHGap(5);
-				buttonPanelLayout.setVGap(5);
-				buttonPanel.setLayout(buttonPanelLayout);
-				this.add(getButtonPanel(), BorderLayout.SOUTH);
-				{
-					applyButton = new JButton();
-					buttonPanel.add(applyButton, "2, 1");
-					applyButton.setText("Apply");
-				}
-				{
-					restoreButton = new JButton();
-					buttonPanel.add(restoreButton, "1, 1");
-					restoreButton.setText("Restore");
-				}
+				restoreButton = new JButton();
+				this.add(restoreButton, "2, 3");
+				restoreButton.setText("Restore");
 			}
 			{
-				topPanel = new JPanel();
-				TableLayout topPanelLayout = new TableLayout(new double[][] {
-						{ TableLayout.MINIMUM, TableLayout.FILL, 7.0 },
-						{ TableLayout.FILL, TableLayout.PREFERRED,
-								TableLayout.PREFERRED } });
-				topPanelLayout.setHGap(5);
-				topPanelLayout.setVGap(5);
-				topPanel.setLayout(topPanelLayout);
-				this.add(topPanel, BorderLayout.NORTH);
-				{
-					childTitleLabel = new JLabel();
-					topPanel.add(childTitleLabel, "1, 1");
-					childTitleLabel.setText("Title");
-				}
-				{
-					jSeparator1 = new JSeparator();
-					topPanel.add(jSeparator1, "1, 2");
-				}
+				applyButton = new JButton();
+				this.add(applyButton, "1, 3");
+				applyButton.setText("Apply");
+			}
+			{
+				jSeparator1 = new JSeparator();
+				this.add(jSeparator1, "0, 1, 2, 1");
 			}
 			{
 				bottomPanel = new JPanel();
-				this.add(bottomPanel, BorderLayout.CENTER);
+				this.add(bottomPanel, "0, 2, 2, 2");
+				bottomPanel.setBorder(BorderFactory.createEmptyBorder(4, 4, 4,
+						4));
+			}
+			{
+				childTitleLabel = new JLabel();
+				this.add(childTitleLabel, "0, 0, 2, 0");
+				childTitleLabel.setText("Title");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public JLabel getChildTitleLabel() {
-		return childTitleLabel;
+	public JPanel getBottomPanel() {
+		return bottomPanel;
 	}
 
-	public JPanel getButtonPanel() {
-		return buttonPanel;
+	public JLabel getChildTitleLabel() {
+		return childTitleLabel;
 	}
 
 	public JButton getApplyButton() {

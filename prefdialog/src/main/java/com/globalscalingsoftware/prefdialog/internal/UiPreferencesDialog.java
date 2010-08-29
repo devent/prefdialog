@@ -4,6 +4,7 @@ import info.clearthought.layout.TableLayout;
 
 import java.awt.BorderLayout;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -25,27 +26,15 @@ import com.globalscalingsoftware.prefdialog.IPreferencesDialogOwner;
  * PURCHASED FOR THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED LEGALLY FOR
  * ANY CORPORATE OR COMMERCIAL PURPOSE.
  */
-@SuppressWarnings("serial")
 public class UiPreferencesDialog extends javax.swing.JDialog {
-	private JSplitPane mainSplitPane;
+
+	private JPanel dialogPanel;
+	private JSplitPane splitPane;
 	private JScrollPane jScrollPane1;
-	private JSeparator jSeparator1;
 	private JButton okButton;
 	private JButton cancelButton;
-	private JPanel buttonsPanel;
-	private JPanel childPanel;
-	private JPanel jPanel1;
-	private JTree preferencesTree;
-
-	{
-		// Set Look & Feel
-		try {
-			javax.swing.UIManager
-					.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	private JSeparator jSeparator1;
+	private JTree childTree;
 
 	/**
 	 * Auto-generated main method to display this JDialog
@@ -65,8 +54,8 @@ public class UiPreferencesDialog extends javax.swing.JDialog {
 		this(owner.getFrame());
 	}
 
-	public UiPreferencesDialog(JFrame owner) {
-		super(owner);
+	public UiPreferencesDialog(JFrame frame) {
+		super(frame);
 		initGUI();
 	}
 
@@ -77,77 +66,61 @@ public class UiPreferencesDialog extends javax.swing.JDialog {
 			BorderLayout thisLayout = new BorderLayout();
 			getContentPane().setLayout(thisLayout);
 			{
-				mainSplitPane = new JSplitPane();
-				getContentPane().add(getMainSplitPane(), BorderLayout.CENTER);
+				dialogPanel = new JPanel();
+				TableLayout dialogPanelLayout = new TableLayout(new double[][] {
+						{ TableLayout.FILL, 100.0, 100.0 },
+						{ TableLayout.FILL, TableLayout.PREFERRED,
+								TableLayout.PREFERRED } });
+				dialogPanelLayout.setHGap(5);
+				dialogPanelLayout.setVGap(5);
+				dialogPanel.setLayout(dialogPanelLayout);
+				getContentPane().add(getDialogPanel(), BorderLayout.CENTER);
+				dialogPanel.setBorder(BorderFactory.createEmptyBorder(4, 4, 4,
+						4));
+				dialogPanel.setEnabled(false);
 				{
-					jPanel1 = new JPanel();
-					mainSplitPane.add(jPanel1, JSplitPane.LEFT);
-					BorderLayout jPanel1Layout = new BorderLayout();
-					jPanel1.setLayout(jPanel1Layout);
-					jPanel1.setPreferredSize(new java.awt.Dimension(86, 675));
+					splitPane = new JSplitPane();
+					dialogPanel.add(getSplitPane(), "0, 0, 2, 0");
 					{
 						jScrollPane1 = new JScrollPane();
-						jPanel1.add(jScrollPane1, BorderLayout.CENTER);
-						jScrollPane1.setOpaque(false);
+						splitPane.add(jScrollPane1, JSplitPane.LEFT);
 						{
-							preferencesTree = new JTree();
-							jScrollPane1.setViewportView(getPreferencesTree());
+							childTree = new JTree();
+							jScrollPane1.setViewportView(getChildTree());
 						}
 					}
 				}
 				{
-					childPanel = new JPanel();
-					mainSplitPane.add(getChildPanel(), JSplitPane.RIGHT);
+					jSeparator1 = new JSeparator();
+					dialogPanel.add(jSeparator1, "0, 1, 2, 1");
 				}
-			}
-			{
-				buttonsPanel = new JPanel();
-				TableLayout buttonsPanelLayout = new TableLayout(
-						new double[][] {
-								{ TableLayout.FILL, TableLayout.PREFERRED,
-										TableLayout.PREFERRED,
-										TableLayout.MINIMUM },
-								{ TableLayout.FILL, TableLayout.PREFERRED,
-										TableLayout.MINIMUM } });
-				buttonsPanelLayout.setHGap(5);
-				buttonsPanelLayout.setVGap(5);
-				buttonsPanel.setLayout(buttonsPanelLayout);
-				getContentPane().add(getButtonsPanel(), BorderLayout.SOUTH);
 				{
 					cancelButton = new JButton();
-					buttonsPanel.add(cancelButton, "2, 1");
+					dialogPanel.add(getCancelButton(), "2, 2");
 					cancelButton.setText("Cancel");
 				}
 				{
 					okButton = new JButton();
-					buttonsPanel.add(okButton, "1, 1");
+					dialogPanel.add(getOkButton(), "1, 2");
 					okButton.setText("Ok");
 				}
-				{
-					jSeparator1 = new JSeparator();
-					buttonsPanel.add(jSeparator1, "0, 0, 2, 0");
-				}
 			}
-			this.setSize(721, 703);
+			this.setSize(642, 522);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public JSplitPane getMainSplitPane() {
-		return mainSplitPane;
+	public JPanel getDialogPanel() {
+		return dialogPanel;
 	}
 
-	public JTree getPreferencesTree() {
-		return preferencesTree;
+	public JSplitPane getSplitPane() {
+		return splitPane;
 	}
 
-	public JPanel getChildPanel() {
-		return childPanel;
-	}
-
-	public JPanel getButtonsPanel() {
-		return buttonsPanel;
+	public JTree getChildTree() {
+		return childTree;
 	}
 
 	public JButton getCancelButton() {
