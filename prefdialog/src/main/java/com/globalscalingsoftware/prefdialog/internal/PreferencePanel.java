@@ -22,7 +22,7 @@ public class PreferencePanel {
 
 		public PreferencePanelInternal(Field parentField, Object parentValue) {
 			getChildTitleLabel().setText(parentValue.toString());
-			double[] cols = { TableLayout.PREFERRED, TableLayout.FILL };
+			double[] cols = { TableLayout.PREFERRED, TableLayout.FILL, 0.6 };
 			double[] rows = {};
 			layout = new TableLayout(cols, rows);
 			getBottomPanel().setLayout(layout);
@@ -56,7 +56,7 @@ public class PreferencePanel {
 			JLabel label = new JLabel(field.getName() + ": ");
 			label.setLabelFor(textfield);
 			getBottomPanel().add(label, format("0, %d", index));
-			getBottomPanel().add(textfield, format("1, %d", index));
+			getBottomPanel().add(textfield, format("2, %d", index));
 		}
 	}
 
