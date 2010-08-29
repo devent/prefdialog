@@ -1,6 +1,8 @@
 package com.globalscalingsoftware.prefdialog.internal;
 
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.AbstractAction;
 import javax.swing.JTree;
@@ -23,6 +25,8 @@ public class PreferenceDialog {
 	private final ICancelAction cancelAction;
 	private final UiPreferencesDialog uiPreferencesDialog;
 	private Event<Object> childSelected;
+	private Runnable okEvent;
+	private Runnable cancelEvent;
 
 	@Inject
 	PreferenceDialog(UiPreferencesDialog uiPreferencesDialog,
@@ -34,8 +38,29 @@ public class PreferenceDialog {
 
 	public void open() {
 		uiPreferencesDialog.getOkButton().setAction((AbstractAction) okAction);
+		uiPreferencesDialog.getOkButton().addActionListener(
+				new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						if (okEvent != null) {
+							okEvent.run();
+						}
+					}
+				});
+
 		uiPreferencesDialog.getCancelButton().setAction(
 				(AbstractAction) cancelAction);
+		uiPreferencesDialog.getCancelButton().addActionListener(
+				new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						if (cancelEvent != null) {
+							cancelEvent.run();
+						}
+					}
+				});
 
 		final JTree childTree = uiPreferencesDialog.getChildTree();
 		childTree.setRootVisible(false);
@@ -83,5 +108,17 @@ public class PreferenceDialog {
 		TreePath treePath = new TreePath(path);
 		uiPreferencesDialog.getChildTree().setSelectionPath(treePath);
 		uiPreferencesDialog.getChildTree().scrollPathToVisible(treePath);
+	}
+
+	public void setOkEvent(Runnable okEvent) {
+		this.okEvent = okEvent;
+	}
+
+	public void setCancelEvent(Runnable cancelEvent) {
+		this.cancelEvent = cancelEvent;
+	}
+
+	public void close() {
+		uiPreferencesDialog.setVisible(false);
 	}
 }

@@ -3,7 +3,6 @@ package com.globalscalingsoftware.prefdialog.internal;
 import java.lang.reflect.Field;
 
 import javax.swing.Action;
-import javax.swing.JPanel;
 
 import com.globalscalingsoftware.prefdialog.IApplyAction;
 import com.globalscalingsoftware.prefdialog.IRestoreAction;
@@ -33,11 +32,12 @@ public class PreferencePanelCreator {
 		this.restoreAction = restoreAction;
 	}
 
-	public JPanel createPanel(Field field, Object value) {
+	public PreferencePanel createPanel(Object parentValue, Field field) {
 		PreferencePanel panel = new PreferencePanel(annotationDiscovery,
 				annotationsFilter, reflectionToolbox);
 		panel.setApplyAction((Action) applyAction);
 		panel.setRestoreAction((Action) restoreAction);
-		return panel.getPanel(field, value);
+		panel.setField(parentValue, field);
+		return panel;
 	}
 }

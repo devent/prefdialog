@@ -17,7 +17,7 @@ public class PreferenceDialogController {
 
 	private final AnnotationDiscovery annotationDiscovery;
 	private final AnnotationsFilter annotationsFilter;
-	private final Map<Object, JPanel> preferencePanels;
+	private final Map<Object, PreferencePanel> preferencePanels;
 	private final PreferenceDialog preferenceDialog;
 	private final PreferencePanelCreator preferencePanel;
 	private final Map<Object, TreeNode[]> treeNodes;
@@ -31,7 +31,7 @@ public class PreferenceDialogController {
 		this.annotationsFilter = annotationsFilter;
 		this.preferenceDialog = preferenceDialog;
 		this.preferencePanel = preferencePanel;
-		preferencePanels = new HashMap<Object, JPanel>();
+		preferencePanels = new HashMap<Object, PreferencePanel>();
 		treeNodes = new HashMap<Object, TreeNode[]>();
 	}
 
@@ -43,14 +43,34 @@ public class PreferenceDialogController {
 
 			@Override
 			public void call(Object object) {
-				JPanel panel = preferencePanels.get(object);
+				JPanel panel = preferencePanels.get(object).getPanel();
 				preferenceDialog.setChildPanel(panel);
+			}
+		});
+		preferenceDialog.setOkEvent(new Runnable() {
+
+			@Override
+			public void run() {
+				preferenceDialog.close();
+				for (PreferencePanel panel : preferencePanels.values()) {
+					panel.applyAllInput();
+				}
+			}
+		});
+		preferenceDialog.setCancelEvent(new Runnable() {
+
+			@Override
+			public void run() {
+				preferenceDialog.close();
+				for (PreferencePanel panel : preferencePanels.values()) {
+					panel.undoAllInput();
+				}
 			}
 		});
 	}
 
 	public void setChildObject(Object object) {
-		JPanel panel = preferencePanels.get(object);
+		JPanel panel = preferencePanels.get(object).getPanel();
 		preferenceDialog.setChildPanel(panel);
 		preferenceDialog.setSelectedChild(treeNodes.get(object));
 	}
@@ -69,7 +89,8 @@ public class PreferenceDialogController {
 
 					treeNodes.put(value, node.getPath());
 
-					JPanel panel = preferencePanel.createPanel(field, value);
+					PreferencePanel panel = preferencePanel.createPanel(value,
+							field);
 					preferencePanels.put(value, panel);
 				}
 			}

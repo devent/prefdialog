@@ -45,11 +45,14 @@ public class PreferencePanel {
 		layout = new TableLayout(cols, rows);
 	}
 
-	public JPanel getPanel(Field field, Object value) {
-		setupChildTitle(value);
+	public void setField(Object parentValue, Field field) {
+		setupChildTitle(parentValue);
 		setupLayout();
-		discoverAnnotations(value);
+		discoverAnnotations(parentValue);
 		setupActions();
+	}
+
+	public JPanel getPanel() {
 		return uiPreferencePanel;
 	}
 
@@ -59,9 +62,7 @@ public class PreferencePanel {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						for (InputField inputField : inputFields.values()) {
-							inputField.applyInput();
-						}
+						applyAllInput();
 					}
 				});
 	}
@@ -157,5 +158,16 @@ public class PreferencePanel {
 
 	public void setRestoreAction(Action a) {
 		uiPreferencePanel.getRestoreButton().setAction(a);
+	}
+
+	public void applyAllInput() {
+		for (InputField inputField : inputFields.values()) {
+			inputField.applyInput();
+		}
+	}
+
+	public void undoAllInput() {
+		// TODO Auto-generated method stub
+
 	}
 }
