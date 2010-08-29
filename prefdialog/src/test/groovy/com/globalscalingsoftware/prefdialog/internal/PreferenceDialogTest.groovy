@@ -69,12 +69,13 @@ class PreferenceDialogTest extends GroovyTestCase { {
 		
 		def okAction = new DefaultAction("Ok")
 		def restoreAction = new DefaultAction("Restore")
+		def applyAction = new DefaultAction("Apply")
 		def cancelAction = new DefaultAction("Cancel")
 		
 		def preferenceDialog = new PreferenceDialog(dialog, 
 				okAction, cancelAction)
-		def preferencePanel = new PreferencePanel(
-				annotationDiscovery, annotationsFilter)
+		def preferencePanel = new PreferencePanelCreator(
+				annotationDiscovery, annotationsFilter, applyAction, restoreAction)
 		def prefereceController = new PreferenceDialogController(
 				annotationDiscovery, annotationsFilter, preferenceDialog,
 				preferencePanel)

@@ -19,12 +19,12 @@ public class PreferenceDialogController {
 	private final AnnotationsFilter annotationsFilter;
 	private final Map<Object, JPanel> preferencePanels;
 	private final PreferenceDialog preferenceDialog;
-	private final PreferencePanel preferencePanel;
+	private final PreferencePanelCreator preferencePanel;
 
 	@Inject
 	PreferenceDialogController(AnnotationDiscovery annotationDiscovery,
 			AnnotationsFilter annotationsFilter,
-			PreferenceDialog preferenceDialog, PreferencePanel preferencePanel) {
+			PreferenceDialog preferenceDialog, PreferencePanelCreator preferencePanel) {
 		this.annotationDiscovery = annotationDiscovery;
 		this.annotationsFilter = annotationsFilter;
 		this.preferenceDialog = preferenceDialog;
