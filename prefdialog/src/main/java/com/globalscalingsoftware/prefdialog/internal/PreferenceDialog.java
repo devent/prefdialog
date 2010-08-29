@@ -8,6 +8,8 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import com.globalscalingsoftware.prefdialog.Event;
@@ -75,5 +77,11 @@ public class PreferenceDialog {
 	public void setChildPanel(Component comp) {
 		uiPreferencesDialog.getSplitPane().setRightComponent(comp);
 		uiPreferencesDialog.pack();
+	}
+
+	public void setSelectedChild(TreeNode[] path) {
+		TreePath treePath = new TreePath(path);
+		uiPreferencesDialog.getChildTree().setSelectionPath(treePath);
+		uiPreferencesDialog.getChildTree().scrollPathToVisible(treePath);
 	}
 }

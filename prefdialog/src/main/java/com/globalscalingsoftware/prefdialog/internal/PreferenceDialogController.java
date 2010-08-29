@@ -7,7 +7,7 @@ import java.util.Map;
 
 import javax.swing.JPanel;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.MutableTreeNode;
+import javax.swing.tree.TreeNode;
 
 import com.globalscalingsoftware.prefdialog.Child;
 import com.globalscalingsoftware.prefdialog.Event;
@@ -20,6 +20,7 @@ public class PreferenceDialogController {
 	private final Map<Object, JPanel> preferencePanels;
 	private final PreferenceDialog preferenceDialog;
 	private final PreferencePanelCreator preferencePanel;
+	private final Map<Object, TreeNode[]> treeNodes;
 
 	@Inject
 	PreferenceDialogController(AnnotationDiscovery annotationDiscovery,
@@ -31,6 +32,7 @@ public class PreferenceDialogController {
 		this.preferenceDialog = preferenceDialog;
 		this.preferencePanel = preferencePanel;
 		preferencePanels = new HashMap<Object, JPanel>();
+		treeNodes = new HashMap<Object, TreeNode[]>();
 	}
 
 	public void setPreferences(Object preferences) {
@@ -47,6 +49,12 @@ public class PreferenceDialogController {
 		});
 	}
 
+	public void setChildObject(Object object) {
+		JPanel panel = preferencePanels.get(object);
+		preferenceDialog.setChildPanel(panel);
+		preferenceDialog.setSelectedChild(treeNodes.get(object));
+	}
+
 	private void discoverAnnotations(Object preferences,
 			final DefaultMutableTreeNode root) {
 		DiscoveredListener listener = new DiscoveredListener() {
@@ -55,8 +63,11 @@ public class PreferenceDialogController {
 			public void fieldAnnotationDiscovered(Field field, Object value,
 					Annotation a) {
 				if (a instanceof Child) {
-					MutableTreeNode node = new DefaultMutableTreeNode(value);
+					DefaultMutableTreeNode node = new DefaultMutableTreeNode(
+							value);
 					root.add(node);
+
+					treeNodes.put(value, node.getPath());
 
 					JPanel panel = preferencePanel.createPanel(field, value);
 					preferencePanels.put(value, panel);

@@ -87,6 +87,7 @@ class PreferenceDialogTest extends GroovyTestCase { {
 				preferencePanel)
 		
 		prefereceController.setPreferences(demoPreferences)
+		prefereceController.setChildObject(demoPreferences.general)
 		preferenceDialog.open()
 		
 		def fields = demoPreferences.general.fields
