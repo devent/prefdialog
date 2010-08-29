@@ -6,7 +6,16 @@ import com.globalscalingsoftware.prefdialog.IPreferencesDialogOwner;
 
 import groovy.util.GroovyTestCase
 
-class PreferenceDialogTest extends GroovyTestCase {
+class PreferenceDialogTest extends GroovyTestCase { {
+		// Set Look & Feel
+		try {
+			javax.swing.UIManager
+			.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	
 	void testConstructor() {
 		def preferenceDialog = new PreferenceDialog(null, null, null, null)
@@ -58,9 +67,17 @@ class PreferenceDialogTest extends GroovyTestCase {
 		def dialog = new UiPreferencesDialog(owner)
 		dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE)
 		
-		def preferenceDialog = new PreferenceDialog(dialog, null, null, null)
+		def okAction = new DefaultAction("Ok")
+		def restoreAction = new DefaultAction("Restore")
+		def cancelAction = new DefaultAction("Cancel")
+		
+		def preferenceDialog = new PreferenceDialog(dialog, 
+				okAction, cancelAction)
+		def preferencePanel = new PreferencePanel(
+				annotationDiscovery, annotationsFilter)
 		def prefereceController = new PreferenceDialogController(
-				annotationDiscovery, annotationsFilter, preferenceDialog)
+				annotationDiscovery, annotationsFilter, preferenceDialog,
+				preferencePanel)
 		
 		prefereceController.setPreferences(demoPreferences)
 		preferenceDialog.open()
