@@ -74,5 +74,6 @@ public class PreferenceDialog {
 
 	public void setChildPanel(Component comp) {
 		uiPreferencesDialog.getSplitPane().setRightComponent(comp);
+		uiPreferencesDialog.pack();
 	}
 }
