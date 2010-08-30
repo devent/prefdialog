@@ -3,8 +3,6 @@ package com.globalscalingsoftware.prefdialog.internal;
 import static java.lang.String.format;
 import info.clearthought.layout.TableLayout;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusListener;
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -24,13 +22,14 @@ public class PreferencePanel {
 	private final UiPreferencePanel uiPreferencePanel;
 	private final Map<String, InputField> inputFields;
 	private final ReflectionToolbox reflectionToolbox;
-	private Runnable applyEvent;
+	private final ApplyEvent applyEvent;
 
 	@Inject
 	PreferencePanel(ReflectionToolbox reflectionToolbox) {
 		this.reflectionToolbox = reflectionToolbox;
 		uiPreferencePanel = new UiPreferencePanel();
 		inputFields = new HashMap<String, InputField>();
+		applyEvent = new ApplyEvent();
 
 		double[] cols = { TableLayout.PREFERRED, TableLayout.FILL, 0.6 };
 		double[] rows = {};
@@ -44,20 +43,7 @@ public class PreferencePanel {
 	}
 
 	private void setupActions() {
-		uiPreferencePanel.getApplyButton().addActionListener(
-				new ActionListener() {
-
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						if (applyEvent != null) {
-							applyEvent.run();
-						}
-					}
-				});
-	}
-
-	public void setApplyEvent(Runnable applyEvent) {
-		this.applyEvent = applyEvent;
+		uiPreferencePanel.getApplyButton().addActionListener(applyEvent);
 	}
 
 	public void setTitle(String title) {
@@ -71,6 +57,17 @@ public class PreferencePanel {
 				new ValidatingFormattedTextField(textfield));
 
 		textfield.setValue(value);
+	}
+
+	public void addTextField(final Object parentObject, final Field field,
+			Object value) {
+		JTextField textfield = new JTextField();
+		insertTextField(parentObject, field, textfield,
+				new ValidatingTextField(textfield));
+	
+		if (value != null) {
+			textfield.setText(value.toString());
+		}
 	}
 
 	private void insertTextField(Object parentObject, Field field,
@@ -93,19 +90,12 @@ public class PreferencePanel {
 				format("2, %d", index));
 	}
 
-	public void addTextField(final Object parentObject, final Field field,
-			Object value) {
-		JTextField textfield = new JTextField();
-		insertTextField(parentObject, field, textfield,
-				new ValidatingTextField(textfield));
-
-		if (value != null) {
-			textfield.setText(value.toString());
-		}
-	}
-
 	public void setApplyAction(Action a) {
 		uiPreferencePanel.getApplyButton().setAction(a);
+	}
+
+	public void setApplyEvent(Runnable applyEvent) {
+		this.applyEvent.setEvent(applyEvent);
 	}
 
 	public void setRestoreAction(Action a) {
