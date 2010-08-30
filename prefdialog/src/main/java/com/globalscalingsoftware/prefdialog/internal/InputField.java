@@ -6,8 +6,8 @@ import java.lang.reflect.Field;
 import javax.swing.JFormattedTextField;
 import javax.swing.JTextField;
 
-import com.globalscalingsoftware.prefdialog.FormattedTextField;
-import com.globalscalingsoftware.prefdialog.TextField;
+import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField;
+import com.globalscalingsoftware.prefdialog.annotations.TextField;
 
 public class InputField {
 

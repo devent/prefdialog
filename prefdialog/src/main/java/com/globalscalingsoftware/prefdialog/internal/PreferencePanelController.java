@@ -3,8 +3,8 @@ package com.globalscalingsoftware.prefdialog.internal;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
-import com.globalscalingsoftware.prefdialog.FormattedTextField;
-import com.globalscalingsoftware.prefdialog.TextField;
+import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField;
+import com.globalscalingsoftware.prefdialog.annotations.TextField;
 
 public class PreferencePanelController {
 

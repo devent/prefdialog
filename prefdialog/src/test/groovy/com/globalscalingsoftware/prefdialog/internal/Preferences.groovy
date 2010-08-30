@@ -1,7 +1,7 @@
 package com.globalscalingsoftware.prefdialog.internal
 
 
-import com.globalscalingsoftware.prefdialog.Child;
+import com.globalscalingsoftware.prefdialog.annotations.Child;
 
 class Preferences {
 	

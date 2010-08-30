@@ -1,6 +1,6 @@
 package com.globalscalingsoftware.prefdialog.internal
 
-import com.globalscalingsoftware.prefdialog.TextField 
+import com.globalscalingsoftware.prefdialog.annotations.TextField;
 
 class Device {
 	

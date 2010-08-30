@@ -9,8 +9,8 @@ import javax.swing.JPanel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 
-import com.globalscalingsoftware.prefdialog.Child;
 import com.globalscalingsoftware.prefdialog.Event;
+import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.google.inject.Inject;
 
 public class PreferenceDialogController {

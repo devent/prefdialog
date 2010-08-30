@@ -4,11 +4,11 @@ import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.globalscalingsoftware.prefdialog.Child;
-import com.globalscalingsoftware.prefdialog.FormattedTextField;
-import com.globalscalingsoftware.prefdialog.Parsed;
-import com.globalscalingsoftware.prefdialog.TextField;
-import com.globalscalingsoftware.prefdialog.Validated;
+import com.globalscalingsoftware.prefdialog.annotations.Child;
+import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField;
+import com.globalscalingsoftware.prefdialog.annotations.Parsed;
+import com.globalscalingsoftware.prefdialog.annotations.TextField;
+import com.globalscalingsoftware.prefdialog.annotations.Validated;
 
 public class AnnotationsFilter implements Filter {
 
