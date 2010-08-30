@@ -14,9 +14,9 @@ import com.google.inject.Inject;
 
 public class PreferencePanelCreator implements IPreferencePanelCreator {
 
-	private final IApplyAction applyAction;
+	private IApplyAction applyAction;
 
-	private final IRestoreAction restoreAction;
+	private IRestoreAction restoreAction;
 
 	private final IReflectionToolbox reflectionToolbox;
 
@@ -27,12 +27,19 @@ public class PreferencePanelCreator implements IPreferencePanelCreator {
 	@Inject
 	PreferencePanelCreator(IAnnotationDiscovery annotationDiscovery,
 			AnnotationsFilter annotationsFilter,
-			IReflectionToolbox reflectionToolbox, IApplyAction applyAction,
-			IRestoreAction restoreAction) {
+			IReflectionToolbox reflectionToolbox) {
 		this.annotationDiscovery = annotationDiscovery;
 		this.annotationsFilter = annotationsFilter;
 		this.reflectionToolbox = reflectionToolbox;
+	}
+
+	@Override
+	public void setApplyAction(IApplyAction applyAction) {
 		this.applyAction = applyAction;
+	}
+
+	@Override
+	public void setRestoreAction(IRestoreAction restoreAction) {
 		this.restoreAction = restoreAction;
 	}
 

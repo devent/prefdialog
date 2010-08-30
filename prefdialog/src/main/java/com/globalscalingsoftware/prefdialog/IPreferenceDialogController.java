@@ -1,9 +1,24 @@
 package com.globalscalingsoftware.prefdialog;
 
+import javax.swing.Action;
+import javax.swing.JFrame;
+
 public interface IPreferenceDialogController {
 
-	public abstract void setPreferences(Object preferences);
+	void setPreferences(Object preferences);
 
-	public abstract void setChildObject(Object object);
+	void setChildObject(Object object);
+
+	void openDialog();
+
+	void setOwner(JFrame owner);
+
+	void setOkAction(Action action);
+
+	void setCancelAction(Action action);
+
+	void setApplyAction(IApplyAction applyAction);
+
+	void setRestoreAction(IRestoreAction restoreAction);
 
 }

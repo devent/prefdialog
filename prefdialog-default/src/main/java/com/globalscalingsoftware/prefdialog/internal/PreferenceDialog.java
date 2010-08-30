@@ -2,7 +2,8 @@ package com.globalscalingsoftware.prefdialog.internal;
 
 import java.awt.Component;
 
-import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JFrame;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -11,26 +12,22 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import com.globalscalingsoftware.prefdialog.Event;
-import com.globalscalingsoftware.prefdialog.ICancelAction;
-import com.globalscalingsoftware.prefdialog.IOkAction;
 import com.globalscalingsoftware.prefdialog.IPreferenceDialog;
-import com.google.inject.Inject;
 
 public class PreferenceDialog implements IPreferenceDialog {
 
-	private final IOkAction okAction;
-	private final ICancelAction cancelAction;
-	private final UiPreferencesDialog uiPreferencesDialog;
+	private UiPreferencesDialog uiPreferencesDialog;
 	private final CallableTreeChildSelectedEvent childSelectedEvent;
 	private final RunnableActionEvent okEvent;
 	private final RunnableActionEvent cancelEvent;
+	private JFrame owner;
+	private Action okAction;
+	private Action cancelAction;
+	private DefaultMutableTreeNode rootNode;
+	private Component childPanel;
+	private TreePath selectedPath;
 
-	@Inject
-	PreferenceDialog(UiPreferencesDialog uiPreferencesDialog,
-			IOkAction okAction, ICancelAction cancelAction) {
-		this.uiPreferencesDialog = uiPreferencesDialog;
-		this.okAction = okAction;
-		this.cancelAction = cancelAction;
+	PreferenceDialog() {
 		childSelectedEvent = new CallableTreeChildSelectedEvent();
 		okEvent = new RunnableActionEvent();
 		cancelEvent = new RunnableActionEvent();
@@ -38,18 +35,22 @@ public class PreferenceDialog implements IPreferenceDialog {
 
 	@Override
 	public void open() {
-		uiPreferencesDialog.getOkButton().setAction((AbstractAction) okAction);
+		uiPreferencesDialog = new UiPreferencesDialog(owner);
+		uiPreferencesDialog.getOkButton().setAction(okAction);
 		uiPreferencesDialog.getOkButton().addActionListener(okEvent);
-
-		uiPreferencesDialog.getCancelButton().setAction(
-				(AbstractAction) cancelAction);
+		uiPreferencesDialog.getCancelButton().setAction(cancelAction);
 		uiPreferencesDialog.getCancelButton().addActionListener(cancelEvent);
 
-		final JTree childTree = uiPreferencesDialog.getChildTree();
+		JTree childTree = uiPreferencesDialog.getChildTree();
+		childTree.setModel(new DefaultTreeModel(rootNode));
 		childTree.setRootVisible(false);
 		childTree.getSelectionModel().setSelectionMode(
 				TreeSelectionModel.SINGLE_TREE_SELECTION);
 		childTree.addTreeSelectionListener(childSelectedEvent);
+		childTree.setSelectionPath(selectedPath);
+		childTree.scrollPathToVisible(selectedPath);
+
+		setChildPanel(childPanel);
 
 		uiPreferencesDialog.setModal(true);
 		uiPreferencesDialog.pack();
@@ -57,8 +58,13 @@ public class PreferenceDialog implements IPreferenceDialog {
 	}
 
 	@Override
+	public void setOwner(JFrame owner) {
+		this.owner = owner;
+	}
+
+	@Override
 	public void setRootNode(DefaultMutableTreeNode root) {
-		uiPreferencesDialog.getChildTree().setModel(new DefaultTreeModel(root));
+		this.rootNode = root;
 	}
 
 	@Override
@@ -68,15 +74,15 @@ public class PreferenceDialog implements IPreferenceDialog {
 
 	@Override
 	public void setChildPanel(Component comp) {
-		uiPreferencesDialog.getSplitPane().setRightComponent(comp);
-		uiPreferencesDialog.pack();
+		this.childPanel = comp;
+		if (uiPreferencesDialog != null) {
+			uiPreferencesDialog.getSplitPane().setRightComponent(childPanel);
+		}
 	}
 
 	@Override
 	public void setSelectedChild(TreeNode[] path) {
-		TreePath treePath = new TreePath(path);
-		uiPreferencesDialog.getChildTree().setSelectionPath(treePath);
-		uiPreferencesDialog.getChildTree().scrollPathToVisible(treePath);
+		this.selectedPath = new TreePath(path);
 	}
 
 	@Override
@@ -92,5 +98,15 @@ public class PreferenceDialog implements IPreferenceDialog {
 	@Override
 	public void close() {
 		uiPreferencesDialog.setVisible(false);
+	}
+
+	@Override
+	public void setOkAction(Action action) {
+		okAction = action;
+	}
+
+	@Override
+	public void setCancelAction(Action action) {
+		cancelAction = action;
 	}
 }

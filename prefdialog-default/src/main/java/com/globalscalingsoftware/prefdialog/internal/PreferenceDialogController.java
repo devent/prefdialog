@@ -5,17 +5,21 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.Action;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 
-import com.globalscalingsoftware.prefdialog.IDiscoveredListener;
 import com.globalscalingsoftware.prefdialog.Event;
 import com.globalscalingsoftware.prefdialog.IAnnotationDiscovery;
+import com.globalscalingsoftware.prefdialog.IApplyAction;
+import com.globalscalingsoftware.prefdialog.IDiscoveredListener;
 import com.globalscalingsoftware.prefdialog.IPreferenceDialog;
 import com.globalscalingsoftware.prefdialog.IPreferenceDialogController;
 import com.globalscalingsoftware.prefdialog.IPreferencePanel;
 import com.globalscalingsoftware.prefdialog.IPreferencePanelCreator;
+import com.globalscalingsoftware.prefdialog.IRestoreAction;
 import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.google.inject.Inject;
 
@@ -25,18 +29,18 @@ public class PreferenceDialogController implements IPreferenceDialogController {
 	private final AnnotationsFilter annotationsFilter;
 	private final Map<Object, IPreferencePanel> preferencePanels;
 	private final IPreferenceDialog preferenceDialog;
-	private final IPreferencePanelCreator preferencePanel;
+	private final IPreferencePanelCreator preferencePanelCreator;
 	private final Map<Object, TreeNode[]> treeNodes;
 
 	@Inject
 	PreferenceDialogController(IAnnotationDiscovery annotationDiscovery,
 			AnnotationsFilter annotationsFilter,
 			IPreferenceDialog preferenceDialog,
-			IPreferencePanelCreator preferencePanel) {
+			IPreferencePanelCreator preferencePanelCreator) {
 		this.annotationDiscovery = annotationDiscovery;
 		this.annotationsFilter = annotationsFilter;
 		this.preferenceDialog = preferenceDialog;
-		this.preferencePanel = preferencePanel;
+		this.preferencePanelCreator = preferencePanelCreator;
 		preferencePanels = new HashMap<Object, IPreferencePanel>();
 		treeNodes = new HashMap<Object, TreeNode[]>();
 	}
@@ -83,6 +87,36 @@ public class PreferenceDialogController implements IPreferenceDialogController {
 		preferenceDialog.setSelectedChild(treeNodes.get(object));
 	}
 
+	@Override
+	public void openDialog() {
+		preferenceDialog.open();
+	}
+
+	@Override
+	public void setOwner(JFrame owner) {
+		preferenceDialog.setOwner(owner);
+	}
+
+	@Override
+	public void setOkAction(Action action) {
+		preferenceDialog.setOkAction(action);
+	}
+
+	@Override
+	public void setCancelAction(Action action) {
+		preferenceDialog.setCancelAction(action);
+	}
+
+	@Override
+	public void setApplyAction(IApplyAction applyAction) {
+		preferencePanelCreator.setApplyAction(applyAction);
+	}
+
+	@Override
+	public void setRestoreAction(IRestoreAction restoreAction) {
+		preferencePanelCreator.setRestoreAction(restoreAction);
+	}
+
 	private void discoverAnnotations(Object preferences,
 			final DefaultMutableTreeNode root) {
 		IDiscoveredListener listener = new IDiscoveredListener() {
@@ -97,8 +131,8 @@ public class PreferenceDialogController implements IPreferenceDialogController {
 
 					treeNodes.put(value, node.getPath());
 
-					IPreferencePanel panel = preferencePanel.createPanel(value,
-							field);
+					IPreferencePanel panel = preferencePanelCreator
+							.createPanel(value, field);
 					preferencePanels.put(value, panel);
 				}
 			}

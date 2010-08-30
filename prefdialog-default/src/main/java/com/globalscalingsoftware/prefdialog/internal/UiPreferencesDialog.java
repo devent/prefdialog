@@ -14,9 +14,6 @@ import javax.swing.JSplitPane;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
 
-import com.globalscalingsoftware.prefdialog.IPreferencesDialogOwner;
-import com.globalscalingsoftware.prefdialog.IUiPreferencesDialog;
-
 /**
  * This code was edited or generated using CloudGarden's Jigloo SWT/Swing GUI
  * Builder, which is free for non-commercial use. If Jigloo is being used
@@ -28,8 +25,7 @@ import com.globalscalingsoftware.prefdialog.IUiPreferencesDialog;
  * ANY CORPORATE OR COMMERCIAL PURPOSE.
  */
 @SuppressWarnings("serial")
-public class UiPreferencesDialog extends javax.swing.JDialog implements
-		IUiPreferencesDialog {
+class UiPreferencesDialog extends javax.swing.JDialog {
 
 	private JPanel dialogPanel;
 	private JSplitPane splitPane;
@@ -51,10 +47,6 @@ public class UiPreferencesDialog extends javax.swing.JDialog implements
 				inst.setVisible(true);
 			}
 		});
-	}
-
-	public UiPreferencesDialog(IPreferencesDialogOwner owner) {
-		this(owner.getFrame());
 	}
 
 	public UiPreferencesDialog(JFrame frame) {
@@ -114,27 +106,22 @@ public class UiPreferencesDialog extends javax.swing.JDialog implements
 		}
 	}
 
-	@Override
 	public JPanel getDialogPanel() {
 		return dialogPanel;
 	}
 
-	@Override
 	public JSplitPane getSplitPane() {
 		return splitPane;
 	}
 
-	@Override
 	public JTree getChildTree() {
 		return childTree;
 	}
 
-	@Override
 	public JButton getCancelButton() {
 		return cancelButton;
 	}
 
-	@Override
 	public JButton getOkButton() {
 		return okButton;
 	}

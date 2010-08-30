@@ -6,4 +6,8 @@ public interface IPreferencePanelCreator {
 
 	IPreferencePanel createPanel(Object parentValue, Field field);
 
+	void setApplyAction(IApplyAction applyAction);
+
+	void setRestoreAction(IRestoreAction restoreAction);
+
 }
