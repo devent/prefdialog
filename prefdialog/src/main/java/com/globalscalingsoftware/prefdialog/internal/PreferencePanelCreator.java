@@ -10,10 +10,6 @@ import com.google.inject.Inject;
 
 public class PreferencePanelCreator {
 
-	private final AnnotationDiscovery annotationDiscovery;
-
-	private final AnnotationsFilter annotationsFilter;
-
 	private final IApplyAction applyAction;
 
 	private final IRestoreAction restoreAction;
@@ -21,23 +17,17 @@ public class PreferencePanelCreator {
 	private final ReflectionToolbox reflectionToolbox;
 
 	@Inject
-	PreferencePanelCreator(AnnotationDiscovery annotationDiscovery,
-			AnnotationsFilter annotationsFilter,
-			ReflectionToolbox reflectionToolbox, IApplyAction applyAction,
-			IRestoreAction restoreAction) {
-		this.annotationDiscovery = annotationDiscovery;
-		this.annotationsFilter = annotationsFilter;
+	PreferencePanelCreator(ReflectionToolbox reflectionToolbox,
+			IApplyAction applyAction, IRestoreAction restoreAction) {
 		this.reflectionToolbox = reflectionToolbox;
 		this.applyAction = applyAction;
 		this.restoreAction = restoreAction;
 	}
 
 	public PreferencePanel createPanel(Object parentValue, Field field) {
-		PreferencePanel panel = new PreferencePanel(annotationDiscovery,
-				annotationsFilter, reflectionToolbox);
+		PreferencePanel panel = new PreferencePanel(reflectionToolbox);
 		panel.setApplyAction((Action) applyAction);
 		panel.setRestoreAction((Action) restoreAction);
-		panel.setField(parentValue, field);
 		return panel;
 	}
 }

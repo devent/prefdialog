@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.util.HashMap;
@@ -19,23 +18,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.globalscalingsoftware.prefdialog.FormattedTextField;
-import com.globalscalingsoftware.prefdialog.TextField;
-
 public class PreferencePanel {
 
 	private final TableLayout layout;
 	private final UiPreferencePanel uiPreferencePanel;
-	private final AnnotationDiscovery annotationDiscovery;
-	private final AnnotationsFilter annotationsFilter;
-	private final ReflectionToolbox reflectionToolbox;
 	private final Map<String, InputField> inputFields;
+	private final ReflectionToolbox reflectionToolbox;
+	private Runnable applyEvent;
 
-	public PreferencePanel(AnnotationDiscovery annotationDiscovery,
-			AnnotationsFilter annotationsFilter,
-			ReflectionToolbox reflectionToolbox) {
-		this.annotationDiscovery = annotationDiscovery;
-		this.annotationsFilter = annotationsFilter;
+	public PreferencePanel(ReflectionToolbox reflectionToolbox) {
 		this.reflectionToolbox = reflectionToolbox;
 		uiPreferencePanel = new UiPreferencePanel();
 		inputFields = new HashMap<String, InputField>();
@@ -43,12 +34,7 @@ public class PreferencePanel {
 		double[] cols = { TableLayout.PREFERRED, TableLayout.FILL, 0.6 };
 		double[] rows = {};
 		layout = new TableLayout(cols, rows);
-	}
-
-	public void setField(Object parentValue, Field field) {
-		setupChildTitle(parentValue);
-		setupLayout();
-		discoverAnnotations(parentValue);
+		uiPreferencePanel.getBottomPanel().setLayout(layout);
 		setupActions();
 	}
 
@@ -62,38 +48,23 @@ public class PreferencePanel {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						applyAllInput();
-					}
-				});
-	}
-
-	private void setupChildTitle(Object value) {
-		uiPreferencePanel.getChildTitleLabel().setText(value.toString());
-	}
-
-	private void setupLayout() {
-		uiPreferencePanel.getBottomPanel().setLayout(layout);
-	}
-
-	private void discoverAnnotations(final Object parentObject) {
-		annotationDiscovery.discover(parentObject, annotationsFilter,
-				new DiscoveredListener() {
-
-					@Override
-					public void fieldAnnotationDiscovered(Field field,
-							Object value, Annotation a) {
-						if (a instanceof FormattedTextField) {
-							createFormattedTextField(parentObject, field, value);
-						} else if (a instanceof TextField) {
-							createTextField(parentObject, field, value);
+						if (applyEvent != null) {
+							applyEvent.run();
 						}
-
 					}
 				});
 	}
 
-	private void createFormattedTextField(final Object parentObject,
-			final Field field, Object object) {
+	public void setApplyEvent(Runnable applyEvent) {
+		this.applyEvent = applyEvent;
+	}
+
+	public void setTitle(String title) {
+		uiPreferencePanel.getChildTitleLabel().setText(title);
+	}
+
+	public void addFormattedTextField(Object parentObject, Field field,
+			Object value) {
 		int index = layout.getNumRow();
 		layout.insertRow(index, TableLayout.PREFERRED);
 		final JFormattedTextField textfield = new JFormattedTextField();
@@ -121,11 +92,11 @@ public class PreferencePanel {
 		uiPreferencePanel.getBottomPanel().add(textfield,
 				format("2, %d", index));
 
-		textfield.setValue(object);
+		textfield.setValue(value);
 	}
 
-	private void createTextField(final Object parentObject, final Field field,
-			Object object) {
+	public void addTextField(final Object parentObject, final Field field,
+			Object value) {
 		int index = layout.getNumRow();
 		layout.insertRow(index, TableLayout.PREFERRED);
 		final JTextField textfield = new JTextField();
@@ -147,8 +118,8 @@ public class PreferencePanel {
 		uiPreferencePanel.getBottomPanel().add(textfield,
 				format("2, %d", index));
 
-		if (object != null) {
-			textfield.setText(object.toString());
+		if (value != null) {
+			textfield.setText(value.toString());
 		}
 	}
 
