@@ -80,6 +80,7 @@ class PreferenceDialogTest extends GroovyTestCase { {
 		def preferenceDialog = new PreferenceDialog(dialog, 
 				okAction, cancelAction)
 		def preferencePanel = new PreferencePanelCreator(
+				annotationDiscovery, annotationsFilter,
 				toolbox, applyAction, restoreAction)
 		def prefereceController = new PreferenceDialogController(
 				annotationDiscovery, annotationsFilter, preferenceDialog,

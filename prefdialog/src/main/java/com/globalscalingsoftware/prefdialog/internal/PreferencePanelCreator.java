@@ -16,9 +16,17 @@ public class PreferencePanelCreator {
 
 	private final ReflectionToolbox reflectionToolbox;
 
+	private final AnnotationDiscovery annotationDiscovery;
+
+	private final AnnotationsFilter annotationsFilter;
+
 	@Inject
-	PreferencePanelCreator(ReflectionToolbox reflectionToolbox,
-			IApplyAction applyAction, IRestoreAction restoreAction) {
+	PreferencePanelCreator(AnnotationDiscovery annotationDiscovery,
+			AnnotationsFilter annotationsFilter,
+			ReflectionToolbox reflectionToolbox, IApplyAction applyAction,
+			IRestoreAction restoreAction) {
+		this.annotationDiscovery = annotationDiscovery;
+		this.annotationsFilter = annotationsFilter;
 		this.reflectionToolbox = reflectionToolbox;
 		this.applyAction = applyAction;
 		this.restoreAction = restoreAction;
@@ -28,6 +36,11 @@ public class PreferencePanelCreator {
 		PreferencePanel panel = new PreferencePanel(reflectionToolbox);
 		panel.setApplyAction((Action) applyAction);
 		panel.setRestoreAction((Action) restoreAction);
+
+		PreferencePanelController controller = new PreferencePanelController(
+				annotationDiscovery, annotationsFilter, panel);
+		controller.setField(parentValue, field);
+
 		return panel;
 	}
 }

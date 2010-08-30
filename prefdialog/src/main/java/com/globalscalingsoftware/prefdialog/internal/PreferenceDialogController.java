@@ -91,9 +91,6 @@ public class PreferenceDialogController {
 
 					PreferencePanel panel = preferencePanel.createPanel(value,
 							field);
-					PreferencePanelController controller = new PreferencePanelController(
-							annotationDiscovery, annotationsFilter, panel);
-					controller.setField(value, field);
 					preferencePanels.put(value, panel);
 				}
 			}
