@@ -3,6 +3,7 @@ package com.globalscalingsoftware.prefdialog.internal;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
+import com.globalscalingsoftware.prefdialog.IDiscoveredListener;
 import com.globalscalingsoftware.prefdialog.IAnnotationDiscovery;
 import com.globalscalingsoftware.prefdialog.IPreferencePanel;
 import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField;
@@ -41,7 +42,7 @@ class PreferencePanelController {
 
 	private void discoverAnnotations(final Object parentObject) {
 		annotationDiscovery.discover(parentObject, annotationsFilter,
-				new DiscoveredListener() {
+				new IDiscoveredListener() {
 
 					@Override
 					public void fieldAnnotationDiscovered(Field field,

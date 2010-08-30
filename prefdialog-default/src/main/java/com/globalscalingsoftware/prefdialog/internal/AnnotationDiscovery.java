@@ -3,6 +3,7 @@ package com.globalscalingsoftware.prefdialog.internal;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
+import com.globalscalingsoftware.prefdialog.IDiscoveredListener;
 import com.globalscalingsoftware.prefdialog.IAnnotationDiscovery;
 import com.globalscalingsoftware.prefdialog.IFilter;
 import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
@@ -19,7 +20,7 @@ public class AnnotationDiscovery implements IAnnotationDiscovery {
 
 	@Override
 	public void discover(Object object, IFilter filter,
-			DiscoveredListener listener) {
+			IDiscoveredListener listener) {
 		if (object == null) {
 			return;
 		}
@@ -27,7 +28,7 @@ public class AnnotationDiscovery implements IAnnotationDiscovery {
 	}
 
 	private void discoverFields(Object object, IFilter filter,
-			DiscoveredListener listener) {
+			IDiscoveredListener listener) {
 		Class<? extends Object> clazz = object.getClass();
 		Field[] fields = clazz.getDeclaredFields();
 		for (Field field : fields) {

@@ -2,6 +2,7 @@ package com.globalscalingsoftware.prefdialog.internal
 
 
 
+import com.globalscalingsoftware.prefdialog.IDiscoveredListener;
 import com.globalscalingsoftware.prefdialog.IFilter;
 import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.annotations.TextField;
@@ -19,7 +20,7 @@ public class AnnotationsTest extends GroovyTestCase {
 		def filter = { a -> a instanceof Child } as IFilter
 		def listener = [
 				fieldAnnotationDiscovered : { f, v, a -> childAnnotationCount++ }
-				] as DiscoveredListener 
+				] as IDiscoveredListener
 		
 		discovery.discover(preferences, filter, listener)
 		assert childAnnotationCount == 2
@@ -40,7 +41,7 @@ public class AnnotationsTest extends GroovyTestCase {
 						annotationCount++
 					}
 				}
-				] as DiscoveredListener 
+				] as IDiscoveredListener 
 		
 		discovery.discover(preferences, filter, listener)
 		assert annotationCount == 1
@@ -55,7 +56,7 @@ public class AnnotationsTest extends GroovyTestCase {
 		def filter = new AnnotationsFilter()
 		def listener = [
 				fieldAnnotationDiscovered : { f, v, a ->  annotationCount++ }
-				] as DiscoveredListener 
+				] as IDiscoveredListener 
 		
 		discovery.discover(preferences, filter, listener)
 		assert annotationCount == 5

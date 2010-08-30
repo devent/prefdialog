@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 
+import com.globalscalingsoftware.prefdialog.IDiscoveredListener;
 import com.globalscalingsoftware.prefdialog.Event;
 import com.globalscalingsoftware.prefdialog.IAnnotationDiscovery;
 import com.globalscalingsoftware.prefdialog.IPreferenceDialog;
@@ -84,7 +85,7 @@ public class PreferenceDialogController implements IPreferenceDialogController {
 
 	private void discoverAnnotations(Object preferences,
 			final DefaultMutableTreeNode root) {
-		DiscoveredListener listener = new DiscoveredListener() {
+		IDiscoveredListener listener = new IDiscoveredListener() {
 
 			@Override
 			public void fieldAnnotationDiscovered(Field field, Object value,
