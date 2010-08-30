@@ -4,8 +4,6 @@ import java.awt.Component;
 
 import javax.swing.AbstractAction;
 import javax.swing.JTree;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
@@ -22,7 +20,7 @@ public class PreferenceDialog {
 	private final IOkAction okAction;
 	private final ICancelAction cancelAction;
 	private final UiPreferencesDialog uiPreferencesDialog;
-	private Event<Object> childSelected;
+	private final CallableTreeChildSelectedEvent childSelectedEvent;
 	private final RunnableActionEvent okEvent;
 	private final RunnableActionEvent cancelEvent;
 
@@ -32,6 +30,7 @@ public class PreferenceDialog {
 		this.uiPreferencesDialog = uiPreferencesDialog;
 		this.okAction = okAction;
 		this.cancelAction = cancelAction;
+		childSelectedEvent = new CallableTreeChildSelectedEvent();
 		okEvent = new RunnableActionEvent();
 		cancelEvent = new RunnableActionEvent();
 	}
@@ -48,25 +47,7 @@ public class PreferenceDialog {
 		childTree.setRootVisible(false);
 		childTree.getSelectionModel().setSelectionMode(
 				TreeSelectionModel.SINGLE_TREE_SELECTION);
-		childTree.addTreeSelectionListener(new TreeSelectionListener() {
-
-			@Override
-			public void valueChanged(TreeSelectionEvent e) {
-				if (childSelected == null) {
-					return;
-				}
-
-				Object pathComponent = childTree.getLastSelectedPathComponent();
-				if (pathComponent == null) {
-					return;
-				}
-
-				DefaultMutableTreeNode node = (DefaultMutableTreeNode) pathComponent;
-				Object nodeInfo = node.getUserObject();
-				childSelected.call(nodeInfo);
-
-			}
-		});
+		childTree.addTreeSelectionListener(childSelectedEvent);
 
 		uiPreferencesDialog.setModal(true);
 		uiPreferencesDialog.pack();
@@ -78,7 +59,7 @@ public class PreferenceDialog {
 	}
 
 	public void setChildSelected(Event<Object> childSelected) {
-		this.childSelected = childSelected;
+		this.childSelectedEvent.setEvent(childSelected);
 	}
 
 	public void setChildPanel(Component comp) {
