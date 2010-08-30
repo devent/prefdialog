@@ -22,14 +22,14 @@ public class PreferencePanel {
 	private final UiPreferencePanel uiPreferencePanel;
 	private final Map<String, InputField> inputFields;
 	private final ReflectionToolbox reflectionToolbox;
-	private final ApplyEvent applyEvent;
+	private final ActionEvent applyEvent;
 
 	@Inject
 	PreferencePanel(ReflectionToolbox reflectionToolbox) {
 		this.reflectionToolbox = reflectionToolbox;
 		uiPreferencePanel = new UiPreferencePanel();
 		inputFields = new HashMap<String, InputField>();
-		applyEvent = new ApplyEvent();
+		applyEvent = new ActionEvent();
 
 		double[] cols = { TableLayout.PREFERRED, TableLayout.FILL, 0.6 };
 		double[] rows = {};

@@ -1,13 +1,12 @@
 package com.globalscalingsoftware.prefdialog.internal;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-class ApplyEvent implements ActionListener {
+class ActionEvent implements ActionListener {
 
 	private Runnable event;
 
-	public ApplyEvent() {
+	public ActionEvent() {
 		event = new Runnable() {
 
 			@Override
@@ -21,7 +20,7 @@ class ApplyEvent implements ActionListener {
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(java.awt.event.ActionEvent e) {
 		event.run();
 	}
 
