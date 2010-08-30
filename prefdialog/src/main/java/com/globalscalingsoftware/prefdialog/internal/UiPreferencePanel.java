@@ -20,7 +20,8 @@ import javax.swing.WindowConstants;
  * PURCHASED FOR THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED LEGALLY FOR
  * ANY CORPORATE OR COMMERCIAL PURPOSE.
  */
-public class UiPreferencePanel extends javax.swing.JPanel {
+@SuppressWarnings("serial")
+class UiPreferencePanel extends javax.swing.JPanel {
 
 	private JLabel childTitleLabel;
 	private JButton restoreButton;

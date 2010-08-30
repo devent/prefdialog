@@ -4,26 +4,30 @@ import java.lang.reflect.Field;
 
 import javax.swing.Action;
 
+import com.globalscalingsoftware.prefdialog.IAnnotationDiscovery;
 import com.globalscalingsoftware.prefdialog.IApplyAction;
+import com.globalscalingsoftware.prefdialog.IPreferencePanel;
+import com.globalscalingsoftware.prefdialog.IPreferencePanelCreator;
+import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.IRestoreAction;
 import com.google.inject.Inject;
 
-public class PreferencePanelCreator {
+public class PreferencePanelCreator implements IPreferencePanelCreator {
 
 	private final IApplyAction applyAction;
 
 	private final IRestoreAction restoreAction;
 
-	private final ReflectionToolbox reflectionToolbox;
+	private final IReflectionToolbox reflectionToolbox;
 
-	private final AnnotationDiscovery annotationDiscovery;
+	private final IAnnotationDiscovery annotationDiscovery;
 
 	private final AnnotationsFilter annotationsFilter;
 
 	@Inject
-	PreferencePanelCreator(AnnotationDiscovery annotationDiscovery,
+	PreferencePanelCreator(IAnnotationDiscovery annotationDiscovery,
 			AnnotationsFilter annotationsFilter,
-			ReflectionToolbox reflectionToolbox, IApplyAction applyAction,
+			IReflectionToolbox reflectionToolbox, IApplyAction applyAction,
 			IRestoreAction restoreAction) {
 		this.annotationDiscovery = annotationDiscovery;
 		this.annotationsFilter = annotationsFilter;
@@ -32,8 +36,9 @@ public class PreferencePanelCreator {
 		this.restoreAction = restoreAction;
 	}
 
-	public PreferencePanel createPanel(Object parentValue, Field field) {
-		PreferencePanel panel = new PreferencePanel(reflectionToolbox);
+	@Override
+	public IPreferencePanel createPanel(Object parentValue, Field field) {
+		IPreferencePanel panel = new PreferencePanel(reflectionToolbox);
 		panel.setApplyAction((Action) applyAction);
 		panel.setRestoreAction((Action) restoreAction);
 

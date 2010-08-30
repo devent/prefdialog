@@ -4,8 +4,11 @@ import static org.fest.reflect.core.Reflection.method;
 
 import java.lang.reflect.Field;
 
-public class ReflectionToolbox {
+import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
 
+public class ReflectionToolbox implements IReflectionToolbox {
+
+	@Override
 	public Object getValueFrom(Field field, Object object) {
 		String name = getGetterName(field);
 		return method(name).in(object).invoke();
@@ -23,6 +26,7 @@ public class ReflectionToolbox {
 		return name;
 	}
 
+	@Override
 	public void setValueTo(Field field, Object object, Object value) {
 		String name = getSetterName(field);
 		method(name).withParameterTypes(field.getType()).in(object)

@@ -14,18 +14,18 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.google.inject.Inject;
+import com.globalscalingsoftware.prefdialog.IPreferencePanel;
+import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
 
-public class PreferencePanel {
+public class PreferencePanel implements IPreferencePanel {
 
 	private final TableLayout layout;
 	private final UiPreferencePanel uiPreferencePanel;
 	private final Map<String, InputField> inputFields;
-	private final ReflectionToolbox reflectionToolbox;
+	private final IReflectionToolbox reflectionToolbox;
 	private final RunnableActionEvent applyEvent;
 
-	@Inject
-	PreferencePanel(ReflectionToolbox reflectionToolbox) {
+	public PreferencePanel(IReflectionToolbox reflectionToolbox) {
 		this.reflectionToolbox = reflectionToolbox;
 		uiPreferencePanel = new UiPreferencePanel();
 		inputFields = new HashMap<String, InputField>();
@@ -38,6 +38,7 @@ public class PreferencePanel {
 		setupActions();
 	}
 
+	@Override
 	public JPanel getPanel() {
 		return uiPreferencePanel;
 	}
@@ -46,10 +47,12 @@ public class PreferencePanel {
 		uiPreferencePanel.getApplyButton().addActionListener(applyEvent);
 	}
 
+	@Override
 	public void setTitle(String title) {
 		uiPreferencePanel.getChildTitleLabel().setText(title);
 	}
 
+	@Override
 	public void addFormattedTextField(Object parentObject, Field field,
 			Object value) {
 		final JFormattedTextField textfield = new JFormattedTextField();
@@ -59,12 +62,13 @@ public class PreferencePanel {
 		textfield.setValue(value);
 	}
 
+	@Override
 	public void addTextField(final Object parentObject, final Field field,
 			Object value) {
 		JTextField textfield = new JTextField();
 		insertTextField(parentObject, field, textfield,
 				new ValidatingTextField(textfield));
-	
+
 		if (value != null) {
 			textfield.setText(value.toString());
 		}
@@ -90,24 +94,29 @@ public class PreferencePanel {
 				format("2, %d", index));
 	}
 
+	@Override
 	public void setApplyAction(Action a) {
 		uiPreferencePanel.getApplyButton().setAction(a);
 	}
 
+	@Override
 	public void setApplyEvent(Runnable applyEvent) {
 		this.applyEvent.setEvent(applyEvent);
 	}
 
+	@Override
 	public void setRestoreAction(Action a) {
 		uiPreferencePanel.getRestoreButton().setAction(a);
 	}
 
+	@Override
 	public void applyAllInput() {
 		for (InputField inputField : inputFields.values()) {
 			inputField.applyInput();
 		}
 	}
 
+	@Override
 	public void undoAllInput() {
 		// TODO Auto-generated method stub
 

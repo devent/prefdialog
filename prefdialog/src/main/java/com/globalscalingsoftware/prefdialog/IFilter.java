@@ -1,8 +1,8 @@
-package com.globalscalingsoftware.prefdialog.internal;
+package com.globalscalingsoftware.prefdialog;
 
 import java.lang.annotation.Annotation;
 
-public interface Filter {
+public interface IFilter {
 
 	boolean accept(Annotation annotation);
 

@@ -3,19 +3,21 @@ package com.globalscalingsoftware.prefdialog.internal;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
+import com.globalscalingsoftware.prefdialog.IAnnotationDiscovery;
+import com.globalscalingsoftware.prefdialog.IPreferencePanel;
 import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField;
 import com.globalscalingsoftware.prefdialog.annotations.TextField;
 
-public class PreferencePanelController {
+class PreferencePanelController {
 
-	private final PreferencePanel preferencePanel;
+	private final IPreferencePanel preferencePanel;
 
-	private final AnnotationDiscovery annotationDiscovery;
+	private final IAnnotationDiscovery annotationDiscovery;
 
 	private final AnnotationsFilter annotationsFilter;
 
-	PreferencePanelController(AnnotationDiscovery annotationDiscovery,
-			AnnotationsFilter annotationsFilter, PreferencePanel preferencePanel) {
+	public PreferencePanelController(IAnnotationDiscovery annotationDiscovery,
+			AnnotationsFilter annotationsFilter, IPreferencePanel preferencePanel) {
 		this.preferencePanel = preferencePanel;
 		this.annotationDiscovery = annotationDiscovery;
 		this.annotationsFilter = annotationsFilter;

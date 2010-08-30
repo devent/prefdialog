@@ -6,12 +6,13 @@ import java.lang.reflect.Field;
 import javax.swing.JFormattedTextField;
 import javax.swing.JTextField;
 
+import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField;
 import com.globalscalingsoftware.prefdialog.annotations.TextField;
 
-public class InputField {
+class InputField {
 
-	private final ReflectionToolbox reflectionToolbox;
+	private final IReflectionToolbox reflectionToolbox;
 
 	private final Field field;
 
@@ -19,7 +20,7 @@ public class InputField {
 
 	private final Object parentValue;
 
-	InputField(ReflectionToolbox reflectionToolbox, Object inputField,
+	InputField(IReflectionToolbox reflectionToolbox, Object inputField,
 			Object parentValue, Field field) {
 		this.reflectionToolbox = reflectionToolbox;
 		this.inputField = inputField;

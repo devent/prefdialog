@@ -3,18 +3,22 @@ package com.globalscalingsoftware.prefdialog.internal;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
+import com.globalscalingsoftware.prefdialog.IAnnotationDiscovery;
+import com.globalscalingsoftware.prefdialog.IFilter;
+import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
 import com.google.inject.Inject;
 
-public class AnnotationDiscovery {
+public class AnnotationDiscovery implements IAnnotationDiscovery {
 
-	private final ReflectionToolbox reflectionToolbox;
+	private final IReflectionToolbox reflectionToolbox;
 
 	@Inject
-	AnnotationDiscovery(ReflectionToolbox reflectionToolbox) {
+	AnnotationDiscovery(IReflectionToolbox reflectionToolbox) {
 		this.reflectionToolbox = reflectionToolbox;
 	}
 
-	public void discover(Object object, Filter filter,
+	@Override
+	public void discover(Object object, IFilter filter,
 			DiscoveredListener listener) {
 		if (object == null) {
 			return;
@@ -22,7 +26,7 @@ public class AnnotationDiscovery {
 		discoverFields(object, filter, listener);
 	}
 
-	private void discoverFields(Object object, Filter filter,
+	private void discoverFields(Object object, IFilter filter,
 			DiscoveredListener listener) {
 		Class<? extends Object> clazz = object.getClass();
 		Field[] fields = clazz.getDeclaredFields();
