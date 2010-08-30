@@ -1,8 +1,6 @@
 package com.globalscalingsoftware.prefdialog.internal;
 
 import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.AbstractAction;
 import javax.swing.JTree;
@@ -25,8 +23,8 @@ public class PreferenceDialog {
 	private final ICancelAction cancelAction;
 	private final UiPreferencesDialog uiPreferencesDialog;
 	private Event<Object> childSelected;
-	private Runnable okEvent;
-	private Runnable cancelEvent;
+	private final RunnableActionEvent okEvent;
+	private final RunnableActionEvent cancelEvent;
 
 	@Inject
 	PreferenceDialog(UiPreferencesDialog uiPreferencesDialog,
@@ -34,33 +32,17 @@ public class PreferenceDialog {
 		this.uiPreferencesDialog = uiPreferencesDialog;
 		this.okAction = okAction;
 		this.cancelAction = cancelAction;
+		okEvent = new RunnableActionEvent();
+		cancelEvent = new RunnableActionEvent();
 	}
 
 	public void open() {
 		uiPreferencesDialog.getOkButton().setAction((AbstractAction) okAction);
-		uiPreferencesDialog.getOkButton().addActionListener(
-				new ActionListener() {
-
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						if (okEvent != null) {
-							okEvent.run();
-						}
-					}
-				});
+		uiPreferencesDialog.getOkButton().addActionListener(okEvent);
 
 		uiPreferencesDialog.getCancelButton().setAction(
 				(AbstractAction) cancelAction);
-		uiPreferencesDialog.getCancelButton().addActionListener(
-				new ActionListener() {
-
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						if (cancelEvent != null) {
-							cancelEvent.run();
-						}
-					}
-				});
+		uiPreferencesDialog.getCancelButton().addActionListener(cancelEvent);
 
 		final JTree childTree = uiPreferencesDialog.getChildTree();
 		childTree.setRootVisible(false);
@@ -111,11 +93,11 @@ public class PreferenceDialog {
 	}
 
 	public void setOkEvent(Runnable okEvent) {
-		this.okEvent = okEvent;
+		this.okEvent.setEvent(okEvent);
 	}
 
 	public void setCancelEvent(Runnable cancelEvent) {
-		this.cancelEvent = cancelEvent;
+		this.cancelEvent.setEvent(cancelEvent);
 	}
 
 	public void close() {
