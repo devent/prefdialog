@@ -13,12 +13,12 @@ public interface IPreferenceDialogController {
 
 	void setOwner(JFrame owner);
 
-	void setOkAction(Action action);
+	void setOkAction(Action okAction);
 
-	void setCancelAction(Action action);
+	void setCancelAction(Action cancelAction);
 
-	void setApplyAction(IApplyAction applyAction);
+	void setApplyAction(Action applyAction);
 
-	void setRestoreAction(IRestoreAction restoreAction);
+	void setRestoreAction(Action restoreAction);
 
 }

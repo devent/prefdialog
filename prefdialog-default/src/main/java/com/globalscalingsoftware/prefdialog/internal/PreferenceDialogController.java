@@ -13,13 +13,11 @@ import javax.swing.tree.TreeNode;
 
 import com.globalscalingsoftware.prefdialog.Event;
 import com.globalscalingsoftware.prefdialog.IAnnotationDiscovery;
-import com.globalscalingsoftware.prefdialog.IApplyAction;
 import com.globalscalingsoftware.prefdialog.IDiscoveredListener;
 import com.globalscalingsoftware.prefdialog.IPreferenceDialog;
 import com.globalscalingsoftware.prefdialog.IPreferenceDialogController;
 import com.globalscalingsoftware.prefdialog.IPreferencePanel;
 import com.globalscalingsoftware.prefdialog.IPreferencePanelCreator;
-import com.globalscalingsoftware.prefdialog.IRestoreAction;
 import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.google.inject.Inject;
 
@@ -108,12 +106,12 @@ public class PreferenceDialogController implements IPreferenceDialogController {
 	}
 
 	@Override
-	public void setApplyAction(IApplyAction applyAction) {
+	public void setApplyAction(Action applyAction) {
 		preferencePanelCreator.setApplyAction(applyAction);
 	}
 
 	@Override
-	public void setRestoreAction(IRestoreAction restoreAction) {
+	public void setRestoreAction(Action restoreAction) {
 		preferencePanelCreator.setRestoreAction(restoreAction);
 	}
 
