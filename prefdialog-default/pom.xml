@@ -3,16 +3,16 @@
   <parent>
     <artifactId>prefdialog-parent</artifactId>
     <groupId>com.globalscalingsoftware.prefdialog</groupId>
-    <version>0.1</version>
+    <version>0.1.1</version>
   </parent>
   <groupId>com.globalscalingsoftware.prefdialog</groupId>
   <artifactId>prefdialog-default</artifactId>
-  <version>0.1</version>
+  <version>0.1.1</version>
   <dependencies>
   	<dependency>
   		<groupId>com.globalscalingsoftware.prefdialog</groupId>
   		<artifactId>prefdialog</artifactId>
-  		<version>0.1</version>
+  		<version>0.1.1</version>
   	</dependency>
   	<dependency>
   		<groupId>com.google.inject</groupId>
