@@ -72,7 +72,6 @@ class UiPreferencesDialog extends javax.swing.JDialog {
 				getContentPane().add(getDialogPanel(), BorderLayout.CENTER);
 				dialogPanel.setBorder(BorderFactory.createEmptyBorder(4, 4, 4,
 						4));
-				dialogPanel.setEnabled(false);
 				{
 					splitPane = new JSplitPane();
 					dialogPanel.add(getSplitPane(), "0, 0, 2, 0");
