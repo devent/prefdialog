@@ -3,6 +3,7 @@ package com.globalscalingsoftware.prefdialog.internal
 import javax.swing.JFrame;
 
 
+
 import groovy.util.GroovyTestCase
 
 class PreferenceDialogTest extends GroovyTestCase { {
@@ -17,7 +18,7 @@ class PreferenceDialogTest extends GroovyTestCase { {
 	
 	
 	void testOpenWithControllerAndPreferences() {
-		def owner = new JFrame()
+		def owner = new PreferenceDialogOwner()
 		owner.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
 		
 		def demoPreferences = new Preferences()
@@ -32,15 +33,13 @@ class PreferenceDialogTest extends GroovyTestCase { {
 		def applyAction = new DefaultAction("Apply")
 		def cancelAction = new DefaultAction("Cancel")
 		
-		def preferenceDialog = new PreferenceDialog(okAction, cancelAction)
+		def preferenceDialog = new PreferenceDialog(owner, okAction, cancelAction)
 		def preferencePanel = new PreferencePanelCreator(
 				annotationDiscovery, toolbox,
 				applyAction, restoreAction)
 		def prefereceController = new PreferenceDialogController(
 				annotationDiscovery, preferenceDialog,preferencePanel, 
 				demoPreferences, demoPreferencesStart)
-		
-		prefereceController.setOwner owner
 		
 		prefereceController.openDialog()
 		

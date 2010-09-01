@@ -2,7 +2,6 @@ package com.globalscalingsoftware.prefdialog;
 
 import java.awt.Component;
 
-import javax.swing.JFrame;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 
@@ -23,7 +22,5 @@ public interface IPreferenceDialog {
 	void close();
 
 	void open();
-
-	void setOwner(JFrame owner);
 
 }

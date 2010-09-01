@@ -5,7 +5,6 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
@@ -95,11 +94,6 @@ public class PreferenceDialogController implements IPreferenceDialogController {
 				}
 			}
 		});
-	}
-
-	@Override
-	public void setOwner(JFrame owner) {
-		preferenceDialog.setOwner(owner);
 	}
 
 	private void discoverAnnotations(Object preferences,
