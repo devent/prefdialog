@@ -5,16 +5,18 @@ import java.lang.reflect.Field;
 import javax.swing.Action;
 
 import com.globalscalingsoftware.prefdialog.IAnnotationDiscovery;
+import com.globalscalingsoftware.prefdialog.IApplyAction;
 import com.globalscalingsoftware.prefdialog.IPreferencePanel;
 import com.globalscalingsoftware.prefdialog.IPreferencePanelCreator;
 import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
+import com.globalscalingsoftware.prefdialog.IRestoreAction;
 import com.google.inject.Inject;
 
 public class PreferencePanelCreator implements IPreferencePanelCreator {
 
-	private Action applyAction;
+	private final Action applyAction;
 
-	private Action restoreAction;
+	private final Action restoreAction;
 
 	private final IReflectionToolbox reflectionToolbox;
 
@@ -25,20 +27,13 @@ public class PreferencePanelCreator implements IPreferencePanelCreator {
 	@Inject
 	PreferencePanelCreator(IAnnotationDiscovery annotationDiscovery,
 			AnnotationsFilter annotationsFilter,
-			IReflectionToolbox reflectionToolbox) {
+			IReflectionToolbox reflectionToolbox, IApplyAction applyAction,
+			IRestoreAction restoreAction) {
 		this.annotationDiscovery = annotationDiscovery;
 		this.annotationsFilter = annotationsFilter;
 		this.reflectionToolbox = reflectionToolbox;
-	}
-
-	@Override
-	public void setApplyAction(Action applyAction) {
-		this.applyAction = applyAction;
-	}
-
-	@Override
-	public void setRestoreAction(Action restoreAction) {
-		this.restoreAction = restoreAction;
+		this.applyAction = (Action) applyAction;
+		this.restoreAction = (Action) restoreAction;
 	}
 
 	@Override

@@ -5,7 +5,6 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.swing.Action;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -93,26 +92,6 @@ public class PreferenceDialogController implements IPreferenceDialogController {
 	@Override
 	public void setOwner(JFrame owner) {
 		preferenceDialog.setOwner(owner);
-	}
-
-	@Override
-	public void setOkAction(Action action) {
-		preferenceDialog.setOkAction(action);
-	}
-
-	@Override
-	public void setCancelAction(Action action) {
-		preferenceDialog.setCancelAction(action);
-	}
-
-	@Override
-	public void setApplyAction(Action applyAction) {
-		preferencePanelCreator.setApplyAction(applyAction);
-	}
-
-	@Override
-	public void setRestoreAction(Action restoreAction) {
-		preferencePanelCreator.setRestoreAction(restoreAction);
 	}
 
 	private void discoverAnnotations(Object preferences,

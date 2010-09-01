@@ -2,7 +2,6 @@ package com.globalscalingsoftware.prefdialog;
 
 import java.awt.Component;
 
-import javax.swing.Action;
 import javax.swing.JFrame;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
@@ -22,10 +21,6 @@ public interface IPreferenceDialog {
 	void setCancelEvent(Runnable cancelEvent);
 
 	void close();
-
-	void setOkAction(Action action);
-
-	void setCancelAction(Action action);
 
 	void open();
 

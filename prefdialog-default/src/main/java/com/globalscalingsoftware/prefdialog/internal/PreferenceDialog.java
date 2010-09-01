@@ -12,7 +12,10 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import com.globalscalingsoftware.prefdialog.Event;
+import com.globalscalingsoftware.prefdialog.ICancelAction;
+import com.globalscalingsoftware.prefdialog.IOkAction;
 import com.globalscalingsoftware.prefdialog.IPreferenceDialog;
+import com.google.inject.Inject;
 
 public class PreferenceDialog implements IPreferenceDialog {
 
@@ -21,13 +24,16 @@ public class PreferenceDialog implements IPreferenceDialog {
 	private final RunnableActionEvent okEvent;
 	private final RunnableActionEvent cancelEvent;
 	private JFrame owner;
-	private Action okAction;
-	private Action cancelAction;
+	private final Action okAction;
+	private final Action cancelAction;
 	private DefaultMutableTreeNode rootNode;
 	private Component childPanel;
 	private TreePath selectedPath;
 
-	PreferenceDialog() {
+	@Inject
+	PreferenceDialog(IOkAction okAction, ICancelAction cancelAction) {
+		this.okAction = (Action) okAction;
+		this.cancelAction = (Action) cancelAction;
 		childSelectedEvent = new CallableTreeChildSelectedEvent();
 		okEvent = new RunnableActionEvent();
 		cancelEvent = new RunnableActionEvent();
@@ -100,13 +106,4 @@ public class PreferenceDialog implements IPreferenceDialog {
 		uiPreferencesDialog.setVisible(false);
 	}
 
-	@Override
-	public void setOkAction(Action action) {
-		okAction = action;
-	}
-
-	@Override
-	public void setCancelAction(Action action) {
-		cancelAction = action;
-	}
 }
