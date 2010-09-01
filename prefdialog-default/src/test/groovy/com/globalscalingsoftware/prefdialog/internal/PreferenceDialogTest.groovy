@@ -20,8 +20,9 @@ class PreferenceDialogTest extends GroovyTestCase { {
 		
 		def demoPreferences = new Preferences()
 		def toolbox = new ReflectionToolbox()
-		def annotationDiscovery = new AnnotationDiscovery(toolbox)
 		def annotationsFilter = new AnnotationsFilter()
+		def annotationDiscovery = new AnnotationDiscovery(annotationsFilter, 
+				toolbox)
 		
 		def okAction = new DefaultAction("Ok")
 		def restoreAction = new DefaultAction("Restore")
@@ -30,10 +31,10 @@ class PreferenceDialogTest extends GroovyTestCase { {
 		
 		def preferenceDialog = new PreferenceDialog(okAction, cancelAction)
 		def preferencePanel = new PreferencePanelCreator(
-				annotationDiscovery, annotationsFilter, toolbox,
+				annotationDiscovery, toolbox,
 				applyAction, restoreAction)
 		def prefereceController = new PreferenceDialogController(
-				annotationDiscovery, annotationsFilter, preferenceDialog,
+				annotationDiscovery, preferenceDialog,
 				preferencePanel)
 		
 		prefereceController.setOwner owner

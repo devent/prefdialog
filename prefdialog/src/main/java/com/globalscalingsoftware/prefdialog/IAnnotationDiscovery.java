@@ -2,6 +2,6 @@ package com.globalscalingsoftware.prefdialog;
 
 public interface IAnnotationDiscovery {
 
-	void discover(Object object, IFilter filter, IDiscoveredListener listener);
+	void discover(Object object, IDiscoveredListener listener);
 
 }

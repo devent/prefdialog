@@ -23,7 +23,6 @@ import com.google.inject.Inject;
 public class PreferenceDialogController implements IPreferenceDialogController {
 
 	private final IAnnotationDiscovery annotationDiscovery;
-	private final AnnotationsFilter annotationsFilter;
 	private final Map<Object, IPreferencePanel> preferencePanels;
 	private final IPreferenceDialog preferenceDialog;
 	private final IPreferencePanelCreator preferencePanelCreator;
@@ -31,11 +30,9 @@ public class PreferenceDialogController implements IPreferenceDialogController {
 
 	@Inject
 	PreferenceDialogController(IAnnotationDiscovery annotationDiscovery,
-			AnnotationsFilter annotationsFilter,
 			IPreferenceDialog preferenceDialog,
 			IPreferencePanelCreator preferencePanelCreator) {
 		this.annotationDiscovery = annotationDiscovery;
-		this.annotationsFilter = annotationsFilter;
 		this.preferenceDialog = preferenceDialog;
 		this.preferencePanelCreator = preferencePanelCreator;
 		preferencePanels = new HashMap<Object, IPreferencePanel>();
@@ -114,7 +111,7 @@ public class PreferenceDialogController implements IPreferenceDialogController {
 				}
 			}
 		};
-		annotationDiscovery.discover(preferences, annotationsFilter, listener);
+		annotationDiscovery.discover(preferences, listener);
 	}
 
 }

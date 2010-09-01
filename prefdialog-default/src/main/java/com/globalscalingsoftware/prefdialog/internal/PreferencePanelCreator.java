@@ -22,15 +22,11 @@ public class PreferencePanelCreator implements IPreferencePanelCreator {
 
 	private final IAnnotationDiscovery annotationDiscovery;
 
-	private final AnnotationsFilter annotationsFilter;
-
 	@Inject
 	PreferencePanelCreator(IAnnotationDiscovery annotationDiscovery,
-			AnnotationsFilter annotationsFilter,
 			IReflectionToolbox reflectionToolbox, IApplyAction applyAction,
 			IRestoreAction restoreAction) {
 		this.annotationDiscovery = annotationDiscovery;
-		this.annotationsFilter = annotationsFilter;
 		this.reflectionToolbox = reflectionToolbox;
 		this.applyAction = (Action) applyAction;
 		this.restoreAction = (Action) restoreAction;
@@ -43,7 +39,7 @@ public class PreferencePanelCreator implements IPreferencePanelCreator {
 		panel.setRestoreAction(restoreAction);
 
 		PreferencePanelController controller = new PreferencePanelController(
-				annotationDiscovery, annotationsFilter, panel);
+				annotationDiscovery, panel);
 		controller.setField(parentValue, field);
 
 		return panel;
