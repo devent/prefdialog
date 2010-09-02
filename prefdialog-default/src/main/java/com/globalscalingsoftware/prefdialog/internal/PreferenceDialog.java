@@ -61,6 +61,7 @@ public class PreferenceDialog implements IPreferenceDialog {
 
 		setChildPanel(childPanel);
 
+		uiPreferencesDialog.setLocationRelativeTo(owner);
 		uiPreferencesDialog.setModal(true);
 		uiPreferencesDialog.pack();
 		uiPreferencesDialog.setVisible(true);
