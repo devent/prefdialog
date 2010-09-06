@@ -2,11 +2,17 @@ package com.globalscalingsoftware.prefdialog.internal
 
 import javax.swing.JFrame;
 
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import com.google.inject.Guice;
+import com.google.inject.Module;
 
 
-import groovy.util.GroovyTestCase
 
-class PreferenceDialogTest extends GroovyTestCase { {
+
+
+class PreferenceDialogTest { {
 		// Set Look & Feel
 		try {
 			javax.swing.UIManager
@@ -16,7 +22,15 @@ class PreferenceDialogTest extends GroovyTestCase { {
 		}
 	}
 	
+	static injector
 	
+	@BeforeClass
+	static void beforeClass() {
+		injector = Guice.createInjector([configure: { binding ->
+		} ] as Module)
+	}
+	
+	@Test
 	void testOpenWithControllerAndPreferences() {
 		def owner = new PreferenceDialogOwner()
 		owner.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)

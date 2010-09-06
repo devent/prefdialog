@@ -1,10 +1,12 @@
 package com.globalscalingsoftware.prefdialog.internal;
 
+import static com.google.inject.assistedinject.FactoryProvider.newFactory;
+
 import com.globalscalingsoftware.prefdialog.IAnnotationDiscovery;
 import com.globalscalingsoftware.prefdialog.IAnnotationFilter;
 import com.globalscalingsoftware.prefdialog.IPreferenceDialog;
 import com.globalscalingsoftware.prefdialog.IPreferenceDialogController;
-import com.globalscalingsoftware.prefdialog.IPreferencePanelCreator;
+import com.globalscalingsoftware.prefdialog.IPreferencePanelFactory;
 import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
 import com.google.inject.AbstractModule;
 
@@ -17,7 +19,9 @@ public class PreferenceDialogServiceModule extends AbstractModule {
 				PreferenceDialogController.class);
 		bind(IAnnotationDiscovery.class).to(AnnotationDiscovery.class);
 		bind(IAnnotationFilter.class).to(AnnotationsFilter.class);
-		bind(IPreferencePanelCreator.class).to(PreferencePanelCreator.class);
+		bind(IPreferencePanelFactory.class).toProvider(
+				newFactory(IPreferencePanelFactory.class,
+						PreferencePanelController.class));
 		bind(IReflectionToolbox.class).to(ReflectionToolbox.class);
 	}
 
