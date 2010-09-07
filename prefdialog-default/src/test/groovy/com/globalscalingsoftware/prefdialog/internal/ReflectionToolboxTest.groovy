@@ -23,35 +23,33 @@ class ReflectionToolboxTest {
 		property = parentObject.fields
 		propertyField = General.getDeclaredField("fields")
 		testValue = 99
-		propertyHelpText = "Must be a number and greater then 2"
+		propertyHelpText = "Must be a number and between 2 and 100"
 	}
 	
 	@Test
 	void testGetValueFromProperty() {
-		def toolbox = new ReflectionToolbox(null)
+		def toolbox = new ReflectionToolbox()
 		def value = toolbox.getValueFrom(propertyField, parentObject)
 		assertThat value, is(property)
 	}
 	
 	@Test
 	void testSetValueToProperty() {
-		def toolbox = new ReflectionToolbox(null)
+		def toolbox = new ReflectionToolbox()
 		toolbox.setValueTo(propertyField, parentObject, testValue)
 		assertThat parentObject.fields, is(testValue)
 	}
 	
 	@Test
 	void testGetHelpTextFromProperty() {
-		def filter = new AnnotationsFilter()
-		def toolbox = new ReflectionToolbox(filter)
+		def toolbox = new ReflectionToolbox()
 		def helpText = toolbox.getHelpText(propertyField)
 		assertThat helpText, is(propertyHelpText)
 	}
 	
 	@Test
 	void testGetValidatorFromProperty() {
-		def filter = new AnnotationsFilter()
-		def toolbox = new ReflectionToolbox(filter)
+		def toolbox = new ReflectionToolbox()
 		def validator = toolbox.getValidator(propertyField)
 		assertThat validator, is(instanceOf(FieldsValidator))
 	}

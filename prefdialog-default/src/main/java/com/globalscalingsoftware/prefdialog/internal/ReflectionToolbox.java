@@ -6,20 +6,12 @@ import static org.fest.reflect.core.Reflection.method;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
-import com.globalscalingsoftware.prefdialog.IAnnotationFilter;
 import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.IValidator;
+import com.globalscalingsoftware.prefdialog.annotations.HelpText;
 import com.globalscalingsoftware.prefdialog.annotations.Validated;
-import com.google.inject.Inject;
 
 public class ReflectionToolbox implements IReflectionToolbox {
-
-	private final IAnnotationFilter annotationFilter;
-
-	@Inject
-	ReflectionToolbox(IAnnotationFilter annotationFilter) {
-		this.annotationFilter = annotationFilter;
-	}
 
 	@Override
 	public Object getValueFrom(Field field, Object object) {
@@ -61,15 +53,16 @@ public class ReflectionToolbox implements IReflectionToolbox {
 	}
 
 	private String annotationHelpText(Field field) {
-		for (Annotation a : field.getAnnotations()) {
-			if (annotationFilter.accept(a)) {
-				if (annotationHaveMethod(a, "helpText")) {
-					return invokeMethodWithReturnType("helpText", String.class,
-							a);
-				}
-			}
+		Annotation a = field.getAnnotation(HelpText.class);
+		if (a == null) {
+			return "";
+		} else {
+			return getHelpTextFromAnnotation(a);
 		}
-		return null;
+	}
+
+	private String getHelpTextFromAnnotation(Annotation a) {
+		return invokeMethodWithReturnType("value", String.class, a);
 	}
 
 	private <T> T invokeMethodWithReturnType(String methodName,

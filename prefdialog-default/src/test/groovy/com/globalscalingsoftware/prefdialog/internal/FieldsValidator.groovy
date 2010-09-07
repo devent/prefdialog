@@ -6,6 +6,6 @@ class FieldsValidator implements IValidator<Integer> {
 	
 	@Override
 	public boolean isValid(Integer value) {
-		return value > 1 && value <= Integer.MAX_VALUE;
+		return value > 1 && value <= 100;
 	}
 }

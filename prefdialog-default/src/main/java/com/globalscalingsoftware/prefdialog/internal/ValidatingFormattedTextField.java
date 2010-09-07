@@ -1,8 +1,6 @@
 package com.globalscalingsoftware.prefdialog.internal;
 
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.text.ParseException;
@@ -36,6 +34,10 @@ class ValidatingFormattedTextField extends JFormattedTextField {
 		oldBorder = getBorder();
 		highlighBorder = BorderFactory.createLineBorder(Color.red);
 		normalBorder = BorderFactory.createEmptyBorder(1, 1, 1, 1);
+		setupListeners();
+	}
+
+	private void setupListeners() {
 		addCaretListener(new CaretListener() {
 
 			@Override
@@ -53,13 +55,6 @@ class ValidatingFormattedTextField extends JFormattedTextField {
 			@Override
 			public void focusGained(FocusEvent e) {
 				selectAllText();
-			}
-		});
-		addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				validateInput();
 			}
 		});
 	}
