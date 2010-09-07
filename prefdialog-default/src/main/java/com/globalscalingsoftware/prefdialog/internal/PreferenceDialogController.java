@@ -114,6 +114,7 @@ public class PreferenceDialogController implements IPreferenceDialogController {
 
 					IPreferencePanelController panel = preferencePanelFactory
 							.create(value, field);
+					panel.setupPanel();
 					preferencePanels.put(value, panel);
 				}
 			}

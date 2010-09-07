@@ -54,10 +54,14 @@ public class PreferencePanelController implements IPreferencePanelController {
 	}
 
 	@Override
-	public JPanel getPanel() {
+	public void setupPanel() {
 		preferencePanel.setTitle(parentValue.toString());
 		discoverAnnotations(parentValue);
 		setupActions();
+	}
+
+	@Override
+	public JPanel getPanel() {
 		return preferencePanel.getPanel();
 	}
 

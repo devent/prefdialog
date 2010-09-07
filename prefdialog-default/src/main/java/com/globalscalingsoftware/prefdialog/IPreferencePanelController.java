@@ -10,4 +10,6 @@ public interface IPreferencePanelController {
 
 	void undoAllInput();
 
+	void setupPanel();
+
 }
