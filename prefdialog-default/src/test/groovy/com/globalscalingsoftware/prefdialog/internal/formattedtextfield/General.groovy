@@ -1,8 +1,10 @@
-package com.globalscalingsoftware.prefdialog.internal
+package com.globalscalingsoftware.prefdialog.internal.formattedtextfield
+
 
 import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField;
 import com.globalscalingsoftware.prefdialog.annotations.HelpText;
 import com.globalscalingsoftware.prefdialog.annotations.Validated;
+import com.globalscalingsoftware.prefdialog.internal.FieldsValidator 
 
 class General {
 	

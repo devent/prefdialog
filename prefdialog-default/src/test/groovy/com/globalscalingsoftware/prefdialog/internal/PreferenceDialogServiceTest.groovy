@@ -3,6 +3,8 @@ package com.globalscalingsoftware.prefdialog.internal
 import groovy.util.GroovyTestCase;
 import javax.swing.JFrame 
 
+import com.globalscalingsoftware.prefdialog.internal.formattedtextfield.Preferences;
+
 class PreferenceDialogServiceTest extends GroovyTestCase {
 	
 	void testGetPreferenceDialog() {

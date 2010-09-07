@@ -1,4 +1,5 @@
-package com.globalscalingsoftware.prefdialog.internal
+package com.globalscalingsoftware.prefdialog.internal.formattedtextfield
+
 
 import java.lang.reflect.Field;
 
@@ -19,6 +20,11 @@ import com.globalscalingsoftware.prefdialog.IAnnotationDiscovery;
 import com.globalscalingsoftware.prefdialog.IAnnotationFilter;
 import com.globalscalingsoftware.prefdialog.IPreferencePanelFactory 
 import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
+import com.globalscalingsoftware.prefdialog.internal.AnnotationDiscovery 
+import com.globalscalingsoftware.prefdialog.internal.AnnotationsFilter 
+import com.globalscalingsoftware.prefdialog.internal.PreferencePanel 
+import com.globalscalingsoftware.prefdialog.internal.PreferencePanelController 
+import com.globalscalingsoftware.prefdialog.internal.ReflectionToolbox 
 import com.google.inject.Guice;
 import com.google.inject.Module;
 

@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.globalscalingsoftware.prefdialog.internal.formattedtextfield.Preferences;
 import com.google.inject.Guice;
 import com.google.inject.Module;
 

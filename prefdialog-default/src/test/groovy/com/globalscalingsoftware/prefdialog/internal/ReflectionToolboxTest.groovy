@@ -2,6 +2,8 @@ package com.globalscalingsoftware.prefdialog.internal
 
 import org.junit.Before;
 import org.junit.Test;
+
+import com.globalscalingsoftware.prefdialog.internal.formattedtextfield.General;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
