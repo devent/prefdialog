@@ -21,7 +21,7 @@ import com.globalscalingsoftware.prefdialog.annotations.TextField;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
-class PreferencePanelController implements IPreferencePanelController {
+public class PreferencePanelController implements IPreferencePanelController {
 
 	private final IPreferencePanel preferencePanel;
 

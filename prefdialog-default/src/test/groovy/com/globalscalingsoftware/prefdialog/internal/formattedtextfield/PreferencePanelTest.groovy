@@ -7,9 +7,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.globalscalingsoftware.prefdialog.IPreferencePanelFactory 
-import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest 
+import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest 
+import com.globalscalingsoftware.prefdialog.internal.PreferencesDialogInjectorFactory 
 
-class PreferencePanelTest extends AbstractPreferencePanelTest {
+class PreferencePanelTest extends AbstractPreferenceTest {
 	
 	def preferences
 	
@@ -17,15 +18,18 @@ class PreferencePanelTest extends AbstractPreferencePanelTest {
 	
 	def field
 	
+	def injector
+	
 	@Before
 	void beforeTest() {
 		preferences = new Preferences()
 		parentValue = preferences.general
-		field = getPreferencesField(preferences, "general")
+		field = getPreferencesField(Preferences, "general")
+		injector = new PreferencesDialogInjectorFactory().create(preferences)
 	}
 	
 	@Test
-	void testClickApplyAndClose() {
+	void testPanelClickApplyAndClose() {
 		def factory = getInjector().getInstance(IPreferencePanelFactory)
 		def controller = factory.create(parentValue, field)
 		
