@@ -15,6 +15,7 @@ import com.globalscalingsoftware.prefdialog.IInputField;
 import com.globalscalingsoftware.prefdialog.IPreferencePanel;
 import com.globalscalingsoftware.prefdialog.IPreferencePanelController;
 import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
+import com.globalscalingsoftware.prefdialog.IValidator;
 import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField;
 import com.globalscalingsoftware.prefdialog.annotations.TextField;
 import com.google.inject.Inject;
@@ -94,8 +95,9 @@ class PreferencePanelController implements IPreferencePanelController {
 			Object value) {
 		String fieldName = field.getName();
 		String helpText = reflectionToolbox.getHelpText(field);
+		IValidator<?> validator = reflectionToolbox.getValidator(field);
 		IFormattedTextField textfield = fieldsFactory.createFormattedTextField(
-				value, fieldName, helpText);
+				value, fieldName, helpText, validator);
 		preferencePanel.addField(textfield.getComponent());
 		inputFields.put(field, textfield);
 	}

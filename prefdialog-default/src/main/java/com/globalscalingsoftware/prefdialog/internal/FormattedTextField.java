@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.globalscalingsoftware.prefdialog.IFormattedTextField;
+import com.globalscalingsoftware.prefdialog.IValidator;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
@@ -29,12 +30,13 @@ public class FormattedTextField implements IFormattedTextField {
 	@Inject
 	FormattedTextField(@Assisted("value") Object value,
 			@Assisted("fieldName") String fieldName,
-			@Assisted("helpText") String helpText) {
+			@Assisted("helpText") String helpText,
+			@Assisted("validator") IValidator<?> validator) {
 		this.fieldName = fieldName;
 		this.value = value;
 		this.helpText = helpText;
 		panel = new JPanel();
-		textField = new ValidatingFormattedTextField();
+		textField = new ValidatingFormattedTextField(value, validator);
 		label = new JLabel();
 	}
 

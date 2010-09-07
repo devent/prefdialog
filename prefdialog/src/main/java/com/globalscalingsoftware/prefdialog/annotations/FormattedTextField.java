@@ -11,6 +11,5 @@ import java.lang.annotation.Target;
 public @interface FormattedTextField {
 
 	String helpText() default "";
-	
-	Class<? extends IValidator> validatorClass default null;
+
 }

@@ -47,4 +47,12 @@ class ReflectionToolboxTest {
 		def helpText = toolbox.getHelpText(propertyField)
 		assertThat helpText, is(propertyHelpText)
 	}
+	
+	@Test
+	void testGetValidatorFromProperty() {
+		def filter = new AnnotationsFilter()
+		def toolbox = new ReflectionToolbox(filter)
+		def validator = toolbox.getValidator(propertyField)
+		assertThat validator, is(instanceOf(FieldsValidator))
+	}
 }

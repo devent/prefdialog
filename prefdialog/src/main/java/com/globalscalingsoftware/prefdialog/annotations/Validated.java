@@ -6,10 +6,12 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import com.globalscalingsoftware.prefdialog.IValidator;
+
 @Target(FIELD)
 @Retention(RUNTIME)
 public @interface Validated {
 
-	Class<?> validatorClass();
+	Class<? extends IValidator<?>> value();
 
 }

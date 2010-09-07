@@ -10,4 +10,6 @@ public interface IReflectionToolbox {
 
 	String getHelpText(Field field);
 
+	IValidator<?> getValidator(Field field);
+
 }

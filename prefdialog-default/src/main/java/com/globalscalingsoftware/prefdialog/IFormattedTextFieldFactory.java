@@ -7,6 +7,7 @@ public interface IFormattedTextFieldFactory {
 	IFormattedTextField createFormattedTextField(
 			@Assisted("value") Object value,
 			@Assisted("fieldName") String fieldName,
-			@Assisted("helpText") String helpText);
+			@Assisted("helpText") String helpText,
+			@Assisted("validator") IValidator<?> validator);
 
 }

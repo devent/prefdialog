@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.text.ParseException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFormattedTextField;
@@ -14,6 +15,8 @@ import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.event.EventListenerList;
 
+import com.globalscalingsoftware.prefdialog.IValidator;
+
 @SuppressWarnings("serial")
 class ValidatingFormattedTextField extends JFormattedTextField {
 
@@ -21,8 +24,14 @@ class ValidatingFormattedTextField extends JFormattedTextField {
 	private final Border oldBorder;
 	private final Border highlighBorder;
 	private final Border normalBorder;
+	@SuppressWarnings("rawtypes")
+	private final IValidator validator;
+	private final Object value;
 
-	public ValidatingFormattedTextField() {
+	public ValidatingFormattedTextField(Object value,
+			@SuppressWarnings("rawtypes") final IValidator validator) {
+		this.value = value;
+		this.validator = validator;
 		listenerList = new EventListenerList();
 		oldBorder = getBorder();
 		highlighBorder = BorderFactory.createLineBorder(Color.red);
@@ -37,6 +46,11 @@ class ValidatingFormattedTextField extends JFormattedTextField {
 		addFocusListener(new FocusAdapter() {
 
 			@Override
+			public void focusLost(FocusEvent e) {
+				restoreValueIfInvalid();
+			}
+
+			@Override
 			public void focusGained(FocusEvent e) {
 				selectAllText();
 			}
@@ -48,6 +62,12 @@ class ValidatingFormattedTextField extends JFormattedTextField {
 				validateInput();
 			}
 		});
+	}
+
+	protected void restoreValueIfInvalid() {
+		if (isNotValidInput()) {
+			setValue(value);
+		}
 	}
 
 	public void addValidListener(ValidListener l) {
@@ -84,8 +104,15 @@ class ValidatingFormattedTextField extends JFormattedTextField {
 		setBorder(BorderFactory.createCompoundBorder(normalBorder, oldBorder));
 	}
 
+	@SuppressWarnings("unchecked")
 	private boolean isNotValidInput() {
-		return !isEditValid();
+		try {
+			commitEdit();
+		} catch (ParseException e) {
+			return true;
+		}
+		boolean b = !isEditValid() || !validator.isValid(getValue());
+		return b;
 	}
 
 	private void highlighField() {

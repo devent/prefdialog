@@ -1,5 +1,6 @@
 package com.globalscalingsoftware.prefdialog.internal;
 
+import static org.fest.reflect.core.Reflection.constructor;
 import static org.fest.reflect.core.Reflection.method;
 
 import java.lang.annotation.Annotation;
@@ -7,6 +8,8 @@ import java.lang.reflect.Field;
 
 import com.globalscalingsoftware.prefdialog.IAnnotationFilter;
 import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
+import com.globalscalingsoftware.prefdialog.IValidator;
+import com.globalscalingsoftware.prefdialog.annotations.Validated;
 import com.google.inject.Inject;
 
 public class ReflectionToolbox implements IReflectionToolbox {
@@ -83,5 +86,31 @@ public class ReflectionToolbox implements IReflectionToolbox {
 		} catch (NoSuchMethodException e) {
 			return false;
 		}
+	}
+
+	static class NoneValidator implements IValidator<Void> {
+
+		@Override
+		public boolean isValid(Void value) {
+			return true;
+		}
+
+	}
+
+	@Override
+	public IValidator<?> getValidator(Field field) {
+		Annotation a = field.getAnnotation(Validated.class);
+		if (a == null) {
+			return new NoneValidator();
+		} else {
+			return createValidatorFromAnnotation(a);
+		}
+	}
+
+	private IValidator<?> createValidatorFromAnnotation(Annotation a) {
+		@SuppressWarnings("unchecked")
+		Class<? extends IValidator<?>> validatorClass = invokeMethodWithReturnType(
+				"value", Class.class, a);
+		return constructor().in(validatorClass).newInstance();
 	}
 }
