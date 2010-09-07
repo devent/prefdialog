@@ -9,15 +9,12 @@ import javax.swing.JPanel;
 
 import com.globalscalingsoftware.prefdialog.IAnnotationDiscovery;
 import com.globalscalingsoftware.prefdialog.IDiscoveredListener;
-import com.globalscalingsoftware.prefdialog.IFormattedTextField;
-import com.globalscalingsoftware.prefdialog.IFormattedTextFieldFactory;
+import com.globalscalingsoftware.prefdialog.IFieldsFactory;
 import com.globalscalingsoftware.prefdialog.IInputField;
 import com.globalscalingsoftware.prefdialog.IPreferencePanel;
+import com.globalscalingsoftware.prefdialog.IPreferencePanelAnnotationFilter;
 import com.globalscalingsoftware.prefdialog.IPreferencePanelController;
 import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
-import com.globalscalingsoftware.prefdialog.IValidator;
-import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField;
-import com.globalscalingsoftware.prefdialog.annotations.TextField;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
@@ -31,17 +28,19 @@ public class PreferencePanelController implements IPreferencePanelController {
 
 	private final Field field;
 
-	private final IFormattedTextFieldFactory fieldsFactory;
+	private final IFieldsFactory fieldsFactory;
 
 	private final Map<Field, IInputField> inputFields;
 
 	private final IReflectionToolbox reflectionToolbox;
 
+	private final IPreferencePanelAnnotationFilter filter;
+
 	@Inject
 	PreferencePanelController(IAnnotationDiscovery annotationDiscovery,
+			IPreferencePanelAnnotationFilter filter,
 			IReflectionToolbox reflectionToolbox,
-			IPreferencePanel preferencePanel,
-			IFormattedTextFieldFactory fieldsFactory,
+			IPreferencePanel preferencePanel, IFieldsFactory fieldsFactory,
 			@Assisted("parentValue") Object parentValue,
 			@Assisted("field") Field field) {
 		this.preferencePanel = preferencePanel;
@@ -49,6 +48,7 @@ public class PreferencePanelController implements IPreferencePanelController {
 		this.reflectionToolbox = reflectionToolbox;
 		this.fieldsFactory = fieldsFactory;
 		this.parentValue = parentValue;
+		this.filter = filter;
 		this.field = field;
 		inputFields = new HashMap<Field, IInputField>();
 	}
@@ -76,34 +76,22 @@ public class PreferencePanelController implements IPreferencePanelController {
 	}
 
 	private void discoverAnnotations(final Object parentObject) {
-		annotationDiscovery.discover(parentObject, new IDiscoveredListener() {
+		annotationDiscovery.discover(filter, parentObject,
+				new IDiscoveredListener() {
 
-			@Override
-			public void fieldAnnotationDiscovered(Field field, Object value,
-					Annotation a) {
-				if (a instanceof FormattedTextField) {
-					createFormattedTextField(parentObject, field, value);
-				} else if (a instanceof TextField) {
-					createTextField(parentObject, field, value);
-				}
-
-			}
-		});
+					@Override
+					public void fieldAnnotationDiscovered(Field field,
+							Object value, Annotation a) {
+						createInputField(parentObject, field, value);
+					}
+				});
 	}
 
-	private void createTextField(Object parentObject, Field field, Object value) {
-		// TODO
-	}
-
-	private void createFormattedTextField(Object parentObject, Field field,
-			Object value) {
-		String fieldName = field.getName();
-		String helpText = reflectionToolbox.getHelpText(field);
-		IValidator<?> validator = reflectionToolbox.getValidator(field);
-		IFormattedTextField textfield = fieldsFactory.createFormattedTextField(
-				value, fieldName, helpText, validator);
-		preferencePanel.addField(textfield.getComponent());
-		inputFields.put(field, textfield);
+	private void createInputField(Object parentObject, Field field, Object value) {
+		IInputField inputfield = fieldsFactory.createField(parentObject, field,
+				value);
+		preferencePanel.addField(inputfield.getComponent());
+		inputFields.put(field, inputfield);
 	}
 
 	@Override

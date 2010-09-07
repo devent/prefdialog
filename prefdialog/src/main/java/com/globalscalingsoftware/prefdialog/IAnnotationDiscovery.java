@@ -2,6 +2,7 @@ package com.globalscalingsoftware.prefdialog;
 
 public interface IAnnotationDiscovery {
 
-	void discover(Object object, IDiscoveredListener listener);
+	void discover(IAnnotationFilter filter, Object object,
+			IDiscoveredListener listener);
 
 }

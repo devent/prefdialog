@@ -32,6 +32,7 @@ class PreferencePanelTest extends AbstractPreferenceTest {
 	void testPanelClickApplyAndClose() {
 		def factory = getInjector().getInstance(IPreferencePanelFactory)
 		def controller = factory.create(parentValue, field)
+		controller.setupPanel()
 		
 		createDialog({ controller.getPanel() })
 		assertThat preferences.general.fields, is(10)

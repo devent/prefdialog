@@ -54,7 +54,7 @@ public class AnnotationsTest extends GroovyTestCase {
 		def discovery = new AnnotationDiscovery(toolbox)
 		
 		def annotationCount = 0
-		def filter = new AnnotationsFilter()
+		def filter = new PrefrenceDialogAnnotationsFilter()
 		def listener = [
 				fieldAnnotationDiscovered : { f, v, a ->  annotationCount++ }
 				] as IDiscoveredListener 

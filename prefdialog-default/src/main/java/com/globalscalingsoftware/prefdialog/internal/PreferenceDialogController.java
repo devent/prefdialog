@@ -11,8 +11,10 @@ import javax.swing.tree.TreeNode;
 
 import com.globalscalingsoftware.prefdialog.Event;
 import com.globalscalingsoftware.prefdialog.IAnnotationDiscovery;
+import com.globalscalingsoftware.prefdialog.IAnnotationFilter;
 import com.globalscalingsoftware.prefdialog.IDiscoveredListener;
 import com.globalscalingsoftware.prefdialog.IPreferenceDialog;
+import com.globalscalingsoftware.prefdialog.IPreferenceDialogAnnotationFilter;
 import com.globalscalingsoftware.prefdialog.IPreferenceDialogController;
 import com.globalscalingsoftware.prefdialog.IPreferencePanelController;
 import com.globalscalingsoftware.prefdialog.IPreferencePanelFactory;
@@ -29,14 +31,17 @@ public class PreferenceDialogController implements IPreferenceDialogController {
 	private final Object preferences;
 	private final Object preferencesStart;
 	private final IPreferencePanelFactory preferencePanelFactory;
+	private final IAnnotationFilter filter;
 
 	@Inject
 	PreferenceDialogController(IAnnotationDiscovery annotationDiscovery,
+			IPreferenceDialogAnnotationFilter filter,
 			IPreferenceDialog preferenceDialog,
 			IPreferencePanelFactory preferencePanelFactory,
 			@Named("preferences") Object preferences,
 			@Named("preferences_start") Object preferencesStart) {
 		this.annotationDiscovery = annotationDiscovery;
+		this.filter = filter;
 		this.preferenceDialog = preferenceDialog;
 		this.preferencePanelFactory = preferencePanelFactory;
 		this.preferences = preferences;
@@ -119,7 +124,7 @@ public class PreferenceDialogController implements IPreferenceDialogController {
 				}
 			}
 		};
-		annotationDiscovery.discover(preferences, listener);
+		annotationDiscovery.discover(filter, preferences, listener);
 	}
 
 }
