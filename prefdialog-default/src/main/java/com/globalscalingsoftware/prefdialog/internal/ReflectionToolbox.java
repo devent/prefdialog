@@ -81,10 +81,10 @@ public class ReflectionToolbox implements IReflectionToolbox {
 		}
 	}
 
-	static class NoneValidator implements IValidator<Void> {
+	static class NoneValidator implements IValidator<Object> {
 
 		@Override
-		public boolean isValid(Void value) {
+		public boolean isValid(Object value) {
 			return true;
 		}
 

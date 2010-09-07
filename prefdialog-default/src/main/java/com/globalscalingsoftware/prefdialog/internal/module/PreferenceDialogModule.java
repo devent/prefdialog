@@ -12,6 +12,7 @@ import com.globalscalingsoftware.prefdialog.IPreferencePanel;
 import com.globalscalingsoftware.prefdialog.IPreferencePanelAnnotationFilter;
 import com.globalscalingsoftware.prefdialog.IPreferencePanelFactory;
 import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
+import com.globalscalingsoftware.prefdialog.ITextFieldFactory;
 import com.globalscalingsoftware.prefdialog.internal.AnnotationDiscovery;
 import com.globalscalingsoftware.prefdialog.internal.FieldsFactory;
 import com.globalscalingsoftware.prefdialog.internal.PreferenceDialog;
@@ -22,6 +23,7 @@ import com.globalscalingsoftware.prefdialog.internal.PreferencePanelController;
 import com.globalscalingsoftware.prefdialog.internal.PrefrenceDialogAnnotationsFilter;
 import com.globalscalingsoftware.prefdialog.internal.ReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.internal.formattedtextfield.FormattedTextField;
+import com.globalscalingsoftware.prefdialog.internal.formattedtextfield.TextField;
 import com.google.inject.AbstractModule;
 
 public class PreferenceDialogModule extends AbstractModule {
@@ -53,5 +55,7 @@ public class PreferenceDialogModule extends AbstractModule {
 		bind(IFormattedTextFieldFactory.class).toProvider(
 				newFactory(IFormattedTextFieldFactory.class,
 						FormattedTextField.class));
+		bind(ITextFieldFactory.class).toProvider(
+				newFactory(ITextFieldFactory.class, TextField.class));
 	}
 }

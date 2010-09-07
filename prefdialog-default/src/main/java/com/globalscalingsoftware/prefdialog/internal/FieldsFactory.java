@@ -20,13 +20,15 @@ public class FieldsFactory implements IFieldsFactory {
 
 	private final IFormattedTextFieldFactory formattedTextFieldFactory;
 
-	private ITextFieldFactory textFieldFactory;
+	private final ITextFieldFactory textFieldFactory;
 
 	@Inject
 	FieldsFactory(IReflectionToolbox reflectionToolbox,
-			IFormattedTextFieldFactory fieldsFactory) {
+			IFormattedTextFieldFactory formattedTextFieldFactory,
+			ITextFieldFactory textFieldFactory) {
 		this.reflectionToolbox = reflectionToolbox;
-		this.formattedTextFieldFactory = fieldsFactory;
+		this.formattedTextFieldFactory = formattedTextFieldFactory;
+		this.textFieldFactory = textFieldFactory;
 	}
 
 	@Override
