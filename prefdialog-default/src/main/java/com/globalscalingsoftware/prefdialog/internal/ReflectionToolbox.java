@@ -3,6 +3,8 @@ package com.globalscalingsoftware.prefdialog.internal;
 import static org.fest.reflect.core.Reflection.constructor;
 import static org.fest.reflect.core.Reflection.method;
 
+import inputfields.IInputField;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
@@ -105,5 +107,14 @@ public class ReflectionToolbox implements IReflectionToolbox {
 		Class<? extends IValidator<?>> validatorClass = invokeMethodWithReturnType(
 				"value", Class.class, a);
 		return constructor().in(validatorClass).newInstance();
+	}
+
+	@Override
+	public Class<? extends IInputField> getInputFieldClassFrom(
+			Annotation annotation) {
+		@SuppressWarnings("unchecked")
+		Class<? extends IInputField> clazz = invokeMethodWithReturnType(
+				"value", Class.class, annotation);
+		return clazz;
 	}
 }

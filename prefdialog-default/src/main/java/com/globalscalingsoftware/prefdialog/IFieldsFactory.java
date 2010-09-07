@@ -1,5 +1,7 @@
 package com.globalscalingsoftware.prefdialog;
 
+import inputfields.IInputField;
+
 import java.lang.reflect.Field;
 
 public interface IFieldsFactory {

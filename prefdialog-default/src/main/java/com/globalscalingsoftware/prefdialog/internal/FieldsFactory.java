@@ -1,34 +1,41 @@
 package com.globalscalingsoftware.prefdialog.internal;
 
-import static java.lang.String.format;
+import inputfields.FormattedTextField;
+import inputfields.IInputField;
+import inputfields.TextField;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.globalscalingsoftware.prefdialog.IFieldsFactory;
-import com.globalscalingsoftware.prefdialog.IFormattedTextFieldFactory;
-import com.globalscalingsoftware.prefdialog.IInputField;
+import com.globalscalingsoftware.prefdialog.IInputFieldsFactory;
 import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
-import com.globalscalingsoftware.prefdialog.ITextFieldFactory;
 import com.globalscalingsoftware.prefdialog.IValidator;
-import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField;
-import com.globalscalingsoftware.prefdialog.annotations.TextField;
+import com.globalscalingsoftware.prefdialog.annotations.InputField;
+import com.globalscalingsoftware.prefdialog.internal.formattedtextfield.FormattedTextFieldImpl;
+import com.globalscalingsoftware.prefdialog.internal.formattedtextfield.TextFieldImpl;
 import com.google.inject.Inject;
 
 public class FieldsFactory implements IFieldsFactory {
 
 	private final IReflectionToolbox reflectionToolbox;
 
-	private final IFormattedTextFieldFactory formattedTextFieldFactory;
+	private final IInputFieldsFactory inputFieldFactory;
 
-	private final ITextFieldFactory textFieldFactory;
+	private final Map<Class<? extends IInputField>, Class<? extends IInputField>> inputFieldImplementations;
 
 	@Inject
 	FieldsFactory(IReflectionToolbox reflectionToolbox,
-			IFormattedTextFieldFactory formattedTextFieldFactory,
-			ITextFieldFactory textFieldFactory) {
+			IInputFieldsFactory inputFieldFactory) {
 		this.reflectionToolbox = reflectionToolbox;
-		this.formattedTextFieldFactory = formattedTextFieldFactory;
-		this.textFieldFactory = textFieldFactory;
+		this.inputFieldFactory = inputFieldFactory;
+
+		inputFieldImplementations = new HashMap<Class<? extends IInputField>, Class<? extends IInputField>>();
+		inputFieldImplementations.put(TextField.class, TextFieldImpl.class);
+		inputFieldImplementations.put(FormattedTextField.class,
+				FormattedTextFieldImpl.class);
 	}
 
 	@Override
@@ -39,32 +46,25 @@ public class FieldsFactory implements IFieldsFactory {
 		String helpText = reflectionToolbox.getHelpText(field);
 		IValidator<?> validator = reflectionToolbox.getValidator(field);
 
-		if (field.getAnnotation(FormattedTextField.class) != null) {
-			return createFormattedTextField(parentObject, field, value,
-					fieldName, helpText, validator);
-		} else if (field.getAnnotation(TextField.class) != null) {
-			return createTextField(parentObject, field, value, fieldName,
-					helpText, validator);
-		}
-
-		throw new UnsupportedOperationException(format(
-				"The field '%s' have the wrong annotation", field));
+		Class<? extends IInputField> inputFieldClass = getInputFieldClassFrom(field);
+		return createInputField(value, fieldName, helpText, validator,
+				inputFieldClass);
 	}
 
-	private IInputField createTextField(Object parentObject, Field field,
-			Object value, String fieldName, String helpText,
-			IValidator<?> validator) {
-		IInputField textfield = textFieldFactory.create(value, fieldName,
-				helpText, validator);
-		return textfield;
+	private IInputField createInputField(Object value, String fieldName,
+			String helpText, IValidator<?> validator,
+			Class<? extends IInputField> inputFieldClass) {
+		IInputField inputField = inputFieldFactory.create(inputFieldClass,
+				value, fieldName, helpText, validator);
+		return inputField;
 	}
 
-	private IInputField createFormattedTextField(Object parentObject,
-			Field field, Object value, String fieldName, String helpText,
-			IValidator<?> validator) {
-		IInputField textfield = formattedTextFieldFactory.create(value,
-				fieldName, helpText, validator);
-		return textfield;
+	private Class<? extends IInputField> getInputFieldClassFrom(Field field) {
+		Annotation a = field.getAnnotation(InputField.class);
+		Class<? extends IInputField> inputFieldClass = reflectionToolbox
+				.getInputFieldClassFrom(a);
+		inputFieldClass = inputFieldImplementations.get(inputFieldClass);
+		return inputFieldClass;
 	}
 
 }

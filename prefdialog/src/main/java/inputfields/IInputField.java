@@ -1,4 +1,4 @@
-package com.globalscalingsoftware.prefdialog;
+package inputfields;
 
 import java.awt.Component;
 

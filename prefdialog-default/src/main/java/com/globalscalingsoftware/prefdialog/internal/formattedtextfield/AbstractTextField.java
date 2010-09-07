@@ -2,13 +2,13 @@ package com.globalscalingsoftware.prefdialog.internal.formattedtextfield;
 
 import static java.lang.String.format;
 import info.clearthought.layout.TableLayout;
+import inputfields.IInputField;
 
 import java.awt.Component;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import com.globalscalingsoftware.prefdialog.IInputField;
 
 public class AbstractTextField implements IInputField {
 
