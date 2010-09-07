@@ -23,7 +23,7 @@ class ReflectionToolboxTest {
 		property = parentObject.fields
 		propertyField = General.getDeclaredField("fields")
 		testValue = 99
-		propertyHelpText = "Can be 2 or more."
+		propertyHelpText = "Must be a number and greater then 2"
 	}
 	
 	@Test

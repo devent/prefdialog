@@ -49,6 +49,15 @@ public class ReflectionToolbox implements IReflectionToolbox {
 
 	@Override
 	public String getHelpText(Field field) {
+		String helptext = annotationHelpText(field);
+		if (helptext != null) {
+			return helptext;
+		}
+
+		return "";
+	}
+
+	private String annotationHelpText(Field field) {
 		for (Annotation a : field.getAnnotations()) {
 			if (annotationFilter.accept(a)) {
 				if (annotationHaveMethod(a, "helpText")) {
@@ -57,7 +66,7 @@ public class ReflectionToolbox implements IReflectionToolbox {
 				}
 			}
 		}
-		return "";
+		return null;
 	}
 
 	private <T> T invokeMethodWithReturnType(String methodName,

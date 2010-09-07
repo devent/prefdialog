@@ -8,4 +8,6 @@ public interface IReflectionToolbox {
 
 	void setValueTo(Field field, Object object, Object value);
 
+	String getHelpText(Field field);
+
 }

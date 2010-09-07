@@ -92,8 +92,10 @@ class PreferencePanelController implements IPreferencePanelController {
 
 	private void createFormattedTextField(Object parentObject, Field field,
 			Object value) {
+		String fieldName = field.getName();
+		String helpText = reflectionToolbox.getHelpText(field);
 		IFormattedTextField textfield = fieldsFactory.createFormattedTextField(
-				parentObject, field, value);
+				value, fieldName, helpText);
 		preferencePanel.addField(textfield.getComponent());
 		inputFields.put(field, textfield);
 	}

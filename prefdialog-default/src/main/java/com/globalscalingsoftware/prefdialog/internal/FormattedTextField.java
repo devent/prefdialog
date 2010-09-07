@@ -1,9 +1,9 @@
 package com.globalscalingsoftware.prefdialog.internal;
 
+import static java.lang.String.format;
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Component;
-import java.lang.reflect.Field;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -20,18 +20,19 @@ public class FormattedTextField implements IFormattedTextField {
 
 	private final JPanel panel;
 
-	private final Object parentObject;
-
-	private final Field field;
-
 	private final Object value;
 
+	private final String fieldName;
+
+	private final String helpText;
+
 	@Inject
-	FormattedTextField(@Assisted("parentObject") Object parentObject,
-			@Assisted("field") Field field, @Assisted("value") Object value) {
-		this.parentObject = parentObject;
-		this.field = field;
+	FormattedTextField(@Assisted("value") Object value,
+			@Assisted("fieldName") String fieldName,
+			@Assisted("helpText") String helpText) {
+		this.fieldName = fieldName;
 		this.value = value;
+		this.helpText = helpText;
 		panel = new JPanel();
 		textField = new ValidatingFormattedTextField();
 		label = new JLabel();
@@ -40,7 +41,28 @@ public class FormattedTextField implements IFormattedTextField {
 	@Override
 	public Component getComponent() {
 		setupPanel();
+		textField.addValidListener(new ValidListener() {
+
+			@Override
+			public void validChanged(ValidEvent validEvent) {
+				if (validEvent.isEditValid()) {
+					clearHelpText();
+				} else {
+					setHelpText();
+				}
+			}
+		});
 		return panel;
+	}
+
+	private void setHelpText() {
+		String text = format("%s (%s): ", fieldName, helpText);
+		label.setText(text);
+	}
+
+	private void clearHelpText() {
+		String text = format("%s: ", fieldName);
+		label.setText(text);
 	}
 
 	private void setupPanel() {
@@ -51,7 +73,7 @@ public class FormattedTextField implements IFormattedTextField {
 		panel.add(label, "0, 0");
 		panel.add(textField, "0, 1");
 
-		label.setText(field.getName() + ": ");
+		label.setText(fieldName + ": ");
 		label.setLabelFor(textField);
 		textField.setValue(value);
 	}

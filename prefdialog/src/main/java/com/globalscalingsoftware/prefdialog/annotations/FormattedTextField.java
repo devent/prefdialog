@@ -10,4 +10,7 @@ import java.lang.annotation.Target;
 @Retention(RUNTIME)
 public @interface FormattedTextField {
 
+	String helpText() default "";
+	
+	Class<? extends IValidator> validatorClass default null;
 }
