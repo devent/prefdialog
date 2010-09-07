@@ -3,16 +3,16 @@ package com.globalscalingsoftware.prefdialog.internal.formattedtextfield;
 
 class ValidEvent {
 
-	private final ValidatingFormattedTextField textField;
+	private final ValidatingTextField textField;
 
 	private final boolean editValid;
 
-	public ValidEvent(ValidatingFormattedTextField textField, boolean editValid) {
+	public ValidEvent(ValidatingTextField textField, boolean editValid) {
 		this.textField = textField;
 		this.editValid = editValid;
 	}
 
-	public ValidatingFormattedTextField getTextField() {
+	public ValidatingTextField getTextField() {
 		return textField;
 	}
 
