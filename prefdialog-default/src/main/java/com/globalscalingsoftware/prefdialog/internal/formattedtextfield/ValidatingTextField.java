@@ -70,6 +70,13 @@ class ValidatingTextField<TextFieldType extends JTextField> {
 	private void restoreValueIfInvalid() {
 		if (isNotValidInput()) {
 			setValue(value);
+			if (isNotValidInput()) {
+				highlighField();
+				fireValidChanged(false);
+			} else {
+				normalField();
+				fireValidChanged(true);
+			}
 		}
 	}
 
