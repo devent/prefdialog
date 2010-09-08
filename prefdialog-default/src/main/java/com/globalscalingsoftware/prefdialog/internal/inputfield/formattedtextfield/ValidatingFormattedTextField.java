@@ -1,4 +1,4 @@
-package com.globalscalingsoftware.prefdialog.internal.formattedtextfield;
+package com.globalscalingsoftware.prefdialog.internal.inputfield.formattedtextfield;
 
 import java.text.ParseException;
 
