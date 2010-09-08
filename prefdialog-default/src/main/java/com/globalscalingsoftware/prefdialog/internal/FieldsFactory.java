@@ -15,7 +15,7 @@ import com.globalscalingsoftware.prefdialog.IInputFieldsFactory;
 import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.IValidator;
 import com.globalscalingsoftware.prefdialog.annotations.InputField;
-import com.globalscalingsoftware.prefdialog.internal.inputfield.button.CheckboxImpl;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.button.CheckboxInputField;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.formattedtextfield.FormattedTextFieldInputField;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.formattedtextfield.TextFieldInputField;
 import com.google.inject.Inject;
@@ -38,7 +38,7 @@ public class FieldsFactory implements IFieldsFactory {
 		inputFieldImplementations.put(TextField.class, TextFieldInputField.class);
 		inputFieldImplementations.put(FormattedTextField.class,
 				FormattedTextFieldInputField.class);
-		inputFieldImplementations.put(Checkbox.class, CheckboxImpl.class);
+		inputFieldImplementations.put(Checkbox.class, CheckboxInputField.class);
 	}
 
 	@Override
