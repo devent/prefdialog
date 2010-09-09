@@ -1,7 +1,7 @@
 package com.globalscalingsoftware.prefdialog.internal.inputfield.button;
 
-import inputfields.IInputField;
 
+import com.globalscalingsoftware.prefdialog.IInputField;
 import com.globalscalingsoftware.prefdialog.IValidator;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractInputField;
 

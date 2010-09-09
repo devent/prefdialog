@@ -1,8 +1,9 @@
 package com.globalscalingsoftware.prefdialog.internal.inputfield;
 
-import inputfields.IInputField;
 
 import java.awt.Component;
+
+import com.globalscalingsoftware.prefdialog.IInputField;
 
 public abstract class AbstractInputField<ComponentType extends Component>
 		implements IInputField {

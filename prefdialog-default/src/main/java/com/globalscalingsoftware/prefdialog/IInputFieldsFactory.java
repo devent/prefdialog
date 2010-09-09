@@ -1,6 +1,5 @@
 package com.globalscalingsoftware.prefdialog;
 
-import inputfields.IInputField;
 
 public interface IInputFieldsFactory {
 

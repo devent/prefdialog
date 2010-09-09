@@ -1,9 +1,9 @@
 package com.globalscalingsoftware.prefdialog.internal.inputfield.formattedtextfield;
 
-import inputfields.IInputField;
 
 import javax.swing.JFormattedTextField;
 
+import com.globalscalingsoftware.prefdialog.IInputField;
 import com.globalscalingsoftware.prefdialog.IValidator;
 
 public class FormattedTextFieldInputField extends AbstractTextField implements

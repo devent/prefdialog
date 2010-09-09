@@ -1,6 +1,5 @@
 package com.globalscalingsoftware.prefdialog.internal;
 
-import inputfields.IInputField;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -8,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.globalscalingsoftware.prefdialog.IFieldsFactory;
+import com.globalscalingsoftware.prefdialog.IInputField;
 import com.globalscalingsoftware.prefdialog.IInputFieldsFactory;
 import com.globalscalingsoftware.prefdialog.IPreferencePanelAnnotationFilter;
 import com.globalscalingsoftware.prefdialog.IReflectionToolbox;

@@ -1,8 +1,8 @@
 package com.globalscalingsoftware.prefdialog.internal;
 
 import static org.fest.reflect.core.Reflection.constructor;
-import inputfields.IInputField;
 
+import com.globalscalingsoftware.prefdialog.IInputField;
 import com.globalscalingsoftware.prefdialog.IInputFieldsFactory;
 import com.globalscalingsoftware.prefdialog.IValidator;
 

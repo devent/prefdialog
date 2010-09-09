@@ -1,6 +1,5 @@
 package com.globalscalingsoftware.prefdialog.internal;
 
-import inputfields.IInputField;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -12,6 +11,7 @@ import javax.swing.JPanel;
 import com.globalscalingsoftware.prefdialog.IAnnotationDiscovery;
 import com.globalscalingsoftware.prefdialog.IDiscoveredListener;
 import com.globalscalingsoftware.prefdialog.IFieldsFactory;
+import com.globalscalingsoftware.prefdialog.IInputField;
 import com.globalscalingsoftware.prefdialog.IPreferencePanel;
 import com.globalscalingsoftware.prefdialog.IPreferencePanelAnnotationFilter;
 import com.globalscalingsoftware.prefdialog.IPreferencePanelController;
