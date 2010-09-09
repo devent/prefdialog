@@ -32,12 +32,13 @@ class ValidatingTextField<TextFieldType extends JTextField> {
 		this.value = value;
 		this.validator = validator;
 		this.field = field;
-
-		setValue(value);
 		listenerList = new EventListenerList();
 		oldBorder = field.getBorder();
 		highlighBorder = BorderFactory.createLineBorder(Color.red);
 		normalBorder = BorderFactory.createEmptyBorder(1, 1, 1, 1);
+
+		setValue(value);
+		validateInput();
 		setupListeners();
 	}
 
