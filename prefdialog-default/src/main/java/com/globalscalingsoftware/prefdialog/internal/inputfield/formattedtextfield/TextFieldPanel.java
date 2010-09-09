@@ -7,7 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
-public class TextFieldPanel extends JPanel {
+class TextFieldPanel extends JPanel {
 
 	private final JLabel label;
 
