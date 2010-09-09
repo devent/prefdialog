@@ -4,9 +4,11 @@ package com.globalscalingsoftware.prefdialog.internal.allinputs
 import com.globalscalingsoftware.prefdialog.annotations.Checkbox;
 import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField;
 import com.globalscalingsoftware.prefdialog.annotations.HelpText 
+import com.globalscalingsoftware.prefdialog.annotations.RadioButton;
 import com.globalscalingsoftware.prefdialog.annotations.TextField;
 import com.globalscalingsoftware.prefdialog.annotations.Validated 
 import com.globalscalingsoftware.prefdialog.internal.FieldsValidator 
+import com.globalscalingsoftware.prefdialog.internal.radiobutton.Colors;
 
 class General {
 	
@@ -22,6 +24,9 @@ class General {
 	
 	@Checkbox
 	boolean automaticSave = false
+	
+	@RadioButton
+	Colors colors = Colors.BLACK
 	
 	@Override
 	public String toString() {
