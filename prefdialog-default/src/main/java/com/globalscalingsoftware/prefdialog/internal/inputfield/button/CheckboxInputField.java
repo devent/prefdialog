@@ -1,12 +1,12 @@
 package com.globalscalingsoftware.prefdialog.internal.inputfield.button;
 
-import inputfields.Checkbox;
+import inputfields.IInputField;
 
 import com.globalscalingsoftware.prefdialog.IValidator;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractInputField;
 
 public class CheckboxInputField extends AbstractInputField<CheckBoxPanel>
-		implements Checkbox {
+		implements IInputField {
 
 	public CheckboxInputField(Object value, String fieldName, String helpText,
 			IValidator<?> validator) {

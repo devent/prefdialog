@@ -1,8 +1,5 @@
 package com.globalscalingsoftware.prefdialog;
 
-import inputfields.IInputField;
-
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
 public interface IReflectionToolbox {
@@ -14,7 +11,5 @@ public interface IReflectionToolbox {
 	String getHelpText(Field field);
 
 	IValidator<?> getValidator(Field field);
-
-	Class<? extends IInputField> getInputFieldClassFrom(Annotation annotation);
 
 }

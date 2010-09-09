@@ -1,10 +1,6 @@
 package com.globalscalingsoftware.prefdialog.internal;
 
-import inputfields.Checkbox;
-import inputfields.FormattedTextField;
 import inputfields.IInputField;
-import inputfields.RadioButton;
-import inputfields.TextField;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -15,11 +11,8 @@ import com.globalscalingsoftware.prefdialog.IFieldsFactory;
 import com.globalscalingsoftware.prefdialog.IInputFieldsFactory;
 import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.IValidator;
-import com.globalscalingsoftware.prefdialog.annotations.InputField;
+import com.globalscalingsoftware.prefdialog.annotations.Checkbox;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.button.CheckboxInputField;
-import com.globalscalingsoftware.prefdialog.internal.inputfield.button.RadioButtonInputField;
-import com.globalscalingsoftware.prefdialog.internal.inputfield.formattedtextfield.FormattedTextFieldInputField;
-import com.globalscalingsoftware.prefdialog.internal.inputfield.formattedtextfield.TextFieldInputField;
 import com.google.inject.Inject;
 
 public class FieldsFactory implements IFieldsFactory {
@@ -28,7 +21,7 @@ public class FieldsFactory implements IFieldsFactory {
 
 	private final IInputFieldsFactory inputFieldFactory;
 
-	private final Map<Class<? extends IInputField>, Class<? extends IInputField>> inputFieldImplementations;
+	private final Map<Class<? extends Annotation>, Class<? extends IInputField>> inputFieldImplementations;
 
 	@Inject
 	FieldsFactory(IReflectionToolbox reflectionToolbox,
@@ -36,14 +29,8 @@ public class FieldsFactory implements IFieldsFactory {
 		this.reflectionToolbox = reflectionToolbox;
 		this.inputFieldFactory = inputFieldFactory;
 
-		inputFieldImplementations = new HashMap<Class<? extends IInputField>, Class<? extends IInputField>>();
-		inputFieldImplementations.put(TextField.class,
-				TextFieldInputField.class);
-		inputFieldImplementations.put(FormattedTextField.class,
-				FormattedTextFieldInputField.class);
+		inputFieldImplementations = new HashMap<Class<? extends Annotation>, Class<? extends IInputField>>();
 		inputFieldImplementations.put(Checkbox.class, CheckboxInputField.class);
-		inputFieldImplementations.put(RadioButton.class,
-				RadioButtonInputField.class);
 	}
 
 	@Override
@@ -68,11 +55,19 @@ public class FieldsFactory implements IFieldsFactory {
 	}
 
 	private Class<? extends IInputField> getInputFieldClassFrom(Field field) {
-		Annotation a = field.getAnnotation(InputField.class);
-		Class<? extends IInputField> inputFieldClass = reflectionToolbox
-				.getInputFieldClassFrom(a);
-		inputFieldClass = inputFieldImplementations.get(inputFieldClass);
-		return inputFieldClass;
+		Class<? extends Annotation> a = getInputFieldAnnotationFrom(field);
+		Class<? extends IInputField> c = inputFieldImplementations.get(a);
+		return c;
+	}
+
+	private Class<? extends Annotation> getInputFieldAnnotationFrom(Field field) {
+		Annotation[] annotations = field.getAnnotations();
+		for (Annotation a : annotations) {
+			if (a instanceof Checkbox) {
+				return Checkbox.class;
+			}
+		}
+		return null;
 	}
 
 }

@@ -1,13 +1,12 @@
 package com.globalscalingsoftware.prefdialog.internal.checkbox
 
-import inputfields.Checkbox;
 
-import com.globalscalingsoftware.prefdialog.annotations.InputField;
+import com.globalscalingsoftware.prefdialog.annotations.Checkbox;
 
 class General {
 	
-	@InputField(Checkbox)
-	boolean automaticSave = true
+	@Checkbox
+	boolean automaticSave = false
 	
 	@Override
 	public String toString() {
