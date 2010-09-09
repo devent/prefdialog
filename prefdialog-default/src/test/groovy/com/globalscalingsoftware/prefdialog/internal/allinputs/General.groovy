@@ -1,9 +1,9 @@
 package com.globalscalingsoftware.prefdialog.internal.allinputs
 
-import inputfields.FormattedTextField 
 import inputfields.TextField 
 
 import com.globalscalingsoftware.prefdialog.annotations.Checkbox;
+import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField;
 import com.globalscalingsoftware.prefdialog.annotations.HelpText 
 import com.globalscalingsoftware.prefdialog.annotations.InputField;
 import com.globalscalingsoftware.prefdialog.annotations.Validated 

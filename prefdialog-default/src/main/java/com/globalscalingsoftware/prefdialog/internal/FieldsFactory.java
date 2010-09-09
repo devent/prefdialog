@@ -13,7 +13,9 @@ import com.globalscalingsoftware.prefdialog.IPreferencePanelAnnotationFilter;
 import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.IValidator;
 import com.globalscalingsoftware.prefdialog.annotations.Checkbox;
+import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.button.CheckboxInputField;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.formattedtextfield.FormattedTextFieldInputField;
 import com.google.inject.Inject;
 
 public class FieldsFactory implements IFieldsFactory {
@@ -36,6 +38,8 @@ public class FieldsFactory implements IFieldsFactory {
 
 		inputFieldImplementations = new HashMap<Class<? extends Annotation>, Class<? extends IInputField>>();
 		inputFieldImplementations.put(Checkbox.class, CheckboxInputField.class);
+		inputFieldImplementations.put(FormattedTextField.class,
+				FormattedTextFieldInputField.class);
 	}
 
 	@Override
