@@ -3,6 +3,7 @@ package com.globalscalingsoftware.prefdialog.internal;
 import inputfields.Checkbox;
 import inputfields.FormattedTextField;
 import inputfields.IInputField;
+import inputfields.RadioButton;
 import inputfields.TextField;
 
 import java.lang.annotation.Annotation;
@@ -16,6 +17,7 @@ import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.IValidator;
 import com.globalscalingsoftware.prefdialog.annotations.InputField;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.button.CheckboxInputField;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.button.RadioButtonInputField;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.formattedtextfield.FormattedTextFieldInputField;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.formattedtextfield.TextFieldInputField;
 import com.google.inject.Inject;
@@ -35,10 +37,13 @@ public class FieldsFactory implements IFieldsFactory {
 		this.inputFieldFactory = inputFieldFactory;
 
 		inputFieldImplementations = new HashMap<Class<? extends IInputField>, Class<? extends IInputField>>();
-		inputFieldImplementations.put(TextField.class, TextFieldInputField.class);
+		inputFieldImplementations.put(TextField.class,
+				TextFieldInputField.class);
 		inputFieldImplementations.put(FormattedTextField.class,
 				FormattedTextFieldInputField.class);
 		inputFieldImplementations.put(Checkbox.class, CheckboxInputField.class);
+		inputFieldImplementations.put(RadioButton.class,
+				RadioButtonInputField.class);
 	}
 
 	@Override
