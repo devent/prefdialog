@@ -9,6 +9,7 @@ import java.util.Map;
 
 import com.globalscalingsoftware.prefdialog.IFieldsFactory;
 import com.globalscalingsoftware.prefdialog.IInputFieldsFactory;
+import com.globalscalingsoftware.prefdialog.IPreferencePanelAnnotationFilter;
 import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.IValidator;
 import com.globalscalingsoftware.prefdialog.annotations.Checkbox;
@@ -23,9 +24,13 @@ public class FieldsFactory implements IFieldsFactory {
 
 	private final Map<Class<? extends Annotation>, Class<? extends IInputField>> inputFieldImplementations;
 
+	private final IPreferencePanelAnnotationFilter annotationFilter;
+
 	@Inject
-	FieldsFactory(IReflectionToolbox reflectionToolbox,
+	FieldsFactory(IPreferencePanelAnnotationFilter annotationFilter,
+			IReflectionToolbox reflectionToolbox,
 			IInputFieldsFactory inputFieldFactory) {
+		this.annotationFilter = annotationFilter;
 		this.reflectionToolbox = reflectionToolbox;
 		this.inputFieldFactory = inputFieldFactory;
 
@@ -63,8 +68,8 @@ public class FieldsFactory implements IFieldsFactory {
 	private Class<? extends Annotation> getInputFieldAnnotationFrom(Field field) {
 		Annotation[] annotations = field.getAnnotations();
 		for (Annotation a : annotations) {
-			if (a instanceof Checkbox) {
-				return Checkbox.class;
+			if (annotationFilter.accept(a)) {
+				return a.annotationType();
 			}
 		}
 		return null;
