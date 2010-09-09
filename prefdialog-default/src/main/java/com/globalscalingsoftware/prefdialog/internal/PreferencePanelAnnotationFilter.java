@@ -7,6 +7,7 @@ import java.util.List;
 import com.globalscalingsoftware.prefdialog.IPreferencePanelAnnotationFilter;
 import com.globalscalingsoftware.prefdialog.annotations.Checkbox;
 import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField;
+import com.globalscalingsoftware.prefdialog.annotations.TextField;
 
 public class PreferencePanelAnnotationFilter extends AbstractAnnotationFilter
 		implements IPreferencePanelAnnotationFilter {
@@ -17,6 +18,7 @@ public class PreferencePanelAnnotationFilter extends AbstractAnnotationFilter
 		annotations = new ArrayList<Class<? extends Annotation>>();
 		annotations.add(Checkbox.class);
 		annotations.add(FormattedTextField.class);
+		annotations.add(TextField.class);
 	}
 
 	PreferencePanelAnnotationFilter() {
