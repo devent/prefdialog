@@ -1,12 +1,11 @@
 package com.globalscalingsoftware.prefdialog.internal.radiobutton
 
-import inputfields.RadioButton;
 
-import com.globalscalingsoftware.prefdialog.annotations.InputField;
+import com.globalscalingsoftware.prefdialog.annotations.RadioButton;
 
 class General {
 	
-	@InputField(RadioButton)
+	@RadioButton
 	Colors colors = Colors.BLACK
 	
 	@Override

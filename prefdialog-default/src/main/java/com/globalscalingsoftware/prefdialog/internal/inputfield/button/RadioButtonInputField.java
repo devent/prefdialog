@@ -1,12 +1,12 @@
 package com.globalscalingsoftware.prefdialog.internal.inputfield.button;
 
-import inputfields.RadioButton;
+import inputfields.IInputField;
 
 import com.globalscalingsoftware.prefdialog.IValidator;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractInputField;
 
 public class RadioButtonInputField extends
-		AbstractInputField<RadioButtonsPanel> implements RadioButton {
+		AbstractInputField<RadioButtonsPanel> implements IInputField {
 
 	@SuppressWarnings("unchecked")
 	public RadioButtonInputField(Object value, String fieldName,

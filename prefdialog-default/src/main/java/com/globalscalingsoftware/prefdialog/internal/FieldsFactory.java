@@ -14,8 +14,10 @@ import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.IValidator;
 import com.globalscalingsoftware.prefdialog.annotations.Checkbox;
 import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField;
+import com.globalscalingsoftware.prefdialog.annotations.RadioButton;
 import com.globalscalingsoftware.prefdialog.annotations.TextField;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.button.CheckboxInputField;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.button.RadioButtonInputField;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.formattedtextfield.FormattedTextFieldInputField;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.formattedtextfield.TextFieldInputField;
 import com.google.inject.Inject;
@@ -44,6 +46,8 @@ public class FieldsFactory implements IFieldsFactory {
 				FormattedTextFieldInputField.class);
 		inputFieldImplementations.put(TextField.class,
 				TextFieldInputField.class);
+		inputFieldImplementations.put(RadioButton.class,
+				RadioButtonInputField.class);
 	}
 
 	@Override
