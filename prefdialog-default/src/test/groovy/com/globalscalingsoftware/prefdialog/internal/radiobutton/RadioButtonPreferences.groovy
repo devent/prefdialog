@@ -3,8 +3,8 @@ package com.globalscalingsoftware.prefdialog.internal.radiobutton
 
 import com.globalscalingsoftware.prefdialog.annotations.Child;
 
-class Preferences {
+class RadioButtonPreferences {
 	
 	@Child
-	General general = new General()
+	RadioButtonGeneral general = new RadioButtonGeneral()
 }
