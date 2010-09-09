@@ -9,6 +9,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.event.EventListenerList;
@@ -34,12 +35,11 @@ class ValidatingTextField<TextFieldType extends JTextField> {
 		this.field = field;
 		listenerList = new EventListenerList();
 		oldBorder = field.getBorder();
-		highlighBorder = BorderFactory.createLineBorder(Color.red);
+		highlighBorder = new LineBorder(Color.red, 1, true);
 		normalBorder = BorderFactory.createEmptyBorder(1, 1, 1, 1);
 
-		setValue(value);
-		validateInput();
 		setupListeners();
+		setValue(value);
 	}
 
 	public TextFieldType getField() {
@@ -88,6 +88,7 @@ class ValidatingTextField<TextFieldType extends JTextField> {
 
 	public void addValidListener(ValidListener l) {
 		listenerList.add(ValidListener.class, l);
+		validateInput();
 	}
 
 	private void fireValidChanged(boolean editValid) {
