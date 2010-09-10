@@ -25,7 +25,7 @@ class General {
 	@Checkbox
 	boolean automaticSave = false
 	
-	@RadioButton
+	@RadioButton(columns=2)
 	Colors colors = Colors.BLACK
 	
 	@Override
