@@ -6,21 +6,26 @@ import info.clearthought.layout.TableLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import com.globalscalingsoftware.prefdialog.IValidator;
+
 @SuppressWarnings("serial")
 class TextFieldPanel extends JPanel {
 
 	private final JLabel label;
 
-	private final String fieldName;
-
 	private final ValidatingTextField<?> textField;
 
-	public TextFieldPanel(String fieldName, ValidatingTextField<?> textField) {
-		this.fieldName = fieldName;
+	private String fieldName;
+
+	public TextFieldPanel(ValidatingTextField<?> textField) {
 		this.textField = textField;
 		label = new JLabel();
-
 		setupPanel();
+	}
+
+	public void setFieldName(String name) {
+		this.fieldName = name;
+		label.setText(name + ": ");
 	}
 
 	private void setupPanel() {
@@ -31,7 +36,6 @@ class TextFieldPanel extends JPanel {
 		add(label, "0, 0");
 		add(textField.getField(), "0, 1");
 
-		label.setText(fieldName + ": ");
 		label.setLabelFor(textField.getField());
 	}
 
@@ -51,5 +55,9 @@ class TextFieldPanel extends JPanel {
 
 	public void addValidListener(ValidListener l) {
 		textField.addValidListener(l);
+	}
+
+	public void setValidator(IValidator<?> validator) {
+		textField.setValidator(validator);
 	}
 }

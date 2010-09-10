@@ -1,13 +1,18 @@
 package com.globalscalingsoftware.prefdialog.internal.inputfield.formattedtextfield;
 
+import java.lang.reflect.Field;
+
+import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractInputField;
 
 public abstract class AbstractTextField extends
 		AbstractInputField<TextFieldPanel> {
 
-	public AbstractTextField(String fieldName, String helpText,
-			ValidatingTextField<?> textField) {
-		super(fieldName, helpText, new TextFieldPanel(fieldName, textField));
+	public AbstractTextField(IReflectionToolbox reflectionToolbox,
+			Object value, Field field, ValidatingTextField<?> textField) {
+		super(reflectionToolbox, value, field, new TextFieldPanel(textField));
+		getComponent().setFieldName(getFieldName());
+		getComponent().setValidator(reflectionToolbox.getValidator(field));
 		getComponent().addValidListener(new ValidListener() {
 
 			@Override

@@ -3,8 +3,8 @@ package com.globalscalingsoftware.prefdialog.internal.textfield
 
 import com.globalscalingsoftware.prefdialog.annotations.Child;
 
-class Preferences {
+class FormattedTextFieldPreferences {
 	
 	@Child
-	General general = new General()
+	FormattedTextFieldGeneral general = new FormattedTextFieldGeneral()
 }

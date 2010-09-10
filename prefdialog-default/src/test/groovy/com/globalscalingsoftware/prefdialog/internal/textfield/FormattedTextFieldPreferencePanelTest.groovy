@@ -11,7 +11,7 @@ import com.globalscalingsoftware.prefdialog.IPreferencePanelFactory
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest 
 import com.globalscalingsoftware.prefdialog.internal.PreferencesDialogInjectorFactory 
 
-class PreferencePanelTest extends AbstractPreferenceTest {
+class FormattedTextFieldPreferencePanelTest extends AbstractPreferenceTest {
 	
 	def preferences
 	
@@ -23,19 +23,19 @@ class PreferencePanelTest extends AbstractPreferenceTest {
 	
 	@Before
 	void beforeTest() {
-		preferences = new Preferences()
+		preferences = new FormattedTextFieldPreferences()
 		parentValue = preferences.general
-		field = getPreferencesField(Preferences, "general")
+		field = getPreferencesField(FormattedTextFieldPreferences, "general")
 		injector = new PreferencesDialogInjectorFactory().create(preferences)
 	}
 	
 	@Test
 	void testPanelClickApplyAndClose() {
-		def factory = injector.getInstance(IPreferencePanelFactory)
+		def factory = getInjector().getInstance(IPreferencePanelFactory)
 		def controller = factory.create(parentValue, field)
 		controller.setupPanel()
 		
 		createDialog({ controller.getPanel() })
-		assertThat preferences.general.name, is("name")
+		assertThat preferences.general.fields, is(10)
 	}
 }

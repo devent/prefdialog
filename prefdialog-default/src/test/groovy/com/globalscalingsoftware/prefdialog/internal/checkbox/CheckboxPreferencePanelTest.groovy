@@ -1,4 +1,5 @@
-package com.globalscalingsoftware.prefdialog.internal.formattedtextfield
+package com.globalscalingsoftware.prefdialog.internal.checkbox
+
 
 
 import static org.hamcrest.MatcherAssert.*;
@@ -10,7 +11,7 @@ import com.globalscalingsoftware.prefdialog.IPreferencePanelFactory
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest 
 import com.globalscalingsoftware.prefdialog.internal.PreferencesDialogInjectorFactory 
 
-class PreferencePanelTest extends AbstractPreferenceTest {
+class CheckboxPreferencePanelTest extends AbstractPreferenceTest {
 	
 	def preferences
 	
@@ -30,11 +31,11 @@ class PreferencePanelTest extends AbstractPreferenceTest {
 	
 	@Test
 	void testPanelClickApplyAndClose() {
-		def factory = getInjector().getInstance(IPreferencePanelFactory)
+		def factory = injector.getInstance(IPreferencePanelFactory)
 		def controller = factory.create(parentValue, field)
 		controller.setupPanel()
 		
 		createDialog({ controller.getPanel() })
-		assertThat preferences.general.fields, is(10)
+		assertThat preferences.general.automaticSave, is(true)
 	}
 }

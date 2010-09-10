@@ -6,6 +6,6 @@ class NotEmptyStringValidator implements IValidator<String> {
 	
 	@Override
 	public boolean isValid(String value) {
-		return !value.isEmpty();
+		return !value.trim().isEmpty();
 	}
 }

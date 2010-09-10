@@ -1,4 +1,5 @@
-package com.globalscalingsoftware.prefdialog.internal.formattedtextfield
+package com.globalscalingsoftware.prefdialog.internal.textfield
+
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
@@ -11,7 +12,7 @@ import com.globalscalingsoftware.prefdialog.internal.PreferencesDialogInjectorFa
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
-class PreferenceDialogTest extends AbstractPreferenceTest {
+class FormattedTextFieldPreferenceDialogTest extends AbstractPreferenceTest {
 	
 	def injector
 	
@@ -19,7 +20,7 @@ class PreferenceDialogTest extends AbstractPreferenceTest {
 	
 	@Before
 	void beforeTest() {
-		preferences = new Preferences()
+		preferences = new FormattedTextFieldPreferences()
 		injector = new PreferencesDialogInjectorFactory().create(preferences)
 	}
 	

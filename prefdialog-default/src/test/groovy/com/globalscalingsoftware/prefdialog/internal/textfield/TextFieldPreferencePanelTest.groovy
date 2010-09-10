@@ -1,4 +1,4 @@
-package com.globalscalingsoftware.prefdialog.internal.checkbox
+package com.globalscalingsoftware.prefdialog.internal.textfield
 
 
 
@@ -11,7 +11,7 @@ import com.globalscalingsoftware.prefdialog.IPreferencePanelFactory
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest 
 import com.globalscalingsoftware.prefdialog.internal.PreferencesDialogInjectorFactory 
 
-class PreferenceCheckboxPanelTest extends AbstractPreferenceTest {
+class TextFieldPreferencePanelTest extends AbstractPreferenceTest {
 	
 	def preferences
 	
@@ -23,19 +23,19 @@ class PreferenceCheckboxPanelTest extends AbstractPreferenceTest {
 	
 	@Before
 	void beforeTest() {
-		preferences = new Preferences()
+		preferences = new TextFieldPreferences()
 		parentValue = preferences.general
-		field = getPreferencesField(Preferences, "general")
+		field = getPreferencesField(TextFieldPreferences, "general")
 		injector = new PreferencesDialogInjectorFactory().create(preferences)
 	}
 	
 	@Test
 	void testPanelClickApplyAndClose() {
-		def factory = injector.getInstance(IPreferencePanelFactory)
+		def factory = getInjector().getInstance(IPreferencePanelFactory)
 		def controller = factory.create(parentValue, field)
 		controller.setupPanel()
 		
 		createDialog({ controller.getPanel() })
-		assertThat preferences.general.automaticSave, is(true)
+		assertThat preferences.general.name, is("name")
 	}
 }

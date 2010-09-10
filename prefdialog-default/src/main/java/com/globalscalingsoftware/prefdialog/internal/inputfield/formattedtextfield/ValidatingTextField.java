@@ -22,16 +22,14 @@ class ValidatingTextField<TextFieldType extends JTextField> {
 	private final Border oldBorder;
 	private final Border highlighBorder;
 	private final Border normalBorder;
+
 	@SuppressWarnings("rawtypes")
-	private final IValidator validator;
-	private final Object value;
+	private IValidator validator;
+
+	private Object value;
 	private final TextFieldType field;
 
-	public ValidatingTextField(Object value,
-			@SuppressWarnings("rawtypes") IValidator validator,
-			TextFieldType field) {
-		this.value = value;
-		this.validator = validator;
+	public ValidatingTextField(TextFieldType field) {
 		this.field = field;
 		listenerList = new EventListenerList();
 		oldBorder = field.getBorder();
@@ -39,7 +37,10 @@ class ValidatingTextField<TextFieldType extends JTextField> {
 		normalBorder = BorderFactory.createEmptyBorder(1, 1, 1, 1);
 
 		setupListeners();
-		setValue(value);
+	}
+
+	public void setValidator(IValidator<?> validator) {
+		this.validator = validator;
 	}
 
 	public TextFieldType getField() {
@@ -82,6 +83,7 @@ class ValidatingTextField<TextFieldType extends JTextField> {
 	}
 
 	protected void setValue(Object value) {
+		this.value = value;
 		String string = value == null ? "" : value.toString();
 		field.setText(string);
 	}
@@ -122,15 +124,21 @@ class ValidatingTextField<TextFieldType extends JTextField> {
 				oldBorder));
 	}
 
-	@SuppressWarnings("unchecked")
 	private boolean isNotValidInput() {
 		try {
 			commitEdit();
 		} catch (ParseException e) {
 			return true;
 		}
-		boolean b = !isEditValid() || !validator.isValid(getValue());
+
+		boolean valueInvalid = isValueInvalid();
+		boolean b = !isEditValid() || valueInvalid;
 		return b;
+	}
+
+	@SuppressWarnings("unchecked")
+	private boolean isValueInvalid() {
+		return validator == null ? false : !validator.isValid(getValue());
 	}
 
 	protected Object getValue() {

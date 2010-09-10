@@ -3,7 +3,7 @@ package com.globalscalingsoftware.prefdialog.internal
 import org.junit.Before;
 import org.junit.Test;
 
-import com.globalscalingsoftware.prefdialog.internal.formattedtextfield.General;
+import com.globalscalingsoftware.prefdialog.internal.textfield.FormattedTextFieldGeneral;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
@@ -21,9 +21,9 @@ class ReflectionToolboxTest {
 	
 	@Before
 	void beforeTest() {
-		parentObject = new General()
+		parentObject = new FormattedTextFieldGeneral()
 		property = parentObject.fields
-		propertyField = General.getDeclaredField("fields")
+		propertyField = FormattedTextFieldGeneral.getDeclaredField("fields")
 		testValue = 99
 		propertyHelpText = "Must be a number and between 2 and 100"
 	}
