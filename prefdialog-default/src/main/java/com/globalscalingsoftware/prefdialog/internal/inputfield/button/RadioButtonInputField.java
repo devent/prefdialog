@@ -10,8 +10,9 @@ public class RadioButtonInputField extends
 		AbstractInputField<RadioButtonsPanel> implements IInputField {
 
 	public RadioButtonInputField(IReflectionToolbox reflectionToolbox,
-			Object value, Field field) {
-		super(reflectionToolbox, value, field, new RadioButtonsPanel());
+			Object parentObject, Object value, Field field) {
+		super(reflectionToolbox, parentObject, value, field,
+				new RadioButtonsPanel());
 
 		Class<? extends Enum<?>> valueclass = getValueClass(value);
 		addEnumFields(valueclass);

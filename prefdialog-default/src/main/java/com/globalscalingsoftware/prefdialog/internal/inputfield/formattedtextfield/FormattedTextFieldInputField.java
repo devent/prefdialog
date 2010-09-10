@@ -11,8 +11,8 @@ public class FormattedTextFieldInputField extends AbstractTextField implements
 		IInputField {
 
 	public FormattedTextFieldInputField(IReflectionToolbox reflectionToolbox,
-			Object value, Field field) {
-		super(reflectionToolbox, value, field,
+			Object parentObject, Object value, Field field) {
+		super(reflectionToolbox, parentObject, value, field,
 				new ValidatingFormattedTextField(new JFormattedTextField()));
 	}
 

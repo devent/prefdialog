@@ -10,8 +10,9 @@ public class CheckboxInputField extends AbstractInputField<CheckBoxPanel>
 		implements IInputField {
 
 	public CheckboxInputField(IReflectionToolbox reflectionToolbox,
-			Object value, Field field) {
-		super(reflectionToolbox, value, field, new CheckBoxPanel());
+			Object parentObject, Object value, Field field) {
+		super(reflectionToolbox, parentObject, value, field,
+				new CheckBoxPanel());
 		getComponent().setInputName(getFieldName());
 		getComponent().setSelected((Boolean) value);
 	}

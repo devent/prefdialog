@@ -11,8 +11,8 @@ public class TextFieldInputField extends AbstractTextField implements
 		IInputField {
 
 	public TextFieldInputField(IReflectionToolbox reflectionToolbox,
-			Object value, Field field) {
-		super(reflectionToolbox, value, field,
+			Object parentObject, Object value, Field field) {
+		super(reflectionToolbox, parentObject, value, field,
 				new ValidatingTextField<JTextField>(new JTextField()));
 	}
 
