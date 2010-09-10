@@ -2,21 +2,22 @@ package com.globalscalingsoftware.prefdialog.internal;
 
 import static org.fest.reflect.core.Reflection.constructor;
 
+import java.lang.reflect.Field;
+
 import com.globalscalingsoftware.prefdialog.IInputField;
 import com.globalscalingsoftware.prefdialog.IInputFieldsFactory;
-import com.globalscalingsoftware.prefdialog.IValidator;
+import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
 
 public class InputFieldsFactory implements IInputFieldsFactory {
 
 	@Override
 	public IInputField create(Class<? extends IInputField> inputFieldClass,
-			Object value, String fieldName, String helpText,
-			IValidator<?> validator) {
-		Class<?>[] parameterTypes = { Object.class, String.class, String.class,
-				IValidator.class };
+			IReflectionToolbox reflectionToolboox, Object value, Field field) {
+		Class<?>[] parameterTypes = { IReflectionToolbox.class, Object.class,
+				Field.class };
 		return constructor().withParameterTypes(parameterTypes)
 				.in(inputFieldClass)
-				.newInstance(value, fieldName, helpText, validator);
+				.newInstance(reflectionToolboox, value, field);
 	}
 
 }

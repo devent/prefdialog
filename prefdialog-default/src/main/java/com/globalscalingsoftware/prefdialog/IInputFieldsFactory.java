@@ -1,10 +1,10 @@
 package com.globalscalingsoftware.prefdialog;
 
+import java.lang.reflect.Field;
 
 public interface IInputFieldsFactory {
 
 	IInputField create(Class<? extends IInputField> inputFieldClass,
-			Object value, String fieldName, String helpText,
-			IValidator<?> validator);
+			IReflectionToolbox reflectionToolboox, Object value, Field field);
 
 }

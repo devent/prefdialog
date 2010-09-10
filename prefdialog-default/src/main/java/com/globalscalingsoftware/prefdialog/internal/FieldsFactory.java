@@ -1,6 +1,5 @@
 package com.globalscalingsoftware.prefdialog.internal;
 
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -11,7 +10,6 @@ import com.globalscalingsoftware.prefdialog.IInputField;
 import com.globalscalingsoftware.prefdialog.IInputFieldsFactory;
 import com.globalscalingsoftware.prefdialog.IPreferencePanelAnnotationFilter;
 import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
-import com.globalscalingsoftware.prefdialog.IValidator;
 import com.globalscalingsoftware.prefdialog.annotations.Checkbox;
 import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField;
 import com.globalscalingsoftware.prefdialog.annotations.RadioButton;
@@ -53,21 +51,14 @@ public class FieldsFactory implements IFieldsFactory {
 	@Override
 	public IInputField createField(Object parentObject, Field field,
 			Object value) {
-
-		String fieldName = field.getName();
-		String helpText = reflectionToolbox.getHelpText(field);
-		IValidator<?> validator = reflectionToolbox.getValidator(field);
-
 		Class<? extends IInputField> inputFieldClass = getInputFieldClassFrom(field);
-		return createInputField(value, fieldName, helpText, validator,
-				inputFieldClass);
+		return createInputField(value, field, inputFieldClass);
 	}
 
-	private IInputField createInputField(Object value, String fieldName,
-			String helpText, IValidator<?> validator,
+	private IInputField createInputField(Object value, Field field,
 			Class<? extends IInputField> inputFieldClass) {
 		IInputField inputField = inputFieldFactory.create(inputFieldClass,
-				value, fieldName, helpText, validator);
+				reflectionToolbox, value, field);
 		return inputField;
 	}
 

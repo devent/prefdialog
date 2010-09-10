@@ -107,4 +107,20 @@ public class ReflectionToolbox implements IReflectionToolbox {
 		return constructor().in(validatorClass).newInstance();
 	}
 
+	@Override
+	public String getFieldName(Field field) {
+		return field.getName();
+	}
+
+	@Override
+	public int getColumns(Field field) {
+		for (Annotation a : field.getAnnotations()) {
+			if (annotationHaveMethod(a, "columns")) {
+				return invokeMethodWithReturnType("columns", int.class, a);
+			}
+		}
+
+		return 1;
+	}
+
 }

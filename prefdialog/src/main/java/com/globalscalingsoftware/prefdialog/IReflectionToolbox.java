@@ -12,4 +12,8 @@ public interface IReflectionToolbox {
 
 	IValidator<?> getValidator(Field field);
 
+	String getFieldName(Field field);
+
+	int getColumns(Field field);
+
 }

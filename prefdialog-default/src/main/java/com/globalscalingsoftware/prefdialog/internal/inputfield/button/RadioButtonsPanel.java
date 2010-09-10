@@ -1,8 +1,6 @@
 package com.globalscalingsoftware.prefdialog.internal.inputfield.button;
 
-import static java.lang.String.format;
-import info.clearthought.layout.TableLayout;
-
+import java.awt.GridLayout;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,16 +12,14 @@ import javax.swing.JRadioButton;
 @SuppressWarnings("serial")
 public class RadioButtonsPanel extends JPanel {
 
-	private final TableLayout layout;
+	private final GridLayout layout;
 
 	private final ButtonGroup buttonsGroup;
 
 	private final Map<ButtonModel, Object> values;
 
 	public RadioButtonsPanel() {
-		double[] col = { TableLayout.PREFERRED };
-		double[] row = {};
-		layout = new TableLayout(col, row);
+		layout = new GridLayout(1, 1);
 		buttonsGroup = new ButtonGroup();
 		values = new HashMap<ButtonModel, Object>();
 		setupPanel();
@@ -40,12 +36,12 @@ public class RadioButtonsPanel extends JPanel {
 	}
 
 	public void addRadioButton(Object value, String text) {
-		int index = layout.getNumRow();
-		layout.insertRow(index, TableLayout.PREFERRED);
+		int rows = layout.getRows();
+		layout.setRows(rows + 1);
 		JRadioButton button = new JRadioButton(text);
 		values.put(button.getModel(), value);
 		buttonsGroup.add(button);
-		add(button, format("0, %d", index));
+		add(button);
 	}
 
 	public void setValue(Object value) {
@@ -55,6 +51,12 @@ public class RadioButtonsPanel extends JPanel {
 				break;
 			}
 		}
+	}
+
+	public void setColumns(int columns) {
+		int rows = layout.getRows() / columns;
+		layout.setRows(rows);
+		layout.setColumns(columns);
 	}
 
 }
