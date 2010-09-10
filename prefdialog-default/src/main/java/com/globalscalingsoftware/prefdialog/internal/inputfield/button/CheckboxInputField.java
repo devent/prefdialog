@@ -1,17 +1,19 @@
 package com.globalscalingsoftware.prefdialog.internal.inputfield.button;
 
+import java.lang.reflect.Field;
 
 import com.globalscalingsoftware.prefdialog.IInputField;
-import com.globalscalingsoftware.prefdialog.IValidator;
+import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractInputField;
 
 public class CheckboxInputField extends AbstractInputField<CheckBoxPanel>
 		implements IInputField {
 
-	public CheckboxInputField(Object value, String fieldName, String helpText,
-			IValidator<?> validator) {
-		super(fieldName, helpText,
-				new CheckBoxPanel(fieldName, (Boolean) value));
+	public CheckboxInputField(IReflectionToolbox reflectionToolbox,
+			Object value, Field field) {
+		super(reflectionToolbox, value, field, new CheckBoxPanel());
+		getComponent().setInputName(getFieldName());
+		getComponent().setSelected((Boolean) value);
 	}
 
 	@Override

@@ -12,27 +12,36 @@ class CheckBoxPanel extends JPanel {
 
 	private static class Action extends AbstractAction {
 
-		public Action(String fieldName, Boolean value) {
-			super(fieldName);
-			putValue(SELECTED_KEY, value);
-		}
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
-
 		}
 
+		public void setName(String name) {
+			putValue(NAME, name);
+		}
+
+		public void setSelected(boolean selected) {
+			putValue(SELECTED_KEY, selected);
+		}
 	}
 
 	private final JCheckBox checkBox;
 
 	private final Action action;
 
-	public CheckBoxPanel(String fieldName, Boolean value) {
+	public CheckBoxPanel() {
 		checkBox = new JCheckBox();
-		action = new Action(fieldName, value);
+		action = new Action();
 		setupPanel();
 		setupCheckbox();
+	}
+
+	public void setInputName(String name) {
+		action.setName(name);
+	}
+
+	public void setSelected(boolean selected) {
+		action.setSelected(selected);
 	}
 
 	private void setupCheckbox() {

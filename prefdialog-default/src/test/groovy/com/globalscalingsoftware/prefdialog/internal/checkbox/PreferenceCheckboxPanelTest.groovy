@@ -11,7 +11,7 @@ import com.globalscalingsoftware.prefdialog.IPreferencePanelFactory
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest 
 import com.globalscalingsoftware.prefdialog.internal.PreferencesDialogInjectorFactory 
 
-class PreferencePanelTest extends AbstractPreferenceTest {
+class PreferenceCheckboxPanelTest extends AbstractPreferenceTest {
 	
 	def preferences
 	
