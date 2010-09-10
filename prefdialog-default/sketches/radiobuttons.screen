@@ -10,6 +10,10 @@
   <widgets xsi:type="model:HLine" x="378" y="188" width="477" measuredWidth="477" measuredHeight="6"/>
   <widgets xsi:type="model:Tree" x="218" y="157" width="135" height="586" text="-General" measuredWidth="135" measuredHeight="586"/>
   <widgets xsi:type="model:VScrollbar" x="336" y="157" height="586" measuredWidth="17" measuredHeight="586"/>
+  <widgets xsi:type="model:RadioButton" x="392" y="208" text="Radio button" measuredWidth="120" measuredHeight="26"/>
+  <widgets xsi:type="model:RadioButton" x="392" y="233" text="Radio button" measuredWidth="120" measuredHeight="26"/>
+  <widgets xsi:type="model:RadioButton" x="392" y="256" text="Radio button" measuredWidth="120" measuredHeight="26"/>
+  <widgets xsi:type="model:RadioButton" x="392" y="281" text="Radio button" measuredWidth="120" measuredHeight="26"/>
   <hRuler/>
   <vRuler/>
   <font/>
