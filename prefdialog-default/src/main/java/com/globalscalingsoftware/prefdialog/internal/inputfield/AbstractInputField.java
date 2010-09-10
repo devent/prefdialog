@@ -17,12 +17,20 @@ public abstract class AbstractInputField<ComponentType extends Component>
 
 	private final Field field;
 
+	private final Object parentObject;
+
 	public AbstractInputField(IReflectionToolbox reflectionToolbox,
-			Object value, Field field, ComponentType component) {
+			Object parentObject, Object value, Field field,
+			ComponentType component) {
 		this.reflectionToolbox = reflectionToolbox;
+		this.parentObject = parentObject;
 		this.value = value;
 		this.field = field;
 		this.component = component;
+	}
+
+	public Object getParentObject() {
+		return parentObject;
 	}
 
 	public String getFieldName() {

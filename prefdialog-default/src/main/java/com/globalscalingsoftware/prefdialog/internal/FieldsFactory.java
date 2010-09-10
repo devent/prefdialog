@@ -11,11 +11,13 @@ import com.globalscalingsoftware.prefdialog.IInputFieldsFactory;
 import com.globalscalingsoftware.prefdialog.IPreferencePanelAnnotationFilter;
 import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.annotations.Checkbox;
+import com.globalscalingsoftware.prefdialog.annotations.ComboBox;
 import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField;
 import com.globalscalingsoftware.prefdialog.annotations.RadioButton;
 import com.globalscalingsoftware.prefdialog.annotations.TextField;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.button.CheckboxInputField;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.button.RadioButtonInputField;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.combobox.ComboBoxInputField;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.formattedtextfield.FormattedTextFieldInputField;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.formattedtextfield.TextFieldInputField;
 import com.google.inject.Inject;
@@ -46,19 +48,20 @@ public class FieldsFactory implements IFieldsFactory {
 				TextFieldInputField.class);
 		inputFieldImplementations.put(RadioButton.class,
 				RadioButtonInputField.class);
+		inputFieldImplementations.put(ComboBox.class, ComboBoxInputField.class);
 	}
 
 	@Override
 	public IInputField createField(Object parentObject, Field field,
 			Object value) {
 		Class<? extends IInputField> inputFieldClass = getInputFieldClassFrom(field);
-		return createInputField(value, field, inputFieldClass);
+		return createInputField(parentObject, value, field, inputFieldClass);
 	}
 
-	private IInputField createInputField(Object value, Field field,
-			Class<? extends IInputField> inputFieldClass) {
+	private IInputField createInputField(Object parentObject, Object value,
+			Field field, Class<? extends IInputField> inputFieldClass) {
 		IInputField inputField = inputFieldFactory.create(inputFieldClass,
-				reflectionToolbox, value, field);
+				reflectionToolbox, parentObject, value, field);
 		return inputField;
 	}
 

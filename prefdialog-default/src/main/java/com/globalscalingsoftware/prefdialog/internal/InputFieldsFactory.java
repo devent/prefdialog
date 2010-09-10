@@ -12,12 +12,13 @@ public class InputFieldsFactory implements IInputFieldsFactory {
 
 	@Override
 	public IInputField create(Class<? extends IInputField> inputFieldClass,
-			IReflectionToolbox reflectionToolboox, Object value, Field field) {
+			IReflectionToolbox reflectionToolboox, Object parentObject,
+			Object value, Field field) {
 		Class<?>[] parameterTypes = { IReflectionToolbox.class, Object.class,
-				Field.class };
+				Object.class, Field.class };
 		return constructor().withParameterTypes(parameterTypes)
 				.in(inputFieldClass)
-				.newInstance(reflectionToolboox, value, field);
+				.newInstance(reflectionToolboox, parentObject, value, field);
 	}
 
 }

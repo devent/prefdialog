@@ -37,8 +37,9 @@ public class ReflectionToolbox implements IReflectionToolbox {
 		return name;
 	}
 
-	private void invokeMethodWithParameters(String name,
-			Class<?> parameterType, Object object, Object value) {
+	@Override
+	public void invokeMethodWithParameters(String name, Class<?> parameterType,
+			Object object, Object value) {
 		method(name).withParameterTypes(parameterType).in(object).invoke(value);
 	}
 
@@ -65,7 +66,8 @@ public class ReflectionToolbox implements IReflectionToolbox {
 		return invokeMethodWithReturnType("value", String.class, a);
 	}
 
-	private <T> T invokeMethodWithReturnType(String methodName,
+	@Override
+	public <T> T invokeMethodWithReturnType(String methodName,
 			Class<? extends T> returnType, Object object) {
 		return method(methodName).withReturnType(returnType).in(object)
 				.invoke();
@@ -121,6 +123,31 @@ public class ReflectionToolbox implements IReflectionToolbox {
 		}
 
 		return 1;
+	}
+
+	@Override
+	public <T> Object searchObjectWithAnnotationValueIn(Object parentObject,
+			Class<? extends Annotation> annotationClass, T value,
+			Class<? extends T> returnType) {
+		for (Field field : parentObject.getClass().getDeclaredFields()) {
+			Annotation a = field.getAnnotation(annotationClass);
+			if (annotationHaveNotValueMethod(a)) {
+				continue;
+			}
+			if (getValueFromAnnotation(a, returnType).equals(value)) {
+				return getValueFrom(field, parentObject);
+			}
+		}
+		return null;
+	}
+
+	private boolean annotationHaveNotValueMethod(Annotation a) {
+		return a == null || !annotationHaveMethod(a, "value");
+	}
+
+	private <T> Object getValueFromAnnotation(Annotation a,
+			Class<? extends T> returnType) {
+		return invokeMethodWithReturnType("value", returnType, a);
 	}
 
 }

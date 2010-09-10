@@ -1,5 +1,6 @@
 package com.globalscalingsoftware.prefdialog;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
 public interface IReflectionToolbox {
@@ -15,5 +16,15 @@ public interface IReflectionToolbox {
 	String getFieldName(Field field);
 
 	int getColumns(Field field);
+
+	<T> T invokeMethodWithReturnType(String methodName,
+			Class<? extends T> returnType, Object object);
+
+	void invokeMethodWithParameters(String name, Class<?> parameterType,
+			Object object, Object value);
+
+	<T> Object searchObjectWithAnnotationValueIn(Object parentObject,
+			Class<? extends Annotation> annotationClass, T value,
+			Class<? extends T> returnType);
 
 }
