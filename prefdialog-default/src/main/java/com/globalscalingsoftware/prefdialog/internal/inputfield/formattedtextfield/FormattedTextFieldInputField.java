@@ -1,18 +1,19 @@
 package com.globalscalingsoftware.prefdialog.internal.inputfield.formattedtextfield;
 
+import java.lang.reflect.Field;
 
 import javax.swing.JFormattedTextField;
 
 import com.globalscalingsoftware.prefdialog.IInputField;
-import com.globalscalingsoftware.prefdialog.IValidator;
+import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
 
 public class FormattedTextFieldInputField extends AbstractTextField implements
 		IInputField {
 
-	public FormattedTextFieldInputField(Object value, String fieldName,
-			String helpText, IValidator<?> validator) {
-		super(fieldName, helpText, new ValidatingFormattedTextField(value,
-				validator, new JFormattedTextField()));
+	public FormattedTextFieldInputField(IReflectionToolbox reflectionToolbox,
+			Object value, Field field) {
+		super(reflectionToolbox, value, field,
+				new ValidatingFormattedTextField(new JFormattedTextField()));
 	}
 
 }

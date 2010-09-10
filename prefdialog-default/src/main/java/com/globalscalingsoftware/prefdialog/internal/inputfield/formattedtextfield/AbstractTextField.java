@@ -11,6 +11,7 @@ public abstract class AbstractTextField extends
 	public AbstractTextField(IReflectionToolbox reflectionToolbox,
 			Object value, Field field, ValidatingTextField<?> textField) {
 		super(reflectionToolbox, value, field, new TextFieldPanel(textField));
+		getComponent().setValue(value);
 		getComponent().setFieldName(getFieldName());
 		getComponent().setValidator(reflectionToolbox.getValidator(field));
 		getComponent().addValidListener(new ValidListener() {

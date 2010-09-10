@@ -60,4 +60,8 @@ class TextFieldPanel extends JPanel {
 	public void setValidator(IValidator<?> validator) {
 		textField.setValidator(validator);
 	}
+
+	public void setValue(Object value) {
+		textField.setValue(value);
+	}
 }

@@ -4,19 +4,16 @@ import java.text.ParseException;
 
 import javax.swing.JFormattedTextField;
 
-import com.globalscalingsoftware.prefdialog.IValidator;
-
 public class ValidatingFormattedTextField extends
 		ValidatingTextField<JFormattedTextField> {
 
-	public ValidatingFormattedTextField(Object value,
-			@SuppressWarnings("rawtypes") IValidator validator,
-			JFormattedTextField field) {
-		super(value, validator, field);
+	public ValidatingFormattedTextField(JFormattedTextField field) {
+		super(field);
 	}
 
 	@Override
 	protected void setValue(Object value) {
+		super.setValue(value);
 		getField().setValue(value);
 	}
 
