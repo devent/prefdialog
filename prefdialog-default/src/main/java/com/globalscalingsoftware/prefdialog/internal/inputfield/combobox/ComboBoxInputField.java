@@ -18,6 +18,7 @@ public class ComboBoxInputField extends AbstractInputField<ComboBoxPanel> {
 		Object values = getValues(reflectionToolbox, parentObject, field);
 		getComponent().setValues(values);
 		getComponent().setValue(value);
+		getComponent().setFieldName(getFieldName());
 	}
 
 	private Object getValues(IReflectionToolbox reflectionToolbox,
