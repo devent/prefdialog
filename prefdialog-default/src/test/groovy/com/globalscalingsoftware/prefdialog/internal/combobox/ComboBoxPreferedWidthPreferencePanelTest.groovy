@@ -1,20 +1,38 @@
 package com.globalscalingsoftware.prefdialog.internal.combobox
 
 
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import com.globalscalingsoftware.prefdialog.IPreferencePanelFactory 
 import com.globalscalingsoftware.prefdialog.annotations.Child;
+import com.globalscalingsoftware.prefdialog.annotations.ComboBox;
+import com.globalscalingsoftware.prefdialog.annotations.ComboBoxElements;
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest 
 import com.globalscalingsoftware.prefdialog.internal.PreferencesDialogInjectorFactory 
 
 class ComboBoxPreferedWidthPreferencePanelTest extends AbstractPreferenceTest {
 	
+	class General {
+		
+		@ComboBoxElements("combobox1")
+		List<String> comboBoxElements = ["first element", "second element", "third element"]
+		
+		@ComboBox(value = "combobox1", width = -2.0d)
+		String comboBox
+		
+		@Override
+		public String toString() {
+			"General"
+		}
+	}
+	
 	class Preferences {
 		
 		@Child
-		ComboBoxPreferedWidthGeneral general = new ComboBoxPreferedWidthGeneral()
+		General general = new General()
 	}
 	
 	def preferences
