@@ -2,8 +2,6 @@ package com.globalscalingsoftware.prefdialog.internal.combobox
 
 import java.util.List;
 
-
-
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 import org.junit.Before;
