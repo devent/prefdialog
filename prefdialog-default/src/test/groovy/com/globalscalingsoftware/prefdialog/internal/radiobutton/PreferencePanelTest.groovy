@@ -8,10 +8,29 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.globalscalingsoftware.prefdialog.IPreferencePanelFactory 
+import com.globalscalingsoftware.prefdialog.annotations.Child;
+import com.globalscalingsoftware.prefdialog.annotations.RadioButton;
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest 
 import com.globalscalingsoftware.prefdialog.internal.PreferencesDialogInjectorFactory 
 
 class PreferencePanelTest extends AbstractPreferenceTest {
+	
+	class General {
+		
+		@RadioButton
+		Colors colors = Colors.BLACK
+		
+		@Override
+		public String toString() {
+			"General"
+		}
+	}
+	
+	class Preferences {
+		
+		@Child
+		General general = new General()
+	}
 	
 	def preferences
 	
@@ -23,9 +42,9 @@ class PreferencePanelTest extends AbstractPreferenceTest {
 	
 	@Before
 	void beforeTest() {
-		preferences = new RadioButtonPreferences()
+		preferences = new Preferences()
 		parentValue = preferences.general
-		field = getPreferencesField(RadioButtonPreferences, "general")
+		field = getPreferencesField(Preferences, "general")
 		injector = new PreferencesDialogInjectorFactory().create(preferences)
 	}
 	

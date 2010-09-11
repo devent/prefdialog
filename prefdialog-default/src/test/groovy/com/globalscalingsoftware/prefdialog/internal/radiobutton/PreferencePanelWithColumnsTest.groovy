@@ -1,12 +1,33 @@
 package com.globalscalingsoftware.prefdialog.internal.radiobutton
 
+import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.Matchers.*;
 import com.globalscalingsoftware.prefdialog.IPreferencePanelFactory 
+import com.globalscalingsoftware.prefdialog.annotations.Child;
+import com.globalscalingsoftware.prefdialog.annotations.RadioButton 
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest;
 import com.globalscalingsoftware.prefdialog.internal.PreferencesDialogInjectorFactory 
 import org.junit.Before;
 import org.junit.Test;
 
 class PreferencePanelWithColumnsTest extends AbstractPreferenceTest {
+	
+	class Preferences {
+		
+		@Child
+		General general = new General()
+	}
+	
+	class General {
+		
+		@RadioButton(columns=2)
+		Colors colors = Colors.BLACK
+		
+		@Override
+		public String toString() {
+			"General"
+		}
+	}
 	
 	def preferences
 	
@@ -18,9 +39,9 @@ class PreferencePanelWithColumnsTest extends AbstractPreferenceTest {
 	
 	@Before
 	void beforeTest() {
-		preferences = new RadioButtonWithColumnsPreferences()
+		preferences = new Preferences()
 		parentValue = preferences.general
-		field = getPreferencesField(RadioButtonWithColumnsPreferences, "general")
+		field = getPreferencesField(Preferences, "general")
 		injector = new PreferencesDialogInjectorFactory().create(preferences)
 	}
 	
