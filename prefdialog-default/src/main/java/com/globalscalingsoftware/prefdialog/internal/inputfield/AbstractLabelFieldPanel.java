@@ -20,15 +20,13 @@ public abstract class AbstractLabelFieldPanel<FieldType extends Component>
 	public AbstractLabelFieldPanel(FieldType field) {
 		this.field = field;
 		label = new JLabel();
-		layout = new TableLayout();
+		double[] col = { TableLayout.FILL };
+		double[] row = { TableLayout.PREFERRED, TableLayout.PREFERRED };
+		layout = new TableLayout(col, row);
 		setupPanel();
 	}
 
 	protected void setupPanel() {
-		layout.insertColumn(0, TableLayout.FILL);
-		layout.insertRow(0, TableLayout.PREFERRED);
-		layout.insertRow(1, TableLayout.PREFERRED);
-
 		setLayout(layout);
 
 		add(label, "0, 0");
@@ -55,5 +53,7 @@ public abstract class AbstractLabelFieldPanel<FieldType extends Component>
 
 	public void setFieldWidth(double width) {
 		layout.setColumn(0, width);
+		layout.layoutContainer(this);
+		repaint();
 	}
 }

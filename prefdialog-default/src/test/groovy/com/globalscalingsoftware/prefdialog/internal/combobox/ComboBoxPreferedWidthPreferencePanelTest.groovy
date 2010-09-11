@@ -5,10 +5,17 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.globalscalingsoftware.prefdialog.IPreferencePanelFactory 
+import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest 
 import com.globalscalingsoftware.prefdialog.internal.PreferencesDialogInjectorFactory 
 
-class ComboBoxWidthPreferencePanelTest extends AbstractPreferenceTest {
+class ComboBoxPreferedWidthPreferencePanelTest extends AbstractPreferenceTest {
+	
+	class Preferences {
+		
+		@Child
+		ComboBoxPreferedWidthGeneral general = new ComboBoxPreferedWidthGeneral()
+	}
 	
 	def preferences
 	
@@ -20,9 +27,9 @@ class ComboBoxWidthPreferencePanelTest extends AbstractPreferenceTest {
 	
 	@Before
 	void beforeTest() {
-		preferences = new ComboBoxWidthPreferences()
+		preferences = new Preferences()
 		parentValue = preferences.general
-		field = getPreferencesField(ComboBoxWidthPreferences, "general")
+		field = getPreferencesField(Preferences, "general")
 		injector = new PreferencesDialogInjectorFactory().create(preferences)
 	}
 	
