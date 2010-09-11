@@ -19,13 +19,8 @@ public class ComboBoxInputField extends AbstractInputField<ComboBoxPanel> {
 		getComponent().setValues(values);
 		getComponent().setValue(value);
 		getComponent().setFieldName(getFieldName());
-		getComponent().setFieldWidth(getWidthFromAnnotationIn(field));
-	}
-
-	private double getWidthFromAnnotationIn(Field field) {
-		Annotation a = field.getAnnotation(ComboBox.class);
-		return getReflectionToolbox().invokeMethodWithReturnType("width",
-				Double.class, a);
+		getComponent().setFieldWidth(
+				getWidthFromAnnotationIn(field, ComboBox.class));
 	}
 
 	private Object getValuesFromAnnotationIn(Object parentObject, Field field) {

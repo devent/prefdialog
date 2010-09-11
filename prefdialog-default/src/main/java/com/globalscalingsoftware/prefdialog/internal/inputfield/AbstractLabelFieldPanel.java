@@ -26,7 +26,7 @@ public abstract class AbstractLabelFieldPanel<FieldType extends Component>
 		setupPanel();
 	}
 
-	protected void setupPanel() {
+	private void setupPanel() {
 		setLayout(layout);
 
 		add(label, "0, 0");
@@ -56,4 +56,5 @@ public abstract class AbstractLabelFieldPanel<FieldType extends Component>
 		layout.layoutContainer(this);
 		repaint();
 	}
+
 }

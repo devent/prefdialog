@@ -1,6 +1,7 @@
 package com.globalscalingsoftware.prefdialog.internal.inputfield;
 
 import java.awt.Component;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
 import com.globalscalingsoftware.prefdialog.IInputField;
@@ -53,6 +54,13 @@ public abstract class AbstractInputField<ComponentType extends Component>
 	@Override
 	public ComponentType getComponent() {
 		return component;
+	}
+
+	protected double getWidthFromAnnotationIn(Field field,
+			Class<? extends Annotation> annotationClass) {
+		Annotation a = field.getAnnotation(annotationClass);
+		return getReflectionToolbox().invokeMethodWithReturnType("width",
+				Double.class, a);
 	}
 
 }

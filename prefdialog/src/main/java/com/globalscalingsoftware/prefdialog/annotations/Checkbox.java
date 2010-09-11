@@ -10,4 +10,5 @@ import java.lang.annotation.Target;
 @Retention(RUNTIME)
 public @interface Checkbox {
 
+	double width() default -1.0;
 }

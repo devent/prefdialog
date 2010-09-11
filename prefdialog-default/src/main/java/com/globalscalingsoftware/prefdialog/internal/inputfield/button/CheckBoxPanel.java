@@ -1,14 +1,14 @@
 package com.globalscalingsoftware.prefdialog.internal.inputfield.button;
 
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JCheckBox;
-import javax.swing.JPanel;
+
+import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractLabelFieldPanel;
 
 @SuppressWarnings("serial")
-class CheckBoxPanel extends JPanel {
+class CheckBoxPanel extends AbstractLabelFieldPanel<JCheckBox> {
 
 	private static class Action extends AbstractAction {
 
@@ -25,35 +25,31 @@ class CheckBoxPanel extends JPanel {
 		}
 	}
 
-	private final JCheckBox checkBox;
-
 	private final Action action;
 
 	public CheckBoxPanel() {
-		checkBox = new JCheckBox();
+		super(new JCheckBox());
 		action = new Action();
-		setupPanel();
 		setupCheckbox();
 	}
 
-	public void setInputName(String name) {
+	private void setupCheckbox() {
+		getField().setAction(action);
+	}
+
+	@Override
+	public void setFieldName(String name) {
 		action.setName(name);
 	}
 
-	public void setSelected(boolean selected) {
-		action.setSelected(selected);
+	@Override
+	public void setValue(Object value) {
+		action.setSelected((Boolean) value);
 	}
 
-	private void setupCheckbox() {
-		checkBox.setAction(action);
+	@Override
+	public Object getValue() {
+		return getField().isSelected();
 	}
 
-	private void setupPanel() {
-		setLayout(new FlowLayout(FlowLayout.LEFT));
-		add(checkBox);
-	}
-
-	public boolean isSelected() {
-		return checkBox.isSelected();
-	}
 }

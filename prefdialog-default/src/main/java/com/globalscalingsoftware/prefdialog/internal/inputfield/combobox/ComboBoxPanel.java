@@ -22,7 +22,6 @@ public class ComboBoxPanel extends AbstractLabelFieldPanel<JComboBox> {
 
 	public ComboBoxPanel() {
 		super(new JComboBox());
-		setupPanel();
 	}
 
 	public void setValues(Object values) {
