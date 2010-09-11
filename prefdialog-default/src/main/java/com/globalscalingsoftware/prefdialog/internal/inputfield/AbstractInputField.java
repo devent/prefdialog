@@ -29,6 +29,10 @@ public abstract class AbstractInputField<ComponentType extends Component>
 		this.component = component;
 	}
 
+	public IReflectionToolbox getReflectionToolbox() {
+		return reflectionToolbox;
+	}
+
 	public Object getParentObject() {
 		return parentObject;
 	}

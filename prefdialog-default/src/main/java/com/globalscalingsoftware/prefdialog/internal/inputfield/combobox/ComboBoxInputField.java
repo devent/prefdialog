@@ -15,21 +15,27 @@ public class ComboBoxInputField extends AbstractInputField<ComboBoxPanel> {
 		super(reflectionToolbox, parentObject, value, field,
 				new ComboBoxPanel());
 
-		Object values = getValues(reflectionToolbox, parentObject, field);
+		Object values = getValuesFromAnnotationIn(parentObject, field);
 		getComponent().setValues(values);
 		getComponent().setValue(value);
 		getComponent().setFieldName(getFieldName());
+		getComponent().setFieldWidth(getWidthFromAnnotationIn(field));
 	}
 
-	private Object getValues(IReflectionToolbox reflectionToolbox,
-			Object parentObject, Field field) {
+	private double getWidthFromAnnotationIn(Field field) {
 		Annotation a = field.getAnnotation(ComboBox.class);
-		String comboBoxName = reflectionToolbox.invokeMethodWithReturnType(
-				"value", String.class, a);
+		return getReflectionToolbox().invokeMethodWithReturnType("width",
+				Double.class, a);
+	}
 
-		Object values = reflectionToolbox.searchObjectWithAnnotationValueIn(
-				parentObject, ComboBoxElements.class, comboBoxName,
-				String.class);
+	private Object getValuesFromAnnotationIn(Object parentObject, Field field) {
+		Annotation a = field.getAnnotation(ComboBox.class);
+		String comboBoxName = getReflectionToolbox()
+				.invokeMethodWithReturnType("value", String.class, a);
+
+		Object values = getReflectionToolbox()
+				.searchObjectWithAnnotationValueIn(parentObject,
+						ComboBoxElements.class, comboBoxName, String.class);
 		return values;
 	}
 
