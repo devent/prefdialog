@@ -1,14 +1,14 @@
 package com.globalscalingsoftware.prefdialog.internal.inputfield.combobox;
 
-import java.awt.FlowLayout;
 import java.util.Collection;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
-import javax.swing.JPanel;
+
+import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractLabelFieldPanel;
 
 @SuppressWarnings("serial")
-public class ComboBoxPanel extends JPanel {
+public class ComboBoxPanel extends AbstractLabelFieldPanel<JComboBox> {
 
 	private class ComboBoxModel extends DefaultComboBoxModel {
 
@@ -20,28 +20,23 @@ public class ComboBoxPanel extends JPanel {
 
 	private ComboBoxModel comboBoxModel;
 
-	private final JComboBox comboBox;
-
 	public ComboBoxPanel() {
-		comboBox = new JComboBox();
+		super(new JComboBox());
 		setupPanel();
-	}
-
-	private void setupPanel() {
-		setLayout(new FlowLayout(FlowLayout.LEFT));
-		add(comboBox);
 	}
 
 	public void setValues(Object values) {
 		comboBoxModel = new ComboBoxModel((Collection<?>) values);
-		comboBox.setModel(comboBoxModel);
+		getField().setModel(comboBoxModel);
 	}
 
+	@Override
 	public Object getValue() {
-		return comboBox.getSelectedItem();
+		return getField().getSelectedItem();
 	}
 
+	@Override
 	public void setValue(Object value) {
-		comboBox.setSelectedItem(value);
+		getField().setSelectedItem(value);
 	}
 }

@@ -1,7 +1,5 @@
 package com.globalscalingsoftware.prefdialog.internal.combobox
 
-
-
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 import org.junit.Before;

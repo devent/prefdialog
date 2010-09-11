@@ -13,12 +13,16 @@ public abstract class AbstractLabelFieldPanel<FieldType extends Component>
 
 	private final JLabel label;
 
-	private final FieldType textField;
+	private final FieldType field;
 
-	public AbstractLabelFieldPanel(FieldType textField) {
-		this.textField = textField;
+	public AbstractLabelFieldPanel(FieldType field) {
+		this.field = field;
 		label = new JLabel();
 		setupPanel();
+	}
+
+	public FieldType getField() {
+		return field;
 	}
 
 	public abstract void setValue(Object value);
@@ -39,9 +43,9 @@ public abstract class AbstractLabelFieldPanel<FieldType extends Component>
 		setLayout(new TableLayout(col, row));
 
 		add(label, "0, 0");
-		add(textField, "0, 1");
+		add(field, "0, 1");
 
-		label.setLabelFor(textField);
+		label.setLabelFor(field);
 	}
 
 }
