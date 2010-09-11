@@ -1,8 +1,10 @@
 package com.globalscalingsoftware.prefdialog.internal.combobox
 
 
+import com.globalscalingsoftware.prefdialog.annotations.ComboBox;
 import com.globalscalingsoftware.prefdialog.annotations.ComboBoxElements 
 import java.util.List;
+
 class ComboBoxWidthGeneralA {
 	
 	@ComboBoxElements("combobox1")
