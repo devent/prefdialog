@@ -8,10 +8,29 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.globalscalingsoftware.prefdialog.IPreferencePanelFactory 
+import com.globalscalingsoftware.prefdialog.annotations.Checkbox;
+import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest 
 import com.globalscalingsoftware.prefdialog.internal.PreferencesDialogInjectorFactory 
 
 class CheckboxPreferencePanelTest extends AbstractPreferenceTest {
+	
+	class General {
+		
+		@Checkbox
+		boolean automaticSave = false
+		
+		@Override
+		public String toString() {
+			"General"
+		}
+	}
+	
+	class Preferences {
+		
+		@Child
+		General general = new General()
+	}
 	
 	def preferences
 	
