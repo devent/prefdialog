@@ -11,4 +11,6 @@ import java.lang.annotation.Target;
 public @interface ComboBox {
 
 	String value();
+
+	double width() default -1.0;
 }

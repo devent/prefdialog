@@ -39,4 +39,5 @@ public class ComboBoxPanel extends AbstractLabelFieldPanel<JComboBox> {
 	public void setValue(Object value) {
 		getField().setSelectedItem(value);
 	}
+
 }

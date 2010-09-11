@@ -1,38 +1,20 @@
 package com.globalscalingsoftware.prefdialog.internal.combobox
 
-import java.util.List;
-import static org.hamcrest.MatcherAssert.*;
-import static org.hamcrest.Matchers.*;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import com.globalscalingsoftware.prefdialog.IPreferencePanelFactory 
 import com.globalscalingsoftware.prefdialog.annotations.Child;
-import com.globalscalingsoftware.prefdialog.annotations.ComboBox 
-import com.globalscalingsoftware.prefdialog.annotations.ComboBoxElements 
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest 
 import com.globalscalingsoftware.prefdialog.internal.PreferencesDialogInjectorFactory 
 
-class ComboBoxPreferencePanelTest extends AbstractPreferenceTest {
-	
-	class General {
-		
-		@ComboBoxElements("combobox1")
-		List<String> comboBoxElements = ["first element", "second element", "third element"]
-		
-		@ComboBox("combobox1")
-		String comboBox
-		
-		@Override
-		public String toString() {
-			"General"
-		}
-	}
+class ComboBoxPreferedWidthPreferencePanelTest extends AbstractPreferenceTest {
 	
 	class Preferences {
 		
 		@Child
-		General general = new General()
+		ComboBoxPreferedWidthGeneral general = new ComboBoxPreferedWidthGeneral()
 	}
 	
 	def preferences
