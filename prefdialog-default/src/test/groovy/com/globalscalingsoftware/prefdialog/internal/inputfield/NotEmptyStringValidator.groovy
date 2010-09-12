@@ -1,4 +1,5 @@
-package com.globalscalingsoftware.prefdialog.internal.allinputs
+package com.globalscalingsoftware.prefdialog.internal.inputfield
+
 
 import com.globalscalingsoftware.prefdialog.IValidator;
 
