@@ -49,7 +49,7 @@ public class AnnotationDiscovery implements IAnnotationDiscovery {
 
 		Object value = reflectionToolbox.getValueFrom(field, object);
 		listener.fieldAnnotationDiscovered(field, value, annotation);
-		discover(filter, value, listener);
+		// discover(filter, value, listener);
 	}
 
 }

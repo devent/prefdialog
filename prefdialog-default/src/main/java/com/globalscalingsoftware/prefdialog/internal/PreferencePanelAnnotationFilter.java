@@ -8,6 +8,7 @@ import com.globalscalingsoftware.prefdialog.IPreferencePanelAnnotationFilter;
 import com.globalscalingsoftware.prefdialog.annotations.Checkbox;
 import com.globalscalingsoftware.prefdialog.annotations.ComboBox;
 import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField;
+import com.globalscalingsoftware.prefdialog.annotations.Group;
 import com.globalscalingsoftware.prefdialog.annotations.RadioButton;
 import com.globalscalingsoftware.prefdialog.annotations.TextField;
 
@@ -23,9 +24,15 @@ public class PreferencePanelAnnotationFilter extends AbstractAnnotationFilter
 		annotations.add(TextField.class);
 		annotations.add(RadioButton.class);
 		annotations.add(ComboBox.class);
+		annotations.add(Group.class);
 	}
 
-	PreferencePanelAnnotationFilter() {
+	public static PreferencePanelAnnotationFilter createDefault() {
+		return new PreferencePanelAnnotationFilter(annotations);
+	}
+
+	PreferencePanelAnnotationFilter(
+			List<Class<? extends Annotation>> annotations) {
 		setAnnotations(annotations);
 	}
 

@@ -43,8 +43,8 @@ public class PreferenceDialogModule extends AbstractModule {
 	}
 
 	private void bindPreferencePanel() {
-		bind(IPreferencePanelAnnotationFilter.class).to(
-				PreferencePanelAnnotationFilter.class);
+		bind(IPreferencePanelAnnotationFilter.class).toInstance(
+				PreferencePanelAnnotationFilter.createDefault());
 		bind(IPreferencePanelFactory.class).toProvider(
 				newFactory(IPreferencePanelFactory.class,
 						PreferencePanelController.class));

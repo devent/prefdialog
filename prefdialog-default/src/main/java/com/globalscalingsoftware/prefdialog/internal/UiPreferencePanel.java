@@ -52,7 +52,7 @@ class UiPreferencePanel extends javax.swing.JPanel {
 					{ TableLayout.PREFERRED, TableLayout.PREFERRED,
 							TableLayout.FILL, TableLayout.PREFERRED } });
 			thisLayout.setHGap(5);
-			thisLayout.setVGap(5);
+			thisLayout.setVGap(0);
 			this.setLayout(thisLayout);
 			this.setPreferredSize(new java.awt.Dimension(514, 406));
 			this.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
