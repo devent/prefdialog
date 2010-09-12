@@ -15,12 +15,9 @@ import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.annotations.ComboBox 
 import com.globalscalingsoftware.prefdialog.annotations.ComboBoxElements 
 import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField;
-import com.globalscalingsoftware.prefdialog.annotations.HelpText 
 import com.globalscalingsoftware.prefdialog.annotations.RadioButton 
 import com.globalscalingsoftware.prefdialog.annotations.TextField;
-import com.globalscalingsoftware.prefdialog.annotations.Validated 
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest;
-import com.globalscalingsoftware.prefdialog.internal.FieldsValidator 
 import com.globalscalingsoftware.prefdialog.internal.PreferencesDialogInjectorFactory 
 import com.globalscalingsoftware.prefdialog.internal.radiobutton.Colors;
 import static org.hamcrest.MatcherAssert.*;
@@ -28,22 +25,18 @@ import static org.hamcrest.Matchers.*;
 
 class PreferenceDialogTest extends AbstractPreferenceTest {
 	
-	class Preferences {
+	static class Preferences {
 		
 		@Child
 		General general = new General()
 	}
 	
-	class General {
+	static class General {
 		
-		@TextField
-		@HelpText("Must not be empty")
-		@Validated(NotEmptyStringValidator)
+		@TextField(validator=NotEmptyStringValidator, validatorText="Must not be empty")
 		String name = ""
 		
-		@FormattedTextField
-		@HelpText("Must be a number and between 2 and 100")
-		@Validated(FieldsValidator)
+		@FormattedTextField(validator=FieldsValidator, validatorText="Must be a number and between 2 and 100")
 		int fields = 4
 		
 		@Checkbox
