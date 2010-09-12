@@ -12,15 +12,17 @@ public class ComboBoxInputField extends AbstractInputField<ComboBoxPanel> {
 
 	public ComboBoxInputField(IReflectionToolbox reflectionToolbox,
 			Object parentObject, Object value, Field field) {
-		super(reflectionToolbox, parentObject, value, field,
+		super(reflectionToolbox, parentObject, value, field, ComboBox.class,
 				new ComboBoxPanel());
 
+		setValuesToComponent();
+	}
+
+	private void setValuesToComponent() {
+		Object parentObject = getParentObject();
+		Field field = getField();
 		Object values = getValuesFromAnnotationIn(parentObject, field);
 		getComponent().setValues(values);
-		getComponent().setValue(value);
-		getComponent().setFieldName(getFieldName());
-		getComponent().setFieldWidth(
-				getWidthFromAnnotationIn(field, ComboBox.class));
 	}
 
 	private Object getValuesFromAnnotationIn(Object parentObject, Field field) {
@@ -34,8 +36,4 @@ public class ComboBoxInputField extends AbstractInputField<ComboBoxPanel> {
 		return values;
 	}
 
-	@Override
-	public Object getValue() {
-		return getComponent().getValue();
-	}
 }

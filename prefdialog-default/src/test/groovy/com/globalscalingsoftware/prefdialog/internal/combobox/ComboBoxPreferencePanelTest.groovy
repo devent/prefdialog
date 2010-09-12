@@ -21,7 +21,7 @@ class ComboBoxPreferencePanelTest extends AbstractPreferenceTest {
 		List<String> comboBoxElements = ["first element", "second element", "third element"]
 		
 		@ComboBox("combobox1")
-		String comboBox
+		String comboBox = "first element"
 		
 		@Override
 		public String toString() {
