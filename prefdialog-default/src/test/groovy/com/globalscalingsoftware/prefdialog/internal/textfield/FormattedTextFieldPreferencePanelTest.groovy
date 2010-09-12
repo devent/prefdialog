@@ -20,7 +20,7 @@ class FormattedTextFieldPreferencePanelTest extends AbstractPreferenceTest {
 	
 	class General {
 		
-		@FormattedTextField
+		@FormattedTextField(width=-2.0d)
 		@HelpText("Must be a number and between 2 and 100")
 		@Validated(FieldsValidator)
 		int fields = 4

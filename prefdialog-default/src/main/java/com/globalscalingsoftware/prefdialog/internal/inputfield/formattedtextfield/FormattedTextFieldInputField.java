@@ -6,6 +6,7 @@ import javax.swing.JFormattedTextField;
 
 import com.globalscalingsoftware.prefdialog.IInputField;
 import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
+import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField;
 
 public class FormattedTextFieldInputField extends AbstractTextField implements
 		IInputField {
@@ -14,6 +15,8 @@ public class FormattedTextFieldInputField extends AbstractTextField implements
 			Object parentObject, Object value, Field field) {
 		super(reflectionToolbox, parentObject, value, field,
 				new ValidatingFormattedTextField(new JFormattedTextField()));
+		getComponent().setFieldWidth(
+				getWidthFromAnnotationIn(field, FormattedTextField.class));
 	}
 
 }
