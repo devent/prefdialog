@@ -15,7 +15,7 @@ import com.globalscalingsoftware.prefdialog.internal.PreferencesDialogInjectorFa
 
 class CheckboxPreferedWidthPreferencePanelTest extends AbstractPreferenceTest {
 	
-	class General {
+	static class General {
 		
 		@Checkbox(width=-2.0d)
 		boolean automaticSave = false
@@ -26,7 +26,7 @@ class CheckboxPreferedWidthPreferencePanelTest extends AbstractPreferenceTest {
 		}
 	}
 	
-	class Preferences {
+	static class Preferences {
 		
 		@Child
 		General general = new General()

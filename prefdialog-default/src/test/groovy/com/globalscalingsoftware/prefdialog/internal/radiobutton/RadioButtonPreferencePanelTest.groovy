@@ -15,7 +15,7 @@ import com.globalscalingsoftware.prefdialog.internal.PreferencesDialogInjectorFa
 
 class RadioButtonPreferencePanelTest extends AbstractPreferenceTest {
 	
-	class General {
+	static class General {
 		
 		@RadioButton
 		Colors colors = Colors.BLACK
@@ -26,7 +26,7 @@ class RadioButtonPreferencePanelTest extends AbstractPreferenceTest {
 		}
 	}
 	
-	class Preferences {
+	static class Preferences {
 		
 		@Child
 		General general = new General()

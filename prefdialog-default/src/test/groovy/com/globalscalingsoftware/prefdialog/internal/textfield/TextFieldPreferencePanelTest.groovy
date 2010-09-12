@@ -15,7 +15,7 @@ import com.globalscalingsoftware.prefdialog.internal.PreferencesDialogInjectorFa
 
 class TextFieldPreferencePanelTest extends AbstractPreferenceTest {
 	
-	class General {
+	static class General {
 		
 		@TextField
 		String name = ""
@@ -26,7 +26,7 @@ class TextFieldPreferencePanelTest extends AbstractPreferenceTest {
 		}
 	}
 	
-	class Preferences {
+	static class Preferences {
 		
 		@Child
 		General general = new General()

@@ -12,13 +12,13 @@ import org.junit.Test;
 
 class RadioButtonPreferencePanelWithColumnsTest extends AbstractPreferenceTest {
 	
-	class Preferences {
+	static class Preferences {
 		
 		@Child
 		General general = new General()
 	}
 	
-	class General {
+	static class General {
 		
 		@RadioButton(columns=2, width=-2.0d)
 		Colors colors = Colors.BLACK

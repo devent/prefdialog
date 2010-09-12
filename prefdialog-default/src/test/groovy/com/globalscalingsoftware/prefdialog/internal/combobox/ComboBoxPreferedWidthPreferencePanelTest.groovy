@@ -15,7 +15,7 @@ import com.globalscalingsoftware.prefdialog.internal.PreferencesDialogInjectorFa
 
 class ComboBoxPreferedWidthPreferencePanelTest extends AbstractPreferenceTest {
 	
-	class General {
+	static class General {
 		
 		@ComboBoxElements("combobox1")
 		List<String> comboBoxElements = ["first element", "second element", "third element"]
@@ -29,7 +29,7 @@ class ComboBoxPreferedWidthPreferencePanelTest extends AbstractPreferenceTest {
 		}
 	}
 	
-	class Preferences {
+	static class Preferences {
 		
 		@Child
 		General general = new General()

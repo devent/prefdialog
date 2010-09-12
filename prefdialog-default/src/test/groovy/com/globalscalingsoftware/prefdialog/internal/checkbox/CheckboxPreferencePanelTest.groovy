@@ -15,7 +15,7 @@ import com.globalscalingsoftware.prefdialog.internal.PreferencesDialogInjectorFa
 
 class CheckboxPreferencePanelTest extends AbstractPreferenceTest {
 	
-	class General {
+	static class General {
 		
 		@Checkbox
 		boolean automaticSave = false
@@ -26,7 +26,7 @@ class CheckboxPreferencePanelTest extends AbstractPreferenceTest {
 		}
 	}
 	
-	class Preferences {
+	static class Preferences {
 		
 		@Child
 		General general = new General()
