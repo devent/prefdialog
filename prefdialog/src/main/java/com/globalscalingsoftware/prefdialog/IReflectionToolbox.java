@@ -9,10 +9,6 @@ public interface IReflectionToolbox {
 
 	void setValueTo(Field field, Object object, Object value);
 
-	String getHelpText(Field field);
-
-	IValidator<?> getValidator(Field field);
-
 	String getFieldName(Field field);
 
 	int getColumns(Field field);
@@ -26,5 +22,7 @@ public interface IReflectionToolbox {
 	<T> Object searchObjectWithAnnotationValueIn(Object parentObject,
 			Class<? extends Annotation> annotationClass, T value,
 			Class<? extends T> returnType);
+
+	<T> T newInstance(Class<? extends T> objectClass, Object... parameters);
 
 }

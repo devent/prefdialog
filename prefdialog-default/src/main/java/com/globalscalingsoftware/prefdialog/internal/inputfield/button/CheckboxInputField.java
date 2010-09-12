@@ -12,17 +12,8 @@ public class CheckboxInputField extends AbstractInputField<CheckBoxPanel>
 
 	public CheckboxInputField(IReflectionToolbox reflectionToolbox,
 			Object parentObject, Object value, Field field) {
-		super(reflectionToolbox, parentObject, value, field,
+		super(reflectionToolbox, parentObject, value, field, Checkbox.class,
 				new CheckBoxPanel());
-		getComponent().setFieldName(getFieldName());
-		getComponent().setValue(value);
-		getComponent().setFieldWidth(
-				getWidthFromAnnotationIn(field, Checkbox.class));
-	}
-
-	@Override
-	public Object getValue() {
-		return getComponent().getValue();
 	}
 
 }

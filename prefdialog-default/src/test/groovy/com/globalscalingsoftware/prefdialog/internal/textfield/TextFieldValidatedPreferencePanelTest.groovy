@@ -8,16 +8,24 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.globalscalingsoftware.prefdialog.IPreferencePanelFactory 
+import com.globalscalingsoftware.prefdialog.IValidator 
 import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.annotations.TextField;
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest 
 import com.globalscalingsoftware.prefdialog.internal.PreferencesDialogInjectorFactory 
 
-class TextFieldPreferedWidthPreferencePanelTest extends AbstractPreferenceTest {
+class TextFieldValidatedPreferencePanelTest extends AbstractPreferenceTest {
 	
-	class General {
+	static class Validator implements IValidator<String> {
 		
-		@TextField(width=-2.0d)
+		public boolean isValid(String value) {
+			value != null && !value.trim().isEmpty()
+		}
+	}
+	
+	static class General {
+		
+		@TextField(validator=Validator, validatorText="Can not be empty")
 		String name = ""
 		
 		@Override
@@ -26,7 +34,7 @@ class TextFieldPreferedWidthPreferencePanelTest extends AbstractPreferenceTest {
 		}
 	}
 	
-	class Preferences {
+	static class Preferences {
 		
 		@Child
 		General general = new General()

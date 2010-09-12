@@ -25,12 +25,12 @@ class TextFieldPanel extends AbstractLabelFieldPanel<JTextField> {
 		super.setFieldName(name);
 	}
 
-	public void setHelpText(String helpText) {
-		String text = format("%s (%s): ", fieldName, helpText);
+	public void setValidatorText(String validatorText) {
+		String text = format("%s (%s): ", fieldName, validatorText);
 		setLabelText(text);
 	}
 
-	public void clearHelpText() {
+	public void clearValidatorText() {
 		String text = format("%s: ", fieldName);
 		setLabelText(text);
 	}

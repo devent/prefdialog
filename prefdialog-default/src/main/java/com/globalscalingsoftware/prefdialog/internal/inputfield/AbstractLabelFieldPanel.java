@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
 public abstract class AbstractLabelFieldPanel<FieldType extends Component>
-		extends JPanel {
+		extends JPanel implements IComponent {
 
 	private final JLabel label;
 
@@ -51,6 +51,7 @@ public abstract class AbstractLabelFieldPanel<FieldType extends Component>
 		label.setText(text);
 	}
 
+	@Override
 	public void setFieldWidth(double width) {
 		layout.setColumn(0, width);
 		layout.layoutContainer(this);

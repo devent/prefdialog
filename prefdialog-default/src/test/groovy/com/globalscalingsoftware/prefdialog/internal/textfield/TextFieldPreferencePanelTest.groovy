@@ -9,9 +9,7 @@ import org.junit.Test;
 
 import com.globalscalingsoftware.prefdialog.IPreferencePanelFactory 
 import com.globalscalingsoftware.prefdialog.annotations.Child;
-import com.globalscalingsoftware.prefdialog.annotations.HelpText 
 import com.globalscalingsoftware.prefdialog.annotations.TextField;
-import com.globalscalingsoftware.prefdialog.annotations.Validated 
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest 
 import com.globalscalingsoftware.prefdialog.internal.PreferencesDialogInjectorFactory 
 
@@ -20,8 +18,6 @@ class TextFieldPreferencePanelTest extends AbstractPreferenceTest {
 	class General {
 		
 		@TextField
-		@HelpText("Must not be empty")
-		@Validated(NotEmptyStringValidator)
 		String name = ""
 		
 		@Override

@@ -8,8 +8,6 @@ import java.lang.reflect.Field;
 
 import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.IValidator;
-import com.globalscalingsoftware.prefdialog.annotations.HelpText;
-import com.globalscalingsoftware.prefdialog.annotations.Validated;
 
 public class ReflectionToolbox implements IReflectionToolbox {
 
@@ -44,29 +42,6 @@ public class ReflectionToolbox implements IReflectionToolbox {
 	}
 
 	@Override
-	public String getHelpText(Field field) {
-		String helptext = annotationHelpText(field);
-		if (helptext != null) {
-			return helptext;
-		}
-
-		return "";
-	}
-
-	private String annotationHelpText(Field field) {
-		Annotation a = field.getAnnotation(HelpText.class);
-		if (a == null) {
-			return "";
-		} else {
-			return getHelpTextFromAnnotation(a);
-		}
-	}
-
-	private String getHelpTextFromAnnotation(Annotation a) {
-		return invokeMethodWithReturnType("value", String.class, a);
-	}
-
-	@Override
 	public <T> T invokeMethodWithReturnType(String methodName,
 			Class<? extends T> returnType, Object object) {
 		return method(methodName).withReturnType(returnType).in(object)
@@ -90,23 +65,6 @@ public class ReflectionToolbox implements IReflectionToolbox {
 			return true;
 		}
 
-	}
-
-	@Override
-	public IValidator<?> getValidator(Field field) {
-		Annotation a = field.getAnnotation(Validated.class);
-		if (a == null) {
-			return new NoneValidator();
-		} else {
-			return createValidatorFromAnnotation(a);
-		}
-	}
-
-	private IValidator<?> createValidatorFromAnnotation(Annotation a) {
-		@SuppressWarnings("unchecked")
-		Class<? extends IValidator<?>> validatorClass = invokeMethodWithReturnType(
-				"value", Class.class, a);
-		return constructor().in(validatorClass).newInstance();
 	}
 
 	@Override
@@ -150,4 +108,14 @@ public class ReflectionToolbox implements IReflectionToolbox {
 		return invokeMethodWithReturnType("value", returnType, a);
 	}
 
+	@Override
+	public <T> T newInstance(Class<? extends T> objectClass,
+			Object... parameters) {
+		Class<?>[] parameterTypes = new Class[parameters.length];
+		for (int i = 0; i < parameterTypes.length; i++) {
+			parameterTypes[i] = parameters[i].getClass();
+		}
+		return constructor().withParameterTypes(parameterTypes).in(objectClass)
+				.newInstance(parameters);
+	}
 }

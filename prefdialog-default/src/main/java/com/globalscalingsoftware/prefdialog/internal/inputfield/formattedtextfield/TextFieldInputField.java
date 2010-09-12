@@ -13,10 +13,8 @@ public class TextFieldInputField extends AbstractTextField implements
 
 	public TextFieldInputField(IReflectionToolbox reflectionToolbox,
 			Object parentObject, Object value, Field field) {
-		super(reflectionToolbox, parentObject, value, field,
+		super(reflectionToolbox, parentObject, value, field, TextField.class,
 				new ValidatingTextField<JTextField>(new JTextField()));
-		getComponent().setFieldWidth(
-				getWidthFromAnnotationIn(field, TextField.class));
 	}
 
 }
