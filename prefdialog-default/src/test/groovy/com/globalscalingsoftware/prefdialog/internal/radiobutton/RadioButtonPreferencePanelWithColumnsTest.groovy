@@ -10,7 +10,7 @@ import com.globalscalingsoftware.prefdialog.internal.PreferencesDialogInjectorFa
 import org.junit.Before;
 import org.junit.Test;
 
-class PreferencePanelWithColumnsTest extends AbstractPreferenceTest {
+class RadioButtonPreferencePanelWithColumnsTest extends AbstractPreferenceTest {
 	
 	class Preferences {
 		

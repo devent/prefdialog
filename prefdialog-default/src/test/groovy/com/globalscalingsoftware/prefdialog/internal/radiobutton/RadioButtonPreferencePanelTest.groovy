@@ -13,7 +13,7 @@ import com.globalscalingsoftware.prefdialog.annotations.RadioButton;
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest 
 import com.globalscalingsoftware.prefdialog.internal.PreferencesDialogInjectorFactory 
 
-class PreferencePanelTest extends AbstractPreferenceTest {
+class RadioButtonPreferencePanelTest extends AbstractPreferenceTest {
 	
 	class General {
 		

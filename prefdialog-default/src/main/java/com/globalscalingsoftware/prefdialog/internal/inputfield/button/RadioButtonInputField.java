@@ -12,15 +12,26 @@ public class RadioButtonInputField extends
 
 	public RadioButtonInputField(IReflectionToolbox reflectionToolbox,
 			Object parentObject, Object value, Field field) {
-		super(reflectionToolbox, parentObject, value, field,
+		super(reflectionToolbox, parentObject, value, field, RadioButton.class,
 				new RadioButtonsPanel());
 
+		setupComponent(value);
+	}
+
+	private void setupComponent(Object value) {
+		setupEnumFields(value);
+		setupColumns();
+	}
+
+	private void setupColumns() {
+		int columns = getReflectionToolbox().getColumns(getField());
+		getComponent().setColumns(columns);
+	}
+
+	private void setupEnumFields(Object value) {
 		Class<? extends Enum<?>> valueclass = getValueClass(value);
 		addEnumFields(valueclass);
 		getComponent().setValue(value);
-		getComponent().setColumns(reflectionToolbox.getColumns(field));
-		getComponent().setFieldWidth(
-				getWidthFromAnnotationIn(field, RadioButton.class));
 	}
 
 	private Class<? extends Enum<?>> getValueClass(Object value) {
@@ -34,11 +45,6 @@ public class RadioButtonInputField extends
 		for (Object constant : enumClass.getEnumConstants()) {
 			getComponent().addRadioButton(constant, constant.toString());
 		}
-	}
-
-	@Override
-	public Object getValue() {
-		return getComponent().getValue();
 	}
 
 }
