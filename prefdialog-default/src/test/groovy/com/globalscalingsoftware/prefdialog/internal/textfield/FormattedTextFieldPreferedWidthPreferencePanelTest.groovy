@@ -1,20 +1,24 @@
 package com.globalscalingsoftware.prefdialog.internal.textfield
+
+
+
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 import org.junit.Before;
 import org.junit.Test;
+
 import com.globalscalingsoftware.prefdialog.IPreferencePanelFactory 
 import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField;
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest 
 import com.globalscalingsoftware.prefdialog.internal.PreferencesDialogInjectorFactory 
 
-class FormattedTextFieldPreferencePanelTest extends AbstractPreferenceTest {
+class FormattedTextFieldPreferedWidthPreferencePanelTest extends AbstractPreferenceTest {
 	
 	static class General {
 		
-		@FormattedTextField
-		double fields = 4
+		@FormattedTextField(width=-2.0d)
+		int fields = 4
 		
 		@Override
 		public String toString() {

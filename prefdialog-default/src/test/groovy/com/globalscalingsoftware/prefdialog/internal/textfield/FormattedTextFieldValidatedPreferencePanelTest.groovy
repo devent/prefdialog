@@ -1,4 +1,5 @@
 package com.globalscalingsoftware.prefdialog.internal.textfield
+import com.globalscalingsoftware.prefdialog.IValidator;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 import org.junit.Before;
@@ -9,12 +10,18 @@ import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField;
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest 
 import com.globalscalingsoftware.prefdialog.internal.PreferencesDialogInjectorFactory 
 
-class FormattedTextFieldPreferencePanelTest extends AbstractPreferenceTest {
+class FormattedTextFieldValidatedPreferencePanelTest extends AbstractPreferenceTest {
+	
+	static class FieldsValidator implements IValidator<Integer> {
+		public boolean isValid(Integer value) {
+			value >= 2 && value <= 100
+		}
+	}
 	
 	static class General {
 		
-		@FormattedTextField
-		double fields = 4
+		@FormattedTextField(validator=FieldsValidator, validatorText="Must be a number and between 2 and 100")
+		int fields = 4
 		
 		@Override
 		public String toString() {

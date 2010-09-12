@@ -44,10 +44,15 @@ public abstract class AbstractTextField extends
 				if (validEvent.isEditValid()) {
 					getComponent().clearValidatorText();
 				} else {
+					String validatorText = getValidatorText();
 					getComponent().setValidatorText(validatorText);
 				}
 			}
 		});
+	}
+
+	protected String getValidatorText() {
+		return validatorText;
 	}
 
 	private void setupValidatorFromFieldAnnotation() {
