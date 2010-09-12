@@ -8,10 +8,33 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.globalscalingsoftware.prefdialog.IPreferencePanelFactory 
+import com.globalscalingsoftware.prefdialog.annotations.Child;
+import com.globalscalingsoftware.prefdialog.annotations.HelpText 
+import com.globalscalingsoftware.prefdialog.annotations.TextField;
+import com.globalscalingsoftware.prefdialog.annotations.Validated 
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest 
 import com.globalscalingsoftware.prefdialog.internal.PreferencesDialogInjectorFactory 
 
 class TextFieldPreferencePanelTest extends AbstractPreferenceTest {
+	
+	class General {
+		
+		@TextField
+		@HelpText("Must not be empty")
+		@Validated(NotEmptyStringValidator)
+		String name = ""
+		
+		@Override
+		public String toString() {
+			"General"
+		}
+	}
+	
+	class Preferences {
+		
+		@Child
+		General general = new General()
+	}
 	
 	def preferences
 	
@@ -23,9 +46,9 @@ class TextFieldPreferencePanelTest extends AbstractPreferenceTest {
 	
 	@Before
 	void beforeTest() {
-		preferences = new TextFieldPreferences()
+		preferences = new Preferences()
 		parentValue = preferences.general
-		field = getPreferencesField(TextFieldPreferences, "general")
+		field = getPreferencesField(Preferences, "general")
 		injector = new PreferencesDialogInjectorFactory().create(preferences)
 	}
 	
