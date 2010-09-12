@@ -11,4 +11,6 @@ import java.lang.annotation.Target;
 public @interface RadioButton {
 
 	int columns() default 1;
+
+	double width() default -1.0;
 }

@@ -9,8 +9,10 @@ import javax.swing.ButtonModel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
+import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractLabelFieldPanel;
+
 @SuppressWarnings("serial")
-public class RadioButtonsPanel extends JPanel {
+public class RadioButtonsPanel extends AbstractLabelFieldPanel<JPanel> {
 
 	private final GridLayout layout;
 
@@ -19,6 +21,7 @@ public class RadioButtonsPanel extends JPanel {
 	private final Map<ButtonModel, Object> values;
 
 	public RadioButtonsPanel() {
+		super(new JPanel());
 		layout = new GridLayout(1, 1);
 		buttonsGroup = new ButtonGroup();
 		values = new HashMap<ButtonModel, Object>();
@@ -26,9 +29,10 @@ public class RadioButtonsPanel extends JPanel {
 	}
 
 	private void setupPanel() {
-		setLayout(layout);
+		getField().setLayout(layout);
 	}
 
+	@Override
 	public Object getValue() {
 		ButtonModel selected = buttonsGroup.getSelection();
 		Object value = values.get(selected);
@@ -41,9 +45,10 @@ public class RadioButtonsPanel extends JPanel {
 		JRadioButton button = new JRadioButton(text);
 		values.put(button.getModel(), value);
 		buttonsGroup.add(button);
-		add(button);
+		getField().add(button);
 	}
 
+	@Override
 	public void setValue(Object value) {
 		for (Map.Entry<ButtonModel, Object> entry : values.entrySet()) {
 			if (entry.getValue() == value) {

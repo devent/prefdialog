@@ -20,7 +20,7 @@ class PreferencePanelWithColumnsTest extends AbstractPreferenceTest {
 	
 	class General {
 		
-		@RadioButton(columns=2)
+		@RadioButton(columns=2, width=-2.0d)
 		Colors colors = Colors.BLACK
 		
 		@Override

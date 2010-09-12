@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 
 import com.globalscalingsoftware.prefdialog.IInputField;
 import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
+import com.globalscalingsoftware.prefdialog.annotations.RadioButton;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractInputField;
 
 public class RadioButtonInputField extends
@@ -18,6 +19,8 @@ public class RadioButtonInputField extends
 		addEnumFields(valueclass);
 		getComponent().setValue(value);
 		getComponent().setColumns(reflectionToolbox.getColumns(field));
+		getComponent().setFieldWidth(
+				getWidthFromAnnotationIn(field, RadioButton.class));
 	}
 
 	private Class<? extends Enum<?>> getValueClass(Object value) {
