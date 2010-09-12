@@ -6,6 +6,7 @@ import javax.swing.JTextField;
 
 import com.globalscalingsoftware.prefdialog.IInputField;
 import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
+import com.globalscalingsoftware.prefdialog.annotations.TextField;
 
 public class TextFieldInputField extends AbstractTextField implements
 		IInputField {
@@ -14,6 +15,8 @@ public class TextFieldInputField extends AbstractTextField implements
 			Object parentObject, Object value, Field field) {
 		super(reflectionToolbox, parentObject, value, field,
 				new ValidatingTextField<JTextField>(new JTextField()));
+		getComponent().setFieldWidth(
+				getWidthFromAnnotationIn(field, TextField.class));
 	}
 
 }
