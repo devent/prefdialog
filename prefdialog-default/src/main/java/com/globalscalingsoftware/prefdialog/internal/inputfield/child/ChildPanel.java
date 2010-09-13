@@ -5,20 +5,30 @@ import info.clearthought.layout.TableLayout;
 
 import java.awt.Font;
 
+import javax.swing.Action;
+
 import com.globalscalingsoftware.prefdialog.IInputField;
+import com.globalscalingsoftware.prefdialog.internal.RunnableActionEvent;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.IComponent;
 
 @SuppressWarnings("serial")
 public class ChildPanel extends UiChildPanel implements IComponent {
 
+	private final RunnableActionEvent applyEvent;
+
+	private final RunnableActionEvent restoreEvent;
+
 	private Object value;
 
 	public ChildPanel() {
+		applyEvent = new RunnableActionEvent();
+		restoreEvent = new RunnableActionEvent();
 		setupPanel();
 	}
 
 	private void setupPanel() {
 		setBoldFontForChildLabel();
+		setupActions();
 	}
 
 	private void setBoldFontForChildLabel() {
@@ -26,6 +36,27 @@ public class ChildPanel extends UiChildPanel implements IComponent {
 		getChildLabel().setFont(
 				new Font(font.getFamily(), font.getStyle() | Font.BOLD, font
 						.getSize()));
+	}
+
+	private void setupActions() {
+		getApplyButton().addActionListener(applyEvent);
+		getRestoreButton().addActionListener(restoreEvent);
+	}
+
+	public void setApplyAction(Action a) {
+		getApplyButton().setAction(a);
+	}
+
+	public void setApplyEvent(Runnable applyEvent) {
+		this.applyEvent.setEvent(applyEvent);
+	}
+
+	public void setRestoreAction(Action a) {
+		getRestoreButton().setAction(a);
+	}
+
+	public void setRestoreEvent(Runnable restoreEvent) {
+		this.restoreEvent.setEvent(restoreEvent);
 	}
 
 	@Override

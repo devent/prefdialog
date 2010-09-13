@@ -3,7 +3,7 @@ package com.globalscalingsoftware.prefdialog.internal;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-class RunnableActionEvent implements ActionListener {
+public class RunnableActionEvent implements ActionListener {
 
 	private Runnable event;
 
