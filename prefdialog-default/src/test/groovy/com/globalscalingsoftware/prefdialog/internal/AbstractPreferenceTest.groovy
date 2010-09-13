@@ -6,6 +6,8 @@ import javax.swing.SwingUtilities
 import javax.swing.UIManager;
 
 
+import com.globalscalingsoftware.prefdialog.IFieldsFactory 
+import com.globalscalingsoftware.prefdialog.IReflectionToolbox 
 import groovy.swing.SwingBuilder 
 
 abstract class AbstractPreferenceTest {
@@ -53,5 +55,18 @@ abstract class AbstractPreferenceTest {
 			}
 		}
 		return field
+	}
+	
+	protected createField(def injector, def preferences, def field, def parentValue) {
+		def factory = injector.getInstance(IFieldsFactory)
+		def reflectionToolbox = injector.getInstance(IReflectionToolbox)
+		def inputfield = factory.createField(preferences, field, parentValue)
+		
+		inputfield.setReflectionToolbox(reflectionToolbox)
+		inputfield.setFieldsFactory(factory)
+		inputfield.setup()
+		
+		createDialog({ inputfield.getComponent() })
+		return inputfield
 	}
 }
