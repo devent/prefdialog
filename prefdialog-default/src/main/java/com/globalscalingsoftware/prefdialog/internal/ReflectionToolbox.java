@@ -1,10 +1,13 @@
 package com.globalscalingsoftware.prefdialog.internal;
 
+import static java.lang.String.format;
 import static org.fest.reflect.core.Reflection.constructor;
 import static org.fest.reflect.core.Reflection.method;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+
+import org.fest.reflect.exception.ReflectionError;
 
 import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.IValidator;
@@ -14,7 +17,25 @@ public class ReflectionToolbox implements IReflectionToolbox {
 	@Override
 	public Object getValueFrom(Field field, Object object) {
 		String name = getGetterName(field);
+		try {
+			return getValueFromGetter(object, name);
+		} catch (ReflectionError e) {
+			return getValueFromField(field, object);
+		}
+	}
+
+	private Object getValueFromGetter(Object object, String name) {
 		return method(name).in(object).invoke();
+	}
+
+	private Object getValueFromField(Field field, Object object) {
+		try {
+			return field.get(object);
+		} catch (IllegalAccessException e) {
+			throw new ReflectionError(format(
+					"Illegal access to field '%s' in object '%s'.", field,
+					object), e);
+		}
 	}
 
 	private String getGetterName(Field field) {

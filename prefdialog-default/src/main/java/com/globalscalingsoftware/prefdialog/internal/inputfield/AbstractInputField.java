@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
+import com.globalscalingsoftware.prefdialog.IFieldsFactory;
 import com.globalscalingsoftware.prefdialog.IInputField;
 import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
 
@@ -22,10 +23,14 @@ public abstract class AbstractInputField<ComponentType extends Component & IComp
 
 	private final Class<? extends Annotation> annotationClass;
 
+	private final IFieldsFactory fieldsFactory;
+
 	public AbstractInputField(IReflectionToolbox reflectionToolbox,
-			Object parentObject, Object value, Field field,
-			Class<? extends Annotation> annotationClass, ComponentType component) {
+			IFieldsFactory fieldsFactory, Object parentObject, Object value,
+			Field field, Class<? extends Annotation> annotationClass,
+			ComponentType component) {
 		this.reflectionToolbox = reflectionToolbox;
+		this.fieldsFactory = fieldsFactory;
 		this.parentObject = parentObject;
 		this.value = value;
 		this.field = field;
@@ -55,6 +60,10 @@ public abstract class AbstractInputField<ComponentType extends Component & IComp
 
 	public IReflectionToolbox getReflectionToolbox() {
 		return reflectionToolbox;
+	}
+
+	public IFieldsFactory getFieldsFactory() {
+		return fieldsFactory;
 	}
 
 	public Object getParentObject() {

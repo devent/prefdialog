@@ -39,10 +39,13 @@ public abstract class AbstractLabelFieldPanel<FieldType extends Component>
 		return field;
 	}
 
+	@Override
 	public abstract void setValue(Object value);
 
+	@Override
 	public abstract Object getValue();
 
+	@Override
 	public void setFieldName(String name) {
 		label.setText(name + ": ");
 	}

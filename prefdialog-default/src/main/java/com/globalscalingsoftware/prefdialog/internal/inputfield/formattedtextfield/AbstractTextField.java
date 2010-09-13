@@ -3,6 +3,7 @@ package com.globalscalingsoftware.prefdialog.internal.inputfield.formattedtextfi
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
+import com.globalscalingsoftware.prefdialog.IFieldsFactory;
 import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.IValidator;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractInputField;
@@ -13,11 +14,11 @@ public abstract class AbstractTextField extends
 	private final String validatorText;
 
 	public AbstractTextField(IReflectionToolbox reflectionToolbox,
-			Object parentObject, Object value, Field field,
-			Class<? extends Annotation> annotationClass,
+			IFieldsFactory fieldsFactory, Object parentObject, Object value,
+			Field field, Class<? extends Annotation> annotationClass,
 			ValidatingTextField<?> textField) {
-		super(reflectionToolbox, parentObject, value, field, annotationClass,
-				new TextFieldPanel(textField));
+		super(reflectionToolbox, fieldsFactory, parentObject, value, field,
+				annotationClass, new TextFieldPanel(textField));
 
 		validatorText = getValidatorTextFromFieldAnnotation();
 		setupComponent();

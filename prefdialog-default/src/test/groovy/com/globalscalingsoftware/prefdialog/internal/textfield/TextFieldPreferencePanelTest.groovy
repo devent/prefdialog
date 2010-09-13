@@ -7,7 +7,7 @@ import static org.hamcrest.Matchers.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.globalscalingsoftware.prefdialog.IPreferencePanelFactory 
+import com.globalscalingsoftware.prefdialog.IFieldsFactory;
 import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.annotations.TextField;
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest 
@@ -50,11 +50,10 @@ class TextFieldPreferencePanelTest extends AbstractPreferenceTest {
 	
 	@Test
 	void testPanelClickApplyAndClose() {
-		def factory = getInjector().getInstance(IPreferencePanelFactory)
-		def controller = factory.create(parentValue, field)
-		controller.setupPanel()
+		def factory = getInjector().getInstance(IFieldsFactory)
+		def field = factory.createField(preferences, field, parentValue)
 		
-		createDialog({ controller.getPanel() })
+		createDialog({ field.getComponent() })
 		assertThat preferences.general.name, is("name")
 	}
 }

@@ -9,9 +9,9 @@ import com.globalscalingsoftware.prefdialog.IFieldsFactory;
 import com.globalscalingsoftware.prefdialog.IInputField;
 import com.globalscalingsoftware.prefdialog.IInputFieldsFactory;
 import com.globalscalingsoftware.prefdialog.IPreferencePanelAnnotationFilter;
-import com.globalscalingsoftware.prefdialog.IPreferencePanelFactory;
 import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.annotations.Checkbox;
+import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.annotations.ComboBox;
 import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField;
 import com.globalscalingsoftware.prefdialog.annotations.Group;
@@ -19,6 +19,7 @@ import com.globalscalingsoftware.prefdialog.annotations.RadioButton;
 import com.globalscalingsoftware.prefdialog.annotations.TextField;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.button.CheckboxInputField;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.button.RadioButtonInputField;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.child.ChildInputField;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.combobox.ComboBoxInputField;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.formattedtextfield.FormattedTextFieldInputField;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.formattedtextfield.TextFieldInputField;
@@ -35,17 +36,13 @@ public class FieldsFactory implements IFieldsFactory {
 
 	private final IPreferencePanelAnnotationFilter annotationFilter;
 
-	private final IPreferencePanelFactory preferencePanelFactory;
-
 	@Inject
 	FieldsFactory(IPreferencePanelAnnotationFilter annotationFilter,
 			IReflectionToolbox reflectionToolbox,
-			IInputFieldsFactory inputFieldFactory,
-			IPreferencePanelFactory preferencePanelFactory) {
+			IInputFieldsFactory inputFieldFactory) {
 		this.annotationFilter = annotationFilter;
 		this.reflectionToolbox = reflectionToolbox;
 		this.inputFieldFactory = inputFieldFactory;
-		this.preferencePanelFactory = preferencePanelFactory;
 
 		inputFieldImplementations = new HashMap<Class<? extends Annotation>, Class<? extends IInputField>>();
 		inputFieldImplementations.put(Checkbox.class, CheckboxInputField.class);
@@ -57,21 +54,18 @@ public class FieldsFactory implements IFieldsFactory {
 				RadioButtonInputField.class);
 		inputFieldImplementations.put(ComboBox.class, ComboBoxInputField.class);
 		inputFieldImplementations.put(Group.class, GroupInputField.class);
+		inputFieldImplementations.put(Child.class, ChildInputField.class);
 	}
 
 	@Override
 	public IInputField createField(Object parentObject, Field field,
 			Object value) {
 		Class<? extends IInputField> inputFieldClass = getInputFieldClassFrom(field);
-		return createInputField(parentObject, value, field, inputFieldClass);
-	}
-
-	private IInputField createInputField(Object parentObject, Object value,
-			Field field, Class<? extends IInputField> inputFieldClass) {
-		IInputField inputField = inputFieldFactory.create(inputFieldClass,
-				reflectionToolbox, parentObject, value, field,
-				preferencePanelFactory);
-		return inputField;
+		if (inputFieldClass == null) {
+			return null;
+		} else {
+			return createInputField(parentObject, value, field, inputFieldClass);
+		}
 	}
 
 	private Class<? extends IInputField> getInputFieldClassFrom(Field field) {
@@ -88,6 +82,13 @@ public class FieldsFactory implements IFieldsFactory {
 			}
 		}
 		return null;
+	}
+
+	private IInputField createInputField(Object parentObject, Object value,
+			Field field, Class<? extends IInputField> inputFieldClass) {
+		IInputField inputField = inputFieldFactory.create(reflectionToolbox,
+				this, inputFieldClass, parentObject, value, field);
+		return inputField;
 	}
 
 }

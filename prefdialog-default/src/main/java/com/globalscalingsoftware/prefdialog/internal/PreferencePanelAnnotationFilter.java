@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.globalscalingsoftware.prefdialog.IPreferencePanelAnnotationFilter;
 import com.globalscalingsoftware.prefdialog.annotations.Checkbox;
+import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.annotations.ComboBox;
 import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField;
 import com.globalscalingsoftware.prefdialog.annotations.Group;
@@ -25,6 +26,7 @@ public class PreferencePanelAnnotationFilter extends AbstractAnnotationFilter
 		annotations.add(RadioButton.class);
 		annotations.add(ComboBox.class);
 		annotations.add(Group.class);
+		annotations.add(Child.class);
 	}
 
 	public static PreferencePanelAnnotationFilter createDefault() {
