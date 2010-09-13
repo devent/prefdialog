@@ -1,6 +1,5 @@
 package com.globalscalingsoftware.prefdialog.internal.textfield
-
-
+import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
@@ -40,18 +39,28 @@ class TextFieldPreferencePanelTest extends AbstractPreferenceTest {
 	
 	def injector
 	
+	def fieldsFactory
+	
+	def reflectionToolbox
+	
 	@Before
 	void beforeTest() {
 		preferences = new Preferences()
 		parentValue = preferences.general
 		field = getPreferencesField(Preferences, "general")
 		injector = new PreferencesDialogInjectorFactory().create(preferences)
+		fieldsFactory = injector.getInstance(IFieldsFactory)
+		reflectionToolbox = injector.getInstance(IReflectionToolbox)
 	}
 	
 	@Test
 	void testPanelClickApplyAndClose() {
 		def factory = getInjector().getInstance(IFieldsFactory)
 		def field = factory.createField(preferences, field, parentValue)
+		
+		field.setReflectionToolbox(reflectionToolbox)
+		field.setFieldsFactory(fieldsFactory)
+		field.setup()
 		
 		createDialog({ field.getComponent() })
 		assertThat preferences.general.name, is("name")

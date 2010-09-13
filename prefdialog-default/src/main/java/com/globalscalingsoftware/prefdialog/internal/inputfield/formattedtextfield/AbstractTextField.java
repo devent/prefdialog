@@ -3,7 +3,6 @@ package com.globalscalingsoftware.prefdialog.internal.inputfield.formattedtextfi
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
-import com.globalscalingsoftware.prefdialog.IFieldsFactory;
 import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.IValidator;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractInputField;
@@ -11,17 +10,21 @@ import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractInputFie
 public abstract class AbstractTextField extends
 		AbstractInputField<TextFieldPanel> {
 
-	private final String validatorText;
+	private String validatorText;
 
-	public AbstractTextField(IReflectionToolbox reflectionToolbox,
-			IFieldsFactory fieldsFactory, Object parentObject, Object value,
-			Field field, Class<? extends Annotation> annotationClass,
+	public AbstractTextField(Object parentObject, Object value, Field field,
+			Class<? extends Annotation> annotationClass,
 			ValidatingTextField<?> textField) {
-		super(reflectionToolbox, fieldsFactory, parentObject, value, field,
-				annotationClass, new TextFieldPanel(textField));
+		super(parentObject, value, field, annotationClass, new TextFieldPanel(
+				textField));
+	}
 
+	@Override
+	public void setup() {
+		super.setup();
 		validatorText = getValidatorTextFromFieldAnnotation();
-		setupComponent();
+		setupValidatorFromFieldAnnotation();
+		setupValidListenerToComponent();
 	}
 
 	private String getValidatorTextFromFieldAnnotation() {
@@ -30,11 +33,6 @@ public abstract class AbstractTextField extends
 		String text = reflectionToolbox.invokeMethodWithReturnType(
 				"validatorText", String.class, a);
 		return text;
-	}
-
-	private void setupComponent() {
-		setupValidatorFromFieldAnnotation();
-		setupValidListenerToComponent();
 	}
 
 	private void setupValidListenerToComponent() {

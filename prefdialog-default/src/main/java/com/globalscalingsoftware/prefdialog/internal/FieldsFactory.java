@@ -9,7 +9,6 @@ import com.globalscalingsoftware.prefdialog.IFieldsFactory;
 import com.globalscalingsoftware.prefdialog.IInputField;
 import com.globalscalingsoftware.prefdialog.IInputFieldsFactory;
 import com.globalscalingsoftware.prefdialog.IPreferencePanelAnnotationFilter;
-import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.annotations.Checkbox;
 import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.annotations.ComboBox;
@@ -28,8 +27,6 @@ import com.google.inject.Inject;
 
 public class FieldsFactory implements IFieldsFactory {
 
-	private final IReflectionToolbox reflectionToolbox;
-
 	private final IInputFieldsFactory inputFieldFactory;
 
 	private final Map<Class<? extends Annotation>, Class<? extends IInputField>> inputFieldImplementations;
@@ -38,10 +35,8 @@ public class FieldsFactory implements IFieldsFactory {
 
 	@Inject
 	FieldsFactory(IPreferencePanelAnnotationFilter annotationFilter,
-			IReflectionToolbox reflectionToolbox,
 			IInputFieldsFactory inputFieldFactory) {
 		this.annotationFilter = annotationFilter;
-		this.reflectionToolbox = reflectionToolbox;
 		this.inputFieldFactory = inputFieldFactory;
 
 		inputFieldImplementations = new HashMap<Class<? extends Annotation>, Class<? extends IInputField>>();
@@ -86,8 +81,8 @@ public class FieldsFactory implements IFieldsFactory {
 
 	private IInputField createInputField(Object parentObject, Object value,
 			Field field, Class<? extends IInputField> inputFieldClass) {
-		IInputField inputField = inputFieldFactory.create(reflectionToolbox,
-				this, inputFieldClass, parentObject, value, field);
+		IInputField inputField = inputFieldFactory.create(inputFieldClass,
+				parentObject, value, field);
 		return inputField;
 	}
 

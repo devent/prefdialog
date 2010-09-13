@@ -12,29 +12,32 @@ import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractInputFie
 
 public class ChildInputField extends AbstractInputField<ChildPanel> {
 
-	public ChildInputField(IReflectionToolbox reflectionToolbox,
-			Object parentObject, Object value, Field field,
-			IFieldsFactory fieldsFactory) {
-		super(reflectionToolbox, fieldsFactory, parentObject, value, field,
-				Child.class, new ChildPanel());
+	private IFieldsFactory fieldsFactory;
+
+	public ChildInputField(Object parentObject, Object value, Field field) {
+		super(parentObject, value, field, Child.class, new ChildPanel());
+	}
+
+	@Override
+	public void setup() {
+		super.setup();
 		addAllInputFields();
 	}
 
 	private void addAllInputFields() {
 		Object parentObject = getValue();
-		IFieldsFactory factory = getFieldsFactory();
 		IReflectionToolbox reflectionToolbox = getReflectionToolbox();
-		addAllInputFields(parentObject, factory, reflectionToolbox);
+		addAllInputFields(parentObject, reflectionToolbox);
 	}
 
-	private void addAllInputFields(Object parentObject, IFieldsFactory factory,
+	private void addAllInputFields(Object parentObject,
 			IReflectionToolbox reflectionToolbox) {
 		for (Field field : parentObject.getClass().getDeclaredFields()) {
 			try {
 				Object value = reflectionToolbox.getValueFrom(field,
 						parentObject);
-				IInputField inputField = factory.createField(parentObject,
-						field, value);
+				IInputField inputField = fieldsFactory.createField(
+						parentObject, field, value);
 				addInputField(inputField);
 			} catch (ReflectionError e) {
 				continue;
@@ -49,4 +52,7 @@ public class ChildInputField extends AbstractInputField<ChildPanel> {
 		getComponent().addField(inputField);
 	}
 
+	public void setFieldsFactory(IFieldsFactory fieldsFactory) {
+		this.fieldsFactory = fieldsFactory;
+	}
 }

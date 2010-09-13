@@ -135,10 +135,13 @@ public class PreferenceDialogController implements IPreferenceDialogController {
 
 					treeNodes.put(value, node.getPath());
 
-					Class<? extends IInputField> inputFieldClass = ChildInputField.class;
-					IInputField panel = inputFieldsFactory.create(
-							reflectionToolbox, fieldsFactory, inputFieldClass,
-							preferences, value, field);
+					Class<ChildInputField> inputFieldClass = ChildInputField.class;
+					ChildInputField panel = inputFieldsFactory.create(
+							inputFieldClass, preferences, value, field);
+					panel.setFieldsFactory(fieldsFactory);
+					panel.setReflectionToolbox(reflectionToolbox);
+					panel.setup();
+
 					preferencePanels.put(value, panel);
 				}
 			}

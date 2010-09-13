@@ -4,9 +4,7 @@ import java.lang.reflect.Field;
 
 public interface IInputFieldsFactory {
 
-	IInputField create(IReflectionToolbox reflectionToolboox,
-			IFieldsFactory fieldsFactory,
-			Class<? extends IInputField> inputFieldClass, Object parentObject,
-			Object value, Field field);
+	<T extends IInputField> T create(Class<T> inputFieldClass,
+			Object parentObject, Object value, Field field);
 
 }

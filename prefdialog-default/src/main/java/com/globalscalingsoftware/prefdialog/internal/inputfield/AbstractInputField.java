@@ -4,16 +4,15 @@ import java.awt.Component;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
-import com.globalscalingsoftware.prefdialog.IFieldsFactory;
 import com.globalscalingsoftware.prefdialog.IInputField;
 import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
 
 public abstract class AbstractInputField<ComponentType extends Component & IComponent>
 		implements IInputField {
 
-	private final ComponentType component;
+	private IReflectionToolbox reflectionToolbox;
 
-	private final IReflectionToolbox reflectionToolbox;
+	private final ComponentType component;
 
 	private final Object value;
 
@@ -23,24 +22,17 @@ public abstract class AbstractInputField<ComponentType extends Component & IComp
 
 	private final Class<? extends Annotation> annotationClass;
 
-	private final IFieldsFactory fieldsFactory;
-
-	public AbstractInputField(IReflectionToolbox reflectionToolbox,
-			IFieldsFactory fieldsFactory, Object parentObject, Object value,
-			Field field, Class<? extends Annotation> annotationClass,
-			ComponentType component) {
-		this.reflectionToolbox = reflectionToolbox;
-		this.fieldsFactory = fieldsFactory;
+	public AbstractInputField(Object parentObject, Object value, Field field,
+			Class<? extends Annotation> annotationClass, ComponentType component) {
 		this.parentObject = parentObject;
 		this.value = value;
 		this.field = field;
 		this.annotationClass = annotationClass;
 		this.component = component;
-
-		setupComponent();
 	}
 
-	private void setupComponent() {
+	@Override
+	public void setup() {
 		component.setFieldName(getFieldName());
 		component.setValue(value);
 		setupFieldWidth();
@@ -58,12 +50,12 @@ public abstract class AbstractInputField<ComponentType extends Component & IComp
 				Double.class, a);
 	}
 
-	public IReflectionToolbox getReflectionToolbox() {
-		return reflectionToolbox;
+	public void setReflectionToolbox(IReflectionToolbox reflectionToolbox) {
+		this.reflectionToolbox = reflectionToolbox;
 	}
 
-	public IFieldsFactory getFieldsFactory() {
-		return fieldsFactory;
+	public IReflectionToolbox getReflectionToolbox() {
+		return reflectionToolbox;
 	}
 
 	public Object getParentObject() {
@@ -75,7 +67,7 @@ public abstract class AbstractInputField<ComponentType extends Component & IComp
 	}
 
 	public String getFieldName() {
-		return reflectionToolbox.getFieldName(field);
+		return field.getName();
 	}
 
 	public Class<? extends Annotation> getAnnotationClass() {
