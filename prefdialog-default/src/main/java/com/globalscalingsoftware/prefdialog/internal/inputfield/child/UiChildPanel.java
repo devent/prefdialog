@@ -48,10 +48,9 @@ class UiChildPanel extends javax.swing.JPanel {
 	private void initGUI() {
 		try {
 			TableLayout thisLayout = new TableLayout(new double[][] {
-					{ 3.0, TableLayout.FILL, TableLayout.FILL,
-							TableLayout.FILL, 3.0 },
+					{ 3.0, TableLayout.FILL, 100.0, 100.0 },
 					{ 3.0, TableLayout.PREFERRED, TableLayout.PREFERRED,
-							TableLayout.FILL, TableLayout.PREFERRED, 3.0 } });
+							TableLayout.FILL, TableLayout.PREFERRED } });
 			thisLayout.setHGap(5);
 			thisLayout.setVGap(5);
 			this.setLayout(thisLayout);
