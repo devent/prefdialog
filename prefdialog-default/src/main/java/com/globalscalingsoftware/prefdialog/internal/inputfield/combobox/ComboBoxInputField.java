@@ -3,22 +3,19 @@ package com.globalscalingsoftware.prefdialog.internal.inputfield.combobox;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
-import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.annotations.ComboBox;
 import com.globalscalingsoftware.prefdialog.annotations.ComboBoxElements;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractInputField;
 
 public class ComboBoxInputField extends AbstractInputField<ComboBoxPanel> {
 
-	public ComboBoxInputField(IReflectionToolbox reflectionToolbox,
-			Object parentObject, Object value, Field field) {
-		super(reflectionToolbox, parentObject, value, field, ComboBox.class,
-				new ComboBoxPanel());
-
-		setValuesToComponent();
+	public ComboBoxInputField(Object parentObject, Object value, Field field) {
+		super(parentObject, value, field, ComboBox.class, new ComboBoxPanel());
 	}
 
-	private void setValuesToComponent() {
+	@Override
+	public void setup() {
+		super.setup();
 		Object parentObject = getParentObject();
 		Field field = getField();
 		Object values = getValuesFromAnnotationIn(parentObject, field);
