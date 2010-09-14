@@ -26,10 +26,11 @@ import com.globalscalingsoftware.prefdialog.internal.inputfield.child.ChildInput
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
-public class PreferenceDialogController implements IPreferenceDialogController {
+public class PreferenceDialogController implements
+		IPreferenceDialogController<Options> {
 
 	private final IAnnotationDiscovery annotationDiscovery;
-	private Map<Object, IInputField> preferencePanels;
+	private final Map<Object, IInputField> preferencePanels;
 	private final IPreferenceDialog preferenceDialog;
 	private final Map<Object, TreeNode[]> treeNodes;
 	private final Object preferences;
@@ -38,6 +39,7 @@ public class PreferenceDialogController implements IPreferenceDialogController {
 	private final IInputFieldsFactory inputFieldsFactory;
 	private final IReflectionToolbox reflectionToolbox;
 	private final IFieldsFactory fieldsFactory;
+	protected Options option;
 
 	@Inject
 	PreferenceDialogController(IAnnotationDiscovery annotationDiscovery,
@@ -58,6 +60,7 @@ public class PreferenceDialogController implements IPreferenceDialogController {
 		this.fieldsFactory = fieldsFactory;
 		preferencePanels = new HashMap<Object, IInputField>();
 		treeNodes = new HashMap<Object, TreeNode[]>();
+		option = Options.CANCEL;
 	}
 
 	@Override
@@ -95,28 +98,25 @@ public class PreferenceDialogController implements IPreferenceDialogController {
 
 			@Override
 			public void run() {
+				option = Options.OK;
 				preferenceDialog.close();
-
-				Map<Object, IInputField> copy = copyPreferencePanels();
-				putValuesInto(copy);
-				preferencePanels = copy;
+				getValues();
 			}
 
-			private void putValuesInto(Map<Object, IInputField> copy) {
+			private void getValues() {
 				for (Map.Entry<Object, IInputField> entry : preferencePanels
 						.entrySet()) {
-					copy.put(entry.getKey(), entry.getValue());
+					IInputField inputField = entry.getValue();
+					inputField.getValue();
 				}
 			}
 
-			private Map<Object, IInputField> copyPreferencePanels() {
-				return new HashMap<Object, IInputField>(preferencePanels);
-			}
 		});
 		preferenceDialog.setCancelEvent(new Runnable() {
 
 			@Override
 			public void run() {
+				option = Options.CANCEL;
 				preferenceDialog.close();
 			}
 		});
@@ -137,8 +137,8 @@ public class PreferenceDialogController implements IPreferenceDialogController {
 					treeNodes.put(value, node.getPath());
 
 					Class<ChildInputField> inputFieldClass = ChildInputField.class;
-					AbstractChildInputField panel = inputFieldsFactory.create(
-							inputFieldClass, preferences, value, field);
+					AbstractChildInputField<?> panel = inputFieldsFactory
+							.create(inputFieldClass, preferences, value, field);
 					panel.setFieldsFactory(fieldsFactory);
 					panel.setReflectionToolbox(reflectionToolbox);
 					panel.setup();
@@ -150,4 +150,8 @@ public class PreferenceDialogController implements IPreferenceDialogController {
 		annotationDiscovery.discover(filter, preferences, listener);
 	}
 
+	@Override
+	public Options getOption() {
+		return option;
+	}
 }

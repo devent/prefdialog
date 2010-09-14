@@ -71,8 +71,5 @@ class PreferenceDialogPreferedWidthTest extends AbstractPreferenceTest {
 	void testDialogClickOk() {
 		def controller = injector.getInstance(IPreferenceDialogController)
 		controller.openDialog()
-		assertThat preferences.general.name, is("name")
-		assertThat preferences.general.fields, is(10)
-		assertThat preferences.general.automaticSave, is(true)
 	}
 }

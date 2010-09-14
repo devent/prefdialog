@@ -1,8 +1,8 @@
 package com.globalscalingsoftware.prefdialog;
 
-
-public interface IPreferenceDialogController {
+public interface IPreferenceDialogController<T extends Enum<?>> {
 
 	void openDialog();
 
+	T getOption();
 }

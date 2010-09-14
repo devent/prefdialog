@@ -1,6 +1,5 @@
 package com.globalscalingsoftware.prefdialog.internal.inputfield
 
-import java.util.List;
 
 
 
@@ -10,20 +9,15 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.globalscalingsoftware.prefdialog.IPreferenceDialogController;
-import com.globalscalingsoftware.prefdialog.annotations.Checkbox;
 import com.globalscalingsoftware.prefdialog.annotations.Child;
-import com.globalscalingsoftware.prefdialog.annotations.ComboBox 
-import com.globalscalingsoftware.prefdialog.annotations.ComboBoxElements 
-import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField;
-import com.globalscalingsoftware.prefdialog.annotations.RadioButton 
 import com.globalscalingsoftware.prefdialog.annotations.TextField;
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest;
+import com.globalscalingsoftware.prefdialog.internal.Options;
 import com.globalscalingsoftware.prefdialog.internal.PreferencesDialogInjectorFactory 
-import com.globalscalingsoftware.prefdialog.internal.radiobutton.Colors;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
-class PreferenceDialogTest extends AbstractPreferenceTest {
+class PreferenceDialogOkTest extends AbstractPreferenceTest {
 	
 	static class Preferences {
 		
@@ -33,23 +27,8 @@ class PreferenceDialogTest extends AbstractPreferenceTest {
 	
 	static class General {
 		
-		@TextField(validator=NotEmptyStringValidator, validatorText="Must not be empty")
+		@TextField
 		String name = ""
-		
-		@FormattedTextField(validator=FieldsValidator, validatorText="Must be a number and between 2 and 100")
-		int fields = 4
-		
-		@Checkbox
-		boolean automaticSave = false
-		
-		@RadioButton(columns=2)
-		Colors colors = Colors.BLACK
-		
-		@ComboBoxElements("combobox1")
-		List<String> comboBoxElements = ["first element", "second element", "third element"]
-		
-		@ComboBox("combobox1")
-		String comboBox
 		
 		@Override
 		public String toString() {
@@ -71,5 +50,9 @@ class PreferenceDialogTest extends AbstractPreferenceTest {
 	void testDialogClickOk() {
 		def controller = injector.getInstance(IPreferenceDialogController)
 		controller.openDialog()
+		
+		def option = controller.getOption()
+		assertThat option, is(Options.OK)
+		assertThat preferences.general.name, is("name")
 	}
 }

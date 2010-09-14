@@ -90,8 +90,15 @@ public abstract class AbstractChildInputField<ComponentType extends Component & 
 		for (Field field : inputFields.keySet()) {
 			IInputField inputField = inputFields.get(field);
 			Object value = inputField.getValue();
-			getReflectionToolbox().setValueTo(field, getValue(), value);
+			Object parentObject = super.getValue();
+			getReflectionToolbox().setValueTo(field, parentObject, value);
 		}
+	}
+
+	@Override
+	public Object getValue() {
+		applyAllInput();
+		return super.getValue();
 	}
 
 	public void setFieldsFactory(IFieldsFactory fieldsFactory) {
