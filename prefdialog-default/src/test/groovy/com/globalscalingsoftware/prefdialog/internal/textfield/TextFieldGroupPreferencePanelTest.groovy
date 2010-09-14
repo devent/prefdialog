@@ -7,7 +7,6 @@ import static org.hamcrest.Matchers.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.globalscalingsoftware.prefdialog.IPreferencePanelFactory 
 import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.annotations.TextField;
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest 
@@ -26,8 +25,14 @@ class TextFieldGroupPreferencePanelTest extends AbstractPreferenceTest {
 	
 	static class General {
 		
+		@TextField
+		String preGroup = ""
+		
 		@com.globalscalingsoftware.prefdialog.annotations.Group
-		Group group = new Group()
+		Group group1 = new Group()
+		
+		@com.globalscalingsoftware.prefdialog.annotations.Group
+		Group group2 = new Group()
 		
 		@Override
 		public String toString() {
@@ -59,11 +64,7 @@ class TextFieldGroupPreferencePanelTest extends AbstractPreferenceTest {
 	
 	@Test
 	void testPanelClickApplyAndClose() {
-		def factory = getInjector().getInstance(IPreferencePanelFactory)
-		def controller = factory.create(parentValue, field)
-		controller.setupPanel()
-		
-		createDialog({ controller.getPanel() })
+		def filed = createField(injector, preferences, field, parentValue)
 		assertThat preferences.general.group.textField1, is("name")
 	}
 }

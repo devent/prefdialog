@@ -19,10 +19,10 @@ import com.globalscalingsoftware.prefdialog.annotations.TextField;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.button.CheckboxInputField;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.button.RadioButtonInputField;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.ChildInputField;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.child.GroupInputField;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.combobox.ComboBoxInputField;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.formattedtextfield.FormattedTextFieldInputField;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.formattedtextfield.TextFieldInputField;
-import com.globalscalingsoftware.prefdialog.internal.inputfield.group.GroupInputField;
 import com.google.inject.Inject;
 
 public class FieldsFactory implements IFieldsFactory {

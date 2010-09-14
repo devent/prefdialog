@@ -8,57 +8,25 @@ import java.awt.Font;
 import javax.swing.Action;
 
 import com.globalscalingsoftware.prefdialog.IInputField;
-import com.globalscalingsoftware.prefdialog.internal.RunnableActionEvent;
 
 @SuppressWarnings("serial")
-public class ChildPanel extends UiChildPanel implements IChildComponent {
-
-	private final RunnableActionEvent applyEvent;
-
-	private final RunnableActionEvent restoreEvent;
+public class GroupPanel extends UiGroupPanel implements IChildComponent {
 
 	private Object value;
 
-	public ChildPanel() {
-		applyEvent = new RunnableActionEvent();
-		restoreEvent = new RunnableActionEvent();
+	public GroupPanel() {
 		setupPanel();
 	}
 
 	private void setupPanel() {
-		setBoldFontForChildLabel();
-		setupActions();
+		setBoldFontForGroupLabel();
 	}
 
-	private void setBoldFontForChildLabel() {
-		Font font = getChildLabel().getFont();
-		getChildLabel().setFont(
+	private void setBoldFontForGroupLabel() {
+		Font font = getGroupLabel().getFont();
+		getGroupLabel().setFont(
 				new Font(font.getFamily(), font.getStyle() | Font.BOLD, font
 						.getSize()));
-	}
-
-	private void setupActions() {
-		getApplyButton().addActionListener(applyEvent);
-		getRestoreButton().addActionListener(restoreEvent);
-	}
-
-	@Override
-	public void setApplyAction(Action a) {
-		getApplyButton().setAction(a);
-	}
-
-	@Override
-	public void setApplyEvent(Runnable applyEvent) {
-		this.applyEvent.setEvent(applyEvent);
-	}
-
-	@Override
-	public void setRestoreAction(Action a) {
-		getRestoreButton().setAction(a);
-	}
-
-	public void setRestoreEvent(Runnable restoreEvent) {
-		this.restoreEvent.setEvent(restoreEvent);
 	}
 
 	@Override
@@ -69,7 +37,7 @@ public class ChildPanel extends UiChildPanel implements IChildComponent {
 
 	@Override
 	public void setFieldName(String name) {
-		getChildLabel().setText(name);
+		getGroupLabel().setText(name);
 	}
 
 	@Override
@@ -82,6 +50,7 @@ public class ChildPanel extends UiChildPanel implements IChildComponent {
 		return value;
 	}
 
+	@Override
 	public void addField(IInputField inputField) {
 		int row = addRowToFieldsLayout();
 		getFieldsPanel().add(inputField.getComponent(), format("0, %d", row));
@@ -96,4 +65,17 @@ public class ChildPanel extends UiChildPanel implements IChildComponent {
 		repaint();
 		return row;
 	}
+
+	@Override
+	public void setApplyEvent(Runnable applyEvent) {
+	}
+
+	@Override
+	public void setApplyAction(Action a) {
+	}
+
+	@Override
+	public void setRestoreAction(Action a) {
+	}
+
 }

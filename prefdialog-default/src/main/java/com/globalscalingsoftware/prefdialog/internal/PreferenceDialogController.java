@@ -21,6 +21,7 @@ import com.globalscalingsoftware.prefdialog.IPreferenceDialogAnnotationFilter;
 import com.globalscalingsoftware.prefdialog.IPreferenceDialogController;
 import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.annotations.Child;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.child.AbstractChildInputField;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.ChildInputField;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
@@ -136,7 +137,7 @@ public class PreferenceDialogController implements IPreferenceDialogController {
 					treeNodes.put(value, node.getPath());
 
 					Class<ChildInputField> inputFieldClass = ChildInputField.class;
-					ChildInputField panel = inputFieldsFactory.create(
+					AbstractChildInputField panel = inputFieldsFactory.create(
 							inputFieldClass, preferences, value, field);
 					panel.setFieldsFactory(fieldsFactory);
 					panel.setReflectionToolbox(reflectionToolbox);
