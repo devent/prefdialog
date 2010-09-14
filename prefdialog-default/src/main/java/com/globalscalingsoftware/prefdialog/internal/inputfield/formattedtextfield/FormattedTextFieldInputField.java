@@ -5,18 +5,16 @@ import java.lang.reflect.Field;
 import javax.swing.JFormattedTextField;
 
 import com.globalscalingsoftware.prefdialog.IInputField;
-import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.IValidator;
 import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField;
 
 public class FormattedTextFieldInputField extends AbstractTextField implements
 		IInputField {
 
-	public FormattedTextFieldInputField(IReflectionToolbox reflectionToolbox,
-			Object parentObject, Object value, Field field) {
-		super(reflectionToolbox, parentObject, value, field,
-				FormattedTextField.class, new ValidatingFormattedTextField(
-						new JFormattedTextField()));
+	public FormattedTextFieldInputField(Object parentObject, Object value,
+			Field field) {
+		super(parentObject, value, field, FormattedTextField.class,
+				new ValidatingFormattedTextField(new JFormattedTextField()));
 	}
 
 	@Override

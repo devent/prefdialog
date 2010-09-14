@@ -4,7 +4,6 @@ import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 import org.junit.Before;
 import org.junit.Test;
-import com.globalscalingsoftware.prefdialog.IPreferencePanelFactory 
 import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField;
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest 
@@ -53,11 +52,7 @@ class FormattedTextFieldValidatedPreferencePanelTest extends AbstractPreferenceT
 	
 	@Test
 	void testPanelClickApplyAndClose() {
-		def factory = getInjector().getInstance(IPreferencePanelFactory)
-		def controller = factory.create(parentValue, field)
-		controller.setupPanel()
-		
-		createDialog({ controller.getPanel() })
+		def filed = createField(injector, preferences, field, parentValue)
 		assertThat preferences.general.fields, is(10)
 	}
 }
