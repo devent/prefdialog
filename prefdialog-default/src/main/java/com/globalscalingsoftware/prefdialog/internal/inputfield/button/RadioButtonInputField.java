@@ -3,22 +3,23 @@ package com.globalscalingsoftware.prefdialog.internal.inputfield.button;
 import java.lang.reflect.Field;
 
 import com.globalscalingsoftware.prefdialog.IInputField;
-import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.annotations.RadioButton;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractInputField;
 
 public class RadioButtonInputField extends
 		AbstractInputField<RadioButtonsPanel> implements IInputField {
 
-	public RadioButtonInputField(IReflectionToolbox reflectionToolbox,
-			Object parentObject, Object value, Field field) {
-		super(reflectionToolbox, parentObject, value, field, RadioButton.class,
-				new RadioButtonsPanel());
+	private final Object value;
 
-		setupComponent(value);
+	public RadioButtonInputField(Object parentObject, Object value, Field field) {
+		super(parentObject, value, field, RadioButton.class,
+				new RadioButtonsPanel());
+		this.value = value;
 	}
 
-	private void setupComponent(Object value) {
+	@Override
+	public void setup() {
+		super.setup();
 		setupEnumFields(value);
 		setupColumns();
 	}

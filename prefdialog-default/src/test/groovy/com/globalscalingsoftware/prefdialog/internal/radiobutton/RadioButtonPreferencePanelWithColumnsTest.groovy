@@ -2,7 +2,6 @@ package com.globalscalingsoftware.prefdialog.internal.radiobutton
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
-import com.globalscalingsoftware.prefdialog.IPreferencePanelFactory 
 import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.annotations.RadioButton 
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest;
@@ -47,11 +46,7 @@ class RadioButtonPreferencePanelWithColumnsTest extends AbstractPreferenceTest {
 	
 	@Test
 	void testPanelClickApplyAndClose() {
-		def factory = injector.getInstance(IPreferencePanelFactory)
-		def controller = factory.create(parentValue, field)
-		controller.setupPanel()
-		
-		createDialog({ controller.getPanel() })
+		def filed = createField(injector, preferences, field, parentValue)
 		assertThat preferences.general.colors, is(Colors.BLUE)
 	}
 }
