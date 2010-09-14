@@ -46,17 +46,19 @@ public class ChildInputField extends AbstractInputField<ChildPanel> {
 						parentObject);
 				IInputField inputField = fieldsFactory.createField(
 						parentObject, field, value);
-				addInputField(field, inputField);
+				addInputField(field, (AbstractInputField<?>) inputField);
 			} catch (ReflectionError e) {
 				continue;
 			}
 		}
 	}
 
-	private void addInputField(Field field, IInputField inputField) {
+	private void addInputField(Field field, AbstractInputField<?> inputField) {
 		if (inputField == null) {
 			return;
 		}
+		inputField.setReflectionToolbox(getReflectionToolbox());
+		inputField.setup();
 		getComponent().addField(inputField);
 		inputFields.put(field, inputField);
 	}
