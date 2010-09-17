@@ -3,6 +3,7 @@ package com.globalscalingsoftware.prefdialog.internal;
 import info.clearthought.layout.TableLayout;
 
 import java.awt.BorderLayout;
+import java.awt.Frame;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -49,8 +50,8 @@ class UiPreferencesDialog extends javax.swing.JDialog {
 		});
 	}
 
-	public UiPreferencesDialog(JFrame frame) {
-		super(frame);
+	public UiPreferencesDialog(Frame owner) {
+		super(owner);
 		initGUI();
 	}
 

@@ -1,8 +1,9 @@
 package com.globalscalingsoftware.prefdialog;
 
+import java.awt.Frame;
 
 public interface IPreferenceDialogController {
 
-	void openDialog();
+	void openDialog(Frame owner);
 
 }

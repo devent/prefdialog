@@ -1,9 +1,9 @@
 package com.globalscalingsoftware.prefdialog.internal;
 
 import java.awt.Component;
+import java.awt.Frame;
 
 import javax.swing.Action;
-import javax.swing.JFrame;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -15,7 +15,6 @@ import com.globalscalingsoftware.prefdialog.Event;
 import com.globalscalingsoftware.prefdialog.ICancelAction;
 import com.globalscalingsoftware.prefdialog.IOkAction;
 import com.globalscalingsoftware.prefdialog.IPreferenceDialog;
-import com.globalscalingsoftware.prefdialog.IPreferenceDialogOwner;
 import com.google.inject.Inject;
 
 public class PreferenceDialog implements IPreferenceDialog {
@@ -24,7 +23,6 @@ public class PreferenceDialog implements IPreferenceDialog {
 	private final CallableTreeChildSelectedEvent childSelectedEvent;
 	private final RunnableActionEvent okEvent;
 	private final RunnableActionEvent cancelEvent;
-	private final JFrame owner;
 	private final Action okAction;
 	private final Action cancelAction;
 	private DefaultMutableTreeNode rootNode;
@@ -32,9 +30,7 @@ public class PreferenceDialog implements IPreferenceDialog {
 	private TreePath selectedPath;
 
 	@Inject
-	PreferenceDialog(IPreferenceDialogOwner owner, IOkAction okAction,
-			ICancelAction cancelAction) {
-		this.owner = (JFrame) owner;
+	PreferenceDialog(IOkAction okAction, ICancelAction cancelAction) {
 		this.okAction = (Action) okAction;
 		this.cancelAction = (Action) cancelAction;
 		childSelectedEvent = new CallableTreeChildSelectedEvent();
@@ -43,7 +39,7 @@ public class PreferenceDialog implements IPreferenceDialog {
 	}
 
 	@Override
-	public void open() {
+	public void open(Frame owner) {
 		uiPreferencesDialog = new UiPreferencesDialog(owner);
 		uiPreferencesDialog.getOkButton().setAction(okAction);
 		uiPreferencesDialog.getOkButton().addActionListener(okEvent);

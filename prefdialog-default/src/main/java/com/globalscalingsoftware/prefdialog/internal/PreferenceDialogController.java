@@ -1,5 +1,6 @@
 package com.globalscalingsoftware.prefdialog.internal;
 
+import java.awt.Frame;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -61,11 +62,11 @@ public class PreferenceDialogController implements IPreferenceDialogController {
 	}
 
 	@Override
-	public void openDialog() {
+	public void openDialog(Frame owner) {
 		setupRootNode();
 		setupEvents();
 		setupPreferencesStart();
-		preferenceDialog.open();
+		preferenceDialog.open(owner);
 	}
 
 	private void setupRootNode() {
@@ -137,8 +138,8 @@ public class PreferenceDialogController implements IPreferenceDialogController {
 					treeNodes.put(value, node.getPath());
 
 					Class<ChildInputField> inputFieldClass = ChildInputField.class;
-					AbstractChildInputField panel = inputFieldsFactory.create(
-							inputFieldClass, preferences, value, field);
+					AbstractChildInputField<?> panel = inputFieldsFactory
+							.create(inputFieldClass, preferences, value, field);
 					panel.setFieldsFactory(fieldsFactory);
 					panel.setReflectionToolbox(reflectionToolbox);
 					panel.setup();
