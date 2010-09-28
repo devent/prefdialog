@@ -4,7 +4,7 @@ import static java.lang.String.format;
 
 import javax.swing.JTextField;
 
-import com.globalscalingsoftware.prefdialog.IValidator;
+import com.globalscalingsoftware.prefdialog.Validator;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractLabelFieldPanel;
 
 @SuppressWarnings("serial")
@@ -49,7 +49,7 @@ class TextFieldPanel extends AbstractLabelFieldPanel<JTextField> {
 		textField.addValidListener(l);
 	}
 
-	public void setValidator(IValidator<?> validator) {
+	public void setValidator(Validator<?> validator) {
 		textField.setValidator(validator);
 	}
 

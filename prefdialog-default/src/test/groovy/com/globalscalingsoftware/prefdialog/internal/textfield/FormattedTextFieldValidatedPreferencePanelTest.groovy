@@ -1,5 +1,5 @@
 package com.globalscalingsoftware.prefdialog.internal.textfield
-import com.globalscalingsoftware.prefdialog.IValidator;
+import com.globalscalingsoftware.prefdialog.Validator;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 import org.junit.Before;
@@ -11,7 +11,7 @@ import com.globalscalingsoftware.prefdialog.internal.PreferencesDialogInjectorFa
 
 class FormattedTextFieldValidatedPreferencePanelTest extends AbstractPreferenceTest {
 	
-	static class FieldsValidator implements IValidator<Integer> {
+	static class FieldsValidator implements Validator<Integer> {
 		public boolean isValid(Integer value) {
 			value >= 2 && value <= 100
 		}

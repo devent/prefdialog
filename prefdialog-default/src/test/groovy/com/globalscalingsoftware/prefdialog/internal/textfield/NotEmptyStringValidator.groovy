@@ -1,8 +1,8 @@
 package com.globalscalingsoftware.prefdialog.internal.textfield
 
-import com.globalscalingsoftware.prefdialog.IValidator;
+import com.globalscalingsoftware.prefdialog.Validator;
 
-class NotEmptyStringValidator implements IValidator<String> {
+class NotEmptyStringValidator implements Validator<String> {
 	
 	@Override
 	public boolean isValid(String value) {

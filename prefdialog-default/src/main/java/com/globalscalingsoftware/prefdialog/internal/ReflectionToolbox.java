@@ -10,7 +10,7 @@ import java.lang.reflect.Field;
 import org.fest.reflect.exception.ReflectionError;
 
 import com.globalscalingsoftware.annotations.Stateless;
-import com.globalscalingsoftware.prefdialog.IValidator;
+import com.globalscalingsoftware.prefdialog.Validator;
 
 @Stateless
 public class ReflectionToolbox {
@@ -76,7 +76,7 @@ public class ReflectionToolbox {
 		}
 	}
 
-	static class NoneValidator implements IValidator<Object> {
+	static class NoneValidator implements Validator<Object> {
 
 		@Override
 		public boolean isValid(Object value) {

@@ -7,7 +7,7 @@ import static org.hamcrest.Matchers.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.globalscalingsoftware.prefdialog.IValidator 
+import com.globalscalingsoftware.prefdialog.Validator 
 import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.annotations.TextField;
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest 
@@ -15,7 +15,7 @@ import com.globalscalingsoftware.prefdialog.internal.PreferencesDialogInjectorFa
 
 class TextFieldValidatedPreferencePanelTest extends AbstractPreferenceTest {
 	
-	static class Validator implements IValidator<String> {
+	static class StringValidator implements Validator<String> {
 		
 		public boolean isValid(String value) {
 			value != null && !value.trim().isEmpty()
@@ -24,7 +24,7 @@ class TextFieldValidatedPreferencePanelTest extends AbstractPreferenceTest {
 	
 	static class General {
 		
-		@TextField(validator=Validator, validatorText="Can not be empty")
+		@TextField(validator=StringValidator, validatorText="Can not be empty")
 		String name = ""
 		
 		@Override

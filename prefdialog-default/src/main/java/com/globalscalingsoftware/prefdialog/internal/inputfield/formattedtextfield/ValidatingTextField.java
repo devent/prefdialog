@@ -14,7 +14,7 @@ import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.event.EventListenerList;
 
-import com.globalscalingsoftware.prefdialog.IValidator;
+import com.globalscalingsoftware.prefdialog.Validator;
 
 class ValidatingTextField<TextFieldType extends JTextField> {
 
@@ -24,7 +24,7 @@ class ValidatingTextField<TextFieldType extends JTextField> {
 	private final Border normalBorder;
 
 	@SuppressWarnings("rawtypes")
-	private IValidator validator;
+	private Validator validator;
 
 	private Object value;
 	private final TextFieldType field;
@@ -39,7 +39,7 @@ class ValidatingTextField<TextFieldType extends JTextField> {
 		setupListeners();
 	}
 
-	public void setValidator(IValidator<?> validator) {
+	public void setValidator(Validator<?> validator) {
 		this.validator = validator;
 	}
 

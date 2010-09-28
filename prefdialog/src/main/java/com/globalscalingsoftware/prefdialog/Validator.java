@@ -1,10 +1,10 @@
 package com.globalscalingsoftware.prefdialog;
 
-public interface IValidator<T> {
+public interface Validator<T> {
 
 	public static final String EMPTY_STRING = "";
 
-	public static class AlwaysValidVaidator implements IValidator<Object> {
+	public static class AlwaysValidVaidator implements Validator<Object> {
 
 		@Override
 		public boolean isValid(Object value) {
