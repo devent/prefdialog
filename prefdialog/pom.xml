@@ -4,11 +4,11 @@
 	<parent>
 		<artifactId>prefdialog-parent</artifactId>
 		<groupId>com.globalscalingsoftware.prefdialog</groupId>
-		<version>0.1.3-SNAPSHOT</version>
+		<version>0.1.4-SNAPSHOT</version>
 	</parent>
 	<groupId>com.globalscalingsoftware.prefdialog</groupId>
 	<artifactId>prefdialog</artifactId>
-	<version>0.1.3-SNAPSHOT</version>
+	<version>0.1.4-SNAPSHOT</version>
 	<dependencies>
 	</dependencies>
 </project>
