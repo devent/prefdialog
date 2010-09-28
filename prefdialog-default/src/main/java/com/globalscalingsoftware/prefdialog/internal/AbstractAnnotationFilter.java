@@ -4,10 +4,9 @@ import java.lang.annotation.Annotation;
 import java.util.List;
 
 import com.globalscalingsoftware.annotations.Stateless;
-import com.globalscalingsoftware.prefdialog.IAnnotationFilter;
 
 @Stateless
-public abstract class AbstractAnnotationFilter implements IAnnotationFilter {
+public abstract class AbstractAnnotationFilter {
 
 	private final List<Class<? extends Annotation>> annotations;
 
@@ -16,7 +15,6 @@ public abstract class AbstractAnnotationFilter implements IAnnotationFilter {
 		this.annotations = (List<Class<? extends Annotation>>) annotations;
 	}
 
-	@Override
 	public boolean accept(Annotation annotation) {
 		for (Class<? extends Annotation> a : annotations) {
 			if (a.isInstance(annotation)) {

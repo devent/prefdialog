@@ -11,9 +11,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 
 import com.globalscalingsoftware.prefdialog.Event;
-import com.globalscalingsoftware.prefdialog.IAnnotationDiscovery;
-import com.globalscalingsoftware.prefdialog.IAnnotationFilter;
-import com.globalscalingsoftware.prefdialog.IDiscoveredListener;
 import com.globalscalingsoftware.prefdialog.IInputField;
 import com.globalscalingsoftware.prefdialog.IPreferenceDialog;
 import com.globalscalingsoftware.prefdialog.IPreferenceDialogController;
@@ -25,19 +22,19 @@ import com.google.inject.name.Named;
 
 public class PreferenceDialogController implements IPreferenceDialogController {
 
-	private final IAnnotationDiscovery annotationDiscovery;
+	private final AnnotationDiscovery annotationDiscovery;
 	private Map<Object, IInputField> preferencePanels;
 	private final IPreferenceDialog preferenceDialog;
 	private final Map<Object, TreeNode[]> treeNodes;
 	private final Object preferences;
 	private final Object preferencesStart;
-	private final IAnnotationFilter filter;
+	private final AbstractAnnotationFilter filter;
 	private final InputFieldsFactory inputFieldsFactory;
 	private final ReflectionToolbox reflectionToolbox;
 	private final FieldsFactory fieldsFactory;
 
 	@Inject
-	PreferenceDialogController(IAnnotationDiscovery annotationDiscovery,
+	PreferenceDialogController(AnnotationDiscovery annotationDiscovery,
 			PreferenceDialogAnnotationsFilter filter,
 			ReflectionToolbox reflectionToolbox,
 			IPreferenceDialog preferenceDialog,
@@ -120,7 +117,7 @@ public class PreferenceDialogController implements IPreferenceDialogController {
 
 	private void discoverAnnotations(final Object preferences,
 			final DefaultMutableTreeNode root) {
-		IDiscoveredListener listener = new IDiscoveredListener() {
+		DiscoveredListener listener = new DiscoveredListener() {
 
 			@Override
 			public void fieldAnnotationDiscovered(Field field, Object value,
