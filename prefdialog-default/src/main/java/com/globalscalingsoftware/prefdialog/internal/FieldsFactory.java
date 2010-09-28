@@ -7,7 +7,6 @@ import java.util.Map;
 
 import com.globalscalingsoftware.annotations.Stateless;
 import com.globalscalingsoftware.prefdialog.IInputField;
-import com.globalscalingsoftware.prefdialog.IPreferencePanelAnnotationFilter;
 import com.globalscalingsoftware.prefdialog.annotations.Checkbox;
 import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.annotations.ComboBox;
@@ -31,10 +30,10 @@ public class FieldsFactory {
 
 	private final Map<Class<? extends Annotation>, Class<? extends IInputField>> inputFieldImplementations;
 
-	private final IPreferencePanelAnnotationFilter annotationFilter;
+	private final PreferencePanelAnnotationFilter annotationFilter;
 
 	@Inject
-	FieldsFactory(IPreferencePanelAnnotationFilter annotationFilter,
+	FieldsFactory(PreferencePanelAnnotationFilter annotationFilter,
 			InputFieldsFactory inputFieldFactory) {
 		this.annotationFilter = annotationFilter;
 		this.inputFieldFactory = inputFieldFactory;

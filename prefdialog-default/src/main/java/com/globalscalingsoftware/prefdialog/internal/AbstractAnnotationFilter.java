@@ -3,14 +3,17 @@ package com.globalscalingsoftware.prefdialog.internal;
 import java.lang.annotation.Annotation;
 import java.util.List;
 
+import com.globalscalingsoftware.annotations.Stateless;
 import com.globalscalingsoftware.prefdialog.IAnnotationFilter;
 
-abstract class AbstractAnnotationFilter implements IAnnotationFilter {
+@Stateless
+public abstract class AbstractAnnotationFilter implements IAnnotationFilter {
 
-	private List<Class<? extends Annotation>> annotations;
+	private final List<Class<? extends Annotation>> annotations;
 
-	public void setAnnotations(List<Class<? extends Annotation>> annotations) {
-		this.annotations = annotations;
+	@SuppressWarnings("unchecked")
+	public AbstractAnnotationFilter(List<?> annotations) {
+		this.annotations = (List<Class<? extends Annotation>>) annotations;
 	}
 
 	@Override
