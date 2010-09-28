@@ -14,10 +14,9 @@ import javax.swing.tree.TreeSelectionModel;
 import com.globalscalingsoftware.prefdialog.Event;
 import com.globalscalingsoftware.prefdialog.ICancelAction;
 import com.globalscalingsoftware.prefdialog.IOkAction;
-import com.globalscalingsoftware.prefdialog.IPreferenceDialog;
 import com.google.inject.Inject;
 
-public class PreferenceDialog implements IPreferenceDialog {
+public class PreferenceDialog {
 
 	private UiPreferencesDialog uiPreferencesDialog;
 	private final CallableTreeChildSelectedEvent childSelectedEvent;
@@ -38,7 +37,6 @@ public class PreferenceDialog implements IPreferenceDialog {
 		cancelEvent = new RunnableActionEvent();
 	}
 
-	@Override
 	public void open(Frame owner) {
 		uiPreferencesDialog = new UiPreferencesDialog(owner);
 		uiPreferencesDialog.getOkButton().setAction(okAction);
@@ -63,17 +61,14 @@ public class PreferenceDialog implements IPreferenceDialog {
 		uiPreferencesDialog.setVisible(true);
 	}
 
-	@Override
 	public void setRootNode(DefaultMutableTreeNode root) {
 		this.rootNode = root;
 	}
 
-	@Override
 	public void setChildSelected(Event<Object> childSelected) {
 		this.childSelectedEvent.setEvent(childSelected);
 	}
 
-	@Override
 	public void setChildPanel(Component comp) {
 		this.childPanel = comp;
 		if (uiPreferencesDialog != null) {
@@ -81,22 +76,18 @@ public class PreferenceDialog implements IPreferenceDialog {
 		}
 	}
 
-	@Override
 	public void setSelectedChild(TreeNode[] path) {
 		this.selectedPath = new TreePath(path);
 	}
 
-	@Override
 	public void setOkEvent(Runnable okEvent) {
 		this.okEvent.setEvent(okEvent);
 	}
 
-	@Override
 	public void setCancelEvent(Runnable cancelEvent) {
 		this.cancelEvent.setEvent(cancelEvent);
 	}
 
-	@Override
 	public void close() {
 		uiPreferencesDialog.setVisible(false);
 	}

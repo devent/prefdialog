@@ -1,6 +1,5 @@
 package com.globalscalingsoftware.prefdialog.internal.module;
 
-import com.globalscalingsoftware.prefdialog.IPreferenceDialog;
 import com.globalscalingsoftware.prefdialog.IPreferenceDialogController;
 import com.globalscalingsoftware.prefdialog.internal.AnnotationDiscovery;
 import com.globalscalingsoftware.prefdialog.internal.FieldsFactory;
@@ -26,7 +25,7 @@ public class PreferenceDialogModule extends AbstractModule {
 		bind(PreferenceDialogAnnotationsFilter.class).asEagerSingleton();
 		bind(IPreferenceDialogController.class).to(
 				PreferenceDialogController.class);
-		bind(IPreferenceDialog.class).to(PreferenceDialog.class);
+		bind(PreferenceDialog.class);
 	}
 
 	private void bindPreferencePanel() {

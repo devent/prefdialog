@@ -12,7 +12,6 @@ import javax.swing.tree.TreeNode;
 
 import com.globalscalingsoftware.prefdialog.Event;
 import com.globalscalingsoftware.prefdialog.IInputField;
-import com.globalscalingsoftware.prefdialog.IPreferenceDialog;
 import com.globalscalingsoftware.prefdialog.IPreferenceDialogController;
 import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.AbstractChildInputField;
@@ -24,7 +23,7 @@ public class PreferenceDialogController implements IPreferenceDialogController {
 
 	private final AnnotationDiscovery annotationDiscovery;
 	private Map<Object, IInputField> preferencePanels;
-	private final IPreferenceDialog preferenceDialog;
+	private final PreferenceDialog preferenceDialog;
 	private final Map<Object, TreeNode[]> treeNodes;
 	private final Object preferences;
 	private final Object preferencesStart;
@@ -37,7 +36,7 @@ public class PreferenceDialogController implements IPreferenceDialogController {
 	PreferenceDialogController(AnnotationDiscovery annotationDiscovery,
 			PreferenceDialogAnnotationsFilter filter,
 			ReflectionToolbox reflectionToolbox,
-			IPreferenceDialog preferenceDialog,
+			PreferenceDialog preferenceDialog,
 			InputFieldsFactory inputFieldsFactory, FieldsFactory fieldsFactory,
 			@Named("preferences") Object preferences,
 			@Named("preferences_start") Object preferencesStart) {
