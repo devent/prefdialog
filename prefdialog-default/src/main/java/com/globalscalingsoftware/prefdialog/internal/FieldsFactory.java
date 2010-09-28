@@ -5,7 +5,7 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.globalscalingsoftware.prefdialog.IFieldsFactory;
+import com.globalscalingsoftware.annotations.Stateless;
 import com.globalscalingsoftware.prefdialog.IInputField;
 import com.globalscalingsoftware.prefdialog.IPreferencePanelAnnotationFilter;
 import com.globalscalingsoftware.prefdialog.annotations.Checkbox;
@@ -24,7 +24,8 @@ import com.globalscalingsoftware.prefdialog.internal.inputfield.formattedtextfie
 import com.globalscalingsoftware.prefdialog.internal.inputfield.formattedtextfield.TextFieldInputField;
 import com.google.inject.Inject;
 
-public class FieldsFactory implements IFieldsFactory {
+@Stateless
+public class FieldsFactory {
 
 	private final InputFieldsFactory inputFieldFactory;
 
@@ -51,7 +52,6 @@ public class FieldsFactory implements IFieldsFactory {
 		inputFieldImplementations.put(Child.class, ChildInputField.class);
 	}
 
-	@Override
 	public IInputField createField(Object parentObject, Field field,
 			Object value) {
 		Class<? extends IInputField> inputFieldClass = getInputFieldClassFrom(field);

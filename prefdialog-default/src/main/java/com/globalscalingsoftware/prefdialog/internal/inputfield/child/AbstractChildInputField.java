@@ -10,15 +10,15 @@ import javax.swing.Action;
 
 import org.fest.reflect.exception.ReflectionError;
 
-import com.globalscalingsoftware.prefdialog.IFieldsFactory;
 import com.globalscalingsoftware.prefdialog.IInputField;
 import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
+import com.globalscalingsoftware.prefdialog.internal.FieldsFactory;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractInputField;
 
 public abstract class AbstractChildInputField<ComponentType extends Component & IChildComponent>
 		extends AbstractInputField<ComponentType> {
 
-	private IFieldsFactory fieldsFactory;
+	private FieldsFactory fieldsFactory;
 
 	private final Map<Field, IInputField> inputFields;
 
@@ -94,7 +94,7 @@ public abstract class AbstractChildInputField<ComponentType extends Component & 
 		}
 	}
 
-	public void setFieldsFactory(IFieldsFactory fieldsFactory) {
+	public void setFieldsFactory(FieldsFactory fieldsFactory) {
 		this.fieldsFactory = fieldsFactory;
 	}
 
