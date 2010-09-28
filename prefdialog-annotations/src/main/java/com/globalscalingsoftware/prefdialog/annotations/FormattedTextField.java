@@ -7,7 +7,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import com.globalscalingsoftware.prefdialog.Validator;
-import com.globalscalingsoftware.prefdialog.validators.AlwaysValidValidator;
+import com.globalscalingsoftware.prefdialog.validators.AlwaysValid;
 
 @Target(FIELD)
 @Retention(RUNTIME)
@@ -15,7 +15,7 @@ public @interface FormattedTextField {
 
 	double width() default -1.0;
 
-	Class<? extends Validator<?>> validator() default AlwaysValidValidator.class;
+	Class<? extends Validator<?>> validator() default AlwaysValid.class;
 
 	String validatorText() default "";
 }

@@ -2,7 +2,7 @@ package com.globalscalingsoftware.prefdialog.validators;
 
 import com.globalscalingsoftware.prefdialog.Validator;
 
-public class AlwaysValidValidator implements Validator<Object> {
+public class AlwaysValid implements Validator<Object> {
 
 	@Override
 	public boolean isValid(Object value) {
