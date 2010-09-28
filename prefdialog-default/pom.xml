@@ -39,5 +39,10 @@
   		<artifactId>annotations-base</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
+  	<dependency>
+  		<groupId>com.globalscalingsoftware.prefdialog</groupId>
+  		<artifactId>prefdialog-annotations</artifactId>
+  		<version>0.1.3-SNAPSHOT</version>
+  	</dependency>
   </dependencies>
 </project>
