@@ -4,7 +4,7 @@ public interface Validator<T> {
 
 	public static final String EMPTY_STRING = "";
 
-	public static class AlwaysValidVaidator implements Validator<Object> {
+	public static class AlwaysValidValidator implements Validator<Object> {
 
 		@Override
 		public boolean isValid(Object value) {

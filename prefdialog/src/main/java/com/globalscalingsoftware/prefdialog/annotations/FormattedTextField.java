@@ -14,7 +14,7 @@ public @interface FormattedTextField {
 
 	double width() default -1.0;
 
-	Class<? extends Validator<?>> validator() default Validator.AlwaysValidVaidator.class;
+	Class<? extends Validator<?>> validator() default Validator.AlwaysValidValidator.class;
 
 	String validatorText() default Validator.EMPTY_STRING;
 }
