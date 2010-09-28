@@ -3,8 +3,8 @@ package com.globalscalingsoftware.prefdialog.internal.inputfield.formattedtextfi
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
-import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.IValidator;
+import com.globalscalingsoftware.prefdialog.internal.ReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractInputField;
 
 public abstract class AbstractTextField extends
@@ -29,7 +29,7 @@ public abstract class AbstractTextField extends
 
 	private String getValidatorTextFromFieldAnnotation() {
 		Annotation a = getField().getAnnotation(getAnnotationClass());
-		IReflectionToolbox reflectionToolbox = getReflectionToolbox();
+		ReflectionToolbox reflectionToolbox = getReflectionToolbox();
 		String text = reflectionToolbox.invokeMethodWithReturnType(
 				"validatorText", String.class, a);
 		return text;
@@ -61,7 +61,7 @@ public abstract class AbstractTextField extends
 	}
 
 	private Object createValidator(Annotation a) {
-		IReflectionToolbox reflectionToolbox = getReflectionToolbox();
+		ReflectionToolbox reflectionToolbox = getReflectionToolbox();
 		Class<?> validatorClass = reflectionToolbox.invokeMethodWithReturnType(
 				"validator", Class.class, a);
 		Object validator = reflectionToolbox.newInstance(validatorClass);

@@ -6,15 +6,14 @@ import java.lang.reflect.Field;
 import com.globalscalingsoftware.prefdialog.IAnnotationDiscovery;
 import com.globalscalingsoftware.prefdialog.IAnnotationFilter;
 import com.globalscalingsoftware.prefdialog.IDiscoveredListener;
-import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
 import com.google.inject.Inject;
 
 public class AnnotationDiscovery implements IAnnotationDiscovery {
 
-	private final IReflectionToolbox reflectionToolbox;
+	private final ReflectionToolbox reflectionToolbox;
 
 	@Inject
-	AnnotationDiscovery(IReflectionToolbox reflectionToolbox) {
+	AnnotationDiscovery(ReflectionToolbox reflectionToolbox) {
 		this.reflectionToolbox = reflectionToolbox;
 	}
 

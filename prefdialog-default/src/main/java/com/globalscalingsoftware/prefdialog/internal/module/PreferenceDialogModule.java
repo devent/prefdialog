@@ -3,7 +3,6 @@ package com.globalscalingsoftware.prefdialog.internal.module;
 import com.globalscalingsoftware.prefdialog.IAnnotationDiscovery;
 import com.globalscalingsoftware.prefdialog.IPreferenceDialog;
 import com.globalscalingsoftware.prefdialog.IPreferenceDialogController;
-import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.internal.AnnotationDiscovery;
 import com.globalscalingsoftware.prefdialog.internal.FieldsFactory;
 import com.globalscalingsoftware.prefdialog.internal.InputFieldsFactory;
@@ -19,7 +18,7 @@ public class PreferenceDialogModule extends AbstractModule {
 	@Override
 	protected void configure() {
 		bind(IAnnotationDiscovery.class).to(AnnotationDiscovery.class);
-		bind(IReflectionToolbox.class).to(ReflectionToolbox.class);
+		bind(ReflectionToolbox.class).asEagerSingleton();
 		bindPreferencePanel();
 		bindPreferenceDialog();
 	}

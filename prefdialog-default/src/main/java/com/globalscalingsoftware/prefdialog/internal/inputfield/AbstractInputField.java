@@ -5,12 +5,12 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
 import com.globalscalingsoftware.prefdialog.IInputField;
-import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
+import com.globalscalingsoftware.prefdialog.internal.ReflectionToolbox;
 
 public abstract class AbstractInputField<ComponentType extends Component & IComponent>
 		implements IInputField {
 
-	private IReflectionToolbox reflectionToolbox;
+	private ReflectionToolbox reflectionToolbox;
 
 	private final ComponentType component;
 
@@ -50,11 +50,11 @@ public abstract class AbstractInputField<ComponentType extends Component & IComp
 				Double.class, a);
 	}
 
-	public void setReflectionToolbox(IReflectionToolbox reflectionToolbox) {
+	public void setReflectionToolbox(ReflectionToolbox reflectionToolbox) {
 		this.reflectionToolbox = reflectionToolbox;
 	}
 
-	public IReflectionToolbox getReflectionToolbox() {
+	public ReflectionToolbox getReflectionToolbox() {
 		return reflectionToolbox;
 	}
 

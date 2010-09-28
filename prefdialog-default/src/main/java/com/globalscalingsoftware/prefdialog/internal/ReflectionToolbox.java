@@ -9,12 +9,12 @@ import java.lang.reflect.Field;
 
 import org.fest.reflect.exception.ReflectionError;
 
-import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
+import com.globalscalingsoftware.annotations.Stateless;
 import com.globalscalingsoftware.prefdialog.IValidator;
 
-public class ReflectionToolbox implements IReflectionToolbox {
+@Stateless
+public class ReflectionToolbox {
 
-	@Override
 	public Object getValueFrom(Field field, Object object) {
 		String name = getGetterName(field);
 		try {
@@ -44,7 +44,6 @@ public class ReflectionToolbox implements IReflectionToolbox {
 		return name;
 	}
 
-	@Override
 	public void setValueTo(Field field, Object object, Object value) {
 		String name = getSetterName(field);
 		invokeMethodWithParameters(name, field.getType(), object, value);
@@ -56,13 +55,11 @@ public class ReflectionToolbox implements IReflectionToolbox {
 		return name;
 	}
 
-	@Override
 	public void invokeMethodWithParameters(String name, Class<?> parameterType,
 			Object object, Object value) {
 		method(name).withParameterTypes(parameterType).in(object).invoke(value);
 	}
 
-	@Override
 	public <T> T invokeMethodWithReturnType(String methodName,
 			Class<? extends T> returnType, Object object) {
 		return method(methodName).withReturnType(returnType).in(object)
@@ -88,12 +85,10 @@ public class ReflectionToolbox implements IReflectionToolbox {
 
 	}
 
-	@Override
 	public String getFieldName(Field field) {
 		return field.getName();
 	}
 
-	@Override
 	public int getColumns(Field field) {
 		for (Annotation a : field.getAnnotations()) {
 			if (annotationHaveMethod(a, "columns")) {
@@ -104,7 +99,6 @@ public class ReflectionToolbox implements IReflectionToolbox {
 		return 1;
 	}
 
-	@Override
 	public <T> Object searchObjectWithAnnotationValueIn(Object parentObject,
 			Class<? extends Annotation> annotationClass, T value,
 			Class<? extends T> returnType) {
@@ -129,7 +123,6 @@ public class ReflectionToolbox implements IReflectionToolbox {
 		return invokeMethodWithReturnType("value", returnType, a);
 	}
 
-	@Override
 	public <T> T newInstance(Class<? extends T> objectClass,
 			Object... parameters) {
 		Class<?>[] parameterTypes = new Class[parameters.length];

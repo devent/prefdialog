@@ -17,7 +17,6 @@ import com.globalscalingsoftware.prefdialog.IDiscoveredListener;
 import com.globalscalingsoftware.prefdialog.IInputField;
 import com.globalscalingsoftware.prefdialog.IPreferenceDialog;
 import com.globalscalingsoftware.prefdialog.IPreferenceDialogController;
-import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.AbstractChildInputField;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.ChildInputField;
@@ -34,13 +33,13 @@ public class PreferenceDialogController implements IPreferenceDialogController {
 	private final Object preferencesStart;
 	private final IAnnotationFilter filter;
 	private final InputFieldsFactory inputFieldsFactory;
-	private final IReflectionToolbox reflectionToolbox;
+	private final ReflectionToolbox reflectionToolbox;
 	private final FieldsFactory fieldsFactory;
 
 	@Inject
 	PreferenceDialogController(IAnnotationDiscovery annotationDiscovery,
 			PreferenceDialogAnnotationsFilter filter,
-			IReflectionToolbox reflectionToolbox,
+			ReflectionToolbox reflectionToolbox,
 			IPreferenceDialog preferenceDialog,
 			InputFieldsFactory inputFieldsFactory, FieldsFactory fieldsFactory,
 			@Named("preferences") Object preferences,

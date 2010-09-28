@@ -11,8 +11,8 @@ import javax.swing.Action;
 import org.fest.reflect.exception.ReflectionError;
 
 import com.globalscalingsoftware.prefdialog.IInputField;
-import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.internal.FieldsFactory;
+import com.globalscalingsoftware.prefdialog.internal.ReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractInputField;
 
 public abstract class AbstractChildInputField<ComponentType extends Component & IChildComponent>
@@ -38,12 +38,12 @@ public abstract class AbstractChildInputField<ComponentType extends Component & 
 
 	private void addAllInputFields() {
 		Object parentObject = getValue();
-		IReflectionToolbox reflectionToolbox = getReflectionToolbox();
+		ReflectionToolbox reflectionToolbox = getReflectionToolbox();
 		addAllInputFields(parentObject, reflectionToolbox);
 	}
 
 	private void addAllInputFields(Object parentObject,
-			IReflectionToolbox reflectionToolbox) {
+			ReflectionToolbox reflectionToolbox) {
 		for (Field field : parentObject.getClass().getDeclaredFields()) {
 			try {
 				Object value = reflectionToolbox.getValueFrom(field,
