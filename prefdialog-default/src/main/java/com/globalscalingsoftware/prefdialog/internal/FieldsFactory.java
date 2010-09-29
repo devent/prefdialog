@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.globalscalingsoftware.annotations.Stateless;
 import com.globalscalingsoftware.prefdialog.InputField;
+import com.globalscalingsoftware.prefdialog.internal.reflection.FieldsAnnotationFilter;
 import com.google.inject.Inject;
 
 @Stateless

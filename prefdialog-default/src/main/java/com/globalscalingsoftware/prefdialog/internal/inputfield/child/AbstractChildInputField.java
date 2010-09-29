@@ -11,8 +11,8 @@ import org.fest.reflect.exception.ReflectionError;
 
 import com.globalscalingsoftware.prefdialog.InputField;
 import com.globalscalingsoftware.prefdialog.internal.FieldsFactory;
-import com.globalscalingsoftware.prefdialog.internal.ReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractDefaultInputField;
+import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbox;
 
 public abstract class AbstractChildInputField<ComponentType extends IChildComponent>
 		extends AbstractDefaultInputField<ComponentType> {

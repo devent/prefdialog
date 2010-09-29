@@ -1,4 +1,4 @@
-package com.globalscalingsoftware.prefdialog.internal;
+package com.globalscalingsoftware.prefdialog.internal.reflection;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;

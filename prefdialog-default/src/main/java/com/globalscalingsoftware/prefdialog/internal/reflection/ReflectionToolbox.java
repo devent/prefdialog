@@ -1,4 +1,4 @@
-package com.globalscalingsoftware.prefdialog.internal;
+package com.globalscalingsoftware.prefdialog.internal.reflection;
 
 import static java.lang.String.format;
 import static org.fest.reflect.core.Reflection.constructor;

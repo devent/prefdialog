@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.globalscalingsoftware.prefdialog.annotations.TextField;
+import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbox;
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;

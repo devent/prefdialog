@@ -4,8 +4,8 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
 import com.globalscalingsoftware.prefdialog.Validator;
-import com.globalscalingsoftware.prefdialog.internal.ReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractDefaultInputField;
+import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbox;
 
 public abstract class AbstractTextField extends
 		AbstractDefaultInputField<TextFieldPanel> {

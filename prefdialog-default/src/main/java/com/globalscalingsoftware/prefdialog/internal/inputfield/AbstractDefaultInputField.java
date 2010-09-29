@@ -5,7 +5,7 @@ import java.lang.reflect.Field;
 
 import com.globalscalingsoftware.prefdialog.AbstractInputField;
 import com.globalscalingsoftware.prefdialog.InputFieldComponent;
-import com.globalscalingsoftware.prefdialog.internal.ReflectionToolbox;
+import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbox;
 
 public abstract class AbstractDefaultInputField<ComponentType extends InputFieldComponent>
 		extends AbstractInputField<ComponentType> {

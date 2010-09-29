@@ -5,6 +5,8 @@ import java.lang.reflect.Field;
 import javax.swing.SwingUtilities 
 import javax.swing.UIManager;
 
+import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbox;
+
 
 import groovy.swing.SwingBuilder 
 
