@@ -7,7 +7,6 @@ import javax.swing.JTextField;
 import com.globalscalingsoftware.prefdialog.Validator;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractLabelFieldPanel;
 
-@SuppressWarnings("serial")
 class TextFieldPanel extends AbstractLabelFieldPanel<JTextField> {
 
 	private final ValidatingTextField<?> textField;

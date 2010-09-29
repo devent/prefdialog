@@ -10,7 +10,7 @@ import com.globalscalingsoftware.prefdialog.InputField;
 @Stateless
 public class InputFieldsFactory {
 
-	public <T extends InputField> T create(Class<T> inputFieldClass,
+	public <T extends InputField<?>> T create(Class<T> inputFieldClass,
 			Object parentObject, Object value, Field field) {
 		Class<?>[] parameterTypes = { Object.class, Object.class, Field.class };
 		return constructor().withParameterTypes(parameterTypes)

@@ -10,11 +10,17 @@ import com.globalscalingsoftware.prefdialog.InputField;
 import com.globalscalingsoftware.prefdialog.annotations.Checkbox;
 import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.annotations.ComboBox;
+import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField;
 import com.globalscalingsoftware.prefdialog.annotations.Group;
+import com.globalscalingsoftware.prefdialog.annotations.RadioButton;
+import com.globalscalingsoftware.prefdialog.annotations.TextField;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.button.CheckboxInputField;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.button.RadioButtonInputField;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.ChildInputField;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.GroupInputField;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.combobox.ComboBoxInputField;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.formattedtextfield.FormattedTextFieldInputField;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.formattedtextfield.TextFieldInputField;
 import com.google.inject.Inject;
 
 @Stateless
@@ -34,12 +40,12 @@ public class FieldsFactory {
 
 		inputFieldImplementations = new HashMap<Class<? extends Annotation>, Class<? extends InputField<?>>>();
 		inputFieldImplementations.put(Checkbox.class, CheckboxInputField.class);
-		// inputFieldImplementations.put(FormattedTextField.class,
-		// FormattedTextFieldInputField.class);
-		// inputFieldImplementations.put(TextField.class,
-		// TextFieldInputField.class);
-		// inputFieldImplementations.put(RadioButton.class,
-		// RadioButtonInputField.class);
+		inputFieldImplementations.put(FormattedTextField.class,
+				FormattedTextFieldInputField.class);
+		inputFieldImplementations.put(TextField.class,
+				TextFieldInputField.class);
+		inputFieldImplementations.put(RadioButton.class,
+				RadioButtonInputField.class);
 		inputFieldImplementations.put(ComboBox.class, ComboBoxInputField.class);
 		inputFieldImplementations.put(Group.class, GroupInputField.class);
 		inputFieldImplementations.put(Child.class, ChildInputField.class);

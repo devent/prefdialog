@@ -4,11 +4,9 @@ import java.lang.reflect.Field;
 
 import javax.swing.JFormattedTextField;
 
-import com.globalscalingsoftware.prefdialog.InputField;
 import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField;
 
-public class FormattedTextFieldInputField extends AbstractTextField implements
-		InputField {
+public class FormattedTextFieldInputField extends AbstractTextField {
 
 	public FormattedTextFieldInputField(Object parentObject, Object value,
 			Field field) {

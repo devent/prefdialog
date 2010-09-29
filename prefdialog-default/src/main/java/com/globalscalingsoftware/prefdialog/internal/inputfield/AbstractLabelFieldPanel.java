@@ -23,11 +23,15 @@ public abstract class AbstractLabelFieldPanel<FieldType extends Component>
 	public AbstractLabelFieldPanel(FieldType field) {
 		this.panel = new JPanel();
 		this.field = field;
-		label = new JLabel();
+		this.label = new JLabel();
+		this.layout = createLayout();
+		setupPanel();
+	}
+
+	private TableLayout createLayout() {
 		double[] col = { TableLayout.FILL };
 		double[] row = { TableLayout.PREFERRED, TableLayout.PREFERRED };
-		layout = new TableLayout(col, row);
-		setupPanel();
+		return new TableLayout(col, row);
 	}
 
 	private void setupPanel() {
