@@ -18,13 +18,15 @@ import com.globalscalingsoftware.prefdialog.internal.AnnotationDiscovery;
 import com.globalscalingsoftware.prefdialog.internal.DiscoveredListener;
 import com.globalscalingsoftware.prefdialog.internal.FieldsFactory;
 import com.globalscalingsoftware.prefdialog.internal.InputFieldsFactory;
+import com.globalscalingsoftware.prefdialog.internal.Options;
 import com.globalscalingsoftware.prefdialog.internal.ReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.AbstractChildInputField;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.ChildInputField;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
-public class PreferenceDialogController implements IPreferenceDialogController {
+public class PreferenceDialogController implements
+		IPreferenceDialogController<Options> {
 
 	private final AnnotationDiscovery annotationDiscovery;
 	private final Map<Object, InputField<?>> preferencePanels;
@@ -36,6 +38,7 @@ public class PreferenceDialogController implements IPreferenceDialogController {
 	private final InputFieldsFactory inputFieldsFactory;
 	private final ReflectionToolbox reflectionToolbox;
 	private final FieldsFactory fieldsFactory;
+	private Options option;
 
 	@Inject
 	PreferenceDialogController(AnnotationDiscovery annotationDiscovery,
@@ -53,8 +56,9 @@ public class PreferenceDialogController implements IPreferenceDialogController {
 		this.preferences = preferences;
 		this.preferencesStart = preferencesStart;
 		this.fieldsFactory = fieldsFactory;
-		preferencePanels = new HashMap<Object, InputField<?>>();
-		treeNodes = new HashMap<Object, TreeNode[]>();
+		this.preferencePanels = new HashMap<Object, InputField<?>>();
+		this.treeNodes = new HashMap<Object, TreeNode[]>();
+		this.option = Options.CANCEL;
 	}
 
 	@Override
@@ -117,7 +121,8 @@ public class PreferenceDialogController implements IPreferenceDialogController {
 		preferenceDialog.setChildPanel(panel);
 	}
 
-	void closeDialog() {
+	void closeDialog(Options option) {
+		this.option = option;
 		preferenceDialog.close();
 	}
 
@@ -125,4 +130,8 @@ public class PreferenceDialogController implements IPreferenceDialogController {
 		return preferencePanels;
 	}
 
+	@Override
+	public Options getOption() {
+		return option;
+	}
 }

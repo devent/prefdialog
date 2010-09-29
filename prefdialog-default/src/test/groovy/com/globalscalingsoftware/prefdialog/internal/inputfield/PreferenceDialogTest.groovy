@@ -71,6 +71,9 @@ class PreferenceDialogTest extends AbstractPreferenceTest {
 	void testDialogClickOk() {
 		def controller = injector.getInstance(IPreferenceDialogController)
 		controller.openDialog()
+		assertThat preferences.general.name, is("name")
+		assertThat preferences.general.fields, is(10)
+		assertThat preferences.general.automaticSave, is(true)
 		assertThat preferences.general.colors, is(Colors.BLUE)
 		assertThat preferences.general.comboBox, is("second element")
 	}
