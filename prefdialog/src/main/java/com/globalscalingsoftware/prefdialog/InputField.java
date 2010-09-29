@@ -29,4 +29,6 @@ public interface InputField<ComponentType extends InputFieldComponent> {
 	Component getAWTComponent();
 
 	void applyInput(Object parent);
+
+	void restoreInput(Object parent);
 }

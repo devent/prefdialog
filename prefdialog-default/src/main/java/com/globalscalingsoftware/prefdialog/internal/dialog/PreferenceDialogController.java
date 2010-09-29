@@ -81,13 +81,7 @@ public class PreferenceDialogController implements IPreferenceDialogController {
 	private void setupEvents() {
 		preferenceDialog.setChildSelected(new ChildSelectedAction(this));
 		preferenceDialog.setOkEvent(new OkEvent(this));
-		preferenceDialog.setCancelEvent(new Runnable() {
-
-			@Override
-			public void run() {
-				preferenceDialog.close();
-			}
-		});
+		preferenceDialog.setCancelEvent(new CancelEvent(this));
 	}
 
 	private void discoverAnnotations(final Object preferences,

@@ -110,4 +110,16 @@ public abstract class AbstractChildInputField<ComponentType extends IChildCompon
 		getComponent().setRestoreAction(a);
 	}
 
+	public void restoreInput() {
+		restoreInput(getComponentValue());
+	}
+
+	@Override
+	public void restoreInput(Object parent) {
+		for (Field field : inputFields.keySet()) {
+			InputField<?> inputField = inputFields.get(field);
+			inputField.restoreInput(parent);
+		}
+	}
+
 }
