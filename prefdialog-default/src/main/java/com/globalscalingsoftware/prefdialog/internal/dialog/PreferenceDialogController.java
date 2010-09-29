@@ -6,6 +6,7 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.Action;
 import javax.swing.JPanel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
@@ -13,7 +14,9 @@ import javax.swing.tree.TreeNode;
 import com.globalscalingsoftware.prefdialog.IPreferenceDialogController;
 import com.globalscalingsoftware.prefdialog.InputField;
 import com.globalscalingsoftware.prefdialog.Options;
-import com.globalscalingsoftware.prefdialog.annotations.Child;
+import com.globalscalingsoftware.prefdialog.annotations.actions.ApplyAction;
+import com.globalscalingsoftware.prefdialog.annotations.actions.RestoreAction;
+import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
 import com.globalscalingsoftware.prefdialog.internal.FieldsFactory;
 import com.globalscalingsoftware.prefdialog.internal.InputFieldsFactory;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.AbstractChildInputField;
@@ -38,6 +41,8 @@ public class PreferenceDialogController implements IPreferenceDialogController {
 	private final ReflectionToolbox reflectionToolbox;
 	private final FieldsFactory fieldsFactory;
 	private Options option;
+	private final Action applyAction;
+	private final Action restoreAction;
 
 	@Inject
 	PreferenceDialogController(AnnotationDiscovery annotationDiscovery,
@@ -46,7 +51,8 @@ public class PreferenceDialogController implements IPreferenceDialogController {
 			PreferenceDialog preferenceDialog,
 			InputFieldsFactory inputFieldsFactory, FieldsFactory fieldsFactory,
 			@Named("preferences") Object preferences,
-			@Named("preferences_start") Object preferencesStart) {
+			@Named("preferences_start") Object preferencesStart,
+			@ApplyAction Action applyAction, @RestoreAction Action restoreAction) {
 		this.annotationDiscovery = annotationDiscovery;
 		this.filter = filter;
 		this.reflectionToolbox = reflectionToolbox;
@@ -58,6 +64,8 @@ public class PreferenceDialogController implements IPreferenceDialogController {
 		this.preferencePanels = new HashMap<Object, InputField<?>>();
 		this.treeNodes = new HashMap<Object, TreeNode[]>();
 		this.option = Options.CANCEL;
+		this.applyAction = applyAction;
+		this.restoreAction = restoreAction;
 	}
 
 	@Override
@@ -106,6 +114,8 @@ public class PreferenceDialogController implements IPreferenceDialogController {
 							.create(inputFieldClass, preferences, value, field);
 					panel.setFieldsFactory(fieldsFactory);
 					panel.setReflectionToolbox(reflectionToolbox);
+					panel.setApplyAction(applyAction);
+					panel.setRestoreAction(restoreAction);
 					panel.setup();
 
 					preferencePanels.put(value, panel);

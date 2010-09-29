@@ -7,8 +7,8 @@ import static org.hamcrest.Matchers.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.globalscalingsoftware.prefdialog.annotations.Child;
-import com.globalscalingsoftware.prefdialog.annotations.TextField;
+import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
+import com.globalscalingsoftware.prefdialog.annotations.fields.TextField;
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest 
 import com.globalscalingsoftware.prefdialog.internal.PreferencesDialogInjectorFactory 
 
@@ -28,10 +28,10 @@ class TextFieldGroupPreferencePanelTest extends AbstractPreferenceTest {
 		@TextField
 		String preGroup = ""
 		
-		@com.globalscalingsoftware.prefdialog.annotations.Group
+		@com.globalscalingsoftware.prefdialog.annotations.fields.Group
 		Group group1 = new Group()
 		
-		@com.globalscalingsoftware.prefdialog.annotations.Group
+		@com.globalscalingsoftware.prefdialog.annotations.fields.Group
 		Group group2 = new Group()
 		
 		@Override

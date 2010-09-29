@@ -1,9 +1,11 @@
 package com.globalscalingsoftware.prefdialog.internal
 
-import com.globalscalingsoftware.prefdialog.IApplyAction 
+import javax.swing.Action;
+
 import com.globalscalingsoftware.prefdialog.ICancelAction 
 import com.globalscalingsoftware.prefdialog.IOkAction 
-import com.globalscalingsoftware.prefdialog.IRestoreAction 
+import com.globalscalingsoftware.prefdialog.annotations.actions.ApplyAction;
+import com.globalscalingsoftware.prefdialog.annotations.actions.RestoreAction;
 import com.globalscalingsoftware.prefdialog.internal.module.PreferenceDialogModule 
 import com.google.inject.Guice 
 import com.google.inject.Module 
@@ -18,8 +20,8 @@ class PreferencesDialogInjectorFactory {
 			def applyAction = new DefaultAction("Apply")
 			def cancelAction = new DefaultAction("Cancel")
 			
-			binding.bind(IRestoreAction).toInstance restoreAction
-			binding.bind(IApplyAction).toInstance applyAction
+			binding.bind(Action).annotatedWith(RestoreAction).toInstance restoreAction
+			binding.bind(Action).annotatedWith(ApplyAction).toInstance applyAction
 			binding.bind(ICancelAction).toInstance cancelAction
 			binding.bind(IOkAction).toInstance okAction
 			

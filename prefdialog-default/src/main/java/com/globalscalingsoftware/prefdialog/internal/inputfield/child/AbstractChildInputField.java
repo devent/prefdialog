@@ -19,6 +19,10 @@ public abstract class AbstractChildInputField<ComponentType extends IChildCompon
 
 	private final Map<Field, InputField<?>> inputFields;
 
+	private Action applyAction;
+
+	private Action restoreAction;
+
 	public AbstractChildInputField(Object parentObject, Object value,
 			Field field, Class<? extends Annotation> annotationClass,
 			ComponentType component) {
@@ -48,6 +52,7 @@ public abstract class AbstractChildInputField<ComponentType extends IChildCompon
 	private void addAllInputFields() {
 		fillInputFields();
 		for (InputField<?> inputField : inputFields.values()) {
+			setupInputField(inputField);
 			getComponent().addField(inputField);
 		}
 	}
@@ -57,6 +62,29 @@ public abstract class AbstractChildInputField<ComponentType extends IChildCompon
 		ReflectionToolbox reflectionToolbox = getReflectionToolbox();
 		new AddAllInputFields(reflectionToolbox, fieldsFactory).addAllInto(
 				inputFields, parentObject);
+	}
+
+	private void setupInputField(InputField<?> inputField) {
+		if (inputField instanceof AbstractDefaultInputField) {
+			setupDefaultInputField(inputField);
+		}
+		if (inputField instanceof AbstractChildInputField) {
+			setupChildInputField(inputField);
+		}
+		inputField.setup();
+	}
+
+	private void setupChildInputField(InputField<?> inputField) {
+		AbstractChildInputField<?> ainputfield = (AbstractChildInputField<?>) inputField;
+		ainputfield.setFieldsFactory(fieldsFactory);
+		ainputfield.setApplyAction(applyAction);
+		ainputfield.setRestoreAction(restoreAction);
+	}
+
+	private void setupDefaultInputField(InputField<?> inputField) {
+		AbstractDefaultInputField<?> ainputfield = (AbstractDefaultInputField<?>) inputField;
+		ReflectionToolbox reflectionToolbox = getReflectionToolbox();
+		ainputfield.setReflectionToolbox(reflectionToolbox);
 	}
 
 	public void applyInput() {
@@ -76,10 +104,12 @@ public abstract class AbstractChildInputField<ComponentType extends IChildCompon
 	}
 
 	public void setApplyAction(Action a) {
+		this.applyAction = a;
 		getComponent().setApplyAction(a);
 	}
 
 	public void setRestoreAction(Action a) {
+		this.restoreAction = a;
 		getComponent().setRestoreAction(a);
 	}
 

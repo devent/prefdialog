@@ -10,13 +10,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.globalscalingsoftware.prefdialog.IPreferenceDialogController;
-import com.globalscalingsoftware.prefdialog.annotations.Checkbox;
-import com.globalscalingsoftware.prefdialog.annotations.Child;
-import com.globalscalingsoftware.prefdialog.annotations.ComboBox 
-import com.globalscalingsoftware.prefdialog.annotations.ComboBoxElements 
-import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField;
-import com.globalscalingsoftware.prefdialog.annotations.RadioButton 
-import com.globalscalingsoftware.prefdialog.annotations.TextField;
+import com.globalscalingsoftware.prefdialog.annotations.fields.Checkbox;
+import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
+import com.globalscalingsoftware.prefdialog.annotations.fields.ComboBox;
+import com.globalscalingsoftware.prefdialog.annotations.fields.ComboBoxElements;
+import com.globalscalingsoftware.prefdialog.annotations.fields.FormattedTextField;
+import com.globalscalingsoftware.prefdialog.annotations.fields.RadioButton;
+import com.globalscalingsoftware.prefdialog.annotations.fields.TextField;
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest;
 import com.globalscalingsoftware.prefdialog.internal.PreferencesDialogInjectorFactory 
 import com.globalscalingsoftware.prefdialog.internal.radiobutton.Colors;

@@ -5,7 +5,7 @@ import com.globalscalingsoftware.prefdialog.Validator;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.globalscalingsoftware.prefdialog.annotations.TextField;
+import com.globalscalingsoftware.prefdialog.annotations.fields.TextField;
 import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbox;
 
 import static org.hamcrest.MatcherAssert.*;

@@ -2,8 +2,8 @@ package com.globalscalingsoftware.prefdialog.internal.radiobutton
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
-import com.globalscalingsoftware.prefdialog.annotations.Child;
-import com.globalscalingsoftware.prefdialog.annotations.RadioButton 
+import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
+import com.globalscalingsoftware.prefdialog.annotations.fields.RadioButton;
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest;
 import com.globalscalingsoftware.prefdialog.internal.PreferencesDialogInjectorFactory 
 import org.junit.Before;

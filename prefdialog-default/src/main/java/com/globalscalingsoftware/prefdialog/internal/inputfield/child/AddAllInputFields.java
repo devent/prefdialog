@@ -7,7 +7,6 @@ import org.fest.reflect.exception.ReflectionError;
 
 import com.globalscalingsoftware.prefdialog.InputField;
 import com.globalscalingsoftware.prefdialog.internal.FieldsFactory;
-import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractDefaultInputField;
 import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbox;
 
 class AddAllInputFields {
@@ -63,32 +62,6 @@ class AddAllInputFields {
 			return;
 		}
 
-		setupInputField(inputField);
-		putInputField(inputFields, field, inputField);
-	}
-
-	private void setupInputField(InputField<?> inputField) {
-		if (inputField instanceof AbstractDefaultInputField) {
-			setupDefaultInputField(inputField);
-		}
-		if (inputField instanceof AbstractChildInputField) {
-			setupChildInputField(inputField);
-		}
-		inputField.setup();
-	}
-
-	private void setupChildInputField(InputField<?> inputField) {
-		AbstractChildInputField<?> ainputfield = (AbstractChildInputField<?>) inputField;
-		ainputfield.setFieldsFactory(fieldsFactory);
-	}
-
-	private void setupDefaultInputField(InputField<?> inputField) {
-		AbstractDefaultInputField<?> ainputfield = (AbstractDefaultInputField<?>) inputField;
-		ainputfield.setReflectionToolbox(reflectionToolbox);
-	}
-
-	private void putInputField(Map<Field, InputField<?>> inputFields,
-			Field field, InputField<?> inputField) {
 		inputFields.put(field, inputField);
 	}
 
