@@ -38,7 +38,7 @@ class CheckBoxPanel extends AbstractLabelFieldPanel<JCheckBox> {
 	}
 
 	@Override
-	public void setFieldName(String name) {
+	public void setName(String name) {
 		action.setName(name);
 	}
 

@@ -3,32 +3,27 @@ package com.globalscalingsoftware.prefdialog.internal;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
-import com.globalscalingsoftware.prefdialog.IAnnotationDiscovery;
-import com.globalscalingsoftware.prefdialog.IAnnotationFilter;
-import com.globalscalingsoftware.prefdialog.IDiscoveredListener;
-import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
 import com.google.inject.Inject;
 
-public class AnnotationDiscovery implements IAnnotationDiscovery {
+public class AnnotationDiscovery {
 
-	private final IReflectionToolbox reflectionToolbox;
+	private final ReflectionToolbox reflectionToolbox;
 
 	@Inject
-	AnnotationDiscovery(IReflectionToolbox reflectionToolbox) {
+	AnnotationDiscovery(ReflectionToolbox reflectionToolbox) {
 		this.reflectionToolbox = reflectionToolbox;
 	}
 
-	@Override
-	public void discover(IAnnotationFilter filter, Object object,
-			IDiscoveredListener listener) {
+	public void discover(AbstractAnnotationFilter filter, Object object,
+			DiscoveredListener listener) {
 		if (object == null) {
 			return;
 		}
 		discoverFields(filter, object, listener);
 	}
 
-	private void discoverFields(IAnnotationFilter filter, Object object,
-			IDiscoveredListener listener) {
+	private void discoverFields(AbstractAnnotationFilter filter, Object object,
+			DiscoveredListener listener) {
 		Class<? extends Object> clazz = object.getClass();
 		Field[] fields = clazz.getDeclaredFields();
 		for (Field field : fields) {
@@ -40,8 +35,8 @@ public class AnnotationDiscovery implements IAnnotationDiscovery {
 		}
 	}
 
-	private void informListenerIfFilterAccepts(IAnnotationFilter filter,
-			Object object, IDiscoveredListener listener, Field field,
+	private void informListenerIfFilterAccepts(AbstractAnnotationFilter filter,
+			Object object, DiscoveredListener listener, Field field,
 			Annotation annotation) {
 		if (!filter.accept(annotation)) {
 			return;

@@ -2,12 +2,11 @@ package com.globalscalingsoftware.prefdialog.internal.inputfield.button;
 
 import java.lang.reflect.Field;
 
-import com.globalscalingsoftware.prefdialog.IInputField;
 import com.globalscalingsoftware.prefdialog.annotations.RadioButton;
-import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractInputField;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractDefaultInputField;
 
 public class RadioButtonInputField extends
-		AbstractInputField<RadioButtonsPanel> implements IInputField {
+		AbstractDefaultInputField<RadioButtonsPanel> {
 
 	private final Object value;
 

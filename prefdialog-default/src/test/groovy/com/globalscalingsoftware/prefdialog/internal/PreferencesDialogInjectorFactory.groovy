@@ -3,7 +3,6 @@ package com.globalscalingsoftware.prefdialog.internal
 import com.globalscalingsoftware.prefdialog.IApplyAction 
 import com.globalscalingsoftware.prefdialog.ICancelAction 
 import com.globalscalingsoftware.prefdialog.IOkAction 
-import com.globalscalingsoftware.prefdialog.IPreferenceDialogOwner 
 import com.globalscalingsoftware.prefdialog.IRestoreAction 
 import com.globalscalingsoftware.prefdialog.internal.module.PreferenceDialogModule 
 import com.google.inject.Guice 
@@ -14,8 +13,6 @@ class PreferencesDialogInjectorFactory {
 	
 	def create(def preferences) {
 		def module = [configure: {binding -> 
-			binding.bind(IPreferenceDialogOwner).to PreferenceDialogOwner
-			
 			def okAction = new DefaultAction("Ok")
 			def restoreAction = new DefaultAction("Restore")
 			def applyAction = new DefaultAction("Apply")

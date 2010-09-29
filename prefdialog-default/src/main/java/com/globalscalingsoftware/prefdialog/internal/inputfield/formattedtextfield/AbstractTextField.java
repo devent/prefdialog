@@ -3,12 +3,12 @@ package com.globalscalingsoftware.prefdialog.internal.inputfield.formattedtextfi
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
-import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
-import com.globalscalingsoftware.prefdialog.IValidator;
-import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractInputField;
+import com.globalscalingsoftware.prefdialog.Validator;
+import com.globalscalingsoftware.prefdialog.internal.ReflectionToolbox;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractDefaultInputField;
 
 public abstract class AbstractTextField extends
-		AbstractInputField<TextFieldPanel> {
+		AbstractDefaultInputField<TextFieldPanel> {
 
 	private String validatorText;
 
@@ -29,7 +29,7 @@ public abstract class AbstractTextField extends
 
 	private String getValidatorTextFromFieldAnnotation() {
 		Annotation a = getField().getAnnotation(getAnnotationClass());
-		IReflectionToolbox reflectionToolbox = getReflectionToolbox();
+		ReflectionToolbox reflectionToolbox = getReflectionToolbox();
 		String text = reflectionToolbox.invokeMethodWithReturnType(
 				"validatorText", String.class, a);
 		return text;
@@ -57,11 +57,11 @@ public abstract class AbstractTextField extends
 	private void setupValidatorFromFieldAnnotation() {
 		Annotation a = getField().getAnnotation(getAnnotationClass());
 		Object validator = createValidator(a);
-		getComponent().setValidator((IValidator<?>) validator);
+		getComponent().setValidator((Validator<?>) validator);
 	}
 
 	private Object createValidator(Annotation a) {
-		IReflectionToolbox reflectionToolbox = getReflectionToolbox();
+		ReflectionToolbox reflectionToolbox = getReflectionToolbox();
 		Class<?> validatorClass = reflectionToolbox.invokeMethodWithReturnType(
 				"validator", Class.class, a);
 		Object validator = reflectionToolbox.newInstance(validatorClass);
@@ -69,7 +69,7 @@ public abstract class AbstractTextField extends
 	}
 
 	@Override
-	public Object getValue() {
+	public Object getComponentValue() {
 		return getComponent().getValue();
 	}
 

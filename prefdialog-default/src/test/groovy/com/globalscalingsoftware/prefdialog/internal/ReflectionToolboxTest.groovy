@@ -1,6 +1,6 @@
 package com.globalscalingsoftware.prefdialog.internal
 
-import com.globalscalingsoftware.prefdialog.IValidator;
+import com.globalscalingsoftware.prefdialog.Validator;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,14 +16,7 @@ class ReflectionToolboxTest {
 	
 	static final HELP_TEXT = "help text"
 	
-	class InlineValidator implements IValidator<String> {
-		
-		public boolean isValid(String value) {
-			value != null && !value.trim().isEmpty()
-		}
-	}
-	
-	static class Validator implements IValidator<String> {
+	static class StringValidator implements Validator<String> {
 		
 		public boolean isValid(String value) {
 			value != null && !value.trim().isEmpty()
@@ -32,7 +25,7 @@ class ReflectionToolboxTest {
 	
 	static class Bean {
 		
-		@TextField(validator=Validator, validatorText=ReflectionToolboxTest.HELP_TEXT)
+		@TextField(validator=StringValidator, validatorText=ReflectionToolboxTest.HELP_TEXT)
 		String property = ReflectionToolboxTest.PROPERTY_VALUE
 	}
 	

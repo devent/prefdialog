@@ -4,12 +4,9 @@ import java.lang.reflect.Field;
 
 import javax.swing.JFormattedTextField;
 
-import com.globalscalingsoftware.prefdialog.IInputField;
-import com.globalscalingsoftware.prefdialog.IValidator;
 import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField;
 
-public class FormattedTextFieldInputField extends AbstractTextField implements
-		IInputField {
+public class FormattedTextFieldInputField extends AbstractTextField {
 
 	public FormattedTextFieldInputField(Object parentObject, Object value,
 			Field field) {
@@ -32,6 +29,6 @@ public class FormattedTextFieldInputField extends AbstractTextField implements
 	}
 
 	private boolean isTextEmpty(String text) {
-		return text.equals(IValidator.EMPTY_STRING);
+		return text.isEmpty();
 	}
 }

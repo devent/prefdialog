@@ -1,45 +1,36 @@
 package com.globalscalingsoftware.prefdialog.internal.module;
 
-import com.globalscalingsoftware.prefdialog.IAnnotationDiscovery;
-import com.globalscalingsoftware.prefdialog.IFieldsFactory;
-import com.globalscalingsoftware.prefdialog.IInputFieldsFactory;
-import com.globalscalingsoftware.prefdialog.IPreferenceDialog;
-import com.globalscalingsoftware.prefdialog.IPreferenceDialogAnnotationFilter;
 import com.globalscalingsoftware.prefdialog.IPreferenceDialogController;
-import com.globalscalingsoftware.prefdialog.IPreferencePanelAnnotationFilter;
-import com.globalscalingsoftware.prefdialog.IReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.internal.AnnotationDiscovery;
+import com.globalscalingsoftware.prefdialog.internal.FieldsAnnotationFilter;
 import com.globalscalingsoftware.prefdialog.internal.FieldsFactory;
 import com.globalscalingsoftware.prefdialog.internal.InputFieldsFactory;
-import com.globalscalingsoftware.prefdialog.internal.PreferenceDialog;
-import com.globalscalingsoftware.prefdialog.internal.PreferenceDialogController;
-import com.globalscalingsoftware.prefdialog.internal.PreferencePanelAnnotationFilter;
-import com.globalscalingsoftware.prefdialog.internal.PrefrenceDialogAnnotationsFilter;
 import com.globalscalingsoftware.prefdialog.internal.ReflectionToolbox;
+import com.globalscalingsoftware.prefdialog.internal.dialog.PreferenceDialog;
+import com.globalscalingsoftware.prefdialog.internal.dialog.PreferenceDialogAnnotationsFilter;
+import com.globalscalingsoftware.prefdialog.internal.dialog.PreferenceDialogController;
 import com.google.inject.AbstractModule;
 
 public class PreferenceDialogModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
-		bind(IAnnotationDiscovery.class).to(AnnotationDiscovery.class);
-		bind(IReflectionToolbox.class).to(ReflectionToolbox.class);
+		bind(AnnotationDiscovery.class).asEagerSingleton();
+		bind(ReflectionToolbox.class).asEagerSingleton();
 		bindPreferencePanel();
 		bindPreferenceDialog();
 	}
 
 	private void bindPreferenceDialog() {
-		bind(IPreferenceDialogAnnotationFilter.class).to(
-				PrefrenceDialogAnnotationsFilter.class);
+		bind(PreferenceDialogAnnotationsFilter.class).asEagerSingleton();
 		bind(IPreferenceDialogController.class).to(
 				PreferenceDialogController.class);
-		bind(IPreferenceDialog.class).to(PreferenceDialog.class);
+		bind(PreferenceDialog.class);
 	}
 
 	private void bindPreferencePanel() {
-		bind(IPreferencePanelAnnotationFilter.class).toInstance(
-				PreferencePanelAnnotationFilter.createDefault());
-		bind(IFieldsFactory.class).to(FieldsFactory.class);
-		bind(IInputFieldsFactory.class).to(InputFieldsFactory.class);
+		bind(FieldsAnnotationFilter.class).asEagerSingleton();
+		bind(FieldsFactory.class).asEagerSingleton();
+		bind(InputFieldsFactory.class).asEagerSingleton();
 	}
 }

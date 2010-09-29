@@ -11,7 +11,6 @@ import javax.swing.JRadioButton;
 
 import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractLabelFieldPanel;
 
-@SuppressWarnings("serial")
 public class RadioButtonsPanel extends AbstractLabelFieldPanel<JPanel> {
 
 	private final GridLayout layout;

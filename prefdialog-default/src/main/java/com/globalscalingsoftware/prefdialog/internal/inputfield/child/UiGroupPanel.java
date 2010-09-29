@@ -18,7 +18,8 @@ import javax.swing.WindowConstants;
  * PURCHASED FOR THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED LEGALLY FOR
  * ANY CORPORATE OR COMMERCIAL PURPOSE.
  */
-public class UiGroupPanel extends javax.swing.JPanel {
+@SuppressWarnings("serial")
+class UiGroupPanel extends javax.swing.JPanel {
 	private JLabel groupLabel;
 	private JSeparator jSeparator1;
 	private JPanel fieldsPanel;
