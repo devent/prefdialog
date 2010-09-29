@@ -7,9 +7,11 @@ import java.util.Map;
 
 import com.globalscalingsoftware.annotations.Stateless;
 import com.globalscalingsoftware.prefdialog.InputField;
+import com.globalscalingsoftware.prefdialog.annotations.Checkbox;
 import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.annotations.ComboBox;
 import com.globalscalingsoftware.prefdialog.annotations.Group;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.button.CheckboxInputField;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.ChildInputField;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.GroupInputField;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.combobox.ComboBoxInputField;
@@ -31,8 +33,7 @@ public class FieldsFactory {
 		this.inputFieldFactory = inputFieldFactory;
 
 		inputFieldImplementations = new HashMap<Class<? extends Annotation>, Class<? extends InputField<?>>>();
-		// inputFieldImplementations.put(Checkbox.class,
-		// CheckboxInputField.class);
+		inputFieldImplementations.put(Checkbox.class, CheckboxInputField.class);
 		// inputFieldImplementations.put(FormattedTextField.class,
 		// FormattedTextFieldInputField.class);
 		// inputFieldImplementations.put(TextField.class,
