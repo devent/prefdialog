@@ -2,9 +2,9 @@ package com.globalscalingsoftware.prefdialog;
 
 import java.awt.Frame;
 
-public interface IPreferenceDialogController<T extends Enum<?>> {
+public interface IPreferenceDialogController {
 
 	void openDialog(Frame owner);
 
-	T getOption();
+	Options getOption();
 }

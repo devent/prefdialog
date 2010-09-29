@@ -12,21 +12,20 @@ import javax.swing.tree.TreeNode;
 
 import com.globalscalingsoftware.prefdialog.IPreferenceDialogController;
 import com.globalscalingsoftware.prefdialog.InputField;
+import com.globalscalingsoftware.prefdialog.Options;
 import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.internal.AbstractAnnotationFilter;
 import com.globalscalingsoftware.prefdialog.internal.AnnotationDiscovery;
 import com.globalscalingsoftware.prefdialog.internal.DiscoveredListener;
 import com.globalscalingsoftware.prefdialog.internal.FieldsFactory;
 import com.globalscalingsoftware.prefdialog.internal.InputFieldsFactory;
-import com.globalscalingsoftware.prefdialog.internal.Options;
 import com.globalscalingsoftware.prefdialog.internal.ReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.AbstractChildInputField;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.ChildInputField;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
-public class PreferenceDialogController implements
-		IPreferenceDialogController<Options> {
+public class PreferenceDialogController implements IPreferenceDialogController {
 
 	private final AnnotationDiscovery annotationDiscovery;
 	private final Map<Object, InputField<?>> preferencePanels;
