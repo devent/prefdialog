@@ -4,11 +4,11 @@ import com.globalscalingsoftware.prefdialog.IPreferenceDialogController;
 import com.globalscalingsoftware.prefdialog.internal.AnnotationDiscovery;
 import com.globalscalingsoftware.prefdialog.internal.FieldsFactory;
 import com.globalscalingsoftware.prefdialog.internal.InputFieldsFactory;
-import com.globalscalingsoftware.prefdialog.internal.PreferenceDialog;
-import com.globalscalingsoftware.prefdialog.internal.PreferenceDialogAnnotationsFilter;
-import com.globalscalingsoftware.prefdialog.internal.PreferenceDialogController;
 import com.globalscalingsoftware.prefdialog.internal.PreferencePanelAnnotationFilter;
 import com.globalscalingsoftware.prefdialog.internal.ReflectionToolbox;
+import com.globalscalingsoftware.prefdialog.internal.dialog.PreferenceDialog;
+import com.globalscalingsoftware.prefdialog.internal.dialog.PreferenceDialogAnnotationsFilter;
+import com.globalscalingsoftware.prefdialog.internal.dialog.PreferenceDialogController;
 import com.google.inject.AbstractModule;
 
 public class PreferenceDialogModule extends AbstractModule {

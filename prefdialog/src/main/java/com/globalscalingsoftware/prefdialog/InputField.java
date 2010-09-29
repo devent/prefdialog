@@ -27,4 +27,6 @@ public interface InputField<ComponentType extends InputFieldComponent> {
 	Object getComponentValue();
 
 	Component getAWTComponent();
+
+	void applyInput(Object parent);
 }

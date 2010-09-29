@@ -1,4 +1,4 @@
-package com.globalscalingsoftware.prefdialog.internal;
+package com.globalscalingsoftware.prefdialog.internal.dialog;
 
 import java.awt.Component;
 import java.awt.Frame;
@@ -14,6 +14,7 @@ import javax.swing.tree.TreeSelectionModel;
 import com.globalscalingsoftware.prefdialog.Event;
 import com.globalscalingsoftware.prefdialog.ICancelAction;
 import com.globalscalingsoftware.prefdialog.IOkAction;
+import com.globalscalingsoftware.prefdialog.internal.RunnableActionEvent;
 import com.google.inject.Inject;
 
 public class PreferenceDialog {

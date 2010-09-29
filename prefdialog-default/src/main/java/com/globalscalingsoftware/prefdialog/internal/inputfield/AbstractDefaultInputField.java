@@ -47,4 +47,10 @@ public abstract class AbstractDefaultInputField<ComponentType extends InputField
 		return reflectionToolbox;
 	}
 
+	@Override
+	public void applyInput(Object parent) {
+		Object value = getComponentValue();
+		Field field = getField();
+		getReflectionToolbox().setValueTo(field, parent, value);
+	}
 }

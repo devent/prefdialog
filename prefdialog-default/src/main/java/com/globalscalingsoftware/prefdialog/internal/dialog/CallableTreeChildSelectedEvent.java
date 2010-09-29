@@ -1,4 +1,4 @@
-package com.globalscalingsoftware.prefdialog.internal;
+package com.globalscalingsoftware.prefdialog.internal.dialog;
 
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;

@@ -74,5 +74,7 @@ class PreferenceDialogTest extends AbstractPreferenceTest {
 		assertThat preferences.general.name, is("name")
 		assertThat preferences.general.fields, is(10)
 		assertThat preferences.general.automaticSave, is(true)
+		assertThat preferences.general.colors, is(Colors.BLUE)
+		assertThat preferences.general.comboBox, is("second element")
 	}
 }

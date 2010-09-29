@@ -1,4 +1,4 @@
-package com.globalscalingsoftware.prefdialog.internal;
+package com.globalscalingsoftware.prefdialog.internal.dialog;
 
 import java.awt.Frame;
 import java.lang.annotation.Annotation;
@@ -10,10 +10,15 @@ import javax.swing.JPanel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 
-import com.globalscalingsoftware.prefdialog.Event;
 import com.globalscalingsoftware.prefdialog.IPreferenceDialogController;
 import com.globalscalingsoftware.prefdialog.InputField;
 import com.globalscalingsoftware.prefdialog.annotations.Child;
+import com.globalscalingsoftware.prefdialog.internal.AbstractAnnotationFilter;
+import com.globalscalingsoftware.prefdialog.internal.AnnotationDiscovery;
+import com.globalscalingsoftware.prefdialog.internal.DiscoveredListener;
+import com.globalscalingsoftware.prefdialog.internal.FieldsFactory;
+import com.globalscalingsoftware.prefdialog.internal.InputFieldsFactory;
+import com.globalscalingsoftware.prefdialog.internal.ReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.AbstractChildInputField;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.ChildInputField;
 import com.google.inject.Inject;
@@ -22,7 +27,7 @@ import com.google.inject.name.Named;
 public class PreferenceDialogController implements IPreferenceDialogController {
 
 	private final AnnotationDiscovery annotationDiscovery;
-	private Map<Object, InputField<?>> preferencePanels;
+	private final Map<Object, InputField<?>> preferencePanels;
 	private final PreferenceDialog preferenceDialog;
 	private final Map<Object, TreeNode[]> treeNodes;
 	private final Object preferences;
@@ -68,43 +73,14 @@ public class PreferenceDialogController implements IPreferenceDialogController {
 
 	private void setupPreferencesStart() {
 		JPanel panel = (JPanel) preferencePanels.get(preferencesStart)
-				.getComponent();
+				.getAWTComponent();
 		preferenceDialog.setChildPanel(panel);
 		preferenceDialog.setSelectedChild(treeNodes.get(preferencesStart));
 	}
 
 	private void setupEvents() {
-		preferenceDialog.setChildSelected(new Event<Object>() {
-
-			@Override
-			public void call(Object object) {
-				JPanel panel = (JPanel) preferencePanels.get(object)
-						.getComponent();
-				preferenceDialog.setChildPanel(panel);
-			}
-		});
-		preferenceDialog.setOkEvent(new Runnable() {
-
-			@Override
-			public void run() {
-				preferenceDialog.close();
-
-				Map<Object, InputField<?>> copy = copyPreferencePanels();
-				putValuesInto(copy);
-				preferencePanels = copy;
-			}
-
-			private void putValuesInto(Map<Object, InputField<?>> copy) {
-				for (Map.Entry<Object, InputField<?>> entry : preferencePanels
-						.entrySet()) {
-					copy.put(entry.getKey(), entry.getValue());
-				}
-			}
-
-			private Map<Object, InputField<?>> copyPreferencePanels() {
-				return new HashMap<Object, InputField<?>>(preferencePanels);
-			}
-		});
+		preferenceDialog.setChildSelected(new ChildSelectedAction(this));
+		preferenceDialog.setOkEvent(new OkEvent(this));
 		preferenceDialog.setCancelEvent(new Runnable() {
 
 			@Override
@@ -140,6 +116,19 @@ public class PreferenceDialogController implements IPreferenceDialogController {
 			}
 		};
 		annotationDiscovery.discover(filter, preferences, listener);
+	}
+
+	void setChildPanel(Object object) {
+		JPanel panel = (JPanel) preferencePanels.get(object).getAWTComponent();
+		preferenceDialog.setChildPanel(panel);
+	}
+
+	void closeDialog() {
+		preferenceDialog.close();
+	}
+
+	Map<Object, InputField<?>> getPreferencePanels() {
+		return preferencePanels;
 	}
 
 }

@@ -80,17 +80,21 @@ public abstract class AbstractChildInputField<ComponentType extends IChildCompon
 
 			@Override
 			public void run() {
-				applyAllInput();
+				applyInput();
 			}
+
 		});
 	}
 
-	private void applyAllInput() {
+	public void applyInput() {
+		applyInput(getComponentValue());
+	}
+
+	@Override
+	public void applyInput(Object parent) {
 		for (Field field : inputFields.keySet()) {
 			InputField<?> inputField = inputFields.get(field);
-			Object value = inputField.getComponentValue();
-			getReflectionToolbox()
-					.setValueTo(field, getComponentValue(), value);
+			inputField.applyInput(parent);
 		}
 	}
 

@@ -1,8 +1,9 @@
-package com.globalscalingsoftware.prefdialog.internal;
+package com.globalscalingsoftware.prefdialog.internal.dialog;
 
 import java.util.Arrays;
 
 import com.globalscalingsoftware.prefdialog.annotations.Child;
+import com.globalscalingsoftware.prefdialog.internal.AbstractAnnotationFilter;
 
 public class PreferenceDialogAnnotationsFilter extends AbstractAnnotationFilter {
 
