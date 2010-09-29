@@ -1,10 +1,11 @@
 package com.globalscalingsoftware.prefdialog.internal.combobox
 
-
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.Matchers.*;
 
 import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.annotations.ComboBox;

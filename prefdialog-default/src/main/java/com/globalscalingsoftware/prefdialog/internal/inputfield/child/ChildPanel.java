@@ -3,15 +3,17 @@ package com.globalscalingsoftware.prefdialog.internal.inputfield.child;
 import static java.lang.String.format;
 import info.clearthought.layout.TableLayout;
 
+import java.awt.Component;
 import java.awt.Font;
 
 import javax.swing.Action;
 
-import com.globalscalingsoftware.prefdialog.IInputField;
+import com.globalscalingsoftware.prefdialog.InputField;
 import com.globalscalingsoftware.prefdialog.internal.RunnableActionEvent;
 
-@SuppressWarnings("serial")
-public class ChildPanel extends UiChildPanel implements IChildComponent {
+public class ChildPanel implements IChildComponent {
+
+	private final UiChildPanel panel;
 
 	private final RunnableActionEvent applyEvent;
 
@@ -20,8 +22,9 @@ public class ChildPanel extends UiChildPanel implements IChildComponent {
 	private Object value;
 
 	public ChildPanel() {
-		applyEvent = new RunnableActionEvent();
-		restoreEvent = new RunnableActionEvent();
+		this.panel = new UiChildPanel();
+		this.applyEvent = new RunnableActionEvent();
+		this.restoreEvent = new RunnableActionEvent();
 		setupPanel();
 	}
 
@@ -31,20 +34,20 @@ public class ChildPanel extends UiChildPanel implements IChildComponent {
 	}
 
 	private void setBoldFontForChildLabel() {
-		Font font = getChildLabel().getFont();
-		getChildLabel().setFont(
+		Font font = panel.getChildLabel().getFont();
+		panel.getChildLabel().setFont(
 				new Font(font.getFamily(), font.getStyle() | Font.BOLD, font
 						.getSize()));
 	}
 
 	private void setupActions() {
-		getApplyButton().addActionListener(applyEvent);
-		getRestoreButton().addActionListener(restoreEvent);
+		panel.getApplyButton().addActionListener(applyEvent);
+		panel.getRestoreButton().addActionListener(restoreEvent);
 	}
 
 	@Override
 	public void setApplyAction(Action a) {
-		getApplyButton().setAction(a);
+		panel.getApplyButton().setAction(a);
 	}
 
 	@Override
@@ -54,7 +57,7 @@ public class ChildPanel extends UiChildPanel implements IChildComponent {
 
 	@Override
 	public void setRestoreAction(Action a) {
-		getRestoreButton().setAction(a);
+		panel.getRestoreButton().setAction(a);
 	}
 
 	public void setRestoreEvent(Runnable restoreEvent) {
@@ -62,14 +65,14 @@ public class ChildPanel extends UiChildPanel implements IChildComponent {
 	}
 
 	@Override
-	public void setFieldWidth(double width) {
+	public void setWidth(double width) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void setFieldName(String name) {
-		getChildLabel().setText(name);
+	public void setName(String name) {
+		panel.getChildLabel().setText(name);
 	}
 
 	@Override
@@ -82,18 +85,25 @@ public class ChildPanel extends UiChildPanel implements IChildComponent {
 		return value;
 	}
 
-	public void addField(IInputField inputField) {
+	@Override
+	public void addField(InputField<?> inputField) {
 		int row = addRowToFieldsLayout();
-		getFieldsPanel().add(inputField.getComponent(), format("0, %d", row));
+		panel.getFieldsPanel().add(inputField.getAWTComponent(),
+				format("0, %d", row));
 	}
 
 	private int addRowToFieldsLayout() {
-		TableLayout layout = (TableLayout) getFieldsPanel().getLayout();
+		TableLayout layout = (TableLayout) panel.getFieldsPanel().getLayout();
 		int rows = layout.getNumRow();
 		int row = rows - 1;
 		layout.insertRow(row, TableLayout.PREFERRED);
-		layout.layoutContainer(this);
-		repaint();
+		layout.layoutContainer(panel);
+		panel.repaint();
 		return row;
+	}
+
+	@Override
+	public Component getAWTComponent() {
+		return panel;
 	}
 }

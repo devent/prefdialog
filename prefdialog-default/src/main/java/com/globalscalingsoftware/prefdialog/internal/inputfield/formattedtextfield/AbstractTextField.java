@@ -5,10 +5,10 @@ import java.lang.reflect.Field;
 
 import com.globalscalingsoftware.prefdialog.Validator;
 import com.globalscalingsoftware.prefdialog.internal.ReflectionToolbox;
-import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractInputField;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractDefaultInputField;
 
 public abstract class AbstractTextField extends
-		AbstractInputField<TextFieldPanel> {
+		AbstractDefaultInputField<TextFieldPanel> {
 
 	private String validatorText;
 
@@ -69,7 +69,7 @@ public abstract class AbstractTextField extends
 	}
 
 	@Override
-	public Object getValue() {
+	public Object getComponentValue() {
 		return getComponent().getValue();
 	}
 

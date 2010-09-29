@@ -1,6 +1,5 @@
 package com.globalscalingsoftware.prefdialog.internal.inputfield.child;
 
-import java.awt.Component;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -10,23 +9,23 @@ import javax.swing.Action;
 
 import org.fest.reflect.exception.ReflectionError;
 
-import com.globalscalingsoftware.prefdialog.IInputField;
+import com.globalscalingsoftware.prefdialog.InputField;
 import com.globalscalingsoftware.prefdialog.internal.FieldsFactory;
 import com.globalscalingsoftware.prefdialog.internal.ReflectionToolbox;
-import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractInputField;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractDefaultInputField;
 
-public abstract class AbstractChildInputField<ComponentType extends Component & IChildComponent>
-		extends AbstractInputField<ComponentType> {
+public abstract class AbstractChildInputField<ComponentType extends IChildComponent>
+		extends AbstractDefaultInputField<ComponentType> {
 
 	private FieldsFactory fieldsFactory;
 
-	private final Map<Field, IInputField> inputFields;
+	private final Map<Field, InputField<?>> inputFields;
 
 	public AbstractChildInputField(Object parentObject, Object value,
 			Field field, Class<? extends Annotation> annotationClass,
 			ComponentType component) {
 		super(parentObject, value, field, annotationClass, component);
-		inputFields = new HashMap<Field, IInputField>();
+		inputFields = new HashMap<Field, InputField<?>>();
 	}
 
 	@Override
@@ -37,7 +36,7 @@ public abstract class AbstractChildInputField<ComponentType extends Component & 
 	}
 
 	private void addAllInputFields() {
-		Object parentObject = getValue();
+		Object parentObject = getComponentValue();
 		ReflectionToolbox reflectionToolbox = getReflectionToolbox();
 		addAllInputFields(parentObject, reflectionToolbox);
 	}
@@ -48,7 +47,7 @@ public abstract class AbstractChildInputField<ComponentType extends Component & 
 			try {
 				Object value = reflectionToolbox.getValueFrom(field,
 						parentObject);
-				IInputField inputField = fieldsFactory.createField(
+				InputField<?> inputField = fieldsFactory.createField(
 						parentObject, field, value);
 				addInputField(field, inputField);
 			} catch (ReflectionError e) {
@@ -57,13 +56,13 @@ public abstract class AbstractChildInputField<ComponentType extends Component & 
 		}
 	}
 
-	private void addInputField(Field field, IInputField inputField) {
+	private void addInputField(Field field, InputField<?> inputField) {
 		if (inputField == null) {
 			return;
 		}
 
-		if (inputField instanceof AbstractInputField) {
-			AbstractInputField<?> ainputfield = (AbstractInputField<?>) inputField;
+		if (inputField instanceof AbstractDefaultInputField) {
+			AbstractDefaultInputField<?> ainputfield = (AbstractDefaultInputField<?>) inputField;
 			ainputfield.setReflectionToolbox(getReflectionToolbox());
 		}
 		if (inputField instanceof AbstractChildInputField) {
@@ -88,9 +87,10 @@ public abstract class AbstractChildInputField<ComponentType extends Component & 
 
 	private void applyAllInput() {
 		for (Field field : inputFields.keySet()) {
-			IInputField inputField = inputFields.get(field);
-			Object value = inputField.getValue();
-			getReflectionToolbox().setValueTo(field, getValue(), value);
+			InputField<?> inputField = inputFields.get(field);
+			Object value = inputField.getComponentValue();
+			getReflectionToolbox()
+					.setValueTo(field, getComponentValue(), value);
 		}
 	}
 

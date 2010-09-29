@@ -20,9 +20,9 @@ class TextFieldPanel extends AbstractLabelFieldPanel<JTextField> {
 	}
 
 	@Override
-	public void setFieldName(String name) {
+	public void setName(String name) {
 		this.fieldName = name;
-		super.setFieldName(name);
+		super.setName(name);
 	}
 
 	public void setValidatorText(String validatorText) {

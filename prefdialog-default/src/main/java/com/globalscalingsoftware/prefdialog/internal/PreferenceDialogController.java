@@ -11,7 +11,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 
 import com.globalscalingsoftware.prefdialog.Event;
-import com.globalscalingsoftware.prefdialog.IInputField;
+import com.globalscalingsoftware.prefdialog.InputField;
 import com.globalscalingsoftware.prefdialog.IPreferenceDialogController;
 import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.AbstractChildInputField;
@@ -22,7 +22,7 @@ import com.google.inject.name.Named;
 public class PreferenceDialogController implements IPreferenceDialogController {
 
 	private final AnnotationDiscovery annotationDiscovery;
-	private Map<Object, IInputField> preferencePanels;
+	private Map<Object, InputField> preferencePanels;
 	private final PreferenceDialog preferenceDialog;
 	private final Map<Object, TreeNode[]> treeNodes;
 	private final Object preferences;
@@ -48,7 +48,7 @@ public class PreferenceDialogController implements IPreferenceDialogController {
 		this.preferences = preferences;
 		this.preferencesStart = preferencesStart;
 		this.fieldsFactory = fieldsFactory;
-		preferencePanels = new HashMap<Object, IInputField>();
+		preferencePanels = new HashMap<Object, InputField>();
 		treeNodes = new HashMap<Object, TreeNode[]>();
 	}
 
@@ -89,20 +89,20 @@ public class PreferenceDialogController implements IPreferenceDialogController {
 			public void run() {
 				preferenceDialog.close();
 
-				Map<Object, IInputField> copy = copyPreferencePanels();
+				Map<Object, InputField> copy = copyPreferencePanels();
 				putValuesInto(copy);
 				preferencePanels = copy;
 			}
 
-			private void putValuesInto(Map<Object, IInputField> copy) {
-				for (Map.Entry<Object, IInputField> entry : preferencePanels
+			private void putValuesInto(Map<Object, InputField> copy) {
+				for (Map.Entry<Object, InputField> entry : preferencePanels
 						.entrySet()) {
 					copy.put(entry.getKey(), entry.getValue());
 				}
 			}
 
-			private Map<Object, IInputField> copyPreferencePanels() {
-				return new HashMap<Object, IInputField>(preferencePanels);
+			private Map<Object, InputField> copyPreferencePanels() {
+				return new HashMap<Object, InputField>(preferencePanels);
 			}
 		});
 		preferenceDialog.setCancelEvent(new Runnable() {

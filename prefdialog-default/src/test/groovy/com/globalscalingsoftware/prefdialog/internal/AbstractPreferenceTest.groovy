@@ -64,7 +64,7 @@ abstract class AbstractPreferenceTest {
 		inputfield.setFieldsFactory(factory)
 		inputfield.setup()
 		
-		createDialog({ inputfield.getComponent() })
+		createDialog({ inputfield.getAWTComponent() })
 		return inputfield
 	}
 }

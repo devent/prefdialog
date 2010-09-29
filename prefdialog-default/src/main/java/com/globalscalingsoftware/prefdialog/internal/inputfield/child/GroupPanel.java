@@ -3,18 +3,21 @@ package com.globalscalingsoftware.prefdialog.internal.inputfield.child;
 import static java.lang.String.format;
 import info.clearthought.layout.TableLayout;
 
+import java.awt.Component;
 import java.awt.Font;
 
 import javax.swing.Action;
 
-import com.globalscalingsoftware.prefdialog.IInputField;
+import com.globalscalingsoftware.prefdialog.InputField;
 
-@SuppressWarnings("serial")
-public class GroupPanel extends UiGroupPanel implements IChildComponent {
+public class GroupPanel implements IChildComponent {
+
+	private final UiGroupPanel panel;
 
 	private Object value;
 
 	public GroupPanel() {
+		panel = new UiGroupPanel();
 		setupPanel();
 	}
 
@@ -23,21 +26,21 @@ public class GroupPanel extends UiGroupPanel implements IChildComponent {
 	}
 
 	private void setBoldFontForGroupLabel() {
-		Font font = getGroupLabel().getFont();
-		getGroupLabel().setFont(
+		Font font = panel.getGroupLabel().getFont();
+		panel.getGroupLabel().setFont(
 				new Font(font.getFamily(), font.getStyle() | Font.BOLD, font
 						.getSize()));
 	}
 
 	@Override
-	public void setFieldWidth(double width) {
+	public void setWidth(double width) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void setFieldName(String name) {
-		getGroupLabel().setText(name);
+	public void setName(String name) {
+		panel.getGroupLabel().setText(name);
 	}
 
 	@Override
@@ -51,18 +54,19 @@ public class GroupPanel extends UiGroupPanel implements IChildComponent {
 	}
 
 	@Override
-	public void addField(IInputField inputField) {
+	public void addField(InputField<?> inputField) {
 		int row = addRowToFieldsLayout();
-		getFieldsPanel().add(inputField.getComponent(), format("0, %d", row));
+		panel.getFieldsPanel().add(inputField.getAWTComponent(),
+				format("0, %d", row));
 	}
 
 	private int addRowToFieldsLayout() {
-		TableLayout layout = (TableLayout) getFieldsPanel().getLayout();
+		TableLayout layout = (TableLayout) panel.getFieldsPanel().getLayout();
 		int rows = layout.getNumRow();
 		int row = rows - 1;
 		layout.insertRow(row, TableLayout.PREFERRED);
-		layout.layoutContainer(this);
-		repaint();
+		layout.layoutContainer(panel);
+		panel.repaint();
 		return row;
 	}
 
@@ -78,4 +82,8 @@ public class GroupPanel extends UiGroupPanel implements IChildComponent {
 	public void setRestoreAction(Action a) {
 	}
 
+	@Override
+	public Component getAWTComponent() {
+		return panel;
+	}
 }

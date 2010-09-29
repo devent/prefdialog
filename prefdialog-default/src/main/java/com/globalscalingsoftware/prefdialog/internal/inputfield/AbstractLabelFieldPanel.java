@@ -7,9 +7,12 @@ import java.awt.Component;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-@SuppressWarnings("serial")
+import com.globalscalingsoftware.prefdialog.InputFieldComponent;
+
 public abstract class AbstractLabelFieldPanel<FieldType extends Component>
-		extends JPanel implements IComponent {
+		implements InputFieldComponent {
+
+	private final JPanel panel;
 
 	private final JLabel label;
 
@@ -18,6 +21,7 @@ public abstract class AbstractLabelFieldPanel<FieldType extends Component>
 	private final TableLayout layout;
 
 	public AbstractLabelFieldPanel(FieldType field) {
+		this.panel = new JPanel();
 		this.field = field;
 		label = new JLabel();
 		double[] col = { TableLayout.FILL };
@@ -27,10 +31,10 @@ public abstract class AbstractLabelFieldPanel<FieldType extends Component>
 	}
 
 	private void setupPanel() {
-		setLayout(layout);
+		panel.setLayout(layout);
 
-		add(label, "0, 0");
-		add(field, "0, 1");
+		panel.add(label, "0, 0");
+		panel.add(field, "0, 1");
 
 		label.setLabelFor(field);
 	}
@@ -46,7 +50,7 @@ public abstract class AbstractLabelFieldPanel<FieldType extends Component>
 	public abstract Object getValue();
 
 	@Override
-	public void setFieldName(String name) {
+	public void setName(String name) {
 		label.setText(name + ": ");
 	}
 
@@ -55,10 +59,14 @@ public abstract class AbstractLabelFieldPanel<FieldType extends Component>
 	}
 
 	@Override
-	public void setFieldWidth(double width) {
+	public void setWidth(double width) {
 		layout.setColumn(0, width);
-		layout.layoutContainer(this);
-		repaint();
+		layout.layoutContainer(panel);
+		panel.repaint();
 	}
 
+	@Override
+	public Component getAWTComponent() {
+		return panel;
+	}
 }
