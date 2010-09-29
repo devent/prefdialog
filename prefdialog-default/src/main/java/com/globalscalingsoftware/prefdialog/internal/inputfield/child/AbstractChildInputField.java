@@ -7,8 +7,6 @@ import java.util.Map;
 
 import javax.swing.Action;
 
-import org.fest.reflect.exception.ReflectionError;
-
 import com.globalscalingsoftware.prefdialog.InputField;
 import com.globalscalingsoftware.prefdialog.internal.FieldsFactory;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractDefaultInputField;
@@ -32,47 +30,8 @@ public abstract class AbstractChildInputField<ComponentType extends IChildCompon
 	public void setup() {
 		super.setup();
 		addAllInputFields();
+
 		setupActions();
-	}
-
-	private void addAllInputFields() {
-		Object parentObject = getComponentValue();
-		ReflectionToolbox reflectionToolbox = getReflectionToolbox();
-		addAllInputFields(parentObject, reflectionToolbox);
-	}
-
-	private void addAllInputFields(Object parentObject,
-			ReflectionToolbox reflectionToolbox) {
-		for (Field field : parentObject.getClass().getDeclaredFields()) {
-			try {
-				Object value = reflectionToolbox.getValueFrom(field,
-						parentObject);
-				InputField<?> inputField = fieldsFactory.createField(
-						parentObject, field, value);
-				addInputField(field, inputField);
-			} catch (ReflectionError e) {
-				continue;
-			}
-		}
-	}
-
-	private void addInputField(Field field, InputField<?> inputField) {
-		if (inputField == null) {
-			return;
-		}
-
-		if (inputField instanceof AbstractDefaultInputField) {
-			AbstractDefaultInputField<?> ainputfield = (AbstractDefaultInputField<?>) inputField;
-			ainputfield.setReflectionToolbox(getReflectionToolbox());
-		}
-		if (inputField instanceof AbstractChildInputField) {
-			AbstractChildInputField<?> ainputfield = (AbstractChildInputField<?>) inputField;
-			ainputfield.setFieldsFactory(fieldsFactory);
-		}
-
-		inputField.setup();
-		getComponent().addField(inputField);
-		inputFields.put(field, inputField);
 	}
 
 	private void setupActions() {
@@ -84,6 +43,20 @@ public abstract class AbstractChildInputField<ComponentType extends IChildCompon
 			}
 
 		});
+	}
+
+	private void addAllInputFields() {
+		fillInputFields();
+		for (InputField<?> inputField : inputFields.values()) {
+			getComponent().addField(inputField);
+		}
+	}
+
+	private void fillInputFields() {
+		Object parentObject = getComponentValue();
+		ReflectionToolbox reflectionToolbox = getReflectionToolbox();
+		new AddAllInputFields(reflectionToolbox, fieldsFactory).addAllInto(
+				inputFields, parentObject);
 	}
 
 	public void applyInput() {

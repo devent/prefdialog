@@ -9,7 +9,6 @@ import com.globalscalingsoftware.prefdialog.ICancelAction;
 import com.globalscalingsoftware.prefdialog.IOkAction;
 import com.globalscalingsoftware.prefdialog.IRestoreAction;
 
-
 class DefaultAction extends AbstractAction 
 implements IOkAction, ICancelAction, IApplyAction, IRestoreAction {
 	
