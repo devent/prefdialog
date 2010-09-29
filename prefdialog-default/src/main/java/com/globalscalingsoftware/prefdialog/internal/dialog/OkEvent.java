@@ -5,7 +5,7 @@ import java.util.Map;
 import com.globalscalingsoftware.prefdialog.InputField;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.AbstractChildInputField;
 
-public class OkEvent implements Runnable {
+class OkEvent implements Runnable {
 
 	private final PreferenceDialogController controller;
 

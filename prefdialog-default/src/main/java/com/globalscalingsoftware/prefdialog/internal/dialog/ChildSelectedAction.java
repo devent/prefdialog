@@ -2,7 +2,7 @@ package com.globalscalingsoftware.prefdialog.internal.dialog;
 
 import com.globalscalingsoftware.prefdialog.Event;
 
-public class ChildSelectedAction implements Event<Object> {
+class ChildSelectedAction implements Event<Object> {
 
 	private final PreferenceDialogController controller;
 
