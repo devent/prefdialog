@@ -16,10 +16,10 @@ class ComboBoxPreferencePanelTest extends AbstractPreferenceTest {
 	
 	static class General {
 		
-		@ComboBoxElements("combobox1")
+		@ComboBoxElements("Some combo box")
 		List<String> comboBoxElements = ["first element", "second element", "third element"]
 		
-		@ComboBox("combobox1")
+		@ComboBox("Some combo box")
 		String comboBox = "first element"
 		
 		@Override
