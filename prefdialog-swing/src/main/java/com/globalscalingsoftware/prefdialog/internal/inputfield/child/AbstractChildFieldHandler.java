@@ -12,7 +12,7 @@ import com.globalscalingsoftware.prefdialog.internal.FieldsFactory;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractDefaultFieldHandler;
 import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbox;
 
-public abstract class AbstractChildInputField<ComponentType extends IChildComponent>
+public abstract class AbstractChildFieldHandler<ComponentType extends IChildComponent>
 		extends AbstractDefaultFieldHandler<ComponentType> {
 
 	private FieldsFactory fieldsFactory;
@@ -23,7 +23,7 @@ public abstract class AbstractChildInputField<ComponentType extends IChildCompon
 
 	private Action restoreAction;
 
-	public AbstractChildInputField(Object parentObject, Object value,
+	public AbstractChildFieldHandler(Object parentObject, Object value,
 			Field field, Class<? extends Annotation> annotationClass,
 			ComponentType component) {
 		super(parentObject, value, field, annotationClass, component);
@@ -68,14 +68,14 @@ public abstract class AbstractChildInputField<ComponentType extends IChildCompon
 		if (inputField instanceof AbstractDefaultFieldHandler) {
 			setupDefaultInputField(inputField);
 		}
-		if (inputField instanceof AbstractChildInputField) {
+		if (inputField instanceof AbstractChildFieldHandler) {
 			setupChildInputField(inputField);
 		}
 		inputField.setup();
 	}
 
 	private void setupChildInputField(FieldHandler<?> inputField) {
-		AbstractChildInputField<?> ainputfield = (AbstractChildInputField<?>) inputField;
+		AbstractChildFieldHandler<?> ainputfield = (AbstractChildFieldHandler<?>) inputField;
 		ainputfield.setFieldsFactory(fieldsFactory);
 		ainputfield.setApplyAction(applyAction);
 		ainputfield.setRestoreAction(restoreAction);

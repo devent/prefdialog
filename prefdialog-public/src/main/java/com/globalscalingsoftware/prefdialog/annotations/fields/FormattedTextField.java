@@ -13,6 +13,8 @@ import com.globalscalingsoftware.prefdialog.validators.AlwaysValid;
 @Retention(RUNTIME)
 public @interface FormattedTextField {
 
+	String value() default "";
+
 	double width() default -1.0;
 
 	Class<? extends Validator<?>> validator() default AlwaysValid.class;

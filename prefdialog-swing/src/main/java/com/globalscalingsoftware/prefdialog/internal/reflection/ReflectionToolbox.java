@@ -10,7 +10,6 @@ import java.lang.reflect.Field;
 import org.fest.reflect.exception.ReflectionError;
 
 import com.globalscalingsoftware.annotations.Stateless;
-import com.globalscalingsoftware.prefdialog.Validator;
 
 @Stateless
 public class ReflectionToolbox {
@@ -34,7 +33,7 @@ public class ReflectionToolbox {
 	 * @return the {@link Object value} of the field.
 	 * @throws ReflectionError
 	 *             if there was no getter method and it was an illegal access to
-	 *             the field thought reflection.
+	 *             the field through reflection.
 	 */
 	public Object getValueFrom(Field field, Object object) {
 		try {
@@ -65,6 +64,24 @@ public class ReflectionToolbox {
 		}
 	}
 
+	/**
+	 * Sets a value to a field.
+	 * 
+	 * If a setter for this field is defined it tries to use the setter first. A
+	 * setter is a method with the pattern
+	 * <code>void setFieldName(FieldType)</code> where <code>FieldType</code>
+	 * the type of the field and <code>FieldName</code> the name of the field
+	 * is.
+	 * 
+	 * @param field
+	 *            the {@link Field} that provides access to the field of the
+	 *            class.
+	 * @param object
+	 *            the {@link Object} of the field.
+	 * @return the new {@link Object value} for the field.
+	 * @throws ReflectionError
+	 *             if there was no such setter method for the field.
+	 */
 	public void setValueTo(Field field, Object object, Object value) {
 		String name = getSetterName(field);
 		invokeMethodWithParameters(name, field.getType(), object, value);
@@ -76,11 +93,40 @@ public class ReflectionToolbox {
 		return name;
 	}
 
+	/**
+	 * Invoke a method with one parameter and no return value.
+	 * 
+	 * @param name
+	 *            the name of the method.
+	 * @param parameterType
+	 *            the type of the parameter.
+	 * @param object
+	 *            the object in which the method is declared.
+	 * @param value
+	 *            the value for the parameter.
+	 * @throws ReflectionError
+	 *             if the method can't be found or invoked.
+	 */
 	public void invokeMethodWithParameters(String name, Class<?> parameterType,
 			Object object, Object value) {
 		method(name).withParameterTypes(parameterType).in(object).invoke(value);
 	}
 
+	/**
+	 * Invoke a method with no parameters and a return value.
+	 * 
+	 * @param <T>
+	 *            the return type of the method.
+	 * @param methodName
+	 *            the name of the method.
+	 * @param returnType
+	 *            the {@link Class} of the return type.
+	 * @param object
+	 *            the object in which the method is declared.
+	 * @return the return value of the method.
+	 * @throws ReflectionError
+	 *             if the method can't be found or invoked.
+	 */
 	public <T> T invokeMethodWithReturnType(String methodName,
 			Class<? extends T> returnType, Object object) {
 		return method(methodName).withReturnType(returnType).in(object)
@@ -95,15 +141,6 @@ public class ReflectionToolbox {
 		} catch (NoSuchMethodException e) {
 			return false;
 		}
-	}
-
-	static class NoneValidator implements Validator<Object> {
-
-		@Override
-		public boolean isValid(Object value) {
-			return true;
-		}
-
 	}
 
 	public String getFieldName(Field field) {
@@ -128,7 +165,8 @@ public class ReflectionToolbox {
 			if (annotationHaveNotValueMethod(a)) {
 				continue;
 			}
-			if (getValueFromAnnotation(a, returnType).equals(value)) {
+			T aValue = invokeMethodWithReturnType("value", returnType, a);
+			if (aValue.equals(value)) {
 				return getValueFrom(field, parentObject);
 			}
 		}
@@ -137,11 +175,6 @@ public class ReflectionToolbox {
 
 	private boolean annotationHaveNotValueMethod(Annotation a) {
 		return a == null || !annotationHaveMethod(a, "value");
-	}
-
-	private <T> Object getValueFromAnnotation(Annotation a,
-			Class<? extends T> returnType) {
-		return invokeMethodWithReturnType("value", returnType, a);
 	}
 
 	public <T> T newInstance(Class<? extends T> objectClass,

@@ -4,7 +4,7 @@ import java.util.Map;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.Options;
-import com.globalscalingsoftware.prefdialog.internal.inputfield.child.AbstractChildInputField;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.child.AbstractChildFieldHandler;
 
 class CancelEvent implements Runnable {
 
@@ -18,8 +18,8 @@ class CancelEvent implements Runnable {
 	public void run() {
 		Map<Object, FieldHandler<?>> panels = controller.getPreferencePanels();
 		for (FieldHandler<?> field : panels.values()) {
-			if (field instanceof AbstractChildInputField) {
-				AbstractChildInputField<?> child = (AbstractChildInputField<?>) field;
+			if (field instanceof AbstractChildFieldHandler) {
+				AbstractChildFieldHandler<?> child = (AbstractChildFieldHandler<?>) field;
 				child.restoreInput();
 			}
 		}

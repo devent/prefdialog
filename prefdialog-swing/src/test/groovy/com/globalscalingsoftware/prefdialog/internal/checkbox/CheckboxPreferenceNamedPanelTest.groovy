@@ -1,26 +1,23 @@
-package com.globalscalingsoftware.prefdialog.internal.combobox
+package com.globalscalingsoftware.prefdialog.internal.checkbox
 
-import java.util.List;
+
+
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.globalscalingsoftware.prefdialog.annotations.fields.Checkbox;
 import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
-import com.globalscalingsoftware.prefdialog.annotations.fields.ComboBox;
-import com.globalscalingsoftware.prefdialog.annotations.fields.ComboBoxElements;
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest 
 import com.globalscalingsoftware.prefdialog.internal.PreferencesDialogInjectorFactory 
 
-class ComboBoxPreferencePanelTest extends AbstractPreferenceTest {
+class CheckboxPreferenceNamedPanelTest extends AbstractPreferenceTest {
 	
 	static class General {
 		
-		@ComboBoxElements("Some combo box")
-		List<String> comboBoxElements = ["first element", "second element", "third element"]
-		
-		@ComboBox("Some combo box")
-		String comboBox = "first element"
+		@Checkbox("save automatic")
+		boolean automaticSave = false
 		
 		@Override
 		public String toString() {
@@ -53,6 +50,6 @@ class ComboBoxPreferencePanelTest extends AbstractPreferenceTest {
 	@Test
 	void testPanelClickApplyAndClose() {
 		def filed = createField(injector, preferences, field, parentValue)
-		assertThat preferences.general.comboBox, is("second element")
+		assertThat preferences.general.automaticSave, is(true)
 	}
 }

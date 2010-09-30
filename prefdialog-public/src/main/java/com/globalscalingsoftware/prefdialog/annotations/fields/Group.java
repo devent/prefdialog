@@ -10,6 +10,8 @@ import java.lang.annotation.Target;
 @Retention(RUNTIME)
 public @interface Group {
 
+	String value() default "";
+
 	double width() default -1.0;
 
 }
