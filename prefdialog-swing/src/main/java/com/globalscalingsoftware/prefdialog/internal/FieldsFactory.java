@@ -5,7 +5,7 @@ import java.lang.reflect.Field;
 import java.util.Map;
 
 import com.globalscalingsoftware.annotations.Stateless;
-import com.globalscalingsoftware.prefdialog.InputField;
+import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.internal.reflection.FieldsAnnotationFilter;
 import com.google.inject.Inject;
 
@@ -14,7 +14,7 @@ public class FieldsFactory {
 
 	private final InputFieldsFactory inputFieldFactory;
 
-	private final Map<Class<? extends Annotation>, Class<? extends InputField<?>>> inputFieldImplementations;
+	private final Map<Class<? extends Annotation>, Class<? extends FieldHandler<?>>> inputFieldImplementations;
 
 	private final FieldsAnnotationFilter annotationFilter;
 
@@ -27,9 +27,9 @@ public class FieldsFactory {
 				.getFieldsImplementations();
 	}
 
-	public InputField<?> createField(Object parentObject, Field field,
+	public FieldHandler<?> createField(Object parentObject, Field field,
 			Object value) {
-		Class<? extends InputField<?>> inputFieldClass = getInputFieldClassFrom(field);
+		Class<? extends FieldHandler<?>> inputFieldClass = getInputFieldClassFrom(field);
 		if (inputFieldClass == null) {
 			return null;
 		} else {
@@ -37,9 +37,9 @@ public class FieldsFactory {
 		}
 	}
 
-	private Class<? extends InputField<?>> getInputFieldClassFrom(Field field) {
+	private Class<? extends FieldHandler<?>> getInputFieldClassFrom(Field field) {
 		Class<? extends Annotation> a = getInputFieldAnnotationFrom(field);
-		Class<? extends InputField<?>> c = inputFieldImplementations.get(a);
+		Class<? extends FieldHandler<?>> c = inputFieldImplementations.get(a);
 		return c;
 	}
 
@@ -53,9 +53,9 @@ public class FieldsFactory {
 		return null;
 	}
 
-	private InputField<?> createInputField(Object parentObject, Object value,
-			Field field, Class<? extends InputField<?>> inputFieldClass) {
-		InputField<?> inputField = inputFieldFactory.create(inputFieldClass,
+	private FieldHandler<?> createInputField(Object parentObject, Object value,
+			Field field, Class<? extends FieldHandler<?>> inputFieldClass) {
+		FieldHandler<?> inputField = inputFieldFactory.create(inputFieldClass,
 				parentObject, value, field);
 		return inputField;
 	}

@@ -4,9 +4,9 @@ import java.lang.reflect.Field;
 
 import com.globalscalingsoftware.prefdialog.annotations.fields.Group;
 
-public class GroupInputField extends AbstractChildInputField<GroupPanel> {
+public class GroupFieldHandler extends AbstractChildFieldHandler<GroupPanel> {
 
-	public GroupInputField(Object parentObject, Object value, Field field) {
+	public GroupFieldHandler(Object parentObject, Object value, Field field) {
 		super(parentObject, value, field, Group.class, new GroupPanel());
 
 	}

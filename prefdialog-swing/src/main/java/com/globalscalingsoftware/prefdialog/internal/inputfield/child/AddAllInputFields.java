@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.fest.reflect.exception.ReflectionError;
 
-import com.globalscalingsoftware.prefdialog.InputField;
+import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.internal.FieldsFactory;
 import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbox;
 
@@ -20,22 +20,22 @@ class AddAllInputFields {
 		this.fieldsFactory = fieldsFactory;
 	}
 
-	public Map<Field, InputField<?>> addAllInto(
-			Map<Field, InputField<?>> inputFields, Object parentObject) {
+	public Map<Field, FieldHandler<?>> addAllInto(
+			Map<Field, FieldHandler<?>> inputFields, Object parentObject) {
 		addAllInputFields(inputFields, parentObject);
 		return inputFields;
 	}
 
-	private void addAllInputFields(Map<Field, InputField<?>> inputFields,
+	private void addAllInputFields(Map<Field, FieldHandler<?>> inputFields,
 			Object parentObject) {
 		for (Field field : parentObject.getClass().getDeclaredFields()) {
-			InputField<?> inputField = createInputField(parentObject,
+			FieldHandler<?> inputField = createInputField(parentObject,
 					reflectionToolbox, field);
 			addInputField(inputFields, field, inputField);
 		}
 	}
 
-	private InputField<?> createInputField(Object parentObject,
+	private FieldHandler<?> createInputField(Object parentObject,
 			ReflectionToolbox reflectionToolbox, Field field) {
 		try {
 			Object value = getValueFromField(parentObject, reflectionToolbox,
@@ -51,13 +51,13 @@ class AddAllInputFields {
 		return reflectionToolbox.getValueFrom(field, parentObject);
 	}
 
-	private InputField<?> createInputField(Object parentObject, Field field,
+	private FieldHandler<?> createInputField(Object parentObject, Field field,
 			Object value) {
 		return fieldsFactory.createField(parentObject, field, value);
 	}
 
-	private void addInputField(Map<Field, InputField<?>> inputFields,
-			Field field, InputField<?> inputField) {
+	private void addInputField(Map<Field, FieldHandler<?>> inputFields,
+			Field field, FieldHandler<?> inputField) {
 		if (inputField == null) {
 			return;
 		}

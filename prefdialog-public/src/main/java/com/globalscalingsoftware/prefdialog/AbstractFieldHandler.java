@@ -1,23 +1,21 @@
-package com.globalscalingsoftware.prefdialog.internal;
+package com.globalscalingsoftware.prefdialog;
 
 import java.awt.Component;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
-import com.globalscalingsoftware.prefdialog.InputField;
-import com.globalscalingsoftware.prefdialog.InputFieldComponent;
-
-public abstract class AbstractInputField<ComponentType extends InputFieldComponent>
-		implements InputField<ComponentType> {
+public abstract class AbstractFieldHandler<FieldComponentType extends FieldComponent>
+		implements FieldHandler<FieldComponentType> {
 
 	private final Object parentObject;
 	private final Object value;
 	private final Field field;
 	private final Class<? extends Annotation> annotationClass;
-	private final ComponentType component;
+	private final FieldComponentType component;
 
-	public AbstractInputField(Object parentObject, Object value, Field field,
-			Class<? extends Annotation> annotationClass, ComponentType component) {
+	public AbstractFieldHandler(Object parentObject, Object value, Field field,
+			Class<? extends Annotation> annotationClass,
+			FieldComponentType component) {
 		this.parentObject = parentObject;
 		this.value = value;
 		this.field = field;
@@ -26,30 +24,24 @@ public abstract class AbstractInputField<ComponentType extends InputFieldCompone
 	}
 
 	@Override
-	public abstract void setup();
+	public void setup() {
+		setComponentName(field.getName());
+		setComponentValue(value);
+	}
 
-	@Override
-	public ComponentType getComponent() {
+	protected FieldComponentType getComponent() {
 		return component;
 	}
 
-	@Override
-	public Object getValue() {
-		return value;
-	}
-
-	@Override
-	public Class<? extends Annotation> getAnnotationClass() {
+	protected Class<? extends Annotation> getAnnotationClass() {
 		return annotationClass;
 	}
 
-	@Override
-	public Field getField() {
+	protected Field getField() {
 		return field;
 	}
 
-	@Override
-	public Object getParentObject() {
+	protected Object getParentObject() {
 		return parentObject;
 	}
 

@@ -12,15 +12,15 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 
 import com.globalscalingsoftware.prefdialog.IPreferenceDialogController;
-import com.globalscalingsoftware.prefdialog.InputField;
+import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.Options;
 import com.globalscalingsoftware.prefdialog.annotations.actions.ApplyAction;
 import com.globalscalingsoftware.prefdialog.annotations.actions.RestoreAction;
 import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
 import com.globalscalingsoftware.prefdialog.internal.FieldsFactory;
 import com.globalscalingsoftware.prefdialog.internal.InputFieldsFactory;
-import com.globalscalingsoftware.prefdialog.internal.inputfield.child.AbstractChildInputField;
-import com.globalscalingsoftware.prefdialog.internal.inputfield.child.ChildInputField;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.child.AbstractChildFieldHandler;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.child.ChildFieldHandler;
 import com.globalscalingsoftware.prefdialog.internal.reflection.AbstractAnnotationFilter;
 import com.globalscalingsoftware.prefdialog.internal.reflection.AnnotationDiscovery;
 import com.globalscalingsoftware.prefdialog.internal.reflection.DiscoveredListener;
@@ -31,7 +31,7 @@ import com.google.inject.name.Named;
 public class PreferenceDialogController implements IPreferenceDialogController {
 
 	private final AnnotationDiscovery annotationDiscovery;
-	private final Map<Object, InputField<?>> preferencePanels;
+	private final Map<Object, FieldHandler<?>> preferencePanels;
 	private final PreferenceDialog preferenceDialog;
 	private final Map<Object, TreeNode[]> treeNodes;
 	private final Object preferences;
@@ -61,7 +61,7 @@ public class PreferenceDialogController implements IPreferenceDialogController {
 		this.preferences = preferences;
 		this.preferencesStart = preferencesStart;
 		this.fieldsFactory = fieldsFactory;
-		this.preferencePanels = new HashMap<Object, InputField<?>>();
+		this.preferencePanels = new HashMap<Object, FieldHandler<?>>();
 		this.treeNodes = new HashMap<Object, TreeNode[]>();
 		this.option = Options.CANCEL;
 		this.applyAction = applyAction;
@@ -109,8 +109,8 @@ public class PreferenceDialogController implements IPreferenceDialogController {
 
 					treeNodes.put(value, node.getPath());
 
-					Class<ChildInputField> inputFieldClass = ChildInputField.class;
-					AbstractChildInputField<?> panel = inputFieldsFactory
+					Class<ChildFieldHandler> inputFieldClass = ChildFieldHandler.class;
+					AbstractChildFieldHandler<?> panel = inputFieldsFactory
 							.create(inputFieldClass, preferences, value, field);
 					panel.setFieldsFactory(fieldsFactory);
 					panel.setReflectionToolbox(reflectionToolbox);
@@ -135,7 +135,7 @@ public class PreferenceDialogController implements IPreferenceDialogController {
 		preferenceDialog.close();
 	}
 
-	Map<Object, InputField<?>> getPreferencePanels() {
+	Map<Object, FieldHandler<?>> getPreferencePanels() {
 		return preferencePanels;
 	}
 
