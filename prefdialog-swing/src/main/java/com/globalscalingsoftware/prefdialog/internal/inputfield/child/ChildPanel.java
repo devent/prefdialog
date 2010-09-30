@@ -8,7 +8,7 @@ import java.awt.Font;
 
 import javax.swing.Action;
 
-import com.globalscalingsoftware.prefdialog.InputField;
+import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.internal.RunnableActionEvent;
 
 public class ChildPanel implements IChildComponent {
@@ -86,7 +86,7 @@ public class ChildPanel implements IChildComponent {
 	}
 
 	@Override
-	public void addField(InputField<?> inputField) {
+	public void addField(FieldHandler<?> inputField) {
 		int row = addRowToFieldsLayout();
 		panel.getFieldsPanel().add(inputField.getAWTComponent(),
 				format("0, %d", row));

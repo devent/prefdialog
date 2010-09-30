@@ -3,25 +3,24 @@ package com.globalscalingsoftware.prefdialog.internal.inputfield;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
-import com.globalscalingsoftware.prefdialog.InputFieldComponent;
-import com.globalscalingsoftware.prefdialog.internal.AbstractInputField;
+import com.globalscalingsoftware.prefdialog.AbstractFieldHandler;
+import com.globalscalingsoftware.prefdialog.FieldComponent;
 import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbox;
 
-public abstract class AbstractDefaultInputField<ComponentType extends InputFieldComponent>
-		extends AbstractInputField<ComponentType> {
+public abstract class AbstractDefaultFieldHandler<FieldComponentType extends FieldComponent>
+		extends AbstractFieldHandler<FieldComponentType> {
 
 	private ReflectionToolbox reflectionToolbox;
 
-	public AbstractDefaultInputField(Object parentObject, Object value,
+	public AbstractDefaultFieldHandler(Object parentObject, Object value,
 			Field field, Class<? extends Annotation> annotationClass,
-			ComponentType component) {
+			FieldComponentType component) {
 		super(parentObject, value, field, annotationClass, component);
 	}
 
 	@Override
 	public void setup() {
-		setComponentName(getField().getName());
-		setComponentValue(getValue());
+		super.setup();
 		setupFieldWidth();
 	}
 

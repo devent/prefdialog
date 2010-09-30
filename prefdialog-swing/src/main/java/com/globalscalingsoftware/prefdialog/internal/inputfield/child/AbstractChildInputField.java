@@ -7,17 +7,17 @@ import java.util.Map;
 
 import javax.swing.Action;
 
-import com.globalscalingsoftware.prefdialog.InputField;
+import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.internal.FieldsFactory;
-import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractDefaultInputField;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractDefaultFieldHandler;
 import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbox;
 
 public abstract class AbstractChildInputField<ComponentType extends IChildComponent>
-		extends AbstractDefaultInputField<ComponentType> {
+		extends AbstractDefaultFieldHandler<ComponentType> {
 
 	private FieldsFactory fieldsFactory;
 
-	private final Map<Field, InputField<?>> inputFields;
+	private final Map<Field, FieldHandler<?>> inputFields;
 
 	private Action applyAction;
 
@@ -27,7 +27,7 @@ public abstract class AbstractChildInputField<ComponentType extends IChildCompon
 			Field field, Class<? extends Annotation> annotationClass,
 			ComponentType component) {
 		super(parentObject, value, field, annotationClass, component);
-		inputFields = new HashMap<Field, InputField<?>>();
+		inputFields = new HashMap<Field, FieldHandler<?>>();
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public abstract class AbstractChildInputField<ComponentType extends IChildCompon
 
 	private void addAllInputFields() {
 		fillInputFields();
-		for (InputField<?> inputField : inputFields.values()) {
+		for (FieldHandler<?> inputField : inputFields.values()) {
 			setupInputField(inputField);
 			getComponent().addField(inputField);
 		}
@@ -64,8 +64,8 @@ public abstract class AbstractChildInputField<ComponentType extends IChildCompon
 				inputFields, parentObject);
 	}
 
-	private void setupInputField(InputField<?> inputField) {
-		if (inputField instanceof AbstractDefaultInputField) {
+	private void setupInputField(FieldHandler<?> inputField) {
+		if (inputField instanceof AbstractDefaultFieldHandler) {
 			setupDefaultInputField(inputField);
 		}
 		if (inputField instanceof AbstractChildInputField) {
@@ -74,15 +74,15 @@ public abstract class AbstractChildInputField<ComponentType extends IChildCompon
 		inputField.setup();
 	}
 
-	private void setupChildInputField(InputField<?> inputField) {
+	private void setupChildInputField(FieldHandler<?> inputField) {
 		AbstractChildInputField<?> ainputfield = (AbstractChildInputField<?>) inputField;
 		ainputfield.setFieldsFactory(fieldsFactory);
 		ainputfield.setApplyAction(applyAction);
 		ainputfield.setRestoreAction(restoreAction);
 	}
 
-	private void setupDefaultInputField(InputField<?> inputField) {
-		AbstractDefaultInputField<?> ainputfield = (AbstractDefaultInputField<?>) inputField;
+	private void setupDefaultInputField(FieldHandler<?> inputField) {
+		AbstractDefaultFieldHandler<?> ainputfield = (AbstractDefaultFieldHandler<?>) inputField;
 		ReflectionToolbox reflectionToolbox = getReflectionToolbox();
 		ainputfield.setReflectionToolbox(reflectionToolbox);
 	}
@@ -94,7 +94,7 @@ public abstract class AbstractChildInputField<ComponentType extends IChildCompon
 	@Override
 	public void applyInput(Object parent) {
 		for (Field field : inputFields.keySet()) {
-			InputField<?> inputField = inputFields.get(field);
+			FieldHandler<?> inputField = inputFields.get(field);
 			inputField.applyInput(parent);
 		}
 	}
@@ -120,7 +120,7 @@ public abstract class AbstractChildInputField<ComponentType extends IChildCompon
 	@Override
 	public void restoreInput(Object parent) {
 		for (Field field : inputFields.keySet()) {
-			InputField<?> inputField = inputFields.get(field);
+			FieldHandler<?> inputField = inputFields.get(field);
 			inputField.restoreInput(parent);
 		}
 	}

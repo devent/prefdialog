@@ -2,7 +2,7 @@ package com.globalscalingsoftware.prefdialog;
 
 import java.awt.Component;
 
-public interface InputFieldComponent {
+public interface FieldComponent {
 
 	void setWidth(double width);
 

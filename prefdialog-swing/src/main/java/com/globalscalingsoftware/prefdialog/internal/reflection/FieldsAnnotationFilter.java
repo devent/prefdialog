@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.globalscalingsoftware.prefdialog.InputField;
+import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.annotations.fields.Checkbox;
 import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
 import com.globalscalingsoftware.prefdialog.annotations.fields.ComboBox;
@@ -25,7 +25,7 @@ import com.globalscalingsoftware.prefdialog.internal.inputfield.formattedtextfie
 public class FieldsAnnotationFilter extends AbstractAnnotationFilter {
 
 	private static List<Class<?>> fieldsAnnotations;
-	private static Map<Class<? extends Annotation>, Class<? extends InputField<?>>> inputFieldImplementations;
+	private static Map<Class<? extends Annotation>, Class<? extends FieldHandler<?>>> inputFieldImplementations;
 
 	static {
 		fieldsAnnotations = new ArrayList<Class<?>>();
@@ -37,7 +37,7 @@ public class FieldsAnnotationFilter extends AbstractAnnotationFilter {
 		fieldsAnnotations.add(Group.class);
 		fieldsAnnotations.add(Child.class);
 
-		inputFieldImplementations = new HashMap<Class<? extends Annotation>, Class<? extends InputField<?>>>();
+		inputFieldImplementations = new HashMap<Class<? extends Annotation>, Class<? extends FieldHandler<?>>>();
 		inputFieldImplementations.put(Checkbox.class, CheckboxInputField.class);
 		inputFieldImplementations.put(FormattedTextField.class,
 				FormattedTextFieldInputField.class);
@@ -54,7 +54,7 @@ public class FieldsAnnotationFilter extends AbstractAnnotationFilter {
 		super(fieldsAnnotations);
 	}
 
-	public Map<Class<? extends Annotation>, Class<? extends InputField<?>>> getFieldsImplementations() {
+	public Map<Class<? extends Annotation>, Class<? extends FieldHandler<?>>> getFieldsImplementations() {
 		return inputFieldImplementations;
 	}
 

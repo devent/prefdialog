@@ -5,9 +5,9 @@ import java.lang.reflect.Field;
 
 import com.globalscalingsoftware.prefdialog.annotations.fields.ComboBox;
 import com.globalscalingsoftware.prefdialog.annotations.fields.ComboBoxElements;
-import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractDefaultInputField;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractDefaultFieldHandler;
 
-public class ComboBoxInputField extends AbstractDefaultInputField<ComboBoxPanel> {
+public class ComboBoxInputField extends AbstractDefaultFieldHandler<ComboBoxPanel> {
 
 	public ComboBoxInputField(Object parentObject, Object value, Field field) {
 		super(parentObject, value, field, ComboBox.class, new ComboBoxPanel());

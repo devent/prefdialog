@@ -7,10 +7,10 @@ import java.awt.Component;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import com.globalscalingsoftware.prefdialog.InputFieldComponent;
+import com.globalscalingsoftware.prefdialog.FieldComponent;
 
 public abstract class AbstractLabelFieldPanel<FieldType extends Component>
-		implements InputFieldComponent {
+		implements FieldComponent {
 
 	private final JPanel panel;
 
