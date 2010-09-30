@@ -10,6 +10,8 @@ import java.lang.annotation.Target;
 @Retention(RUNTIME)
 public @interface RadioButton {
 
+	String value() default "";
+
 	int columns() default 1;
 
 	double width() default -1.0;
