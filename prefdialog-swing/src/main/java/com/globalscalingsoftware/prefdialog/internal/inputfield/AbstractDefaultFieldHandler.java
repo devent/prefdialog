@@ -21,21 +21,43 @@ public abstract class AbstractDefaultFieldHandler<FieldComponentType extends Fie
 	@Override
 	public void setup() {
 		super.setup();
-		setupFieldWidth();
+		setupComponent();
 	}
 
-	private void setupFieldWidth() {
+	private void setupComponent() {
 		Field field = getField();
 		Class<? extends Annotation> annotationClass = getAnnotationClass();
-		double width = getWidthFromAnnotationIn(field, annotationClass);
+		setupComponentWidth(field, annotationClass);
+		setupComponentName(field, annotationClass);
+	}
+
+	private void setupComponentName(Field field,
+			Class<? extends Annotation> annotationClass) {
+		String name = getValueFromAnnotationIn("value", String.class, field,
+				annotationClass);
+		name = defaultNameIfNameNotSet(name, field);
+		setComponentName(name);
+	}
+
+	private String defaultNameIfNameNotSet(String name, Field field) {
+		if (name.isEmpty()) {
+			name = field.getName();
+		}
+		return name;
+	}
+
+	private void setupComponentWidth(Field field,
+			Class<? extends Annotation> annotationClass) {
+		double width = getValueFromAnnotationIn("width", Double.class, field,
+				annotationClass);
 		setComponentWidth(width);
 	}
 
-	private double getWidthFromAnnotationIn(Field field,
-			Class<? extends Annotation> annotationClass) {
+	private <T> T getValueFromAnnotationIn(String name, Class<T> returnType,
+			Field field, Class<? extends Annotation> annotationClass) {
 		Annotation a = field.getAnnotation(annotationClass);
-		return getReflectionToolbox().invokeMethodWithReturnType("width",
-				Double.class, a);
+		return getReflectionToolbox().invokeMethodWithReturnType(name,
+				returnType, a);
 	}
 
 	public void setReflectionToolbox(ReflectionToolbox reflectionToolbox) {
