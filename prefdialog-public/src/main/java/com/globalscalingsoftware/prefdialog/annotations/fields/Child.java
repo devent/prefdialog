@@ -10,5 +10,7 @@ import java.lang.annotation.Target;
 @Retention(RUNTIME)
 public @interface Child {
 
+	String value() default "";
+
 	double width() default -1.0;
 }
