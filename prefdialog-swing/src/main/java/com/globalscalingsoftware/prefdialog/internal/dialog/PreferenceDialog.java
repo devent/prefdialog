@@ -12,8 +12,8 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import com.globalscalingsoftware.prefdialog.Event;
-import com.globalscalingsoftware.prefdialog.ICancelAction;
-import com.globalscalingsoftware.prefdialog.IOkAction;
+import com.globalscalingsoftware.prefdialog.annotations.actions.CancelAction;
+import com.globalscalingsoftware.prefdialog.annotations.actions.OkAction;
 import com.globalscalingsoftware.prefdialog.internal.RunnableActionEvent;
 import com.google.inject.Inject;
 
@@ -30,9 +30,10 @@ public class PreferenceDialog {
 	private TreePath selectedPath;
 
 	@Inject
-	PreferenceDialog(IOkAction okAction, ICancelAction cancelAction) {
-		this.okAction = (Action) okAction;
-		this.cancelAction = (Action) cancelAction;
+	PreferenceDialog(@OkAction Action okAction,
+			@CancelAction Action cancelAction) {
+		this.okAction = okAction;
+		this.cancelAction = cancelAction;
 		childSelectedEvent = new CallableTreeChildSelectedEvent();
 		okEvent = new RunnableActionEvent();
 		cancelEvent = new RunnableActionEvent();

@@ -4,15 +4,16 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
-import com.globalscalingsoftware.prefdialog.ICancelAction;
-import com.globalscalingsoftware.prefdialog.IOkAction;
 import com.globalscalingsoftware.prefdialog.annotations.actions.ApplyAction;
+import com.globalscalingsoftware.prefdialog.annotations.actions.CancelAction;
+import com.globalscalingsoftware.prefdialog.annotations.actions.OkAction;
 import com.globalscalingsoftware.prefdialog.annotations.actions.RestoreAction;
 
 @ApplyAction
 @RestoreAction
-class DefaultAction extends AbstractAction 
-implements IOkAction, ICancelAction {
+@OkAction
+@CancelAction
+class DefaultAction extends AbstractAction {
 	
 	def DefaultAction(String name) {
 		super(name)
