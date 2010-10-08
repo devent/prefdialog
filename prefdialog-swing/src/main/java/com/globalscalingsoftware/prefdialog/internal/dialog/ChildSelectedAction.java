@@ -4,9 +4,9 @@ import com.globalscalingsoftware.prefdialog.Event;
 
 class ChildSelectedAction implements Event<Object> {
 
-	private final PreferenceDialogController controller;
+	private final PreferenceDialogControllerImpl controller;
 
-	public ChildSelectedAction(PreferenceDialogController controller) {
+	public ChildSelectedAction(PreferenceDialogControllerImpl controller) {
 		this.controller = controller;
 	}
 

@@ -8,7 +8,7 @@ import static org.hamcrest.Matchers.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.globalscalingsoftware.prefdialog.IPreferenceDialogController;
+import com.globalscalingsoftware.prefdialog.PreferenceDialogController;
 import com.globalscalingsoftware.prefdialog.Options;
 import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
 import com.globalscalingsoftware.prefdialog.annotations.fields.TextField;
@@ -48,7 +48,7 @@ class PreferenceDialogOkTest extends AbstractPreferenceTest {
 	
 	@Test
 	void testDialogClickOk() {
-		def controller = injector.getInstance(IPreferenceDialogController)
+		def controller = injector.getInstance(PreferenceDialogController)
 		controller.openDialog()
 		
 		def option = controller.getOption()

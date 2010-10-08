@@ -9,7 +9,7 @@ import static org.hamcrest.Matchers.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.globalscalingsoftware.prefdialog.IPreferenceDialogController;
+import com.globalscalingsoftware.prefdialog.PreferenceDialogController;
 import com.globalscalingsoftware.prefdialog.annotations.fields.Checkbox;
 import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
 import com.globalscalingsoftware.prefdialog.annotations.fields.ComboBox;
@@ -85,7 +85,7 @@ class PreferenceDialogWithNamedGroupsTest extends AbstractPreferenceTest {
 	
 	@Test
 	void testDialogClickOk() {
-		def controller = injector.getInstance(IPreferenceDialogController)
+		def controller = injector.getInstance(PreferenceDialogController)
 		controller.openDialog()
 		assertThat preferences.general.name, is("name")
 		assertThat preferences.general.fields, is(10)

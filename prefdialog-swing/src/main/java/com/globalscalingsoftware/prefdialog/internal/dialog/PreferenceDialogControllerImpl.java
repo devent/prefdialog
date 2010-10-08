@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 
-import com.globalscalingsoftware.prefdialog.IPreferenceDialogController;
+import com.globalscalingsoftware.prefdialog.PreferenceDialogController;
 import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.Options;
 import com.globalscalingsoftware.prefdialog.annotations.actions.ApplyAction;
@@ -28,7 +28,7 @@ import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbo
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
-public class PreferenceDialogController implements IPreferenceDialogController {
+public class PreferenceDialogControllerImpl implements PreferenceDialogController {
 
 	private final AnnotationDiscovery annotationDiscovery;
 	private final Map<Object, FieldHandler<?>> preferencePanels;
@@ -45,7 +45,7 @@ public class PreferenceDialogController implements IPreferenceDialogController {
 	private final Action restoreAction;
 
 	@Inject
-	PreferenceDialogController(AnnotationDiscovery annotationDiscovery,
+	PreferenceDialogControllerImpl(AnnotationDiscovery annotationDiscovery,
 			PreferenceDialogAnnotationsFilter filter,
 			ReflectionToolbox reflectionToolbox,
 			PreferenceDialog preferenceDialog,

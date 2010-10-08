@@ -1,11 +1,11 @@
 package com.globalscalingsoftware.prefdialog.internal.module;
 
-import com.globalscalingsoftware.prefdialog.IPreferenceDialogController;
+import com.globalscalingsoftware.prefdialog.PreferenceDialogController;
 import com.globalscalingsoftware.prefdialog.internal.FieldsFactory;
 import com.globalscalingsoftware.prefdialog.internal.InputFieldsFactory;
 import com.globalscalingsoftware.prefdialog.internal.dialog.PreferenceDialog;
 import com.globalscalingsoftware.prefdialog.internal.dialog.PreferenceDialogAnnotationsFilter;
-import com.globalscalingsoftware.prefdialog.internal.dialog.PreferenceDialogController;
+import com.globalscalingsoftware.prefdialog.internal.dialog.PreferenceDialogControllerImpl;
 import com.globalscalingsoftware.prefdialog.internal.reflection.AnnotationDiscovery;
 import com.globalscalingsoftware.prefdialog.internal.reflection.FieldsAnnotationFilter;
 import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbox;
@@ -23,8 +23,8 @@ public class PreferenceDialogModule extends AbstractModule {
 
 	private void bindPreferenceDialog() {
 		bind(PreferenceDialogAnnotationsFilter.class).asEagerSingleton();
-		bind(IPreferenceDialogController.class).to(
-				PreferenceDialogController.class);
+		bind(PreferenceDialogController.class).to(
+				PreferenceDialogControllerImpl.class);
 		bind(PreferenceDialog.class);
 	}
 

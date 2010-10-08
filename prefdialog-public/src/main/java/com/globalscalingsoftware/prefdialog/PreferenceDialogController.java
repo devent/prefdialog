@@ -2,7 +2,7 @@ package com.globalscalingsoftware.prefdialog;
 
 import java.awt.Frame;
 
-public interface IPreferenceDialogController {
+public interface PreferenceDialogController {
 
 	void openDialog(Frame owner);
 

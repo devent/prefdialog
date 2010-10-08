@@ -8,9 +8,9 @@ import com.globalscalingsoftware.prefdialog.internal.inputfield.child.AbstractCh
 
 class OkEvent implements Runnable {
 
-	private final PreferenceDialogController controller;
+	private final PreferenceDialogControllerImpl controller;
 
-	public OkEvent(PreferenceDialogController controller) {
+	public OkEvent(PreferenceDialogControllerImpl controller) {
 		this.controller = controller;
 	}
 
