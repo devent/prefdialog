@@ -33,11 +33,11 @@
 	<distributionManagement>
 		<repository>
 			<id>globalscaling.com</id>
-			<url>http://localhost:8080/archiva/repository/globalscaling.com/</url>
+			<url>https://globalscalingsoftware-projects.com/archiva/repository/globalscaling.com/</url>
 		</repository>
 		<snapshotRepository>
 			<id>globalscaling.com-snapshots</id>
-			<url>http://localhost:8080/archiva/repository/globalscaling.com-snapshots/</url>
+			<url>https://globalscalingsoftware-projects.com/archiva/repository/globalscaling.com-snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
 
