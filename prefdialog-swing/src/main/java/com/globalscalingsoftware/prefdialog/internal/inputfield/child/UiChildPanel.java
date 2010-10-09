@@ -4,12 +4,15 @@ import info.clearthought.layout.TableLayout;
 
 import java.awt.Dimension;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.WindowConstants;
+import javax.swing.border.Border;
 
 /**
  * This code was edited or generated using CloudGarden's Jigloo SWT/Swing GUI
@@ -24,6 +27,7 @@ import javax.swing.WindowConstants;
 @SuppressWarnings("serial")
 class UiChildPanel extends javax.swing.JPanel {
 	private JLabel childLabel;
+	private JScrollPane jScrollPane1;
 	private JPanel fieldsPanel;
 	private JButton applyButton;
 	private JButton restoreButton;
@@ -75,13 +79,22 @@ class UiChildPanel extends javax.swing.JPanel {
 				applyButton.setText("Apply");
 			}
 			{
-				fieldsPanel = new JPanel();
-				TableLayout fieldsPanelLayout = new TableLayout(new double[][] {
-						{ TableLayout.FILL }, { TableLayout.FILL } });
-				fieldsPanelLayout.setHGap(5);
-				fieldsPanelLayout.setVGap(5);
-				fieldsPanel.setLayout(fieldsPanelLayout);
-				this.add(getFieldsPanel(), "1, 3, 3, 3");
+				jScrollPane1 = new JScrollPane();
+				this.add(jScrollPane1, "1, 3, 3, 3");
+				jScrollPane1.setOpaque(false);
+				Border border = BorderFactory.createEmptyBorder(0, 0, 0, 0);
+				jScrollPane1.setViewportBorder(border);
+				jScrollPane1.setBorder(border);
+				{
+					fieldsPanel = new JPanel();
+					jScrollPane1.setViewportView(fieldsPanel);
+					TableLayout fieldsPanelLayout = new TableLayout(
+							new double[][] { { TableLayout.FILL },
+									{ TableLayout.FILL } });
+					fieldsPanelLayout.setHGap(5);
+					fieldsPanelLayout.setVGap(5);
+					fieldsPanel.setLayout(fieldsPanelLayout);
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
