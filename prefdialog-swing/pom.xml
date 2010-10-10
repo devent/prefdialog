@@ -5,12 +5,12 @@
 	<parent>
 		<artifactId>prefdialog</artifactId>
 		<groupId>com.globalscalingsoftware.prefdialog</groupId>
-		<version>0.1.5-SNAPSHOT</version>
+		<version>0.1.5</version>
 	</parent>
 
 	<groupId>com.globalscalingsoftware.prefdialog</groupId>
 	<artifactId>prefdialog-swing</artifactId>
-	<version>0.1.5-SNAPSHOT</version>
+	<version>0.1.5</version>
 	
 	<dependencies>
 		<dependency>
@@ -46,7 +46,7 @@
 		<dependency>
 			<groupId>com.globalscalingsoftware.prefdialog</groupId>
 			<artifactId>prefdialog-public</artifactId>
-			<version>0.1.5-SNAPSHOT</version>
+			<version>0.1.5</version>
 		</dependency>
 	</dependencies>
 </project>
