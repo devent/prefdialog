@@ -21,7 +21,7 @@ public class RadioButtonsPanel extends AbstractLabelFieldPanel<JPanel> {
 
 	public RadioButtonsPanel() {
 		super(new JPanel());
-		layout = new GridLayout(1, 1);
+		layout = new GridLayout(0, 1);
 		buttonsGroup = new ButtonGroup();
 		values = new HashMap<ButtonModel, Object>();
 		setupPanel();
@@ -60,7 +60,6 @@ public class RadioButtonsPanel extends AbstractLabelFieldPanel<JPanel> {
 	public void setColumns(int columns) {
 		int rows = layout.getRows() / columns;
 		layout.setRows(rows);
-		layout.setColumns(columns);
 	}
 
 }
