@@ -20,13 +20,13 @@ class MultipleRadioButtonPreferencePanelTest extends AbstractPreferenceTest {
 		Colors colors1 = Colors.BLACK
 		
 		@RadioButton(columns=2)
-		Colors colors2 = Colors.BLACK
+		Colors colors2 = Colors.BLUE
 		
 		@RadioButton
-		Colors colors3 = Colors.BLACK
+		Colors colors3 = Colors.CYAN
 		
 		@RadioButton
-		Colors colors4 = Colors.BLACK
+		Colors colors4 = Colors.GREEN
 		
 		@Override
 		public String toString() {

@@ -4,7 +4,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.fest.reflect.exception.ReflectionError;
 
@@ -23,13 +22,13 @@ class AddAllInputFields {
 		this.fieldsFactory = fieldsFactory;
 	}
 
-	public Map<Field, FieldHandler<?>> addAllInto(
-			Map<Field, FieldHandler<?>> inputFields, Object parentObject) {
+	public List<FieldHandler<?>> addAllInto(List<FieldHandler<?>> inputFields,
+			Object parentObject) {
 		addAllInputFields(inputFields, parentObject);
 		return inputFields;
 	}
 
-	private void addAllInputFields(Map<Field, FieldHandler<?>> inputFields,
+	private void addAllInputFields(List<FieldHandler<?>> inputFields,
 			Object parentObject) {
 		List<Field> fields = getPreferenceFields(parentObject);
 		for (Field field : fields) {
@@ -87,13 +86,13 @@ class AddAllInputFields {
 		return fieldsFactory.createField(parentObject, field, value);
 	}
 
-	private void addInputField(Map<Field, FieldHandler<?>> inputFields,
-			Field field, FieldHandler<?> inputField) {
+	private void addInputField(List<FieldHandler<?>> inputFields, Field field,
+			FieldHandler<?> inputField) {
 		if (inputField == null) {
 			return;
 		}
 
-		inputFields.put(field, inputField);
+		inputFields.add(inputField);
 	}
 
 }

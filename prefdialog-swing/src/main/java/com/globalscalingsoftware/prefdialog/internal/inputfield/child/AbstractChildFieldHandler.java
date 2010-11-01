@@ -2,8 +2,8 @@ package com.globalscalingsoftware.prefdialog.internal.inputfield.child;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.Action;
 
@@ -17,7 +17,7 @@ public abstract class AbstractChildFieldHandler<ComponentType extends IChildComp
 
 	private FieldsFactory fieldsFactory;
 
-	private final Map<Field, FieldHandler<?>> inputFields;
+	private final List<FieldHandler<?>> inputFields;
 
 	private Action applyAction;
 
@@ -27,7 +27,7 @@ public abstract class AbstractChildFieldHandler<ComponentType extends IChildComp
 			Field field, Class<? extends Annotation> annotationClass,
 			ComponentType component) {
 		super(parentObject, value, field, annotationClass, component);
-		inputFields = new HashMap<Field, FieldHandler<?>>();
+		inputFields = new ArrayList<FieldHandler<?>>();
 	}
 
 	@Override
@@ -50,14 +50,14 @@ public abstract class AbstractChildFieldHandler<ComponentType extends IChildComp
 	}
 
 	private void addAllInputFields() {
-		fillInputFields();
-		for (FieldHandler<?> inputField : inputFields.values()) {
+		fillInputFields(inputFields);
+		for (FieldHandler<?> inputField : inputFields) {
 			setupInputField(inputField);
 			getComponent().addField(inputField);
 		}
 	}
 
-	private void fillInputFields() {
+	private void fillInputFields(List<FieldHandler<?>> inputFields) {
 		Object parentObject = getComponentValue();
 		ReflectionToolbox reflectionToolbox = getReflectionToolbox();
 		new AddAllInputFields(reflectionToolbox, fieldsFactory).addAllInto(
@@ -93,8 +93,7 @@ public abstract class AbstractChildFieldHandler<ComponentType extends IChildComp
 
 	@Override
 	public void applyInput(Object parent) {
-		for (Field field : inputFields.keySet()) {
-			FieldHandler<?> inputField = inputFields.get(field);
+		for (FieldHandler<?> inputField : inputFields) {
 			inputField.applyInput(parent);
 		}
 	}
@@ -119,8 +118,7 @@ public abstract class AbstractChildFieldHandler<ComponentType extends IChildComp
 
 	@Override
 	public void restoreInput(Object parent) {
-		for (Field field : inputFields.keySet()) {
-			FieldHandler<?> inputField = inputFields.get(field);
+		for (FieldHandler<?> inputField : inputFields) {
 			inputField.restoreInput(parent);
 		}
 	}
