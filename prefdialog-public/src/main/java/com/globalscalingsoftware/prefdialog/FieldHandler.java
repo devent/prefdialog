@@ -60,4 +60,5 @@ public interface FieldHandler<FieldComponentType extends FieldComponent> {
 	 *            the parent object to which this component belongs to.
 	 */
 	void restoreInput(Object parent);
+
 }

@@ -34,7 +34,6 @@ public abstract class AbstractChildFieldHandler<ComponentType extends IChildComp
 	public void setup() {
 		super.setup();
 		addAllInputFields();
-
 		setupActions();
 	}
 

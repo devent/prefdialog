@@ -4,12 +4,13 @@ import info.clearthought.layout.TableLayout;
 
 import java.awt.Component;
 
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.globalscalingsoftware.prefdialog.FieldComponent;
 
-public abstract class AbstractLabelFieldPanel<FieldType extends Component>
+public abstract class AbstractLabelFieldPanel<FieldType extends JComponent>
 		implements FieldComponent {
 
 	private final JPanel panel;
@@ -41,6 +42,7 @@ public abstract class AbstractLabelFieldPanel<FieldType extends Component>
 		panel.add(field, "0, 1");
 
 		label.setLabelFor(field);
+		field.requestFocus();
 	}
 
 	public FieldType getField() {
