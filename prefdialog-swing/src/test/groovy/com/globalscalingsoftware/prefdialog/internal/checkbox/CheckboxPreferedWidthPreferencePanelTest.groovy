@@ -71,6 +71,7 @@ class CheckboxPreferedWidthPreferencePanelTest extends AbstractPreferenceTest {
 	@Test
 	void testPanelClickApplyAndClose() {
 		window.checkBox("automaticSave").click()
+		window.panel("general").button("apply").click()
 		assert preferences.general.automaticSave == true
 	}
 }

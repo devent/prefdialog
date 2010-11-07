@@ -71,11 +71,13 @@ class UiChildPanel extends javax.swing.JPanel {
 			{
 				restoreButton = new JButton();
 				this.add(getRestoreButton(), "3, 4");
+				restoreButton.setName("restore");
 				restoreButton.setText("Restore");
 			}
 			{
 				applyButton = new JButton();
 				this.add(getApplyButton(), "2, 4");
+				applyButton.setName("apply");
 				applyButton.setText("Apply");
 			}
 			{
