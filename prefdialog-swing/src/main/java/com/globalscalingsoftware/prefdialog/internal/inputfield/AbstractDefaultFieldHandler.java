@@ -28,22 +28,28 @@ public abstract class AbstractDefaultFieldHandler<FieldComponentType extends Fie
 		Field field = getField();
 		Class<? extends Annotation> annotationClass = getAnnotationClass();
 		setupComponentWidth(field, annotationClass);
-		setupComponentName(field, annotationClass);
+		setupComponentName(field);
+		setupComponentTitle(field, annotationClass);
 	}
 
-	private void setupComponentName(Field field,
-			Class<? extends Annotation> annotationClass) {
-		String name = getValueFromAnnotationIn("value", String.class, field,
-				annotationClass);
-		name = defaultNameIfNameNotSet(name, field);
+	private void setupComponentName(Field field) {
+		String name = field.getName();
 		setComponentName(name);
 	}
 
-	private String defaultNameIfNameNotSet(String name, Field field) {
-		if (name.isEmpty()) {
-			name = field.getName();
+	private void setupComponentTitle(Field field,
+			Class<? extends Annotation> annotationClass) {
+		String title = getValueFromAnnotationIn("value", String.class, field,
+				annotationClass);
+		title = defaultTitleIfNameNotSet(title, field);
+		setComponentTitle(title);
+	}
+
+	private String defaultTitleIfNameNotSet(String title, Field field) {
+		if (title.isEmpty()) {
+			title = field.getName();
 		}
-		return name;
+		return title;
 	}
 
 	private void setupComponentWidth(Field field,

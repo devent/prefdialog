@@ -19,10 +19,16 @@ public interface FieldHandler<FieldComponentType extends FieldComponent> {
 	void setComponentWidth(double width);
 
 	/**
-	 * Sets the name of the component. The name will either be used internal or
-	 * as text for the component's label.
+	 * Sets the name of the component. The name will be used to identify the
+	 * component.
 	 */
 	void setComponentName(String name);
+
+	/**
+	 * Sets the title of the component. The title will either be used as text
+	 * for the component's label.
+	 */
+	void setComponentTitle(String title);
 
 	/**
 	 * Sets the value of the component. The value must be the same type (or can

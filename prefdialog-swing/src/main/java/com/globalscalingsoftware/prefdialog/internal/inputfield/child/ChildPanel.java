@@ -3,15 +3,16 @@ package com.globalscalingsoftware.prefdialog.internal.inputfield.child;
 import static java.lang.String.format;
 import info.clearthought.layout.TableLayout;
 
-import java.awt.Component;
 import java.awt.Font;
 
 import javax.swing.Action;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.internal.RunnableActionEvent;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractFieldPanel;
 
-public class ChildPanel implements IChildComponent {
+public class ChildPanel extends AbstractFieldPanel<UiChildPanel> implements
+		IChildComponent {
 
 	private final UiChildPanel panel;
 
@@ -22,7 +23,8 @@ public class ChildPanel implements IChildComponent {
 	private Object value;
 
 	public ChildPanel() {
-		this.panel = new UiChildPanel();
+		super(new UiChildPanel());
+		this.panel = getField();
 		this.applyEvent = new RunnableActionEvent();
 		this.restoreEvent = new RunnableActionEvent();
 		setupPanel();
@@ -65,14 +67,8 @@ public class ChildPanel implements IChildComponent {
 	}
 
 	@Override
-	public void setWidth(double width) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setName(String name) {
-		panel.getChildLabel().setText(name);
+	public void setTitle(String title) {
+		panel.getChildLabel().setText(title);
 	}
 
 	@Override
@@ -102,8 +98,4 @@ public class ChildPanel implements IChildComponent {
 		return row;
 	}
 
-	@Override
-	public Component getAWTComponent() {
-		return panel;
-	}
 }

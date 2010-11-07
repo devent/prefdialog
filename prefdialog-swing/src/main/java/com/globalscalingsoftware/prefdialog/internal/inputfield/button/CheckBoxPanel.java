@@ -5,10 +5,10 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.JCheckBox;
 
-import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractLabelFieldPanel;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractFieldPanel;
 
 @SuppressWarnings("serial")
-class CheckBoxPanel extends AbstractLabelFieldPanel<JCheckBox> {
+class CheckBoxPanel extends AbstractFieldPanel<JCheckBox> {
 
 	private static class Action extends AbstractAction {
 
@@ -38,8 +38,8 @@ class CheckBoxPanel extends AbstractLabelFieldPanel<JCheckBox> {
 	}
 
 	@Override
-	public void setName(String name) {
-		action.setName(name);
+	public void setTitle(String title) {
+		action.setName(title);
 	}
 
 	@Override

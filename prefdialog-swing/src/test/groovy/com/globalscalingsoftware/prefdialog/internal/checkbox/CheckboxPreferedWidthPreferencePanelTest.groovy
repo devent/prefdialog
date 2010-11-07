@@ -1,9 +1,15 @@
 package com.globalscalingsoftware.prefdialog.internal.checkbox
 
+import javax.swing.JFrame;
+
 
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
+import org.fest.swing.edt.GuiActionRunner;
+import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.fixture.FrameFixture;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -39,17 +45,32 @@ class CheckboxPreferedWidthPreferencePanelTest extends AbstractPreferenceTest {
 	
 	def injector
 	
+	private FrameFixture window
+	
 	@Before
 	void beforeTest() {
 		preferences = new Preferences()
 		parentValue = preferences.general
 		field = getPreferencesField(Preferences, "general")
 		injector = new PreferencesDialogInjectorFactory().create(preferences)
+		
+		JFrame frame = GuiActionRunner.execute(new GuiQuery<JFrame>() {
+					protected JFrame executeInEDT() {
+						return createDialog(injector, preferences, field, parentValue)
+					}
+				});
+		window = new FrameFixture(frame);
+		window.show();
+	}
+	
+	@After
+	void afterTest() {
+		window.cleanUp()
 	}
 	
 	@Test
 	void testPanelClickApplyAndClose() {
-		def filed = createField(injector, preferences, field, parentValue)
-		assertThat preferences.general.automaticSave, is(true)
+		window.checkBox("automaticSave").click()
+		assert preferences.general.automaticSave == true
 	}
 }

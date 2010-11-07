@@ -25,7 +25,7 @@ public abstract class AbstractFieldHandler<FieldComponentType extends FieldCompo
 
 	@Override
 	public void setup() {
-		setComponentName(field.getName());
+		setComponentTitle(field.getName());
 		setComponentValue(value);
 	}
 
@@ -53,6 +53,11 @@ public abstract class AbstractFieldHandler<FieldComponentType extends FieldCompo
 	@Override
 	public void setComponentName(String name) {
 		component.setName(name);
+	}
+
+	@Override
+	public void setComponentTitle(String title) {
+		component.setTitle(title);
 	}
 
 	@Override

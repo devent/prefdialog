@@ -8,6 +8,8 @@ public interface FieldComponent {
 
 	void setName(String name);
 
+	void setTitle(String title);
+
 	void setValue(Object value);
 
 	Object getValue();

@@ -8,24 +8,23 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import com.globalscalingsoftware.prefdialog.FieldComponent;
-
 public abstract class AbstractLabelFieldPanel<FieldType extends JComponent>
-		implements FieldComponent {
-
-	private final JPanel panel;
+		extends AbstractFieldPanel<JPanel> {
 
 	private final JLabel label;
 
-	private final FieldType field;
-
 	private final TableLayout layout;
 
+	private final JPanel panel;
+
+	private final FieldType field;
+
 	public AbstractLabelFieldPanel(FieldType field) {
-		this.panel = new JPanel();
+		super(new JPanel());
 		this.field = field;
-		this.label = new JLabel();
+		this.panel = (JPanel) getAWTComponent();
 		this.layout = createLayout();
+		this.label = new JLabel();
 		setupPanel();
 	}
 
@@ -36,6 +35,7 @@ public abstract class AbstractLabelFieldPanel<FieldType extends JComponent>
 	}
 
 	private void setupPanel() {
+		JPanel panel = (JPanel) getAWTComponent();
 		panel.setLayout(layout);
 
 		panel.add(label, "0, 0");
@@ -45,7 +45,7 @@ public abstract class AbstractLabelFieldPanel<FieldType extends JComponent>
 		field.requestFocus();
 	}
 
-	public FieldType getField() {
+	public FieldType getPanelField() {
 		return field;
 	}
 
@@ -56,8 +56,8 @@ public abstract class AbstractLabelFieldPanel<FieldType extends JComponent>
 	public abstract Object getValue();
 
 	@Override
-	public void setName(String name) {
-		label.setText(name + ": ");
+	public void setTitle(String title) {
+		label.setText(title + ": ");
 	}
 
 	public void setLabelText(String text) {

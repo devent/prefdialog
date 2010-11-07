@@ -48,5 +48,11 @@
 			<artifactId>prefdialog-public</artifactId>
 			<version>0.1.6-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>org.easytesting</groupId>
+			<artifactId>fest-swing-junit-4.5</artifactId>
+			<version>1.2.1</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 </project>

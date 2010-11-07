@@ -3,21 +3,23 @@ package com.globalscalingsoftware.prefdialog.internal.inputfield.child;
 import static java.lang.String.format;
 import info.clearthought.layout.TableLayout;
 
-import java.awt.Component;
 import java.awt.Font;
 
 import javax.swing.Action;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractFieldPanel;
 
-public class GroupPanel implements IChildComponent {
+public class GroupPanel extends AbstractFieldPanel<UiGroupPanel> implements
+		IChildComponent {
 
 	private final UiGroupPanel panel;
 
 	private Object value;
 
 	public GroupPanel() {
-		panel = new UiGroupPanel();
+		super(new UiGroupPanel());
+		panel = getField();
 		setupPanel();
 	}
 
@@ -39,8 +41,8 @@ public class GroupPanel implements IChildComponent {
 	}
 
 	@Override
-	public void setName(String name) {
-		panel.getGroupLabel().setText(name);
+	public void setTitle(String title) {
+		panel.getGroupLabel().setText(title);
 	}
 
 	@Override
@@ -82,8 +84,4 @@ public class GroupPanel implements IChildComponent {
 	public void setRestoreAction(Action a) {
 	}
 
-	@Override
-	public Component getAWTComponent() {
-		return panel;
-	}
 }

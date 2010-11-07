@@ -40,7 +40,7 @@ abstract class AbstractPreferenceTest {
 	
 	protected createDialog(def preferencesPanel) {
 		new SwingBuilder().build {
-			dialog(title:'Preferences Panel', size:[480,640], modal: true, show: true, locationByPlatform: true) {
+			dialog(title:'Preferences Panel', size:[480, 640], modal: true, show: true, locationByPlatform: true) {
 				borderLayout()
 				widget(preferencesPanel())
 			}
@@ -68,5 +68,26 @@ abstract class AbstractPreferenceTest {
 		
 		createDialog({ inputfield.getAWTComponent() })
 		return inputfield
+	}
+	
+	protected createDialog(def injector, def preferences, def field, def parentValue) {
+		def factory = injector.getInstance(FieldsFactory)
+		def reflectionToolbox = injector.getInstance(ReflectionToolbox)
+		def inputfield = factory.createField(preferences, field, parentValue)
+		
+		inputfield.setReflectionToolbox(reflectionToolbox)
+		inputfield.setFieldsFactory(factory)
+		inputfield.setup()
+		
+		createDialog2({ inputfield.getAWTComponent() })
+	}
+	
+	protected createDialog2(def preferencesPanel) {
+		new SwingBuilder().build {
+			frame(title:'Preferences Panel', size:[480, 640], locationByPlatform: true) {
+				borderLayout()
+				widget(preferencesPanel())
+			}
+		}
 	}
 }
