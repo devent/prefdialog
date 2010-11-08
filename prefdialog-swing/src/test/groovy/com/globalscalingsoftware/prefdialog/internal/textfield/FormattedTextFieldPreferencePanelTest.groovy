@@ -1,13 +1,11 @@
 package com.globalscalingsoftware.prefdialog.internal.textfield
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
-import org.junit.Before;
 import org.junit.Test;
 
 import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
 import com.globalscalingsoftware.prefdialog.annotations.fields.FormattedTextField;
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest 
-import com.globalscalingsoftware.prefdialog.internal.PreferencesDialogInjectorFactory 
 
 class FormattedTextFieldPreferencePanelTest extends AbstractPreferenceTest {
 	
@@ -28,25 +26,19 @@ class FormattedTextFieldPreferencePanelTest extends AbstractPreferenceTest {
 		General general = new General()
 	}
 	
-	def preferences
-	
-	def parentValue
-	
-	def field
-	
-	def injector
-	
-	@Before
-	void beforeTest() {
+	def setupPreferences() {
+		preferencesClass = Preferences
 		preferences = new Preferences()
-		parentValue = preferences.general
-		field = getPreferencesField(Preferences, "general")
-		injector = new PreferencesDialogInjectorFactory().create(preferences)
+		preferencesParentName = "general"
+		preferencesParentValue = preferences.general
 	}
 	
 	@Test
 	void testPanelClickApplyAndClose() {
-		def filed = createField(injector, preferences, field, parentValue)
-		assertThat preferences.general.fields, is(10)
+		window.textBox("fields").enterText "10"
+		window.panel("general").button("apply").click()
+		
+		assert window.label("label-fields").text() == "fields: "
+		assert preferences.general.fields == 10
 	}
 }

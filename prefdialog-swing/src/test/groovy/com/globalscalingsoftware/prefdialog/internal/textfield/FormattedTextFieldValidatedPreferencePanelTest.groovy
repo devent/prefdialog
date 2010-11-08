@@ -2,13 +2,11 @@ package com.globalscalingsoftware.prefdialog.internal.textfield
 import com.globalscalingsoftware.prefdialog.Validator;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
-import org.junit.Before;
 import org.junit.Test;
 
 import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
 import com.globalscalingsoftware.prefdialog.annotations.fields.FormattedTextField;
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest 
-import com.globalscalingsoftware.prefdialog.internal.PreferencesDialogInjectorFactory 
 
 class FormattedTextFieldValidatedPreferencePanelTest extends AbstractPreferenceTest {
 	
@@ -35,25 +33,23 @@ class FormattedTextFieldValidatedPreferencePanelTest extends AbstractPreferenceT
 		General general = new General()
 	}
 	
-	def preferences
-	
-	def parentValue
-	
-	def field
-	
-	def injector
-	
-	@Before
-	void beforeTest() {
+	def setupPreferences() {
+		preferencesClass = Preferences
 		preferences = new Preferences()
-		parentValue = preferences.general
-		field = getPreferencesField(Preferences, "general")
-		injector = new PreferencesDialogInjectorFactory().create(preferences)
+		preferencesParentName = "general"
+		preferencesParentValue = preferences.general
+	}
+	
+	@Test
+	void testPanelInvalidTextClickApplyAndClose() {
+		window.textBox("fields").enterText "1"
+		assert window.label("label-fields").text() == "fields (Must be a number and between 2 and 100): "
 	}
 	
 	@Test
 	void testPanelClickApplyAndClose() {
-		def filed = createField(injector, preferences, field, parentValue)
-		assertThat preferences.general.fields, is(10)
+		window.textBox("fields").enterText "10"
+		window.panel("general").button("apply").click()
+		assert preferences.general.fields == 10
 	}
 }
