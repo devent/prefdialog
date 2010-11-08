@@ -39,7 +39,7 @@ class TextFieldPreferencePanelTest extends AbstractPreferenceTest {
 		window.textBox("name").enterText "test"
 		window.panel("general").button("apply").click()
 		
-		window.label("label-name").requireText "name: "
+		assert window.label("label-name").text() == "name: "
 		assert preferences.general.name == "test"
 	}
 }

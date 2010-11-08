@@ -11,7 +11,7 @@ class TextFieldPanel extends AbstractLabelFieldPanel<JTextField> {
 
 	private final ValidatingTextField<?> textField;
 
-	private String fieldName;
+	private String fieldTitle;
 
 	public TextFieldPanel(ValidatingTextField<?> textField) {
 		super(textField.getField());
@@ -19,18 +19,18 @@ class TextFieldPanel extends AbstractLabelFieldPanel<JTextField> {
 	}
 
 	@Override
-	public void setName(String name) {
-		this.fieldName = name;
-		super.setName(name);
+	public void setTitle(String title) {
+		this.fieldTitle = title;
+		super.setTitle(title);
 	}
 
 	public void setValidatorText(String validatorText) {
-		String text = format("%s (%s): ", fieldName, validatorText);
+		String text = format("%s (%s): ", fieldTitle, validatorText);
 		setLabelText(text);
 	}
 
 	public void clearValidatorText() {
-		String text = format("%s: ", fieldName);
+		String text = format("%s: ", fieldTitle);
 		setLabelText(text);
 	}
 
