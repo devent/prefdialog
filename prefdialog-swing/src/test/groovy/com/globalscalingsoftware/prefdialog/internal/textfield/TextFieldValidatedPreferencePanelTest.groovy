@@ -4,14 +4,12 @@ package com.globalscalingsoftware.prefdialog.internal.textfield
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
-import org.junit.Before;
 import org.junit.Test;
 
 import com.globalscalingsoftware.prefdialog.Validator 
 import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
 import com.globalscalingsoftware.prefdialog.annotations.fields.TextField;
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest 
-import com.globalscalingsoftware.prefdialog.internal.PreferencesDialogInjectorFactory 
 
 class TextFieldValidatedPreferencePanelTest extends AbstractPreferenceTest {
 	
@@ -39,25 +37,23 @@ class TextFieldValidatedPreferencePanelTest extends AbstractPreferenceTest {
 		General general = new General()
 	}
 	
-	def preferences
-	
-	def parentValue
-	
-	def field
-	
-	def injector
-	
-	@Before
-	void beforeTest() {
+	def setupPreferences() {
+		preferencesClass = Preferences
 		preferences = new Preferences()
-		parentValue = preferences.general
-		field = getPreferencesField(Preferences, "general")
-		injector = new PreferencesDialogInjectorFactory().create(preferences)
+		preferencesParentName = "general"
+		preferencesParentValue = preferences.general
 	}
 	
 	@Test
-	void testPanelClickApplyAndClose() {
-		def filed = createField(injector, preferences, field, parentValue)
-		assertThat preferences.general.name, is("name")
+	void testPanelInvalidTextClickApplyAndClose() {
+		window.textBox("name").enterText ""
+		assert window.label("label-name").text() == "name (Can not be empty): "
+	}
+	
+	@Test
+	void testPanelValidTextClickApplyAndClose() {
+		window.textBox("name").enterText "test"
+		window.panel("general").button("apply").click()
+		assert preferences.general.name == "test"
 	}
 }
