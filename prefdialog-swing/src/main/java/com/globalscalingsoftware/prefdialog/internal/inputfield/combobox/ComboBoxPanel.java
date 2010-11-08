@@ -26,17 +26,17 @@ public class ComboBoxPanel extends AbstractLabelFieldPanel<JComboBox> {
 
 	public void setValues(Object values) {
 		comboBoxModel = new ComboBoxModel((Collection<?>) values);
-		getField().setModel(comboBoxModel);
+		getPanelField().setModel(comboBoxModel);
 	}
 
 	@Override
 	public Object getValue() {
-		return getField().getSelectedItem();
+		return getPanelField().getSelectedItem();
 	}
 
 	@Override
 	public void setValue(Object value) {
-		getField().setSelectedItem(value);
+		getPanelField().setSelectedItem(value);
 	}
 
 }

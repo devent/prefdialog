@@ -2,8 +2,6 @@ package com.globalscalingsoftware.prefdialog.internal.inputfield;
 
 import info.clearthought.layout.TableLayout;
 
-import java.awt.Component;
-
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -15,14 +13,11 @@ public abstract class AbstractLabelFieldPanel<FieldType extends JComponent>
 
 	private final TableLayout layout;
 
-	private final JPanel panel;
-
 	private final FieldType field;
 
 	public AbstractLabelFieldPanel(FieldType field) {
 		super(new JPanel());
 		this.field = field;
-		this.panel = (JPanel) getAWTComponent();
 		this.layout = createLayout();
 		this.label = new JLabel();
 		setupPanel();
@@ -65,14 +60,18 @@ public abstract class AbstractLabelFieldPanel<FieldType extends JComponent>
 	}
 
 	@Override
+	public void setName(String name) {
+		super.setName("panel-" + name);
+		label.setName("label-" + name);
+		field.setName(name);
+	}
+
+	@Override
 	public void setWidth(double width) {
+		JPanel panel = (JPanel) getAWTComponent();
 		layout.setColumn(0, width);
 		layout.layoutContainer(panel);
 		panel.repaint();
 	}
 
-	@Override
-	public Component getAWTComponent() {
-		return panel;
-	}
 }
