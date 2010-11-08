@@ -4,13 +4,11 @@ package com.globalscalingsoftware.prefdialog.internal.checkbox
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
-import org.junit.Before;
 import org.junit.Test;
 
 import com.globalscalingsoftware.prefdialog.annotations.fields.Checkbox;
 import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest 
-import com.globalscalingsoftware.prefdialog.internal.PreferencesDialogInjectorFactory 
 
 class CheckboxPreferenceNamedPanelTest extends AbstractPreferenceTest {
 	
@@ -31,25 +29,19 @@ class CheckboxPreferenceNamedPanelTest extends AbstractPreferenceTest {
 		General general = new General()
 	}
 	
-	def preferences
-	
-	def parentValue
-	
-	def field
-	
-	def injector
-	
-	@Before
-	void beforeTest() {
+	def setupPreferences() {
+		preferencesClass = Preferences
 		preferences = new Preferences()
-		parentValue = preferences.general
-		field = getPreferencesField(Preferences, "general")
-		injector = new PreferencesDialogInjectorFactory().create(preferences)
+		preferencesParentName = "general"
+		preferencesParentValue = preferences.general
 	}
 	
 	@Test
 	void testPanelClickApplyAndClose() {
-		def filed = createField(injector, preferences, field, parentValue)
-		assertThat preferences.general.automaticSave, is(true)
+		window.checkBox("automaticSave").click()
+		window.panel("general").button("apply").click()
+		
+		window.checkBox("automaticSave").requireText "save automatic"
+		assert preferences.general.automaticSave == true
 	}
 }
