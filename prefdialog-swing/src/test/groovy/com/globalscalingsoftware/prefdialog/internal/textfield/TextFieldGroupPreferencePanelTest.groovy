@@ -1,20 +1,15 @@
 package com.globalscalingsoftware.prefdialog.internal.textfield
 
-
-
-import static org.hamcrest.MatcherAssert.*;
-import static org.hamcrest.Matchers.*;
-import org.junit.Before;
 import org.junit.Test;
 
 import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
+import com.globalscalingsoftware.prefdialog.annotations.fields.Group 
 import com.globalscalingsoftware.prefdialog.annotations.fields.TextField;
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest 
-import com.globalscalingsoftware.prefdialog.internal.PreferencesDialogInjectorFactory 
 
 class TextFieldGroupPreferencePanelTest extends AbstractPreferenceTest {
 	
-	static class Group {
+	static class Group1 {
 		
 		@TextField
 		String textField1 = ""
@@ -23,16 +18,25 @@ class TextFieldGroupPreferencePanelTest extends AbstractPreferenceTest {
 		String textField2 = ""
 	}
 	
+	static class Group2 {
+		
+		@TextField
+		String textField3 = ""
+		
+		@TextField
+		String textField4 = ""
+	}
+	
 	static class General {
 		
 		@TextField
 		String preGroup = ""
 		
-		@com.globalscalingsoftware.prefdialog.annotations.fields.Group
-		Group group1 = new Group()
+		@Group
+		Group1 group1 = new Group1()
 		
-		@com.globalscalingsoftware.prefdialog.annotations.fields.Group
-		Group group2 = new Group()
+		@Group
+		Group2 group2 = new Group2()
 		
 		@Override
 		public String toString() {
@@ -46,25 +50,26 @@ class TextFieldGroupPreferencePanelTest extends AbstractPreferenceTest {
 		General general = new General()
 	}
 	
-	def preferences
 	
-	def parentValue
-	
-	def field
-	
-	def injector
-	
-	@Before
-	void beforeTest() {
+	def setupPreferences() {
+		preferencesClass = Preferences
 		preferences = new Preferences()
-		parentValue = preferences.general
-		field = getPreferencesField(Preferences, "general")
-		injector = new PreferencesDialogInjectorFactory().create(preferences)
+		preferencesParentName = "general"
+		preferencesParentValue = preferences.general
 	}
 	
 	@Test
 	void testPanelClickApplyAndClose() {
-		def filed = createField(injector, preferences, field, parentValue)
-		assertThat preferences.general.group.textField1, is("name")
+		window.textBox("textField1").enterText "test1"
+		window.textBox("textField2").enterText "test2"
+		window.textBox("textField3").enterText "test3"
+		window.textBox("textField4").enterText "test4"
+		window.panel("general").button("apply").click()
+		
+		assert window.label("label-textField1").text() == "textField1: "
+		assert preferences.general.group1.textField1 == "test1"
+		assert preferences.general.group1.textField2 == "test2"
+		assert preferences.general.group2.textField3 == "test3"
+		assert preferences.general.group2.textField4 == "test4"
 	}
 }

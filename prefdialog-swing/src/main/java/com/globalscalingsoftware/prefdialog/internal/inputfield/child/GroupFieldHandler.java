@@ -8,7 +8,11 @@ public class GroupFieldHandler extends AbstractChildFieldHandler<GroupPanel> {
 
 	public GroupFieldHandler(Object parentObject, Object value, Field field) {
 		super(parentObject, value, field, Group.class, new GroupPanel());
-
 	}
 
+	@Override
+	public void applyInput(Object parent) {
+		parent = getComponentValue();
+		super.applyInput(parent);
+	}
 }
