@@ -5,8 +5,6 @@ import static org.hamcrest.Matchers.*;
 import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
 import com.globalscalingsoftware.prefdialog.annotations.fields.RadioButton;
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest;
-import com.globalscalingsoftware.prefdialog.internal.PreferencesDialogInjectorFactory 
-import org.junit.Before;
 import org.junit.Test;
 
 class RadioButtonPreferencePanelWithColumnsTest extends AbstractPreferenceTest {
@@ -28,25 +26,19 @@ class RadioButtonPreferencePanelWithColumnsTest extends AbstractPreferenceTest {
 		}
 	}
 	
-	def preferences
-	
-	def parentValue
-	
-	def field
-	
-	def injector
-	
-	@Before
-	void beforeTest() {
+	def setupPreferences() {
+		preferencesClass = Preferences
 		preferences = new Preferences()
-		parentValue = preferences.general
-		field = getPreferencesField(Preferences, "general")
-		injector = new PreferencesDialogInjectorFactory().create(preferences)
+		preferencesParentName = "general"
+		preferencesParentValue = preferences.general
 	}
 	
 	@Test
 	void testPanelClickApplyAndClose() {
-		def filed = createField(injector, preferences, field, parentValue)
-		assertThat preferences.general.colors, is(Colors.BLUE)
+		window.radioButton("colors-BLUE").click()
+		window.panel("general").button("apply").click()
+		
+		window.label("label-colors").requireText "colors: "
+		assert preferences.general.colors == Colors.BLUE
 	}
 }

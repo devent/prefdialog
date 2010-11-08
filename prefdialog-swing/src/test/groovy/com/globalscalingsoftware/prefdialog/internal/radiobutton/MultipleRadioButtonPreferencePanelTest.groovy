@@ -4,13 +4,11 @@ package com.globalscalingsoftware.prefdialog.internal.radiobutton
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
-import org.junit.Before;
 import org.junit.Test;
 
 import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
 import com.globalscalingsoftware.prefdialog.annotations.fields.RadioButton;
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest 
-import com.globalscalingsoftware.prefdialog.internal.PreferencesDialogInjectorFactory 
 
 class MultipleRadioButtonPreferencePanelTest extends AbstractPreferenceTest {
 	
@@ -40,25 +38,28 @@ class MultipleRadioButtonPreferencePanelTest extends AbstractPreferenceTest {
 		General general = new General()
 	}
 	
-	def preferences
-	
-	def parentValue
-	
-	def field
-	
-	def injector
-	
-	@Before
-	void beforeTest() {
+	def setupPreferences() {
+		preferencesClass = Preferences
 		preferences = new Preferences()
-		parentValue = preferences.general
-		field = getPreferencesField(Preferences, "general")
-		injector = new PreferencesDialogInjectorFactory().create(preferences)
+		preferencesParentName = "general"
+		preferencesParentValue = preferences.general
 	}
 	
 	@Test
 	void testPanelClickApplyAndClose() {
-		def filed = createField(injector, preferences, field, parentValue)
-		assertThat preferences.general.colors1, is(Colors.BLUE)
+		window.radioButton("colors1-BLUE").click()
+		window.radioButton("colors2-BLUE").click()
+		window.radioButton("colors3-BLUE").click()
+		window.radioButton("colors4-BLUE").click()
+		window.panel("general").button("apply").click()
+		
+		window.label("label-colors1").requireText "colors1: "
+		window.label("label-colors2").requireText "colors2: "
+		window.label("label-colors3").requireText "colors3: "
+		window.label("label-colors4").requireText "colors4: "
+		assert preferences.general.colors1 == Colors.BLUE
+		assert preferences.general.colors2 == Colors.BLUE
+		assert preferences.general.colors3 == Colors.BLUE
+		assert preferences.general.colors4 == Colors.BLUE
 	}
 }

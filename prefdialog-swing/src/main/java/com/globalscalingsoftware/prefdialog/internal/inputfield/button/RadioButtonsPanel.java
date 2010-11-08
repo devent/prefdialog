@@ -1,5 +1,7 @@
 package com.globalscalingsoftware.prefdialog.internal.inputfield.button;
 
+import static java.lang.String.format;
+
 import java.awt.GridLayout;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,13 +19,15 @@ public class RadioButtonsPanel extends AbstractLabelFieldPanel<JPanel> {
 
 	private final ButtonGroup buttonsGroup;
 
-	private final Map<ButtonModel, Object> values;
+	private final Map<ButtonModel, Object> buttons;
+
+	private String name;
 
 	public RadioButtonsPanel() {
 		super(new JPanel());
 		layout = new GridLayout(0, 1);
 		buttonsGroup = new ButtonGroup();
-		values = new HashMap<ButtonModel, Object>();
+		buttons = new HashMap<ButtonModel, Object>();
 		setupPanel();
 	}
 
@@ -34,7 +38,7 @@ public class RadioButtonsPanel extends AbstractLabelFieldPanel<JPanel> {
 	@Override
 	public Object getValue() {
 		ButtonModel selected = buttonsGroup.getSelection();
-		Object value = values.get(selected);
+		Object value = buttons.get(selected);
 		return value;
 	}
 
@@ -42,14 +46,21 @@ public class RadioButtonsPanel extends AbstractLabelFieldPanel<JPanel> {
 		int rows = layout.getRows();
 		layout.setRows(rows + 1);
 		JRadioButton button = new JRadioButton(text);
-		values.put(button.getModel(), value);
+		button.setName(format("%s-%s", name, text));
+		buttons.put(button.getModel(), value);
 		buttonsGroup.add(button);
 		getField().add(button);
 	}
 
 	@Override
+	public void setName(String name) {
+		this.name = name;
+		super.setName(name);
+	}
+
+	@Override
 	public void setValue(Object value) {
-		for (Map.Entry<ButtonModel, Object> entry : values.entrySet()) {
+		for (Map.Entry<ButtonModel, Object> entry : buttons.entrySet()) {
 			if (entry.getValue() == value) {
 				entry.getKey().setSelected(true);
 				break;
