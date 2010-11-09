@@ -6,9 +6,9 @@ import org.junit.Test;
 
 import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
 import com.globalscalingsoftware.prefdialog.annotations.fields.FormattedTextField;
-import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest 
+import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest 
 
-class FormattedTextFieldValidatedPreferencePanelTest extends AbstractPreferenceTest {
+class FormattedTextFieldValidatedPreferencePanelTest extends AbstractPreferencePanelTest {
 	
 	static class FieldsValidator implements Validator<Integer> {
 		public boolean isValid(Integer value) {

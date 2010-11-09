@@ -6,25 +6,20 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
-import org.junit.Before;
 import org.junit.Test;
 
-import com.globalscalingsoftware.prefdialog.PreferenceDialogController;
 import com.globalscalingsoftware.prefdialog.annotations.fields.Checkbox;
 import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
 import com.globalscalingsoftware.prefdialog.annotations.fields.ComboBox;
 import com.globalscalingsoftware.prefdialog.annotations.fields.ComboBoxElements;
 import com.globalscalingsoftware.prefdialog.annotations.fields.FormattedTextField;
+import com.globalscalingsoftware.prefdialog.annotations.fields.Group 
 import com.globalscalingsoftware.prefdialog.annotations.fields.RadioButton;
 import com.globalscalingsoftware.prefdialog.annotations.fields.TextField;
-import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest;
-import com.globalscalingsoftware.prefdialog.internal.PreferencesDialogInjectorFactory 
+import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceDialogTest;
 import com.globalscalingsoftware.prefdialog.internal.radiobutton.Colors;
-import com.globalscalingsoftware.prefdialog.internal.textfield.TextFieldGroupPreferencePanelTest.Group;
-import static org.hamcrest.MatcherAssert.*;
-import static org.hamcrest.Matchers.*;
 
-class PreferenceDialogWithNamedGroupsTest extends AbstractPreferenceTest {
+class PreferenceDialogWithNamedGroupsTest extends AbstractPreferenceDialogTest {
 	
 	static class Preferences {
 		
@@ -40,11 +35,11 @@ class PreferenceDialogWithNamedGroupsTest extends AbstractPreferenceTest {
 		@FormattedTextField(validator=FieldsValidator, validatorText="Must be a number and between 2 and 100")
 		int fields = 4
 		
-		@com.globalscalingsoftware.prefdialog.annotations.fields.Group("Group One")
-		Group group1 = new Group()
+		@Group("Group One")
+		Group1 group1 = new Group1()
 		
-		@com.globalscalingsoftware.prefdialog.annotations.fields.Group("Group Two")
-		Group group2 = new Group()
+		@Group("Group Two")
+		Group2 group2 = new Group2()
 		
 		@Checkbox
 		boolean automaticSave = false
@@ -53,7 +48,11 @@ class PreferenceDialogWithNamedGroupsTest extends AbstractPreferenceTest {
 		Colors colors = Colors.BLACK
 		
 		@ComboBoxElements("combobox1")
-		List<String> comboBoxElements = ["first element", "second element", "third element"]
+		List<String> comboBoxElements = [
+			"first element",
+			"second element",
+			"third element"
+		]
 		
 		@ComboBox("combobox1")
 		String comboBox
@@ -64,7 +63,7 @@ class PreferenceDialogWithNamedGroupsTest extends AbstractPreferenceTest {
 		}
 	}
 	
-	static class Group {
+	static class Group1 {
 		
 		@TextField
 		String textField1 = ""
@@ -73,22 +72,40 @@ class PreferenceDialogWithNamedGroupsTest extends AbstractPreferenceTest {
 		String textField2 = ""
 	}
 	
-	def injector
+	static class Group2 {
+		
+		@TextField
+		String textField3 = ""
+		
+		@TextField
+		String textField4 = ""
+	}
 	
-	def preferences
-	
-	@Before
-	void beforeTest() {
+	def setupPreferences() {
 		preferences = new Preferences()
-		injector = new PreferencesDialogInjectorFactory().create(preferences)
 	}
 	
 	@Test
-	void testDialogClickOk() {
-		def controller = injector.getInstance(PreferenceDialogController)
-		controller.openDialog()
-		assertThat preferences.general.name, is("name")
-		assertThat preferences.general.fields, is(10)
-		assertThat preferences.general.automaticSave, is(true)
+	void testClickOkAndClose() {
+		window.textBox("name").enterText "name"
+		window.textBox("fields").enterText "10"
+		window.textBox("textField1").enterText "field1"
+		window.textBox("textField2").enterText "field2"
+		window.textBox("textField3").enterText "field3"
+		window.textBox("textField4").enterText "field4"
+		window.checkBox("automaticSave").click()
+		window.radioButton("colors-BLUE").click()
+		window.comboBox("comboBox").selectItem 1
+		window.button("ok").click()
+		
+		assert preferences.general.name == "name"
+		assert preferences.general.fields == 10
+		assert preferences.general.automaticSave == true
+		assert preferences.general.colors == Colors.BLUE
+		assert preferences.general.comboBox == "second element"
+		assert preferences.general.group1.textField1 == "field1"
+		assert preferences.general.group1.textField2 == "field2"
+		assert preferences.general.group2.textField3 == "field3"
+		assert preferences.general.group2.textField4 == "field4"
 	}
 }

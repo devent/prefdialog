@@ -9,9 +9,9 @@ import org.junit.Test;
 import com.globalscalingsoftware.prefdialog.Validator 
 import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
 import com.globalscalingsoftware.prefdialog.annotations.fields.TextField;
-import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest 
+import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest 
 
-class TextFieldValidatedPreferencePanelTest extends AbstractPreferenceTest {
+class TextFieldValidatedPreferencePanelTest extends AbstractPreferencePanelTest {
 	
 	static class StringValidator implements Validator<String> {
 		

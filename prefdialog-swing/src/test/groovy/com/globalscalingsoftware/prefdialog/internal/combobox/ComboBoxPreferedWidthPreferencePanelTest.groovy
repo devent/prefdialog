@@ -9,9 +9,9 @@ import static org.hamcrest.Matchers.*;
 import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
 import com.globalscalingsoftware.prefdialog.annotations.fields.ComboBox;
 import com.globalscalingsoftware.prefdialog.annotations.fields.ComboBoxElements;
-import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest 
+import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest 
 
-class ComboBoxPreferedWidthPreferencePanelTest extends AbstractPreferenceTest {
+class ComboBoxPreferedWidthPreferencePanelTest extends AbstractPreferencePanelTest {
 	
 	static class General {
 		

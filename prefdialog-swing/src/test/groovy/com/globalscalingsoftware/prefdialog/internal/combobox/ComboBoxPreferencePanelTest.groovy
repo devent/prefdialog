@@ -6,9 +6,9 @@ import org.junit.Test;
 import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
 import com.globalscalingsoftware.prefdialog.annotations.fields.ComboBox;
 import com.globalscalingsoftware.prefdialog.annotations.fields.ComboBoxElements;
-import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest 
+import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest 
 
-class ComboBoxPreferencePanelTest extends AbstractPreferenceTest {
+class ComboBoxPreferencePanelTest extends AbstractPreferencePanelTest {
 	
 	static class General {
 		

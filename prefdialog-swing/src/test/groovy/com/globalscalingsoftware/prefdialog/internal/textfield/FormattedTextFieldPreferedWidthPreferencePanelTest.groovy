@@ -8,9 +8,9 @@ import org.junit.Test;
 
 import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
 import com.globalscalingsoftware.prefdialog.annotations.fields.FormattedTextField;
-import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest 
+import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest 
 
-class FormattedTextFieldPreferedWidthPreferencePanelTest extends AbstractPreferenceTest {
+class FormattedTextFieldPreferedWidthPreferencePanelTest extends AbstractPreferencePanelTest {
 	
 	static class General {
 		

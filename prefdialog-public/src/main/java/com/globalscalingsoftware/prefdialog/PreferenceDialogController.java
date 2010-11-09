@@ -4,7 +4,10 @@ import java.awt.Frame;
 
 public interface PreferenceDialogController {
 
-	void openDialog(Frame owner);
+	void setup(Frame owner);
+
+	void openDialog();
 
 	Options getOption();
+
 }

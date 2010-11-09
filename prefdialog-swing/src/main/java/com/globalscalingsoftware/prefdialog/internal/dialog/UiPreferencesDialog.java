@@ -92,11 +92,13 @@ class UiPreferencesDialog extends javax.swing.JDialog {
 				{
 					cancelButton = new JButton();
 					dialogPanel.add(getCancelButton(), "2, 2");
+					cancelButton.setName("cancel");
 					cancelButton.setText("Cancel");
 				}
 				{
 					okButton = new JButton();
 					dialogPanel.add(getOkButton(), "1, 2");
+					okButton.setName("ok");
 					okButton.setText("Ok");
 				}
 			}

@@ -39,7 +39,7 @@ public class PreferenceDialog {
 		cancelEvent = new RunnableActionEvent();
 	}
 
-	public void open(Frame owner) {
+	public void setup(Frame owner) {
 		uiPreferencesDialog = new UiPreferencesDialog(owner);
 		uiPreferencesDialog.getOkButton().setAction(okAction);
 		uiPreferencesDialog.getOkButton().addActionListener(okEvent);
@@ -47,6 +47,7 @@ public class PreferenceDialog {
 		uiPreferencesDialog.getCancelButton().addActionListener(cancelEvent);
 
 		JTree childTree = uiPreferencesDialog.getChildTree();
+		childTree.setName("child_tree");
 		childTree.setModel(new DefaultTreeModel(rootNode));
 		childTree.setRootVisible(false);
 		childTree.getSelectionModel().setSelectionMode(
@@ -59,8 +60,15 @@ public class PreferenceDialog {
 
 		uiPreferencesDialog.setLocationRelativeTo(owner);
 		uiPreferencesDialog.setModal(true);
+	}
+
+	public void open() {
 		uiPreferencesDialog.pack();
 		uiPreferencesDialog.setVisible(true);
+	}
+
+	public UiPreferencesDialog getUiPreferencesDialog() {
+		return uiPreferencesDialog;
 	}
 
 	public void setRootNode(DefaultMutableTreeNode root) {

@@ -4,10 +4,10 @@ import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
 import com.globalscalingsoftware.prefdialog.annotations.fields.RadioButton;
-import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest;
+import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest;
 import org.junit.Test;
 
-class RadioButtonPreferencePanelWithColumnsTest extends AbstractPreferenceTest {
+class RadioButtonPreferencePanelWithColumnsTest extends AbstractPreferencePanelTest {
 	
 	static class Preferences {
 		

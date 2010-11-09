@@ -15,7 +15,7 @@ import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbo
 
 import groovy.swing.SwingBuilder 
 
-abstract class AbstractPreferenceTest {
+abstract class AbstractPreferencePanelTest {
 	
 	static {
 		setGTKLookAndFeel()

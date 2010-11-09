@@ -4,9 +4,9 @@ import org.junit.Test;
 
 import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
 import com.globalscalingsoftware.prefdialog.annotations.fields.RadioButton;
-import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest 
+import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest 
 
-class RadioButtonPreferencePanelTest extends AbstractPreferenceTest {
+class RadioButtonPreferencePanelTest extends AbstractPreferencePanelTest {
 	
 	static class General {
 		

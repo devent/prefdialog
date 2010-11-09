@@ -6,10 +6,8 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
-import org.junit.Before;
 import org.junit.Test;
 
-import com.globalscalingsoftware.prefdialog.PreferenceDialogController;
 import com.globalscalingsoftware.prefdialog.annotations.fields.Checkbox;
 import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
 import com.globalscalingsoftware.prefdialog.annotations.fields.ComboBox;
@@ -17,13 +15,12 @@ import com.globalscalingsoftware.prefdialog.annotations.fields.ComboBoxElements;
 import com.globalscalingsoftware.prefdialog.annotations.fields.FormattedTextField;
 import com.globalscalingsoftware.prefdialog.annotations.fields.RadioButton;
 import com.globalscalingsoftware.prefdialog.annotations.fields.TextField;
-import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest;
-import com.globalscalingsoftware.prefdialog.internal.PreferencesDialogInjectorFactory 
+import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceDialogTest;
 import com.globalscalingsoftware.prefdialog.internal.radiobutton.Colors;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
-class PreferenceDialogPreferedWidthTest extends AbstractPreferenceTest {
+class PreferenceDialogPreferedWidthTest extends AbstractPreferenceDialogTest {
 	
 	static class Preferences {
 		
@@ -46,7 +43,11 @@ class PreferenceDialogPreferedWidthTest extends AbstractPreferenceTest {
 		Colors colors = Colors.BLACK
 		
 		@ComboBoxElements("combobox1")
-		List<String> comboBoxElements = ["first element", "second element", "third element"]
+		List<String> comboBoxElements = [
+			"first element",
+			"second element",
+			"third element"
+		]
 		
 		@ComboBox(value="combobox1", width=-2.0d)
 		String comboBox
@@ -57,19 +58,23 @@ class PreferenceDialogPreferedWidthTest extends AbstractPreferenceTest {
 		}
 	}
 	
-	def injector
-	
-	def preferences
-	
-	@Before
-	void beforeTest() {
+	def setupPreferences() {
 		preferences = new Preferences()
-		injector = new PreferencesDialogInjectorFactory().create(preferences)
 	}
 	
 	@Test
-	void testDialogClickOk() {
-		def controller = injector.getInstance(PreferenceDialogController)
-		controller.openDialog()
+	void testClickOkAndClose() {
+		window.textBox("name").enterText "name"
+		window.textBox("fields").enterText "10"
+		window.checkBox("automaticSave").click()
+		window.radioButton("colors-BLUE").click()
+		window.comboBox("comboBox").selectItem 1
+		window.button("ok").click()
+		
+		assert preferences.general.name == "name"
+		assert preferences.general.fields == 10
+		assert preferences.general.automaticSave == true
+		assert preferences.general.colors == Colors.BLUE
+		assert preferences.general.comboBox == "second element"
 	}
 }

@@ -7,13 +7,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.Action;
+import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 
-import com.globalscalingsoftware.prefdialog.PreferenceDialogController;
 import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.Options;
+import com.globalscalingsoftware.prefdialog.PreferenceDialogController;
 import com.globalscalingsoftware.prefdialog.annotations.actions.ApplyAction;
 import com.globalscalingsoftware.prefdialog.annotations.actions.RestoreAction;
 import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
@@ -28,7 +29,8 @@ import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbo
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
-public class PreferenceDialogControllerImpl implements PreferenceDialogController {
+public class PreferenceDialogControllerImpl implements
+		PreferenceDialogController {
 
 	private final AnnotationDiscovery annotationDiscovery;
 	private final Map<Object, FieldHandler<?>> preferencePanels;
@@ -69,11 +71,20 @@ public class PreferenceDialogControllerImpl implements PreferenceDialogControlle
 	}
 
 	@Override
-	public void openDialog(Frame owner) {
+	public void setup(Frame owner) {
 		setupRootNode();
 		setupEvents();
 		setupPreferencesStart();
-		preferenceDialog.open(owner);
+		preferenceDialog.setup(owner);
+	}
+
+	@Override
+	public void openDialog() {
+		preferenceDialog.open();
+	}
+
+	public JDialog getPreferenceDialog() {
+		return preferenceDialog.getUiPreferencesDialog();
 	}
 
 	private void setupRootNode() {

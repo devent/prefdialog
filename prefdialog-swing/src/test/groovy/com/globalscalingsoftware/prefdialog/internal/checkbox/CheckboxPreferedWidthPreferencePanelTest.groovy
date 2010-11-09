@@ -6,9 +6,9 @@ import org.junit.Test;
 
 import com.globalscalingsoftware.prefdialog.annotations.fields.Checkbox;
 import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
-import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest 
+import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest 
 
-class CheckboxPreferedWidthPreferencePanelTest extends AbstractPreferenceTest {
+class CheckboxPreferedWidthPreferencePanelTest extends AbstractPreferencePanelTest {
 	
 	static class General {
 		

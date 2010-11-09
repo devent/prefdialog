@@ -5,19 +5,16 @@ package com.globalscalingsoftware.prefdialog.internal.inputfield
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
-import org.junit.Before;
 import org.junit.Test;
 
-import com.globalscalingsoftware.prefdialog.PreferenceDialogController;
 import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
 import com.globalscalingsoftware.prefdialog.annotations.fields.FormattedTextField;
 import com.globalscalingsoftware.prefdialog.annotations.fields.TextField;
-import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceTest;
-import com.globalscalingsoftware.prefdialog.internal.PreferencesDialogInjectorFactory 
+import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceDialogTest;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
-class PreferenceDialogWithMoreChildrenTest extends AbstractPreferenceTest {
+class PreferenceDialogWithMoreChildrenTest extends AbstractPreferenceDialogTest {
 	
 	static class Preferences {
 		
@@ -56,19 +53,22 @@ class PreferenceDialogWithMoreChildrenTest extends AbstractPreferenceTest {
 		}
 	}
 	
-	def injector
-	
-	def preferences
-	
-	@Before
-	void beforeTest() {
+	def setupPreferences() {
 		preferences = new Preferences()
-		injector = new PreferencesDialogInjectorFactory().create(preferences)
 	}
 	
 	@Test
-	void testDialogClickOk() {
-		def controller = injector.getInstance(PreferenceDialogController)
-		controller.openDialog()
+	void testClickOkAndClose() {
+		window.textBox("name").enterText "name"
+		window.textBox("fields").enterText "10"
+		window.tree("child_tree").clickPath "Child2"
+		window.textBox("something").enterText "something text"
+		window.textBox("moreFields").enterText "20"
+		window.button("ok").click()
+		
+		assert preferences.general.name == "name"
+		assert preferences.general.fields == 10
+		assert preferences.child2.something == "something text"
+		assert preferences.child2.moreFields == 20
 	}
 }
