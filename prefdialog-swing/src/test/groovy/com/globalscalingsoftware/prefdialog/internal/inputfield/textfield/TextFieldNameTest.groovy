@@ -36,6 +36,6 @@ class TextFieldNameTest extends AbstractPreferencePanelTest {
 	
 	@Test
 	void testPanelClickApplyAndClose() {
-		assert window.label("label-name").text() == "Project name"
+		assert window.label("label-name").text() == "Project name: "
 	}
 }
