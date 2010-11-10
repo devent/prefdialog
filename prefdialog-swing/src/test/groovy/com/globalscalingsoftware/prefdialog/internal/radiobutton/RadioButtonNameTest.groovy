@@ -10,7 +10,7 @@ import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
 import com.globalscalingsoftware.prefdialog.annotations.fields.RadioButton;
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest 
 
-class NamedRadioButtonPreferencePanelTest extends AbstractPreferencePanelTest {
+class RadioButtonNameTest extends AbstractPreferencePanelTest {
 	
 	static class General {
 		
@@ -39,9 +39,6 @@ class NamedRadioButtonPreferencePanelTest extends AbstractPreferencePanelTest {
 	@Test
 	void testPanelClickApplyAndClose() {
 		window.radioButton("colors-BLUE").click()
-		window.panel("general").button("apply").click()
-		
-		window.label("label-colors").requireText "Some colors: "
-		assert preferences.general.colors == Colors.BLUE
+		assert window.label("label-colors").text() == "Some colors: "
 	}
 }

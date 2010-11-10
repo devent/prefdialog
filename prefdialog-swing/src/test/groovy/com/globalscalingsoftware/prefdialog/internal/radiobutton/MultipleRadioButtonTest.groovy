@@ -10,7 +10,7 @@ import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
 import com.globalscalingsoftware.prefdialog.annotations.fields.RadioButton;
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest 
 
-class MultipleRadioButtonPreferencePanelTest extends AbstractPreferencePanelTest {
+class MultipleRadioButtonTest extends AbstractPreferencePanelTest {
 	
 	static class General {
 		
