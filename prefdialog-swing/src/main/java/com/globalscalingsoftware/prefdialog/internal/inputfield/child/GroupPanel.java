@@ -84,4 +84,7 @@ public class GroupPanel extends AbstractFieldPanel<UiGroupPanel> implements
 	public void setRestoreAction(Action a) {
 	}
 
+	@Override
+	public void setRestoreEvent(Runnable e) {
+	}
 }

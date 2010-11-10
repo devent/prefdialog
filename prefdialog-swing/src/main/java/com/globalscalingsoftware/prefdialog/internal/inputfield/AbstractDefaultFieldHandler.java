@@ -83,6 +83,7 @@ public abstract class AbstractDefaultFieldHandler<FieldComponentType extends Fie
 
 	@Override
 	public void restoreInput(Object parent) {
-		// TODO
+		Object value = getValue();
+		setComponentValue(value);
 	}
 }

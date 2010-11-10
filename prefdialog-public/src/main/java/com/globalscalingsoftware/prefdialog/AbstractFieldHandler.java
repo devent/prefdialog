@@ -45,6 +45,10 @@ public abstract class AbstractFieldHandler<FieldComponentType extends FieldCompo
 		return parentObject;
 	}
 
+	protected Object getValue() {
+		return value;
+	}
+
 	@Override
 	public void setComponentWidth(double width) {
 		component.setWidth(width);

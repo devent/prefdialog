@@ -46,6 +46,14 @@ public abstract class AbstractChildFieldHandler<ComponentType extends IChildComp
 			}
 
 		});
+		getComponent().setRestoreEvent(new Runnable() {
+
+			@Override
+			public void run() {
+				restoreInput();
+			}
+
+		});
 	}
 
 	private void addAllInputFields() {

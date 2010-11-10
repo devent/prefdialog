@@ -53,8 +53,8 @@ public class ChildPanel extends AbstractFieldPanel<UiChildPanel> implements
 	}
 
 	@Override
-	public void setApplyEvent(Runnable applyEvent) {
-		this.applyEvent.setEvent(applyEvent);
+	public void setApplyEvent(Runnable e) {
+		this.applyEvent.setEvent(e);
 	}
 
 	@Override
@@ -62,8 +62,9 @@ public class ChildPanel extends AbstractFieldPanel<UiChildPanel> implements
 		panel.getRestoreButton().setAction(a);
 	}
 
-	public void setRestoreEvent(Runnable restoreEvent) {
-		this.restoreEvent.setEvent(restoreEvent);
+	@Override
+	public void setRestoreEvent(Runnable e) {
+		this.restoreEvent.setEvent(e);
 	}
 
 	@Override
