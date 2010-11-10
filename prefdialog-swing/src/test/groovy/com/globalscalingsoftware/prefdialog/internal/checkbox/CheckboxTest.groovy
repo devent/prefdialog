@@ -10,11 +10,11 @@ import com.globalscalingsoftware.prefdialog.annotations.fields.Checkbox;
 import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest 
 
-class CheckboxPreferenceNamedPanelTest extends AbstractPreferencePanelTest {
+class CheckboxTest extends AbstractPreferencePanelTest {
 	
 	static class General {
 		
-		@Checkbox("save automatic")
+		@Checkbox
 		boolean automaticSave = false
 		
 		@Override
@@ -40,8 +40,5 @@ class CheckboxPreferenceNamedPanelTest extends AbstractPreferencePanelTest {
 	void testPanelClickApplyAndClose() {
 		window.checkBox("automaticSave").click()
 		window.panel("general").button("apply").click()
-		
-		window.checkBox("automaticSave").requireText "save automatic"
-		assert preferences.general.automaticSave == true
 	}
 }

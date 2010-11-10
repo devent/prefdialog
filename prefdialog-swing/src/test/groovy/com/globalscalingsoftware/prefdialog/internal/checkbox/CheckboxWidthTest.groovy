@@ -1,7 +1,5 @@
 package com.globalscalingsoftware.prefdialog.internal.checkbox
 
-
-
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 import org.junit.Test;
@@ -10,11 +8,11 @@ import com.globalscalingsoftware.prefdialog.annotations.fields.Checkbox;
 import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest 
 
-class CheckboxPreferencePanelTest extends AbstractPreferencePanelTest {
+class CheckboxWidthTest extends AbstractPreferencePanelTest {
 	
 	static class General {
 		
-		@Checkbox
+		@Checkbox(width=-2.0d)
 		boolean automaticSave = false
 		
 		@Override
@@ -40,5 +38,6 @@ class CheckboxPreferencePanelTest extends AbstractPreferencePanelTest {
 	void testPanelClickApplyAndClose() {
 		window.checkBox("automaticSave").click()
 		window.panel("general").button("apply").click()
+		assert preferences.general.automaticSave == true
 	}
 }
