@@ -1,4 +1,4 @@
-package com.globalscalingsoftware.prefdialog.internal.combobox
+package com.globalscalingsoftware.prefdialog.internal.inputfield.combobox
 
 import java.util.List;
 import org.junit.Test;

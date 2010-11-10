@@ -1,32 +1,31 @@
-package com.globalscalingsoftware.prefdialog.internal.radiobutton
-
-
+package com.globalscalingsoftware.prefdialog.internal.inputfield.radiobutton
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
-import org.junit.Test;
-
 import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
 import com.globalscalingsoftware.prefdialog.annotations.fields.RadioButton;
-import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest 
+import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.Colors;
 
-class RadioButtonNameTest extends AbstractPreferencePanelTest {
+import org.junit.Test;
+
+class RadioButtonWithAndColumnsTest extends AbstractPreferencePanelTest {
+	
+	static class Preferences {
+		
+		@Child
+		General general = new General()
+	}
 	
 	static class General {
 		
-		@RadioButton("Some colors")
+		@RadioButton(columns=2, width=-2.0d)
 		Colors colors = Colors.BLACK
 		
 		@Override
 		public String toString() {
 			"General"
 		}
-	}
-	
-	static class Preferences {
-		
-		@Child
-		General general = new General()
 	}
 	
 	def setupPreferences() {
@@ -39,6 +38,9 @@ class RadioButtonNameTest extends AbstractPreferencePanelTest {
 	@Test
 	void testPanelClickApplyAndClose() {
 		window.radioButton("colors-BLUE").click()
-		assert window.label("label-colors").text() == "Some colors: "
+		window.panel("general").button("apply").click()
+		
+		assert window.label("label-colors").text() == "colors: "
+		assert preferences.general.colors == Colors.BLUE
 	}
 }

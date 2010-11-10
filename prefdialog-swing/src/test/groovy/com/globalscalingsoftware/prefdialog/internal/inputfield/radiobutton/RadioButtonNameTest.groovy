@@ -1,19 +1,22 @@
-package com.globalscalingsoftware.prefdialog.internal.textfield
+package com.globalscalingsoftware.prefdialog.internal.inputfield.radiobutton
+
+
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 import org.junit.Test;
 
 import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
-import com.globalscalingsoftware.prefdialog.annotations.fields.TextField;
+import com.globalscalingsoftware.prefdialog.annotations.fields.RadioButton;
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest 
+import com.globalscalingsoftware.prefdialog.internal.inputfield.Colors;
 
-class TextFieldRestoreTest extends AbstractPreferencePanelTest {
+class RadioButtonNameTest extends AbstractPreferencePanelTest {
 	
 	static class General {
 		
-		@TextField
-		String name = ""
+		@RadioButton("Some colors")
+		Colors colors = Colors.BLACK
 		
 		@Override
 		public String toString() {
@@ -36,10 +39,7 @@ class TextFieldRestoreTest extends AbstractPreferencePanelTest {
 	
 	@Test
 	void testPanelClickApplyAndClose() {
-		window.textBox("name").enterText "test"
-		window.panel("general").button("restore").click()
-		
-		assert window.textBox("name").text() == ""
-		assert preferences.general.name == ""
+		window.radioButton("colors-BLUE").click()
+		assert window.label("label-colors").text() == "Some colors: "
 	}
 }

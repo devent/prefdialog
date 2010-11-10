@@ -1,11 +1,6 @@
 package com.globalscalingsoftware.prefdialog.internal.inputfield
 
 import java.util.List;
-
-
-
-import static org.hamcrest.MatcherAssert.*;
-import static org.hamcrest.Matchers.*;
 import org.junit.Test;
 
 import com.globalscalingsoftware.prefdialog.annotations.fields.Checkbox;
@@ -13,15 +8,12 @@ import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
 import com.globalscalingsoftware.prefdialog.annotations.fields.ComboBox;
 import com.globalscalingsoftware.prefdialog.annotations.fields.ComboBoxElements;
 import com.globalscalingsoftware.prefdialog.annotations.fields.FormattedTextField;
-import com.globalscalingsoftware.prefdialog.annotations.fields.Group 
 import com.globalscalingsoftware.prefdialog.annotations.fields.RadioButton;
 import com.globalscalingsoftware.prefdialog.annotations.fields.TextField;
-import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceDialogTest;
-import com.globalscalingsoftware.prefdialog.internal.radiobutton.Colors;
-import static org.hamcrest.MatcherAssert.*;
-import static org.hamcrest.Matchers.*;
+import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceDialogTest 
+import com.globalscalingsoftware.prefdialog.validators.NotEmptyString 
 
-class PreferenceDialogWithGroupsTest extends AbstractPreferenceDialogTest {
+class DialogTest extends AbstractPreferenceDialogTest {
 	
 	static class Preferences {
 		
@@ -31,17 +23,11 @@ class PreferenceDialogWithGroupsTest extends AbstractPreferenceDialogTest {
 	
 	static class General {
 		
-		@TextField(validator=NotEmptyStringValidator, validatorText="Must not be empty")
+		@TextField(validator=NotEmptyString, validatorText="Must not be empty")
 		String name = ""
 		
 		@FormattedTextField(validator=FieldsValidator, validatorText="Must be a number and between 2 and 100")
 		int fields = 4
-		
-		@Group
-		Group1 group1 = new Group1()
-		
-		@Group
-		Group2 group2 = new Group2()
 		
 		@Checkbox
 		boolean automaticSave = false
@@ -63,24 +49,6 @@ class PreferenceDialogWithGroupsTest extends AbstractPreferenceDialogTest {
 		public String toString() {
 			"General"
 		}
-	}
-	
-	static class Group1 {
-		
-		@TextField
-		String textField1 = ""
-		
-		@TextField
-		String textField2 = ""
-	}
-	
-	static class Group2 {
-		
-		@TextField
-		String textField3 = ""
-		
-		@TextField
-		String textField4 = ""
 	}
 	
 	def setupPreferences() {

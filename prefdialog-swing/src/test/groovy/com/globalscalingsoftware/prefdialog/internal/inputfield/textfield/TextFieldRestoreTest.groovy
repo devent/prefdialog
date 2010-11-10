@@ -1,4 +1,4 @@
-package com.globalscalingsoftware.prefdialog.internal.textfield
+package com.globalscalingsoftware.prefdialog.internal.inputfield.textfield
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
@@ -8,11 +8,11 @@ import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
 import com.globalscalingsoftware.prefdialog.annotations.fields.TextField;
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest 
 
-class TextFieldNameTest extends AbstractPreferencePanelTest {
+class TextFieldRestoreTest extends AbstractPreferencePanelTest {
 	
 	static class General {
 		
-		@TextField("Project name")
+		@TextField
 		String name = ""
 		
 		@Override
@@ -36,6 +36,10 @@ class TextFieldNameTest extends AbstractPreferencePanelTest {
 	
 	@Test
 	void testPanelClickApplyAndClose() {
-		assert window.label("label-name").text() == "Project name"
+		window.textBox("name").enterText "test"
+		window.panel("general").button("restore").click()
+		
+		assert window.textBox("name").text() == ""
+		assert preferences.general.name == ""
 	}
 }

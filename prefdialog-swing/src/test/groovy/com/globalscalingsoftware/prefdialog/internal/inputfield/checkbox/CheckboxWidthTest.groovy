@@ -1,4 +1,4 @@
-package com.globalscalingsoftware.prefdialog.internal.checkbox
+package com.globalscalingsoftware.prefdialog.internal.inputfield.checkbox
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;

@@ -1,21 +1,19 @@
-package com.globalscalingsoftware.prefdialog.internal.checkbox
-
-
+package com.globalscalingsoftware.prefdialog.internal.inputfield.textfield
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 import org.junit.Test;
 
-import com.globalscalingsoftware.prefdialog.annotations.fields.Checkbox;
 import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
+import com.globalscalingsoftware.prefdialog.annotations.fields.TextField;
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest 
 
-class CheckboxTest extends AbstractPreferencePanelTest {
+class TextFieldNameTest extends AbstractPreferencePanelTest {
 	
 	static class General {
 		
-		@Checkbox
-		boolean automaticSave = false
+		@TextField("Project name")
+		String name = ""
 		
 		@Override
 		public String toString() {
@@ -38,7 +36,6 @@ class CheckboxTest extends AbstractPreferencePanelTest {
 	
 	@Test
 	void testPanelClickApplyAndClose() {
-		window.checkBox("automaticSave").click()
-		window.panel("general").button("apply").click()
+		assert window.label("label-name").text() == "Project name"
 	}
 }

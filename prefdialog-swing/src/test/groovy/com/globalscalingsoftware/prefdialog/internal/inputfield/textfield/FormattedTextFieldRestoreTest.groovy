@@ -1,4 +1,4 @@
-package com.globalscalingsoftware.prefdialog.internal.textfield
+package com.globalscalingsoftware.prefdialog.internal.inputfield.textfield
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 import org.junit.Test;

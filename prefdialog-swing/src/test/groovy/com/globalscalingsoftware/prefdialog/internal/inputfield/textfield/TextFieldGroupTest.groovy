@@ -1,4 +1,4 @@
-package com.globalscalingsoftware.prefdialog.internal.textfield
+package com.globalscalingsoftware.prefdialog.internal.inputfield.textfield
 
 import org.junit.Test;
 

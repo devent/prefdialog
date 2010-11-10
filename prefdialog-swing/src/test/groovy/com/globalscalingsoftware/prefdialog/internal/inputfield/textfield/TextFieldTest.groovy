@@ -1,21 +1,19 @@
-package com.globalscalingsoftware.prefdialog.internal.textfield
-
-
+package com.globalscalingsoftware.prefdialog.internal.inputfield.textfield
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 import org.junit.Test;
 
 import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
-import com.globalscalingsoftware.prefdialog.annotations.fields.FormattedTextField;
+import com.globalscalingsoftware.prefdialog.annotations.fields.TextField;
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest 
 
-class FormattedTextFieldWidthTest extends AbstractPreferencePanelTest {
+class TextFieldTest extends AbstractPreferencePanelTest {
 	
 	static class General {
 		
-		@FormattedTextField(width=-2.0d)
-		int fields = 4
+		@TextField
+		String name = ""
 		
 		@Override
 		public String toString() {
@@ -29,7 +27,6 @@ class FormattedTextFieldWidthTest extends AbstractPreferencePanelTest {
 		General general = new General()
 	}
 	
-	
 	def setupPreferences() {
 		preferencesClass = Preferences
 		preferences = new Preferences()
@@ -39,10 +36,10 @@ class FormattedTextFieldWidthTest extends AbstractPreferencePanelTest {
 	
 	@Test
 	void testPanelClickApplyAndClose() {
-		window.textBox("fields").enterText "10"
+		window.textBox("name").enterText "test"
 		window.panel("general").button("apply").click()
 		
-		assert window.label("label-fields").text() == "fields: "
-		assert preferences.general.fields == 10
+		assert window.label("label-name").text() == "name: "
+		assert preferences.general.name == "test"
 	}
 }

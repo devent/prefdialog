@@ -1,17 +1,18 @@
-package com.globalscalingsoftware.prefdialog.internal.radiobutton
-
+package com.globalscalingsoftware.prefdialog.internal.inputfield.textfield
+import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.Matchers.*;
 import org.junit.Test;
 
 import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
-import com.globalscalingsoftware.prefdialog.annotations.fields.RadioButton;
+import com.globalscalingsoftware.prefdialog.annotations.fields.FormattedTextField;
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest 
 
-class RadioButtonTest extends AbstractPreferencePanelTest {
+class FormattedTextFieldTest extends AbstractPreferencePanelTest {
 	
 	static class General {
 		
-		@RadioButton
-		Colors colors = Colors.BLACK
+		@FormattedTextField
+		double fields = 4
 		
 		@Override
 		public String toString() {
@@ -34,10 +35,10 @@ class RadioButtonTest extends AbstractPreferencePanelTest {
 	
 	@Test
 	void testPanelClickApplyAndClose() {
-		window.radioButton("colors-BLUE").click()
+		window.textBox("fields").enterText "10"
 		window.panel("general").button("apply").click()
 		
-		assert window.label("label-colors").text() == "colors: "
-		assert preferences.general.colors == Colors.BLUE
+		assert window.label("label-fields").text() == "fields: "
+		assert preferences.general.fields == 10
 	}
 }

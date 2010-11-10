@@ -1,4 +1,4 @@
-package com.globalscalingsoftware.prefdialog.internal.textfield
+package com.globalscalingsoftware.prefdialog.internal.inputfield.checkbox
 
 
 
@@ -6,16 +6,16 @@ import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 import org.junit.Test;
 
+import com.globalscalingsoftware.prefdialog.annotations.fields.Checkbox;
 import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
-import com.globalscalingsoftware.prefdialog.annotations.fields.TextField;
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest 
 
-class TextFieldWidthTest extends AbstractPreferencePanelTest {
+class CheckboxTest extends AbstractPreferencePanelTest {
 	
 	static class General {
 		
-		@TextField(width=-2.0d)
-		String name = ""
+		@Checkbox
+		boolean automaticSave = false
 		
 		@Override
 		public String toString() {
@@ -29,7 +29,6 @@ class TextFieldWidthTest extends AbstractPreferencePanelTest {
 		General general = new General()
 	}
 	
-	
 	def setupPreferences() {
 		preferencesClass = Preferences
 		preferences = new Preferences()
@@ -39,10 +38,7 @@ class TextFieldWidthTest extends AbstractPreferencePanelTest {
 	
 	@Test
 	void testPanelClickApplyAndClose() {
-		window.textBox("name").enterText "test"
+		window.checkBox("automaticSave").click()
 		window.panel("general").button("apply").click()
-		
-		assert window.label("label-name").text() == "name: "
-		assert preferences.general.name == "test"
 	}
 }

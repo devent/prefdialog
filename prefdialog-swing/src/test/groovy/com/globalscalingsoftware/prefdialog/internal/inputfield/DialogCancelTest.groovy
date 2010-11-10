@@ -1,19 +1,12 @@
 package com.globalscalingsoftware.prefdialog.internal.inputfield
 
-
-
-
-import static org.hamcrest.MatcherAssert.*;
-import static org.hamcrest.Matchers.*;
 import org.junit.Test;
 
 import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
 import com.globalscalingsoftware.prefdialog.annotations.fields.TextField;
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceDialogTest;
-import static org.hamcrest.MatcherAssert.*;
-import static org.hamcrest.Matchers.*;
 
-class PreferenceDialogOkTest extends AbstractPreferenceDialogTest {
+class DialogCancelTest extends AbstractPreferenceDialogTest {
 	
 	static class Preferences {
 		
@@ -37,10 +30,10 @@ class PreferenceDialogOkTest extends AbstractPreferenceDialogTest {
 	}
 	
 	@Test
-	void testClickOkAndClose() {
+	void testClickCancelAndClose() {
 		window.textBox("name").enterText "name"
-		window.button("ok").click()
+		window.button("cancel").click()
 		
-		assert preferences.general.name == "name"
+		assert preferences.general.name == ""
 	}
 }
