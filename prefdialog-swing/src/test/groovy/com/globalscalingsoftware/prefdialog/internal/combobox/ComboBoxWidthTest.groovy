@@ -1,26 +1,29 @@
 package com.globalscalingsoftware.prefdialog.internal.combobox
 
 import java.util.List;
+
 import org.junit.Test;
+import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.Matchers.*;
 
 import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
 import com.globalscalingsoftware.prefdialog.annotations.fields.ComboBox;
 import com.globalscalingsoftware.prefdialog.annotations.fields.ComboBoxElements;
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest 
 
-class ComboBoxPreferencePanelTest extends AbstractPreferencePanelTest {
+class ComboBoxWidthTest extends AbstractPreferencePanelTest {
 	
 	static class General {
 		
-		@ComboBoxElements("Some combo box")
+		@ComboBoxElements("combobox1")
 		List<String> comboBoxElements = [
 			"first element",
 			"second element",
 			"third element"
 		]
 		
-		@ComboBox("Some combo box")
-		String comboBox = "first element"
+		@ComboBox(value = "combobox1", width = -2.0d)
+		String comboBox
 		
 		@Override
 		public String toString() {
@@ -46,7 +49,7 @@ class ComboBoxPreferencePanelTest extends AbstractPreferencePanelTest {
 		window.comboBox("comboBox").selectItem 1
 		window.panel("general").button("apply").click()
 		
-		window.label("label-comboBox").requireText "Some combo box: "
+		assert window.label("label-comboBox").text() == "combobox1: "
 		assert preferences.general.comboBox == "second element"
 	}
 }
