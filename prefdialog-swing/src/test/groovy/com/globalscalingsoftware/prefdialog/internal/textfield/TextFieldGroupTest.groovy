@@ -7,7 +7,7 @@ import com.globalscalingsoftware.prefdialog.annotations.fields.Group
 import com.globalscalingsoftware.prefdialog.annotations.fields.TextField;
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest 
 
-class TextFieldGroupPreferencePanelTest extends AbstractPreferencePanelTest {
+class TextFieldGroupTest extends AbstractPreferencePanelTest {
 	
 	static class Group1 {
 		
