@@ -1,4 +1,4 @@
-package com.globalscalingsoftware.prefdialog.internal.module;
+package com.globalscalingsoftware.prefdialog.module;
 
 import com.globalscalingsoftware.prefdialog.PreferenceDialogController;
 import com.globalscalingsoftware.prefdialog.internal.FieldsFactory;
@@ -11,6 +11,11 @@ import com.globalscalingsoftware.prefdialog.internal.reflection.FieldsAnnotation
 import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbox;
 import com.google.inject.AbstractModule;
 
+/**
+ * Binds the default dependencies for the preference dialog.
+ * 
+ * 
+ */
 public class PreferenceDialogModule extends AbstractModule {
 
 	@Override

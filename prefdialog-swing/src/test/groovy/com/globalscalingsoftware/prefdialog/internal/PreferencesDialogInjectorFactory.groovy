@@ -6,7 +6,7 @@ import com.globalscalingsoftware.prefdialog.annotations.actions.ApplyAction;
 import com.globalscalingsoftware.prefdialog.annotations.actions.CancelAction;
 import com.globalscalingsoftware.prefdialog.annotations.actions.OkAction;
 import com.globalscalingsoftware.prefdialog.annotations.actions.RestoreAction;
-import com.globalscalingsoftware.prefdialog.internal.module.PreferenceDialogModule 
+import com.globalscalingsoftware.prefdialog.module.PreferenceDialogModule;
 import com.google.inject.Guice 
 import com.google.inject.Module 
 import com.google.inject.name.Names 
