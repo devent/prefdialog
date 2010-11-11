@@ -161,4 +161,9 @@ public class PreferenceDialogControllerImpl implements
 	public void setOkAction(Action a) {
 		preferenceDialog.setOkAction(a);
 	}
+
+	@Override
+	public void setCancelAction(Action a) {
+		preferenceDialog.setCancelAction(a);
+	}
 }

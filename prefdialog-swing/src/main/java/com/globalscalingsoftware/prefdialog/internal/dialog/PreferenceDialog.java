@@ -12,34 +12,29 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import com.globalscalingsoftware.prefdialog.Event;
-import com.globalscalingsoftware.prefdialog.annotations.actions.CancelAction;
-import com.globalscalingsoftware.prefdialog.internal.RunnableActionEvent;
 import com.google.inject.Inject;
 
 public class PreferenceDialog {
 
 	private UiPreferencesDialog uiPreferencesDialog;
 	private final CallableTreeChildSelectedEvent childSelectedEvent;
-	private final RunnableActionEvent cancelEvent;
 	private final OkAction okAction;
-	private final Action cancelAction;
+	private final CancelAction cancelAction;
 	private DefaultMutableTreeNode rootNode;
 	private Component childPanel;
 	private TreePath selectedPath;
 
 	@Inject
-	PreferenceDialog(OkAction okAction, @CancelAction Action cancelAction) {
+	PreferenceDialog(OkAction okAction, CancelAction cancelAction) {
 		this.okAction = okAction;
 		this.cancelAction = cancelAction;
 		childSelectedEvent = new CallableTreeChildSelectedEvent();
-		cancelEvent = new RunnableActionEvent();
 	}
 
 	public void setup(Frame owner) {
 		uiPreferencesDialog = new UiPreferencesDialog(owner);
 		uiPreferencesDialog.getOkButton().setAction(okAction);
 		uiPreferencesDialog.getCancelButton().setAction(cancelAction);
-		uiPreferencesDialog.getCancelButton().addActionListener(cancelEvent);
 
 		JTree childTree = uiPreferencesDialog.getChildTree();
 		childTree.setName("child_tree");
@@ -89,8 +84,8 @@ public class PreferenceDialog {
 		this.okAction.setParentAction(a);
 	}
 
-	public void setCancelEvent(Runnable cancelEvent) {
-		this.cancelEvent.setEvent(cancelEvent);
+	public void setCancelAction(Action a) {
+		this.cancelAction.setParentAction(a);
 	}
 
 	public void close() {

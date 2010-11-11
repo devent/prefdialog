@@ -1,20 +1,36 @@
 package com.globalscalingsoftware.prefdialog.internal.dialog;
 
+import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.AbstractAction;
 import javax.swing.Action;
 
 public abstract class AbstractDelegateAction implements Action {
 
-	protected Action parentAction;
+	private Action parentAction;
 
-	public AbstractDelegateAction() {
-		super();
+	@SuppressWarnings("serial")
+	public AbstractDelegateAction(String name) {
+		parentAction = new AbstractAction(name) {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+			}
+		};
 	}
 
 	public void setParentAction(Action parentAction) {
 		this.parentAction = parentAction;
 	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		parentAction.actionPerformed(e);
+		customActionPerformed(e);
+	}
+
+	protected abstract void customActionPerformed(ActionEvent e);
 
 	@Override
 	public Object getValue(String key) {
