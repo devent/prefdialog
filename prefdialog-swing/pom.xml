@@ -11,7 +11,7 @@
 	<groupId>com.globalscalingsoftware.prefdialog</groupId>
 	<artifactId>prefdialog-swing</artifactId>
 	<version>0.1.6-SNAPSHOT</version>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>com.google.inject</groupId>
@@ -39,11 +39,6 @@
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>org.codehaus.groovy</groupId>
-			<artifactId>groovy-all</artifactId>
-			<version>1.8.0-beta-2</version>
-		</dependency>
-		<dependency>
 			<groupId>com.globalscalingsoftware.prefdialog</groupId>
 			<artifactId>prefdialog-public</artifactId>
 			<version>0.1.6-SNAPSHOT</version>
@@ -52,6 +47,12 @@
 			<groupId>org.easytesting</groupId>
 			<artifactId>fest-swing-junit-4.5</artifactId>
 			<version>1.2.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.groovy</groupId>
+			<artifactId>groovy-all</artifactId>
+			<version>1.7.5</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

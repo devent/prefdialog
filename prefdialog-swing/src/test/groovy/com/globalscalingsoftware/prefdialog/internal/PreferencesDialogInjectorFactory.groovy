@@ -15,19 +15,19 @@ class PreferencesDialogInjectorFactory {
 	
 	def create(def preferences) {
 		def module = [configure: {binding -> 
-			def okAction = new DefaultAction("Ok")
-			def restoreAction = new DefaultAction("Restore")
-			def applyAction = new DefaultAction("Apply")
-			def cancelAction = new DefaultAction("Cancel")
-			
-			binding.bind(Action).annotatedWith(RestoreAction).toInstance restoreAction
-			binding.bind(Action).annotatedWith(ApplyAction).toInstance applyAction
-			binding.bind(Action).annotatedWith(CancelAction).toInstance cancelAction
-			binding.bind(Action).annotatedWith(OkAction).toInstance okAction
-			
-			binding.bind(Object).annotatedWith(Names.named("preferences")).toInstance(preferences)
-			binding.bind(Object).annotatedWith(Names.named("preferences_start")).toInstance(preferences.general)
-		}] as Module
+				def okAction = new DefaultAction("Ok")
+				def restoreAction = new DefaultAction("Restore")
+				def applyAction = new DefaultAction("Apply")
+				def cancelAction = new DefaultAction("Cancel")
+				
+				binding.bind(Action).annotatedWith(RestoreAction).toInstance restoreAction
+				binding.bind(Action).annotatedWith(ApplyAction).toInstance applyAction
+				binding.bind(Action).annotatedWith(CancelAction).toInstance cancelAction
+				binding.bind(Action).annotatedWith(OkAction).toInstance okAction
+				
+				binding.bind(Object).annotatedWith(Names.named("preferences")).toInstance(preferences)
+				binding.bind(Object).annotatedWith(Names.named("preferences_start")).toInstance(preferences.general)
+			}] as Module
 		return Guice.createInjector(new PreferenceDialogModule(), module)
 	}
 }

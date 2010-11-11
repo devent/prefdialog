@@ -1,7 +1,9 @@
 package com.globalscalingsoftware.prefdialog.internal
 
+import java.awt.BorderLayout;
 import java.lang.reflect.Field;
 
+import javax.swing.JFrame;
 import javax.swing.SwingUtilities 
 import javax.swing.UIManager;
 import org.fest.swing.edt.GuiActionRunner 
@@ -13,7 +15,6 @@ import org.junit.Before;
 import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbox;
 
 
-import groovy.swing.SwingBuilder 
 
 abstract class AbstractPreferencePanelTest {
 	
@@ -100,11 +101,11 @@ abstract class AbstractPreferencePanelTest {
 	}
 	
 	private createFrame(def preferencesPanel) {
-		return new SwingBuilder().build {
-			frame(title:'Preferences Panel', size:[480, 640], locationByPlatform: true) {
-				borderLayout()
-				widget(preferencesPanel())
-			}
-		}
+		def frame = new JFrame("Preferences Panel")
+		frame.setSize 480, 640
+		frame.setLocationByPlatform true
+		frame.setLayout new BorderLayout()
+		frame.add preferencesPanel()
+		return frame
 	}
 }

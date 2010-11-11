@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbox;
 
-class ReflectionToolboxTest extends AbstractReflectionToolboxTest {
+class ReflectionToolboxTest extends AbstractReflectionToolbox {
 	
 	@Test
 	void testGetValueFromProperty() {

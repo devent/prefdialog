@@ -4,7 +4,7 @@ import com.globalscalingsoftware.prefdialog.annotations.fields.TextField
 import com.globalscalingsoftware.prefdialog.validators.NotEmptyString 
 import org.junit.Before;
 
-class AbstractReflectionToolboxTest {
+class AbstractReflectionToolbox {
 	
 	static final PROPERTY_VALUE = "property_value"
 	
@@ -12,8 +12,8 @@ class AbstractReflectionToolboxTest {
 	
 	static class Bean {
 		
-		@TextField(validator=NotEmptyString, validatorText=AbstractReflectionToolboxTest.HELP_TEXT)
-		String property = AbstractReflectionToolboxTest.PROPERTY_VALUE
+		@TextField(validator=NotEmptyString, validatorText=AbstractReflectionToolbox.HELP_TEXT)
+		String property = AbstractReflectionToolbox.PROPERTY_VALUE
 	}
 	
 	static class ParentBean {
