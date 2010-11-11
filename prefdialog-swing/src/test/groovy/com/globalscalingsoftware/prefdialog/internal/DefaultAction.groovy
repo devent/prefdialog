@@ -6,12 +6,10 @@ import javax.swing.AbstractAction;
 
 import com.globalscalingsoftware.prefdialog.annotations.actions.ApplyAction;
 import com.globalscalingsoftware.prefdialog.annotations.actions.CancelAction;
-import com.globalscalingsoftware.prefdialog.annotations.actions.OkAction;
 import com.globalscalingsoftware.prefdialog.annotations.actions.RestoreAction;
 
 @ApplyAction
 @RestoreAction
-@OkAction
 @CancelAction
 class DefaultAction extends AbstractAction {
 	

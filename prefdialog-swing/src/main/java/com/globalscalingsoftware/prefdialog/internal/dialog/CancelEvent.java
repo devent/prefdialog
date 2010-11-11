@@ -8,9 +8,9 @@ import com.globalscalingsoftware.prefdialog.internal.inputfield.child.AbstractCh
 
 class CancelEvent implements Runnable {
 
-	private final PreferenceDialogControllerImpl controller;
+	private final PreferenceDialogControllerInternal controller;
 
-	public CancelEvent(PreferenceDialogControllerImpl controller) {
+	public CancelEvent(PreferenceDialogControllerInternal controller) {
 		this.controller = controller;
 	}
 

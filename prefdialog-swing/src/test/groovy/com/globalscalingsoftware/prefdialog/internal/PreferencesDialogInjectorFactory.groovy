@@ -4,7 +4,6 @@ import javax.swing.Action;
 
 import com.globalscalingsoftware.prefdialog.annotations.actions.ApplyAction;
 import com.globalscalingsoftware.prefdialog.annotations.actions.CancelAction;
-import com.globalscalingsoftware.prefdialog.annotations.actions.OkAction;
 import com.globalscalingsoftware.prefdialog.annotations.actions.RestoreAction;
 import com.globalscalingsoftware.prefdialog.module.PreferenceDialogModule;
 import com.google.inject.Guice 
@@ -15,7 +14,6 @@ class PreferencesDialogInjectorFactory {
 	
 	def create(def preferences) {
 		def module = [configure: {binding -> 
-				def okAction = new DefaultAction("Ok")
 				def restoreAction = new DefaultAction("Restore")
 				def applyAction = new DefaultAction("Apply")
 				def cancelAction = new DefaultAction("Cancel")
@@ -23,7 +21,6 @@ class PreferencesDialogInjectorFactory {
 				binding.bind(Action).annotatedWith(RestoreAction).toInstance restoreAction
 				binding.bind(Action).annotatedWith(ApplyAction).toInstance applyAction
 				binding.bind(Action).annotatedWith(CancelAction).toInstance cancelAction
-				binding.bind(Action).annotatedWith(OkAction).toInstance okAction
 				
 				binding.bind(Object).annotatedWith(Names.named("preferences")).toInstance(preferences)
 				binding.bind(Object).annotatedWith(Names.named("preferences_start")).toInstance(preferences.general)

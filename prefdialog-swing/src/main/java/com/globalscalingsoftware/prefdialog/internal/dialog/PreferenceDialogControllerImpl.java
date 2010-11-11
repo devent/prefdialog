@@ -30,7 +30,7 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
 public class PreferenceDialogControllerImpl implements
-		PreferenceDialogController {
+		PreferenceDialogController, PreferenceDialogControllerInternal {
 
 	private final AnnotationDiscovery annotationDiscovery;
 	private final Map<Object, FieldHandler<?>> preferencePanels;
@@ -55,6 +55,8 @@ public class PreferenceDialogControllerImpl implements
 			@Named("preferences") Object preferences,
 			@Named("preferences_start") Object preferencesStart,
 			@ApplyAction Action applyAction, @RestoreAction Action restoreAction) {
+		System.out
+				.println("PreferenceDialogControllerImpl.PreferenceDialogControllerImpl()");
 		this.annotationDiscovery = annotationDiscovery;
 		this.filter = filter;
 		this.reflectionToolbox = reflectionToolbox;
@@ -73,7 +75,7 @@ public class PreferenceDialogControllerImpl implements
 	@Override
 	public void setup(Frame owner) {
 		setupRootNode();
-		setupEvents();
+		setupChildSelectedAction();
 		setupPreferencesStart();
 		preferenceDialog.setup(owner);
 	}
@@ -100,10 +102,8 @@ public class PreferenceDialogControllerImpl implements
 		preferenceDialog.setSelectedChild(treeNodes.get(preferencesStart));
 	}
 
-	private void setupEvents() {
+	private void setupChildSelectedAction() {
 		preferenceDialog.setChildSelected(new ChildSelectedAction(this));
-		preferenceDialog.setOkEvent(new OkEvent(this));
-		preferenceDialog.setCancelEvent(new CancelEvent(this));
 	}
 
 	private void discoverAnnotations(final Object preferences,
@@ -141,17 +141,24 @@ public class PreferenceDialogControllerImpl implements
 		preferenceDialog.setChildPanel(panel);
 	}
 
-	void closeDialog(Options option) {
+	@Override
+	public void closeDialog(Options option) {
 		this.option = option;
 		preferenceDialog.close();
 	}
 
-	Map<Object, FieldHandler<?>> getPreferencePanels() {
+	@Override
+	public Map<Object, FieldHandler<?>> getPreferencePanels() {
 		return preferencePanels;
 	}
 
 	@Override
 	public Options getOption() {
 		return option;
+	}
+
+	@Override
+	public void setOkAction(Action a) {
+		preferenceDialog.setOkAction(a);
 	}
 }
