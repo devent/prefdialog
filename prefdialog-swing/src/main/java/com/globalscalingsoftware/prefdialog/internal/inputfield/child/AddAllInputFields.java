@@ -8,7 +8,7 @@ import java.util.List;
 import org.fest.reflect.exception.ReflectionError;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
-import com.globalscalingsoftware.prefdialog.internal.FieldsFactory;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.FieldsFactory;
 import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbox;
 
 class AddAllInputFields {

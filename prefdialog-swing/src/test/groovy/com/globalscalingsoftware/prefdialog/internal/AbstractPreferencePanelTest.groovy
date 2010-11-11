@@ -12,6 +12,7 @@ import org.fest.swing.fixture.FrameFixture
 import org.junit.After;
 import org.junit.Before;
 
+import com.globalscalingsoftware.prefdialog.internal.inputfield.FieldsFactory;
 import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbox;
 
 

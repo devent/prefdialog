@@ -8,8 +8,8 @@ import java.util.List;
 import javax.swing.Action;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
-import com.globalscalingsoftware.prefdialog.internal.FieldsFactory;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractDefaultFieldHandler;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.FieldsFactory;
 import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbox;
 
 public abstract class AbstractChildFieldHandler<ComponentType extends IChildComponent>

@@ -16,4 +16,8 @@ public interface PreferenceDialogController {
 
 	void setCancelAction(Action a);
 
+	void setApplyAction(Action a);
+
+	void setRestoreAction(Action a);
+
 }

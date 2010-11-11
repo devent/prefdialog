@@ -1,12 +1,12 @@
 package com.globalscalingsoftware.prefdialog.module;
 
 import com.globalscalingsoftware.prefdialog.PreferenceDialogController;
-import com.globalscalingsoftware.prefdialog.internal.FieldsFactory;
-import com.globalscalingsoftware.prefdialog.internal.InputFieldsFactory;
+import com.globalscalingsoftware.prefdialog.internal.dialog.InputFieldsFactory;
 import com.globalscalingsoftware.prefdialog.internal.dialog.PreferenceDialog;
 import com.globalscalingsoftware.prefdialog.internal.dialog.PreferenceDialogAnnotationsFilter;
 import com.globalscalingsoftware.prefdialog.internal.dialog.PreferenceDialogControllerImpl;
 import com.globalscalingsoftware.prefdialog.internal.dialog.PreferenceDialogControllerInternal;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.FieldsFactory;
 import com.globalscalingsoftware.prefdialog.internal.reflection.AnnotationDiscovery;
 import com.globalscalingsoftware.prefdialog.internal.reflection.FieldsAnnotationFilter;
 import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbox;

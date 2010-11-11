@@ -1,4 +1,4 @@
-package com.globalscalingsoftware.prefdialog.internal;
+package com.globalscalingsoftware.prefdialog.internal.inputfield.child;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

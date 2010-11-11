@@ -1,4 +1,4 @@
-package com.globalscalingsoftware.prefdialog.internal;
+package com.globalscalingsoftware.prefdialog.internal.inputfield;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -7,12 +7,13 @@ import java.util.Map;
 import com.globalscalingsoftware.annotations.Stateless;
 import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.internal.reflection.FieldsAnnotationFilter;
+import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbox;
 import com.google.inject.Inject;
 
 @Stateless
 public class FieldsFactory {
 
-	private final InputFieldsFactory inputFieldFactory;
+	private final ReflectionToolbox reflectionToolbox;
 
 	private final Map<Class<? extends Annotation>, Class<? extends FieldHandler<?>>> inputFieldImplementations;
 
@@ -20,9 +21,9 @@ public class FieldsFactory {
 
 	@Inject
 	FieldsFactory(FieldsAnnotationFilter annotationFilter,
-			InputFieldsFactory inputFieldFactory) {
+			ReflectionToolbox reflectionToolbox) {
 		this.annotationFilter = annotationFilter;
-		this.inputFieldFactory = inputFieldFactory;
+		this.reflectionToolbox = reflectionToolbox;
 		this.inputFieldImplementations = annotationFilter
 				.getFieldsImplementations();
 	}
@@ -55,8 +56,10 @@ public class FieldsFactory {
 
 	private FieldHandler<?> createInputField(Object parentObject, Object value,
 			Field field, Class<? extends FieldHandler<?>> inputFieldClass) {
-		FieldHandler<?> inputField = inputFieldFactory.create(inputFieldClass,
-				parentObject, value, field);
+		Class<?>[] parameterTypes = new Class<?>[] { Object.class,
+				Object.class, Field.class };
+		FieldHandler<?> inputField = reflectionToolbox.newInstance(
+				inputFieldClass, parameterTypes, parentObject, value, field);
 		return inputField;
 	}
 

@@ -8,7 +8,6 @@ import java.awt.Font;
 import javax.swing.Action;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
-import com.globalscalingsoftware.prefdialog.internal.RunnableActionEvent;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractFieldPanel;
 
 public class ChildPanel extends AbstractFieldPanel<UiChildPanel> implements

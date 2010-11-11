@@ -186,4 +186,11 @@ public class ReflectionToolbox {
 		return constructor().withParameterTypes(parameterTypes).in(objectClass)
 				.newInstance(parameters);
 	}
+
+	public <T> T newInstance(Class<? extends T> objectClass,
+			Class<?>[] parameterTypes, Object... parameters) {
+		return constructor().withParameterTypes(parameterTypes).in(objectClass)
+				.newInstance(parameters);
+	}
+
 }
