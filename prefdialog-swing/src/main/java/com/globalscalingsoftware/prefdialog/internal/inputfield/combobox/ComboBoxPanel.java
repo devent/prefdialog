@@ -10,7 +10,7 @@ import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractLabelFie
 @SuppressWarnings("serial")
 public class ComboBoxPanel extends AbstractLabelFieldPanel<JComboBox> {
 
-	private class ComboBoxModel extends DefaultComboBoxModel {
+	private static class ComboBoxModel extends DefaultComboBoxModel {
 
 		public ComboBoxModel(Collection<?> values) {
 			super(values.toArray());
