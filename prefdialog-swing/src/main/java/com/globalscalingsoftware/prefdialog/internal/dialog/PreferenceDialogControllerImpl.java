@@ -17,7 +17,6 @@ public class PreferenceDialogControllerImpl implements
 		PreferenceDialogController, PreferenceDialogControllerInternal {
 
 	private final PreferenceDialog preferenceDialog;
-	private Object preferencesStart;
 	private final InputFieldsFactory inputFieldsFactory;
 	private Options option;
 	private PreferencePanels preferencePanels;
@@ -39,16 +38,27 @@ public class PreferenceDialogControllerImpl implements
 		preferenceDialog.setup(owner);
 	}
 
-	@Override
-	public void openDialog() {
-		preferenceDialog.open();
+	private void setupRootNode() {
+		preferencePanels = inputFieldsFactory.createRootNode(preferences);
+		preferenceDialog.setRootNode(preferencePanels.getRootNode());
+	}
+
+	private void setupChildSelectedAction() {
+		preferenceDialog.setChildSelected(new ChildSelectedAction(this));
+	}
+
+	private void setupPreferencesStart() {
+		FieldHandler<?> preferencesStart = preferencePanels
+				.getPreferencesStart();
+		JPanel panel = (JPanel) preferencesStart.getAWTComponent();
+		preferenceDialog.setChildPanel(panel);
+		Object value = preferencesStart.getComponentValue();
+		preferenceDialog.setSelectedChild(preferencePanels.getPath(value));
 	}
 
 	@Override
-	@Inject
-	public void setPreferencesStart(
-			@Named("preferences_start") Object preferencesStart) {
-		this.preferencesStart = preferencesStart;
+	public void openDialog() {
+		preferenceDialog.open();
 	}
 
 	@Override
@@ -59,24 +69,6 @@ public class PreferenceDialogControllerImpl implements
 
 	public JDialog getPreferenceDialog() {
 		return preferenceDialog.getUiPreferencesDialog();
-	}
-
-	private void setupRootNode() {
-		preferencePanels = inputFieldsFactory.createRootNode(preferences);
-		preferenceDialog.setRootNode(preferencePanels.getRootNode());
-	}
-
-	private void setupPreferencesStart() {
-		FieldHandler<?> fieldHandler = preferencePanels
-				.getFieldHandler(preferencesStart);
-		JPanel panel = (JPanel) fieldHandler.getAWTComponent();
-		preferenceDialog.setChildPanel(panel);
-		preferenceDialog.setSelectedChild(preferencePanels
-				.getPath(preferencesStart));
-	}
-
-	private void setupChildSelectedAction() {
-		preferenceDialog.setChildSelected(new ChildSelectedAction(this));
 	}
 
 	void setChildPanel(Object object) {

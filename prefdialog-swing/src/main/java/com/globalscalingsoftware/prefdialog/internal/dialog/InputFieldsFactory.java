@@ -3,7 +3,6 @@ package com.globalscalingsoftware.prefdialog.internal.dialog;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.HashMap;
-import java.util.Map;
 
 import javax.swing.Action;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -36,6 +35,14 @@ public class InputFieldsFactory {
 
 	private final RestoreAction restoreAction;
 
+	private HashMap<Object, TreeNode[]> treeNodes;
+
+	private DefaultMutableTreeNode rootNode;
+
+	private HashMap<Object, FieldHandler<?>> fieldHandlers;
+
+	private FieldHandler<?> preferencesStart;
+
 	@Inject
 	InputFieldsFactory(AnnotationDiscovery annotationDiscovery,
 			PreferenceDialogAnnotationsFilter filter,
@@ -50,38 +57,37 @@ public class InputFieldsFactory {
 	}
 
 	public PreferencePanels createRootNode(Object preferences) {
-		Map<Object, TreeNode[]> treeNodes = new HashMap<Object, TreeNode[]>();
-		DefaultMutableTreeNode root = new DefaultMutableTreeNode();
-		Map<Object, FieldHandler<?>> fieldHandlers = new HashMap<Object, FieldHandler<?>>();
-
-		return discoverAnnotations(root, treeNodes, fieldHandlers, preferences);
+		treeNodes = new HashMap<Object, TreeNode[]>();
+		rootNode = new DefaultMutableTreeNode();
+		fieldHandlers = new HashMap<Object, FieldHandler<?>>();
+		preferencesStart = null;
+		return discoverAnnotations(preferences);
 	}
 
-	private PreferencePanels discoverAnnotations(
-			final DefaultMutableTreeNode rootNode,
-			final Map<Object, TreeNode[]> treeNodes,
-			final Map<Object, FieldHandler<?>> fieldHandlers,
-			final Object preferences) {
+	private PreferencePanels discoverAnnotations(final Object preferences) {
 		DiscoveredListener listener = new DiscoveredListener() {
 
 			@Override
 			public void fieldAnnotationDiscovered(Field field, Object value,
 					Annotation a) {
 				if (a instanceof Child) {
-					createChildFieldHandler(rootNode, treeNodes, fieldHandlers,
-							field, value, preferences);
+					if (preferencesStart == null) {
+						preferencesStart = createChildFieldHandler(field,
+								value, preferences);
+					} else {
+						createChildFieldHandler(field, value, preferences);
+					}
 				}
 			}
 
 		};
 		annotationDiscovery.discover(filter, preferences, listener);
-		return new PreferencePanels(fieldHandlers, treeNodes, rootNode);
+		return new PreferencePanels(fieldHandlers, treeNodes, rootNode,
+				preferencesStart);
 	}
 
-	private void createChildFieldHandler(DefaultMutableTreeNode rootNode,
-			Map<Object, TreeNode[]> treeNodes,
-			Map<Object, FieldHandler<?>> fieldHandlers, Field field,
-			Object value, Object preferences) {
+	private FieldHandler<?> createChildFieldHandler(Field field, Object value,
+			Object preferences) {
 		DefaultMutableTreeNode node = new DefaultMutableTreeNode(value);
 		rootNode.add(node);
 		treeNodes.put(value, node.getPath());
@@ -98,6 +104,7 @@ public class InputFieldsFactory {
 		panel.setup();
 
 		fieldHandlers.put(value, panel);
+		return panel;
 	}
 
 	public void setApplyAction(Action a) {

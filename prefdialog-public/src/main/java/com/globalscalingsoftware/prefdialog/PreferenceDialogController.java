@@ -17,7 +17,6 @@ import javax.swing.Action;
  * 
  * <pre>
  * controller.setPreferences(preferences);
- * controller.setPreferencesStart(preferences_start);
  * controller.setup(owner);
  * controller.openDialog();
  * if (controller.getOption() == OK) {
@@ -32,11 +31,6 @@ public interface PreferenceDialogController {
 	 * Sets the preferences object.
 	 */
 	void setPreferences(Object preferences);
-
-	/**
-	 * Sets the preferences subobject with will be first shown in the dialog.
-	 */
-	void setPreferencesStart(Object preferencesStart);
 
 	/**
 	 * Create the dialog and all the components with the {@link Frame owner} of

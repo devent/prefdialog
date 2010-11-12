@@ -24,7 +24,6 @@ import com.google.inject.Injector;
  * injector = Guice.createInjector(new PreferenceDialogModule());
  * controller = injector.getInstance(PreferenceDialogController.class);
  * controller.setPreferences(preferences);
- * controller.setPreferencesStart(preferences_start);
  * controller.setup(owner);
  * controller.openDialog();
  * if (controller.getOption() == OK) {
@@ -37,7 +36,6 @@ import com.google.inject.Injector;
  * <pre>
  * In preferencesModule:
  * binding.bind(Object.class).annotatedWith(Names.named("preferences")).toInstance(preferences);
- * binding.bind(Object.class).annotatedWith(Names.named("preferences_start")).toInstance(preferences.general);
  * 
  * injector = Guice
  * 		.createInjector(new PreferenceDialogModule(), preferencesModule);

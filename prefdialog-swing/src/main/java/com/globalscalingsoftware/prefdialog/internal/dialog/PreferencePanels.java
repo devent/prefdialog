@@ -16,11 +16,15 @@ class PreferencePanels {
 
 	private final DefaultMutableTreeNode rootNode;
 
+	private final FieldHandler<?> preferencesStart;
+
 	public PreferencePanels(Map<Object, FieldHandler<?>> fieldHandlers,
-			Map<Object, TreeNode[]> treeNodes, DefaultMutableTreeNode rootNode) {
+			Map<Object, TreeNode[]> treeNodes, DefaultMutableTreeNode rootNode,
+			FieldHandler<?> preferencesStart) {
 		this.fieldHandlers = fieldHandlers;
 		this.treeNodes = treeNodes;
 		this.rootNode = rootNode;
+		this.preferencesStart = preferencesStart;
 	}
 
 	public DefaultMutableTreeNode getRootNode() {
@@ -37,6 +41,10 @@ class PreferencePanels {
 
 	public Map<Object, FieldHandler<?>> getPreferencePanels() {
 		return Collections.unmodifiableMap(fieldHandlers);
+	}
+
+	public FieldHandler<?> getPreferencesStart() {
+		return preferencesStart;
 	}
 
 }
