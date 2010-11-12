@@ -17,18 +17,17 @@ public class PreferenceDialogControllerImpl implements
 		PreferenceDialogController, PreferenceDialogControllerInternal {
 
 	private final PreferenceDialog preferenceDialog;
-	private final Object preferencesStart;
+	private Object preferencesStart;
 	private final InputFieldsFactory inputFieldsFactory;
 	private Options option;
 	private PreferencePanels preferencePanels;
+	private Object preferences;
 
 	@Inject
 	PreferenceDialogControllerImpl(PreferenceDialog preferenceDialog,
-			InputFieldsFactory inputFieldsFactory,
-			@Named("preferences_start") Object preferencesStart) {
+			InputFieldsFactory inputFieldsFactory) {
 		this.preferenceDialog = preferenceDialog;
 		this.inputFieldsFactory = inputFieldsFactory;
-		this.preferencesStart = preferencesStart;
 		this.option = Options.CANCEL;
 	}
 
@@ -45,12 +44,25 @@ public class PreferenceDialogControllerImpl implements
 		preferenceDialog.open();
 	}
 
+	@Override
+	@Inject
+	public void setPreferencesStart(
+			@Named("preferences_start") Object preferencesStart) {
+		this.preferencesStart = preferencesStart;
+	}
+
+	@Override
+	@Inject
+	public void setPreferences(@Named("preferences") Object preferences) {
+		this.preferences = preferences;
+	}
+
 	public JDialog getPreferenceDialog() {
 		return preferenceDialog.getUiPreferencesDialog();
 	}
 
 	private void setupRootNode() {
-		preferencePanels = inputFieldsFactory.createRootNode();
+		preferencePanels = inputFieldsFactory.createRootNode(preferences);
 		preferenceDialog.setRootNode(preferencePanels.getRootNode());
 	}
 

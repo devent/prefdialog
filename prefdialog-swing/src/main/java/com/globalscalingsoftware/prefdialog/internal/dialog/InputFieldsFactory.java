@@ -20,14 +20,11 @@ import com.globalscalingsoftware.prefdialog.internal.reflection.AnnotationDiscov
 import com.globalscalingsoftware.prefdialog.internal.reflection.DiscoveredListener;
 import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbox;
 import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 @Stateless
 public class InputFieldsFactory {
 
 	private final AbstractAnnotationFilter filter;
-
-	private final Object preferences;
 
 	private final ReflectionToolbox reflectionToolbox;
 
@@ -40,12 +37,10 @@ public class InputFieldsFactory {
 	private final RestoreAction restoreAction;
 
 	@Inject
-	InputFieldsFactory(@Named("preferences") Object preferences,
-			AnnotationDiscovery annotationDiscovery,
+	InputFieldsFactory(AnnotationDiscovery annotationDiscovery,
 			PreferenceDialogAnnotationsFilter filter,
 			ReflectionToolbox reflectionToolbox, FieldsFactory fieldsFactory,
 			ApplyAction applyAction, RestoreAction restoreAction) {
-		this.preferences = preferences;
 		this.annotationDiscovery = annotationDiscovery;
 		this.filter = filter;
 		this.reflectionToolbox = reflectionToolbox;
@@ -54,18 +49,19 @@ public class InputFieldsFactory {
 		this.restoreAction = restoreAction;
 	}
 
-	public PreferencePanels createRootNode() {
+	public PreferencePanels createRootNode(Object preferences) {
 		Map<Object, TreeNode[]> treeNodes = new HashMap<Object, TreeNode[]>();
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode();
 		Map<Object, FieldHandler<?>> fieldHandlers = new HashMap<Object, FieldHandler<?>>();
 
-		return discoverAnnotations(root, treeNodes, fieldHandlers);
+		return discoverAnnotations(root, treeNodes, fieldHandlers, preferences);
 	}
 
 	private PreferencePanels discoverAnnotations(
 			final DefaultMutableTreeNode rootNode,
 			final Map<Object, TreeNode[]> treeNodes,
-			final Map<Object, FieldHandler<?>> fieldHandlers) {
+			final Map<Object, FieldHandler<?>> fieldHandlers,
+			final Object preferences) {
 		DiscoveredListener listener = new DiscoveredListener() {
 
 			@Override
@@ -73,7 +69,7 @@ public class InputFieldsFactory {
 					Annotation a) {
 				if (a instanceof Child) {
 					createChildFieldHandler(rootNode, treeNodes, fieldHandlers,
-							field, value);
+							field, value, preferences);
 				}
 			}
 
@@ -85,7 +81,7 @@ public class InputFieldsFactory {
 	private void createChildFieldHandler(DefaultMutableTreeNode rootNode,
 			Map<Object, TreeNode[]> treeNodes,
 			Map<Object, FieldHandler<?>> fieldHandlers, Field field,
-			Object value) {
+			Object value, Object preferences) {
 		DefaultMutableTreeNode node = new DefaultMutableTreeNode(value);
 		rootNode.add(node);
 		treeNodes.put(value, node.getPath());

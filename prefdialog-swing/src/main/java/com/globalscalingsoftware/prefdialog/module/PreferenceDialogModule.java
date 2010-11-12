@@ -11,11 +11,19 @@ import com.globalscalingsoftware.prefdialog.internal.reflection.AnnotationDiscov
 import com.globalscalingsoftware.prefdialog.internal.reflection.FieldsAnnotationFilter;
 import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbox;
 import com.google.inject.AbstractModule;
+import com.google.inject.Injector;
 
 /**
  * Binds the default dependencies for the preference dialog.
  * 
+ * We can use the module to create a new instance of
+ * {@link PreferenceDialogController} with the help of an {@link Injector}. As
+ * in the example:
  * 
+ * <pre>
+ * injector = Guice.createInjector(new PreferenceDialogModule());
+ * controller = injector.getInstance(PreferenceDialogController.class);
+ * </pre>
  */
 public class PreferenceDialogModule extends AbstractModule {
 
