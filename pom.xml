@@ -55,12 +55,12 @@
 
 	<distributionManagement>
 		<repository>
-			<id>globalscaling.com</id>
-			<url>https://globalscalingsoftware-projects.com/archiva/repository/globalscaling.com/</url>
+			<id>globalscaling.com-public</id>
+			<url>https://globalscalingsoftware-projects.com/archiva/repository/globalscaling.com-public/</url>
 		</repository>
 		<snapshotRepository>
-			<id>globalscaling.com-snapshots</id>
-			<url>https://globalscalingsoftware-projects.com/archiva/repository/globalscaling.com-snapshots/</url>
+			<id>globalscaling.com-public-snapshots</id>
+			<url>https://globalscalingsoftware-projects.com/archiva/repository/globalscaling.com-public-snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
 
