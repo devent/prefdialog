@@ -23,8 +23,10 @@ import java.awt.Frame;
 import javax.swing.Action;
 
 /**
+ * <p>
  * The controller for the preference dialog. It is the public API for the
  * preference dialog.
+ * </p>
  * 
  * First, the preferences and preferences start objects need to be set. Then,
  * the dialog owner (can be <code>null</code>) need to be set. After that, the

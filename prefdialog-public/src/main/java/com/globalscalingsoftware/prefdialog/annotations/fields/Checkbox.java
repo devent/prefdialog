@@ -24,11 +24,30 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import javax.swing.JCheckBox;
+
+/**
+ * <p>
+ * Annotation to create a {@link JCheckBox} for this field.
+ * </p>
+ * Example:
+ * 
+ * <pre>
+ * &#064;Checkbox(&quot;Is Important&quot;)
+ * private boolean isImportant;
+ * </pre>
+ */
 @Target(FIELD)
 @Retention(RUNTIME)
 public @interface Checkbox {
 
+	/**
+	 * The text of the checkbox.
+	 */
 	String value() default "";
 
+	/**
+	 * The width of the checkbox inside the container.
+	 */
 	double width() default -1.0;
 }

@@ -24,11 +24,31 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+/**
+ * <p>
+ * Annotate a new child panel in the preferences dialog.
+ * </p>
+ * 
+ * The child panel will be shown left in the tree list. If the user clicks on
+ * the item of the tree list the preferences of this child will be shown at the
+ * right side of the dialog. Example:
+ * 
+ * <pre>
+ * &#064;Child
+ * private ChildPreferences childPreferences;
+ * </pre>
+ */
 @Target(FIELD)
 @Retention(RUNTIME)
 public @interface Child {
 
+	/**
+	 * The name of the child.
+	 */
 	String value() default "";
 
+	/**
+	 * The width of the child inside the container.
+	 */
 	double width() default -1.0;
 }

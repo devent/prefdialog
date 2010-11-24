@@ -24,9 +24,18 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+/**
+ * <p>
+ * Annotation that defines the field where the items for the {@link ComboBox}
+ * field are stored.
+ * </p>
+ */
 @Target(FIELD)
 @Retention(RUNTIME)
 public @interface ComboBoxElements {
 
+	/**
+	 * The name of the combobox for which that field holds the elements.
+	 */
 	String value();
 }
