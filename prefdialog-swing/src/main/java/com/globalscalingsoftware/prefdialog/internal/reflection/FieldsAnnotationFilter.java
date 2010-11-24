@@ -31,6 +31,7 @@ import com.globalscalingsoftware.prefdialog.annotations.fields.ComboBox;
 import com.globalscalingsoftware.prefdialog.annotations.fields.FormattedTextField;
 import com.globalscalingsoftware.prefdialog.annotations.fields.Group;
 import com.globalscalingsoftware.prefdialog.annotations.fields.RadioButton;
+import com.globalscalingsoftware.prefdialog.annotations.fields.Slider;
 import com.globalscalingsoftware.prefdialog.annotations.fields.TextField;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.button.CheckboxFieldHandler;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.button.RadioButtonFieldHandler;
@@ -39,6 +40,7 @@ import com.globalscalingsoftware.prefdialog.internal.inputfield.child.GroupField
 import com.globalscalingsoftware.prefdialog.internal.inputfield.combobox.ComboBoxInputField;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.formattedtextfield.FormattedTextFieldInputField;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.formattedtextfield.TextFieldInputField;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.slider.SliderFieldHandler;
 
 public class FieldsAnnotationFilter extends AbstractAnnotationFilter {
 
@@ -52,11 +54,13 @@ public class FieldsAnnotationFilter extends AbstractAnnotationFilter {
 		fieldsAnnotations.add(TextField.class);
 		fieldsAnnotations.add(RadioButton.class);
 		fieldsAnnotations.add(ComboBox.class);
+		fieldsAnnotations.add(Slider.class);
 		fieldsAnnotations.add(Group.class);
 		fieldsAnnotations.add(Child.class);
 
 		inputFieldImplementations = new HashMap<Class<? extends Annotation>, Class<? extends FieldHandler<?>>>();
-		inputFieldImplementations.put(Checkbox.class, CheckboxFieldHandler.class);
+		inputFieldImplementations.put(Checkbox.class,
+				CheckboxFieldHandler.class);
 		inputFieldImplementations.put(FormattedTextField.class,
 				FormattedTextFieldInputField.class);
 		inputFieldImplementations.put(TextField.class,
@@ -64,6 +68,7 @@ public class FieldsAnnotationFilter extends AbstractAnnotationFilter {
 		inputFieldImplementations.put(RadioButton.class,
 				RadioButtonFieldHandler.class);
 		inputFieldImplementations.put(ComboBox.class, ComboBoxInputField.class);
+		inputFieldImplementations.put(Slider.class, SliderFieldHandler.class);
 		inputFieldImplementations.put(Group.class, GroupFieldHandler.class);
 		inputFieldImplementations.put(Child.class, ChildFieldHandler.class);
 	}

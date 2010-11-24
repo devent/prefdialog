@@ -85,7 +85,7 @@ public abstract class AbstractDefaultFieldHandler<FieldComponentType extends Fie
 		setComponentWidth(width);
 	}
 
-	private <T> T getValueFromAnnotationIn(String name, Class<T> returnType,
+	protected <T> T getValueFromAnnotationIn(String name, Class<T> returnType,
 			Field field, Class<? extends Annotation> annotationClass) {
 		Annotation a = field.getAnnotation(annotationClass);
 		return getReflectionToolbox().invokeMethodWithReturnType(name,
