@@ -35,4 +35,5 @@ public interface IChildComponent extends FieldComponent {
 
 	void setRestoreEvent(Runnable e);
 
+	public void setButtonsTransparent(boolean transparent);
 }

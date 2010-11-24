@@ -116,4 +116,13 @@ public class ChildPanel extends AbstractFieldPanel<UiChildPanel> implements
 		return row;
 	}
 
+	@Override
+	public void setButtonsTransparent(boolean transparent) {
+		panel.getApplyButton().setOpaque(!transparent);
+		panel.getApplyButton().setContentAreaFilled(!transparent);
+		panel.getApplyButton().setBorderPainted(!transparent);
+		panel.getRestoreButton().setOpaque(!transparent);
+		panel.getRestoreButton().setContentAreaFilled(!transparent);
+		panel.getRestoreButton().setBorderPainted(!transparent);
+	}
 }

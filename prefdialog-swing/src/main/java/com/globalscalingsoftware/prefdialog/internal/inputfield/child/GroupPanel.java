@@ -105,4 +105,8 @@ public class GroupPanel extends AbstractFieldPanel<UiGroupPanel> implements
 	@Override
 	public void setRestoreEvent(Runnable e) {
 	}
+
+	@Override
+	public void setButtonsTransparent(boolean transparent) {
+	}
 }
