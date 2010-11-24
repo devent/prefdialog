@@ -20,9 +20,8 @@ package com.globalscalingsoftware.prefdialog.internal.inputfield.child;
 
 import info.clearthought.layout.TableLayout;
 
-import java.awt.Dimension;
-
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -46,6 +45,7 @@ import javax.swing.border.Border;
 class UiChildPanel extends javax.swing.JPanel {
 	private JLabel childLabel;
 	private JScrollPane jScrollPane1;
+	private JPanel buttonsPanel;
 	private JPanel fieldsPanel;
 	private JButton applyButton;
 	private JButton restoreButton;
@@ -70,37 +70,25 @@ class UiChildPanel extends javax.swing.JPanel {
 	private void initGUI() {
 		try {
 			TableLayout thisLayout = new TableLayout(new double[][] {
-					{ 3.0, TableLayout.FILL, 100.0, 100.0 },
-					{ 3.0, TableLayout.PREFERRED, TableLayout.PREFERRED,
+					{ TableLayout.FILL },
+					{ TableLayout.PREFERRED, TableLayout.PREFERRED,
 							TableLayout.FILL, TableLayout.PREFERRED } });
 			thisLayout.setHGap(5);
 			thisLayout.setVGap(5);
 			this.setLayout(thisLayout);
-			setPreferredSize(new Dimension(400, 300));
+			this.setPreferredSize(new java.awt.Dimension(416, 300));
 			{
 				childLabel = new JLabel();
-				this.add(getChildLabel(), "1, 1");
+				this.add(childLabel, "0, 0");
 				childLabel.setText("Child Label");
 			}
 			{
 				jSeparator1 = new JSeparator();
-				this.add(jSeparator1, "1, 2, 3, 2, f, c");
-			}
-			{
-				restoreButton = new JButton();
-				this.add(getRestoreButton(), "3, 4");
-				restoreButton.setName("restore");
-				restoreButton.setText("Restore");
-			}
-			{
-				applyButton = new JButton();
-				this.add(getApplyButton(), "2, 4");
-				applyButton.setName("apply");
-				applyButton.setText("Apply");
+				this.add(jSeparator1, "0, 1");
 			}
 			{
 				jScrollPane1 = new JScrollPane();
-				this.add(jScrollPane1, "1, 3, 3, 3");
+				this.add(jScrollPane1, "0, 2");
 				jScrollPane1.setOpaque(false);
 				Border border = BorderFactory.createEmptyBorder(0, 0, 0, 0);
 				jScrollPane1.setViewportBorder(border);
@@ -114,6 +102,25 @@ class UiChildPanel extends javax.swing.JPanel {
 					fieldsPanelLayout.setHGap(5);
 					fieldsPanelLayout.setVGap(5);
 					fieldsPanel.setLayout(fieldsPanelLayout);
+				}
+			}
+			{
+				buttonsPanel = new JPanel();
+				BoxLayout buttonsPanelLayout = new BoxLayout(buttonsPanel,
+						javax.swing.BoxLayout.X_AXIS);
+				buttonsPanel.setLayout(buttonsPanelLayout);
+				this.add(buttonsPanel, "0,3,r,f");
+				{
+					applyButton = new JButton();
+					buttonsPanel.add(applyButton);
+					applyButton.setName("apply");
+					applyButton.setText("Apply ");
+				}
+				{
+					restoreButton = new JButton();
+					buttonsPanel.add(restoreButton);
+					restoreButton.setName("restore");
+					restoreButton.setText("Restore");
 				}
 			}
 		} catch (Exception e) {
