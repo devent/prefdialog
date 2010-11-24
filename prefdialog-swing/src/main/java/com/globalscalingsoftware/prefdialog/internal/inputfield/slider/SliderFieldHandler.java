@@ -36,21 +36,60 @@ public class SliderFieldHandler extends
 		super.setup();
 		setupMin();
 		setupMax();
+		setupMajorTicks();
+		setupMinorTicks();
+		setupPaintLabels();
+		setupPaintTicks();
+		setupPaintTrack();
+		setupSnapToTicks();
 	}
 
 	private void setupMin() {
-		Field field = getField();
-		Class<? extends Annotation> annotationClass = getAnnotationClass();
-		int min = getValueFromAnnotationIn("min", Integer.class, field,
-				annotationClass);
+		int min = getValueFromAnnotation("min", Integer.class);
 		getComponent().setMin(min);
 	}
 
 	private void setupMax() {
-		Field field = getField();
-		Class<? extends Annotation> annotationClass = getAnnotationClass();
-		int max = getValueFromAnnotationIn("max", Integer.class, field,
-				annotationClass);
+		int max = getValueFromAnnotation("max", Integer.class);
 		getComponent().setMax(max);
 	}
+
+	private void setupMajorTicks() {
+		int value = getValueFromAnnotation("majorTicks", Integer.class);
+		getComponent().setMajorTicks(value);
+	}
+
+	private void setupMinorTicks() {
+		int value = getValueFromAnnotation("minorTicks", Integer.class);
+		getComponent().setMinorTicks(value);
+	}
+
+	private void setupPaintTicks() {
+		boolean value = getValueFromAnnotation("paintTicks", Boolean.class);
+		getComponent().setPaintTicks(value);
+	}
+
+	private void setupPaintLabels() {
+		boolean value = getValueFromAnnotation("paintLabels", Boolean.class);
+		getComponent().setPaintLabels(value);
+	}
+
+	private void setupPaintTrack() {
+		boolean value = getValueFromAnnotation("paintTrack", Boolean.class);
+		getComponent().setPaintTrack(value);
+	}
+
+	private void setupSnapToTicks() {
+		boolean value = getValueFromAnnotation("snapToTicks", Boolean.class);
+		getComponent().setSnapToTicks(value);
+	}
+
+	private <T> T getValueFromAnnotation(String name, Class<T> returnType) {
+		Field field = getField();
+		Class<? extends Annotation> annotationClass = getAnnotationClass();
+		T value = getValueFromAnnotationIn(name, returnType, field,
+				annotationClass);
+		return value;
+	}
+
 }

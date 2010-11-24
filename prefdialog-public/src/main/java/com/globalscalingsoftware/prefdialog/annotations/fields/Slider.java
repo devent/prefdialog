@@ -25,4 +25,16 @@ public @interface Slider {
 	int min() default 0;
 
 	int max() default 100;
+
+	int majorTicks() default 0;
+
+	int minorTicks() default 0;
+
+	boolean paintTicks() default false;
+
+	boolean paintLabels() default false;
+
+	boolean paintTrack() default true;
+
+	boolean snapToTicks() default false;
 }

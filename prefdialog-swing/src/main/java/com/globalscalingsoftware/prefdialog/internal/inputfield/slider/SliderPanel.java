@@ -46,4 +46,28 @@ public class SliderPanel extends AbstractLabelFieldPanel<JSlider> {
 		getPanelField().setValue((Integer) value);
 	}
 
+	public void setMajorTicks(int value) {
+		getPanelField().setMajorTickSpacing(value);
+	}
+
+	public void setMinorTicks(int value) {
+		getPanelField().setMinorTickSpacing(value);
+	}
+
+	public void setPaintTicks(boolean value) {
+		getPanelField().setPaintTicks(value);
+	}
+
+	public void setPaintLabels(boolean value) {
+		getPanelField().setPaintLabels(value);
+	}
+
+	public void setPaintTrack(boolean value) {
+		getPanelField().setPaintTrack(value);
+	}
+
+	public void setSnapToTicks(boolean value) {
+		getPanelField().setSnapToTicks(value);
+	}
+
 }
