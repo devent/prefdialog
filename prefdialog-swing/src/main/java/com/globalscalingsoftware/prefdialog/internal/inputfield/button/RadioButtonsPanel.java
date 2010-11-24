@@ -41,11 +41,14 @@ public class RadioButtonsPanel extends AbstractLabelFieldPanel<JPanel> {
 
 	private String name;
 
+	private boolean enabled;
+
 	public RadioButtonsPanel() {
 		super(new JPanel());
 		layout = new GridLayout(0, 1);
 		buttonsGroup = new ButtonGroup();
 		buttons = new HashMap<ButtonModel, Object>();
+		enabled = true;
 		setupPanel();
 	}
 
@@ -65,6 +68,7 @@ public class RadioButtonsPanel extends AbstractLabelFieldPanel<JPanel> {
 		layout.setRows(rows + 1);
 		JRadioButton button = new JRadioButton(text);
 		button.setName(format("%s-%s", name, text));
+		button.setEnabled(enabled);
 		buttons.put(button.getModel(), value);
 		buttonsGroup.add(button);
 		getField().add(button);
@@ -91,4 +95,11 @@ public class RadioButtonsPanel extends AbstractLabelFieldPanel<JPanel> {
 		layout.setRows(rows);
 	}
 
+	@Override
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+		for (ButtonModel button : buttons.keySet()) {
+			button.setEnabled(enabled);
+		}
+	}
 }

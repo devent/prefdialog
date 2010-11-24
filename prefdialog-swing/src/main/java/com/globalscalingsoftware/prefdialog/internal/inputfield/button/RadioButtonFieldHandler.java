@@ -23,12 +23,12 @@ import java.lang.reflect.Field;
 import com.globalscalingsoftware.prefdialog.annotations.fields.RadioButton;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractDefaultFieldHandler;
 
-public class RadioButtonInputField extends
+public class RadioButtonFieldHandler extends
 		AbstractDefaultFieldHandler<RadioButtonsPanel> {
 
 	private final Object value;
 
-	public RadioButtonInputField(Object parentObject, Object value, Field field) {
+	public RadioButtonFieldHandler(Object parentObject, Object value, Field field) {
 		super(parentObject, value, field, RadioButton.class,
 				new RadioButtonsPanel());
 		this.value = value;

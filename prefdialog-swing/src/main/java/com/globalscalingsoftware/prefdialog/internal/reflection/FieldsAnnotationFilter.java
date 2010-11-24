@@ -33,7 +33,7 @@ import com.globalscalingsoftware.prefdialog.annotations.fields.Group;
 import com.globalscalingsoftware.prefdialog.annotations.fields.RadioButton;
 import com.globalscalingsoftware.prefdialog.annotations.fields.TextField;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.button.CheckboxInputField;
-import com.globalscalingsoftware.prefdialog.internal.inputfield.button.RadioButtonInputField;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.button.RadioButtonFieldHandler;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.ChildFieldHandler;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.GroupFieldHandler;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.combobox.ComboBoxInputField;
@@ -62,7 +62,7 @@ public class FieldsAnnotationFilter extends AbstractAnnotationFilter {
 		inputFieldImplementations.put(TextField.class,
 				TextFieldInputField.class);
 		inputFieldImplementations.put(RadioButton.class,
-				RadioButtonInputField.class);
+				RadioButtonFieldHandler.class);
 		inputFieldImplementations.put(ComboBox.class, ComboBoxInputField.class);
 		inputFieldImplementations.put(Group.class, GroupFieldHandler.class);
 		inputFieldImplementations.put(Child.class, ChildFieldHandler.class);
