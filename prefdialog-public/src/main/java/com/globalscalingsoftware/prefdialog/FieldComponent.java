@@ -33,4 +33,6 @@ public interface FieldComponent {
 	Object getValue();
 
 	Component getAWTComponent();
+
+	void setEnabled(boolean enabled);
 }

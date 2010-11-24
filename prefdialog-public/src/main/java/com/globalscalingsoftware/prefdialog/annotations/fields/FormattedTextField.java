@@ -38,4 +38,10 @@ public @interface FormattedTextField {
 	Class<? extends Validator<?>> validator() default AlwaysValid.class;
 
 	String validatorText() default "";
+
+	/**
+	 * If this input field should be read-only. Read-only fields are to show
+	 * information for the user without that the user can modify the value.
+	 */
+	boolean readonly() default false;
 }

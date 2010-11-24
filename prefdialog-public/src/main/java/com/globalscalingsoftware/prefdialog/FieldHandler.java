@@ -85,4 +85,9 @@ public interface FieldHandler<FieldComponentType extends FieldComponent> {
 	 */
 	void restoreInput(Object parent);
 
+	/**
+	 * Enables or disables the component.
+	 */
+	void setComponentEnabled(boolean enabled);
+
 }

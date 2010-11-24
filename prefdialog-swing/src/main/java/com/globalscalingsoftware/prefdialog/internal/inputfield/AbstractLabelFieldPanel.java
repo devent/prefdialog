@@ -92,4 +92,8 @@ public abstract class AbstractLabelFieldPanel<FieldType extends JComponent>
 		panel.repaint();
 	}
 
+	@Override
+	public void setEnabled(boolean enabled) {
+		field.setEnabled(enabled);
+	}
 }

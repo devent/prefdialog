@@ -83,6 +83,11 @@ public abstract class AbstractFieldHandler<FieldComponentType extends FieldCompo
 	}
 
 	@Override
+	public void setComponentEnabled(boolean enabled) {
+		component.setEnabled(enabled);
+	}
+
+	@Override
 	public void setComponentValue(Object value) {
 		component.setValue(value);
 	}

@@ -48,6 +48,14 @@ public abstract class AbstractDefaultFieldHandler<FieldComponentType extends Fie
 		setupComponentWidth(field, annotationClass);
 		setupComponentName(field);
 		setupComponentTitle(field, annotationClass);
+		setupComponentReadOnly(field, annotationClass);
+	}
+
+	private void setupComponentReadOnly(Field field,
+			Class<? extends Annotation> annotationClass) {
+		boolean readonly = getValueFromAnnotationIn("readonly", Boolean.class,
+				field, annotationClass);
+		setComponentEnabled(!readonly);
 	}
 
 	private void setupComponentName(Field field) {

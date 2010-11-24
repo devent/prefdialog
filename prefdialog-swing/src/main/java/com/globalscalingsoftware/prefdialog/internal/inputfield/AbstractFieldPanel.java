@@ -56,4 +56,9 @@ public abstract class AbstractFieldPanel<FieldType extends JComponent>
 	public Component getAWTComponent() {
 		return field;
 	}
+
+	@Override
+	public void setEnabled(boolean enabled) {
+		field.setEnabled(enabled);
+	}
 }
