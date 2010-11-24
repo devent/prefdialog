@@ -32,7 +32,7 @@ import com.globalscalingsoftware.prefdialog.annotations.fields.FormattedTextFiel
 import com.globalscalingsoftware.prefdialog.annotations.fields.Group;
 import com.globalscalingsoftware.prefdialog.annotations.fields.RadioButton;
 import com.globalscalingsoftware.prefdialog.annotations.fields.TextField;
-import com.globalscalingsoftware.prefdialog.internal.inputfield.button.CheckboxInputField;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.button.CheckboxFieldHandler;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.button.RadioButtonFieldHandler;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.ChildFieldHandler;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.GroupFieldHandler;
@@ -56,7 +56,7 @@ public class FieldsAnnotationFilter extends AbstractAnnotationFilter {
 		fieldsAnnotations.add(Child.class);
 
 		inputFieldImplementations = new HashMap<Class<? extends Annotation>, Class<? extends FieldHandler<?>>>();
-		inputFieldImplementations.put(Checkbox.class, CheckboxInputField.class);
+		inputFieldImplementations.put(Checkbox.class, CheckboxFieldHandler.class);
 		inputFieldImplementations.put(FormattedTextField.class,
 				FormattedTextFieldInputField.class);
 		inputFieldImplementations.put(TextField.class,
