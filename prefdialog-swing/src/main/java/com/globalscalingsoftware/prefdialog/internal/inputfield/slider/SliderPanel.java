@@ -18,6 +18,7 @@
  */
 package com.globalscalingsoftware.prefdialog.internal.inputfield.slider;
 
+import javax.swing.BoundedRangeModel;
 import javax.swing.JSlider;
 
 import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractLabelFieldPanel;
@@ -68,6 +69,14 @@ public class SliderPanel extends AbstractLabelFieldPanel<JSlider> {
 
 	public void setSnapToTicks(boolean value) {
 		getPanelField().setSnapToTicks(value);
+	}
+
+	public void setModel(BoundedRangeModel model) {
+		getPanelField().setModel(model);
+	}
+
+	public void setExtent(int extent) {
+		getPanelField().setExtent(extent);
 	}
 
 }

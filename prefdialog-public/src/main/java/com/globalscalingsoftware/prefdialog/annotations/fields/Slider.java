@@ -6,6 +6,9 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import javax.swing.BoundedRangeModel;
+import javax.swing.DefaultBoundedRangeModel;
+
 @Target(FIELD)
 @Retention(RUNTIME)
 public @interface Slider {
@@ -26,6 +29,8 @@ public @interface Slider {
 
 	int max() default 100;
 
+	int extent() default 10;
+
 	int majorTicks() default 0;
 
 	int minorTicks() default 0;
@@ -37,4 +42,6 @@ public @interface Slider {
 	boolean paintTrack() default true;
 
 	boolean snapToTicks() default false;
+
+	Class<? extends BoundedRangeModel> model() default DefaultBoundedRangeModel.class;
 }

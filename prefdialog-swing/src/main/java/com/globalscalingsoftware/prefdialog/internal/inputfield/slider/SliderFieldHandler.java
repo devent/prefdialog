@@ -21,6 +21,9 @@ package com.globalscalingsoftware.prefdialog.internal.inputfield.slider;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
+import javax.swing.BoundedRangeModel;
+import javax.swing.DefaultBoundedRangeModel;
+
 import com.globalscalingsoftware.prefdialog.annotations.fields.Slider;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractDefaultFieldHandler;
 
@@ -34,14 +37,43 @@ public class SliderFieldHandler extends
 	@Override
 	public void setup() {
 		super.setup();
+		setupCustomModel();
 		setupMin();
 		setupMax();
+		setupExtent();
 		setupMajorTicks();
 		setupMinorTicks();
 		setupPaintLabels();
 		setupPaintTicks();
 		setupPaintTrack();
 		setupSnapToTicks();
+	}
+
+	private void setupExtent() {
+		int extent = getValueFromAnnotation("extent", Integer.class);
+		getComponent().setExtent(extent);
+	}
+
+	private void setupCustomModel() {
+		@SuppressWarnings("unchecked")
+		Class<? extends BoundedRangeModel> modelClass = getValueFromAnnotation(
+				"model", Class.class);
+		BoundedRangeModel model = createNewInstance(modelClass);
+		getComponent().setModel(model);
+	}
+
+	private BoundedRangeModel createNewInstance(
+			Class<? extends BoundedRangeModel> modelClass) {
+		try {
+			return modelClass.newInstance();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return new DefaultBoundedRangeModel();
 	}
 
 	private void setupMin() {
