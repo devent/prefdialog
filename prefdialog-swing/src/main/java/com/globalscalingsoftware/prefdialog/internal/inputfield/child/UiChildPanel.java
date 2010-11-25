@@ -77,6 +77,7 @@ class UiChildPanel extends javax.swing.JPanel {
 			thisLayout.setVGap(5);
 			this.setLayout(thisLayout);
 			this.setPreferredSize(new java.awt.Dimension(416, 300));
+			this.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
 			{
 				childLabel = new JLabel();
 				this.add(childLabel, "0, 0");
