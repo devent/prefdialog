@@ -20,6 +20,9 @@ package com.globalscalingsoftware.prefdialog.internal.inputfield.slider
 
 
 import javax.swing.DefaultBoundedRangeModel;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+
 import org.junit.Test;
 
 import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
@@ -29,6 +32,10 @@ import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest
 class SliderCustomModelTest extends AbstractPreferencePanelTest {
 	
 	static class CustomModel extends DefaultBoundedRangeModel {
+		
+		CustomModel() {
+			super(2, 1, 2, 1025)
+		}
 		
 		@Override
 		void setMinimum(int arg0) {
@@ -45,9 +52,17 @@ class SliderCustomModelTest extends AbstractPreferencePanelTest {
 		
 		@Override
 		int getMaximum() {
-			return 1024
+			return 1025
 		}
 		
+		void setExtent(int arg0) {
+		}
+
+		@Override
+		public int getExtent() {
+			return 1
+		}
+				
 		@Override
 		void setValue(int value) {
 			def log2 = log2(value)
@@ -89,9 +104,6 @@ class SliderCustomModelTest extends AbstractPreferencePanelTest {
 	
 	@Test
 	void testMinimum() {
-		println window.slider("slider").component().minimum
-		println window.slider("slider").component().maximum
-		
 		window.slider("slider").slideToMinimum()
 		window.panel("general").button("apply").click()
 		assert preferences.general.slider == 2
