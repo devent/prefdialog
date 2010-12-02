@@ -19,11 +19,11 @@
 package com.globalscalingsoftware.prefdialog.internal
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent 
 import java.lang.reflect.Field;
 
+import javax.swing.AbstractAction;
 import javax.swing.JFrame;
-import javax.swing.SwingUtilities 
-import javax.swing.UIManager;
 import org.fest.swing.edt.GuiActionRunner 
 import org.fest.swing.edt.GuiQuery 
 import org.fest.swing.fixture.FrameFixture 
@@ -37,29 +37,19 @@ import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbo
 
 abstract class AbstractPreferencePanelTest {
 	
-	static {
-		//setGTKLookAndFeel()
-		//setPlasticLookAndFeel()
-		//setSubstanceLookAndFeel()
+	static class ApplyAction extends AbstractAction {
+		ApplyAction() {
+			super("Apply")
+		}
+		void actionPerformed(ActionEvent e) {
+		}
 	}
 	
-	static setGTKLookAndFeel() {
-		setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel")
-	}
-	
-	static setPlasticLookAndFeel() {
-		setLookAndFeel("com.jgoodies.looks.plastic.Plastic3DLookAndFeel")
-	}
-	
-	static setSubstanceLookAndFeel() {
-		setLookAndFeel("org.pushingpixels.substance.api.skin.SubstanceBusinessLookAndFeel")
-	}
-	
-	static setLookAndFeel(def lookAndFeelClass) {
-		try {
-			SwingUtilities.invokeLater({UIManager.setLookAndFeel(lookAndFeelClass); }as Runnable)
-		} catch (Exception e) {
-			e.printStackTrace();
+	static class RestoreAction extends AbstractAction {
+		RestoreAction() {
+			super("Restore")
+		}
+		void actionPerformed(ActionEvent e) {
 		}
 	}
 	
@@ -90,7 +80,7 @@ abstract class AbstractPreferencePanelTest {
 	protected createFrameFixture() {
 		def injector = new PreferencesDialogInjectorFactory().create(preferences)
 		def field = getPreferencesField(preferencesClass, preferencesParentName)
-		//createFrame(injector, preferences, field, parentValue)
+		//createFrame(injector, preferences, field, preferencesParentValue)
 		def frame = GuiActionRunner.execute([executeInEDT: { 
 				return createFrame(injector, preferences, field, preferencesParentValue)
 			} ] as GuiQuery);
@@ -114,6 +104,8 @@ abstract class AbstractPreferencePanelTest {
 		
 		inputfield.setReflectionToolbox(reflectionToolbox)
 		inputfield.setFieldsFactory(factory)
+		inputfield.setApplyAction(new ApplyAction())
+		inputfield.setRestoreAction(new RestoreAction())
 		inputfield.setup()
 		
 		return createFrame({ return inputfield.getAWTComponent() })

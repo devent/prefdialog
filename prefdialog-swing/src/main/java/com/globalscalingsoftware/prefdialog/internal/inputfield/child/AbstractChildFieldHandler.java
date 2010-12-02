@@ -45,7 +45,7 @@ public abstract class AbstractChildFieldHandler<ComponentType extends IChildComp
 			Field field, Class<? extends Annotation> annotationClass,
 			ComponentType component) {
 		super(parentObject, value, field, annotationClass, component);
-		inputFields = new ArrayList<FieldHandler<?>>();
+		this.inputFields = new ArrayList<FieldHandler<?>>();
 	}
 
 	@Override
@@ -53,25 +53,6 @@ public abstract class AbstractChildFieldHandler<ComponentType extends IChildComp
 		super.setup();
 		addAllInputFields();
 		setupActions();
-	}
-
-	private void setupActions() {
-		getComponent().setApplyEvent(new Runnable() {
-
-			@Override
-			public void run() {
-				applyInput();
-			}
-
-		});
-		getComponent().setRestoreEvent(new Runnable() {
-
-			@Override
-			public void run() {
-				restoreInput();
-			}
-
-		});
 	}
 
 	private void addAllInputFields() {
@@ -99,6 +80,12 @@ public abstract class AbstractChildFieldHandler<ComponentType extends IChildComp
 		inputField.setup();
 	}
 
+	private void setupDefaultInputField(FieldHandler<?> inputField) {
+		AbstractDefaultFieldHandler<?> ainputfield = (AbstractDefaultFieldHandler<?>) inputField;
+		ReflectionToolbox reflectionToolbox = getReflectionToolbox();
+		ainputfield.setReflectionToolbox(reflectionToolbox);
+	}
+
 	private void setupChildInputField(FieldHandler<?> inputField) {
 		AbstractChildFieldHandler<?> ainputfield = (AbstractChildFieldHandler<?>) inputField;
 		ainputfield.setFieldsFactory(fieldsFactory);
@@ -106,10 +93,23 @@ public abstract class AbstractChildFieldHandler<ComponentType extends IChildComp
 		ainputfield.setRestoreAction(restoreAction);
 	}
 
-	private void setupDefaultInputField(FieldHandler<?> inputField) {
-		AbstractDefaultFieldHandler<?> ainputfield = (AbstractDefaultFieldHandler<?>) inputField;
-		ReflectionToolbox reflectionToolbox = getReflectionToolbox();
-		ainputfield.setReflectionToolbox(reflectionToolbox);
+	private void setupActions() {
+		getComponent().setApplyEvent(new Runnable() {
+
+			@Override
+			public void run() {
+				applyInput();
+			}
+
+		});
+		getComponent().setRestoreEvent(new Runnable() {
+
+			@Override
+			public void run() {
+				restoreInput();
+			}
+
+		});
 	}
 
 	public void applyInput() {
@@ -123,8 +123,15 @@ public abstract class AbstractChildFieldHandler<ComponentType extends IChildComp
 		}
 	}
 
-	public void setFieldsFactory(FieldsFactory fieldsFactory) {
-		this.fieldsFactory = fieldsFactory;
+	public void restoreInput() {
+		restoreInput(getComponentValue());
+	}
+
+	@Override
+	public void restoreInput(Object parent) {
+		for (FieldHandler<?> inputField : inputFields) {
+			inputField.restoreInput(parent);
+		}
 	}
 
 	public void setApplyAction(Action a) {
@@ -137,15 +144,8 @@ public abstract class AbstractChildFieldHandler<ComponentType extends IChildComp
 		getComponent().setRestoreAction(a);
 	}
 
-	public void restoreInput() {
-		restoreInput(getComponentValue());
-	}
-
-	@Override
-	public void restoreInput(Object parent) {
-		for (FieldHandler<?> inputField : inputFields) {
-			inputField.restoreInput(parent);
-		}
+	public void setFieldsFactory(FieldsFactory fieldsFactory) {
+		this.fieldsFactory = fieldsFactory;
 	}
 
 	public void setButtonsTransparent(boolean transparent) {

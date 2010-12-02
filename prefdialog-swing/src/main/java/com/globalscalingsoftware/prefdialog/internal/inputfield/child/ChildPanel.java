@@ -33,17 +33,17 @@ public class ChildPanel extends AbstractFieldPanel<UiChildPanel> implements
 
 	private final UiChildPanel panel;
 
-	private final RunnableActionEvent applyEvent;
+	private final EventAction applyEventAction;
 
-	private final RunnableActionEvent restoreEvent;
+	private final EventAction restoreEventAction;
 
 	private Object value;
 
 	public ChildPanel() {
 		super(new UiChildPanel());
 		this.panel = getField();
-		this.applyEvent = new RunnableActionEvent();
-		this.restoreEvent = new RunnableActionEvent();
+		this.applyEventAction = new EventAction();
+		this.restoreEventAction = new EventAction();
 		setupPanel();
 	}
 
@@ -60,28 +60,34 @@ public class ChildPanel extends AbstractFieldPanel<UiChildPanel> implements
 	}
 
 	private void setupActions() {
-		panel.getApplyButton().addActionListener(applyEvent);
-		panel.getRestoreButton().addActionListener(restoreEvent);
+		panel.getApplyButton().setAction(applyEventAction);
+		panel.getRestoreButton().setAction(restoreEventAction);
 	}
 
 	@Override
 	public void setApplyAction(Action a) {
-		panel.getApplyButton().setAction(a);
+		applyEventAction.setParentAction(a);
+		EventAction newAction = new EventAction();
+		newAction.setParentAction(applyEventAction);
+		panel.getApplyButton().setAction(newAction);
 	}
 
 	@Override
 	public void setApplyEvent(Runnable e) {
-		this.applyEvent.setEvent(e);
+		applyEventAction.setEvent(e);
 	}
 
 	@Override
 	public void setRestoreAction(Action a) {
-		panel.getRestoreButton().setAction(a);
+		restoreEventAction.setParentAction(a);
+		EventAction newAction = new EventAction();
+		newAction.setParentAction(restoreEventAction);
+		panel.getRestoreButton().setAction(newAction);
 	}
 
 	@Override
 	public void setRestoreEvent(Runnable e) {
-		this.restoreEvent.setEvent(e);
+		restoreEventAction.setEvent(e);
 	}
 
 	@Override
