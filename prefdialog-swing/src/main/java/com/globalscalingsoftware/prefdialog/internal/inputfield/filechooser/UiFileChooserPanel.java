@@ -46,7 +46,6 @@ class UiFileChooserPanel extends javax.swing.JPanel {
 			thisLayout.setHGap(5);
 			thisLayout.setVGap(5);
 			this.setLayout(thisLayout);
-			this.setPreferredSize(new java.awt.Dimension(410, 37));
 			{
 				fileNameText = new JFormattedTextField();
 				this.add(getFileNameText(), "0, 0");
