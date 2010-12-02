@@ -38,7 +38,7 @@ import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbo
 abstract class AbstractPreferencePanelTest {
 	
 	static {
-		setGTKLookAndFeel()
+		//setGTKLookAndFeel()
 		//setPlasticLookAndFeel()
 		//setSubstanceLookAndFeel()
 	}

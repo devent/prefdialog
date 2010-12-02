@@ -28,6 +28,7 @@ import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.annotations.fields.Checkbox;
 import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
 import com.globalscalingsoftware.prefdialog.annotations.fields.ComboBox;
+import com.globalscalingsoftware.prefdialog.annotations.fields.FileChooser;
 import com.globalscalingsoftware.prefdialog.annotations.fields.FormattedTextField;
 import com.globalscalingsoftware.prefdialog.annotations.fields.Group;
 import com.globalscalingsoftware.prefdialog.annotations.fields.RadioButton;
@@ -38,6 +39,7 @@ import com.globalscalingsoftware.prefdialog.internal.inputfield.button.RadioButt
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.ChildFieldHandler;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.GroupFieldHandler;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.combobox.ComboBoxInputField;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.filechooser.FileChooserFieldHandler;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.formattedtextfield.FormattedTextFieldInputField;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.formattedtextfield.TextFieldInputField;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.slider.SliderFieldHandler;
@@ -57,6 +59,7 @@ public class FieldsAnnotationFilter extends AbstractAnnotationFilter {
 		fieldsAnnotations.add(Slider.class);
 		fieldsAnnotations.add(Group.class);
 		fieldsAnnotations.add(Child.class);
+		fieldsAnnotations.add(FileChooser.class);
 
 		inputFieldImplementations = new HashMap<Class<? extends Annotation>, Class<? extends FieldHandler<?>>>();
 		inputFieldImplementations.put(Checkbox.class,
@@ -71,6 +74,8 @@ public class FieldsAnnotationFilter extends AbstractAnnotationFilter {
 		inputFieldImplementations.put(Slider.class, SliderFieldHandler.class);
 		inputFieldImplementations.put(Group.class, GroupFieldHandler.class);
 		inputFieldImplementations.put(Child.class, ChildFieldHandler.class);
+		inputFieldImplementations.put(FileChooser.class,
+				FileChooserFieldHandler.class);
 	}
 
 	FieldsAnnotationFilter() {
