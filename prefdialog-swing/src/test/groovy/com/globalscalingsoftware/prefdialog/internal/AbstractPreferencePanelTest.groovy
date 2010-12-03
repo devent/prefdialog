@@ -80,7 +80,7 @@ abstract class AbstractPreferencePanelTest {
 	protected createFrameFixture() {
 		def injector = new PreferencesDialogInjectorFactory().create(preferences)
 		def field = getPreferencesField(preferencesClass, preferencesParentName)
-		//createFrame(injector, preferences, field, preferencesParentValue)
+		createFrame(injector, preferences, field, preferencesParentValue)
 		def frame = GuiActionRunner.execute([executeInEDT: { 
 				return createFrame(injector, preferences, field, preferencesParentValue)
 			} ] as GuiQuery);

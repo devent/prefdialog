@@ -28,7 +28,8 @@ public class RadioButtonFieldHandler extends
 
 	private final Object value;
 
-	public RadioButtonFieldHandler(Object parentObject, Object value, Field field) {
+	public RadioButtonFieldHandler(Object parentObject, Object value,
+			Field field) {
 		super(parentObject, value, field, RadioButton.class,
 				new RadioButtonsPanel());
 		this.value = value;
@@ -37,19 +38,17 @@ public class RadioButtonFieldHandler extends
 	@Override
 	public void setup() {
 		super.setup();
-		setupEnumFields(value);
 		setupColumns();
+		setupValue(value);
 	}
 
 	private void setupColumns() {
+		Class<? extends Enum<?>> valueClass = getValueClass(value);
+		Enum<?>[] enumFields = getEnumFields(valueClass);
 		int columns = getReflectionToolbox().getColumns(getField());
-		getComponent().setColumns(columns);
-	}
-
-	private void setupEnumFields(Object value) {
-		Class<? extends Enum<?>> valueclass = getValueClass(value);
-		addEnumFields(valueclass);
-		getComponent().setValue(value);
+		int rows = enumFields.length;
+		getComponent().setColumnsRows(columns, rows);
+		addEnumFields(enumFields);
 	}
 
 	private Class<? extends Enum<?>> getValueClass(Object value) {
@@ -59,10 +58,18 @@ public class RadioButtonFieldHandler extends
 		return valueclass;
 	}
 
-	private void addEnumFields(Class<? extends Enum<?>> enumClass) {
-		for (Object constant : enumClass.getEnumConstants()) {
-			getComponent().addRadioButton(constant, constant.toString());
+	private Enum<?>[] getEnumFields(Class<? extends Enum<?>> enumClass) {
+		return enumClass.getEnumConstants();
+	}
+
+	private void addEnumFields(Enum<?>[] enumFields) {
+		for (Enum<?> e : enumFields) {
+			getComponent().addRadioButton(e, e.toString());
 		}
+	}
+
+	private void setupValue(Object value) {
+		getComponent().setValue(value);
 	}
 
 }

@@ -19,8 +19,8 @@
 package com.globalscalingsoftware.prefdialog.internal.inputfield.button;
 
 import static java.lang.String.format;
+import info.clearthought.layout.TableLayout;
 
-import java.awt.GridLayout;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,7 +33,7 @@ import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractLabelFie
 
 public class RadioButtonsPanel extends AbstractLabelFieldPanel<JPanel> {
 
-	private final GridLayout layout;
+	private final TableLayout layout;
 
 	private final ButtonGroup buttonsGroup;
 
@@ -43,12 +43,22 @@ public class RadioButtonsPanel extends AbstractLabelFieldPanel<JPanel> {
 
 	private boolean enabled;
 
+	private int buttonsCount;
+
+	private int rows;
+
+	private int row;
+
 	public RadioButtonsPanel() {
 		super(new JPanel());
-		layout = new GridLayout(0, 1);
-		buttonsGroup = new ButtonGroup();
-		buttons = new HashMap<ButtonModel, Object>();
-		enabled = true;
+		this.layout = new TableLayout(new double[] { TableLayout.PREFERRED },
+				new double[] {});
+		this.buttonsGroup = new ButtonGroup();
+		this.buttons = new HashMap<ButtonModel, Object>();
+		this.enabled = true;
+		this.rows = 0;
+		this.row = 0;
+		this.buttonsCount = 0;
 		setupPanel();
 	}
 
@@ -63,15 +73,37 @@ public class RadioButtonsPanel extends AbstractLabelFieldPanel<JPanel> {
 		return value;
 	}
 
+	public void setColumnsRows(int columns, int rows) {
+		double[] column = new double[columns];
+		for (int i = 0; i < columns; i++) {
+			column[i] = TableLayout.PREFERRED;
+		}
+		layout.setColumn(column);
+
+		rows = rows / columns;
+		this.rows = rows;
+		double[] row = new double[rows];
+		for (int i = 0; i < rows; i++) {
+			row[i] = TableLayout.PREFERRED;
+		}
+		layout.setRow(row);
+	}
+
 	public void addRadioButton(Object value, String text) {
-		int rows = layout.getRows();
-		layout.setRows(rows + 1);
 		JRadioButton button = new JRadioButton(text);
 		button.setName(format("%s-%s", name, text));
 		button.setEnabled(enabled);
 		buttons.put(button.getModel(), value);
 		buttonsGroup.add(button);
-		getField().add(button);
+
+		int column = buttonsCount / rows;
+		if (row >= rows) {
+			row = 0;
+		}
+		getField().add(button, format("%d, %d", column, row));
+
+		row++;
+		buttonsCount++;
 	}
 
 	@Override
@@ -88,11 +120,6 @@ public class RadioButtonsPanel extends AbstractLabelFieldPanel<JPanel> {
 				break;
 			}
 		}
-	}
-
-	public void setColumns(int columns) {
-		int rows = layout.getRows() / columns;
-		layout.setRows(rows);
 	}
 
 	@Override
