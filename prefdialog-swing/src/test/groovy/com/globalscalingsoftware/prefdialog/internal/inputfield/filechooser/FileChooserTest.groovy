@@ -20,8 +20,8 @@ package com.globalscalingsoftware.prefdialog.internal.inputfield.filechooser
 
 import org.junit.Test;
 
-import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
-import com.globalscalingsoftware.prefdialog.annotations.fields.FileChooser 
+import com.globalscalingsoftware.prefdialog.annotations.Child 
+import com.globalscalingsoftware.prefdialog.annotations.FileChooser 
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest 
 
 class FileChooserTest extends AbstractPreferencePanelTest {

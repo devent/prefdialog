@@ -22,9 +22,9 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
-import com.globalscalingsoftware.prefdialog.annotations.fields.ComboBox;
-import com.globalscalingsoftware.prefdialog.annotations.fields.ComboBoxElements;
+import com.globalscalingsoftware.prefdialog.annotations.Child 
+import com.globalscalingsoftware.prefdialog.annotations.ComboBox 
+import com.globalscalingsoftware.prefdialog.annotations.ComboBoxElements 
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest 
 
 class ComboBoxWidthTest extends AbstractPreferencePanelTest {

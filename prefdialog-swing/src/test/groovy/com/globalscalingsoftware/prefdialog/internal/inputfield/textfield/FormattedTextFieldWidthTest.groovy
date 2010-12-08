@@ -20,9 +20,9 @@ package com.globalscalingsoftware.prefdialog.internal.inputfield.textfield
 
 import org.junit.Test;
 
-import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
-import com.globalscalingsoftware.prefdialog.annotations.fields.FormattedTextField;
-import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest 
+import com.globalscalingsoftware.prefdialog.annotations.Child;
+import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField 
+import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest;
 
 class FormattedTextFieldWidthTest extends AbstractPreferencePanelTest {
 	

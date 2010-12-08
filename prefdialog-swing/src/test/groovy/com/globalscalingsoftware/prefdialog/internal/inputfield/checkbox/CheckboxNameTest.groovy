@@ -20,8 +20,8 @@ package com.globalscalingsoftware.prefdialog.internal.inputfield.checkbox
 
 import org.junit.Test;
 
-import com.globalscalingsoftware.prefdialog.annotations.fields.Checkbox;
-import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
+import com.globalscalingsoftware.prefdialog.annotations.Checkbox 
+import com.globalscalingsoftware.prefdialog.annotations.Child 
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest 
 
 class CheckboxNameTest extends AbstractPreferencePanelTest {

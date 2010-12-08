@@ -20,14 +20,12 @@ package com.globalscalingsoftware.prefdialog.internal.inputfield.slider
 
 
 import javax.swing.DefaultBoundedRangeModel;
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 
 import org.junit.Test;
 
-import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
-import com.globalscalingsoftware.prefdialog.annotations.fields.Slider 
-import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest 
+import com.globalscalingsoftware.prefdialog.annotations.Child;
+import com.globalscalingsoftware.prefdialog.annotations.Slider 
+import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest;
 
 class SliderCustomModelTest extends AbstractPreferencePanelTest {
 	
@@ -57,12 +55,12 @@ class SliderCustomModelTest extends AbstractPreferencePanelTest {
 		
 		void setExtent(int arg0) {
 		}
-
+		
 		@Override
 		public int getExtent() {
 			return 1
 		}
-				
+		
 		@Override
 		void setValue(int value) {
 			def log2 = log2(value)

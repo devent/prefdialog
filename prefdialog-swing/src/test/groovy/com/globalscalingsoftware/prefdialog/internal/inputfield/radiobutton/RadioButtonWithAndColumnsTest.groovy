@@ -18,8 +18,8 @@
  */
 package com.globalscalingsoftware.prefdialog.internal.inputfield.radiobutton
 
-import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
-import com.globalscalingsoftware.prefdialog.annotations.fields.RadioButton;
+import com.globalscalingsoftware.prefdialog.annotations.Child 
+import com.globalscalingsoftware.prefdialog.annotations.RadioButton 
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.Colors;
 

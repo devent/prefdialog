@@ -20,8 +20,8 @@ package com.globalscalingsoftware.prefdialog.internal.inputfield
 
 import org.junit.Test;
 
-import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
-import com.globalscalingsoftware.prefdialog.annotations.fields.TextField;
+import com.globalscalingsoftware.prefdialog.annotations.Child;
+import com.globalscalingsoftware.prefdialog.annotations.TextField;
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceDialogTest;
 
 class DialogRestoreTest extends AbstractPreferenceDialogTest {

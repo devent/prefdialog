@@ -20,9 +20,9 @@ package com.globalscalingsoftware.prefdialog.internal.inputfield.textfield
 
 import org.junit.Test;
 
-import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
-import com.globalscalingsoftware.prefdialog.annotations.fields.TextField;
-import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest 
+import com.globalscalingsoftware.prefdialog.annotations.Child;
+import com.globalscalingsoftware.prefdialog.annotations.TextField 
+import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest;
 
 class TextFieldReadOnlyTest extends AbstractPreferencePanelTest {
 	
