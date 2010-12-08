@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-public. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.annotations.fields;
+package com.globalscalingsoftware.prefdialog.annotations;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
@@ -24,32 +24,20 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import javax.swing.JCheckBox;
+import com.globalscalingsoftware.prefdialog.validators.AlwaysValid;
+import com.globalscalingsoftware.prefdialog.validators.Validator;
 
-/**
- * <p>
- * Annotation to create a {@link JCheckBox} for this field.
- * </p>
- * Example:
- * 
- * <pre>
- * &#064;Checkbox(&quot;Is Important&quot;)
- * private boolean isImportant;
- * </pre>
- */
 @Target(FIELD)
 @Retention(RUNTIME)
-public @interface Checkbox {
+public @interface TextField {
 
-	/**
-	 * The text of the checkbox.
-	 */
 	String value() default "";
 
-	/**
-	 * The width of the checkbox inside the container.
-	 */
 	double width() default -1.0;
+
+	Class<? extends Validator<?>> validator() default AlwaysValid.class;
+
+	String validatorText() default "";
 
 	/**
 	 * If this input field should be read-only. Read-only fields are to show

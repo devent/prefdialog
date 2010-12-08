@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-public. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.annotations.fields;
+package com.globalscalingsoftware.prefdialog.annotations;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
@@ -24,29 +24,32 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JTextField;
-
 /**
  * <p>
- * Annotation to create a {@link JTextField} and {@link JButton} for this field.
- * If the user click on the button a {@link JFileChooser} will open for the user
- * to select a file. The text field will show the selected path of the file.
+ * Annotate a new child panel in the preferences dialog.
  * </p>
- * Example:
+ * 
+ * The child panel will be shown left in the tree list. If the user clicks on
+ * the item of the tree list the preferences of this child will be shown at the
+ * right side of the dialog. Example:
  * 
  * <pre>
- * &#064;FileChooser
- * private File file = new File(&quot;&quot;);
+ * &#064;Child
+ * private ChildPreferences childPreferences;
  * </pre>
  */
 @Target(FIELD)
 @Retention(RUNTIME)
-public @interface FileChooser {
+public @interface Child {
 
+	/**
+	 * The name of the child.
+	 */
 	String value() default "";
 
+	/**
+	 * The width of the child inside the container.
+	 */
 	double width() default -1.0;
 
 	/**

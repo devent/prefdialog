@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-public. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.annotations.fields;
+package com.globalscalingsoftware.prefdialog.annotations;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
@@ -24,12 +24,42 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import javax.swing.JComboBox;
+
+/**
+ * <p>
+ * Annotate a field to be chosen by a {@link JComboBox}.
+ * </p>
+ * <p>
+ * This annotation requires another field where the items for the combobox are
+ * stored. This field is annotated with the {@link ComboBoxElements} annotation
+ * and must have the same {@link ComboBox#value()} value.
+ * </p>
+ * <p>
+ * Example:
+ * </p>
+ * 
+ * <pre>
+ * &#064;ComboBox(&quot;Some Field&quot;)
+ * private String someField;
+ * 
+ * &#064;ComboBoxElements(&quot;Some Field&quot;)
+ * private String[] someField = { &quot;first&quot;, &quot;second&quot;, &quot;third&quot; };
+ * </pre>
+ */
 @Target(FIELD)
 @Retention(RUNTIME)
-public @interface Group {
+public @interface ComboBox {
 
-	String value() default "";
+	/**
+	 * The name of the combobox, needs to be the same as of
+	 * {@link ComboBoxElements}.
+	 */
+	String value();
 
+	/**
+	 * The width of the combobox inside the container.
+	 */
 	double width() default -1.0;
 
 	/**

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-public. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.annotations.fields;
+package com.globalscalingsoftware.prefdialog.annotations;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
@@ -24,18 +24,36 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import javax.swing.JCheckBox;
+
 /**
  * <p>
- * Annotation that defines the field where the items for the {@link ComboBox}
- * field are stored.
+ * Annotation to create a {@link JCheckBox} for this field.
  * </p>
+ * Example:
+ * 
+ * <pre>
+ * &#064;Checkbox(&quot;Is Important&quot;)
+ * private boolean isImportant;
+ * </pre>
  */
 @Target(FIELD)
 @Retention(RUNTIME)
-public @interface ComboBoxElements {
+public @interface Checkbox {
 
 	/**
-	 * The name of the combobox for which that field holds the elements.
+	 * The text of the checkbox.
 	 */
-	String value();
+	String value() default "";
+
+	/**
+	 * The width of the checkbox inside the container.
+	 */
+	double width() default -1.0;
+
+	/**
+	 * If this input field should be read-only. Read-only fields are to show
+	 * information for the user without that the user can modify the value.
+	 */
+	boolean readonly() default false;
 }

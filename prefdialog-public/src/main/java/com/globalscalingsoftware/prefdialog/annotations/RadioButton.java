@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-public. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.annotations.fields;
+package com.globalscalingsoftware.prefdialog.annotations;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
@@ -24,32 +24,14 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-/**
- * <p>
- * Annotate a new child panel in the preferences dialog.
- * </p>
- * 
- * The child panel will be shown left in the tree list. If the user clicks on
- * the item of the tree list the preferences of this child will be shown at the
- * right side of the dialog. Example:
- * 
- * <pre>
- * &#064;Child
- * private ChildPreferences childPreferences;
- * </pre>
- */
 @Target(FIELD)
 @Retention(RUNTIME)
-public @interface Child {
+public @interface RadioButton {
 
-	/**
-	 * The name of the child.
-	 */
 	String value() default "";
 
-	/**
-	 * The width of the child inside the container.
-	 */
+	int columns() default 1;
+
 	double width() default -1.0;
 
 	/**

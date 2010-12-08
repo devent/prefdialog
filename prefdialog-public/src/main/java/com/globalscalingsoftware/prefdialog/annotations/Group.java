@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-public. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.annotations.fields;
+package com.globalscalingsoftware.prefdialog.annotations;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
@@ -24,20 +24,13 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import com.globalscalingsoftware.prefdialog.Validator;
-import com.globalscalingsoftware.prefdialog.validators.AlwaysValid;
-
 @Target(FIELD)
 @Retention(RUNTIME)
-public @interface FormattedTextField {
+public @interface Group {
 
 	String value() default "";
 
 	double width() default -1.0;
-
-	Class<? extends Validator<?>> validator() default AlwaysValid.class;
-
-	String validatorText() default "";
 
 	/**
 	 * If this input field should be read-only. Read-only fields are to show
