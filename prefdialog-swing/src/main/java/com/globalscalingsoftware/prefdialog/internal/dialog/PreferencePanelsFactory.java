@@ -107,6 +107,7 @@ public class PreferencePanelsFactory {
 					.createFieldsHandlers(annotationDiscovery, fieldFactories,
 							preferences, value)) {
 				fieldHandler.setup();
+				panel.addFieldHandler(fieldHandler);
 			}
 
 			panel.setApplyAction(applyAction);
