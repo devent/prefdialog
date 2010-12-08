@@ -18,7 +18,6 @@
  */
 package com.globalscalingsoftware.prefdialog.validators;
 
-import com.globalscalingsoftware.prefdialog.Validator;
 
 public class NotEmptyString implements Validator<String> {
 

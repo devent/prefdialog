@@ -18,12 +18,7 @@
  */
 package com.globalscalingsoftware.prefdialog.validators;
 
+public interface Validator<T> {
 
-public class AlwaysValid implements Validator<Object> {
-
-	@Override
-	public boolean isValid(Object value) {
-		return true;
-	}
-
+	boolean isValid(T value);
 }
