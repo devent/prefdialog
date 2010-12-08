@@ -21,8 +21,8 @@ package com.globalscalingsoftware.prefdialog.internal.inputfield.combobox;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
-import com.globalscalingsoftware.prefdialog.annotations.fields.ComboBox;
-import com.globalscalingsoftware.prefdialog.annotations.fields.ComboBoxElements;
+import com.globalscalingsoftware.prefdialog.annotations.ComboBox;
+import com.globalscalingsoftware.prefdialog.annotations.ComboBoxElements;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractDefaultFieldHandler;
 
 public class ComboBoxInputField extends

@@ -48,19 +48,16 @@ import javax.swing.Action;
 public interface PreferenceDialogController {
 
 	/**
-	 * Sets the preferences object.
-	 */
-	void setPreferences(Object preferences);
-
-	/**
 	 * Create the dialog and all the components with the {@link Frame owner} of
 	 * the dialog.
 	 * 
 	 * @param owner
 	 *            the {@link Frame owner} of the dialog, can be
 	 *            <code>null</code>.
+	 * @param preferences
+	 *            the preferences.
 	 */
-	void setup(Frame owner);
+	void setup(Frame owner, Object preferences);
 
 	/**
 	 * Opens the dialog.

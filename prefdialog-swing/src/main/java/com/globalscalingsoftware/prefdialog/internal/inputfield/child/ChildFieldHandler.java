@@ -20,7 +20,7 @@ package com.globalscalingsoftware.prefdialog.internal.inputfield.child;
 
 import java.lang.reflect.Field;
 
-import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
+import com.globalscalingsoftware.prefdialog.annotations.Child;
 
 public class ChildFieldHandler extends AbstractChildFieldHandler<ChildPanel> {
 

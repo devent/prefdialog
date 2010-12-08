@@ -19,7 +19,7 @@
 package com.globalscalingsoftware.prefdialog.internal.inputfield
 
 
-import com.globalscalingsoftware.prefdialog.Validator;
+import com.globalscalingsoftware.prefdialog.validators.Validator;
 
 class FieldsValidator implements Validator<Integer> {
 	

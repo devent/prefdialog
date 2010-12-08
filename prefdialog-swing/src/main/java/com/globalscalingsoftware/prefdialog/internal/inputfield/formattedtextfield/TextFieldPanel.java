@@ -22,8 +22,8 @@ import static java.lang.String.format;
 
 import javax.swing.JTextField;
 
-import com.globalscalingsoftware.prefdialog.Validator;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractLabelFieldPanel;
+import com.globalscalingsoftware.prefdialog.validators.Validator;
 
 class TextFieldPanel extends AbstractLabelFieldPanel<JTextField> {
 

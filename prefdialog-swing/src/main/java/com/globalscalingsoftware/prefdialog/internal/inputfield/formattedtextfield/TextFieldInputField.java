@@ -22,7 +22,7 @@ import java.lang.reflect.Field;
 
 import javax.swing.JTextField;
 
-import com.globalscalingsoftware.prefdialog.annotations.fields.TextField;
+import com.globalscalingsoftware.prefdialog.annotations.TextField;
 
 public class TextFieldInputField extends AbstractTextField {
 

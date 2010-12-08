@@ -26,7 +26,7 @@ import java.lang.reflect.Field;
 
 import javax.swing.JFileChooser;
 
-import com.globalscalingsoftware.prefdialog.annotations.fields.FileChooser;
+import com.globalscalingsoftware.prefdialog.annotations.FileChooser;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractDefaultFieldHandler;
 
 public class FileChooserFieldHandler extends

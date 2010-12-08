@@ -32,7 +32,7 @@ import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.event.EventListenerList;
 
-import com.globalscalingsoftware.prefdialog.Validator;
+import com.globalscalingsoftware.prefdialog.validators.Validator;
 
 class ValidatingTextField<TextFieldType extends JTextField> {
 

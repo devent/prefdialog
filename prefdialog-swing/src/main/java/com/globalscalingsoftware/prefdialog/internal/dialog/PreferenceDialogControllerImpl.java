@@ -29,7 +29,6 @@ import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.Options;
 import com.globalscalingsoftware.prefdialog.PreferenceDialogController;
 import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 public class PreferenceDialogControllerImpl implements
 		PreferenceDialogController, PreferenceDialogControllerInternal {
@@ -49,7 +48,8 @@ public class PreferenceDialogControllerImpl implements
 	}
 
 	@Override
-	public void setup(Frame owner) {
+	public void setup(Frame owner, Object preferences) {
+		this.preferences = preferences;
 		setupRootNode();
 		setupChildSelectedAction();
 		setupPreferencesStart();
@@ -77,12 +77,6 @@ public class PreferenceDialogControllerImpl implements
 	@Override
 	public void openDialog() {
 		preferenceDialog.open();
-	}
-
-	@Override
-	@Inject
-	public void setPreferences(@Named("preferences") Object preferences) {
-		this.preferences = preferences;
 	}
 
 	public JDialog getPreferenceDialog() {

@@ -21,9 +21,9 @@ package com.globalscalingsoftware.prefdialog.internal.inputfield.formattedtextfi
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
-import com.globalscalingsoftware.prefdialog.Validator;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractDefaultFieldHandler;
 import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbox;
+import com.globalscalingsoftware.prefdialog.validators.Validator;
 
 public abstract class AbstractTextField extends
 		AbstractDefaultFieldHandler<TextFieldPanel> {
