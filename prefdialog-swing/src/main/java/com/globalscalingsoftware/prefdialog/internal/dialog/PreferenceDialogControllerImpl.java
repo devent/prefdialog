@@ -18,7 +18,9 @@
  */
 package com.globalscalingsoftware.prefdialog.internal.dialog;
 
+import java.awt.Component;
 import java.awt.Frame;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.Action;
@@ -102,7 +104,8 @@ public class PreferenceDialogControllerImpl implements
 	}
 
 	private void restoreAllInput() {
-		Map<Object, ChildFieldHandler> panels = getPreferencePanels();
+		Map<Object, ChildFieldHandler> panels = preferencePanels
+				.getPreferencePanels();
 		for (FieldHandler<?> field : panels.values()) {
 			restoreInputForChildField(field);
 		}
@@ -116,14 +119,11 @@ public class PreferenceDialogControllerImpl implements
 	}
 
 	private void applyAllInput() {
-		Map<Object, ChildFieldHandler> panels = getPreferencePanels();
+		Map<Object, ChildFieldHandler> panels = preferencePanels
+				.getPreferencePanels();
 		for (FieldHandler<?> field : panels.values()) {
 			applyInputForChildField(field);
 		}
-	}
-
-	private Map<Object, ChildFieldHandler> getPreferencePanels() {
-		return preferencePanels.getPreferencePanels();
 	}
 
 	private void applyInputForChildField(FieldHandler<?> field) {
@@ -156,8 +156,20 @@ public class PreferenceDialogControllerImpl implements
 		preferenceDialog.open();
 	}
 
+	@Override
 	public JDialog getPreferenceDialog() {
 		return preferenceDialog.getUiPreferencesDialog();
+	}
+
+	@Override
+	public Map<String, Component> getPreferencePanels() {
+		Map<String, Component> panels = new HashMap<String, Component>();
+		for (Map.Entry<Object, ChildFieldHandler> entry : preferencePanels
+				.getPreferencePanels().entrySet()) {
+			panels.put(entry.getKey().toString(), entry.getValue()
+					.getAWTComponent());
+		}
+		return panels;
 	}
 
 	void setChildPanel(Object object) {
