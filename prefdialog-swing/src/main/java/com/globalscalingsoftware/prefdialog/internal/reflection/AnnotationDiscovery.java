@@ -21,48 +21,69 @@ package com.globalscalingsoftware.prefdialog.internal.reflection;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
+import com.globalscalingsoftware.annotations.Stateless;
 import com.google.inject.Inject;
 
+@Stateless
 public class AnnotationDiscovery {
+
+	private class DiscoveryWorker {
+
+		private final Object object;
+		private final AnnotationDiscoveryCallback callback;
+
+		public DiscoveryWorker(Object object,
+				AnnotationDiscoveryCallback callback) {
+			this.object = object;
+			this.callback = callback;
+		}
+
+		public void discoverFields() {
+			Class<? extends Object> clazz = object.getClass();
+			Field[] fields = clazz.getDeclaredFields();
+			for (Field field : fields) {
+				Annotation[] annotations = field.getDeclaredAnnotations();
+				searchAnnotations(field, annotations);
+			}
+		}
+
+		private void searchAnnotations(Field field, Annotation[] annotations) {
+			for (Annotation annotation : annotations) {
+				informCallbackIfFilterAccepts(field, annotation);
+			}
+		}
+
+		private void informCallbackIfFilterAccepts(Field field,
+				Annotation annotation) {
+			if (filter.accept(annotation)) {
+				informCallback(field, annotation);
+			}
+		}
+
+		private void informCallback(Field field, Annotation annotation) {
+			Object value = reflectionToolbox.getValueFrom(field, object);
+			callback.fieldAnnotationDiscovered(field, value, annotation);
+		}
+
+	}
 
 	private final ReflectionToolbox reflectionToolbox;
 
+	private final AnnotationFilter filter;
+
 	@Inject
-	AnnotationDiscovery(ReflectionToolbox reflectionToolbox) {
+	AnnotationDiscovery(AnnotationFilter filter,
+			ReflectionToolbox reflectionToolbox) {
+		this.filter = filter;
 		this.reflectionToolbox = reflectionToolbox;
 	}
 
-	public void discover(AbstractAnnotationFilter filter, Object object,
-			DiscoveredListener listener) {
+	public void discoverAnnotations(Object object,
+			AnnotationDiscoveryCallback callback) {
 		if (object == null) {
 			return;
 		}
-		discoverFields(filter, object, listener);
-	}
-
-	private void discoverFields(AbstractAnnotationFilter filter, Object object,
-			DiscoveredListener listener) {
-		Class<? extends Object> clazz = object.getClass();
-		Field[] fields = clazz.getDeclaredFields();
-		for (Field field : fields) {
-			Annotation[] annotations = field.getDeclaredAnnotations();
-			for (Annotation annotation : annotations) {
-				informListenerIfFilterAccepts(filter, object, listener, field,
-						annotation);
-			}
-		}
-	}
-
-	private void informListenerIfFilterAccepts(AbstractAnnotationFilter filter,
-			Object object, DiscoveredListener listener, Field field,
-			Annotation annotation) {
-		if (!filter.accept(annotation)) {
-			return;
-		}
-
-		Object value = reflectionToolbox.getValueFrom(field, object);
-		listener.fieldAnnotationDiscovered(field, value, annotation);
-		// discover(filter, value, listener);
+		new DiscoveryWorker(object, callback).discoverFields();
 	}
 
 }

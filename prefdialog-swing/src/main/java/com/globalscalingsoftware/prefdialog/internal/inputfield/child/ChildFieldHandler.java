@@ -21,11 +21,18 @@ package com.globalscalingsoftware.prefdialog.internal.inputfield.child;
 import java.lang.reflect.Field;
 
 import com.globalscalingsoftware.prefdialog.annotations.Child;
+import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbox;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
 public class ChildFieldHandler extends AbstractChildFieldHandler<ChildPanel> {
 
-	public ChildFieldHandler(Object parentObject, Object value, Field field) {
-		super(parentObject, value, field, Child.class, new ChildPanel());
+	@Inject
+	ChildFieldHandler(ReflectionToolbox reflectionToolbox,
+			@Assisted("parentObject") Object parentObject,
+			@Assisted("value") Object value, @Assisted Field field) {
+		super(reflectionToolbox, parentObject, value, field, Child.class,
+				new ChildPanel());
 	}
 
 }

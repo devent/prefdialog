@@ -29,27 +29,35 @@ import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.Options;
 import com.globalscalingsoftware.prefdialog.PreferenceDialogController;
 import com.globalscalingsoftware.prefdialog.internal.dialog.actions.ActionsHandler;
-import com.globalscalingsoftware.prefdialog.internal.inputfield.InputFieldsFactory;
-import com.globalscalingsoftware.prefdialog.internal.inputfield.PreferencePanels;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.AbstractChildFieldHandler;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.child.ChildFieldHandler;
+import com.globalscalingsoftware.prefdialog.internal.reflection.AnnotationDiscovery;
+import com.globalscalingsoftware.prefdialog.internal.reflection.FieldFactories;
 import com.google.inject.Inject;
 
 public class PreferenceDialogControllerImpl implements
 		PreferenceDialogController {
 
 	private final PreferenceDialog preferenceDialog;
-	private final InputFieldsFactory inputFieldsFactory;
+	private final PreferencePanelsFactory preferencePanelsFactory;
 	private Options option;
 	private PreferencePanels preferencePanels;
 	private Object preferences;
 	private final ActionsHandler actionsHandler;
+	private final AnnotationDiscovery annotationDiscovery;
+	private final FieldFactories fieldFactories;
 
 	@Inject
 	PreferenceDialogControllerImpl(PreferenceDialog preferenceDialog,
-			ActionsHandler actionsHandler, InputFieldsFactory inputFieldsFactory) {
+			ActionsHandler actionsHandler,
+			AnnotationDiscovery annotationDiscovery,
+			FieldFactories fieldFactories,
+			PreferencePanelsFactory preferencePanelsFactory) {
 		this.preferenceDialog = preferenceDialog;
 		this.actionsHandler = actionsHandler;
-		this.inputFieldsFactory = inputFieldsFactory;
+		this.annotationDiscovery = annotationDiscovery;
+		this.fieldFactories = fieldFactories;
+		this.preferencePanelsFactory = preferencePanelsFactory;
 		this.option = Options.CANCEL;
 	}
 
@@ -61,6 +69,12 @@ public class PreferenceDialogControllerImpl implements
 		setupChildSelectedAction();
 		setupPreferencesStart();
 		setupActions();
+	}
+
+	private void setupRootNode() {
+		preferencePanels = preferencePanelsFactory.createRootNode(
+				annotationDiscovery, fieldFactories, preferences);
+		preferenceDialog.setRootNode(preferencePanels.getRootNode());
 	}
 
 	private void setupActions() {
@@ -88,7 +102,7 @@ public class PreferenceDialogControllerImpl implements
 	}
 
 	private void restoreAllInput() {
-		Map<Object, FieldHandler<?>> panels = getPreferencePanels();
+		Map<Object, ChildFieldHandler> panels = getPreferencePanels();
 		for (FieldHandler<?> field : panels.values()) {
 			restoreInputForChildField(field);
 		}
@@ -102,13 +116,13 @@ public class PreferenceDialogControllerImpl implements
 	}
 
 	private void applyAllInput() {
-		Map<Object, FieldHandler<?>> panels = getPreferencePanels();
+		Map<Object, ChildFieldHandler> panels = getPreferencePanels();
 		for (FieldHandler<?> field : panels.values()) {
 			applyInputForChildField(field);
 		}
 	}
 
-	private Map<Object, FieldHandler<?>> getPreferencePanels() {
+	private Map<Object, ChildFieldHandler> getPreferencePanels() {
 		return preferencePanels.getPreferencePanels();
 	}
 
@@ -122,11 +136,6 @@ public class PreferenceDialogControllerImpl implements
 	private void closeDialog(Options option) {
 		this.option = option;
 		preferenceDialog.close();
-	}
-
-	private void setupRootNode() {
-		preferencePanels = inputFieldsFactory.createRootNode(preferences);
-		preferenceDialog.setRootNode(preferencePanels.getRootNode());
 	}
 
 	private void setupChildSelectedAction() {

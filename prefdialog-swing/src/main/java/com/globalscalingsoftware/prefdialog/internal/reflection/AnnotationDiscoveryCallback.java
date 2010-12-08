@@ -16,24 +16,13 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.internal.inputfield.child;
+package com.globalscalingsoftware.prefdialog.internal.reflection;
 
-import javax.swing.Action;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 
-import com.globalscalingsoftware.prefdialog.FieldComponent;
-import com.globalscalingsoftware.prefdialog.FieldHandler;
+public interface AnnotationDiscoveryCallback {
 
-public interface IChildComponent extends FieldComponent {
+	void fieldAnnotationDiscovered(Field field, Object value, Annotation a);
 
-	void addField(FieldHandler<?> inputField);
-
-	void setApplyEvent(Runnable e);
-
-	void setApplyAction(Action a);
-
-	void setRestoreAction(Action a);
-
-	void setRestoreEvent(Runnable e);
-
-	public void setButtonsTransparent(boolean transparent);
 }

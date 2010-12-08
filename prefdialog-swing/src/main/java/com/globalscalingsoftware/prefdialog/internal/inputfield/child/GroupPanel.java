@@ -29,7 +29,7 @@ import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractFieldPanel;
 
 public class GroupPanel extends AbstractFieldPanel<UiGroupPanel> implements
-		IChildComponent {
+		ChildComponent {
 
 	private final UiGroupPanel panel;
 

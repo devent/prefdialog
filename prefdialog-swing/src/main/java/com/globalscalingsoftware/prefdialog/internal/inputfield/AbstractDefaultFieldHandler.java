@@ -28,12 +28,14 @@ import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbo
 public abstract class AbstractDefaultFieldHandler<FieldComponentType extends FieldComponent>
 		extends AbstractFieldHandler<FieldComponentType> {
 
-	private ReflectionToolbox reflectionToolbox;
+	protected final ReflectionToolbox reflectionToolbox;
 
-	public AbstractDefaultFieldHandler(Object parentObject, Object value,
-			Field field, Class<? extends Annotation> annotationClass,
+	public AbstractDefaultFieldHandler(ReflectionToolbox reflectionToolbox,
+			Object parentObject, Object value, Field field,
+			Class<? extends Annotation> annotationClass,
 			FieldComponentType component) {
 		super(parentObject, value, field, annotationClass, component);
+		this.reflectionToolbox = reflectionToolbox;
 	}
 
 	@Override
@@ -88,23 +90,15 @@ public abstract class AbstractDefaultFieldHandler<FieldComponentType extends Fie
 	protected <T> T getValueFromAnnotationIn(String name, Class<T> returnType,
 			Field field, Class<? extends Annotation> annotationClass) {
 		Annotation a = field.getAnnotation(annotationClass);
-		return getReflectionToolbox().invokeMethodWithReturnType(name,
-				returnType, a);
-	}
-
-	public void setReflectionToolbox(ReflectionToolbox reflectionToolbox) {
-		this.reflectionToolbox = reflectionToolbox;
-	}
-
-	public ReflectionToolbox getReflectionToolbox() {
-		return reflectionToolbox;
+		return reflectionToolbox
+				.invokeMethodWithReturnType(name, returnType, a);
 	}
 
 	@Override
 	public void applyInput(Object parent) {
 		Object value = getComponentValue();
 		Field field = getField();
-		getReflectionToolbox().setValueTo(field, parent, value);
+		reflectionToolbox.setValueTo(field, parent, value);
 	}
 
 	@Override

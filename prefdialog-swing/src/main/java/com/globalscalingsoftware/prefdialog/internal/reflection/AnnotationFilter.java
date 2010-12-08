@@ -16,19 +16,29 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.internal.inputfield.textfield;
+package com.globalscalingsoftware.prefdialog.internal.reflection;
 
-import java.lang.reflect.Field;
+import java.lang.annotation.Annotation;
+import java.util.List;
 
-import javax.swing.JTextField;
+import com.globalscalingsoftware.annotations.Stateless;
 
-import com.globalscalingsoftware.prefdialog.annotations.TextField;
+@Stateless
+public class AnnotationFilter {
 
-public class TextFieldInputField extends AbstractTextField {
+	private final List<Class<? extends Annotation>> annotations;
 
-	public TextFieldInputField(Object parentObject, Object value, Field field) {
-		super(parentObject, value, field, TextField.class,
-				new ValidatingTextField<JTextField>(new JTextField()));
+	public AnnotationFilter(List<Class<? extends Annotation>> annotations) {
+		this.annotations = annotations;
+	}
+
+	public boolean accept(Annotation annotation) {
+		for (Class<? extends Annotation> a : annotations) {
+			if (a.isInstance(annotation)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

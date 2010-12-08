@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.internal.inputfield;
+package com.globalscalingsoftware.prefdialog.internal.dialog;
 
 import java.util.Collections;
 import java.util.Map;
@@ -24,21 +24,21 @@ import java.util.Map;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 
-import com.globalscalingsoftware.prefdialog.FieldHandler;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.child.ChildFieldHandler;
 
 public class PreferencePanels {
 
-	private final Map<Object, FieldHandler<?>> fieldHandlers;
+	private final Map<Object, ChildFieldHandler> fieldHandlers;
 
 	private final Map<Object, TreeNode[]> treeNodes;
 
 	private final DefaultMutableTreeNode rootNode;
 
-	private final FieldHandler<?> preferencesStart;
+	private final ChildFieldHandler preferencesStart;
 
-	public PreferencePanels(Map<Object, FieldHandler<?>> fieldHandlers,
+	public PreferencePanels(Map<Object, ChildFieldHandler> fieldHandlers,
 			Map<Object, TreeNode[]> treeNodes, DefaultMutableTreeNode rootNode,
-			FieldHandler<?> preferencesStart) {
+			ChildFieldHandler preferencesStart) {
 		this.fieldHandlers = fieldHandlers;
 		this.treeNodes = treeNodes;
 		this.rootNode = rootNode;
@@ -53,15 +53,15 @@ public class PreferencePanels {
 		return treeNodes.get(value);
 	}
 
-	public FieldHandler<?> getFieldHandler(Object value) {
+	public ChildFieldHandler getFieldHandler(Object value) {
 		return fieldHandlers.get(value);
 	}
 
-	public Map<Object, FieldHandler<?>> getPreferencePanels() {
+	public Map<Object, ChildFieldHandler> getPreferencePanels() {
 		return Collections.unmodifiableMap(fieldHandlers);
 	}
 
-	public FieldHandler<?> getPreferencesStart() {
+	public ChildFieldHandler getPreferencesStart() {
 		return preferencesStart;
 	}
 

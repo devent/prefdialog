@@ -28,8 +28,10 @@ import java.lang.reflect.Field;
 import org.fest.reflect.exception.ReflectionError;
 
 import com.globalscalingsoftware.annotations.Stateless;
+import com.google.inject.Singleton;
 
 @Stateless
+@Singleton
 public class ReflectionToolbox {
 
 	/**

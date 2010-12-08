@@ -16,17 +16,24 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.internal.dialog;
+package com.globalscalingsoftware.prefdialog.internal.inputfield.child;
 
-import java.util.Arrays;
+import javax.swing.Action;
 
-import com.globalscalingsoftware.prefdialog.annotations.Child;
-import com.globalscalingsoftware.prefdialog.internal.reflection.AbstractAnnotationFilter;
+import com.globalscalingsoftware.prefdialog.FieldComponent;
+import com.globalscalingsoftware.prefdialog.FieldHandler;
 
-public class PreferenceDialogAnnotationsFilter extends AbstractAnnotationFilter {
+public interface ChildComponent extends FieldComponent {
 
-	PreferenceDialogAnnotationsFilter() {
-		super(Arrays.asList(new Class[] { Child.class }));
-	}
+	void addField(FieldHandler<?> inputField);
 
+	void setApplyEvent(Runnable e);
+
+	void setApplyAction(Action a);
+
+	void setRestoreAction(Action a);
+
+	void setRestoreEvent(Runnable e);
+
+	public void setButtonsTransparent(boolean transparent);
 }

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.internal.inputfield.formattedtextfield;
+package com.globalscalingsoftware.prefdialog.internal.inputfield.textfield;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -25,16 +25,17 @@ import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractDefaultF
 import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.validators.Validator;
 
-public abstract class AbstractTextField extends
+public abstract class AbstractTextFieldHandler extends
 		AbstractDefaultFieldHandler<TextFieldPanel> {
 
 	private String validatorText;
 
-	public AbstractTextField(Object parentObject, Object value, Field field,
+	public AbstractTextFieldHandler(ReflectionToolbox reflectionToolbox,
+			Object parentObject, Object value, Field field,
 			Class<? extends Annotation> annotationClass,
 			ValidatingTextField<?> textField) {
-		super(parentObject, value, field, annotationClass, new TextFieldPanel(
-				textField));
+		super(reflectionToolbox, parentObject, value, field, annotationClass,
+				new TextFieldPanel(textField));
 	}
 
 	@Override
@@ -47,7 +48,6 @@ public abstract class AbstractTextField extends
 
 	private String getValidatorTextFromFieldAnnotation() {
 		Annotation a = getField().getAnnotation(getAnnotationClass());
-		ReflectionToolbox reflectionToolbox = getReflectionToolbox();
 		String text = reflectionToolbox.invokeMethodWithReturnType(
 				"validatorText", String.class, a);
 		return text;
@@ -79,7 +79,6 @@ public abstract class AbstractTextField extends
 	}
 
 	private Object createValidator(Annotation a) {
-		ReflectionToolbox reflectionToolbox = getReflectionToolbox();
 		Class<?> validatorClass = reflectionToolbox.invokeMethodWithReturnType(
 				"validator", Class.class, a);
 		Object validator = reflectionToolbox.newInstance(validatorClass);

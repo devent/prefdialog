@@ -46,7 +46,7 @@ abstract class AbstractPreferenceDialogTest {
 		def injector = new PreferencesDialogInjectorFactory().create()
 		def controller = injector.getInstance(PreferenceDialogController)
 		
-		//createDialog(controller)
+		createDialog(controller)
 		def dialog = GuiActionRunner.execute([executeInEDT: { return createDialog(controller) } ] as GuiQuery);
 		return new DialogFixture(dialog);
 	}
