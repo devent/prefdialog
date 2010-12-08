@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.internal.dialog;
+package com.globalscalingsoftware.prefdialog.internal;
 
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeListener;
@@ -24,16 +24,24 @@ import java.beans.PropertyChangeListener;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 
-public abstract class AbstractDelegateAction implements Action {
+public abstract class AbstractDelegateCallbackAction implements Action {
 
 	private Action parentAction;
 
+	private Runnable callback;
+
 	@SuppressWarnings("serial")
-	public AbstractDelegateAction(String name) {
+	public AbstractDelegateCallbackAction(String name) {
 		parentAction = new AbstractAction(name) {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+			}
+		};
+		this.callback = new Runnable() {
+
+			@Override
+			public void run() {
 			}
 		};
 	}
@@ -42,13 +50,15 @@ public abstract class AbstractDelegateAction implements Action {
 		this.parentAction = parentAction;
 	}
 
+	public void setCallback(Runnable callback) {
+		this.callback = callback;
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		parentAction.actionPerformed(e);
-		customActionPerformed(e);
+		callback.run();
 	}
-
-	protected abstract void customActionPerformed(ActionEvent e);
 
 	@Override
 	public Object getValue(String key) {

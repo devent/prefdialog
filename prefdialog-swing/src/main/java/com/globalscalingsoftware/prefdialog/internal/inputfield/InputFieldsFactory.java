@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.internal.dialog;
+package com.globalscalingsoftware.prefdialog.internal.inputfield;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -29,7 +29,9 @@ import javax.swing.tree.TreeNode;
 import com.globalscalingsoftware.annotations.Stateless;
 import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.annotations.Child;
-import com.globalscalingsoftware.prefdialog.internal.inputfield.FieldsFactory;
+import com.globalscalingsoftware.prefdialog.internal.dialog.PreferenceDialogAnnotationsFilter;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.actions.ApplyAction;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.actions.RestoreAction;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.AbstractChildFieldHandler;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.ChildFieldHandler;
 import com.globalscalingsoftware.prefdialog.internal.reflection.AbstractAnnotationFilter;

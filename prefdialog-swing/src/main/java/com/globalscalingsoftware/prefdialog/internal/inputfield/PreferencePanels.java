@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.internal.dialog;
+package com.globalscalingsoftware.prefdialog.internal.inputfield;
 
 import java.util.Collections;
 import java.util.Map;
@@ -26,7 +26,7 @@ import javax.swing.tree.TreeNode;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
 
-class PreferencePanels {
+public class PreferencePanels {
 
 	private final Map<Object, FieldHandler<?>> fieldHandlers;
 

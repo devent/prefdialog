@@ -16,42 +16,15 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.internal.inputfield
+package com.globalscalingsoftware.prefdialog.internal.dialog.actions;
 
-import org.junit.Test;
+import com.globalscalingsoftware.prefdialog.internal.AbstractDelegateCallbackAction;
 
-import com.globalscalingsoftware.prefdialog.annotations.Child;
-import com.globalscalingsoftware.prefdialog.annotations.TextField;
-import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceDialogTest;
 
-class DialogOkTest extends AbstractPreferenceDialogTest {
-	
-	static class Preferences {
-		
-		@Child
-		General general = new General()
+public class OkAction extends AbstractDelegateCallbackAction {
+
+	OkAction() {
+		super("Ok");
 	}
-	
-	static class General {
-		
-		@TextField
-		String name = ""
-		
-		@Override
-		public String toString() {
-			"General"
-		}
-	}
-	
-	def setupPreferences() {
-		preferences = new Preferences()
-	}
-	
-	@Test
-	void testClickOkAndClose() {
-		window.textBox("name").enterText "name"
-		window.button("ok").click()
-		
-		assert preferences.general.name == "name"
-	}
+
 }

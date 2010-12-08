@@ -16,17 +16,15 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.internal.dialog;
+package com.globalscalingsoftware.prefdialog.internal.inputfield.actions;
 
-import java.util.Map;
+import com.globalscalingsoftware.prefdialog.internal.AbstractDelegateCallbackAction;
 
-import com.globalscalingsoftware.prefdialog.FieldHandler;
-import com.globalscalingsoftware.prefdialog.Options;
 
-public interface PreferenceDialogControllerInternal {
+public class ApplyAction extends AbstractDelegateCallbackAction {
 
-	void closeDialog(Options option);
-
-	Map<Object, FieldHandler<?>> getPreferencePanels();
+	ApplyAction() {
+		super("Apply");
+	}
 
 }

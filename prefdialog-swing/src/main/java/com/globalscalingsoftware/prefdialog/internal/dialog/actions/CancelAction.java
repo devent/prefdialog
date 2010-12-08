@@ -16,18 +16,14 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.internal.dialog;
+package com.globalscalingsoftware.prefdialog.internal.dialog.actions;
 
-import java.awt.event.ActionEvent;
+import com.globalscalingsoftware.prefdialog.internal.AbstractDelegateCallbackAction;
 
-public class RestoreAction extends AbstractDelegateAction {
 
-	RestoreAction() {
-		super("Restore");
+public class CancelAction extends AbstractDelegateCallbackAction {
+
+	CancelAction() {
+		super("Cancel");
 	}
-
-	@Override
-	protected void customActionPerformed(ActionEvent e) {
-	}
-
 }

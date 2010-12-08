@@ -28,21 +28,27 @@ import javax.swing.JPanel;
 import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.Options;
 import com.globalscalingsoftware.prefdialog.PreferenceDialogController;
+import com.globalscalingsoftware.prefdialog.internal.dialog.actions.ActionsHandler;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.InputFieldsFactory;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.PreferencePanels;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.child.AbstractChildFieldHandler;
 import com.google.inject.Inject;
 
 public class PreferenceDialogControllerImpl implements
-		PreferenceDialogController, PreferenceDialogControllerInternal {
+		PreferenceDialogController {
 
 	private final PreferenceDialog preferenceDialog;
 	private final InputFieldsFactory inputFieldsFactory;
 	private Options option;
 	private PreferencePanels preferencePanels;
 	private Object preferences;
+	private final ActionsHandler actionsHandler;
 
 	@Inject
 	PreferenceDialogControllerImpl(PreferenceDialog preferenceDialog,
-			InputFieldsFactory inputFieldsFactory) {
+			ActionsHandler actionsHandler, InputFieldsFactory inputFieldsFactory) {
 		this.preferenceDialog = preferenceDialog;
+		this.actionsHandler = actionsHandler;
 		this.inputFieldsFactory = inputFieldsFactory;
 		this.option = Options.CANCEL;
 	}
@@ -50,10 +56,72 @@ public class PreferenceDialogControllerImpl implements
 	@Override
 	public void setup(Frame owner, Object preferences) {
 		this.preferences = preferences;
+		preferenceDialog.setup(owner);
 		setupRootNode();
 		setupChildSelectedAction();
 		setupPreferencesStart();
-		preferenceDialog.setup(owner);
+		setupActions();
+	}
+
+	private void setupActions() {
+		Action okAction = actionsHandler.getOkAction();
+		preferenceDialog.setOkAction(okAction);
+		Action cancelAction = actionsHandler.getCancelAction();
+		preferenceDialog.setCancelAction(cancelAction);
+
+		actionsHandler.setOkCallback(new Runnable() {
+
+			@Override
+			public void run() {
+				applyAllInput();
+				closeDialog(Options.OK);
+			}
+		});
+		actionsHandler.setCancelCallback(new Runnable() {
+
+			@Override
+			public void run() {
+				restoreAllInput();
+				closeDialog(Options.CANCEL);
+			}
+		});
+	}
+
+	private void restoreAllInput() {
+		Map<Object, FieldHandler<?>> panels = getPreferencePanels();
+		for (FieldHandler<?> field : panels.values()) {
+			restoreInputForChildField(field);
+		}
+	}
+
+	private void restoreInputForChildField(FieldHandler<?> field) {
+		if (field instanceof AbstractChildFieldHandler) {
+			AbstractChildFieldHandler<?> child = (AbstractChildFieldHandler<?>) field;
+			child.restoreInput();
+		}
+	}
+
+	private void applyAllInput() {
+		Map<Object, FieldHandler<?>> panels = getPreferencePanels();
+		for (FieldHandler<?> field : panels.values()) {
+			applyInputForChildField(field);
+		}
+	}
+
+	private Map<Object, FieldHandler<?>> getPreferencePanels() {
+		return preferencePanels.getPreferencePanels();
+	}
+
+	private void applyInputForChildField(FieldHandler<?> field) {
+		if (field instanceof AbstractChildFieldHandler) {
+			AbstractChildFieldHandler<?> child = (AbstractChildFieldHandler<?>) field;
+			child.applyInput();
+		}
+	}
+
+	private void closeDialog(Options option) {
+		this.option = option;
+		preferenceDialog.close();
 	}
 
 	private void setupRootNode() {
@@ -95,34 +163,23 @@ public class PreferenceDialogControllerImpl implements
 	}
 
 	@Override
-	public void setOkAction(Action a) {
-		preferenceDialog.setOkAction(a);
+	public void setOkAction(Action action) {
+		actionsHandler.setOkParentAction(action);
 	}
 
 	@Override
-	public void setCancelAction(Action a) {
-		preferenceDialog.setCancelAction(a);
+	public void setCancelAction(Action action) {
+		actionsHandler.setCancelParentAction(action);
 	}
 
 	@Override
-	public void setApplyAction(Action a) {
-		inputFieldsFactory.setApplyAction(a);
+	public void setApplyAction(Action action) {
+		actionsHandler.setApplyParentAction(action);
 	}
 
 	@Override
-	public void setRestoreAction(Action a) {
-		inputFieldsFactory.setRestoreAction(a);
-	}
-
-	@Override
-	public void closeDialog(Options option) {
-		this.option = option;
-		preferenceDialog.close();
-	}
-
-	@Override
-	public Map<Object, FieldHandler<?>> getPreferencePanels() {
-		return preferencePanels.getPreferencePanels();
+	public void setRestoreAction(Action action) {
+		actionsHandler.setRestoreParentAction(action);
 	}
 
 }

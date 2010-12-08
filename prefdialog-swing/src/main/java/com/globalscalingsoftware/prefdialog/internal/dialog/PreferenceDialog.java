@@ -30,29 +30,21 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import com.globalscalingsoftware.prefdialog.Event;
-import com.google.inject.Inject;
 
 public class PreferenceDialog {
 
 	private UiPreferencesDialog uiPreferencesDialog;
 	private final CallableTreeChildSelectedEvent childSelectedEvent;
-	private final OkAction okAction;
-	private final CancelAction cancelAction;
 	private DefaultMutableTreeNode rootNode;
 	private Component childPanel;
 	private TreePath selectedPath;
 
-	@Inject
-	PreferenceDialog(OkAction okAction, CancelAction cancelAction) {
-		this.okAction = okAction;
-		this.cancelAction = cancelAction;
+	PreferenceDialog() {
 		childSelectedEvent = new CallableTreeChildSelectedEvent();
 	}
 
 	public void setup(Frame owner) {
 		uiPreferencesDialog = new UiPreferencesDialog(owner);
-		uiPreferencesDialog.getOkButton().setAction(okAction);
-		uiPreferencesDialog.getCancelButton().setAction(cancelAction);
 
 		JTree childTree = uiPreferencesDialog.getChildTree();
 		childTree.setName("child_tree");
@@ -73,6 +65,10 @@ public class PreferenceDialog {
 	public void open() {
 		uiPreferencesDialog.pack();
 		uiPreferencesDialog.setVisible(true);
+	}
+
+	public void close() {
+		uiPreferencesDialog.setVisible(false);
 	}
 
 	public UiPreferencesDialog getUiPreferencesDialog() {
@@ -98,16 +94,12 @@ public class PreferenceDialog {
 		this.selectedPath = new TreePath(path);
 	}
 
-	public void setOkAction(Action a) {
-		this.okAction.setParentAction(a);
+	public void setOkAction(Action action) {
+		uiPreferencesDialog.getOkButton().setAction(action);
 	}
 
-	public void setCancelAction(Action a) {
-		this.cancelAction.setParentAction(a);
-	}
-
-	public void close() {
-		uiPreferencesDialog.setVisible(false);
+	public void setCancelAction(Action action) {
+		uiPreferencesDialog.getCancelButton().setAction(action);
 	}
 
 }
