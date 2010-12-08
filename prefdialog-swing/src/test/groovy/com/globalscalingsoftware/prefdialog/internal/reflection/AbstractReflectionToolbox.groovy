@@ -18,7 +18,7 @@
  */
 package com.globalscalingsoftware.prefdialog.internal.reflection
 
-import com.globalscalingsoftware.prefdialog.annotations.fields.TextField 
+import com.globalscalingsoftware.prefdialog.annotations.TextField 
 import com.globalscalingsoftware.prefdialog.validators.NotEmptyString 
 import org.junit.Before;
 

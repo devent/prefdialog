@@ -43,7 +43,7 @@ abstract class AbstractPreferenceDialogTest {
 	abstract setupPreferences()
 	
 	private createFrameFixture(def preferences) {
-		def injector = new PreferencesDialogInjectorFactory().create(preferences)
+		def injector = new PreferencesDialogInjectorFactory().create()
 		def controller = injector.getInstance(PreferenceDialogController)
 		
 		//createDialog(controller)
@@ -52,7 +52,7 @@ abstract class AbstractPreferenceDialogTest {
 	}
 	
 	protected createDialog(def controller) {
-		controller.setup(null)
+		controller.setup(null, preferences)
 		return controller.getPreferenceDialog()
 	}
 	
