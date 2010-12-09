@@ -2,6 +2,8 @@ package com.globalscalingsoftware.prefdialog.module;
 
 import static com.google.inject.assistedinject.FactoryProvider.newFactory;
 
+import com.globalscalingsoftware.prefdialog.internal.inputfield.checkbox.CheckBoxFieldHandler;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.checkbox.CheckBoxFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.ChildFieldHandler;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.ChildFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.group.GroupFieldHandler;
@@ -27,6 +29,9 @@ public class FieldHandlersModule extends AbstractModule {
 		bind(RadioButtonFieldHandlerFactory.class).toProvider(
 				newFactory(RadioButtonFieldHandlerFactory.class,
 						RadioButtonFieldHandler.class));
+		bind(CheckBoxFieldHandlerFactory.class).toProvider(
+				newFactory(CheckBoxFieldHandlerFactory.class,
+						CheckBoxFieldHandler.class));
 		bind(ChildFieldHandlerFactory.class).toProvider(
 				newFactory(ChildFieldHandlerFactory.class,
 						ChildFieldHandler.class));

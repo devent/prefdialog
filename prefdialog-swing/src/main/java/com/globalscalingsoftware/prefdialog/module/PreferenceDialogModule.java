@@ -33,6 +33,7 @@ import com.globalscalingsoftware.prefdialog.annotations.RadioButton;
 import com.globalscalingsoftware.prefdialog.annotations.Slider;
 import com.globalscalingsoftware.prefdialog.annotations.TextField;
 import com.globalscalingsoftware.prefdialog.internal.dialog.PreferenceDialogControllerImpl;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.checkbox.CheckBoxFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.ChildFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.group.GroupFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.radiobutton.RadioButtonFieldHandlerFactory;
@@ -104,6 +105,8 @@ public class PreferenceDialogModule extends AbstractModule {
 				injector.getInstance(FormattedTextFieldHandlerFactory.class));
 		factories.put(RadioButton.class,
 				injector.getInstance(RadioButtonFieldHandlerFactory.class));
+		factories.put(Checkbox.class,
+				injector.getInstance(CheckBoxFieldHandlerFactory.class));
 		factories.put(Child.class,
 				injector.getInstance(ChildFieldHandlerFactory.class));
 		factories.put(Group.class,
