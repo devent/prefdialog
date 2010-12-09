@@ -44,14 +44,12 @@ class TextFieldNameTest extends AbstractPreferencePanelTest {
 	}
 	
 	def setupPreferences() {
-		preferencesClass = Preferences
 		preferences = new Preferences()
-		preferencesParentName = "general"
-		preferencesParentValue = preferences.general
+		panelName = "General"
 	}
 	
 	@Test
-	void testPanelClickApplyAndClose() {
+	void testComponents() {
 		assert window.label("label-name").text() == "Project name: "
 	}
 }

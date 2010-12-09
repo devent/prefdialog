@@ -34,6 +34,7 @@ import com.globalscalingsoftware.prefdialog.internal.inputfield.actions.ApplyAct
 import com.globalscalingsoftware.prefdialog.internal.inputfield.actions.RestoreAction;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.ChildFieldHandler;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.ChildFieldHandlerFactory;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.child.group.GroupFieldHandler;
 import com.globalscalingsoftware.prefdialog.internal.reflection.AnnotationDiscovery;
 import com.globalscalingsoftware.prefdialog.internal.reflection.AnnotationDiscoveryCallback;
 import com.globalscalingsoftware.prefdialog.internal.reflection.FieldFactories;
@@ -103,19 +104,36 @@ public class PreferencePanelsFactory {
 			ChildFieldHandlerFactory factory = fieldFactories
 					.getFactory(Child.class);
 			ChildFieldHandler panel = factory.create(preferences, value, field);
-			for (FieldHandler<?> fieldHandler : fieldsFactory
-					.createFieldsHandlers(annotationDiscovery, fieldFactories,
-							preferences, value)) {
-				fieldHandler.setup();
-				panel.addFieldHandler(fieldHandler);
-			}
-
 			panel.setApplyAction(applyAction);
 			panel.setRestoreAction(restoreAction);
 			panel.setup();
 
+			for (FieldHandler<?> fieldHandler : fieldsFactory
+					.createFieldsHandlers(annotationDiscovery, fieldFactories,
+							preferences, value)) {
+				fieldHandler.setup();
+				setupGroupFieldHandler(panel, fieldHandler);
+				panel.addFieldHandler(fieldHandler);
+			}
+
 			fieldHandlers.put(value, panel);
 			return panel;
+		}
+
+		private void setupGroupFieldHandler(ChildFieldHandler child,
+				FieldHandler<?> handler) {
+			if (!(handler instanceof GroupFieldHandler)) {
+				return;
+			}
+			GroupFieldHandler groupFieldHandler = (GroupFieldHandler) handler;
+			Object parentObject = child.getComponentValue();
+			Object value = handler.getComponentValue();
+			for (FieldHandler<?> fieldHandler : fieldsFactory
+					.createFieldsHandlers(annotationDiscovery, fieldFactories,
+							parentObject, value)) {
+				fieldHandler.setup();
+				groupFieldHandler.addFieldHandler(fieldHandler);
+			}
 		}
 
 	}

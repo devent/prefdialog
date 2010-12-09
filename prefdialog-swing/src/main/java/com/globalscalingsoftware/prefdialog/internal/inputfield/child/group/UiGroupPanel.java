@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.internal.inputfield.child;
+package com.globalscalingsoftware.prefdialog.internal.inputfield.child.group;
 
 import info.clearthought.layout.TableLayout;
 

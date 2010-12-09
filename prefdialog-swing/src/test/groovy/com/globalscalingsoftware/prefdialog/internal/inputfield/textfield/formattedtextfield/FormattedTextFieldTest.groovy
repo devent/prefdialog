@@ -16,27 +16,21 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.internal.inputfield.textfield
+package com.globalscalingsoftware.prefdialog.internal.inputfield.textfield.formattedtextfield
+
 
 import org.junit.Test;
 
 import com.globalscalingsoftware.prefdialog.annotations.Child;
-import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField 
+import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField;
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest;
-import com.globalscalingsoftware.prefdialog.validators.Validator;
 
-class FormattedTextFieldValidatorTest extends AbstractPreferencePanelTest {
-	
-	static class FieldsValidator implements Validator<Integer> {
-		public boolean isValid(Integer value) {
-			value >= 2 && value <= 100
-		}
-	}
+class FormattedTextFieldTest extends AbstractPreferencePanelTest {
 	
 	static class General {
 		
-		@FormattedTextField(validator=FieldsValidator, validatorText="Must be a number and between 2 and 100")
-		int fields = 4
+		@FormattedTextField
+		double fields = 4
 		
 		@Override
 		public String toString() {
@@ -51,22 +45,33 @@ class FormattedTextFieldValidatorTest extends AbstractPreferencePanelTest {
 	}
 	
 	def setupPreferences() {
-		preferencesClass = Preferences
 		preferences = new Preferences()
-		preferencesParentName = "general"
-		preferencesParentValue = preferences.general
+		panelName = "General"
 	}
 	
 	@Test
-	void testPanelInvalidTextClickApplyAndClose() {
-		window.textBox("fields").enterText "1"
-		assert window.label("label-fields").text() == "fields (Must be a number and between 2 and 100): "
+	void testComponents() {
+		window.label("label-fields").requireVisible()
+		assert window.label("label-fields").text() == "fields: "
+		window.textBox("fields").requireVisible()
+		assert window.textBox("fields").text() == "4"
+		window.button("apply").requireVisible()
+		assert window.button("apply").text() == "Apply"
+		window.button("restore").requireVisible()
+		assert window.button("restore").text() == "Restore"
 	}
 	
 	@Test
-	void testPanelClickApplyAndClose() {
+	void testEnterTextAndApply() {
 		window.textBox("fields").enterText "10"
 		window.panel("general").button("apply").click()
 		assert preferences.general.fields == 10
+	}
+	
+	@Test
+	void testEnterTextAndRestore() {
+		window.textBox("fields").enterText "10"
+		window.panel("general").button("restore").click()
+		assert preferences.general.fields == 4
 	}
 }

@@ -52,20 +52,18 @@ class TextFieldValidatorTest extends AbstractPreferencePanelTest {
 	}
 	
 	def setupPreferences() {
-		preferencesClass = Preferences
 		preferences = new Preferences()
-		preferencesParentName = "general"
-		preferencesParentValue = preferences.general
+		panelName = "General"
 	}
 	
 	@Test
-	void testPanelInvalidTextClickApplyAndClose() {
+	void testEnterInvalidTextAndApply() {
 		window.textBox("name").enterText ""
 		assert window.label("label-name").text() == "name (Can not be empty): "
 	}
 	
 	@Test
-	void testPanelValidTextClickApplyAndClose() {
+	void testEnterValidTextAndApply() {
 		window.textBox("name").enterText "test"
 		window.panel("general").button("apply").click()
 		assert preferences.general.name == "test"

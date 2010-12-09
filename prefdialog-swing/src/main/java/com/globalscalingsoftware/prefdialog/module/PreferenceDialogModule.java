@@ -34,6 +34,7 @@ import com.globalscalingsoftware.prefdialog.annotations.Slider;
 import com.globalscalingsoftware.prefdialog.annotations.TextField;
 import com.globalscalingsoftware.prefdialog.internal.dialog.PreferenceDialogControllerImpl;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.ChildFieldHandlerFactory;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.child.group.GroupFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.textfield.TextFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.internal.reflection.AnnotationDiscovery;
 import com.globalscalingsoftware.prefdialog.internal.reflection.AnnotationFilter;
@@ -99,6 +100,8 @@ public class PreferenceDialogModule extends AbstractModule {
 				injector.getInstance(TextFieldHandlerFactory.class));
 		factories.put(Child.class,
 				injector.getInstance(ChildFieldHandlerFactory.class));
+		factories.put(Group.class,
+				injector.getInstance(GroupFieldHandlerFactory.class));
 		bind(FactoriesMap.class).toInstance(factories);
 	}
 

@@ -25,13 +25,15 @@ import javax.swing.JFormattedTextField;
 import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.textfield.AbstractTextFieldHandler;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.textfield.ValidatorTexts;
+import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbox;
 
 public class FormattedTextFieldHandler extends AbstractTextFieldHandler {
 
-	public FormattedTextFieldHandler(Object parentObject, Object value,
-			Field field) {
-		super(parentObject, value, field, FormattedTextField.class,
-				new ValidatingFormattedTextField(new JFormattedTextField()));
+	public FormattedTextFieldHandler(ReflectionToolbox reflectionToolbox,
+			Object parentObject, Object value, Field field) {
+		super(reflectionToolbox, parentObject, value, field,
+				FormattedTextField.class, new ValidatingFormattedTextField(
+						new JFormattedTextField()));
 	}
 
 	@Override

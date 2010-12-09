@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.internal.inputfield.child;
+package com.globalscalingsoftware.prefdialog.internal.inputfield.child.group;
 
 import static java.lang.String.format;
 import info.clearthought.layout.TableLayout;
@@ -27,6 +27,7 @@ import javax.swing.Action;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractFieldPanel;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.child.ChildComponent;
 
 public class GroupPanel extends AbstractFieldPanel<UiGroupPanel> implements
 		ChildComponent {

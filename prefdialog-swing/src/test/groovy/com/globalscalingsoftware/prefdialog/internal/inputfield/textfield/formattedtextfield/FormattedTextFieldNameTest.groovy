@@ -16,19 +16,20 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.internal.inputfield.textfield
+package com.globalscalingsoftware.prefdialog.internal.inputfield.textfield.formattedtextfield
+
 
 import org.junit.Test;
 
-import com.globalscalingsoftware.prefdialog.annotations.Child;
-import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField;
-import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest;
+import com.globalscalingsoftware.prefdialog.annotations.Child 
+import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField 
+import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest 
 
-class FormattedTextFieldRestoreTest extends AbstractPreferencePanelTest {
+class FormattedTextFieldNameTest extends AbstractPreferencePanelTest {
 	
 	static class General {
 		
-		@FormattedTextField
+		@FormattedTextField("Number of fields")
 		double fields = 4
 		
 		@Override
@@ -44,18 +45,13 @@ class FormattedTextFieldRestoreTest extends AbstractPreferencePanelTest {
 	}
 	
 	def setupPreferences() {
-		preferencesClass = Preferences
 		preferences = new Preferences()
-		preferencesParentName = "general"
-		preferencesParentValue = preferences.general
+		panelName = "General"
 	}
 	
 	@Test
 	void testPanelClickApplyAndClose() {
 		window.textBox("fields").enterText "10"
-		window.panel("general").button("restore").click()
-		
-		assert window.textBox("fields").text() == "4"
-		assert preferences.general.fields == 4
+		assert window.label("label-fields").text() == "Number of fields: "
 	}
 }

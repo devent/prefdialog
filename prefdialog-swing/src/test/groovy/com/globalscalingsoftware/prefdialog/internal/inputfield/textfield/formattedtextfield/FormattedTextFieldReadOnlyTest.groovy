@@ -16,7 +16,8 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.internal.inputfield.textfield
+package com.globalscalingsoftware.prefdialog.internal.inputfield.textfield.formattedtextfield
+
 
 import org.junit.Test;
 
@@ -24,12 +25,12 @@ import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField 
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest;
 
-class FormattedTextFieldWidthTest extends AbstractPreferencePanelTest {
+class FormattedTextFieldReadOnlyTest extends AbstractPreferencePanelTest {
 	
 	static class General {
 		
-		@FormattedTextField(width=-2.0d)
-		int fields = 4
+		@FormattedTextField(readonly=true)
+		double fields = 4
 		
 		@Override
 		public String toString() {
@@ -43,20 +44,14 @@ class FormattedTextFieldWidthTest extends AbstractPreferencePanelTest {
 		General general = new General()
 	}
 	
-	
 	def setupPreferences() {
-		preferencesClass = Preferences
 		preferences = new Preferences()
-		preferencesParentName = "general"
-		preferencesParentValue = preferences.general
+		panelName = "General"
 	}
 	
 	@Test
 	void testPanelClickApplyAndClose() {
-		window.textBox("fields").enterText "10"
-		window.panel("general").button("apply").click()
-		
-		assert window.label("label-fields").text() == "fields: "
-		assert preferences.general.fields == 10
+		window.textBox("fields").requireDisabled()
+		window.textBox("fields").requireText "4"
 	}
 }
