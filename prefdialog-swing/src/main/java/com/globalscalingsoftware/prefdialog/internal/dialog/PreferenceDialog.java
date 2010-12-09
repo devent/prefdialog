@@ -35,7 +35,6 @@ public class PreferenceDialog {
 
 	private UiPreferencesDialog uiPreferencesDialog;
 	private final CallableTreeChildSelectedEvent childSelectedEvent;
-	private DefaultMutableTreeNode rootNode;
 	private Component childPanel;
 	private TreePath selectedPath;
 
@@ -43,7 +42,7 @@ public class PreferenceDialog {
 		childSelectedEvent = new CallableTreeChildSelectedEvent();
 	}
 
-	public void setup(Frame owner) {
+	public void setup(Frame owner, DefaultMutableTreeNode rootNode) {
 		uiPreferencesDialog = new UiPreferencesDialog(owner);
 
 		JTree childTree = uiPreferencesDialog.getChildTree();
@@ -73,10 +72,6 @@ public class PreferenceDialog {
 
 	public UiPreferencesDialog getUiPreferencesDialog() {
 		return uiPreferencesDialog;
-	}
-
-	public void setRootNode(DefaultMutableTreeNode root) {
-		this.rootNode = root;
 	}
 
 	public void setChildSelected(Event<Object> childSelected) {
