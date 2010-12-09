@@ -14,6 +14,8 @@ import com.globalscalingsoftware.prefdialog.internal.inputfield.filechooser.File
 import com.globalscalingsoftware.prefdialog.internal.inputfield.filechooser.FileChooserFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.radiobutton.RadioButtonFieldHandler;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.radiobutton.RadioButtonFieldHandlerFactory;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.slider.SliderFieldHandler;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.slider.SliderFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.textfield.TextFieldHandler;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.textfield.TextFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.textfield.formattedtextfield.FormattedTextFieldHandler;
@@ -42,6 +44,9 @@ public class FieldHandlersModule extends AbstractModule {
 		bind(FileChooserFieldHandlerFactory.class).toProvider(
 				newFactory(FileChooserFieldHandlerFactory.class,
 						FileChooserFieldHandler.class));
+		bind(SliderFieldHandlerFactory.class).toProvider(
+				newFactory(SliderFieldHandlerFactory.class,
+						SliderFieldHandler.class));
 		bind(ChildFieldHandlerFactory.class).toProvider(
 				newFactory(ChildFieldHandlerFactory.class,
 						ChildFieldHandler.class));

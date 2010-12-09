@@ -26,12 +26,19 @@ import javax.swing.DefaultBoundedRangeModel;
 
 import com.globalscalingsoftware.prefdialog.annotations.Slider;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractDefaultFieldHandler;
+import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbox;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
 public class SliderFieldHandler extends
 		AbstractDefaultFieldHandler<SliderPanel> {
 
-	public SliderFieldHandler(Object parentObject, Object value, Field field) {
-		super(parentObject, value, field, Slider.class, new SliderPanel());
+	@Inject
+	SliderFieldHandler(ReflectionToolbox reflectionToolbox,
+			@Assisted("parentObject") Object parentObject,
+			@Assisted("value") Object value, @Assisted Field field) {
+		super(reflectionToolbox, parentObject, value, field, Slider.class,
+				new SliderPanel());
 	}
 
 	@Override

@@ -39,6 +39,7 @@ import com.globalscalingsoftware.prefdialog.internal.inputfield.child.group.Grou
 import com.globalscalingsoftware.prefdialog.internal.inputfield.combobox.ComboBoxFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.filechooser.FileChooserFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.radiobutton.RadioButtonFieldHandlerFactory;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.slider.SliderFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.textfield.TextFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.textfield.formattedtextfield.FormattedTextFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.internal.reflection.AnnotationDiscovery;
@@ -113,6 +114,8 @@ public class PreferenceDialogModule extends AbstractModule {
 				injector.getInstance(ComboBoxFieldHandlerFactory.class));
 		factories.put(FileChooser.class,
 				injector.getInstance(FileChooserFieldHandlerFactory.class));
+		factories.put(Slider.class,
+				injector.getInstance(SliderFieldHandlerFactory.class));
 		factories.put(Child.class,
 				injector.getInstance(ChildFieldHandlerFactory.class));
 		factories.put(Group.class,
