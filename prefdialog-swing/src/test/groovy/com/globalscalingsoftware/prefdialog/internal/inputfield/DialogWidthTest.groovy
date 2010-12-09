@@ -62,7 +62,7 @@ class DialogWidthTest extends AbstractPreferenceDialogTest {
 		]
 		
 		@ComboBox(value="combobox1", width=-2.0d)
-		String comboBox
+		String comboBox = ""
 		
 		@Override
 		public String toString() {
