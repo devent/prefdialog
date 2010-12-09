@@ -10,6 +10,8 @@ import com.globalscalingsoftware.prefdialog.internal.inputfield.radiobutton.Radi
 import com.globalscalingsoftware.prefdialog.internal.inputfield.radiobutton.RadioButtonFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.textfield.TextFieldHandler;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.textfield.TextFieldHandlerFactory;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.textfield.formattedtextfield.FormattedTextFieldHandler;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.textfield.formattedtextfield.FormattedTextFieldHandlerFactory;
 import com.google.inject.AbstractModule;
 
 public class FieldHandlersModule extends AbstractModule {
@@ -19,6 +21,9 @@ public class FieldHandlersModule extends AbstractModule {
 		bind(TextFieldHandlerFactory.class).toProvider(
 				newFactory(TextFieldHandlerFactory.class,
 						TextFieldHandler.class));
+		bind(FormattedTextFieldHandlerFactory.class).toProvider(
+				newFactory(FormattedTextFieldHandlerFactory.class,
+						FormattedTextFieldHandler.class));
 		bind(RadioButtonFieldHandlerFactory.class).toProvider(
 				newFactory(RadioButtonFieldHandlerFactory.class,
 						RadioButtonFieldHandler.class));
