@@ -71,7 +71,6 @@ public class PreferenceDialogControllerImpl implements
 
 	@Override
 	public void setup() {
-		preferenceDialog.setup(owner);
 		setupRootNode();
 		setupChildSelectedAction();
 		setupPreferencesStart();
@@ -81,7 +80,7 @@ public class PreferenceDialogControllerImpl implements
 	private void setupRootNode() {
 		preferencePanels = preferencePanelsFactory.createRootNode(
 				annotationDiscovery, fieldFactories, preferences);
-		preferenceDialog.setRootNode(preferencePanels.getRootNode());
+		preferenceDialog.setup(owner, preferencePanels.getRootNode());
 	}
 
 	private void setupActions() {
