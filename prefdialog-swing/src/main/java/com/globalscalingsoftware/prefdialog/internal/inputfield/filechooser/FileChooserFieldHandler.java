@@ -28,13 +28,18 @@ import javax.swing.JFileChooser;
 
 import com.globalscalingsoftware.prefdialog.annotations.FileChooser;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractDefaultFieldHandler;
+import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbox;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
 public class FileChooserFieldHandler extends
 		AbstractDefaultFieldHandler<FileChooserPanel> {
 
-	public FileChooserFieldHandler(Object parentObject, Object value,
-			Field field) {
-		super(parentObject, value, field, FileChooser.class,
+	@Inject
+	FileChooserFieldHandler(ReflectionToolbox reflectionToolbox,
+			@Assisted("parentObject") Object parentObject,
+			@Assisted("value") Object value, @Assisted Field field) {
+		super(reflectionToolbox, parentObject, value, field, FileChooser.class,
 				new FileChooserPanel());
 	}
 
