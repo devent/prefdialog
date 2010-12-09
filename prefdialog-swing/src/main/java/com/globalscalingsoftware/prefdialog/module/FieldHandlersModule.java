@@ -8,6 +8,8 @@ import com.globalscalingsoftware.prefdialog.internal.inputfield.child.ChildField
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.ChildFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.group.GroupFieldHandler;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.group.GroupFieldHandlerFactory;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.combobox.ComboBoxFieldHandler;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.combobox.ComboBoxFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.radiobutton.RadioButtonFieldHandler;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.radiobutton.RadioButtonFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.textfield.TextFieldHandler;
@@ -32,6 +34,9 @@ public class FieldHandlersModule extends AbstractModule {
 		bind(CheckBoxFieldHandlerFactory.class).toProvider(
 				newFactory(CheckBoxFieldHandlerFactory.class,
 						CheckBoxFieldHandler.class));
+		bind(ComboBoxFieldHandlerFactory.class).toProvider(
+				newFactory(ComboBoxFieldHandlerFactory.class,
+						ComboBoxFieldHandler.class));
 		bind(ChildFieldHandlerFactory.class).toProvider(
 				newFactory(ChildFieldHandlerFactory.class,
 						ChildFieldHandler.class));

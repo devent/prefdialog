@@ -37,21 +37,19 @@ public class FieldsFactory {
 
 		private final AnnotationDiscovery annotationDiscovery;
 		private final Object parentObject;
-		private final Object value;
 		private final FieldFactories fieldFactories;
 		private final List<FieldHandler<?>> fieldHandlers;
 
 		public FactoryWorker(AnnotationDiscovery annotationDiscovery,
-				FieldFactories fieldFactories, Object parentObject, Object value) {
+				FieldFactories fieldFactories, Object parentObject) {
 			this.annotationDiscovery = annotationDiscovery;
 			this.fieldFactories = fieldFactories;
 			this.parentObject = parentObject;
-			this.value = value;
 			this.fieldHandlers = new ArrayList<FieldHandler<?>>();
 		}
 
 		public List<FieldHandler<?>> createFieldsHandlers() {
-			annotationDiscovery.discoverAnnotations(value, this);
+			annotationDiscovery.discoverAnnotations(parentObject, this);
 			return fieldHandlers;
 		}
 
@@ -68,9 +66,9 @@ public class FieldsFactory {
 
 	public List<FieldHandler<?>> createFieldsHandlers(
 			AnnotationDiscovery annotationDiscovery,
-			FieldFactories fieldFactories, Object parentObject, Object value) {
-		return new FactoryWorker(annotationDiscovery, fieldFactories,
-				parentObject, value).createFieldsHandlers();
+			FieldFactories fieldFactories, Object value) {
+		return new FactoryWorker(annotationDiscovery, fieldFactories, value)
+				.createFieldsHandlers();
 	}
 
 }

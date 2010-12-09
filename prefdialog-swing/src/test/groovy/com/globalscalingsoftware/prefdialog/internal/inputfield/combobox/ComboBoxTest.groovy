@@ -53,10 +53,8 @@ class ComboBoxTest extends AbstractPreferencePanelTest {
 	}
 	
 	def setupPreferences() {
-		preferencesClass = Preferences
 		preferences = new Preferences()
-		preferencesParentName = "general"
-		preferencesParentValue = preferences.general
+		panelName = "General"
 	}
 	
 	@Test

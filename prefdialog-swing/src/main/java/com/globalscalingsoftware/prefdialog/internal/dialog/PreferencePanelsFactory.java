@@ -110,7 +110,7 @@ public class PreferencePanelsFactory {
 
 			for (FieldHandler<?> fieldHandler : fieldsFactory
 					.createFieldsHandlers(annotationDiscovery, fieldFactories,
-							preferences, value)) {
+							value)) {
 				fieldHandler.setup();
 				setupGroupFieldHandler(panel, fieldHandler);
 				panel.addFieldHandler(fieldHandler);
@@ -126,11 +126,10 @@ public class PreferencePanelsFactory {
 				return;
 			}
 			GroupFieldHandler groupFieldHandler = (GroupFieldHandler) handler;
-			Object parentObject = child.getComponentValue();
 			Object value = handler.getComponentValue();
 			for (FieldHandler<?> fieldHandler : fieldsFactory
 					.createFieldsHandlers(annotationDiscovery, fieldFactories,
-							parentObject, value)) {
+							value)) {
 				fieldHandler.setup();
 				groupFieldHandler.addFieldHandler(fieldHandler);
 			}

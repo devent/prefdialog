@@ -39,7 +39,7 @@ class ComboBoxWidthTest extends AbstractPreferencePanelTest {
 		]
 		
 		@ComboBox(value = "combobox1", width = -2.0d)
-		String comboBox
+		String comboBox = ""
 		
 		@Override
 		public String toString() {
@@ -54,10 +54,8 @@ class ComboBoxWidthTest extends AbstractPreferencePanelTest {
 	}
 	
 	def setupPreferences() {
-		preferencesClass = Preferences
 		preferences = new Preferences()
-		preferencesParentName = "general"
-		preferencesParentValue = preferences.general
+		panelName = "General"
 	}
 	
 	@Test
