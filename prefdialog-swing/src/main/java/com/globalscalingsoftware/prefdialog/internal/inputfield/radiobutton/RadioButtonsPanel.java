@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.internal.inputfield.button;
+package com.globalscalingsoftware.prefdialog.internal.inputfield.radiobutton;
 
 import static java.lang.String.format;
 import info.clearthought.layout.TableLayout;
