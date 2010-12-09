@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.globalscalingsoftware.prefdialog.PreferenceDialogController;
+import com.globalscalingsoftware.prefdialog.PreferenceDialogFactory;
 import com.globalscalingsoftware.prefdialog.annotations.Checkbox;
 import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.annotations.ComboBox;
@@ -49,6 +50,7 @@ import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbo
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.assistedinject.FactoryProvider;
 
 /**
  * Binds the default dependencies for the preference dialog.
@@ -139,8 +141,9 @@ public class PreferenceDialogModule extends AbstractModule {
 	}
 
 	private void bindPreferenceDialog() {
-		bind(PreferenceDialogController.class).to(
-				PreferenceDialogControllerImpl.class);
+		bind(PreferenceDialogFactory.class).toProvider(
+				FactoryProvider.newFactory(PreferenceDialogFactory.class,
+						PreferenceDialogControllerImpl.class));
 	}
 
 }

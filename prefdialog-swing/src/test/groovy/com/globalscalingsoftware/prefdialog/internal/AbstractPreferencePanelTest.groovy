@@ -29,7 +29,7 @@ import org.fest.swing.fixture.FrameFixture
 import org.junit.After;
 import org.junit.Before;
 
-import com.globalscalingsoftware.prefdialog.PreferenceDialogController;
+import com.globalscalingsoftware.prefdialog.PreferenceDialogFactory;
 
 
 
@@ -73,15 +73,16 @@ abstract class AbstractPreferencePanelTest {
 	
 	protected createFrameFixture() {
 		def injector = new PreferencesDialogInjectorFactory().create()
-		def controller = injector.getInstance(PreferenceDialogController)
+		def factory = injector.getInstance(PreferenceDialogFactory)
 		
-		getFrame(controller)
-		def frame = GuiActionRunner.execute([executeInEDT: { return getFrame(controller) } ] as GuiQuery);
+		getFrame(factory)
+		def frame = GuiActionRunner.execute([executeInEDT: { return getFrame(factory) } ] as GuiQuery);
 		return new FrameFixture(frame);
 	}
 	
-	protected getFrame(PreferenceDialogController controller) {
-		controller.setup(null, preferences)
+	protected getFrame(PreferenceDialogFactory factory) {
+		def controller = factory.create(null, preferences)
+		controller.setup()
 		def panel = controller.getPreferencePanels().get(panelName)
 		return createFrame(panel)
 	}

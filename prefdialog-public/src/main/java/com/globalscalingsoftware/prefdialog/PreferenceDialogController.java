@@ -53,14 +53,8 @@ public interface PreferenceDialogController {
 	/**
 	 * Create the dialog and all the components with the {@link Frame owner} of
 	 * the dialog.
-	 * 
-	 * @param owner
-	 *            the {@link Frame owner} of the dialog, can be
-	 *            <code>null</code>.
-	 * @param preferences
-	 *            the preferences.
 	 */
-	void setup(Frame owner, Object preferences);
+	void setup();
 
 	/**
 	 * Opens the dialog.
