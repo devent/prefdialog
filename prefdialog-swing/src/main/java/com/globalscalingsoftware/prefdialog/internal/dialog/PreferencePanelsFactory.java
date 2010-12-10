@@ -32,7 +32,7 @@ import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.FieldsFactory;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.actions.ApplyAction;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.actions.RestoreAction;
-import com.globalscalingsoftware.prefdialog.internal.inputfield.child.ChildFieldHandler;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.child.ChildFieldHandlerImpl;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.ChildFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.group.GroupFieldHandler;
 import com.globalscalingsoftware.prefdialog.internal.reflection.AnnotationDiscovery;
@@ -53,9 +53,9 @@ public class PreferencePanelsFactory {
 
 		private final DefaultMutableTreeNode rootNode;
 
-		private final HashMap<Object, ChildFieldHandler> fieldHandlers;
+		private final HashMap<Object, ChildFieldHandlerImpl> fieldHandlers;
 
-		private ChildFieldHandler preferencesStart;
+		private ChildFieldHandlerImpl preferencesStart;
 
 		private final FieldFactories fieldFactories;
 
@@ -66,7 +66,7 @@ public class PreferencePanelsFactory {
 			this.preferences = preferences;
 			this.treeNodes = new HashMap<Object, TreeNode[]>();
 			this.rootNode = new DefaultMutableTreeNode();
-			this.fieldHandlers = new HashMap<Object, ChildFieldHandler>();
+			this.fieldHandlers = new HashMap<Object, ChildFieldHandlerImpl>();
 			this.preferencesStart = null;
 		}
 
@@ -88,14 +88,14 @@ public class PreferencePanelsFactory {
 		}
 
 		private void createPreferencesStart(Field field, Object value) {
-			ChildFieldHandler fieldHandler = createChildFieldHandler(field,
+			ChildFieldHandlerImpl fieldHandler = createChildFieldHandler(field,
 					value);
 			if (preferencesStart == null) {
 				preferencesStart = fieldHandler;
 			}
 		}
 
-		private ChildFieldHandler createChildFieldHandler(Field field,
+		private ChildFieldHandlerImpl createChildFieldHandler(Field field,
 				Object value) {
 			DefaultMutableTreeNode node = new DefaultMutableTreeNode(value);
 			rootNode.add(node);
@@ -103,7 +103,7 @@ public class PreferencePanelsFactory {
 
 			ChildFieldHandlerFactory factory = fieldFactories
 					.getFactory(Child.class);
-			ChildFieldHandler panel = factory.create(preferences, value, field);
+			ChildFieldHandlerImpl panel = factory.create(preferences, value, field);
 			panel.setApplyAction(applyAction);
 			panel.setRestoreAction(restoreAction);
 			panel.setup();
@@ -120,7 +120,7 @@ public class PreferencePanelsFactory {
 			return panel;
 		}
 
-		private void setupGroupFieldHandler(ChildFieldHandler child,
+		private void setupGroupFieldHandler(ChildFieldHandlerImpl child,
 				FieldHandler<?> handler) {
 			if (!(handler instanceof GroupFieldHandler)) {
 				return;

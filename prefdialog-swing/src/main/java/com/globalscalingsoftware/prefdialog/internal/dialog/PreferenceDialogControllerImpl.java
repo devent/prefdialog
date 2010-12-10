@@ -18,7 +18,6 @@
  */
 package com.globalscalingsoftware.prefdialog.internal.dialog;
 
-import java.awt.Component;
 import java.awt.Frame;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,12 +26,13 @@ import javax.swing.Action;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 
+import com.globalscalingsoftware.prefdialog.ChildFieldHandler;
 import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.Options;
 import com.globalscalingsoftware.prefdialog.PreferenceDialogController;
 import com.globalscalingsoftware.prefdialog.internal.dialog.actions.ActionsHandler;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.AbstractChildFieldHandler;
-import com.globalscalingsoftware.prefdialog.internal.inputfield.child.ChildFieldHandler;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.child.ChildFieldHandlerImpl;
 import com.globalscalingsoftware.prefdialog.internal.reflection.AnnotationDiscovery;
 import com.globalscalingsoftware.prefdialog.internal.reflection.FieldFactories;
 import com.google.inject.Inject;
@@ -108,7 +108,7 @@ public class PreferenceDialogControllerImpl implements
 	}
 
 	private void restoreAllInput() {
-		Map<Object, ChildFieldHandler> panels = preferencePanels
+		Map<Object, ChildFieldHandlerImpl> panels = preferencePanels
 				.getPreferencePanels();
 		for (FieldHandler<?> field : panels.values()) {
 			restoreInputForChildField(field);
@@ -123,7 +123,7 @@ public class PreferenceDialogControllerImpl implements
 	}
 
 	private void applyAllInput() {
-		Map<Object, ChildFieldHandler> panels = preferencePanels
+		Map<Object, ChildFieldHandlerImpl> panels = preferencePanels
 				.getPreferencePanels();
 		for (FieldHandler<?> field : panels.values()) {
 			applyInputForChildField(field);
@@ -166,12 +166,11 @@ public class PreferenceDialogControllerImpl implements
 	}
 
 	@Override
-	public Map<String, Component> getPreferencePanels() {
-		Map<String, Component> panels = new HashMap<String, Component>();
-		for (Map.Entry<Object, ChildFieldHandler> entry : preferencePanels
+	public Map<String, ChildFieldHandler> getPreferencePanels() {
+		Map<String, ChildFieldHandler> panels = new HashMap<String, ChildFieldHandler>();
+		for (Map.Entry<Object, ChildFieldHandlerImpl> entry : preferencePanels
 				.getPreferencePanels().entrySet()) {
-			panels.put(entry.getKey().toString(), entry.getValue()
-					.getAWTComponent());
+			panels.put(entry.getKey().toString(), entry.getValue());
 		}
 		return panels;
 	}
