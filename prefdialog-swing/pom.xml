@@ -5,12 +5,12 @@
 	<parent>
 		<artifactId>prefdialog</artifactId>
 		<groupId>com.globalscalingsoftware.prefdialog</groupId>
-		<version>1.1</version>
+		<version>1.2-SNAPSHOT</version>
 	</parent>
 
 	<groupId>com.globalscalingsoftware.prefdialog</groupId>
 	<artifactId>prefdialog-swing</artifactId>
-	<version>1.1</version>
+	<version>1.2-SNAPSHOT</version>
 
 	<dependencies>
 		<dependency>
@@ -41,7 +41,7 @@
 		<dependency>
 			<groupId>com.globalscalingsoftware.prefdialog</groupId>
 			<artifactId>prefdialog-public</artifactId>
-			<version>1.1</version>
+			<version>1.2-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.easytesting</groupId>
