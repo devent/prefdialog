@@ -37,7 +37,7 @@ class ComboBoxReadOnlyTest extends AbstractPreferencePanelTest {
 			"third element"
 		]
 		
-		@ComboBox(value="Some combo box", readonly=true)
+		@ComboBox(elements="Some combo box", readonly=true)
 		String comboBox = "first element"
 		
 		@Override

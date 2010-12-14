@@ -38,7 +38,7 @@ class ComboBoxWidthTest extends AbstractPreferencePanelTest {
 			"third element"
 		]
 		
-		@ComboBox(value = "combobox1", width = -2.0d)
+		@ComboBox(elements = "combobox1", width = -2.0d)
 		String comboBox = ""
 		
 		@Override
@@ -63,7 +63,7 @@ class ComboBoxWidthTest extends AbstractPreferencePanelTest {
 		window.comboBox("comboBox").selectItem 1
 		window.panel("general").button("apply").click()
 		
-		assert window.label("label-comboBox").text() == "combobox1: "
+		assert window.label("label-comboBox").text() == "comboBox: "
 		assert preferences.general.comboBox == "second element"
 	}
 }

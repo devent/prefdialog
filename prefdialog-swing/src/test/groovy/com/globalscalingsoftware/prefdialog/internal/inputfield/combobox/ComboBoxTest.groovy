@@ -37,7 +37,7 @@ class ComboBoxTest extends AbstractPreferencePanelTest {
 			"third element"
 		]
 		
-		@ComboBox("Some combo box")
+		@ComboBox(elements="Some combo box")
 		String comboBox = "first element"
 		
 		@Override
@@ -58,11 +58,21 @@ class ComboBoxTest extends AbstractPreferencePanelTest {
 	}
 	
 	@Test
-	void testPanelClickApplyAndClose() {
+	void testChooseFirstAndApply() {
 		window.comboBox("comboBox").selectItem 1
 		window.panel("general").button("apply").click()
 		
-		assert window.label("label-comboBox").text() == "Some combo box: "
+		assert window.label("label-comboBox").text() == "comboBox: "
 		assert preferences.general.comboBox == "second element"
 	}
+	
+	@Test
+	void testChooseFirstAndRestore() {
+		window.comboBox("comboBox").selectItem 1
+		window.panel("general").button("restore").click()
+		
+		window.comboBox("comboBox").requireSelection 0
+		assert preferences.general.comboBox == "first element"
+	}
 }
+
