@@ -29,6 +29,7 @@ import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractDefaultF
 import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbox;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
+import com.google.inject.internal.Nullable;
 
 public class ComboBoxFieldHandler extends
 		AbstractDefaultFieldHandler<ComboBoxPanel> {
@@ -36,7 +37,7 @@ public class ComboBoxFieldHandler extends
 	@Inject
 	ComboBoxFieldHandler(ReflectionToolbox reflectionToolbox,
 			@Assisted("parentObject") Object parentObject,
-			@Assisted("value") Object value, @Assisted Field field) {
+			@Assisted("value") @Nullable Object value, @Assisted Field field) {
 		super(reflectionToolbox, parentObject, value, field, ComboBox.class,
 				new ComboBoxPanel());
 	}
