@@ -177,7 +177,7 @@ public class ReflectionToolbox {
 		return 1;
 	}
 
-	public <T> Object searchObjectWithAnnotationValueIn(Object parentObject,
+	public <T> T searchObjectWithAnnotationValueIn(Object parentObject,
 			Class<? extends Annotation> annotationClass, T value,
 			Class<? extends T> returnType) {
 		for (Field field : parentObject.getClass().getDeclaredFields()) {
@@ -187,10 +187,15 @@ public class ReflectionToolbox {
 			}
 			T aValue = invokeMethodWithReturnType("value", returnType, a);
 			if (aValue.equals(value)) {
-				return getValueFrom(field, parentObject);
+				return getValueFrom(parentObject, field);
 			}
 		}
 		return null;
+	}
+
+	@SuppressWarnings("unchecked")
+	private <T> T getValueFrom(Object parentObject, Field field) {
+		return (T) getValueFrom(field, parentObject);
 	}
 
 	private boolean annotationHaveNotValueMethod(Annotation a) {

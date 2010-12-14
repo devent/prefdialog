@@ -26,7 +26,9 @@ import java.lang.annotation.Target;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComboBox;
+import javax.swing.ListCellRenderer;
 
 /**
  * <p>
@@ -91,4 +93,9 @@ public @interface ComboBox {
 	 * Optional a custom {@link ComboBoxModel} to use with this combo box.
 	 */
 	Class<? extends ComboBoxModel> model() default DefaultComboBoxModel.class;
+
+	/**
+	 * Optional a custom {@link ListCellRenderer} to use with this combo box.
+	 */
+	Class<? extends ListCellRenderer> renderer() default DefaultListCellRenderer.class;
 }
