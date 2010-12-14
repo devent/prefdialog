@@ -46,10 +46,10 @@ public class ComboBoxFieldHandler extends
 
 	@Override
 	public void setup() {
-		super.setup();
 		setupCustomModel();
 		setupCustomRenderer();
 		setupElements();
+		super.setup();
 	}
 
 	private void setupCustomRenderer() {
