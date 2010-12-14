@@ -20,6 +20,7 @@ package com.globalscalingsoftware.prefdialog.internal.inputfield.combobox;
 
 import java.util.Collection;
 
+import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 
@@ -28,23 +29,26 @@ import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractLabelFie
 @SuppressWarnings("serial")
 public class ComboBoxPanel extends AbstractLabelFieldPanel<JComboBox> {
 
-	private static class ComboBoxModel extends DefaultComboBoxModel {
+	private static class ValuesComboBoxModel extends DefaultComboBoxModel {
 
-		public ComboBoxModel(Collection<?> values) {
+		public ValuesComboBoxModel(Collection<?> values) {
 			super(values.toArray());
 		}
 
 	}
-
-	private ComboBoxModel comboBoxModel;
 
 	public ComboBoxPanel() {
 		super(new JComboBox());
 	}
 
 	public void setValues(Object values) {
-		comboBoxModel = new ComboBoxModel((Collection<?>) values);
-		getPanelField().setModel(comboBoxModel);
+		ValuesComboBoxModel model = new ValuesComboBoxModel(
+				(Collection<?>) values);
+		getPanelField().setModel(model);
+	}
+
+	public void setModel(ComboBoxModel model) {
+		getPanelField().setModel(model);
 	}
 
 	@Override

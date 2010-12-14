@@ -21,6 +21,8 @@ package com.globalscalingsoftware.prefdialog.internal.inputfield.combobox;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
+import javax.swing.ComboBoxModel;
+
 import com.globalscalingsoftware.prefdialog.annotations.ComboBox;
 import com.globalscalingsoftware.prefdialog.annotations.ComboBoxElements;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractDefaultFieldHandler;
@@ -42,21 +44,54 @@ public class ComboBoxFieldHandler extends
 	@Override
 	public void setup() {
 		super.setup();
-		Object parentObject = getParentObject();
-		Field field = getField();
-		Object values = getValuesFromAnnotationIn(parentObject, field);
-		getComponent().setValues(values);
+		setupElements();
+		setupCustomModel();
 	}
 
-	private Object getValuesFromAnnotationIn(Object parentObject, Field field) {
+	private void setupCustomModel() {
+		Field field = getField();
 		Annotation a = field.getAnnotation(ComboBox.class);
-		String comboBoxName = reflectionToolbox.invokeMethodWithReturnType(
-				"value", String.class, a);
+		@SuppressWarnings("unchecked")
+		Class<? extends ComboBoxModel> modelClass = getAnnotationField(
+				Class.class, a, "model");
+		ComboBoxModel model = createModel(modelClass);
+		getComponent().setModel(model);
+	}
+
+	private ComboBoxModel createModel(Class<? extends ComboBoxModel> modelClass) {
+		try {
+			return modelClass.newInstance();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			throw new RuntimeException(e);
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			throw new RuntimeException(e);
+		}
+	}
+
+	private void setupElements() {
+		Object values = getValuesFromAnnotationIn();
+		if (values != null) {
+			getComponent().setValues(values);
+		}
+	}
+
+	private Object getValuesFromAnnotationIn() {
+		Object parentObject = getParentObject();
+		Field field = getField();
+		Annotation a = field.getAnnotation(ComboBox.class);
+		String comboBoxName = getAnnotationField(String.class, a, "elements");
 
 		Object values = reflectionToolbox.searchObjectWithAnnotationValueIn(
 				parentObject, ComboBoxElements.class, comboBoxName,
 				String.class);
 		return values;
+	}
+
+	private <T> T getAnnotationField(Class<? extends T> clazz, Annotation a,
+			String name) {
+		return reflectionToolbox.invokeMethodWithReturnType(name, clazz, a);
 	}
 
 }
