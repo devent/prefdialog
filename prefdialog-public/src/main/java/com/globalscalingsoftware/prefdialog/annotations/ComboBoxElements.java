@@ -35,7 +35,7 @@ import java.lang.annotation.Target;
 public @interface ComboBoxElements {
 
 	/**
-	 * The name of the combobox for which that field holds the elements.
+	 * The name of this combo box elements.
 	 */
 	String value();
 }

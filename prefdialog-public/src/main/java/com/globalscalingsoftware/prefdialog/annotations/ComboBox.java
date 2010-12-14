@@ -24,6 +24,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 
 /**
@@ -31,20 +33,32 @@ import javax.swing.JComboBox;
  * Annotate a field to be chosen by a {@link JComboBox}.
  * </p>
  * <p>
- * This annotation requires another field where the items for the combobox are
- * stored. This field is annotated with the {@link ComboBoxElements} annotation
- * and must have the same {@link ComboBox#value()} value.
+ * This annotation can be used with another field where the items for the combo
+ * box are stored. This field is annotated with the {@link ComboBoxElements}
+ * annotation and must have the same value as {@link ComboBox#elements()}.
  * </p>
  * <p>
- * Example:
+ * The other possibility is to specify a custom {@link ComboBoxModel} with
+ * {@link ComboBox#model()}.
+ * </p>
+ * <p>
+ * Example A:
  * </p>
  * 
  * <pre>
- * &#064;ComboBox(&quot;Some Field&quot;)
+ * &#064;ComboBox(elements = &quot;Some Field&quot;)
  * private String someField;
  * 
  * &#064;ComboBoxElements(&quot;Some Field&quot;)
  * private String[] someField = { &quot;first&quot;, &quot;second&quot;, &quot;third&quot; };
+ * </pre>
+ * <p>
+ * Example B:
+ * </p>
+ * 
+ * <pre>
+ * &#064;ComboBox(model = CustomComboBoxModel.class)
+ * private String someField;
  * </pre>
  */
 @Target(FIELD)
@@ -52,10 +66,9 @@ import javax.swing.JComboBox;
 public @interface ComboBox {
 
 	/**
-	 * The name of the combobox, needs to be the same as of
-	 * {@link ComboBoxElements}.
+	 * The name of the combobox.
 	 */
-	String value();
+	String value() default "";
 
 	/**
 	 * The width of the combobox inside the container.
@@ -67,4 +80,15 @@ public @interface ComboBox {
 	 * information for the user without that the user can modify the value.
 	 */
 	boolean readonly() default false;
+
+	/**
+	 * Optional the name of the field to use for the elements of the combo box.
+	 * Needs to be the same as of {@link ComboBoxElements#value()}.
+	 */
+	String elements() default "";
+
+	/**
+	 * Optional a custom {@link ComboBoxModel} to use with this combo box.
+	 */
+	Class<? extends ComboBoxModel> model() default DefaultComboBoxModel.class;
 }
