@@ -19,6 +19,7 @@
 package com.globalscalingsoftware.prefdialog.internal.inputfield.textfield;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.text.ParseException;
@@ -54,7 +55,13 @@ public class ValidatingTextField<TextFieldType extends JTextField> {
 		highlighBorder = new LineBorder(Color.red, 1, true);
 		normalBorder = BorderFactory.createEmptyBorder(1, 1, 1, 1);
 
+		setupTextField();
 		setupListeners();
+	}
+
+	private void setupTextField() {
+		int height = field.getPreferredSize().height;
+		field.setPreferredSize(new Dimension(200, height));
 	}
 
 	public void setValidator(Validator<?> validator) {
