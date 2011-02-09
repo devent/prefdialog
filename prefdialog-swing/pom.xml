@@ -10,7 +10,7 @@
 
 	<groupId>com.globalscalingsoftware.prefdialog</groupId>
 	<artifactId>prefdialog-swing</artifactId>
-	<version>1.2</version>
+	<version>1.3-SNAPSHOT</version>
 
 	<dependencies>
 		<dependency>

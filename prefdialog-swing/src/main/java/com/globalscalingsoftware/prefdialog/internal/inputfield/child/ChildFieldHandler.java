@@ -25,10 +25,10 @@ import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbo
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
-public class ChildFieldHandlerImpl extends AbstractChildFieldHandler<ChildPanel> {
+public class ChildFieldHandler extends AbstractChildFieldHandler<ChildPanel> {
 
 	@Inject
-	ChildFieldHandlerImpl(ReflectionToolbox reflectionToolbox,
+	ChildFieldHandler(ReflectionToolbox reflectionToolbox,
 			@Assisted("parentObject") Object parentObject,
 			@Assisted("value") Object value, @Assisted Field field) {
 		super(reflectionToolbox, parentObject, value, field, Child.class,

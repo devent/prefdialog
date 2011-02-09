@@ -4,7 +4,7 @@ import static com.google.inject.assistedinject.FactoryProvider.newFactory;
 
 import com.globalscalingsoftware.prefdialog.internal.inputfield.checkbox.CheckBoxFieldHandler;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.checkbox.CheckBoxFieldHandlerFactory;
-import com.globalscalingsoftware.prefdialog.internal.inputfield.child.ChildFieldHandlerImpl;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.child.ChildFieldHandler;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.ChildFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.group.GroupFieldHandler;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.group.GroupFieldHandlerFactory;
@@ -49,7 +49,7 @@ public class FieldHandlersModule extends AbstractModule {
 						SliderFieldHandler.class));
 		bind(ChildFieldHandlerFactory.class).toProvider(
 				newFactory(ChildFieldHandlerFactory.class,
-						ChildFieldHandlerImpl.class));
+						ChildFieldHandler.class));
 		bind(GroupFieldHandlerFactory.class).toProvider(
 				newFactory(GroupFieldHandlerFactory.class,
 						GroupFieldHandler.class));

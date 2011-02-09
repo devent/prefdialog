@@ -25,14 +25,12 @@ import java.util.List;
 
 import javax.swing.Action;
 
-import com.globalscalingsoftware.prefdialog.ChildFieldHandler;
 import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractDefaultFieldHandler;
 import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbox;
 
 public abstract class AbstractChildFieldHandler<ComponentType extends ChildComponent>
-		extends AbstractDefaultFieldHandler<ComponentType> implements
-		ChildFieldHandler {
+		extends AbstractDefaultFieldHandler<ComponentType> {
 
 	private final List<FieldHandler<?>> fieldHandlers;
 
@@ -104,7 +102,6 @@ public abstract class AbstractChildFieldHandler<ComponentType extends ChildCompo
 		getComponent().setRestoreAction(a);
 	}
 
-	@Override
 	public void setButtonsTransparent(boolean transparent) {
 		getComponent().setButtonsTransparent(transparent);
 	}

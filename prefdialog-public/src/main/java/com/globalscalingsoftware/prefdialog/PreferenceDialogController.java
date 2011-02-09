@@ -19,7 +19,6 @@
 package com.globalscalingsoftware.prefdialog;
 
 import java.awt.Frame;
-import java.util.Map;
 
 import javax.swing.Action;
 import javax.swing.JDialog;
@@ -67,8 +66,6 @@ public interface PreferenceDialogController {
 	Options getOption();
 
 	JDialog getPreferenceDialog();
-
-	Map<String, ChildFieldHandler> getPreferencePanels();
 
 	/**
 	 * Sets the {@link Action} for the "Ok" button of the dialog.

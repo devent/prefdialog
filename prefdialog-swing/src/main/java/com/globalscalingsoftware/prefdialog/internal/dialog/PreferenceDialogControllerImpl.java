@@ -26,13 +26,12 @@ import javax.swing.Action;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 
-import com.globalscalingsoftware.prefdialog.ChildFieldHandler;
 import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.Options;
 import com.globalscalingsoftware.prefdialog.PreferenceDialogController;
 import com.globalscalingsoftware.prefdialog.internal.dialog.actions.ActionsHandler;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.AbstractChildFieldHandler;
-import com.globalscalingsoftware.prefdialog.internal.inputfield.child.ChildFieldHandlerImpl;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.child.ChildFieldHandler;
 import com.globalscalingsoftware.prefdialog.internal.reflection.AnnotationDiscovery;
 import com.globalscalingsoftware.prefdialog.internal.reflection.FieldFactories;
 import com.google.inject.Inject;
@@ -108,7 +107,7 @@ public class PreferenceDialogControllerImpl implements
 	}
 
 	private void restoreAllInput() {
-		Map<Object, ChildFieldHandlerImpl> panels = preferencePanels
+		Map<Object, ChildFieldHandler> panels = preferencePanels
 				.getPreferencePanels();
 		for (FieldHandler<?> field : panels.values()) {
 			restoreInputForChildField(field);
@@ -123,7 +122,7 @@ public class PreferenceDialogControllerImpl implements
 	}
 
 	private void applyAllInput() {
-		Map<Object, ChildFieldHandlerImpl> panels = preferencePanels
+		Map<Object, ChildFieldHandler> panels = preferencePanels
 				.getPreferencePanels();
 		for (FieldHandler<?> field : panels.values()) {
 			applyInputForChildField(field);
@@ -165,10 +164,9 @@ public class PreferenceDialogControllerImpl implements
 		return preferenceDialog.getUiPreferencesDialog();
 	}
 
-	@Override
 	public Map<String, ChildFieldHandler> getPreferencePanels() {
 		Map<String, ChildFieldHandler> panels = new HashMap<String, ChildFieldHandler>();
-		for (Map.Entry<Object, ChildFieldHandlerImpl> entry : preferencePanels
+		for (Map.Entry<Object, ChildFieldHandler> entry : preferencePanels
 				.getPreferencePanels().entrySet()) {
 			panels.put(entry.getKey().toString(), entry.getValue());
 		}

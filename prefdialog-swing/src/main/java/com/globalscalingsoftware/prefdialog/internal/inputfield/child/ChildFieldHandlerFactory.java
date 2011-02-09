@@ -8,6 +8,6 @@ import com.google.inject.assistedinject.Assisted;
 public interface ChildFieldHandlerFactory extends FieldHandlerFactory {
 
 	@Override
-	ChildFieldHandlerImpl create(@Assisted("parentObject") Object parentObject,
+	ChildFieldHandler create(@Assisted("parentObject") Object parentObject,
 			@Assisted("value") Object value, @Assisted Field field);
 }
