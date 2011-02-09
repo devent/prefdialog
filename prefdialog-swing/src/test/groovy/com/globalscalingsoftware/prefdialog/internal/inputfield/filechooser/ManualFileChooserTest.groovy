@@ -49,7 +49,7 @@ class ManualFileChooserTest extends AbstractPreferencePanelTest {
 	}
 	
 	@Test
-	void testInputs() {
+	void testManual() {
 		Thread.sleep(30000)
 	}
 }

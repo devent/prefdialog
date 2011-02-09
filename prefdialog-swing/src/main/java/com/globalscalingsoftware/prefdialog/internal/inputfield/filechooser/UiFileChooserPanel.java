@@ -2,10 +2,14 @@ package com.globalscalingsoftware.prefdialog.internal.inputfield.filechooser;
 
 import info.clearthought.layout.TableLayout;
 
+import java.awt.Dimension;
+
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
+import javax.swing.border.BevelBorder;
 
 /**
  * This code was edited or generated using CloudGarden's Jigloo SWT/Swing GUI
@@ -48,12 +52,17 @@ class UiFileChooserPanel extends javax.swing.JPanel {
 			this.setLayout(thisLayout);
 			{
 				fileNameText = new JFormattedTextField();
-				this.add(getFileNameText(), "0, 0");
+				int height = fileNameText.getPreferredSize().height;
+				fileNameText.setPreferredSize(new Dimension(200, height));
+				this.add(fileNameText, "0, 0");
 			}
 			{
 				openFileButton = new JButton();
 				this.add(getOpenFileButton(), "1, 0");
 				openFileButton.setText("...");
+				openFileButton.setBorder(BorderFactory
+						.createEtchedBorder(BevelBorder.LOWERED));
+				openFileButton.setContentAreaFilled(false);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -75,7 +75,7 @@ abstract class AbstractPreferencePanelTest {
 		def injector = new PreferencesDialogInjectorFactory().create()
 		def factory = injector.getInstance(PreferenceDialogFactory)
 		
-		//getFrame(factory)
+		getFrame(factory)
 		def frame = GuiActionRunner.execute([executeInEDT: { return getFrame(factory) } ] as GuiQuery);
 		return new FrameFixture(frame);
 	}
