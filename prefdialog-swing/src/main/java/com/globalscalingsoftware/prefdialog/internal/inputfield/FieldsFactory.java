@@ -66,9 +66,9 @@ public class FieldsFactory {
 
 	public List<FieldHandler<?>> createFieldsHandlers(
 			AnnotationDiscovery annotationDiscovery,
-			FieldFactories fieldFactories, Object value) {
-		return new FactoryWorker(annotationDiscovery, fieldFactories, value)
-				.createFieldsHandlers();
+			FieldFactories fieldFactories, Object parentObject) {
+		return new FactoryWorker(annotationDiscovery, fieldFactories,
+				parentObject).createFieldsHandlers();
 	}
 
 }
