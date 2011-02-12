@@ -21,7 +21,6 @@ package com.globalscalingsoftware.prefdialog;
 import java.awt.Frame;
 
 import javax.swing.Action;
-import javax.swing.JDialog;
 
 /**
  * <p>
@@ -64,8 +63,6 @@ public interface PreferenceDialogController {
 	 * dialog.
 	 */
 	Options getOption();
-
-	JDialog getPreferenceDialog();
 
 	/**
 	 * Sets the {@link Action} for the "Ok" button of the dialog.

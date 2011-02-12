@@ -45,8 +45,6 @@ public class PreferencePanelsFactory {
 
 	private class FactoryWorker {
 
-		private final AnnotationDiscovery annotationDiscovery;
-
 		private final Object preferences;
 
 		private final HashMap<Object, TreeNode[]> treeNodes;
@@ -57,12 +55,7 @@ public class PreferencePanelsFactory {
 
 		private ChildFieldHandler preferencesStart;
 
-		private final FieldFactories fieldFactories;
-
-		public FactoryWorker(AnnotationDiscovery annotationDiscovery,
-				FieldFactories fieldFactories, Object preferences) {
-			this.annotationDiscovery = annotationDiscovery;
-			this.fieldFactories = fieldFactories;
+		public FactoryWorker(Object preferences) {
 			this.preferences = preferences;
 			this.treeNodes = new HashMap<Object, TreeNode[]>();
 			this.rootNode = new DefaultMutableTreeNode();
@@ -143,19 +136,23 @@ public class PreferencePanelsFactory {
 
 	private final RestoreAction restoreAction;
 
+	private final AnnotationDiscovery annotationDiscovery;
+
+	private final FieldFactories fieldFactories;
+
 	@Inject
-	PreferencePanelsFactory(FieldsFactory fieldsFactory,
+	PreferencePanelsFactory(AnnotationDiscovery annotationDiscovery,
+			FieldFactories fieldFactories, FieldsFactory fieldsFactory,
 			ApplyAction applyAction, RestoreAction restoreAction) {
+		this.annotationDiscovery = annotationDiscovery;
+		this.fieldFactories = fieldFactories;
 		this.fieldsFactory = fieldsFactory;
 		this.applyAction = applyAction;
 		this.restoreAction = restoreAction;
 	}
 
-	public PreferencePanels createRootNode(
-			AnnotationDiscovery annotationDiscovery,
-			FieldFactories fieldFactories, Object preferences) {
-		return new FactoryWorker(annotationDiscovery, fieldFactories,
-				preferences).discoverAnnotations();
+	public PreferencePanels createRootNode(Object preferences) {
+		return new FactoryWorker(preferences).discoverAnnotations();
 	}
 
 	public void setApplyAction(Action a) {

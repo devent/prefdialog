@@ -19,7 +19,6 @@
 package com.globalscalingsoftware.prefdialog.internal.dialog;
 
 import java.awt.Frame;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.Action;
@@ -32,8 +31,6 @@ import com.globalscalingsoftware.prefdialog.PreferenceDialogController;
 import com.globalscalingsoftware.prefdialog.internal.dialog.actions.ActionsHandler;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.AbstractChildFieldHandler;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.child.ChildFieldHandler;
-import com.globalscalingsoftware.prefdialog.internal.reflection.AnnotationDiscovery;
-import com.globalscalingsoftware.prefdialog.internal.reflection.FieldFactories;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.internal.Nullable;
@@ -47,21 +44,15 @@ public class PreferenceDialogControllerImpl implements
 	private PreferencePanels preferencePanels;
 	private final Object preferences;
 	private final ActionsHandler actionsHandler;
-	private final AnnotationDiscovery annotationDiscovery;
-	private final FieldFactories fieldFactories;
 	private final Frame owner;
 
 	@Inject
 	PreferenceDialogControllerImpl(PreferenceDialog preferenceDialog,
 			ActionsHandler actionsHandler,
-			AnnotationDiscovery annotationDiscovery,
-			FieldFactories fieldFactories,
 			PreferencePanelsFactory preferencePanelsFactory,
 			@Assisted @Nullable Frame owner, @Assisted Object preferences) {
 		this.preferenceDialog = preferenceDialog;
 		this.actionsHandler = actionsHandler;
-		this.annotationDiscovery = annotationDiscovery;
-		this.fieldFactories = fieldFactories;
 		this.preferencePanelsFactory = preferencePanelsFactory;
 		this.owner = owner;
 		this.preferences = preferences;
@@ -77,8 +68,7 @@ public class PreferenceDialogControllerImpl implements
 	}
 
 	private void setupRootNode() {
-		preferencePanels = preferencePanelsFactory.createRootNode(
-				annotationDiscovery, fieldFactories, preferences);
+		preferencePanels = preferencePanelsFactory.createRootNode(preferences);
 		preferenceDialog.setup(owner, preferencePanels.getRootNode());
 	}
 
@@ -159,18 +149,8 @@ public class PreferenceDialogControllerImpl implements
 		preferenceDialog.open();
 	}
 
-	@Override
-	public JDialog getPreferenceDialog() {
+	JDialog getPreferenceDialog() {
 		return preferenceDialog.getUiPreferencesDialog();
-	}
-
-	public Map<String, ChildFieldHandler> getPreferencePanels() {
-		Map<String, ChildFieldHandler> panels = new HashMap<String, ChildFieldHandler>();
-		for (Map.Entry<Object, ChildFieldHandler> entry : preferencePanels
-				.getPreferencePanels().entrySet()) {
-			panels.put(entry.getKey().toString(), entry.getValue());
-		}
-		return panels;
 	}
 
 	void setChildPanel(Object object) {
