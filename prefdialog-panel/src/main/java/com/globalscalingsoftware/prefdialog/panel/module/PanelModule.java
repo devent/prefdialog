@@ -2,6 +2,8 @@ package com.globalscalingsoftware.prefdialog.panel.module;
 
 import static com.google.inject.assistedinject.FactoryProvider.newFactory;
 
+import com.globalscalingsoftware.prefdialog.PreferencePanelHandler;
+import com.globalscalingsoftware.prefdialog.PreferencePanelHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.child.group.GroupFieldHandler;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.child.group.GroupFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.combobox.ComboBoxFieldHandler;
@@ -22,10 +24,17 @@ import com.globalscalingsoftware.prefdialog.panel.internal.panel.inputfield.chil
 import com.globalscalingsoftware.prefdialog.panel.internal.panel.inputfield.child.ChildFieldHandlerFactory;
 import com.google.inject.AbstractModule;
 
-public class FieldHandlersModule extends AbstractModule {
+public class PanelModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
+		bind(PreferencePanelHandlerFactory.class).toProvider(
+				newFactory(PreferencePanelHandlerFactory.class,
+						PreferencePanelHandler.class));
+		bindFieldHandlers();
+	}
+
+	private void bindFieldHandlers() {
 		bind(TextFieldHandlerFactory.class).toProvider(
 				newFactory(TextFieldHandlerFactory.class,
 						TextFieldHandler.class));
