@@ -23,14 +23,12 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.globalscalingsoftware.annotations.Stateless;
 import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.FieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.internal.reflection.AnnotationDiscovery;
 import com.globalscalingsoftware.prefdialog.internal.reflection.AnnotationDiscoveryCallback;
 import com.globalscalingsoftware.prefdialog.internal.reflection.FieldFactories;
 
-@Stateless
 public class FieldsFactory {
 
 	private class FactoryWorker implements AnnotationDiscoveryCallback {

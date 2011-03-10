@@ -21,10 +21,8 @@ package com.globalscalingsoftware.prefdialog.internal.reflection;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
-import com.globalscalingsoftware.annotations.Stateless;
 import com.google.inject.Inject;
 
-@Stateless
 public class AnnotationDiscovery {
 
 	private class DiscoveryWorker {

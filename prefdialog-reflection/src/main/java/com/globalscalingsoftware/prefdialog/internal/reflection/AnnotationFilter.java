@@ -21,9 +21,6 @@ package com.globalscalingsoftware.prefdialog.internal.reflection;
 import java.lang.annotation.Annotation;
 import java.util.List;
 
-import com.globalscalingsoftware.annotations.Stateless;
-
-@Stateless
 public class AnnotationFilter {
 
 	private final List<Class<? extends Annotation>> annotations;

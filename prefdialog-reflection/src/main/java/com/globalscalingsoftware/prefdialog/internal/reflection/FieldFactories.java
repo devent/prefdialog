@@ -6,11 +6,8 @@ import java.lang.annotation.Annotation;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-import com.globalscalingsoftware.annotations.Stateless;
-import com.globalscalingsoftware.prefdialog.FieldHandlerFactory;
 import com.google.inject.Inject;
 
-@Stateless
 public class FieldFactories {
 
 	private final Map<Class<? extends Annotation>, FieldHandlerFactory> factories;
