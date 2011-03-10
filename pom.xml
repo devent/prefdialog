@@ -10,6 +10,7 @@
 	<modules>
 		<module>prefdialog-swing</module>
 		<module>prefdialog-public</module>
+		<module>prefdialog-panel</module>
 	</modules>
 
 	<licenses>
