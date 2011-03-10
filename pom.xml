@@ -11,6 +11,7 @@
 		<module>prefdialog-swing</module>
 		<module>prefdialog-public</module>
 		<module>prefdialog-panel</module>
+		<module>prefdialog-reflection</module>
 	</modules>
 
 	<licenses>
