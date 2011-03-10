@@ -31,6 +31,22 @@ public interface FieldHandler<FieldComponentType extends FieldComponent> {
 	void setup();
 
 	/**
+	 * Apply the user input.
+	 * 
+	 * @param parent
+	 *            the parent object to which this component belongs to.
+	 */
+	void applyInput(Object parent);
+
+	/**
+	 * Restore the value after the user entered some input.
+	 * 
+	 * @param parent
+	 *            the parent object to which this component belongs to.
+	 */
+	void restoreInput(Object parent);
+
+	/**
 	 * Sets the width of the component, as specified by the <code>width</code>
 	 * annotation type element.
 	 */
@@ -68,22 +84,6 @@ public interface FieldHandler<FieldComponentType extends FieldComponent> {
 	 * container.
 	 */
 	Component getAWTComponent();
-
-	/**
-	 * Apply the user input.
-	 * 
-	 * @param parent
-	 *            the parent object to which this component belongs to.
-	 */
-	void applyInput(Object parent);
-
-	/**
-	 * Restore the value after the user entered some input.
-	 * 
-	 * @param parent
-	 *            the parent object to which this component belongs to.
-	 */
-	void restoreInput(Object parent);
 
 	/**
 	 * Enables or disables the component.
