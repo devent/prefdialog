@@ -16,25 +16,23 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.panel.internal.panel.inputfield.checkbox;
+package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.child;
 
 import java.lang.reflect.Field;
 
-import com.globalscalingsoftware.prefdialog.annotations.Checkbox;
+import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbox;
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractDefaultFieldHandler;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
-public class CheckBoxFieldHandler extends
-		AbstractDefaultFieldHandler<CheckBoxPanel> {
+public class ChildFieldHandler extends AbstractChildFieldHandler<ChildPanel> {
 
 	@Inject
-	CheckBoxFieldHandler(ReflectionToolbox reflectionToolbox,
+	ChildFieldHandler(ReflectionToolbox reflectionToolbox,
 			@Assisted("parentObject") Object parentObject,
 			@Assisted("value") Object value, @Assisted Field field) {
-		super(reflectionToolbox, parentObject, value, field, Checkbox.class,
-				new CheckBoxPanel());
+		super(reflectionToolbox, parentObject, value, field, Child.class,
+				new ChildPanel());
 	}
 
 }

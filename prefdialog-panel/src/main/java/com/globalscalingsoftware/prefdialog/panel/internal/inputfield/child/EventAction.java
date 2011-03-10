@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.internal;
+package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.child;
 
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeListener;
@@ -24,24 +24,23 @@ import java.beans.PropertyChangeListener;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 
-public abstract class AbstractDelegateCallbackAction implements Action {
+public class EventAction implements Action {
 
 	private Action parentAction;
-
-	private Runnable callback;
+	private Runnable event;
 
 	@SuppressWarnings("serial")
-	public AbstractDelegateCallbackAction(String name) {
-		parentAction = new AbstractAction(name) {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-			}
-		};
-		this.callback = new Runnable() {
+	public EventAction() {
+		this.event = new Runnable() {
 
 			@Override
 			public void run() {
+			}
+		};
+		this.parentAction = new AbstractAction() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
 			}
 		};
 	}
@@ -50,14 +49,14 @@ public abstract class AbstractDelegateCallbackAction implements Action {
 		this.parentAction = parentAction;
 	}
 
-	public void setCallback(Runnable callback) {
-		this.callback = callback;
+	public void setEvent(Runnable event) {
+		this.event = event;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		event.run();
 		parentAction.actionPerformed(e);
-		callback.run();
 	}
 
 	@Override

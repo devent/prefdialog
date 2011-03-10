@@ -4,25 +4,29 @@ import static com.google.inject.assistedinject.FactoryProvider.newFactory;
 
 import com.globalscalingsoftware.prefdialog.PreferencePanelHandler;
 import com.globalscalingsoftware.prefdialog.PreferencePanelHandlerFactory;
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.child.group.GroupFieldHandler;
+import com.globalscalingsoftware.prefdialog.annotations.Checkbox;
+import com.globalscalingsoftware.prefdialog.annotations.Child;
+import com.globalscalingsoftware.prefdialog.annotations.ComboBox;
+import com.globalscalingsoftware.prefdialog.annotations.FileChooser;
+import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField;
+import com.globalscalingsoftware.prefdialog.annotations.Group;
+import com.globalscalingsoftware.prefdialog.annotations.RadioButton;
+import com.globalscalingsoftware.prefdialog.annotations.Slider;
+import com.globalscalingsoftware.prefdialog.annotations.TextField;
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.FactoriesMap;
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.FieldHandlersModule;
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.checkbox.CheckBoxFieldHandlerFactory;
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.child.ChildFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.child.group.GroupFieldHandlerFactory;
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.combobox.ComboBoxFieldHandler;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.combobox.ComboBoxFieldHandlerFactory;
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.filechooser.FileChooserFieldHandler;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.filechooser.FileChooserFieldHandlerFactory;
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.radiobutton.RadioButtonFieldHandler;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.radiobutton.RadioButtonFieldHandlerFactory;
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.slider.SliderFieldHandler;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.slider.SliderFieldHandlerFactory;
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.textfield.TextFieldHandler;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.textfield.TextFieldHandlerFactory;
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.textfield.formattedtextfield.FormattedTextFieldHandler;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.textfield.formattedtextfield.FormattedTextFieldHandlerFactory;
-import com.globalscalingsoftware.prefdialog.panel.internal.panel.inputfield.checkbox.CheckBoxFieldHandler;
-import com.globalscalingsoftware.prefdialog.panel.internal.panel.inputfield.checkbox.CheckBoxFieldHandlerFactory;
-import com.globalscalingsoftware.prefdialog.panel.internal.panel.inputfield.child.ChildFieldHandler;
-import com.globalscalingsoftware.prefdialog.panel.internal.panel.inputfield.child.ChildFieldHandlerFactory;
 import com.google.inject.AbstractModule;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 
 public class PanelModule extends AbstractModule {
 
@@ -31,37 +35,31 @@ public class PanelModule extends AbstractModule {
 		bind(PreferencePanelHandlerFactory.class).toProvider(
 				newFactory(PreferencePanelHandlerFactory.class,
 						PreferencePanelHandler.class));
-		bindFieldHandlers();
+		bindFactories();
 	}
 
-	private void bindFieldHandlers() {
-		bind(TextFieldHandlerFactory.class).toProvider(
-				newFactory(TextFieldHandlerFactory.class,
-						TextFieldHandler.class));
-		bind(FormattedTextFieldHandlerFactory.class).toProvider(
-				newFactory(FormattedTextFieldHandlerFactory.class,
-						FormattedTextFieldHandler.class));
-		bind(RadioButtonFieldHandlerFactory.class).toProvider(
-				newFactory(RadioButtonFieldHandlerFactory.class,
-						RadioButtonFieldHandler.class));
-		bind(CheckBoxFieldHandlerFactory.class).toProvider(
-				newFactory(CheckBoxFieldHandlerFactory.class,
-						CheckBoxFieldHandler.class));
-		bind(ComboBoxFieldHandlerFactory.class).toProvider(
-				newFactory(ComboBoxFieldHandlerFactory.class,
-						ComboBoxFieldHandler.class));
-		bind(FileChooserFieldHandlerFactory.class).toProvider(
-				newFactory(FileChooserFieldHandlerFactory.class,
-						FileChooserFieldHandler.class));
-		bind(SliderFieldHandlerFactory.class).toProvider(
-				newFactory(SliderFieldHandlerFactory.class,
-						SliderFieldHandler.class));
-		bind(ChildFieldHandlerFactory.class).toProvider(
-				newFactory(ChildFieldHandlerFactory.class,
-						ChildFieldHandler.class));
-		bind(GroupFieldHandlerFactory.class).toProvider(
-				newFactory(GroupFieldHandlerFactory.class,
-						GroupFieldHandler.class));
+	private void bindFactories() {
+		Injector injector = Guice.createInjector(new FieldHandlersModule());
+		FactoriesMap factories = new FactoriesMap();
+		factories.put(TextField.class,
+				injector.getInstance(TextFieldHandlerFactory.class));
+		factories.put(FormattedTextField.class,
+				injector.getInstance(FormattedTextFieldHandlerFactory.class));
+		factories.put(RadioButton.class,
+				injector.getInstance(RadioButtonFieldHandlerFactory.class));
+		factories.put(Checkbox.class,
+				injector.getInstance(CheckBoxFieldHandlerFactory.class));
+		factories.put(ComboBox.class,
+				injector.getInstance(ComboBoxFieldHandlerFactory.class));
+		factories.put(FileChooser.class,
+				injector.getInstance(FileChooserFieldHandlerFactory.class));
+		factories.put(Slider.class,
+				injector.getInstance(SliderFieldHandlerFactory.class));
+		factories.put(Child.class,
+				injector.getInstance(ChildFieldHandlerFactory.class));
+		factories.put(Group.class,
+				injector.getInstance(GroupFieldHandlerFactory.class));
+		bind(FactoriesMap.class).toInstance(factories);
 	}
 
 }

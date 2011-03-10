@@ -1,4 +1,4 @@
-package com.globalscalingsoftware.prefdialog.internal.reflection;
+package com.globalscalingsoftware.prefdialog.panel.internal.inputfield;
 
 import static java.lang.String.format;
 

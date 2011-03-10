@@ -2,7 +2,7 @@ package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.radiobutt
 
 import java.lang.reflect.Field;
 
-import com.globalscalingsoftware.prefdialog.FieldHandlerFactory;
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.FieldHandlerFactory;
 import com.google.inject.assistedinject.Assisted;
 
 public interface RadioButtonFieldHandlerFactory extends FieldHandlerFactory {

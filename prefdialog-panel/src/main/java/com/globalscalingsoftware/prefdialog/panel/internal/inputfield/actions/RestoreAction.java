@@ -18,10 +18,9 @@
  */
 package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.actions;
 
-import com.globalscalingsoftware.prefdialog.internal.AbstractDelegateCallbackAction;
+import com.globalscalingsoftware.prefdialog.actions.AbstractDelegatedCallbackAction;
 
-
-public class RestoreAction extends AbstractDelegateCallbackAction {
+public class RestoreAction extends AbstractDelegatedCallbackAction {
 
 	RestoreAction() {
 		super("Restore");

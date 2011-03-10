@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.panel.internal.panel.inputfield.child;
+package com.globalscalingsoftware.prefdialog.actions;
 
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeListener;
@@ -24,20 +24,21 @@ import java.beans.PropertyChangeListener;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 
-public class EventAction implements Action {
+
+public class AbstractDelegatedCallbackAction implements DelegatedCallbackAction {
 
 	private Action parentAction;
-	private Runnable event;
+
+	private Runnable callback;
+
+	protected AbstractDelegatedCallbackAction(String name) {
+		this.parentAction = createEmptyAction(name);
+		this.callback = createEmptyCallback();
+	}
 
 	@SuppressWarnings("serial")
-	public EventAction() {
-		this.event = new Runnable() {
-
-			@Override
-			public void run() {
-			}
-		};
-		this.parentAction = new AbstractAction() {
+	private Action createEmptyAction(String name) {
+		return new AbstractAction(name) {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -45,17 +46,28 @@ public class EventAction implements Action {
 		};
 	}
 
+	private Runnable createEmptyCallback() {
+		return new Runnable() {
+
+			@Override
+			public void run() {
+			}
+		};
+	}
+
+	@Override
 	public void setParentAction(Action parentAction) {
 		this.parentAction = parentAction;
 	}
 
-	public void setEvent(Runnable event) {
-		this.event = event;
+	@Override
+	public void setCallback(Runnable callback) {
+		this.callback = callback;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		event.run();
+		callback.run();
 		parentAction.actionPerformed(e);
 	}
 

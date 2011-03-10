@@ -1,9 +1,8 @@
-package com.globalscalingsoftware.prefdialog.internal.reflection;
+package com.globalscalingsoftware.prefdialog.panel.internal.inputfield;
 
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
 
-import com.globalscalingsoftware.prefdialog.FieldHandlerFactory;
 
 @SuppressWarnings("serial")
 public class FactoriesMap extends

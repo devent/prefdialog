@@ -22,7 +22,7 @@ import java.lang.reflect.Field;
 
 import com.globalscalingsoftware.prefdialog.annotations.Group;
 import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbox;
-import com.globalscalingsoftware.prefdialog.panel.internal.panel.inputfield.child.AbstractChildFieldHandler;
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.child.AbstractChildFieldHandler;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 

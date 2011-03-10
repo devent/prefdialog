@@ -18,10 +18,10 @@
  */
 package com.globalscalingsoftware.prefdialog.internal.dialog.actions;
 
-import com.globalscalingsoftware.prefdialog.internal.AbstractDelegateCallbackAction;
+import com.globalscalingsoftware.prefdialog.actions.internal.DelegatedCallbackAction;
 
 
-public class CancelAction extends AbstractDelegateCallbackAction {
+public class CancelAction extends DelegatedCallbackAction {
 
 	CancelAction() {
 		super("Cancel");

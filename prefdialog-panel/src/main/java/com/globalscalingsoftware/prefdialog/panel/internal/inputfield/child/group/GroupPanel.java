@@ -27,7 +27,7 @@ import javax.swing.Action;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractFieldPanel;
-import com.globalscalingsoftware.prefdialog.panel.internal.panel.inputfield.child.ChildComponent;
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.child.ChildComponent;
 
 public class GroupPanel extends AbstractFieldPanel<UiGroupPanel> implements
 		ChildComponent {

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.panel.internal.panel.inputfield.child;
+package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.child;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;

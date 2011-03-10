@@ -24,10 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
-import com.globalscalingsoftware.prefdialog.FieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.internal.reflection.AnnotationDiscovery;
 import com.globalscalingsoftware.prefdialog.internal.reflection.AnnotationDiscoveryCallback;
-import com.globalscalingsoftware.prefdialog.internal.reflection.FieldFactories;
 
 public class FieldsFactory {
 
