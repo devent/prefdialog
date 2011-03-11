@@ -23,7 +23,7 @@ import java.lang.reflect.Field;
 
 import com.globalscalingsoftware.prefdialog.AbstractFieldHandler;
 import com.globalscalingsoftware.prefdialog.FieldComponent;
-import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbox;
+import com.globalscalingsoftware.prefdialog.reflection.internal.ReflectionToolbox;
 
 public abstract class AbstractDefaultFieldHandler<FieldComponentType extends FieldComponent>
 		extends AbstractFieldHandler<FieldComponentType> {

@@ -21,8 +21,8 @@ package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.child.gro
 import java.lang.reflect.Field;
 
 import com.globalscalingsoftware.prefdialog.annotations.Group;
-import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.child.AbstractChildFieldHandler;
+import com.globalscalingsoftware.prefdialog.reflection.internal.ReflectionToolbox;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 

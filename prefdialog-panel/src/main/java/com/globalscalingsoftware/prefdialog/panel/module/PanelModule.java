@@ -1,6 +1,14 @@
 package com.globalscalingsoftware.prefdialog.panel.module;
 
 import static com.google.inject.assistedinject.FactoryProvider.newFactory;
+import static com.google.inject.name.Names.named;
+
+import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import com.globalscalingsoftware.prefdialog.PreferencePanelHandler;
 import com.globalscalingsoftware.prefdialog.PreferencePanelHandlerFactory;
@@ -14,6 +22,8 @@ import com.globalscalingsoftware.prefdialog.annotations.RadioButton;
 import com.globalscalingsoftware.prefdialog.annotations.Slider;
 import com.globalscalingsoftware.prefdialog.annotations.TextField;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.FactoriesMap;
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.FactoriesMap.FactoriesMapFactory;
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.FieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.FieldHandlersModule;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.checkbox.CheckBoxFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.child.ChildFieldHandlerFactory;
@@ -35,31 +45,56 @@ public class PanelModule extends AbstractModule {
 		bind(PreferencePanelHandlerFactory.class).toProvider(
 				newFactory(PreferencePanelHandlerFactory.class,
 						PreferencePanelHandler.class));
-		bindFactories();
+		bindFactoriesMap();
+		bindAnnotations();
 	}
 
-	private void bindFactories() {
+	private void bindFactoriesMap() {
 		Injector injector = Guice.createInjector(new FieldHandlersModule());
-		FactoriesMap factories = new FactoriesMap();
-		factories.put(TextField.class,
-				injector.getInstance(TextFieldHandlerFactory.class));
-		factories.put(FormattedTextField.class,
-				injector.getInstance(FormattedTextFieldHandlerFactory.class));
-		factories.put(RadioButton.class,
-				injector.getInstance(RadioButtonFieldHandlerFactory.class));
-		factories.put(Checkbox.class,
-				injector.getInstance(CheckBoxFieldHandlerFactory.class));
-		factories.put(ComboBox.class,
-				injector.getInstance(ComboBoxFieldHandlerFactory.class));
-		factories.put(FileChooser.class,
-				injector.getInstance(FileChooserFieldHandlerFactory.class));
-		factories.put(Slider.class,
-				injector.getInstance(SliderFieldHandlerFactory.class));
-		factories.put(Child.class,
-				injector.getInstance(ChildFieldHandlerFactory.class));
-		factories.put(Group.class,
-				injector.getInstance(GroupFieldHandlerFactory.class));
+		Map<Class<? extends Annotation>, FieldHandlerFactory> fieldHandlerFactoriesMap = createFactoriesMap(injector);
+		FactoriesMap factories = injector
+				.getInstance(FactoriesMapFactory.class).create(
+						fieldHandlerFactoriesMap);
 		bind(FactoriesMap.class).toInstance(factories);
+	}
+
+	private Map<Class<? extends Annotation>, FieldHandlerFactory> createFactoriesMap(
+			Injector injector) {
+		Map<Class<? extends Annotation>, FieldHandlerFactory> fieldHandlerFactoriesMap = new HashMap<Class<? extends Annotation>, FieldHandlerFactory>();
+		fieldHandlerFactoriesMap.put(TextField.class,
+				injector.getInstance(TextFieldHandlerFactory.class));
+		fieldHandlerFactoriesMap.put(FormattedTextField.class,
+				injector.getInstance(FormattedTextFieldHandlerFactory.class));
+		fieldHandlerFactoriesMap.put(RadioButton.class,
+				injector.getInstance(RadioButtonFieldHandlerFactory.class));
+		fieldHandlerFactoriesMap.put(Checkbox.class,
+				injector.getInstance(CheckBoxFieldHandlerFactory.class));
+		fieldHandlerFactoriesMap.put(ComboBox.class,
+				injector.getInstance(ComboBoxFieldHandlerFactory.class));
+		fieldHandlerFactoriesMap.put(FileChooser.class,
+				injector.getInstance(FileChooserFieldHandlerFactory.class));
+		fieldHandlerFactoriesMap.put(Slider.class,
+				injector.getInstance(SliderFieldHandlerFactory.class));
+		fieldHandlerFactoriesMap.put(Child.class,
+				injector.getInstance(ChildFieldHandlerFactory.class));
+		fieldHandlerFactoriesMap.put(Group.class,
+				injector.getInstance(GroupFieldHandlerFactory.class));
+		return fieldHandlerFactoriesMap;
+	}
+
+	private void bindAnnotations() {
+		List<Class<? extends Annotation>> annotations = new ArrayList<Class<? extends Annotation>>();
+		annotations.add(Checkbox.class);
+		annotations.add(FormattedTextField.class);
+		annotations.add(TextField.class);
+		annotations.add(RadioButton.class);
+		annotations.add(ComboBox.class);
+		annotations.add(Slider.class);
+		annotations.add(Group.class);
+		annotations.add(Child.class);
+		annotations.add(FileChooser.class);
+		bind(Collection.class).annotatedWith(named("field_annotations"))
+				.toInstance(annotations);
 	}
 
 }

@@ -21,50 +21,74 @@ package com.globalscalingsoftware.prefdialog.panel.internal.inputfield;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
-import com.globalscalingsoftware.prefdialog.internal.reflection.AnnotationDiscovery;
-import com.globalscalingsoftware.prefdialog.internal.reflection.AnnotationDiscoveryCallback;
+import com.globalscalingsoftware.prefdialog.reflection.AnnotationDiscoveryCallback;
+import com.globalscalingsoftware.prefdialog.reflection.AnnotationDiscoveryFactory;
+import com.globalscalingsoftware.prefdialog.reflection.AnnotationFilterFactory;
+import com.globalscalingsoftware.prefdialog.reflection.internal.AnnotationFilter;
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 
+/**
+ * Creates all {@link FieldHandler field handler} for which object's fields it
+ * can find a {@link Annotation field annotation}.
+ */
 public class FieldsFactory {
 
-	private class FactoryWorker implements AnnotationDiscoveryCallback {
+	private final AnnotationFilter annotationFilter;
 
-		private final AnnotationDiscovery annotationDiscovery;
-		private final Object parentObject;
-		private final FieldFactories fieldFactories;
-		private final List<FieldHandler<?>> fieldHandlers;
+	private final AnnotationDiscoveryFactory annotationDiscoveryFactory;
 
-		public FactoryWorker(AnnotationDiscovery annotationDiscovery,
-				FieldFactories fieldFactories, Object parentObject) {
-			this.annotationDiscovery = annotationDiscovery;
-			this.fieldFactories = fieldFactories;
-			this.parentObject = parentObject;
-			this.fieldHandlers = new ArrayList<FieldHandler<?>>();
-		}
-
-		public List<FieldHandler<?>> createFieldsHandlers() {
-			annotationDiscovery.discoverAnnotations(parentObject, this);
-			return fieldHandlers;
-		}
-
-		@Override
-		public void fieldAnnotationDiscovered(Field field, Object value,
-				Annotation a) {
-			FieldHandlerFactory factory = fieldFactories.getFactory(a);
-			FieldHandler<?> handler = factory
-					.create(parentObject, value, field);
-			fieldHandlers.add(handler);
-		}
-
+	@Inject
+	FieldsFactory(
+			@Named("field_annotations") Collection<Class<? extends Annotation>> fieldAnnotations,
+			AnnotationFilterFactory annotationFilterFactory,
+			AnnotationDiscoveryFactory annotationDiscoveryFactory) {
+		this.annotationFilter = annotationFilterFactory
+				.create(fieldAnnotations);
+		this.annotationDiscoveryFactory = annotationDiscoveryFactory;
 	}
 
+	/**
+	 * Search a object's fields for {@link Annotation field annotations} and
+	 * create for each valid annotation a new {@link FieldHandler field handler}
+	 * .
+	 * 
+	 * @param factoriesMap
+	 *            the {@link FactoriesMap map} that contains the mapping between
+	 *            {@link Annotation field annotations} and
+	 *            {@link FieldHandlerFactory field handler factories}.
+	 * @param object
+	 *            the {@link Object} which fields will be searched for valid
+	 *            annotations.
+	 * @return a {@link List} of all created {@link FieldHandler field handlers}
+	 *         .
+	 */
 	public List<FieldHandler<?>> createFieldsHandlers(
-			AnnotationDiscovery annotationDiscovery,
-			FieldFactories fieldFactories, Object parentObject) {
-		return new FactoryWorker(annotationDiscovery, fieldFactories,
-				parentObject).createFieldsHandlers();
+			final FactoriesMap factoriesMap, final Object object) {
+		final ArrayList<FieldHandler<?>> fieldHandlers = new ArrayList<FieldHandler<?>>();
+		annotationDiscoveryFactory.create(annotationFilter, object,
+				new AnnotationDiscoveryCallback() {
+
+					@Override
+					public void fieldAnnotationDiscovered(Field field,
+							Object value, Annotation a) {
+						FieldHandler<?> handler = createDiscoveredFieldHandler(
+								factoriesMap, object, field, value, a);
+						fieldHandlers.add(handler);
+					}
+
+				}).discoverAnnotations();
+		return fieldHandlers;
 	}
 
+	private FieldHandler<?> createDiscoveredFieldHandler(
+			FactoriesMap factoriesMap, Object parentObject, Field field,
+			Object value, Annotation a) {
+		FieldHandlerFactory factory = factoriesMap.getFactory(a.getClass());
+		return factory.create(parentObject, value, field);
+	}
 }

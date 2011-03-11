@@ -2,6 +2,7 @@ package com.globalscalingsoftware.prefdialog.panel.internal.inputfield;
 
 import static com.google.inject.assistedinject.FactoryProvider.newFactory;
 
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.FactoriesMap.FactoriesMapFactory;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.checkbox.CheckBoxFieldHandler;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.checkbox.CheckBoxFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.child.ChildFieldHandler;
@@ -26,6 +27,12 @@ public class FieldHandlersModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
+		bind(FactoriesMapFactory.class).toProvider(
+				newFactory(FactoriesMapFactory.class, FactoriesMap.class));
+		bindFieldHandlerFactories();
+	}
+
+	private void bindFieldHandlerFactories() {
 		bind(TextFieldHandlerFactory.class).toProvider(
 				newFactory(TextFieldHandlerFactory.class,
 						TextFieldHandler.class));

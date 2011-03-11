@@ -23,7 +23,7 @@ import java.lang.reflect.Field;
 import javax.swing.JTextField;
 
 import com.globalscalingsoftware.prefdialog.annotations.TextField;
-import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbox;
+import com.globalscalingsoftware.prefdialog.reflection.internal.ReflectionToolbox;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 

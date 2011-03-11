@@ -26,8 +26,8 @@ import java.util.List;
 import javax.swing.Action;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
-import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractDefaultFieldHandler;
+import com.globalscalingsoftware.prefdialog.reflection.internal.ReflectionToolbox;
 
 public abstract class AbstractChildFieldHandler<ComponentType extends ChildComponent>
 		extends AbstractDefaultFieldHandler<ComponentType> {
