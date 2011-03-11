@@ -120,10 +120,12 @@ public class PreferencePanelImpl implements PreferencePanelHandler {
 
 	@Override
 	public void setApplyAction(Action a) {
+		actionsHandler.setApplyParent(a);
 	}
 
 	@Override
 	public void setRestoreAction(Action a) {
+		actionsHandler.setRestoreParent(a);
 	}
 
 	@Override

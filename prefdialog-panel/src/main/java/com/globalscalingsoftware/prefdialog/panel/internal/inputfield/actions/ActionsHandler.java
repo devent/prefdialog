@@ -24,11 +24,11 @@ public class ActionsHandler {
 		return restoreAction;
 	}
 
-	public void setApplyCallback(Runnable callback) {
-		applyAction.setCallback(callback);
+	public void setApplyParent(Action parentAction) {
+		applyAction.setParentAction(parentAction);
 	}
 
-	public void setRestoreCallback(Runnable callback) {
-		restoreAction.setCallback(callback);
+	public void setRestoreParent(Action parentAction) {
+		applyAction.setParentAction(parentAction);
 	}
 }
