@@ -4,7 +4,7 @@
 
 	<groupId>com.globalscalingsoftware.prefdialog</groupId>
 	<artifactId>prefdialog</artifactId>
-	<version>1.2</version>
+	<version>1.4-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<modules>
@@ -22,10 +22,6 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
-	<organization>
-		<name>FEST (Fixtures for Easy Software Testing)</name>
-		<url>http://fest.easytesting.org</url>
-	</organization>
 	<developers>
 		<developer>
 			<id>erwinm</id>
@@ -40,13 +36,6 @@
 	</developers>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.hamcrest</groupId>
-			<artifactId>hamcrest-all</artifactId>
-			<version>1.1</version>
-			<type>jar</type>
-			<scope>test</scope>
-		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
