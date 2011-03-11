@@ -34,11 +34,6 @@
 			<version>2.0</version>
 		</dependency>
 		<dependency>
-			<groupId>com.globalscalingsoftware.annotations</groupId>
-			<artifactId>annotations-base</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<dependency>
 			<groupId>com.globalscalingsoftware.prefdialog</groupId>
 			<artifactId>prefdialog-public</artifactId>
 			<version>1.4-SNAPSHOT</version>
