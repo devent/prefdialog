@@ -16,19 +16,33 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.internal.reflection;
+package com.globalscalingsoftware.prefdialog.reflection.internal;
 
 import java.lang.annotation.Annotation;
-import java.util.List;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
+
+/**
+ * A filter that only accepts predefined {@link Annotation annotations}.
+ */
 public class AnnotationFilter {
 
-	private final List<Class<? extends Annotation>> annotations;
+	private final Set<Class<? extends Annotation>> annotations;
 
-	public AnnotationFilter(List<Class<? extends Annotation>> annotations) {
-		this.annotations = annotations;
+	@Inject
+	AnnotationFilter(
+			@Assisted Collection<Class<? extends Annotation>> annotations) {
+		this.annotations = new HashSet<Class<? extends Annotation>>(annotations);
 	}
 
+	/**
+	 * Returns <code>true</code> if the given {@link Annotation} is of type of
+	 * one of the predefined annotations, <code>false</code> if not.
+	 */
 	public boolean accept(Annotation annotation) {
 		for (Class<? extends Annotation> a : annotations) {
 			if (a.isInstance(annotation)) {

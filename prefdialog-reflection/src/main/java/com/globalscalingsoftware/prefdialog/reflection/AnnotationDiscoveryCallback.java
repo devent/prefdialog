@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.internal.reflection;
+package com.globalscalingsoftware.prefdialog.reflection;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
