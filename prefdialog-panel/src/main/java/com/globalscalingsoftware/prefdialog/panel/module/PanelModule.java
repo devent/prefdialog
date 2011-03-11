@@ -1,13 +1,11 @@
 package com.globalscalingsoftware.prefdialog.panel.module;
 
 import static com.google.inject.assistedinject.FactoryProvider.newFactory;
-import static com.google.inject.name.Names.named;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.globalscalingsoftware.prefdialog.PreferencePanelHandlerFactory;
@@ -21,6 +19,8 @@ import com.globalscalingsoftware.prefdialog.annotations.RadioButton;
 import com.globalscalingsoftware.prefdialog.annotations.Slider;
 import com.globalscalingsoftware.prefdialog.annotations.TextField;
 import com.globalscalingsoftware.prefdialog.panel.internal.PreferencePanelHandlerImpl;
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.FactoriesMap;
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.FactoriesMap.FactoriesMapFactory;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.FieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.FieldHandlersModule;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.checkbox.CheckBoxFieldHandlerFactory;
@@ -32,9 +32,12 @@ import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.radiobutto
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.slider.SliderFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.textfield.TextFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.textfield.formattedtextfield.FormattedTextFieldHandlerFactory;
+import com.globalscalingsoftware.prefdialog.reflection.module.ReflectionModule;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.Provides;
+import com.google.inject.name.Named;
 
 public class PanelModule extends AbstractModule {
 
@@ -43,21 +46,17 @@ public class PanelModule extends AbstractModule {
 		bind(PreferencePanelHandlerFactory.class).toProvider(
 				newFactory(PreferencePanelHandlerFactory.class,
 						PreferencePanelHandlerImpl.class));
-		bindFactoriesMap();
-		bindAnnotations();
-	}
-
-	private void bindFactoriesMap() {
+		bind(FactoriesMapFactory.class).toProvider(
+				newFactory(FactoriesMapFactory.class, FactoriesMap.class));
+		new ReflectionModule().configure(binder());
 		new FieldHandlersModule().configure(binder());
-		Injector injector = Guice.createInjector(new FieldHandlersModule());
-		Map<Class<? extends Annotation>, FieldHandlerFactory> fieldHandlerFactoriesMap = createFactoriesMap(injector);
-		bind(Map.class).annotatedWith(named("field_handler_factories_map"))
-				.toInstance(fieldHandlerFactoriesMap);
 	}
 
-	private Map<Class<? extends Annotation>, FieldHandlerFactory> createFactoriesMap(
-			Injector injector) {
+	@Provides
+	@Named("field_handler_factories_map")
+	Map<Class<? extends Annotation>, FieldHandlerFactory> bindFactoriesMap() {
 		Map<Class<? extends Annotation>, FieldHandlerFactory> fieldHandlerFactoriesMap = new HashMap<Class<? extends Annotation>, FieldHandlerFactory>();
+		Injector injector = Guice.createInjector(new FieldHandlersModule());
 		fieldHandlerFactoriesMap.put(TextField.class,
 				injector.getInstance(TextFieldHandlerFactory.class));
 		fieldHandlerFactoriesMap.put(FormattedTextField.class,
@@ -79,8 +78,10 @@ public class PanelModule extends AbstractModule {
 		return fieldHandlerFactoriesMap;
 	}
 
-	private void bindAnnotations() {
-		List<Class<? extends Annotation>> annotations = new ArrayList<Class<? extends Annotation>>();
+	@Provides
+	@Named("field_annotations")
+	Collection<Class<? extends Annotation>> bindAnnotations() {
+		Collection<Class<? extends Annotation>> annotations = new ArrayList<Class<? extends Annotation>>();
 		annotations.add(Checkbox.class);
 		annotations.add(FormattedTextField.class);
 		annotations.add(TextField.class);
@@ -90,8 +91,7 @@ public class PanelModule extends AbstractModule {
 		annotations.add(Group.class);
 		annotations.add(Child.class);
 		annotations.add(FileChooser.class);
-		bind(Collection.class).annotatedWith(named("field_annotations"))
-				.toInstance(annotations);
+		return annotations;
 	}
 
 }

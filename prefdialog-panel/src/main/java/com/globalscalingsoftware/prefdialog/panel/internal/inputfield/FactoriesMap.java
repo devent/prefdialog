@@ -86,18 +86,22 @@ public class FactoriesMap {
 	 *             if there was no mapping of the field annotation class found.
 	 */
 	public FieldHandlerFactory getFactory(Class<? extends Annotation> annotation) {
-		FieldHandlerFactory factory = fieldHandlerFactories.get(annotation);
-		checkNull(annotation, factory);
-		return factory;
+		for (MapIterator it = mapIterator(); it.hasNext();) {
+			it.next();
+			Class<? extends Annotation> key = getAnnotationClass(it);
+			FieldHandlerFactory value = (FieldHandlerFactory) it.getValue();
+			if (key.isAssignableFrom(annotation)) {
+				return value;
+			}
+		}
+		throw new NullPointerException(
+				format("This factories map does not contain a mapping for the field annotation class %s.",
+						annotation));
 	}
 
-	private void checkNull(Class<? extends Annotation> annotation,
-			FieldHandlerFactory factory) {
-		if (factory == null) {
-			throw new NullPointerException(
-					format("This factories map does not contain a mapping for the field annotation class %s.",
-							annotation));
-		}
+	@SuppressWarnings("unchecked")
+	private Class<? extends Annotation> getAnnotationClass(MapIterator it) {
+		return ((Class<? extends Annotation>) it.getKey());
 	}
 
 }
