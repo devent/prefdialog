@@ -22,8 +22,8 @@ import org.junit.Test;
 
 import com.globalscalingsoftware.prefdialog.annotations.Child 
 import com.globalscalingsoftware.prefdialog.annotations.RadioButton 
-import com.globalscalingsoftware.prefdialog.internal.inputfield.Colors;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest;
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.Colors 
 
 class RadioButtonNameTest extends AbstractPreferencePanelTest {
 	

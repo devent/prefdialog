@@ -18,18 +18,18 @@
  */
 package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.combobox
 
-import java.awt.Component 
+import java.awt.Component;
 import java.util.List;
 
 import javax.swing.DefaultListCellRenderer;
-import javax.swing.JList 
+import javax.swing.JList;
 
 import org.junit.Test;
 
-import com.globalscalingsoftware.prefdialog.annotations.Child 
+import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.annotations.ComboBox 
 import com.globalscalingsoftware.prefdialog.annotations.ComboBoxElements 
-import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest 
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest;
 
 class ComboBoxCustomRendererTest extends AbstractPreferencePanelTest {
 	
@@ -72,19 +72,19 @@ class ComboBoxCustomRendererTest extends AbstractPreferencePanelTest {
 	
 	@Test
 	void testChooseFirstAndApply() {
-		window.comboBox("comboBox").selectItem 1
-		window.panel("general").button("apply").click()
+		fixture.comboBox("comboBox").selectItem 1
+		fixture.panel("general").button("apply").click()
 		
-		assert window.label("label-comboBox").text() == "comboBox: "
+		assert fixture.label("label-comboBox").text() == "comboBox: "
 		assert preferences.general.comboBox == "second element"
 	}
 	
 	@Test
 	void testChooseFirstAndRestore() {
-		window.comboBox("comboBox").selectItem 1
-		window.panel("general").button("restore").click()
+		fixture.comboBox("comboBox").selectItem 1
+		fixture.panel("general").button("restore").click()
 		
-		window.comboBox("comboBox").requireSelection 0
+		fixture.comboBox("comboBox").requireSelection 0
 		assert preferences.general.comboBox == "first element"
 	}
 }

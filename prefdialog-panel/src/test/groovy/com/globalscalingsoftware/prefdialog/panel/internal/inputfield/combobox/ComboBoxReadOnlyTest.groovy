@@ -19,12 +19,13 @@
 package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.combobox
 
 import java.util.List;
+
 import org.junit.Test;
 
-import com.globalscalingsoftware.prefdialog.annotations.Child 
+import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.annotations.ComboBox 
 import com.globalscalingsoftware.prefdialog.annotations.ComboBoxElements 
-import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest 
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest;
 
 class ComboBoxReadOnlyTest extends AbstractPreferencePanelTest {
 	
@@ -59,7 +60,7 @@ class ComboBoxReadOnlyTest extends AbstractPreferencePanelTest {
 	
 	@Test
 	void testPanelClickApplyAndClose() {
-		window.comboBox("comboBox").requireDisabled()
-		window.comboBox("comboBox").requireSelection 0
+		fixture.comboBox("comboBox").requireDisabled()
+		fixture.comboBox("comboBox").requireSelection 0
 	}
 }
