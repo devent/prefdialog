@@ -28,7 +28,7 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.name.Named;
 
-public class PreferencePanelImpl implements PreferencePanelHandler {
+public class PreferencePanelHandlerImpl implements PreferencePanelHandler {
 
 	private final Object preferences;
 
@@ -45,7 +45,7 @@ public class PreferencePanelImpl implements PreferencePanelHandler {
 	private ChildFieldHandler childFieldHandler;
 
 	@Inject
-	PreferencePanelImpl(
+	PreferencePanelHandlerImpl(
 			AnnotationFilterFactory annotationFilterFactory,
 			AnnotationDiscoveryFactory annotationDiscoveryFactory,
 			FieldsFactory fieldFactories,

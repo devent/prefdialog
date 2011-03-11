@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.globalscalingsoftware.prefdialog.PreferencePanelHandler;
 import com.globalscalingsoftware.prefdialog.PreferencePanelHandlerFactory;
 import com.globalscalingsoftware.prefdialog.annotations.Checkbox;
 import com.globalscalingsoftware.prefdialog.annotations.Child;
@@ -21,6 +20,7 @@ import com.globalscalingsoftware.prefdialog.annotations.Group;
 import com.globalscalingsoftware.prefdialog.annotations.RadioButton;
 import com.globalscalingsoftware.prefdialog.annotations.Slider;
 import com.globalscalingsoftware.prefdialog.annotations.TextField;
+import com.globalscalingsoftware.prefdialog.panel.internal.PreferencePanelHandlerImpl;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.FieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.FieldHandlersModule;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.checkbox.CheckBoxFieldHandlerFactory;
@@ -42,7 +42,7 @@ public class PanelModule extends AbstractModule {
 	protected void configure() {
 		bind(PreferencePanelHandlerFactory.class).toProvider(
 				newFactory(PreferencePanelHandlerFactory.class,
-						PreferencePanelHandler.class));
+						PreferencePanelHandlerImpl.class));
 		bindFactoriesMap();
 		bindAnnotations();
 	}
