@@ -21,8 +21,6 @@ import com.globalscalingsoftware.prefdialog.annotations.Group;
 import com.globalscalingsoftware.prefdialog.annotations.RadioButton;
 import com.globalscalingsoftware.prefdialog.annotations.Slider;
 import com.globalscalingsoftware.prefdialog.annotations.TextField;
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.FactoriesMap;
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.FactoriesMap.FactoriesMapFactory;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.FieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.FieldHandlersModule;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.checkbox.CheckBoxFieldHandlerFactory;
@@ -50,12 +48,11 @@ public class PanelModule extends AbstractModule {
 	}
 
 	private void bindFactoriesMap() {
+		new FieldHandlersModule().configure(binder());
 		Injector injector = Guice.createInjector(new FieldHandlersModule());
 		Map<Class<? extends Annotation>, FieldHandlerFactory> fieldHandlerFactoriesMap = createFactoriesMap(injector);
-		FactoriesMap factories = injector
-				.getInstance(FactoriesMapFactory.class).create(
-						fieldHandlerFactoriesMap);
-		bind(FactoriesMap.class).toInstance(factories);
+		bind(Map.class).annotatedWith(named("field_handler_factories_map"))
+				.toInstance(fieldHandlerFactoriesMap);
 	}
 
 	private Map<Class<? extends Annotation>, FieldHandlerFactory> createFactoriesMap(
