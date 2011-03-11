@@ -18,21 +18,8 @@
  */
 package com.globalscalingsoftware.prefdialog.module;
 
-import java.lang.annotation.Annotation;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.globalscalingsoftware.prefdialog.PreferenceDialogController;
 import com.globalscalingsoftware.prefdialog.PreferenceDialogFactory;
-import com.globalscalingsoftware.prefdialog.annotations.Checkbox;
-import com.globalscalingsoftware.prefdialog.annotations.Child;
-import com.globalscalingsoftware.prefdialog.annotations.ComboBox;
-import com.globalscalingsoftware.prefdialog.annotations.FileChooser;
-import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField;
-import com.globalscalingsoftware.prefdialog.annotations.Group;
-import com.globalscalingsoftware.prefdialog.annotations.RadioButton;
-import com.globalscalingsoftware.prefdialog.annotations.Slider;
-import com.globalscalingsoftware.prefdialog.annotations.TextField;
 import com.globalscalingsoftware.prefdialog.internal.dialog.PreferenceDialogControllerImpl;
 import com.google.inject.AbstractModule;
 import com.google.inject.Injector;
@@ -80,26 +67,6 @@ public class PreferenceDialogModule extends AbstractModule {
 		bind(ReflectionToolbox.class).asEagerSingleton();
 		bindPreferenceDialog();
 		bindFields();
-	}
-
-	private void bindFields() {
-		bindAnnotations();
-		bindFactories();
-	}
-
-	private void bindAnnotations() {
-		List<Class<? extends Annotation>> annotations = new ArrayList<Class<? extends Annotation>>();
-		annotations.add(Checkbox.class);
-		annotations.add(FormattedTextField.class);
-		annotations.add(TextField.class);
-		annotations.add(RadioButton.class);
-		annotations.add(ComboBox.class);
-		annotations.add(Slider.class);
-		annotations.add(Group.class);
-		annotations.add(Child.class);
-		annotations.add(FileChooser.class);
-		bind(AnnotationFilter.class).toInstance(
-				new AnnotationFilter(annotations));
 	}
 
 	private void bindPreferenceDialog() {
