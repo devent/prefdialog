@@ -29,8 +29,6 @@ import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.Options;
 import com.globalscalingsoftware.prefdialog.PreferenceDialogController;
 import com.globalscalingsoftware.prefdialog.internal.dialog.actions.ActionsHandler;
-import com.globalscalingsoftware.prefdialog.internal.inputfield.child.AbstractChildFieldHandler;
-import com.globalscalingsoftware.prefdialog.internal.inputfield.child.ChildFieldHandler;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.internal.Nullable;
@@ -39,9 +37,9 @@ public class PreferenceDialogControllerImpl implements
 		PreferenceDialogController {
 
 	private final PreferenceDialog preferenceDialog;
-	private final PreferencePanelsFactory preferencePanelsFactory;
+	private final PreferencePanelsHandler preferencePanelsFactory;
 	private Options option;
-	private PreferencePanels preferencePanels;
+	private PreferencePanelsCollection preferencePanels;
 	private final Object preferences;
 	private final ActionsHandler actionsHandler;
 	private final Frame owner;
@@ -49,7 +47,7 @@ public class PreferenceDialogControllerImpl implements
 	@Inject
 	PreferenceDialogControllerImpl(PreferenceDialog preferenceDialog,
 			ActionsHandler actionsHandler,
-			PreferencePanelsFactory preferencePanelsFactory,
+			PreferencePanelsHandler preferencePanelsFactory,
 			@Assisted @Nullable Frame owner, @Assisted Object preferences) {
 		this.preferenceDialog = preferenceDialog;
 		this.actionsHandler = actionsHandler;
@@ -57,10 +55,10 @@ public class PreferenceDialogControllerImpl implements
 		this.owner = owner;
 		this.preferences = preferences;
 		this.option = Options.CANCEL;
+		setup();
 	}
 
-	@Override
-	public void setup() {
+	private void setup() {
 		setupRootNode();
 		setupChildSelectedAction();
 		setupPreferencesStart();
@@ -68,7 +66,7 @@ public class PreferenceDialogControllerImpl implements
 	}
 
 	private void setupRootNode() {
-		preferencePanels = preferencePanelsFactory.createRootNode(preferences);
+		preferencePanels = preferencePanelsFactory.createPreferencePanelsCollection(preferences);
 		preferenceDialog.setup(owner, preferencePanels.getRootNode());
 	}
 
