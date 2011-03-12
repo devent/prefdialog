@@ -26,6 +26,9 @@ import java.util.Map;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.globalscalingsoftware.prefdialog.PreferencePanelHandler;
 import com.globalscalingsoftware.prefdialog.PreferencePanelHandlerFactory;
 import com.globalscalingsoftware.prefdialog.internal.dialog.PreferencePanelsCollection.PreferencePanelsCollectionFactory;
@@ -42,6 +45,9 @@ import com.google.inject.name.Named;
  * preferences.
  */
 public class PreferencePanelsHandler {
+
+	private final Logger l = LoggerFactory
+			.getLogger(PreferencePanelsHandler.class);
 
 	private final AnnotationFilter annotationFilter;
 
@@ -130,13 +136,17 @@ public class PreferencePanelsHandler {
 			if (firstPreferencePanelHandler == null) {
 				firstPreferencePanelHandler = handler;
 			}
+			l.debug("New preference panel handler created for {} panel in preferences {}.",
+					panelName, preferences);
 			panelHandlers.put(preferences, handler);
 		}
 
 		private void createNodePath(Object value) {
 			DefaultMutableTreeNode node = new DefaultMutableTreeNode(value);
 			rootNode.add(node);
-			treeNodes.put(value, node.getPath());
+			TreeNode[] path = node.getPath();
+			treeNodes.put(value, path);
+			l.debug("New node path {} created for {}.", path, value);
 		}
 
 	}
