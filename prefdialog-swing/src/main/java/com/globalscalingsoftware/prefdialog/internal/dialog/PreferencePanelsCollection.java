@@ -101,7 +101,7 @@ public class PreferencePanelsCollection {
 	public TreeNode[] getPath(Object value) {
 		checkNotNull(value, "Cannot get a tree node for a null value.");
 		TreeNode[] path = treeNodes.get(value);
-		checkNotNull(value, format("The preference panels does not "
+		checkNotNull(path, format("The preference panels does not "
 				+ "contain a path for the value %s.", value));
 		return path;
 	}
