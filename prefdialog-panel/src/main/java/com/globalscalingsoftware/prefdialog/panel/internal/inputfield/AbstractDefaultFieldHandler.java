@@ -21,12 +21,27 @@ package com.globalscalingsoftware.prefdialog.panel.internal.inputfield;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.globalscalingsoftware.prefdialog.AbstractFieldHandler;
 import com.globalscalingsoftware.prefdialog.FieldComponent;
 import com.globalscalingsoftware.prefdialog.reflection.internal.ReflectionToolbox;
 
+/**
+ * Setups the width, name, title and read only property read from the field
+ * annotation. Implements apply and restore input.
+ * 
+ * @param <FieldComponentType>
+ *            the type of the underlying {@link FieldComponent}.
+ * @see AbstractFieldHandler
+ * @see FieldComponent
+ */
 public abstract class AbstractDefaultFieldHandler<FieldComponentType extends FieldComponent>
 		extends AbstractFieldHandler<FieldComponentType> {
+
+	private final Logger l = LoggerFactory
+			.getLogger(AbstractDefaultFieldHandler.class);
 
 	protected final ReflectionToolbox reflectionToolbox;
 
@@ -57,11 +72,13 @@ public abstract class AbstractDefaultFieldHandler<FieldComponentType extends Fie
 			Class<? extends Annotation> annotationClass) {
 		boolean readonly = getValueFromAnnotationIn("readonly", Boolean.class,
 				field, annotationClass);
+		l.debug("Set the read only to {} for field {}.", readonly, field);
 		setComponentEnabled(!readonly);
 	}
 
 	private void setupComponentName(Field field) {
 		String name = field.getName();
+		l.debug("Set the name to {} for field {}.", name, field);
 		setComponentName(name);
 	}
 
@@ -70,6 +87,7 @@ public abstract class AbstractDefaultFieldHandler<FieldComponentType extends Fie
 		String title = getValueFromAnnotationIn("value", String.class, field,
 				annotationClass);
 		title = defaultTitleIfNameNotSet(title, field);
+		l.debug("Set the title to {} for field {}.", title, field);
 		setComponentTitle(title);
 	}
 
@@ -84,6 +102,7 @@ public abstract class AbstractDefaultFieldHandler<FieldComponentType extends Fie
 			Class<? extends Annotation> annotationClass) {
 		double width = getValueFromAnnotationIn("width", Double.class, field,
 				annotationClass);
+		l.debug("Set the width to {} for field {}.", width, field);
 		setComponentWidth(width);
 	}
 
@@ -98,12 +117,14 @@ public abstract class AbstractDefaultFieldHandler<FieldComponentType extends Fie
 	public void applyInput(Object parent) {
 		Object value = getComponentValue();
 		Field field = getField();
+		l.debug("Apply input and set value to {} for field {}.", value, field);
 		reflectionToolbox.setValueTo(field, parent, value);
 	}
 
 	@Override
 	public void restoreInput(Object parent) {
 		Object value = getValue();
+		l.debug("Restore value to {} for field", value, parent);
 		setComponentValue(value);
 	}
 }
