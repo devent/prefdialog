@@ -14,8 +14,12 @@ public interface PreferencePanelHandlerFactory {
 	 * 
 	 * @param preferences
 	 *            the preferences from which the panel will be created.
+	 * @param panelName
+	 *            the name of the field in the preferences from which the panel
+	 *            will be created.
 	 * @return the new created {@link PreferencePanelHandler preference panel
 	 *         handler}.
 	 */
-	PreferencePanelHandler create(@Assisted Object preferences);
+	PreferencePanelHandler create(@Assisted Object preferences,
+			@Assisted String panelName);
 }

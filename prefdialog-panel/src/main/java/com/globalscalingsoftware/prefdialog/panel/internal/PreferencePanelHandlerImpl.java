@@ -1,5 +1,7 @@
 package com.globalscalingsoftware.prefdialog.panel.internal;
 
+import static java.lang.String.format;
+
 import java.awt.Component;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -44,6 +46,8 @@ public class PreferencePanelHandlerImpl implements PreferencePanelHandler {
 
 	private ChildFieldHandler childFieldHandler;
 
+	private final String panelName;
+
 	@Inject
 	PreferencePanelHandlerImpl(
 			AnnotationFilterFactory annotationFilterFactory,
@@ -51,7 +55,8 @@ public class PreferencePanelHandlerImpl implements PreferencePanelHandler {
 			FieldsFactory fieldFactories,
 			FactoriesMapFactory factoriesMapFactory,
 			@Named("field_handler_factories_map") Map<Class<? extends Annotation>, FieldHandlerFactory> fieldHandlerFactories,
-			ActionsHandler actionsHandler, @Assisted Object preferences) {
+			ActionsHandler actionsHandler, @Assisted Object preferences,
+			@Assisted String panelName) {
 		this.annotationFilter = annotationFilterFactory
 				.create(createChildAnnotations());
 		this.annotationDiscoveryFactory = annotationDiscoveryFactory;
@@ -59,6 +64,7 @@ public class PreferencePanelHandlerImpl implements PreferencePanelHandler {
 		this.factoriesMap = factoriesMapFactory.create(fieldHandlerFactories);
 		this.actionsHandler = actionsHandler;
 		this.preferences = preferences;
+		this.panelName = panelName;
 		this.childFieldHandler = null;
 		createChild();
 	}
@@ -80,10 +86,21 @@ public class PreferencePanelHandlerImpl implements PreferencePanelHandler {
 					@Override
 					public void fieldAnnotationDiscovered(Field field,
 							Object value, Annotation a) {
-						childFieldHandler = createChildFieldHandler(field,
-								value);
+						if (value.toString().equals(panelName)) {
+							childFieldHandler = createChildFieldHandler(field,
+									value);
+						}
 					}
 				}).discoverAnnotations();
+		checkChildFieldHandlerCreated();
+	}
+
+	private void checkChildFieldHandlerCreated() {
+		if (childFieldHandler == null) {
+			throw new NullPointerException(format(
+					"Could not find a preference field with the name %s.",
+					panelName));
+		}
 	}
 
 	private ChildFieldHandler createChildFieldHandler(Field field, Object value) {
