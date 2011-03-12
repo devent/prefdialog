@@ -1,4 +1,4 @@
-package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.actions;
+package com.globalscalingsoftware.prefdialog.panel.internal.actions;
 
 import javax.swing.Action;
 
