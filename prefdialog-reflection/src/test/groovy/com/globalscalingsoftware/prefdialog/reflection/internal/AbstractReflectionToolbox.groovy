@@ -16,9 +16,10 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.internal.reflection
+package com.globalscalingsoftware.prefdialog.reflection.internal
 
 import com.globalscalingsoftware.prefdialog.annotations.TextField 
+import com.globalscalingsoftware.prefdialog.reflection.internal.ReflectionToolbox 
 import com.globalscalingsoftware.prefdialog.validators.NotEmptyString 
 import org.junit.Before;
 
