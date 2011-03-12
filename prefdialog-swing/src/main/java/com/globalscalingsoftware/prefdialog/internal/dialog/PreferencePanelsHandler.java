@@ -138,7 +138,7 @@ public class PreferencePanelsHandler {
 			}
 			l.debug("New preference panel handler created for {} panel in preferences {}.",
 					panelName, preferences);
-			panelHandlers.put(preferences, handler);
+			panelHandlers.put(handler.getPreferences(), handler);
 		}
 
 		private void createNodePath(Object value) {
