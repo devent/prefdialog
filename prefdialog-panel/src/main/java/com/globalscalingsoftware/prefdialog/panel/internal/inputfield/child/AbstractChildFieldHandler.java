@@ -25,12 +25,28 @@ import java.util.List;
 
 import javax.swing.Action;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.globalscalingsoftware.prefdialog.FieldHandler;
+import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractDefaultFieldHandler;
 import com.globalscalingsoftware.prefdialog.reflection.internal.ReflectionToolbox;
 
+/**
+ * Implements combined behavior for {@link Child} fields. Can contain other
+ * {@link FieldHandler}.
+ * 
+ * @param <ComponentType>
+ *            the type of the underlying {@link ChildComponent}.
+ * @see AbstractDefaultFieldHandler
+ * @see ChildComponent
+ */
 public abstract class AbstractChildFieldHandler<ComponentType extends ChildComponent>
 		extends AbstractDefaultFieldHandler<ComponentType> {
+
+	private final Logger l = LoggerFactory
+			.getLogger(AbstractChildFieldHandler.class);
 
 	private final List<FieldHandler<?>> fieldHandlers;
 
@@ -49,6 +65,7 @@ public abstract class AbstractChildFieldHandler<ComponentType extends ChildCompo
 	}
 
 	public void addFieldHandler(FieldHandler<?> fieldHandler) {
+		l.debug("Add new field handler {}.", fieldHandler);
 		getComponent().addField(fieldHandler);
 		fieldHandlers.add(fieldHandler);
 	}
