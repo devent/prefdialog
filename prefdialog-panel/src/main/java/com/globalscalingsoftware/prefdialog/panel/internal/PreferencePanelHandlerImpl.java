@@ -172,6 +172,6 @@ public class PreferencePanelHandlerImpl implements PreferencePanelHandler {
 
 	@Override
 	public Object getPreferences() {
-		return preferences;
+		return childFieldHandler.getComponentValue();
 	}
 }
