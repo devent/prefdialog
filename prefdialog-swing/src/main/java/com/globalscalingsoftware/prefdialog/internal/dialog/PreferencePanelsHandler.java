@@ -86,7 +86,7 @@ public class PreferencePanelsHandler {
 			final Map<Object, TreeNode[]> treeNodes,
 			final DefaultMutableTreeNode rootNode) {
 		CreatePreferencePanelHandlersCallback callback = new CreatePreferencePanelHandlersCallback(
-				panelHandlers, treeNodes, rootNode);
+				preferences, panelHandlers, treeNodes, rootNode);
 		annotationDiscoveryFactory.create(annotationFilter, preferences,
 				callback).discoverAnnotations();
 		return callback.getFirstPreferencePanelHandler();
@@ -98,12 +98,14 @@ public class PreferencePanelsHandler {
 		private final Map<Object, PreferencePanelHandler> panelHandlers;
 		private final Map<Object, TreeNode[]> treeNodes;
 		private final DefaultMutableTreeNode rootNode;
+		private final Object preferences;
 		private PreferencePanelHandler firstPreferencePanelHandler;
 
-		public CreatePreferencePanelHandlersCallback(
+		public CreatePreferencePanelHandlersCallback(Object preferences,
 				Map<Object, PreferencePanelHandler> panelHandlers,
 				Map<Object, TreeNode[]> treeNodes,
 				DefaultMutableTreeNode rootNode) {
+			this.preferences = preferences;
 			this.panelHandlers = panelHandlers;
 			this.treeNodes = treeNodes;
 			this.rootNode = rootNode;
@@ -117,17 +119,18 @@ public class PreferencePanelsHandler {
 		@Override
 		public void fieldAnnotationDiscovered(Field field, Object value,
 				Annotation a) {
-			createPreferencePanelHandler(value);
+			createPreferencePanelHandler(preferences, value.toString());
 			createNodePath(value);
 		}
 
-		private void createPreferencePanelHandler(Object value) {
+		private void createPreferencePanelHandler(Object preferences,
+				String panelName) {
 			PreferencePanelHandler handler = preferencePanelHandlerFactory
-					.create(value);
+					.create(preferences, panelName);
 			if (firstPreferencePanelHandler == null) {
 				firstPreferencePanelHandler = handler;
 			}
-			panelHandlers.put(value, handler);
+			panelHandlers.put(preferences, handler);
 		}
 
 		private void createNodePath(Object value) {

@@ -29,10 +29,10 @@ import com.globalscalingsoftware.prefdialog.annotations.ComboBoxElements
 import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField 
 import com.globalscalingsoftware.prefdialog.annotations.RadioButton 
 import com.globalscalingsoftware.prefdialog.annotations.TextField 
-import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceDialogTest;
+import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceDialogFixture;
 import com.globalscalingsoftware.prefdialog.validators.NotEmptyString 
 
-class DialogWidthTest extends AbstractPreferenceDialogTest {
+class DialogWidthTest extends AbstractPreferenceDialogFixture {
 	
 	static class Preferences {
 		

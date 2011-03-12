@@ -31,6 +31,7 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
+import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.internal.Nullable;
 
@@ -48,6 +49,7 @@ public class PreferenceDialog {
 	private final DefaultMutableTreeNode rootNode;
 	private ChildSelectedCallback childSelectedCallback;
 
+	@Inject
 	PreferenceDialog(@Assisted @Nullable Frame owner,
 			@Assisted DefaultMutableTreeNode rootNode) {
 		this.uiPreferencesDialog = new UiPreferencesDialog(owner);

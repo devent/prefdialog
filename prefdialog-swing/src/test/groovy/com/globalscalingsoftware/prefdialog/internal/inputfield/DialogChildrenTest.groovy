@@ -23,9 +23,9 @@ import org.junit.Test;
 import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField;
 import com.globalscalingsoftware.prefdialog.annotations.TextField;
-import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceDialogTest;
+import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceDialogFixture;
 
-class DialogChildrenTest extends AbstractPreferenceDialogTest {
+class DialogChildrenTest extends AbstractPreferenceDialogFixture {
 	
 	static class Preferences {
 		
