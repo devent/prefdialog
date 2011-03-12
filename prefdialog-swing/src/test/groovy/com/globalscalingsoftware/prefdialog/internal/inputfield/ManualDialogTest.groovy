@@ -19,9 +19,13 @@
 package com.globalscalingsoftware.prefdialog.internal.inputfield
 
 
+import java.util.List;
+
 import org.junit.Test;
 
 import com.globalscalingsoftware.prefdialog.annotations.Child 
+import com.globalscalingsoftware.prefdialog.annotations.ComboBox 
+import com.globalscalingsoftware.prefdialog.annotations.ComboBoxElements 
 import com.globalscalingsoftware.prefdialog.annotations.FileChooser 
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceDialogFixture 
 
@@ -31,6 +35,16 @@ class ManualDialogTest extends AbstractPreferenceDialogFixture {
 		
 		@FileChooser
 		File file = new File("")
+		
+		@ComboBoxElements("Some combo box")
+		List<String> comboBoxElements = [
+			"first element",
+			"second element",
+			"third element"
+		]
+		
+		@ComboBox(elements="Some combo box")
+		String comboBox = "first element"
 		
 		@Override
 		public String toString() {

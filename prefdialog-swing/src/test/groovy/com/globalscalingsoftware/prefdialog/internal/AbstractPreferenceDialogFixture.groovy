@@ -48,7 +48,6 @@ abstract class AbstractPreferenceDialogFixture {
 		def injector = Guice.createInjector(new DialogModule())
 		def factory = injector.getInstance(PreferenceDialogControllerFactory)
 		
-		createDialog(factory)
 		def dialog = GuiActionRunner.execute([executeInEDT: { return createDialog(factory) } ] as GuiQuery);
 		return new DialogFixture(dialog);
 	}
