@@ -11,6 +11,9 @@ import java.util.Map;
 
 import javax.swing.Action;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.PreferencePanelHandler;
 import com.globalscalingsoftware.prefdialog.annotations.Child;
@@ -31,6 +34,9 @@ import com.google.inject.assistedinject.Assisted;
 import com.google.inject.name.Named;
 
 public class PreferencePanelHandlerImpl implements PreferencePanelHandler {
+
+	private final Logger l = LoggerFactory
+			.getLogger(PreferencePanelHandlerImpl.class);
 
 	private final Object preferences;
 
@@ -86,6 +92,8 @@ public class PreferencePanelHandlerImpl implements PreferencePanelHandler {
 					@Override
 					public void fieldAnnotationDiscovered(Field field,
 							Object value, Annotation a) {
+						l.debug("Discrovered child annotation for field value {}.",
+								value);
 						if (value.toString().equals(panelName)) {
 							childFieldHandler = createChildFieldHandler(field,
 									value);
@@ -104,6 +112,7 @@ public class PreferencePanelHandlerImpl implements PreferencePanelHandler {
 	}
 
 	private ChildFieldHandler createChildFieldHandler(Field field, Object value) {
+		l.debug("Create a new child field handler for field {}.", value);
 		ChildFieldHandlerFactory factory = (ChildFieldHandlerFactory) factoriesMap
 				.getFactory(Child.class);
 		ChildFieldHandler panel = factory.create(preferences, value, field);
@@ -126,6 +135,7 @@ public class PreferencePanelHandlerImpl implements PreferencePanelHandler {
 		if (!(handler instanceof GroupFieldHandler)) {
 			return;
 		}
+		l.debug("Create a new group field hanlder for child field {}.", child);
 		GroupFieldHandler groupFieldHandler = (GroupFieldHandler) handler;
 		Object value = handler.getComponentValue();
 		for (FieldHandler<?> fieldHandler : fieldFactories

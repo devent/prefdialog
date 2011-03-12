@@ -77,7 +77,7 @@ abstract class AbstractPreferencePanelTest {
 		def injector = Guice.createInjector(new PanelModule())
 		def factory = injector.getInstance(PreferencePanelHandlerFactory)
 		
-		getFrame(factory)
+		//getFrame(factory)
 		def frame = GuiActionRunner.execute([executeInEDT: { return getFrame(factory) } ] as GuiQuery);
 		return new FrameFixture(frame);
 	}
