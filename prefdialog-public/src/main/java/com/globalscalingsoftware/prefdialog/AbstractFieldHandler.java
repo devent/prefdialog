@@ -22,6 +22,15 @@ import java.awt.Component;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
+/**
+ * Adds attributes to the getter methods in {@link FieldHandler} and delegates
+ * the the component getter and setter to an underlying {@link FieldComponent}.
+ * 
+ * @param <FieldComponentType>
+ *            the type of the underlying {@link FieldComponent}.
+ * @see FieldHandler
+ * @see FieldComponent
+ */
 public abstract class AbstractFieldHandler<FieldComponentType extends FieldComponent>
 		implements FieldHandler<FieldComponentType> {
 
