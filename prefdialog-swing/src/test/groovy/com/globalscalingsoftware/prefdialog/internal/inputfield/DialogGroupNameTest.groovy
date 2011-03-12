@@ -101,16 +101,16 @@ class DialogGroupNameTest extends AbstractPreferenceDialogTest {
 	
 	@Test
 	void testClickOkAndClose() {
-		window.textBox("name").enterText "name"
-		window.textBox("fields").enterText "10"
-		window.textBox("textField1").enterText "field1"
-		window.textBox("textField2").enterText "field2"
-		window.textBox("textField3").enterText "field3"
-		window.textBox("textField4").enterText "field4"
-		window.checkBox("automaticSave").click()
-		window.radioButton("colors-BLUE").click()
-		window.comboBox("comboBox").selectItem 1
-		window.button("ok").click()
+		fixture.textBox("name").enterText "name"
+		fixture.textBox("fields").enterText "10"
+		fixture.textBox("textField1").enterText "field1"
+		fixture.textBox("textField2").enterText "field2"
+		fixture.textBox("textField3").enterText "field3"
+		fixture.textBox("textField4").enterText "field4"
+		fixture.checkBox("automaticSave").click()
+		fixture.radioButton("colors-BLUE").click()
+		fixture.comboBox("comboBox").selectItem 1
+		fixture.button("ok").click()
 		
 		assert preferences.general.name == "name"
 		assert preferences.general.fields == 10

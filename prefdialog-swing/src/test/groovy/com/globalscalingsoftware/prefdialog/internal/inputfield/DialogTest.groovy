@@ -50,43 +50,43 @@ class DialogTest extends AbstractPreferenceDialogTest {
 	
 	@Test
 	void testComponents() {
-		window.textBox("name").requireVisible()
-		assert window.textBox("name").text() == ""
-		window.button("ok").requireVisible()
-		assert window.button("ok").text() == "Ok"
-		window.button("cancel").requireVisible()
-		assert window.button("cancel").text() == "Cancel"
-		window.button("restore").requireVisible()
-		assert window.button("restore").text() == "Restore"
-		window.button("apply").requireVisible()
-		assert window.button("apply").text() == "Apply"
+		fixture.textBox("name").requireVisible()
+		assert fixture.textBox("name").text() == ""
+		fixture.button("ok").requireVisible()
+		assert fixture.button("ok").text() == "Ok"
+		fixture.button("cancel").requireVisible()
+		assert fixture.button("cancel").text() == "Cancel"
+		fixture.button("restore").requireVisible()
+		assert fixture.button("restore").text() == "Restore"
+		fixture.button("apply").requireVisible()
+		assert fixture.button("apply").text() == "Apply"
 	}
 	
 	@Test
 	void testClickEnterTextOk() {
-		window.textBox("name").enterText "name"
-		window.button("ok").click()
+		fixture.textBox("name").enterText "name"
+		fixture.button("ok").click()
 		assert preferences.general.name == "name"
 	}
 	
 	@Test
 	void testClickEnterTextCancel() {
-		window.textBox("name").enterText "name"
-		window.button("cancel").click()
+		fixture.textBox("name").enterText "name"
+		fixture.button("cancel").click()
 		assert preferences.general.name == ""
 	}
 	
 	@Test
 	void testClickEnterTextApply() {
-		window.textBox("name").enterText "name"
-		window.button("apply").click()
+		fixture.textBox("name").enterText "name"
+		fixture.button("apply").click()
 		assert preferences.general.name == "name"
 	}
 	
 	@Test
 	void testClickEnterTextRestore() {
-		window.textBox("name").enterText "name"
-		window.button("restore").click()
+		fixture.textBox("name").enterText "name"
+		fixture.button("restore").click()
 		assert preferences.general.name == ""
 	}
 }

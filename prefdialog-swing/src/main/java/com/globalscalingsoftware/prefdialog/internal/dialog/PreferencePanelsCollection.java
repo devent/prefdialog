@@ -49,6 +49,9 @@ public class PreferencePanelsCollection {
 		 * @param panelHandlers
 		 *            a map of the {@link PreferencePanelHandler}, assigned to
 		 *            the preferences value for which the panel was created.
+		 * @param firstPreferencePanelHandler
+		 *            a reference to the first created
+		 *            {@link PreferencePanelHandler}.
 		 * @param treeNodes
 		 *            a map of a path to the preference panels, assigned to the
 		 *            preferences value for which the panel was created.
@@ -59,6 +62,7 @@ public class PreferencePanelsCollection {
 		 */
 		PreferencePanelsCollection create(
 				@Assisted("fieldHandlers") Map<Object, PreferencePanelHandler> panelHandlers,
+				@Assisted PreferencePanelHandler firstPreferencePanelHandler,
 				@Assisted("treeNodes") Map<Object, TreeNode[]> treeNodes,
 				@Assisted DefaultMutableTreeNode rootNode);
 	}
@@ -69,12 +73,16 @@ public class PreferencePanelsCollection {
 
 	private final DefaultMutableTreeNode rootNode;
 
+	private final PreferencePanelHandler firstPreferencePanelHandler;
+
 	@Inject
 	PreferencePanelsCollection(
 			@Assisted("fieldHandlers") Map<Object, PreferencePanelHandler> panelHandlers,
+			@Assisted PreferencePanelHandler firstPreferencePanelHandler,
 			@Assisted("treeNodes") Map<Object, TreeNode[]> treeNodes,
 			@Assisted DefaultMutableTreeNode rootNode) {
 		this.panelHandlers = panelHandlers;
+		this.firstPreferencePanelHandler = firstPreferencePanelHandler;
 		this.treeNodes = treeNodes;
 		this.rootNode = rootNode;
 	}
@@ -127,6 +135,13 @@ public class PreferencePanelsCollection {
 		UnmodifiableMap handlers = (UnmodifiableMap) UnmodifiableMap
 				.decorate(panelHandlers);
 		return handlers.mapIterator();
+	}
+
+	/**
+	 * Returns the first {@link PreferencePanelHandler}.
+	 */
+	public PreferencePanelHandler getFirstPreferencePanelHandler() {
+		return firstPreferencePanelHandler;
 	}
 
 }

@@ -101,12 +101,12 @@ class DialogGroupsTest extends AbstractPreferenceDialogTest {
 	
 	@Test
 	void testClickOkAndClose() {
-		window.textBox("name").enterText "name"
-		window.textBox("fields").enterText "10"
-		window.checkBox("automaticSave").click()
-		window.radioButton("colors-BLUE").click()
-		window.comboBox("comboBox").selectItem 1
-		window.button("ok").click()
+		fixture.textBox("name").enterText "name"
+		fixture.textBox("fields").enterText "10"
+		fixture.checkBox("automaticSave").click()
+		fixture.radioButton("colors-BLUE").click()
+		fixture.comboBox("comboBox").selectItem 1
+		fixture.button("ok").click()
 		
 		assert preferences.general.name == "name"
 		assert preferences.general.fields == 10

@@ -34,25 +34,8 @@ import com.google.inject.assistedinject.FactoryProvider;
  * 
  * <pre>
  * injector = Guice.createInjector(new PreferenceDialogModule());
- * controller = injector.getInstance(PreferenceDialogController.class);
- * controller.setPreferences(preferences);
- * controller.setup(owner);
- * controller.openDialog();
- * if (controller.getOption() == OK) {
- *     compute preferences
- * }
- * </pre>
- * 
- * We can use Guice to inject the preferences:
- * 
- * <pre>
- * In preferencesModule:
- * binding.bind(Object.class).annotatedWith(Names.named("preferences")).toInstance(preferences);
- * 
- * injector = Guice
- * 		.createInjector(new PreferenceDialogModule(), preferencesModule);
- * controller = injector.getInstance(PreferenceDialogController.class);
- * controller.setup(owner);
+ * factory = injector.getInstance(PreferenceDialogFactory.class);
+ * controller = factory.create(owner, preferences);
  * controller.openDialog();
  * if (controller.getOption() == OK) {
  *     compute preferences
@@ -63,10 +46,7 @@ public class PreferenceDialogModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
-		bind(AnnotationDiscovery.class).asEagerSingleton();
-		bind(ReflectionToolbox.class).asEagerSingleton();
 		bindPreferenceDialog();
-		bindFields();
 	}
 
 	private void bindPreferenceDialog() {

@@ -70,12 +70,12 @@ class DialogChildrenTest extends AbstractPreferenceDialogTest {
 	
 	@Test
 	void testClickOkAndClose() {
-		window.textBox("name").enterText "name"
-		window.textBox("fields").enterText "10"
-		window.tree("child_tree").clickPath "Child2"
-		window.textBox("something").enterText "something text"
-		window.textBox("moreFields").enterText "20"
-		window.button("ok").click()
+		fixture.textBox("name").enterText "name"
+		fixture.textBox("fields").enterText "10"
+		fixture.tree("child_tree").clickPath "Child2"
+		fixture.textBox("something").enterText "something text"
+		fixture.textBox("moreFields").enterText "20"
+		fixture.button("ok").click()
 		
 		assert preferences.general.name == "name"
 		assert preferences.general.fields == 10

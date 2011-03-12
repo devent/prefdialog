@@ -26,24 +26,26 @@ import org.junit.After;
 import org.junit.Before;
 
 import com.globalscalingsoftware.prefdialog.PreferenceDialogFactory;
+import com.globalscalingsoftware.prefdialog.module.PreferenceDialogModule;
+import com.google.inject.Guice;
 
 abstract class AbstractPreferenceDialogTest {
 	
-	protected preferences
+	def preferences
 	
-	protected DialogFixture window
+	def fixture
 	
 	@Before
 	void beforeTest() {
 		setupPreferences()
-		window = createFrameFixture(preferences)
-		window.show();
+		fixture = createFrameFixture(preferences)
+		fixture.show();
 	}
 	
 	abstract setupPreferences()
 	
-	private createFrameFixture(def preferences) {
-		def injector = new PreferencesDialogInjectorFactory().create()
+	def createFrameFixture(def preferences) {
+		def injector = Guice.createInjector(new PreferenceDialogModule())
 		def factory = injector.getInstance(PreferenceDialogFactory)
 		
 		createDialog(factory)
@@ -51,14 +53,13 @@ abstract class AbstractPreferenceDialogTest {
 		return new DialogFixture(dialog);
 	}
 	
-	protected createDialog(PreferenceDialogFactory factory) {
+	def createDialog(def factory) {
 		def controller = factory.create(null, preferences)
-		controller.setup()
 		return controller.getPreferenceDialog()
 	}
 	
 	@After
 	void afterTest() {
-		window.cleanUp()
+		fixture.cleanUp()
 	}
 }

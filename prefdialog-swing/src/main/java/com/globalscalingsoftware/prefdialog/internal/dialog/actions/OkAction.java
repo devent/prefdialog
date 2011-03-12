@@ -18,10 +18,9 @@
  */
 package com.globalscalingsoftware.prefdialog.internal.dialog.actions;
 
-import com.globalscalingsoftware.prefdialog.actions.internal.DelegatedCallbackAction;
+import com.globalscalingsoftware.prefdialog.actions.AbstractDelegatedCallbackAction;
 
-
-public class OkAction extends DelegatedCallbackAction {
+public class OkAction extends AbstractDelegatedCallbackAction {
 
 	OkAction() {
 		super("Ok");

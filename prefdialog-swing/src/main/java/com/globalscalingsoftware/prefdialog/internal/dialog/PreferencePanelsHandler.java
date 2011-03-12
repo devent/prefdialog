@@ -74,41 +74,68 @@ public class PreferencePanelsHandler {
 		Map<Object, PreferencePanelHandler> panelHandlers = Maps.newHashMap();
 		Map<Object, TreeNode[]> treeNodes = Maps.newHashMap();
 		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
-		createPreferencePanelHandlers(preferences, panelHandlers, treeNodes,
-				rootNode);
+		PreferencePanelHandler firstPreferencePanelHandler = createPreferencePanelHandlers(
+				preferences, panelHandlers, treeNodes, rootNode);
 		return preferencePanelsCollectionFactory.create(panelHandlers,
-				treeNodes, rootNode);
+				firstPreferencePanelHandler, treeNodes, rootNode);
 	}
 
-	private void createPreferencePanelHandlers(Object preferences,
+	private PreferencePanelHandler createPreferencePanelHandlers(
+			Object preferences,
 			final Map<Object, PreferencePanelHandler> panelHandlers,
 			final Map<Object, TreeNode[]> treeNodes,
 			final DefaultMutableTreeNode rootNode) {
+		CreatePreferencePanelHandlersCallback callback = new CreatePreferencePanelHandlersCallback(
+				panelHandlers, treeNodes, rootNode);
 		annotationDiscoveryFactory.create(annotationFilter, preferences,
-				new AnnotationDiscoveryCallback() {
-
-					@Override
-					public void fieldAnnotationDiscovered(Field field,
-							Object value, Annotation a) {
-						createPreferencePanelHandler(value, panelHandlers);
-						createNodePath(value, treeNodes, rootNode);
-					}
-
-				}).discoverAnnotations();
+				callback).discoverAnnotations();
+		return callback.getFirstPreferencePanelHandler();
 	}
 
-	private void createPreferencePanelHandler(Object value,
-			Map<Object, PreferencePanelHandler> panelHandlers) {
-		PreferencePanelHandler handler = preferencePanelHandlerFactory
-				.create(value);
-		panelHandlers.put(value, handler);
-	}
+	private class CreatePreferencePanelHandlersCallback implements
+			AnnotationDiscoveryCallback {
 
-	private void createNodePath(Object value,
-			Map<Object, TreeNode[]> treeNodes, DefaultMutableTreeNode rootNode) {
-		DefaultMutableTreeNode node = new DefaultMutableTreeNode(value);
-		rootNode.add(node);
-		treeNodes.put(value, node.getPath());
+		private final Map<Object, PreferencePanelHandler> panelHandlers;
+		private final Map<Object, TreeNode[]> treeNodes;
+		private final DefaultMutableTreeNode rootNode;
+		private PreferencePanelHandler firstPreferencePanelHandler;
+
+		public CreatePreferencePanelHandlersCallback(
+				Map<Object, PreferencePanelHandler> panelHandlers,
+				Map<Object, TreeNode[]> treeNodes,
+				DefaultMutableTreeNode rootNode) {
+			this.panelHandlers = panelHandlers;
+			this.treeNodes = treeNodes;
+			this.rootNode = rootNode;
+			this.firstPreferencePanelHandler = null;
+		}
+
+		public PreferencePanelHandler getFirstPreferencePanelHandler() {
+			return firstPreferencePanelHandler;
+		}
+
+		@Override
+		public void fieldAnnotationDiscovered(Field field, Object value,
+				Annotation a) {
+			createPreferencePanelHandler(value);
+			createNodePath(value);
+		}
+
+		private void createPreferencePanelHandler(Object value) {
+			PreferencePanelHandler handler = preferencePanelHandlerFactory
+					.create(value);
+			if (firstPreferencePanelHandler == null) {
+				firstPreferencePanelHandler = handler;
+			}
+			panelHandlers.put(value, handler);
+		}
+
+		private void createNodePath(Object value) {
+			DefaultMutableTreeNode node = new DefaultMutableTreeNode(value);
+			rootNode.add(node);
+			treeNodes.put(value, node.getPath());
+		}
+
 	}
 
 }

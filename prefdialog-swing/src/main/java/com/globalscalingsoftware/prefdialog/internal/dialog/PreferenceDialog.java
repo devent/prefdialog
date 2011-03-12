@@ -23,42 +23,74 @@ import java.awt.Frame;
 
 import javax.swing.Action;
 import javax.swing.JTree;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
-import com.globalscalingsoftware.prefdialog.Event;
+import com.google.inject.assistedinject.Assisted;
+import com.google.inject.internal.Nullable;
 
 public class PreferenceDialog {
 
-	private UiPreferencesDialog uiPreferencesDialog;
-	private final CallableTreeChildSelectedEvent childSelectedEvent;
-	private Component childPanel;
-	private TreePath selectedPath;
-
-	PreferenceDialog() {
-		childSelectedEvent = new CallableTreeChildSelectedEvent();
+	public interface PreferenceDialogFactory {
+		PreferenceDialog create(@Assisted @Nullable Frame owner,
+				@Assisted DefaultMutableTreeNode rootNode);
 	}
 
-	public void setup(Frame owner, DefaultMutableTreeNode rootNode) {
-		uiPreferencesDialog = new UiPreferencesDialog(owner);
+	private final UiPreferencesDialog uiPreferencesDialog;
+	private Component childPanel;
+	private TreePath selectedPath;
+	private final Frame owner;
+	private final DefaultMutableTreeNode rootNode;
+	private ChildSelectedCallback childSelectedCallback;
 
+	PreferenceDialog(@Assisted @Nullable Frame owner,
+			@Assisted DefaultMutableTreeNode rootNode) {
+		this.uiPreferencesDialog = new UiPreferencesDialog(owner);
+		this.owner = owner;
+		this.rootNode = rootNode;
+		setup();
+	}
+
+	public void setup() {
+		setupChildTree();
+		setChildPanel(childPanel);
+		setupDialog();
+	}
+
+	private void setupDialog() {
+		uiPreferencesDialog.setLocationRelativeTo(owner);
+		uiPreferencesDialog.setModal(true);
+	}
+
+	private void setupChildTree() {
 		JTree childTree = uiPreferencesDialog.getChildTree();
 		childTree.setName("child_tree");
 		childTree.setModel(new DefaultTreeModel(rootNode));
 		childTree.setRootVisible(false);
 		childTree.getSelectionModel().setSelectionMode(
 				TreeSelectionModel.SINGLE_TREE_SELECTION);
-		childTree.addTreeSelectionListener(childSelectedEvent);
+		childTree.addTreeSelectionListener(new TreeSelectionListener() {
+
+			@Override
+			public void valueChanged(TreeSelectionEvent e) {
+				JTree tree = (JTree) e.getSource();
+				Object pathComponent = tree.getLastSelectedPathComponent();
+				if (pathComponent == null) {
+					return;
+				}
+
+				DefaultMutableTreeNode node = (DefaultMutableTreeNode) pathComponent;
+				Object nodeInfo = node.getUserObject();
+				childSelectedCallback.call(nodeInfo);
+			}
+		});
 		childTree.setSelectionPath(selectedPath);
 		childTree.scrollPathToVisible(selectedPath);
-
-		setChildPanel(childPanel);
-
-		uiPreferencesDialog.setLocationRelativeTo(owner);
-		uiPreferencesDialog.setModal(true);
 	}
 
 	public void open() {
@@ -70,19 +102,13 @@ public class PreferenceDialog {
 		uiPreferencesDialog.setVisible(false);
 	}
 
-	public UiPreferencesDialog getUiPreferencesDialog() {
-		return uiPreferencesDialog;
-	}
-
-	public void setChildSelected(Event<Object> childSelected) {
-		this.childSelectedEvent.setEvent(childSelected);
+	public void setChildSelected(ChildSelectedCallback callback) {
+		this.childSelectedCallback = callback;
 	}
 
 	public void setChildPanel(Component comp) {
 		this.childPanel = comp;
-		if (uiPreferencesDialog != null) {
-			uiPreferencesDialog.getSplitPane().setRightComponent(childPanel);
-		}
+		uiPreferencesDialog.getSplitPane().setRightComponent(childPanel);
 	}
 
 	public void setSelectedChild(TreeNode[] path) {
@@ -95,6 +121,10 @@ public class PreferenceDialog {
 
 	public void setCancelAction(Action action) {
 		uiPreferencesDialog.getCancelButton().setAction(action);
+	}
+
+	public Component getAWTComponent() {
+		return uiPreferencesDialog;
 	}
 
 }
