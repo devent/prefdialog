@@ -25,4 +25,19 @@ public interface PreferencePanelHandler {
 	 * Returns the {@link Component} that can be added to a frame or dialog.
 	 */
 	Component getAWTComponent();
+
+	/**
+	 * Restore the fields to the original values.
+	 */
+	void restoreInput();
+
+	/**
+	 * Apply all entered data.
+	 */
+	void applyInput();
+
+	/**
+	 * Returns the preferences object for this panel.
+	 */
+	Object getPreferences();
 }

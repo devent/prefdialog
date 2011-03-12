@@ -18,8 +18,6 @@
  */
 package com.globalscalingsoftware.prefdialog;
 
-import java.awt.Frame;
-
 import javax.swing.Action;
 
 /**
@@ -37,7 +35,6 @@ import javax.swing.Action;
  * 
  * <pre>
  * controller.setPreferences(preferences);
- * controller.setup(owner);
  * controller.openDialog();
  * if (controller.getOption() == OK) {
  *     compute preferences
@@ -46,12 +43,6 @@ import javax.swing.Action;
  * </pre>
  */
 public interface PreferenceDialogController {
-
-	/**
-	 * Create the dialog and all the components with the {@link Frame owner} of
-	 * the dialog.
-	 */
-	void setup();
 
 	/**
 	 * Opens the dialog.

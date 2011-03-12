@@ -133,4 +133,18 @@ public class PreferencePanelHandlerImpl implements PreferencePanelHandler {
 		return childFieldHandler.getAWTComponent();
 	}
 
+	@Override
+	public void applyInput() {
+		childFieldHandler.applyInput();
+	}
+
+	@Override
+	public void restoreInput() {
+		childFieldHandler.restoreInput();
+	}
+
+	@Override
+	public Object getPreferences() {
+		return preferences;
+	}
 }
