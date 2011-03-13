@@ -56,21 +56,10 @@ public abstract class AbstractChildFieldHandler<ComponentType extends ChildCompo
 		super(reflectionToolbox, parentObject, value, field, annotationClass,
 				component);
 		this.fieldHandlers = new ArrayList<FieldHandler<?>>();
+		setup();
 	}
 
-	@Override
-	public void setup() {
-		super.setup();
-		setupActions();
-	}
-
-	public void addFieldHandler(FieldHandler<?> fieldHandler) {
-		l.debug("Add new field handler {}.", fieldHandler);
-		getComponent().addField(fieldHandler);
-		fieldHandlers.add(fieldHandler);
-	}
-
-	private void setupActions() {
+	private void setup() {
 		getComponent().setApplyEvent(new Runnable() {
 
 			@Override
@@ -109,6 +98,12 @@ public abstract class AbstractChildFieldHandler<ComponentType extends ChildCompo
 		for (FieldHandler<?> inputField : fieldHandlers) {
 			inputField.restoreInput(parent);
 		}
+	}
+
+	public void addFieldHandler(FieldHandler<?> fieldHandler) {
+		l.debug("Add new field handler {}.", fieldHandler);
+		getComponent().addField(fieldHandler);
+		fieldHandlers.add(fieldHandler);
 	}
 
 	public void setApplyAction(Action a) {

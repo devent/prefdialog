@@ -38,11 +38,10 @@ public class RadioButtonFieldHandler extends
 		super(reflectionToolbox, parentObject, value, field, RadioButton.class,
 				new RadioButtonsPanel());
 		this.value = value;
+		setup();
 	}
 
-	@Override
-	public void setup() {
-		super.setup();
+	private void setup() {
 		setupColumns();
 		setupValue(value);
 	}

@@ -48,10 +48,10 @@ public abstract class AbstractFieldHandler<FieldComponentType extends FieldCompo
 		this.field = field;
 		this.annotationClass = annotationClass;
 		this.component = component;
+		setup();
 	}
 
-	@Override
-	public void setup() {
+	private void setup() {
 		setComponentTitle(field.getName());
 		setComponentValue(value);
 	}

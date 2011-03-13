@@ -51,15 +51,10 @@ public abstract class AbstractDefaultFieldHandler<FieldComponentType extends Fie
 			FieldComponentType component) {
 		super(parentObject, value, field, annotationClass, component);
 		this.reflectionToolbox = reflectionToolbox;
+		setup();
 	}
 
-	@Override
-	public void setup() {
-		super.setup();
-		setupComponent();
-	}
-
-	private void setupComponent() {
+	private void setup() {
 		Field field = getField();
 		Class<? extends Annotation> annotationClass = getAnnotationClass();
 		setupComponentWidth(field, annotationClass);

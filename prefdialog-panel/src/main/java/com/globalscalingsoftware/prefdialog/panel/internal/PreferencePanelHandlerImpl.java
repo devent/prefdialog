@@ -118,11 +118,9 @@ public class PreferencePanelHandlerImpl implements PreferencePanelHandler {
 		ChildFieldHandler panel = factory.create(preferences, value, field);
 		panel.setApplyAction(actionsHandler.getApplyAction());
 		panel.setRestoreAction(actionsHandler.getRestoreAction());
-		panel.setup();
 
 		for (FieldHandler<?> fieldHandler : fieldFactories
 				.createFieldsHandlers(factoriesMap, value)) {
-			fieldHandler.setup();
 			setupGroupFieldHandler(panel, fieldHandler);
 			panel.addFieldHandler(fieldHandler);
 		}
@@ -140,7 +138,6 @@ public class PreferencePanelHandlerImpl implements PreferencePanelHandler {
 		Object value = handler.getComponentValue();
 		for (FieldHandler<?> fieldHandler : fieldFactories
 				.createFieldsHandlers(factoriesMap, value)) {
-			fieldHandler.setup();
 			groupFieldHandler.addFieldHandler(fieldHandler);
 		}
 	}

@@ -41,11 +41,10 @@ public class FileChooserFieldHandler extends
 			@Assisted("value") Object value, @Assisted Field field) {
 		super(reflectionToolbox, parentObject, value, field, FileChooser.class,
 				new FileChooserPanel());
+		setup();
 	}
 
-	@Override
-	public void setup() {
-		super.setup();
+	private void setup() {
 		getComponent().setOpenFileAction(new Runnable() {
 
 			@Override

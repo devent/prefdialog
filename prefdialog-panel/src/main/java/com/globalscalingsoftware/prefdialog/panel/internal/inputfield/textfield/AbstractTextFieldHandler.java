@@ -36,11 +36,10 @@ public abstract class AbstractTextFieldHandler extends
 			ValidatingTextField<?> textField) {
 		super(reflectionToolbox, parentObject, value, field, annotationClass,
 				new TextFieldPanel(textField));
+		setup();
 	}
 
-	@Override
-	public void setup() {
-		super.setup();
+	private void setup() {
 		validatorText = getValidatorTextFromFieldAnnotation();
 		setupValidatorFromFieldAnnotation();
 		setupValidListenerToComponent();

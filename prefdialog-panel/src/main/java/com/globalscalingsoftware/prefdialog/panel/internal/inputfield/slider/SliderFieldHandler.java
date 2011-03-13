@@ -39,11 +39,10 @@ public class SliderFieldHandler extends
 			@Assisted("value") Object value, @Assisted Field field) {
 		super(reflectionToolbox, parentObject, value, field, Slider.class,
 				new SliderPanel());
+		setup();
 	}
 
-	@Override
-	public void setup() {
-		super.setup();
+	private void setup() {
 		setupCustomModel();
 		setupMin();
 		setupMax();

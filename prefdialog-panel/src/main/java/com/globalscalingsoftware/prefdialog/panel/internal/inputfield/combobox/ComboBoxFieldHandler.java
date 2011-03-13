@@ -42,14 +42,13 @@ public class ComboBoxFieldHandler extends
 			@Assisted("value") @Nullable Object value, @Assisted Field field) {
 		super(reflectionToolbox, parentObject, value, field, ComboBox.class,
 				new ComboBoxPanel());
+		setup();
 	}
 
-	@Override
 	public void setup() {
 		setupCustomModel();
 		setupCustomRenderer();
 		setupElements();
-		super.setup();
 	}
 
 	private void setupCustomRenderer() {
