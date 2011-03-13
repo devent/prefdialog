@@ -23,10 +23,10 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.JCheckBox;
 
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractFieldPanel;
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractFieldComponent;
 
 @SuppressWarnings("serial")
-class CheckBoxPanel extends AbstractFieldPanel<JCheckBox> {
+class CheckBoxPanel extends AbstractFieldComponent<JCheckBox> {
 
 	private static class Action extends AbstractAction {
 

@@ -174,4 +174,5 @@ public class PreferencePanelHandlerImpl implements PreferencePanelHandler {
 	public Object getPreferences() {
 		return childFieldHandler.getComponentValue();
 	}
+
 }

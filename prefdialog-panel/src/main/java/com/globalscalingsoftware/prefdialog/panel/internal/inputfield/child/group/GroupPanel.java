@@ -27,10 +27,10 @@ import javax.swing.Action;
 import javax.swing.border.TitledBorder;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractFieldPanel;
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractFieldComponent;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.child.ChildComponent;
 
-public class GroupPanel extends AbstractFieldPanel<UiGroupPanel> implements
+public class GroupPanel extends AbstractFieldComponent<UiGroupPanel> implements
 		ChildComponent {
 
 	private final UiGroupPanel panel;

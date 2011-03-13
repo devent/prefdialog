@@ -24,12 +24,12 @@ import javax.swing.JComponent;
 
 import com.globalscalingsoftware.prefdialog.FieldComponent;
 
-public abstract class AbstractFieldPanel<FieldType extends JComponent>
+public abstract class AbstractFieldComponent<FieldType extends JComponent>
 		implements FieldComponent {
 
 	private final FieldType field;
 
-	public AbstractFieldPanel(FieldType field) {
+	public AbstractFieldComponent(FieldType field) {
 		this.field = field;
 	}
 
@@ -61,4 +61,5 @@ public abstract class AbstractFieldPanel<FieldType extends JComponent>
 	public void setEnabled(boolean enabled) {
 		field.setEnabled(enabled);
 	}
+
 }

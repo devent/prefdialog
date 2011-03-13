@@ -26,9 +26,9 @@ import java.awt.Font;
 import javax.swing.Action;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractFieldPanel;
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractFieldComponent;
 
-public class ChildPanel extends AbstractFieldPanel<UiChildPanel> implements
+public class ChildPanel extends AbstractFieldComponent<UiChildPanel> implements
 		ChildComponent {
 
 	private final UiChildPanel panel;

@@ -25,7 +25,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public abstract class AbstractLabelFieldPanel<FieldType extends JComponent>
-		extends AbstractFieldPanel<JPanel> {
+		extends AbstractFieldComponent<JPanel> {
 
 	private final JLabel label;
 
@@ -96,4 +96,5 @@ public abstract class AbstractLabelFieldPanel<FieldType extends JComponent>
 	public void setEnabled(boolean enabled) {
 		field.setEnabled(enabled);
 	}
+
 }

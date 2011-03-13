@@ -122,4 +122,5 @@ public abstract class AbstractChildFieldHandler<ComponentType extends ChildCompo
 	public void setButtonsTransparent(boolean transparent) {
 		getComponent().setButtonsTransparent(transparent);
 	}
+
 }
