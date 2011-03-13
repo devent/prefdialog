@@ -44,6 +44,7 @@ import javax.swing.border.Border;
 class UiChildPanel extends javax.swing.JPanel {
 	private JLabel childLabel;
 	private JScrollPane jScrollPane1;
+	private JSeparator jSeparator2;
 	private JPanel buttonsPanel;
 	private JPanel fieldsPanel;
 	private JButton applyButton;
@@ -110,22 +111,26 @@ class UiChildPanel extends javax.swing.JPanel {
 				buttonsPanel = new JPanel();
 				TableLayout buttonsPanelLayout = new TableLayout(
 						new double[][] { { TableLayout.FILL, 0.25, 0.25 },
-								{ TableLayout.FILL } });
+								{ TableLayout.PREFERRED, TableLayout.FILL } });
 				buttonsPanelLayout.setHGap(5);
 				buttonsPanelLayout.setVGap(5);
 				buttonsPanel.setLayout(buttonsPanelLayout);
 				this.add(buttonsPanel, "0, 3");
 				{
 					applyButton = new JButton();
-					buttonsPanel.add(applyButton, "1, 0");
+					buttonsPanel.add(applyButton, "1, 1");
 					applyButton.setName("apply");
 					applyButton.setText("Apply ");
 				}
 				{
 					restoreButton = new JButton();
-					buttonsPanel.add(restoreButton, "2, 0");
+					buttonsPanel.add(restoreButton, "2, 1");
 					restoreButton.setName("restore");
 					restoreButton.setText("Restore");
+				}
+				{
+					jSeparator2 = new JSeparator();
+					buttonsPanel.add(jSeparator2, "0, 0, 2, 0");
 				}
 			}
 		} catch (Exception e) {
