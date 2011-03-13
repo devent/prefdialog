@@ -21,7 +21,6 @@ package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.child;
 import info.clearthought.layout.TableLayout;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -77,7 +76,7 @@ class UiChildPanel extends javax.swing.JPanel {
 			thisLayout.setVGap(5);
 			this.setLayout(thisLayout);
 			this.setPreferredSize(new java.awt.Dimension(416, 300));
-			this.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
+			this.setBorder(BorderFactory.createEmptyBorder(6, 6, 6, 6));
 			{
 				childLabel = new JLabel();
 				this.add(childLabel, "0, 0");
@@ -89,7 +88,7 @@ class UiChildPanel extends javax.swing.JPanel {
 			}
 			{
 				jScrollPane1 = new JScrollPane();
-				this.add(jScrollPane1, "0, 2");
+				this.add(jScrollPane1, "0,2,f,t");
 				jScrollPane1.setOpaque(false);
 				Border border = BorderFactory.createEmptyBorder(0, 0, 0, 0);
 				jScrollPane1.setViewportBorder(border);
@@ -99,27 +98,34 @@ class UiChildPanel extends javax.swing.JPanel {
 					jScrollPane1.setViewportView(fieldsPanel);
 					TableLayout fieldsPanelLayout = new TableLayout(
 							new double[][] { { TableLayout.FILL },
-									{ TableLayout.FILL } });
+									{ TableLayout.FILL, TableLayout.FILL } });
 					fieldsPanelLayout.setHGap(5);
 					fieldsPanelLayout.setVGap(5);
 					fieldsPanel.setLayout(fieldsPanelLayout);
+					fieldsPanel.setBorder(BorderFactory.createEmptyBorder(6, 6,
+							6, 6));
 				}
 			}
 			{
 				buttonsPanel = new JPanel();
-				BoxLayout buttonsPanelLayout = new BoxLayout(buttonsPanel,
-						javax.swing.BoxLayout.X_AXIS);
+				TableLayout buttonsPanelLayout = new TableLayout(
+						new double[][] {
+								{ TableLayout.FILL, TableLayout.PREFERRED,
+										TableLayout.PREFERRED },
+								{ TableLayout.FILL } });
+				buttonsPanelLayout.setHGap(5);
+				buttonsPanelLayout.setVGap(5);
 				buttonsPanel.setLayout(buttonsPanelLayout);
-				this.add(buttonsPanel, "0,3,r,f");
+				this.add(buttonsPanel, "0, 3");
 				{
 					applyButton = new JButton();
-					buttonsPanel.add(applyButton);
+					buttonsPanel.add(applyButton, "1, 0");
 					applyButton.setName("apply");
 					applyButton.setText("Apply ");
 				}
 				{
 					restoreButton = new JButton();
-					buttonsPanel.add(restoreButton);
+					buttonsPanel.add(restoreButton, "2, 0");
 					restoreButton.setName("restore");
 					restoreButton.setText("Restore");
 				}
