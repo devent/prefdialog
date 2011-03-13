@@ -57,7 +57,7 @@ abstract class AbstractPreferencePanelTest {
 	
 	def panelName
 	
-	def fixture
+	FrameFixture fixture
 	
 	@Before
 	void beforeTest() {

@@ -63,6 +63,7 @@ class FormattedTextFieldTest extends AbstractPreferencePanelTest {
 	
 	@Test
 	void testEnterTextAndApply() {
+		fixture.textBox("fields").deleteText()
 		fixture.textBox("fields").enterText "10"
 		fixture.panel("general").button("apply").click()
 		assert preferences.general.fields == 10

@@ -58,12 +58,14 @@ class FormattedTextFieldValidatorTest extends AbstractPreferencePanelTest {
 	
 	@Test
 	void testPanelInvalidTextClickApplyAndClose() {
+		fixture.textBox("fields").deleteText()
 		fixture.textBox("fields").enterText "1"
 		assert fixture.label("label-fields").text() == "fields (Must be a number and between 2 and 100): "
 	}
 	
 	@Test
 	void testPanelClickApplyAndClose() {
+		fixture.textBox("fields").deleteText()
 		fixture.textBox("fields").enterText "10"
 		fixture.panel("general").button("apply").click()
 		assert preferences.general.fields == 10

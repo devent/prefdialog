@@ -52,6 +52,7 @@ class FormattedTextFieldWidthTest extends AbstractPreferencePanelTest {
 	
 	@Test
 	void testPanelClickApplyAndClose() {
+		fixture.textBox("fields").deleteText()
 		fixture.textBox("fields").enterText "10"
 		fixture.panel("general").button("apply").click()
 		

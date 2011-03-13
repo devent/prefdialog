@@ -76,9 +76,13 @@ class TextFieldGroupTest extends AbstractPreferencePanelTest {
 	
 	@Test
 	void testEnterTextAndApply() {
+		fixture.textBox("textField1").deleteText()
 		fixture.textBox("textField1").enterText "test1"
+		fixture.textBox("textField2").deleteText()
 		fixture.textBox("textField2").enterText "test2"
+		fixture.textBox("textField3").deleteText()
 		fixture.textBox("textField3").enterText "test3"
+		fixture.textBox("textField4").deleteText()
 		fixture.textBox("textField4").enterText "test4"
 		fixture.panel("general").button("apply").click()
 		
