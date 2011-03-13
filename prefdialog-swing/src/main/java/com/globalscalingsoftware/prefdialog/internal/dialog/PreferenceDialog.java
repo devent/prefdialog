@@ -44,7 +44,6 @@ public class PreferenceDialog {
 
 	private final UiPreferencesDialog uiPreferencesDialog;
 	private Component childPanel;
-	private TreePath selectedPath;
 	private final Frame owner;
 	private final DefaultMutableTreeNode rootNode;
 	private ChildSelectedCallback childSelectedCallback;
@@ -91,8 +90,6 @@ public class PreferenceDialog {
 				childSelectedCallback.call(nodeInfo);
 			}
 		});
-		childTree.setSelectionPath(selectedPath);
-		childTree.scrollPathToVisible(selectedPath);
 	}
 
 	public void open() {
@@ -114,7 +111,10 @@ public class PreferenceDialog {
 	}
 
 	public void setSelectedChild(TreeNode[] path) {
-		this.selectedPath = new TreePath(path);
+		TreePath selectedPath = new TreePath(path);
+		JTree childTree = uiPreferencesDialog.getChildTree();
+		childTree.setSelectionPath(selectedPath);
+		childTree.scrollPathToVisible(selectedPath);
 	}
 
 	public void setOkAction(Action action) {
