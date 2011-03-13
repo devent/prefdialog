@@ -50,11 +50,28 @@ class RadioButtonTest extends AbstractPreferencePanelTest {
 	}
 	
 	@Test
-	void testPanelClickApplyAndClose() {
+	void testField() {
+		assert fixture.label("label-colors").text() == "colors: "
+		fixture.panel("general").button("apply").requireDisabled()
+		fixture.panel("general").button("restore").requireEnabled()
+	}
+	
+	@Test
+	void testPanelChooseBlueAndApply() {
 		fixture.radioButton("colors-BLUE").click()
 		fixture.panel("general").button("apply").click()
+		fixture.panel("general").button("apply").requireDisabled()
 		
-		assert fixture.label("label-colors").text() == "colors: "
 		assert preferences.general.colors == Colors.BLUE
+	}
+	
+	@Test
+	void testPanelChooseBlueAndRestore() {
+		fixture.radioButton("colors-BLUE").click()
+		fixture.panel("general").button("apply").requireEnabled()
+		fixture.panel("general").button("restore").click()
+		fixture.panel("general").button("apply").requireDisabled()
+		
+		assert preferences.general.colors == Colors.BLACK
 	}
 }
