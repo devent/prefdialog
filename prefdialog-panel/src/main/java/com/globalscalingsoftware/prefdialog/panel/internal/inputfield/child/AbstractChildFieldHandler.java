@@ -66,6 +66,8 @@ public abstract class AbstractChildFieldHandler<ComponentType extends ChildCompo
 			@Override
 			public void run() {
 				applyInput();
+				getComponent().setApplyButtonEnabled(false);
+				getComponent().setRestoreButtonEnabled(false);
 			}
 
 		});
@@ -74,6 +76,8 @@ public abstract class AbstractChildFieldHandler<ComponentType extends ChildCompo
 			@Override
 			public void run() {
 				restoreInput();
+				getComponent().setApplyButtonEnabled(false);
+				getComponent().setRestoreButtonEnabled(false);
 			}
 
 		});

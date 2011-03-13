@@ -78,6 +78,11 @@ public class ChildPanel extends AbstractFieldComponent<UiChildPanel> implements
 	}
 
 	@Override
+	public void setApplyButtonEnabled(boolean enabled) {
+		applyEventAction.setEnabled(enabled);
+	}
+
+	@Override
 	public void setRestoreAction(Action a) {
 		restoreEventAction.setParentAction(a);
 		EventAction newAction = new EventAction();
@@ -88,6 +93,11 @@ public class ChildPanel extends AbstractFieldComponent<UiChildPanel> implements
 	@Override
 	public void setRestoreEvent(Runnable e) {
 		restoreEventAction.setEvent(e);
+	}
+
+	@Override
+	public void setRestoreButtonEnabled(boolean enabled) {
+		restoreEventAction.setEnabled(enabled);
 	}
 
 	@Override

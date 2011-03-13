@@ -31,9 +31,13 @@ public interface ChildComponent extends FieldComponent {
 
 	void setApplyAction(Action a);
 
+	void setApplyButtonEnabled(boolean enabled);
+
 	void setRestoreAction(Action a);
 
 	void setRestoreEvent(Runnable e);
+
+	void setRestoreButtonEnabled(boolean enabled);
 
 	public void setButtonsTransparent(boolean transparent);
 }

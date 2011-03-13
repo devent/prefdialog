@@ -102,11 +102,19 @@ public class GroupPanel extends AbstractFieldComponent<UiGroupPanel> implements
 	}
 
 	@Override
+	public void setApplyButtonEnabled(boolean enabled) {
+	}
+
+	@Override
 	public void setRestoreAction(Action a) {
 	}
 
 	@Override
 	public void setRestoreEvent(Runnable e) {
+	}
+
+	@Override
+	public void setRestoreButtonEnabled(boolean enabled) {
 	}
 
 	@Override
