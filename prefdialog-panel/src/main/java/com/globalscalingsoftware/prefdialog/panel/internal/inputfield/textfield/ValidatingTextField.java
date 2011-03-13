@@ -25,7 +25,6 @@ import java.awt.event.FocusEvent;
 import java.text.ParseException;
 
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.event.CaretEvent;
@@ -84,10 +83,6 @@ public class ValidatingTextField<TextFieldType extends JTextField> {
 				restoreValueIfInvalid();
 			}
 
-			@Override
-			public void focusGained(FocusEvent e) {
-				selectAllText();
-			}
 		});
 	}
 
@@ -119,16 +114,6 @@ public class ValidatingTextField<TextFieldType extends JTextField> {
 		for (ValidListener l : listenerList.getListeners(ValidListener.class)) {
 			l.validChanged(new ValidEvent(this, editValid));
 		}
-	}
-
-	private void selectAllText() {
-		SwingUtilities.invokeLater(new Runnable() {
-
-			@Override
-			public void run() {
-				field.selectAll();
-			}
-		});
 	}
 
 	private void validateInput() {
