@@ -16,7 +16,8 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.internal
+package com.globalscalingsoftware.prefdialog.dialog.internal
+
 
 
 import org.fest.swing.edt.GuiActionRunner 
@@ -26,7 +27,7 @@ import org.junit.After;
 import org.junit.Before;
 
 import com.globalscalingsoftware.prefdialog.PreferenceDialogControllerFactory;
-import com.globalscalingsoftware.prefdialog.module.DialogModule;
+import com.globalscalingsoftware.prefdialog.dialog.module.DialogModule 
 import com.google.inject.Guice;
 
 abstract class AbstractPreferenceDialogFixture {

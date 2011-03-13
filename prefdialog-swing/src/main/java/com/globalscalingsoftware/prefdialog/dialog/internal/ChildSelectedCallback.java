@@ -1,4 +1,4 @@
-package com.globalscalingsoftware.prefdialog.internal.dialog;
+package com.globalscalingsoftware.prefdialog.dialog.internal;
 
 public interface ChildSelectedCallback {
 

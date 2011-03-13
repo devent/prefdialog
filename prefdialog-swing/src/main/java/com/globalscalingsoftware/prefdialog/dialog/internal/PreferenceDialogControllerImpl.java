@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.internal.dialog;
+package com.globalscalingsoftware.prefdialog.dialog.internal;
 
 import java.awt.Component;
 import java.awt.Frame;
@@ -29,8 +29,8 @@ import org.apache.commons.collections.MapIterator;
 import com.globalscalingsoftware.prefdialog.Options;
 import com.globalscalingsoftware.prefdialog.PreferenceDialogController;
 import com.globalscalingsoftware.prefdialog.PreferencePanelHandler;
-import com.globalscalingsoftware.prefdialog.internal.dialog.PreferenceDialog.PreferenceDialogFactory;
-import com.globalscalingsoftware.prefdialog.internal.dialog.actions.ActionsHandler;
+import com.globalscalingsoftware.prefdialog.dialog.internal.PreferenceDialog.PreferenceDialogFactory;
+import com.globalscalingsoftware.prefdialog.dialog.internal.actions.ActionsHandler;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.internal.Nullable;

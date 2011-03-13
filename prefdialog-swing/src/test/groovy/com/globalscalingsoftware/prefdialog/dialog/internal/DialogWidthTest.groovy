@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.internal.inputfield
+package com.globalscalingsoftware.prefdialog.dialog.internal
 
 import java.util.List;
 
@@ -29,7 +29,6 @@ import com.globalscalingsoftware.prefdialog.annotations.ComboBoxElements
 import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField 
 import com.globalscalingsoftware.prefdialog.annotations.RadioButton 
 import com.globalscalingsoftware.prefdialog.annotations.TextField 
-import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceDialogFixture;
 import com.globalscalingsoftware.prefdialog.validators.NotEmptyString 
 
 class DialogWidthTest extends AbstractPreferenceDialogFixture {

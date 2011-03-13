@@ -16,13 +16,15 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.internal.dialog.actions;
+package com.globalscalingsoftware.prefdialog.dialog.internal
 
-import com.globalscalingsoftware.prefdialog.actions.AbstractDelegatedCallbackAction;
 
-public class CancelAction extends AbstractDelegatedCallbackAction {
+import com.globalscalingsoftware.prefdialog.validators.Validator;
 
-	CancelAction() {
-		super("Cancel");
+class FieldsValidator implements Validator<Integer> {
+	
+	@Override
+	public boolean isValid(Integer value) {
+		return value > 1 && value <= 100;
 	}
 }

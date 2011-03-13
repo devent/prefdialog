@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.module;
+package com.globalscalingsoftware.prefdialog.dialog.module;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -25,11 +25,11 @@ import java.util.Collection;
 import com.globalscalingsoftware.prefdialog.PreferenceDialogController;
 import com.globalscalingsoftware.prefdialog.PreferenceDialogControllerFactory;
 import com.globalscalingsoftware.prefdialog.annotations.Child;
-import com.globalscalingsoftware.prefdialog.internal.dialog.PreferenceDialog;
-import com.globalscalingsoftware.prefdialog.internal.dialog.PreferenceDialog.PreferenceDialogFactory;
-import com.globalscalingsoftware.prefdialog.internal.dialog.PreferenceDialogControllerImpl;
-import com.globalscalingsoftware.prefdialog.internal.dialog.PreferencePanelsCollection;
-import com.globalscalingsoftware.prefdialog.internal.dialog.PreferencePanelsCollection.PreferencePanelsCollectionFactory;
+import com.globalscalingsoftware.prefdialog.dialog.internal.PreferenceDialog;
+import com.globalscalingsoftware.prefdialog.dialog.internal.PreferenceDialogControllerImpl;
+import com.globalscalingsoftware.prefdialog.dialog.internal.PreferencePanelsCollection;
+import com.globalscalingsoftware.prefdialog.dialog.internal.PreferenceDialog.PreferenceDialogFactory;
+import com.globalscalingsoftware.prefdialog.dialog.internal.PreferencePanelsCollection.PreferencePanelsCollectionFactory;
 import com.globalscalingsoftware.prefdialog.panel.module.PanelModule;
 import com.google.inject.AbstractModule;
 import com.google.inject.Injector;

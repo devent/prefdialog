@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.internal.inputfield;
+package com.globalscalingsoftware.prefdialog.dialog.internal;
 
 public enum Colors {
 	RED, BLUE, GREEN, LILA, VIOLET, CYAN, WHITE, BLACK

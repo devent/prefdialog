@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.internal.dialog;
+package com.globalscalingsoftware.prefdialog.dialog.internal;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
 
 import com.globalscalingsoftware.prefdialog.PreferencePanelHandler;
 import com.globalscalingsoftware.prefdialog.PreferencePanelHandlerFactory;
-import com.globalscalingsoftware.prefdialog.internal.dialog.PreferencePanelsCollection.PreferencePanelsCollectionFactory;
+import com.globalscalingsoftware.prefdialog.dialog.internal.PreferencePanelsCollection.PreferencePanelsCollectionFactory;
 import com.globalscalingsoftware.prefdialog.reflection.AnnotationDiscoveryCallback;
 import com.globalscalingsoftware.prefdialog.reflection.AnnotationDiscoveryFactory;
 import com.globalscalingsoftware.prefdialog.reflection.AnnotationFilterFactory;

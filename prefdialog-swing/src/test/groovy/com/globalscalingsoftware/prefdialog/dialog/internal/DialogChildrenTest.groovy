@@ -16,14 +16,13 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.internal.inputfield
+package com.globalscalingsoftware.prefdialog.dialog.internal
 
 import org.junit.Test;
 
 import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField;
 import com.globalscalingsoftware.prefdialog.annotations.TextField;
-import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceDialogFixture;
 
 class DialogChildrenTest extends AbstractPreferenceDialogFixture {
 	
