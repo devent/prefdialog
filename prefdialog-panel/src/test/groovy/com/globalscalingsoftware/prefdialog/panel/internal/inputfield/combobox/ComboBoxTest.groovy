@@ -62,6 +62,7 @@ class ComboBoxTest extends AbstractPreferencePanelTest {
 	void testChooseFirstAndApply() {
 		fixture.comboBox("comboBox").selectItem 1
 		fixture.panel("general").button("apply").click()
+		fixture.panel("general").button("apply").requireDisabled()
 		
 		assert fixture.label("label-comboBox").text() == "comboBox: "
 		assert preferences.general.comboBox == "second element"
@@ -70,9 +71,11 @@ class ComboBoxTest extends AbstractPreferencePanelTest {
 	@Test
 	void testChooseFirstAndRestore() {
 		fixture.comboBox("comboBox").selectItem 1
+		fixture.panel("general").button("apply").requireEnabled()
 		fixture.panel("general").button("restore").click()
-		
+		fixture.panel("general").button("apply").requireDisabled()
 		fixture.comboBox("comboBox").requireSelection 0
+		
 		assert preferences.general.comboBox == "first element"
 	}
 }
