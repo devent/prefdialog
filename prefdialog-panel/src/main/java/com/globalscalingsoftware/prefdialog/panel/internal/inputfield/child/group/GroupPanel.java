@@ -24,6 +24,7 @@ import info.clearthought.layout.TableLayout;
 import java.awt.Font;
 
 import javax.swing.Action;
+import javax.swing.border.TitledBorder;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractFieldPanel;
@@ -47,10 +48,10 @@ public class GroupPanel extends AbstractFieldPanel<UiGroupPanel> implements
 	}
 
 	private void setBoldFontForGroupLabel() {
-		Font font = panel.getGroupLabel().getFont();
-		panel.getGroupLabel().setFont(
-				new Font(font.getFamily(), font.getStyle() | Font.BOLD, font
-						.getSize()));
+		TitledBorder border = (TitledBorder) panel.getBorder();
+		Font font = border.getTitleFont();
+		border.setTitleFont(new Font(font.getFamily(), font.getStyle()
+				| Font.BOLD, font.getSize()));
 	}
 
 	@Override
@@ -61,7 +62,8 @@ public class GroupPanel extends AbstractFieldPanel<UiGroupPanel> implements
 
 	@Override
 	public void setTitle(String title) {
-		panel.getGroupLabel().setText(title);
+		TitledBorder border = (TitledBorder) panel.getBorder();
+		border.setTitle(title);
 	}
 
 	@Override

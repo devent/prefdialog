@@ -20,11 +20,11 @@ package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.child.gro
 
 import info.clearthought.layout.TableLayout;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSeparator;
 import javax.swing.WindowConstants;
+import javax.swing.border.TitledBorder;
 
 /**
  * This code was edited or generated using CloudGarden's Jigloo SWT/Swing GUI
@@ -38,8 +38,6 @@ import javax.swing.WindowConstants;
  */
 @SuppressWarnings("serial")
 class UiGroupPanel extends javax.swing.JPanel {
-	private JLabel groupLabel;
-	private JSeparator jSeparator1;
 	private JPanel fieldsPanel;
 
 	/**
@@ -66,15 +64,8 @@ class UiGroupPanel extends javax.swing.JPanel {
 			thisLayout.setHGap(5);
 			thisLayout.setVGap(5);
 			this.setLayout(thisLayout);
-			{
-				groupLabel = new JLabel();
-				this.add(groupLabel, "0, 0, 1, 0");
-				groupLabel.setText("Group Label");
-			}
-			{
-				jSeparator1 = new JSeparator();
-				this.add(jSeparator1, "2, 0, f, c");
-			}
+			this.setBorder(BorderFactory.createTitledBorder(null, "Group",
+					TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION));
 			{
 				fieldsPanel = new JPanel();
 				TableLayout fieldsPanelLayout = new TableLayout(new double[][] {
@@ -87,10 +78,6 @@ class UiGroupPanel extends javax.swing.JPanel {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	public JLabel getGroupLabel() {
-		return groupLabel;
 	}
 
 	public JPanel getFieldsPanel() {
