@@ -34,7 +34,7 @@ abstract class AbstractPreferenceDialogFixture {
 	
 	def preferences
 	
-	def fixture
+	DialogFixture fixture
 	
 	@Before
 	void beforeTest() {

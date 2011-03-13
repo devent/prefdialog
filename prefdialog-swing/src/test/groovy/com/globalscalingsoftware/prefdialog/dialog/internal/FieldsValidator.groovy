@@ -25,6 +25,6 @@ class FieldsValidator implements Validator<Integer> {
 	
 	@Override
 	public boolean isValid(Integer value) {
-		return value > 1 && value <= 100;
+		return value > 1 && value <= 900;
 	}
 }

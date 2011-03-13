@@ -77,8 +77,8 @@ class DialogChildrenTest extends AbstractPreferenceDialogFixture {
 		fixture.button("ok").click()
 		
 		assert preferences.general.name == "name"
-		assert preferences.general.fields == 10
+		assert preferences.general.fields == 104
 		assert preferences.child2.something == "something text"
-		assert preferences.child2.moreFields == 20
+		assert preferences.child2.moreFields == 204
 	}
 }

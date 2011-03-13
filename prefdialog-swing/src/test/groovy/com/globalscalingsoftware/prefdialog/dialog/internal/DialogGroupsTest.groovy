@@ -45,7 +45,7 @@ class DialogGroupsTest extends AbstractPreferenceDialogFixture {
 		@TextField(validator=NotEmptyString, validatorText="Must not be empty")
 		String name = ""
 		
-		@FormattedTextField(validator=FieldsValidator, validatorText="Must be a number and between 2 and 100")
+		@FormattedTextField(validator=FieldsValidator, validatorText="Must be a number and between 2 and 900")
 		int fields = 4
 		
 		@Group
@@ -108,7 +108,7 @@ class DialogGroupsTest extends AbstractPreferenceDialogFixture {
 		fixture.button("ok").click()
 		
 		assert preferences.general.name == "name"
-		assert preferences.general.fields == 10
+		assert preferences.general.fields == 104
 		assert preferences.general.automaticSave == true
 		assert preferences.general.colors == Colors.BLUE
 		assert preferences.general.comboBox == "second element"
