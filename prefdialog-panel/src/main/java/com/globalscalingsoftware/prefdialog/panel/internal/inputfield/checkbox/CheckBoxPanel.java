@@ -47,7 +47,7 @@ class CheckBoxPanel extends AbstractFieldComponent<JCheckBox> {
 
 	public CheckBoxPanel() {
 		super(new JCheckBox());
-		action = new Action();
+		this.action = new Action();
 		setupCheckbox();
 	}
 
@@ -74,4 +74,5 @@ class CheckBoxPanel extends AbstractFieldComponent<JCheckBox> {
 	public boolean isInputValid() {
 		return true;
 	}
+
 }

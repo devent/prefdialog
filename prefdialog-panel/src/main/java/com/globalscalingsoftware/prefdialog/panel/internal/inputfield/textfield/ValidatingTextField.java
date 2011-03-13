@@ -27,8 +27,8 @@ import java.text.ParseException;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
-import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.EventListenerList;
 
 import com.globalscalingsoftware.prefdialog.InputChangedCallback;
@@ -69,14 +69,23 @@ public class ValidatingTextField<TextFieldType extends JTextField> {
 	}
 
 	private void setupListeners() {
-		field.addCaretListener(new CaretListener() {
+		field.getDocument().addDocumentListener(new DocumentListener() {
 
 			@Override
-			public void caretUpdate(CaretEvent e) {
+			public void removeUpdate(DocumentEvent e) {
 				validateInput();
 				inputChanged();
 			}
 
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				validateInput();
+				inputChanged();
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+			}
 		});
 		field.addFocusListener(new FocusAdapter() {
 

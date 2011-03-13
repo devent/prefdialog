@@ -63,9 +63,6 @@ public abstract class AbstractLabelFieldPanel<FieldType extends JComponent>
 	}
 
 	@Override
-	public abstract void setValue(Object value);
-
-	@Override
 	public abstract Object getValue();
 
 	@Override
