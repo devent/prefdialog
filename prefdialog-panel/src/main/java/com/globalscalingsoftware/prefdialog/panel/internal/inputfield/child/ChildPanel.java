@@ -131,4 +131,9 @@ public class ChildPanel extends AbstractFieldComponent<UiChildPanel> implements
 		panel.getRestoreButton().setContentAreaFilled(!transparent);
 		panel.getRestoreButton().setBorderPainted(!transparent);
 	}
+
+	@Override
+	public boolean isInputValid() {
+		return true;
+	}
 }

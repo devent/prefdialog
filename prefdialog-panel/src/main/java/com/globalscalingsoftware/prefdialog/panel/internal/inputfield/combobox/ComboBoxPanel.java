@@ -59,4 +59,8 @@ public class ComboBoxPanel extends AbstractLabelFieldPanel<JComboBox> {
 		getPanelField().setRenderer(renderer);
 	}
 
+	@Override
+	public boolean isInputValid() {
+		return true;
+	}
 }

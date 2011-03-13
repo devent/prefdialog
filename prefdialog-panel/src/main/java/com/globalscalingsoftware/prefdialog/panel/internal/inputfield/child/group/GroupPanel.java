@@ -112,4 +112,9 @@ public class GroupPanel extends AbstractFieldComponent<UiGroupPanel> implements
 	@Override
 	public void setButtonsTransparent(boolean transparent) {
 	}
+
+	@Override
+	public boolean isInputValid() {
+		return true;
+	}
 }

@@ -66,4 +66,9 @@ public class FileChooserPanel extends
 		getPanelField().getFileNameText().setEnabled(enabled);
 		getPanelField().getOpenFileButton().setEnabled(enabled);
 	}
+
+	@Override
+	public boolean isInputValid() {
+		return true;
+	}
 }

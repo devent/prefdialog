@@ -70,4 +70,8 @@ class CheckBoxPanel extends AbstractFieldComponent<JCheckBox> {
 		return getField().isSelected();
 	}
 
+	@Override
+	public boolean isInputValid() {
+		return true;
+	}
 }

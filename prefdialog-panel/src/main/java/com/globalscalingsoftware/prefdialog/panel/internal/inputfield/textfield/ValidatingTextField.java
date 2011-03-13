@@ -31,25 +31,33 @@ import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.event.EventListenerList;
 
+import com.globalscalingsoftware.prefdialog.InputChangedCallback;
+import com.globalscalingsoftware.prefdialog.InputChangedDelegateCallback;
 import com.globalscalingsoftware.prefdialog.validators.Validator;
 
 public class ValidatingTextField<TextFieldType extends JTextField> {
 
 	private final EventListenerList listenerList;
+
 	private final Border oldBorder;
+
 	private final Border highlighBorder;
 
 	@SuppressWarnings("rawtypes")
 	private Validator validator;
 
 	private Object value;
+
 	private final TextFieldType field;
+
+	private final InputChangedDelegateCallback inputChangedCallback;
 
 	public ValidatingTextField(TextFieldType field) {
 		this.field = field;
-		listenerList = new EventListenerList();
-		oldBorder = field.getBorder();
-		highlighBorder = new LineBorder(Color.red, 1, false);
+		this.listenerList = new EventListenerList();
+		this.oldBorder = field.getBorder();
+		this.highlighBorder = new LineBorder(Color.red, 1, false);
+		this.inputChangedCallback = new InputChangedDelegateCallback();
 
 		setupTextField();
 		setupListeners();
@@ -60,21 +68,15 @@ public class ValidatingTextField<TextFieldType extends JTextField> {
 		field.setPreferredSize(new Dimension(200, height));
 	}
 
-	public void setValidator(Validator<?> validator) {
-		this.validator = validator;
-	}
-
-	public TextFieldType getField() {
-		return field;
-	}
-
 	private void setupListeners() {
 		field.addCaretListener(new CaretListener() {
 
 			@Override
 			public void caretUpdate(CaretEvent e) {
 				validateInput();
+				inputChanged();
 			}
+
 		});
 		field.addFocusListener(new FocusAdapter() {
 
@@ -84,6 +86,16 @@ public class ValidatingTextField<TextFieldType extends JTextField> {
 			}
 
 		});
+	}
+
+	private void validateInput() {
+		if (isNotValidInput()) {
+			highlighField();
+			fireValidChanged(false);
+		} else {
+			normalField();
+			fireValidChanged(true);
+		}
 	}
 
 	private void restoreValueIfInvalid() {
@@ -99,15 +111,12 @@ public class ValidatingTextField<TextFieldType extends JTextField> {
 		}
 	}
 
-	protected void setValue(Object value) {
-		this.value = value;
-		String string = value == null ? "" : value.toString();
-		field.setText(string);
+	private void highlighField() {
+		field.setBorder(highlighBorder);
 	}
 
-	public void addValidListener(ValidListener l) {
-		listenerList.add(ValidListener.class, l);
-		validateInput();
+	private void normalField() {
+		field.setBorder(oldBorder);
 	}
 
 	private void fireValidChanged(boolean editValid) {
@@ -116,18 +125,21 @@ public class ValidatingTextField<TextFieldType extends JTextField> {
 		}
 	}
 
-	private void validateInput() {
-		if (isNotValidInput()) {
-			highlighField();
-			fireValidChanged(false);
-		} else {
-			normalField();
-			fireValidChanged(true);
-		}
+	private void inputChanged() {
+		inputChangedCallback.inputChanged(this);
 	}
 
-	private void normalField() {
-		field.setBorder(oldBorder);
+	public void setValidator(Validator<?> validator) {
+		this.validator = validator;
+	}
+
+	public TextFieldType getField() {
+		return field;
+	}
+
+	public void addValidListener(ValidListener l) {
+		listenerList.add(ValidListener.class, l);
+		validateInput();
 	}
 
 	private boolean isNotValidInput() {
@@ -142,24 +154,29 @@ public class ValidatingTextField<TextFieldType extends JTextField> {
 		return b;
 	}
 
+	protected void commitEdit() throws ParseException {
+	}
+
 	@SuppressWarnings("unchecked")
 	private boolean isValueInvalid() {
 		return validator == null ? false : !validator.isValid(getValue());
-	}
-
-	protected Object getValue() {
-		return field.getText();
 	}
 
 	protected boolean isEditValid() {
 		return true;
 	}
 
-	protected void commitEdit() throws ParseException {
+	protected void setValue(Object value) {
+		this.value = value;
+		String string = value == null ? "" : value.toString();
+		field.setText(string);
 	}
 
-	private void highlighField() {
-		field.setBorder(highlighBorder);
+	protected Object getValue() {
+		return field.getText();
 	}
 
+	public void setInputChangedCallback(InputChangedCallback callback) {
+		inputChangedCallback.setDelegateCallback(callback);
+	}
 }

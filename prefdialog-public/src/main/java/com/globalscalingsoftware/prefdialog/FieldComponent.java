@@ -36,4 +36,18 @@ public interface FieldComponent {
 
 	void setEnabled(boolean enabled);
 
+	/**
+	 * Tests if the current input is valid.
+	 * 
+	 * @return <code>true</code> if the current input is valid or
+	 *         <code>false</code> if it is not valid.
+	 */
+	boolean isInputValid();
+
+	/**
+	 * Set the {@link InputChangedCallback} that will be called if the input of
+	 * this field changes.
+	 */
+	void setInputChangedCallback(InputChangedCallback callback);
+
 }

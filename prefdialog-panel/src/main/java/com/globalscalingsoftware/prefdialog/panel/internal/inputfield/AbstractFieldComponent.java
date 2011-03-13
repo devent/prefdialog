@@ -22,15 +22,26 @@ import java.awt.Component;
 
 import javax.swing.JComponent;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.globalscalingsoftware.prefdialog.FieldComponent;
+import com.globalscalingsoftware.prefdialog.InputChangedCallback;
+import com.globalscalingsoftware.prefdialog.InputChangedDelegateCallback;
 
 public abstract class AbstractFieldComponent<FieldType extends JComponent>
 		implements FieldComponent {
 
+	private final Logger l = LoggerFactory
+			.getLogger(AbstractFieldComponent.class);
+
 	private final FieldType field;
+
+	private final InputChangedDelegateCallback inputChangedCallback;
 
 	public AbstractFieldComponent(FieldType field) {
 		this.field = field;
+		this.inputChangedCallback = new InputChangedDelegateCallback();
 	}
 
 	public FieldType getField() {
@@ -45,6 +56,7 @@ public abstract class AbstractFieldComponent<FieldType extends JComponent>
 
 	@Override
 	public void setName(String name) {
+		l.debug("Set name {} to field component {}.", name, field);
 		field.setName(name);
 	}
 
@@ -59,7 +71,23 @@ public abstract class AbstractFieldComponent<FieldType extends JComponent>
 
 	@Override
 	public void setEnabled(boolean enabled) {
+		l.debug("Set enabled {} to field component {}.", enabled, field);
 		field.setEnabled(enabled);
+	}
+
+	@Override
+	public void setInputChangedCallback(InputChangedCallback callback) {
+		inputChangedCallback.setDelegateCallback(callback);
+		l.debug("Set input changed callback {} to field component {}.",
+				callback, field);
+	}
+
+	/**
+	 * Call the {@link InputChangedCallback} after the input has changed.
+	 */
+	protected void inputChanged() {
+		l.debug("Call input changed callback for field {}.", field);
+		inputChangedCallback.inputChanged(this);
 	}
 
 }

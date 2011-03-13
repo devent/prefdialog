@@ -79,4 +79,8 @@ public class SliderPanel extends AbstractLabelFieldPanel<JSlider> {
 		getPanelField().setExtent(extent);
 	}
 
+	@Override
+	public boolean isInputValid() {
+		return true;
+	}
 }

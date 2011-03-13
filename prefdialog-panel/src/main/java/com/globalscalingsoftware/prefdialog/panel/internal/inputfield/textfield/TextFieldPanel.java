@@ -22,6 +22,7 @@ import static java.lang.String.format;
 
 import javax.swing.JTextField;
 
+import com.globalscalingsoftware.prefdialog.InputChangedCallback;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractLabelFieldPanel;
 import com.globalscalingsoftware.prefdialog.validators.Validator;
 
@@ -31,9 +32,23 @@ class TextFieldPanel extends AbstractLabelFieldPanel<JTextField> {
 
 	private String fieldTitle;
 
+	private boolean inputValid;
+
 	public TextFieldPanel(ValidatingTextField<?> textField) {
 		super(textField.getField());
 		this.textField = textField;
+		this.inputValid = true;
+		setup();
+	}
+
+	private void setup() {
+		this.textField.setInputChangedCallback(new InputChangedCallback() {
+
+			@Override
+			public void inputChanged(Object source) {
+				TextFieldPanel.this.inputChanged();
+			}
+		});
 	}
 
 	@Override
@@ -43,11 +58,13 @@ class TextFieldPanel extends AbstractLabelFieldPanel<JTextField> {
 	}
 
 	public void setValidatorText(String validatorText) {
+		inputValid = false;
 		String text = format("%s (%s): ", fieldTitle, validatorText);
 		setLabelText(text);
 	}
 
 	public void clearValidatorText() {
+		inputValid = true;
 		String text = format("%s: ", fieldTitle);
 		setLabelText(text);
 	}
@@ -70,4 +87,8 @@ class TextFieldPanel extends AbstractLabelFieldPanel<JTextField> {
 		textField.setValidator(validator);
 	}
 
+	@Override
+	public boolean isInputValid() {
+		return inputValid;
+	}
 }

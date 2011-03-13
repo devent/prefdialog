@@ -118,4 +118,13 @@ public abstract class AbstractChildFieldHandler<ComponentType extends ChildCompo
 		getComponent().setButtonsTransparent(transparent);
 	}
 
+	@Override
+	public boolean isInputValid() {
+		for (FieldHandler<?> fieldHandler : fieldHandlers) {
+			if (!fieldHandler.isInputValid()) {
+				return false;
+			}
+		}
+		return true;
+	}
 }

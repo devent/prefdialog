@@ -39,6 +39,7 @@ public abstract class AbstractFieldHandler<FieldComponentType extends FieldCompo
 	private final Field field;
 	private final Class<? extends Annotation> annotationClass;
 	private final FieldComponentType component;
+	private final InputChangedDelegateCallback callback;
 
 	public AbstractFieldHandler(Object parentObject, Object value, Field field,
 			Class<? extends Annotation> annotationClass,
@@ -48,12 +49,31 @@ public abstract class AbstractFieldHandler<FieldComponentType extends FieldCompo
 		this.field = field;
 		this.annotationClass = annotationClass;
 		this.component = component;
+		this.callback = new InputChangedDelegateCallback();
 		setup();
 	}
 
 	private void setup() {
+		setupComponentInputChangedCallback();
 		setComponentTitle(field.getName());
 		setComponentValue(value);
+	}
+
+	private void setupComponentInputChangedCallback() {
+		component.setInputChangedCallback(new InputChangedCallback() {
+
+			@Override
+			public void inputChanged(Object source) {
+				AbstractFieldHandler.this.inputChanged();
+			}
+		});
+	}
+
+	/**
+	 * Call the {@link InputChangedCallback} after the input has changed.
+	 */
+	protected void inputChanged() {
+		callback.inputChanged(this);
 	}
 
 	protected FieldComponentType getComponent() {
@@ -74,6 +94,16 @@ public abstract class AbstractFieldHandler<FieldComponentType extends FieldCompo
 
 	protected Object getValue() {
 		return value;
+	}
+
+	@Override
+	public void setInputChangedCallback(InputChangedCallback callback) {
+		this.callback.setDelegateCallback(callback);
+	}
+
+	@Override
+	public boolean isInputValid() {
+		return component.isInputValid();
 	}
 
 	@Override
@@ -99,6 +129,7 @@ public abstract class AbstractFieldHandler<FieldComponentType extends FieldCompo
 	@Override
 	public void setComponentValue(Object value) {
 		component.setValue(value);
+		inputChanged();
 	}
 
 	@Override

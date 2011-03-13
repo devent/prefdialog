@@ -129,4 +129,9 @@ public class RadioButtonsPanel extends AbstractLabelFieldPanel<JPanel> {
 			button.setEnabled(enabled);
 		}
 	}
+
+	@Override
+	public boolean isInputValid() {
+		return true;
+	}
 }

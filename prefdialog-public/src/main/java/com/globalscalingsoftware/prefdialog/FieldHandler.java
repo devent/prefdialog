@@ -42,6 +42,20 @@ public interface FieldHandler<FieldComponentType extends FieldComponent> {
 	void restoreInput(Object parent);
 
 	/**
+	 * Set the {@link InputChangedCallback} that will be called if the input of
+	 * this field changes.
+	 */
+	void setInputChangedCallback(InputChangedCallback callback);
+
+	/**
+	 * Tests if the current input is valid.
+	 * 
+	 * @return <code>true</code> if the current input is valid or
+	 *         <code>false</code> if it is not valid.
+	 */
+	boolean isInputValid();
+
+	/**
 	 * Sets the width of the component, as specified by the <code>width</code>
 	 * annotation type element.
 	 */
