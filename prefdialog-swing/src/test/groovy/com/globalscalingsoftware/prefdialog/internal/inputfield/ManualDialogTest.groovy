@@ -19,43 +19,85 @@
 package com.globalscalingsoftware.prefdialog.internal.inputfield
 
 
+
 import java.util.List;
 
 import org.junit.Test;
 
+import com.globalscalingsoftware.prefdialog.annotations.Checkbox;
 import com.globalscalingsoftware.prefdialog.annotations.Child 
 import com.globalscalingsoftware.prefdialog.annotations.ComboBox 
 import com.globalscalingsoftware.prefdialog.annotations.ComboBoxElements 
-import com.globalscalingsoftware.prefdialog.annotations.FileChooser 
+import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField;
+import com.globalscalingsoftware.prefdialog.annotations.Group;
+import com.globalscalingsoftware.prefdialog.annotations.RadioButton 
+import com.globalscalingsoftware.prefdialog.annotations.TextField;
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceDialogFixture 
+import com.globalscalingsoftware.prefdialog.internal.inputfield.DialogChildrenTest.Child1;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.DialogChildrenTest.Child2;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.DialogGroupsTest.Group1;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.DialogGroupsTest.Group2;
+import com.globalscalingsoftware.prefdialog.validators.NotEmptyString 
 
 class ManualDialogTest extends AbstractPreferenceDialogFixture {
 	
-	static class General {
+	static class Preferences {
 		
-		@FileChooser
-		File file = new File("")
+		@Child
+		Child1 general = new Child1()
 		
-		@ComboBoxElements("Some combo box")
+		@Child
+		Child2 child2 = new Child2()
+	}
+	
+	static class Child1 {
+		
+		@TextField(validator=NotEmptyString, validatorText="Must not be empty")
+		String name = ""
+		
+		@FormattedTextField(validator=FieldsValidator, validatorText="Must be a number and between 2 and 100")
+		int fields = 4
+		
+		@Group
+		Group1 group1 = new Group1()
+		
+		@Group
+		Group2 group2 = new Group2()
+		
+		@Checkbox
+		boolean automaticSave = false
+		
+		@RadioButton(columns=2)
+		Colors colors = Colors.BLACK
+		
+		@ComboBoxElements("combobox1")
 		List<String> comboBoxElements = [
 			"first element",
 			"second element",
 			"third element"
 		]
 		
-		@ComboBox(elements="Some combo box")
-		String comboBox = "first element"
+		@ComboBox(value="combobox1", elements="combobox1")
+		String comboBox
 		
 		@Override
 		public String toString() {
-			"General"
+			"Child1"
 		}
 	}
 	
-	static class Preferences {
+	static class Child2 {
 		
-		@Child
-		General general = new General()
+		@TextField
+		String something = ""
+		
+		@FormattedTextField
+		int moreFields = 4
+		
+		@Override
+		public String toString() {
+			"Child2"
+		}
 	}
 	
 	def setupPreferences() {
@@ -64,6 +106,6 @@ class ManualDialogTest extends AbstractPreferenceDialogFixture {
 	
 	@Test
 	void testManual() {
-		Thread.sleep(30000)
+		Thread.sleep(3000000)
 	}
 }
