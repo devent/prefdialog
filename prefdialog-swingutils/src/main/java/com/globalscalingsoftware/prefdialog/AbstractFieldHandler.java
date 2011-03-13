@@ -129,7 +129,6 @@ public abstract class AbstractFieldHandler<FieldComponentType extends FieldCompo
 	@Override
 	public void setComponentValue(Object value) {
 		component.setValue(value);
-		inputChanged();
 	}
 
 	@Override

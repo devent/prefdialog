@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
+import com.globalscalingsoftware.prefdialog.InputChangedCallback;
 import com.globalscalingsoftware.prefdialog.PreferencePanelHandler;
 import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.panel.internal.actions.ActionsHandler;
@@ -83,6 +84,7 @@ public class PreferencePanelHandlerImpl implements PreferencePanelHandler {
 
 	private void createChild() {
 		discoverAnnotations();
+		setupChildFieldHandler();
 	}
 
 	private void discoverAnnotations() {
@@ -140,6 +142,21 @@ public class PreferencePanelHandlerImpl implements PreferencePanelHandler {
 				.createFieldsHandlers(factoriesMap, value)) {
 			groupFieldHandler.addFieldHandler(fieldHandler);
 		}
+	}
+
+	private void setupChildFieldHandler() {
+		childFieldHandler.setInputChangedCallback(new InputChangedCallback() {
+
+			@Override
+			public void inputChanged(Object source) {
+				boolean enabled = childFieldHandler.isInputValid();
+				l.debug("Set apply action enabled to {}.", enabled);
+				actionsHandler.getApplyAction().setEnabled(enabled);
+
+				l.debug("Set restore action enabled to {}.", true);
+				actionsHandler.getRestoreAction().setEnabled(true);
+			}
+		});
 	}
 
 	@Override

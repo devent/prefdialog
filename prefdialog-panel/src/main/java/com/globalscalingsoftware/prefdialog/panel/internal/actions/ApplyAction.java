@@ -24,6 +24,7 @@ public class ApplyAction extends AbstractDelegatedCallbackAction {
 
 	ApplyAction() {
 		super("Apply");
+		setEnabled(false);
 	}
 
 }

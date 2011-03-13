@@ -24,6 +24,7 @@ public class RestoreAction extends AbstractDelegatedCallbackAction {
 
 	RestoreAction() {
 		super("Restore");
+		setEnabled(false);
 	}
 
 }
