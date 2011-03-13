@@ -109,9 +109,7 @@ class UiChildPanel extends javax.swing.JPanel {
 			{
 				buttonsPanel = new JPanel();
 				TableLayout buttonsPanelLayout = new TableLayout(
-						new double[][] {
-								{ TableLayout.FILL, TableLayout.PREFERRED,
-										TableLayout.PREFERRED },
+						new double[][] { { TableLayout.FILL, 0.25, 0.25 },
 								{ TableLayout.FILL } });
 				buttonsPanelLayout.setHGap(5);
 				buttonsPanelLayout.setVGap(5);
