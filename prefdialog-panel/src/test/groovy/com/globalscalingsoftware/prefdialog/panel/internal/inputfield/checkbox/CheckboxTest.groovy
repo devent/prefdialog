@@ -49,8 +49,17 @@ class CheckboxTest extends AbstractPreferencePanelTest {
 	}
 	
 	@Test
-	void testPanelClickApplyAndClose() {
+	void testPanelClickApply() {
 		fixture.checkBox("automaticSave").click()
 		fixture.panel("general").button("apply").click()
+		fixture.panel("general").button("apply").requireDisabled()
+	}
+	
+	@Test
+	void testPanelClickRestore() {
+		fixture.checkBox("automaticSave").click()
+		fixture.panel("general").button("apply").requireEnabled()
+		fixture.panel("general").button("restore").click()
+		fixture.panel("general").button("apply").requireDisabled()
 	}
 }
