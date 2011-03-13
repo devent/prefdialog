@@ -71,4 +71,20 @@ class FileChooserTest extends AbstractPreferencePanelTest {
 		
 		assert preferences.general.file == tmpfile
 	}
+	
+	@Test
+	void testSelectFileAndRestore() {
+		File tmpfile = File.createTempFile("fileChooserTest", null)
+		tmpfile.deleteOnExit();
+		
+		fixture.panel("general").button("openfilebutton-file").click()
+		fixture.fileChooser("filechooser-file").setCurrentDirectory(tmpfile.getParentFile())
+		fixture.fileChooser("filechooser-file").selectFile tmpfile
+		fixture.fileChooser("filechooser-file").approve()
+		fixture.panel("general").button("apply").requireEnabled()
+		fixture.panel("general").button("restore").click()
+		fixture.panel("general").button("apply").requireDisabled()
+		
+		assert preferences.general.file == new File("")
+	}
 }
