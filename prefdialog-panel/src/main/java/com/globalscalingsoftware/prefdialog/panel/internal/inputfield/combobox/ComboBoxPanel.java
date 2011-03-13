@@ -18,6 +18,8 @@
  */
 package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.combobox;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Collection;
 
 import javax.swing.ComboBoxModel;
@@ -31,6 +33,17 @@ public class ComboBoxPanel extends AbstractLabelFieldPanel<JComboBox> {
 
 	public ComboBoxPanel() {
 		super(new JComboBox());
+		setup();
+	}
+
+	private void setup() {
+		getPanelField().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				inputChanged();
+			}
+		});
 	}
 
 	public void setValues(Collection<?> values) {
