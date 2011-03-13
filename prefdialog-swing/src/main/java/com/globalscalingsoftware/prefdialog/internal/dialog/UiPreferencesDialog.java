@@ -94,9 +94,13 @@ class UiPreferencesDialog extends javax.swing.JDialog {
 				{
 					splitPane = new JSplitPane();
 					dialogPanel.add(getSplitPane(), "0, 0, 2, 0");
+					splitPane.setBorder(BorderFactory.createEmptyBorder(0, 0,
+							0, 0));
 					{
 						jScrollPane1 = new JScrollPane();
 						splitPane.add(jScrollPane1, JSplitPane.LEFT);
+						jScrollPane1.setBorder(BorderFactory.createEmptyBorder(
+								3, 3, 3, 3));
 						{
 							childTree = new JTree();
 							jScrollPane1.setViewportView(getChildTree());
