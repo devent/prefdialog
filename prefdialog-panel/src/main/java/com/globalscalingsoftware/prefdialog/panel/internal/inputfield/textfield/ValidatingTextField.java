@@ -24,7 +24,6 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.text.ParseException;
 
-import javax.swing.BorderFactory;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
@@ -40,7 +39,6 @@ public class ValidatingTextField<TextFieldType extends JTextField> {
 	private final EventListenerList listenerList;
 	private final Border oldBorder;
 	private final Border highlighBorder;
-	private final Border normalBorder;
 
 	@SuppressWarnings("rawtypes")
 	private Validator validator;
@@ -52,8 +50,7 @@ public class ValidatingTextField<TextFieldType extends JTextField> {
 		this.field = field;
 		listenerList = new EventListenerList();
 		oldBorder = field.getBorder();
-		highlighBorder = new LineBorder(Color.red, 1, true);
-		normalBorder = BorderFactory.createEmptyBorder(1, 1, 1, 1);
+		highlighBorder = new LineBorder(Color.red, 1, false);
 
 		setupTextField();
 		setupListeners();
@@ -145,8 +142,7 @@ public class ValidatingTextField<TextFieldType extends JTextField> {
 	}
 
 	private void normalField() {
-		field.setBorder(BorderFactory.createCompoundBorder(normalBorder,
-				oldBorder));
+		field.setBorder(oldBorder);
 	}
 
 	private boolean isNotValidInput() {
@@ -178,8 +174,7 @@ public class ValidatingTextField<TextFieldType extends JTextField> {
 	}
 
 	private void highlighField() {
-		field.setBorder(BorderFactory.createCompoundBorder(highlighBorder,
-				oldBorder));
+		field.setBorder(highlighBorder);
 	}
 
 }
