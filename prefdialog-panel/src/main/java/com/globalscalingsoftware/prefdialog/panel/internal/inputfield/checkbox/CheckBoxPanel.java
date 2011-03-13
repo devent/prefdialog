@@ -28,10 +28,11 @@ import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractFi
 @SuppressWarnings("serial")
 class CheckBoxPanel extends AbstractFieldComponent<JCheckBox> {
 
-	private static class Action extends AbstractAction {
+	private class Action extends AbstractAction {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			inputChanged();
 		}
 
 		public void setName(String name) {
