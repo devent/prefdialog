@@ -101,8 +101,7 @@ class SliderCustomModelTest extends AbstractPreferencePanelTest {
 	@Test
 	void testMinimum() {
 		fixture.slider("slider").slideToMinimum()
-		fixture.panel("general").button("apply").click()
-		assert preferences.general.slider == 2
+		fixture.panel("general").button("apply").requireDisabled()
 	}
 	
 	@Test
