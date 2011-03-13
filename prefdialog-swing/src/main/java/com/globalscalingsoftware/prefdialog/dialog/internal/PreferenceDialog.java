@@ -129,4 +129,7 @@ public class PreferenceDialog {
 		return uiPreferencesDialog;
 	}
 
+	public void setTitle(String title) {
+		uiPreferencesDialog.setTitle(title);
+	}
 }

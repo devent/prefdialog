@@ -41,6 +41,11 @@ class ManualDialogTest extends AbstractPreferenceDialogFixture {
 		
 		@Child
 		Child2 child2 = new Child2()
+		
+		@Override
+		String toString() {
+			"Preferences"
+		}
 	}
 	
 	static class Child1 {

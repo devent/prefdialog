@@ -30,6 +30,11 @@ class DialogTest extends AbstractPreferenceDialogFixture {
 		
 		@Child
 		General general = new General()
+		
+		@Override
+		String toString() {
+			"Preferences"
+		}
 	}
 	
 	static class General {
@@ -49,6 +54,7 @@ class DialogTest extends AbstractPreferenceDialogFixture {
 	
 	@Test
 	void testComponents() {
+		assert fixture.target.title == "Preferences"
 		fixture.textBox("name").requireVisible()
 		assert fixture.textBox("name").text() == ""
 		fixture.button("ok").requireVisible()

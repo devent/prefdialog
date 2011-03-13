@@ -46,6 +46,8 @@ public class PreferenceDialogControllerImpl implements
 
 	private Options option;
 
+	private final Object preferences;
+
 	@Inject
 	PreferenceDialogControllerImpl(ActionsHandler actionsHandler,
 			PreferencePanelsHandler preferencePanelsFactory,
@@ -56,14 +58,20 @@ public class PreferenceDialogControllerImpl implements
 				.createPreferencePanelsCollection(preferences);
 		this.preferenceDialog = preferenceDialogFactory.create(owner,
 				preferencePanels.getRootNode());
+		this.preferences = preferences;
 		this.option = Options.CANCEL;
 		setup();
 	}
 
 	private void setup() {
+		setupDialog();
 		setupChildSelectedAction();
 		setupFirstPreferencesPanelHandler();
 		setupActions();
+	}
+
+	private void setupDialog() {
+		preferenceDialog.setTitle(preferences.toString());
 	}
 
 	private void setupActions() {
