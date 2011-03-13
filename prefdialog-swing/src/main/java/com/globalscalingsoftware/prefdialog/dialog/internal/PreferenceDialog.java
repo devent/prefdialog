@@ -57,7 +57,7 @@ public class PreferenceDialog {
 		setup();
 	}
 
-	public void setup() {
+	private void setup() {
 		setupChildTree();
 		setChildPanel(childPanel);
 		setupDialog();
