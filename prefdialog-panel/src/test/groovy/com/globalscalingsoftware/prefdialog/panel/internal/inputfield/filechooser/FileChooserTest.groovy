@@ -58,17 +58,6 @@ class FileChooserTest extends AbstractPreferencePanelTest {
 	}
 	
 	@Test
-	void testEnterFileNameAndApply() {
-		File tmpfile = File.createTempFile("fileChooserTest", null)
-		tmpfile.deleteOnExit();
-		
-		fixture.textBox("file").enterText(tmpfile.getAbsolutePath())
-		fixture.panel("general").button("apply").click()
-		
-		assert preferences.general.file == tmpfile
-	}
-	
-	@Test
 	void testSelectFileAndApply() {
 		File tmpfile = File.createTempFile("fileChooserTest", null)
 		tmpfile.deleteOnExit();
@@ -78,6 +67,7 @@ class FileChooserTest extends AbstractPreferencePanelTest {
 		fixture.fileChooser("filechooser-file").selectFile tmpfile
 		fixture.fileChooser("filechooser-file").approve()
 		fixture.panel("general").button("apply").click()
+		fixture.panel("general").button("apply").requireDisabled()
 		
 		assert preferences.general.file == tmpfile
 	}

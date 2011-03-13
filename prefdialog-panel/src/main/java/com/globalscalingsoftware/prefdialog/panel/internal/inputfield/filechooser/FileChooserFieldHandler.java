@@ -59,7 +59,7 @@ public class FileChooserFieldHandler extends
 		int option = showFileChooserDialog(chooser);
 		if (option == JFileChooser.APPROVE_OPTION) {
 			File file = chooser.getSelectedFile();
-			getComponent().setValue(file);
+			getComponent().setFile(file);
 		}
 	}
 

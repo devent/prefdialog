@@ -22,6 +22,7 @@ import static java.lang.String.format;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractLabelFieldPanel;
 
@@ -30,6 +31,11 @@ public class FileChooserPanel extends
 
 	public FileChooserPanel() {
 		super(new UiFileChooserPanel());
+		setup();
+	}
+
+	private void setup() {
+		getPanelField().getFileNameText().setEditable(false);
 	}
 
 	public void setOpenFileAction(final Runnable runnable) {
@@ -63,7 +69,6 @@ public class FileChooserPanel extends
 
 	@Override
 	public void setEnabled(boolean enabled) {
-		getPanelField().getFileNameText().setEnabled(enabled);
 		getPanelField().getOpenFileButton().setEnabled(enabled);
 	}
 
@@ -71,4 +76,10 @@ public class FileChooserPanel extends
 	public boolean isInputValid() {
 		return true;
 	}
+
+	public void setFile(File file) {
+		getPanelField().getFileNameText().setValue(file);
+		inputChanged();
+	}
+
 }
