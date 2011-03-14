@@ -19,6 +19,7 @@
 package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.slider
 
 
+
 import org.junit.Test;
 
 import com.globalscalingsoftware.prefdialog.annotations.Child;
@@ -50,10 +51,28 @@ class SliderTest extends AbstractPreferencePanelTest {
 	}
 	
 	@Test
-	void testPanelClickApplyAndClose() {
+	void testField() {
+		assert fixture.label("label-slider").text() == "slider: "
+		fixture.panel("general").button("apply").requireDisabled()
+		fixture.panel("general").button("restore").requireEnabled()
+	}
+	
+	@Test
+	void testPanelClickApply() {
 		fixture.slider("slider").slideTo 55
 		fixture.panel("general").button("apply").click()
+		fixture.panel("general").button("apply").requireDisabled()
 		
 		assert preferences.general.slider == 55
+	}
+	
+	@Test
+	void testPanelClickRestore() {
+		fixture.slider("slider").slideTo 55
+		fixture.panel("general").button("apply").requireEnabled()
+		fixture.panel("general").button("restore").click()
+		fixture.panel("general").button("apply").requireDisabled()
+		
+		assert preferences.general.slider == 50
 	}
 }
