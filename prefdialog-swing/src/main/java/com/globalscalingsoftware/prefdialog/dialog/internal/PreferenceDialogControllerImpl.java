@@ -77,7 +77,9 @@ public class PreferenceDialogControllerImpl implements
 
 					@Override
 					public void inputChanged(Object source) {
-						actionsHandler.setOkActionEnabled(true);
+						boolean inputValid = preferencePanelsHandler
+								.isInputValid();
+						actionsHandler.setOkActionEnabled(inputValid);
 					}
 				});
 	}

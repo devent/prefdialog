@@ -42,4 +42,6 @@ public interface PreferencePanelHandler {
 	Object getPreferences();
 
 	void setInputChangedCallback(InputChangedCallback inputChangedCallback);
+
+	boolean isInputValue();
 }

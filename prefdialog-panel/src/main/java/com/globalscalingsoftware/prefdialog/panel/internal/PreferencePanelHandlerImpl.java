@@ -203,4 +203,9 @@ public class PreferencePanelHandlerImpl implements PreferencePanelHandler {
 	public void setInputChangedCallback(InputChangedCallback callback) {
 		inputChangedDelegateCallback.setDelegateCallback(callback);
 	}
+
+	@Override
+	public boolean isInputValue() {
+		return childFieldHandler.isInputValid();
+	}
 }

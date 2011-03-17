@@ -145,4 +145,17 @@ public class PreferencePanelsCollection {
 		return firstPreferencePanelHandler;
 	}
 
+	public boolean isInputValid() {
+		MapIterator panels = getPreferencePanels();
+		while (panels.hasNext()) {
+			panels.next();
+			PreferencePanelHandler handler = (PreferencePanelHandler) panels
+					.getValue();
+			if (!handler.isInputValue()) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 }

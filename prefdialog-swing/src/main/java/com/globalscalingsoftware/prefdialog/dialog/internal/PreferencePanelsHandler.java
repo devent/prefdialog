@@ -85,4 +85,8 @@ public class PreferencePanelsHandler {
 	public PreferencePanelHandler getPreferencePanelHandler(Object value) {
 		return preferencePanelsCollection.getPreferencePanelHandler(value);
 	}
+
+	public boolean isInputValid() {
+		return preferencePanelsCollection.isInputValid();
+	}
 }
