@@ -29,6 +29,8 @@ import javax.swing.tree.TreeNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.globalscalingsoftware.prefdialog.InputChangedCallback;
+import com.globalscalingsoftware.prefdialog.InputChangedDelegateCallback;
 import com.globalscalingsoftware.prefdialog.PreferencePanelHandler;
 import com.globalscalingsoftware.prefdialog.PreferencePanelHandlerFactory;
 import com.globalscalingsoftware.prefdialog.dialog.internal.PreferencePanelsCollection.PreferencePanelsCollectionFactory;
@@ -57,6 +59,8 @@ public class PreferencePanelsHandler {
 
 	private final PreferencePanelHandlerFactory preferencePanelHandlerFactory;
 
+	private final InputChangedDelegateCallback inputChangedCallback;
+
 	@Inject
 	PreferencePanelsHandler(
 			AnnotationFilterFactory annotationFilterFactory,
@@ -69,6 +73,7 @@ public class PreferencePanelsHandler {
 		this.annotationDiscoveryFactory = annotationDiscoveryFactory;
 		this.preferencePanelsCollectionFactory = preferencePanelsCollectionFactory;
 		this.preferencePanelHandlerFactory = preferencePanelHandlerFactory;
+		this.inputChangedCallback = new InputChangedDelegateCallback();
 	}
 
 	/**
@@ -133,12 +138,24 @@ public class PreferencePanelsHandler {
 				String panelName) {
 			PreferencePanelHandler handler = preferencePanelHandlerFactory
 					.create(preferences, panelName);
-			if (firstPreferencePanelHandler == null) {
-				firstPreferencePanelHandler = handler;
-			}
+			setFirstPreferencePanelHandler(handler);
 			l.debug("New preference panel handler created for {} panel in preferences {}.",
 					panelName, preferences);
 			panelHandlers.put(handler.getPreferences(), handler);
+			handler.setInputChangedCallback(new InputChangedCallback() {
+
+				@Override
+				public void inputChanged(Object source) {
+					PreferencePanelsHandler.this.inputChanged(source);
+				}
+			});
+		}
+
+		private void setFirstPreferencePanelHandler(
+				PreferencePanelHandler handler) {
+			if (firstPreferencePanelHandler == null) {
+				firstPreferencePanelHandler = handler;
+			}
 		}
 
 		private void createNodePath(Object value) {
@@ -151,4 +168,11 @@ public class PreferencePanelsHandler {
 
 	}
 
+	private void inputChanged(Object source) {
+		inputChangedCallback.inputChanged(source);
+	}
+
+	public void setInputChangedCallback(InputChangedCallback callback) {
+		inputChangedCallback.setDelegateCallback(callback);
+	}
 }
