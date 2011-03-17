@@ -24,6 +24,7 @@ public class OkAction extends AbstractDelegatedCallbackAction {
 
 	OkAction() {
 		super("Ok");
+		setEnabled(false);
 	}
 
 }
