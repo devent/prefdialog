@@ -18,29 +18,18 @@
  */
 package com.globalscalingsoftware.prefdialog.dialog.internal;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.util.Collection;
-import java.util.Map;
-
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.collections.MapIterator;
 
 import com.globalscalingsoftware.prefdialog.InputChangedCallback;
 import com.globalscalingsoftware.prefdialog.PreferencePanelHandler;
-import com.globalscalingsoftware.prefdialog.PreferencePanelHandlerFactory;
-import com.globalscalingsoftware.prefdialog.dialog.internal.PreferencePanelsCollection.PreferencePanelsCollectionFactory;
-import com.globalscalingsoftware.prefdialog.reflection.AnnotationDiscoveryCallback;
-import com.globalscalingsoftware.prefdialog.reflection.AnnotationDiscoveryFactory;
-import com.globalscalingsoftware.prefdialog.reflection.AnnotationFilterFactory;
-import com.globalscalingsoftware.prefdialog.reflection.internal.AnnotationFilter;
+import com.globalscalingsoftware.prefdialog.dialog.internal.CreatePreferencePanelHandlersWorker.CreatePreferencePanelHandlersWorkerFactory;
 import com.globalscalingsoftware.prefdialog.swingutils.actions.internal.InputChangedDelegateCallback;
+import com.globalscalingsoftware.prefdialog.swingutils.actions.internal.InputChangedDelegateCallback.InputChangedDelegateCallbackFactory;
 import com.google.inject.Inject;
-import com.google.inject.internal.Maps;
-import com.google.inject.name.Named;
+import com.google.inject.assistedinject.Assisted;
 
 /**
  * Create the {@link PreferencePanelHandler preference panel handlers} from the
@@ -48,131 +37,52 @@ import com.google.inject.name.Named;
  */
 public class PreferencePanelsHandler {
 
-	private final Logger l = LoggerFactory
-			.getLogger(PreferencePanelsHandler.class);
-
-	private final AnnotationFilter annotationFilter;
-
-	private final PreferencePanelsCollectionFactory preferencePanelsCollectionFactory;
-
-	private final AnnotationDiscoveryFactory annotationDiscoveryFactory;
-
-	private final PreferencePanelHandlerFactory preferencePanelHandlerFactory;
+	public interface PreferencePanelsHandlerFactory {
+		PreferencePanelsHandler create(@Assisted Object preferences);
+	}
 
 	private final InputChangedDelegateCallback inputChangedCallback;
 
+	private final PreferencePanelsCollection preferencePanelsCollection;
+
+	private final PreferencePanelHandler firstPreferencePanelHandler;
+
 	@Inject
 	PreferencePanelsHandler(
-			AnnotationFilterFactory annotationFilterFactory,
-			AnnotationDiscoveryFactory annotationDiscoveryFactory,
-			@Named("childAnnotations") Collection<Class<? extends Annotation>> childAnnotations,
-			PreferencePanelsCollectionFactory preferencePanelsCollectionFactory,
-			PreferencePanelHandlerFactory preferencePanelHandlerFactory) {
-		this.annotationFilter = annotationFilterFactory
-				.create(childAnnotations);
-		this.annotationDiscoveryFactory = annotationDiscoveryFactory;
-		this.preferencePanelsCollectionFactory = preferencePanelsCollectionFactory;
-		this.preferencePanelHandlerFactory = preferencePanelHandlerFactory;
-		this.inputChangedCallback = new InputChangedDelegateCallback();
-	}
-
-	/**
-	 * Create a {@link PreferencePanelsCollection collection} of
-	 * {@link PreferencePanelHandler} from the given preferences object.
-	 */
-	public PreferencePanelsCollection createPreferencePanelsCollection(
-			Object preferences) {
-		Map<Object, PreferencePanelHandler> panelHandlers = Maps.newHashMap();
-		Map<Object, TreeNode[]> treeNodes = Maps.newHashMap();
-		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
-		PreferencePanelHandler firstPreferencePanelHandler = createPreferencePanelHandlers(
-				preferences, panelHandlers, treeNodes, rootNode);
-		return preferencePanelsCollectionFactory.create(panelHandlers,
-				firstPreferencePanelHandler, treeNodes, rootNode);
-	}
-
-	private PreferencePanelHandler createPreferencePanelHandlers(
-			Object preferences,
-			final Map<Object, PreferencePanelHandler> panelHandlers,
-			final Map<Object, TreeNode[]> treeNodes,
-			final DefaultMutableTreeNode rootNode) {
-		CreatePreferencePanelHandlersCallback callback = new CreatePreferencePanelHandlersCallback(
-				preferences, panelHandlers, treeNodes, rootNode);
-		annotationDiscoveryFactory.create(annotationFilter, preferences,
-				callback).discoverAnnotations();
-		return callback.getFirstPreferencePanelHandler();
-	}
-
-	private class CreatePreferencePanelHandlersCallback implements
-			AnnotationDiscoveryCallback {
-
-		private final Map<Object, PreferencePanelHandler> panelHandlers;
-		private final Map<Object, TreeNode[]> treeNodes;
-		private final DefaultMutableTreeNode rootNode;
-		private final Object preferences;
-		private PreferencePanelHandler firstPreferencePanelHandler;
-
-		public CreatePreferencePanelHandlersCallback(Object preferences,
-				Map<Object, PreferencePanelHandler> panelHandlers,
-				Map<Object, TreeNode[]> treeNodes,
-				DefaultMutableTreeNode rootNode) {
-			this.preferences = preferences;
-			this.panelHandlers = panelHandlers;
-			this.treeNodes = treeNodes;
-			this.rootNode = rootNode;
-			this.firstPreferencePanelHandler = null;
-		}
-
-		public PreferencePanelHandler getFirstPreferencePanelHandler() {
-			return firstPreferencePanelHandler;
-		}
-
-		@Override
-		public void fieldAnnotationDiscovered(Field field, Object value,
-				Annotation a) {
-			createPreferencePanelHandler(preferences, value.toString());
-			createNodePath(value);
-		}
-
-		private void createPreferencePanelHandler(Object preferences,
-				String panelName) {
-			PreferencePanelHandler handler = preferencePanelHandlerFactory
-					.create(preferences, panelName);
-			setFirstPreferencePanelHandler(handler);
-			l.debug("New preference panel handler created for {} panel in preferences {}.",
-					panelName, preferences);
-			panelHandlers.put(handler.getPreferences(), handler);
-			handler.setInputChangedCallback(new InputChangedCallback() {
-
-				@Override
-				public void inputChanged(Object source) {
-					PreferencePanelsHandler.this.inputChanged(source);
-				}
-			});
-		}
-
-		private void setFirstPreferencePanelHandler(
-				PreferencePanelHandler handler) {
-			if (firstPreferencePanelHandler == null) {
-				firstPreferencePanelHandler = handler;
-			}
-		}
-
-		private void createNodePath(Object value) {
-			DefaultMutableTreeNode node = new DefaultMutableTreeNode(value);
-			rootNode.add(node);
-			TreeNode[] path = node.getPath();
-			treeNodes.put(value, path);
-			l.debug("New node path {} created for {}.", path, value);
-		}
-
-	}
-
-	private void inputChanged(Object source) {
-		inputChangedCallback.inputChanged(source);
+			InputChangedDelegateCallbackFactory inputChangedDelegateCallbackFactory,
+			CreatePreferencePanelHandlersWorkerFactory createPreferencePanelHandlersWorkerFactory,
+			@Assisted Object preferences) {
+		this.inputChangedCallback = inputChangedDelegateCallbackFactory
+				.create();
+		CreatePreferencePanelHandlersWorker createPreferencePanelHandlersWorker = createPreferencePanelHandlersWorkerFactory
+				.create(preferences, inputChangedCallback);
+		this.firstPreferencePanelHandler = createPreferencePanelHandlersWorker
+				.getFirstPreferencePanelHandler();
+		this.preferencePanelsCollection = createPreferencePanelHandlersWorker
+				.getPreferencePanelsCollection();
 	}
 
 	public void setInputChangedCallback(InputChangedCallback callback) {
 		inputChangedCallback.setDelegateCallback(callback);
+	}
+
+	public DefaultMutableTreeNode getRootNode() {
+		return preferencePanelsCollection.getRootNode();
+	}
+
+	public PreferencePanelHandler getFirstPreferencePanelHandler() {
+		return firstPreferencePanelHandler;
+	}
+
+	public MapIterator getPreferencePanels() {
+		return preferencePanelsCollection.getPreferencePanels();
+	}
+
+	public TreeNode[] getPath(Object value) {
+		return preferencePanelsCollection.getPath(value);
+	}
+
+	public PreferencePanelHandler getPreferencePanelHandler(Object value) {
+		return preferencePanelsCollection.getPreferencePanelHandler(value);
 	}
 }

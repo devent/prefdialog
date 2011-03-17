@@ -30,6 +30,8 @@ import com.globalscalingsoftware.prefdialog.reflection.AnnotationDiscoveryCallba
 import com.globalscalingsoftware.prefdialog.reflection.AnnotationDiscoveryFactory;
 import com.globalscalingsoftware.prefdialog.reflection.AnnotationFilterFactory;
 import com.globalscalingsoftware.prefdialog.reflection.internal.AnnotationFilter;
+import com.globalscalingsoftware.prefdialog.swingutils.actions.internal.InputChangedDelegateCallback;
+import com.globalscalingsoftware.prefdialog.swingutils.actions.internal.InputChangedDelegateCallback.InputChangedDelegateCallbackFactory;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.name.Named;
@@ -55,6 +57,8 @@ public class PreferencePanelHandlerImpl implements PreferencePanelHandler {
 
 	private final String panelName;
 
+	private final InputChangedDelegateCallback inputChangedDelegateCallback;
+
 	@Inject
 	PreferencePanelHandlerImpl(
 			AnnotationFilterFactory annotationFilterFactory,
@@ -62,8 +66,9 @@ public class PreferencePanelHandlerImpl implements PreferencePanelHandler {
 			FieldsFactory fieldFactories,
 			FactoriesMapFactory factoriesMapFactory,
 			@Named("field_handler_factories_map") Map<Class<? extends Annotation>, FieldHandlerFactory> fieldHandlerFactories,
-			ActionsHandler actionsHandler, @Assisted Object preferences,
-			@Assisted String panelName) {
+			ActionsHandler actionsHandler,
+			InputChangedDelegateCallbackFactory inputChangedDelegateCallbackFactory,
+			@Assisted Object preferences, @Assisted String panelName) {
 		this.annotationFilter = annotationFilterFactory
 				.create(createChildAnnotations());
 		this.annotationDiscoveryFactory = annotationDiscoveryFactory;
@@ -73,6 +78,8 @@ public class PreferencePanelHandlerImpl implements PreferencePanelHandler {
 		this.preferences = preferences;
 		this.panelName = panelName;
 		this.childFieldHandler = null;
+		this.inputChangedDelegateCallback = inputChangedDelegateCallbackFactory
+				.create();
 		createChild();
 	}
 
@@ -152,8 +159,14 @@ public class PreferencePanelHandlerImpl implements PreferencePanelHandler {
 				boolean enabled = childFieldHandler.isInputValid();
 				l.debug("Set apply action enabled to {}.", enabled);
 				actionsHandler.getApplyAction().setEnabled(enabled);
+				PreferencePanelHandlerImpl.this.inputChanged();
 			}
+
 		});
+	}
+
+	private void inputChanged() {
+		inputChangedDelegateCallback.inputChanged(this);
 	}
 
 	@Override
@@ -188,5 +201,6 @@ public class PreferencePanelHandlerImpl implements PreferencePanelHandler {
 
 	@Override
 	public void setInputChangedCallback(InputChangedCallback callback) {
+		inputChangedDelegateCallback.setDelegateCallback(callback);
 	}
 }

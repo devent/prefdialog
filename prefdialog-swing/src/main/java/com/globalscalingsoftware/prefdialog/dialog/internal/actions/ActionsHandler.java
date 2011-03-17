@@ -40,4 +40,8 @@ public class ActionsHandler {
 		cancelAction.setParentAction(action);
 	}
 
+	public void setOkActionEnabled(boolean b) {
+		okAction.setEnabled(b);
+	}
+
 }

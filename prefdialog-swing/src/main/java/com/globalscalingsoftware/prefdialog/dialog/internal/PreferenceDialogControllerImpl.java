@@ -26,6 +26,7 @@ import javax.swing.JPanel;
 
 import org.apache.commons.collections.MapIterator;
 
+import com.globalscalingsoftware.prefdialog.InputChangedCallback;
 import com.globalscalingsoftware.prefdialog.Options;
 import com.globalscalingsoftware.prefdialog.PreferenceDialogController;
 import com.globalscalingsoftware.prefdialog.PreferencePanelHandler;
@@ -40,7 +41,7 @@ public class PreferenceDialogControllerImpl implements
 
 	private final PreferenceDialog preferenceDialog;
 
-	private final PreferencePanelsCollection preferencePanels;
+	private final PreferencePanelsHandler preferencePanelsHandler;
 
 	private final ActionsHandler actionsHandler;
 
@@ -50,14 +51,13 @@ public class PreferenceDialogControllerImpl implements
 
 	@Inject
 	PreferenceDialogControllerImpl(ActionsHandler actionsHandler,
-			PreferencePanelsHandler preferencePanelsFactory,
+			PreferencePanelsHandler preferencePanelsHandler,
 			PreferenceDialogFactory preferenceDialogFactory,
 			@Assisted @Nullable Frame owner, @Assisted Object preferences) {
 		this.actionsHandler = actionsHandler;
-		this.preferencePanels = preferencePanelsFactory
-				.createPreferencePanelsCollection(preferences);
+		this.preferencePanelsHandler = preferencePanelsHandler;
 		this.preferenceDialog = preferenceDialogFactory.create(owner,
-				preferencePanels.getRootNode());
+				preferencePanelsHandler.getRootNode());
 		this.preferences = preferences;
 		this.option = Options.CANCEL;
 		setup();
@@ -68,6 +68,18 @@ public class PreferenceDialogControllerImpl implements
 		setupChildSelectedAction();
 		setupFirstPreferencesPanelHandler();
 		setupActions();
+		setupInputChangedActions();
+	}
+
+	private void setupInputChangedActions() {
+		preferencePanelsHandler
+				.setInputChangedCallback(new InputChangedCallback() {
+
+					@Override
+					public void inputChanged(Object source) {
+						actionsHandler.setOkActionEnabled(true);
+					}
+				});
 	}
 
 	private void setupDialog() {
@@ -99,7 +111,7 @@ public class PreferenceDialogControllerImpl implements
 	}
 
 	private void restoreAllInput() {
-		MapIterator panels = preferencePanels.getPreferencePanels();
+		MapIterator panels = preferencePanelsHandler.getPreferencePanels();
 		while (panels.hasNext()) {
 			panels.next();
 			PreferencePanelHandler handler = (PreferencePanelHandler) panels
@@ -109,7 +121,7 @@ public class PreferenceDialogControllerImpl implements
 	}
 
 	private void applyAllInput() {
-		MapIterator panels = preferencePanels.getPreferencePanels();
+		MapIterator panels = preferencePanelsHandler.getPreferencePanels();
 		while (panels.hasNext()) {
 			panels.next();
 			PreferencePanelHandler handler = (PreferencePanelHandler) panels
@@ -128,7 +140,7 @@ public class PreferenceDialogControllerImpl implements
 
 			@Override
 			public void call(Object value) {
-				PreferencePanelHandler handler = preferencePanels
+				PreferencePanelHandler handler = preferencePanelsHandler
 						.getPreferencePanelHandler(value);
 				JPanel panel = (JPanel) handler.getAWTComponent();
 				preferenceDialog.setChildPanel(panel);
@@ -137,12 +149,13 @@ public class PreferenceDialogControllerImpl implements
 	}
 
 	private void setupFirstPreferencesPanelHandler() {
-		PreferencePanelHandler firstHandler = preferencePanels
+		PreferencePanelHandler firstHandler = preferencePanelsHandler
 				.getFirstPreferencePanelHandler();
 		JPanel panel = (JPanel) firstHandler.getAWTComponent();
 		preferenceDialog.setChildPanel(panel);
 		Object value = firstHandler.getPreferences();
-		preferenceDialog.setSelectedChild(preferencePanels.getPath(value));
+		preferenceDialog.setSelectedChild(preferencePanelsHandler
+				.getPath(value));
 	}
 
 	@Override
@@ -167,7 +180,7 @@ public class PreferenceDialogControllerImpl implements
 
 	@Override
 	public void setApplyAction(Action action) {
-		MapIterator panels = preferencePanels.getPreferencePanels();
+		MapIterator panels = preferencePanelsHandler.getPreferencePanels();
 		while (panels.hasNext()) {
 			panels.next();
 			PreferencePanelHandler handler = (PreferencePanelHandler) panels
@@ -178,7 +191,7 @@ public class PreferenceDialogControllerImpl implements
 
 	@Override
 	public void setRestoreAction(Action action) {
-		MapIterator panels = preferencePanels.getPreferencePanels();
+		MapIterator panels = preferencePanelsHandler.getPreferencePanels();
 		while (panels.hasNext()) {
 			panels.next();
 			PreferencePanelHandler handler = (PreferencePanelHandler) panels
