@@ -48,8 +48,8 @@ public class PanelModule extends AbstractModule {
 						PreferencePanelHandlerImpl.class));
 		bind(FactoriesMapFactory.class).toProvider(
 				newFactory(FactoriesMapFactory.class, FactoriesMap.class));
-		new ReflectionModule().configure(binder());
-		new FieldHandlersModule().configure(binder());
+		install(new ReflectionModule());
+		install(new FieldHandlersModule());
 	}
 
 	@Provides
