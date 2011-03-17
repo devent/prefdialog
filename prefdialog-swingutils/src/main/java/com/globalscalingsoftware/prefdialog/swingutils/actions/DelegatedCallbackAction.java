@@ -1,4 +1,4 @@
-package com.globalscalingsoftware.prefdialog.actions;
+package com.globalscalingsoftware.prefdialog.swingutils.actions;
 
 import java.awt.event.ActionEvent;
 

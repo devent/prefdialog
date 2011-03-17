@@ -40,4 +40,6 @@ public interface PreferencePanelHandler {
 	 * Returns the preferences object for this panel.
 	 */
 	Object getPreferences();
+
+	void setInputChangedCallback(InputChangedCallback inputChangedCallback);
 }

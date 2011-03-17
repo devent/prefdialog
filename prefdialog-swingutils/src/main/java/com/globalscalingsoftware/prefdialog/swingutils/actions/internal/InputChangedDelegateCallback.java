@@ -1,8 +1,14 @@
-package com.globalscalingsoftware.prefdialog;
+package com.globalscalingsoftware.prefdialog.swingutils.actions.internal;
+
+import com.globalscalingsoftware.prefdialog.InputChangedCallback;
 
 public class InputChangedDelegateCallback implements InputChangedCallback {
 
 	private InputChangedCallback delegateCallback;
+
+	public interface InputChangedDelegateCallbackFactory {
+		InputChangedDelegateCallback create();
+	}
 
 	public InputChangedDelegateCallback() {
 		this.delegateCallback = new InputChangedCallback() {

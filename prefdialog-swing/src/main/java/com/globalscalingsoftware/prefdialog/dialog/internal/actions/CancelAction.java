@@ -18,7 +18,7 @@
  */
 package com.globalscalingsoftware.prefdialog.dialog.internal.actions;
 
-import com.globalscalingsoftware.prefdialog.actions.AbstractDelegatedCallbackAction;
+import com.globalscalingsoftware.prefdialog.swingutils.actions.internal.AbstractDelegatedCallbackAction;
 
 public class CancelAction extends AbstractDelegatedCallbackAction {
 

@@ -16,11 +16,16 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-public. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog;
+package com.globalscalingsoftware.prefdialog.swingutils.internal;
 
 import java.awt.Component;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+
+import com.globalscalingsoftware.prefdialog.FieldComponent;
+import com.globalscalingsoftware.prefdialog.FieldHandler;
+import com.globalscalingsoftware.prefdialog.InputChangedCallback;
+import com.globalscalingsoftware.prefdialog.swingutils.actions.internal.InputChangedDelegateCallback;
 
 /**
  * Adds attributes to the getter methods in {@link FieldHandler} and delegates

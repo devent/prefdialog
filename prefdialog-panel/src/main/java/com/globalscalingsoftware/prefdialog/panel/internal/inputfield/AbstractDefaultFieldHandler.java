@@ -24,9 +24,9 @@ import java.lang.reflect.Field;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.globalscalingsoftware.prefdialog.AbstractFieldHandler;
 import com.globalscalingsoftware.prefdialog.FieldComponent;
 import com.globalscalingsoftware.prefdialog.reflection.internal.ReflectionToolbox;
+import com.globalscalingsoftware.prefdialog.swingutils.internal.AbstractFieldHandler;
 
 /**
  * Setups the width, name, title and read only property read from the field

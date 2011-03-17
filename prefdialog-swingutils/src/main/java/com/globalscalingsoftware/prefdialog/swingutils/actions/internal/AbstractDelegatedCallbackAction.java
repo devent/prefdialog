@@ -16,13 +16,15 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.actions;
+package com.globalscalingsoftware.prefdialog.swingutils.actions.internal;
 
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+
+import com.globalscalingsoftware.prefdialog.swingutils.actions.DelegatedCallbackAction;
 
 
 public class AbstractDelegatedCallbackAction implements DelegatedCallbackAction {

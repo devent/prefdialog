@@ -186,4 +186,7 @@ public class PreferencePanelHandlerImpl implements PreferencePanelHandler {
 		return childFieldHandler.getComponentValue();
 	}
 
+	@Override
+	public void setInputChangedCallback(InputChangedCallback callback) {
+	}
 }

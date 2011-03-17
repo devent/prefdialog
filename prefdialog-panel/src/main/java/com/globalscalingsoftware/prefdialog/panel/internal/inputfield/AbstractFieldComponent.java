@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
 
 import com.globalscalingsoftware.prefdialog.FieldComponent;
 import com.globalscalingsoftware.prefdialog.InputChangedCallback;
-import com.globalscalingsoftware.prefdialog.InputChangedDelegateCallback;
+import com.globalscalingsoftware.prefdialog.swingutils.actions.internal.InputChangedDelegateCallback;
 
 public abstract class AbstractFieldComponent<FieldType extends JComponent>
 		implements FieldComponent {

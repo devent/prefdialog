@@ -30,7 +30,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.globalscalingsoftware.prefdialog.InputChangedCallback;
-import com.globalscalingsoftware.prefdialog.InputChangedDelegateCallback;
 import com.globalscalingsoftware.prefdialog.PreferencePanelHandler;
 import com.globalscalingsoftware.prefdialog.PreferencePanelHandlerFactory;
 import com.globalscalingsoftware.prefdialog.dialog.internal.PreferencePanelsCollection.PreferencePanelsCollectionFactory;
@@ -38,6 +37,7 @@ import com.globalscalingsoftware.prefdialog.reflection.AnnotationDiscoveryCallba
 import com.globalscalingsoftware.prefdialog.reflection.AnnotationDiscoveryFactory;
 import com.globalscalingsoftware.prefdialog.reflection.AnnotationFilterFactory;
 import com.globalscalingsoftware.prefdialog.reflection.internal.AnnotationFilter;
+import com.globalscalingsoftware.prefdialog.swingutils.actions.internal.InputChangedDelegateCallback;
 import com.google.inject.Inject;
 import com.google.inject.internal.Maps;
 import com.google.inject.name.Named;

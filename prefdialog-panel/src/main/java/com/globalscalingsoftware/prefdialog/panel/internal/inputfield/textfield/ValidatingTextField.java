@@ -32,7 +32,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.EventListenerList;
 
 import com.globalscalingsoftware.prefdialog.InputChangedCallback;
-import com.globalscalingsoftware.prefdialog.InputChangedDelegateCallback;
+import com.globalscalingsoftware.prefdialog.swingutils.actions.internal.InputChangedDelegateCallback;
 import com.globalscalingsoftware.prefdialog.validators.Validator;
 
 public class ValidatingTextField<TextFieldType extends JTextField> {
