@@ -55,27 +55,39 @@ class DialogTest extends AbstractPreferenceDialogFixture {
 	@Test
 	void testComponents() {
 		assert fixture.target.title == "Preferences"
+		
 		fixture.textBox("name").requireVisible()
 		assert fixture.textBox("name").text() == ""
+		
+		fixture.button("ok").requireDisabled()
 		fixture.button("ok").requireVisible()
 		assert fixture.button("ok").text() == "Ok"
+		
+		fixture.button("cancel").requireEnabled()
 		fixture.button("cancel").requireVisible()
 		assert fixture.button("cancel").text() == "Cancel"
+		
+		fixture.button("restore").requireEnabled()
 		fixture.button("restore").requireVisible()
 		assert fixture.button("restore").text() == "Restore"
+		
+		fixture.button("apply").requireDisabled()
 		fixture.button("apply").requireVisible()
 		assert fixture.button("apply").text() == "Apply"
 	}
 	
 	@Test
 	void testClickEnterTextOk() {
+		fixture.button("ok").requireDisabled()
 		fixture.textBox("name").enterText "name"
+		fixture.button("ok").requireEnabled()
 		fixture.button("ok").click()
 		assert preferences.general.name == "name"
 	}
 	
 	@Test
 	void testClickEnterTextCancel() {
+		fixture.button("ok").requireDisabled()
 		fixture.textBox("name").enterText "name"
 		fixture.button("cancel").click()
 		assert preferences.general.name == ""
@@ -83,15 +95,26 @@ class DialogTest extends AbstractPreferenceDialogFixture {
 	
 	@Test
 	void testClickEnterTextApply() {
+		fixture.button("ok").requireDisabled()
+		fixture.button("apply").requireDisabled()
+		
 		fixture.textBox("name").enterText "name"
 		fixture.button("apply").click()
+		fixture.button("apply").requireDisabled()
+		fixture.button("ok").requireEnabled()
 		assert preferences.general.name == "name"
 	}
 	
 	@Test
 	void testClickEnterTextRestore() {
+		fixture.button("ok").requireDisabled()
+		fixture.button("apply").requireDisabled()
+		
 		fixture.textBox("name").enterText "name"
 		fixture.button("restore").click()
+		
+		fixture.button("apply").requireDisabled()
+		fixture.button("ok").requireEnabled()
 		assert preferences.general.name == ""
 	}
 }

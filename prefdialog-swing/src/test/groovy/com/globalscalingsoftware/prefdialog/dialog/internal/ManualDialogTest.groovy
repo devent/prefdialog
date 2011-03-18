@@ -122,6 +122,6 @@ class ManualDialogTest extends AbstractPreferenceDialogFixture {
 	
 	@Test
 	void testManual() {
-		Thread.sleep(3000000)
+		Thread.sleep(1000)
 	}
 }
