@@ -42,6 +42,11 @@
         <url>scm:git:scm:git:ssh://gitpublic@globalscalingsoftware.com/prefdialog.git </url>
     </scm>
     
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.build.groovy.version>1.7.5</project.build.groovy.version>
+    </properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -62,6 +67,12 @@
             <version>2.0</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>${project.build.groovy.version}</version>
+            <scope>test</scope>
+        </dependency>
 	</dependencies>
 
 	<distributionManagement>
@@ -74,10 +85,6 @@
 			<url>https://globalscalingsoftware-projects.com/archiva/repository/globalscaling.com-public-snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
-
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
 
 	<build>
 		<plugins>

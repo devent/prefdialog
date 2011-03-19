@@ -51,12 +51,6 @@
             <scope>test</scope>
         </dependency>
 		<dependency>
-			<groupId>org.codehaus.groovy</groupId>
-			<artifactId>groovy-all</artifactId>
-			<version>1.7.5</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>com.globalscalingsoftware.prefdialog</groupId>
 			<artifactId>prefdialog-reflection</artifactId>
 			<version>1.4-SNAPSHOT</version>
