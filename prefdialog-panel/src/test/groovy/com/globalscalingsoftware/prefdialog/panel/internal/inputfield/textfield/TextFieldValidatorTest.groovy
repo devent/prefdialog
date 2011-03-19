@@ -58,8 +58,10 @@ class TextFieldValidatorTest extends AbstractPreferencePanelTest {
 	
 	@Test
 	void testEnterInvalidTextAndApply() {
-		fixture.textBox("name").enterText ""
-		assert fixture.label("label-name").text() == "name (Can not be empty): "
+		fixture.textBox("name").selectAll()
+		fixture.textBox("name").enterText " "
+		fixture.textBox("name").requireToolTip "<html><strong>name</strong> - Can not be empty</html>"
+		assert fixture.label("label-name").text() == "name: "
 	}
 	
 	@Test

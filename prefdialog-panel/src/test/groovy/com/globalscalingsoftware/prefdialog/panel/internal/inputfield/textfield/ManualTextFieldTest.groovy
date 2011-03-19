@@ -23,6 +23,7 @@ import org.junit.Test;
 import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.annotations.TextField;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest;
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.textfield.TextFieldValidatorTest.StringValidator 
 
 class ManualTextFieldTest extends AbstractPreferencePanelTest {
 	
@@ -30,6 +31,9 @@ class ManualTextFieldTest extends AbstractPreferencePanelTest {
 		
 		@TextField
 		String name = ""
+		
+		@TextField(validator=StringValidator, validatorText="Can not be empty")
+		String name2 = ""
 		
 		@Override
 		public String toString() {
@@ -50,6 +54,6 @@ class ManualTextFieldTest extends AbstractPreferencePanelTest {
 	
 	@Test
 	void testManual() {
-		//Thread.sleep(30000)
+		Thread.sleep(30000)
 	}
 }
