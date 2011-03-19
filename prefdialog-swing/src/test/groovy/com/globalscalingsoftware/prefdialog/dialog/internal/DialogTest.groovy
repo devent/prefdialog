@@ -73,7 +73,7 @@ class DialogTest extends AbstractPreferenceDialogFixture {
 		
 		fixture.button("apply").requireDisabled()
 		fixture.button("apply").requireVisible()
-		assert fixture.button("apply").text() == "Apply"
+		assert fixture.button("apply").text() == "Apply "
 	}
 	
 	@Test

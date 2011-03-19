@@ -55,7 +55,7 @@ class TextFieldTest extends AbstractPreferencePanelTest {
 		fixture.textBox("name").requireVisible()
 		assert fixture.textBox("name").text() == ""
 		fixture.button("apply").requireVisible()
-		assert fixture.button("apply").text() == "Apply"
+		assert fixture.button("apply").text() == "Apply "
 		fixture.button("restore").requireVisible()
 		assert fixture.button("restore").text() == "Restore"
 	}
