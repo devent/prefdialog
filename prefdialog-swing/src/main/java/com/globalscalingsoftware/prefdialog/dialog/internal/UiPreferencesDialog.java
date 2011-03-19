@@ -82,7 +82,8 @@ class UiPreferencesDialog extends javax.swing.JDialog {
 			{
 				dialogPanel = new JPanel();
 				TableLayout dialogPanelLayout = new TableLayout(new double[][] {
-						{ TableLayout.FILL, 0.25, 0.25 },
+						{ TableLayout.FILL, TableLayout.PREFERRED,
+								TableLayout.PREFERRED },
 						{ TableLayout.FILL, TableLayout.PREFERRED,
 								TableLayout.PREFERRED } });
 				dialogPanelLayout.setHGap(5);
