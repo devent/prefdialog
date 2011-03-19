@@ -71,11 +71,15 @@ public class EventAction implements Action {
 
 	@Override
 	public void setEnabled(boolean b) {
+		System.out.println("EventAction.setEnabled()"); // TODO println
+		System.out.println(b);// TODO println
 		parentAction.setEnabled(b);
 	}
 
 	@Override
 	public boolean isEnabled() {
+		System.out.println("EventAction.isEnabled()"); // TODO println
+		System.out.println(parentAction.isEnabled());// TODO println
 		return parentAction.isEnabled();
 	}
 

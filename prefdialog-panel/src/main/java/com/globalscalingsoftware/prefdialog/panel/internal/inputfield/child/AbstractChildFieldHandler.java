@@ -61,7 +61,7 @@ public abstract class AbstractChildFieldHandler<ComponentType extends ChildCompo
 	}
 
 	private void setup() {
-		getComponent().setApplyEvent(new Runnable() {
+		getComponent().setApplyCallback(new Runnable() {
 
 			@Override
 			public void run() {
@@ -70,7 +70,7 @@ public abstract class AbstractChildFieldHandler<ComponentType extends ChildCompo
 			}
 
 		});
-		getComponent().setRestoreEvent(new Runnable() {
+		getComponent().setRestoreCallback(new Runnable() {
 
 			@Override
 			public void run() {
@@ -115,6 +115,10 @@ public abstract class AbstractChildFieldHandler<ComponentType extends ChildCompo
 				AbstractChildFieldHandler.this.inputChanged();
 			}
 		});
+	}
+
+	public void setApplyEnabled(boolean b) {
+		getComponent().setApplyButtonEnabled(b);
 	}
 
 	public void setApplyAction(Action a) {

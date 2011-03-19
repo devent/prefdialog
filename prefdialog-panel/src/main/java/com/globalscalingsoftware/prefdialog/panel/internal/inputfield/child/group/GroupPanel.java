@@ -94,7 +94,7 @@ public class GroupPanel extends AbstractFieldComponent<UiGroupPanel> implements
 	}
 
 	@Override
-	public void setApplyEvent(Runnable applyEvent) {
+	public void setApplyCallback(Runnable applyEvent) {
 	}
 
 	@Override
@@ -110,7 +110,7 @@ public class GroupPanel extends AbstractFieldComponent<UiGroupPanel> implements
 	}
 
 	@Override
-	public void setRestoreEvent(Runnable e) {
+	public void setRestoreCallback(Runnable e) {
 	}
 
 	@Override

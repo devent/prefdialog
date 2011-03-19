@@ -27,7 +27,7 @@ public interface ChildComponent extends FieldComponent {
 
 	void addField(FieldHandler<?> inputField);
 
-	void setApplyEvent(Runnable e);
+	void setApplyCallback(Runnable e);
 
 	void setApplyAction(Action a);
 
@@ -35,7 +35,7 @@ public interface ChildComponent extends FieldComponent {
 
 	void setRestoreAction(Action a);
 
-	void setRestoreEvent(Runnable e);
+	void setRestoreCallback(Runnable e);
 
 	void setRestoreButtonEnabled(boolean enabled);
 

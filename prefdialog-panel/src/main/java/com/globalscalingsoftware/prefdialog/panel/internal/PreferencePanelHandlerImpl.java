@@ -158,7 +158,7 @@ public class PreferencePanelHandlerImpl implements PreferencePanelHandler {
 			public void inputChanged(Object source) {
 				boolean enabled = childFieldHandler.isInputValid();
 				l.debug("Set apply action enabled to {}.", enabled);
-				actionsHandler.getApplyAction().setEnabled(enabled);
+				childFieldHandler.setApplyEnabled(true);
 				PreferencePanelHandlerImpl.this.inputChanged();
 			}
 
@@ -172,11 +172,13 @@ public class PreferencePanelHandlerImpl implements PreferencePanelHandler {
 	@Override
 	public void setApplyAction(Action a) {
 		actionsHandler.setApplyParent(a);
+		childFieldHandler.setApplyAction(actionsHandler.getApplyAction());
 	}
 
 	@Override
 	public void setRestoreAction(Action a) {
 		actionsHandler.setRestoreParent(a);
+		childFieldHandler.setRestoreAction(actionsHandler.getRestoreAction());
 	}
 
 	@Override

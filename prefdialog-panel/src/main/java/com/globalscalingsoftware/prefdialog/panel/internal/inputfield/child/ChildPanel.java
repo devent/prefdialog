@@ -22,6 +22,8 @@ import static java.lang.String.format;
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.Action;
 
@@ -33,23 +35,16 @@ public class ChildPanel extends AbstractFieldComponent<UiChildPanel> implements
 
 	private final UiChildPanel panel;
 
-	private final EventAction applyEventAction;
-
-	private final EventAction restoreEventAction;
-
 	private Object value;
 
 	public ChildPanel() {
 		super(new UiChildPanel());
 		this.panel = getField();
-		this.applyEventAction = new EventAction();
-		this.restoreEventAction = new EventAction();
 		setupPanel();
 	}
 
 	private void setupPanel() {
 		setBoldFontForChildLabel();
-		setupActions();
 	}
 
 	private void setBoldFontForChildLabel() {
@@ -59,45 +54,48 @@ public class ChildPanel extends AbstractFieldComponent<UiChildPanel> implements
 						.getSize()));
 	}
 
-	private void setupActions() {
-		panel.getApplyButton().setAction(applyEventAction);
-		panel.getRestoreButton().setAction(restoreEventAction);
-	}
-
 	@Override
 	public void setApplyAction(Action a) {
-		applyEventAction.setParentAction(a);
-		EventAction newAction = new EventAction();
-		newAction.setParentAction(applyEventAction);
-		panel.getApplyButton().setAction(newAction);
+		panel.getApplyButton().setAction(null);
+		panel.getApplyButton().setAction(a);
 	}
 
 	@Override
-	public void setApplyEvent(Runnable e) {
-		applyEventAction.setEvent(e);
+	public void setApplyCallback(final Runnable callback) {
+		panel.getApplyButton().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				callback.run();
+			}
+		});
 	}
 
 	@Override
 	public void setApplyButtonEnabled(boolean enabled) {
-		applyEventAction.setEnabled(enabled);
+		panel.getApplyButton().setEnabled(enabled);
 	}
 
 	@Override
 	public void setRestoreAction(Action a) {
-		restoreEventAction.setParentAction(a);
-		EventAction newAction = new EventAction();
-		newAction.setParentAction(restoreEventAction);
-		panel.getRestoreButton().setAction(newAction);
+		panel.getRestoreButton().setAction(null);
+		panel.getRestoreButton().setAction(a);
 	}
 
 	@Override
-	public void setRestoreEvent(Runnable e) {
-		restoreEventAction.setEvent(e);
+	public void setRestoreCallback(final Runnable callback) {
+		panel.getRestoreButton().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				callback.run();
+			}
+		});
 	}
 
 	@Override
 	public void setRestoreButtonEnabled(boolean enabled) {
-		restoreEventAction.setEnabled(enabled);
+		panel.getRestoreButton().setEnabled(enabled);
 	}
 
 	@Override
