@@ -51,6 +51,6 @@ class ManualFormattedTextFieldTest extends AbstractPreferencePanelTest {
 	
 	@Test
 	void testManual() {
-		Thread.sleep(30000)
+		Thread.sleep(1000)
 	}
 }
