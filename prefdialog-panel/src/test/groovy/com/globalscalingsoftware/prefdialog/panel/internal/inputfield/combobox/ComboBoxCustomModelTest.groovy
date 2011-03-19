@@ -42,7 +42,7 @@ class ComboBoxCustomModelTest extends AbstractPreferencePanelTest {
 	static class General {
 		
 		@ComboBox(model=CustomComboBoxModel)
-		String comboBox = "first element"
+		String comboBox = "second element"
 		
 		@Override
 		public String toString() {
@@ -62,21 +62,23 @@ class ComboBoxCustomModelTest extends AbstractPreferencePanelTest {
 	}
 	
 	@Test
-	void testChooseFirstAndApply() {
-		fixture.comboBox("comboBox").selectItem 1
+	void testChooseThirdAndApply() {
+		assert preferences.general.comboBox == "second element"
+		fixture.comboBox("comboBox").selectItem 2
 		fixture.panel("general").button("apply").click()
 		
 		assert fixture.label("label-comboBox").text() == "comboBox: "
-		assert preferences.general.comboBox == "second element"
+		assert preferences.general.comboBox == "third element"
 	}
 	
 	@Test
-	void testChooseFirstAndRestore() {
-		fixture.comboBox("comboBox").selectItem 1
+	void testChooseThirdAndRestore() {
+		assert preferences.general.comboBox == "second element"
+		fixture.comboBox("comboBox").selectItem 2
 		fixture.panel("general").button("restore").click()
 		
-		fixture.comboBox("comboBox").requireSelection 0
-		assert preferences.general.comboBox == "first element"
+		fixture.comboBox("comboBox").requireSelection 1
+		assert preferences.general.comboBox == "second element"
 	}
 }
 

@@ -27,9 +27,14 @@ import javax.swing.JComboBox;
 import javax.swing.ListCellRenderer;
 import javax.swing.MutableComboBoxModel;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractLabelFieldPanel;
 
 public class ComboBoxPanel extends AbstractLabelFieldPanel<JComboBox> {
+
+	private final Logger log = LoggerFactory.getLogger(ComboBoxPanel.class);
 
 	public ComboBoxPanel() {
 		super(new JComboBox());
@@ -65,6 +70,7 @@ public class ComboBoxPanel extends AbstractLabelFieldPanel<JComboBox> {
 
 	@Override
 	public void setValue(Object value) {
+		log.debug("Set new value {}.", value);
 		getPanelField().setSelectedItem(value);
 	}
 

@@ -25,6 +25,9 @@ import java.util.Collection;
 import javax.swing.ComboBoxModel;
 import javax.swing.ListCellRenderer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.globalscalingsoftware.prefdialog.annotations.ComboBox;
 import com.globalscalingsoftware.prefdialog.annotations.ComboBoxElements;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractDefaultFieldHandler;
@@ -36,6 +39,9 @@ import com.google.inject.internal.Nullable;
 public class ComboBoxFieldHandler extends
 		AbstractDefaultFieldHandler<ComboBoxPanel> {
 
+	private final Logger log = LoggerFactory
+			.getLogger(ComboBoxFieldHandler.class);
+
 	@Inject
 	ComboBoxFieldHandler(ReflectionToolbox reflectionToolbox,
 			@Assisted("parentObject") Object parentObject,
@@ -43,6 +49,7 @@ public class ComboBoxFieldHandler extends
 		super(reflectionToolbox, parentObject, value, field, ComboBox.class,
 				new ComboBoxPanel());
 		setup();
+		setComponentValue(value);
 	}
 
 	public void setup() {
@@ -58,6 +65,7 @@ public class ComboBoxFieldHandler extends
 		Class<? extends ListCellRenderer> rendererClass = getAnnotationField(
 				Class.class, a, "renderer");
 		ListCellRenderer renderer = createInstance(rendererClass);
+		log.debug("Set new list cell renderer {}.", renderer);
 		getComponent().setRenderer(renderer);
 	}
 
@@ -68,6 +76,7 @@ public class ComboBoxFieldHandler extends
 		Class<? extends ComboBoxModel> modelClass = getAnnotationField(
 				Class.class, a, "model");
 		ComboBoxModel model = createInstance(modelClass);
+		log.debug("Set new combo box model {}.", model);
 		getComponent().setModel(model);
 	}
 
@@ -86,6 +95,7 @@ public class ComboBoxFieldHandler extends
 	private void setupElements() {
 		Collection<?> values = getValuesFromAnnotationIn();
 		if (values != null) {
+			log.debug("Set new values {}.", values);
 			getComponent().setValues(values);
 		}
 	}
