@@ -23,7 +23,7 @@ import com.globalscalingsoftware.prefdialog.swingutils.actions.internal.Abstract
 public class ApplyAction extends AbstractDelegatedCallbackAction {
 
 	ApplyAction() {
-		super("Apply");
+		super("Apply ");
 		setEnabled(false);
 	}
 
