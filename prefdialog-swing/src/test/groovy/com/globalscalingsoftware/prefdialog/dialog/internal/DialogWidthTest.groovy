@@ -83,7 +83,7 @@ class DialogWidthTest extends AbstractPreferenceDialogFixture {
 		fixture.button("ok").click()
 		
 		assert preferences.general.name == "name"
-		assert preferences.general.fields == 10
+		assert preferences.general.fields == 104
 		assert preferences.general.automaticSave == true
 		assert preferences.general.colors == Colors.BLUE
 		assert preferences.general.comboBox == "second element"
