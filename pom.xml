@@ -22,6 +22,7 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
+
 	<developers>
 		<developer>
 			<id>erwinm</id>
@@ -35,6 +36,12 @@
 		</developer>
 	</developers>
 
+    <scm>
+        <connection>scm:git:ssh://gitpublic@globalscalingsoftware.com/prefdialog.git </connection>
+        <developerConnection>scm:git:ssh://gitpublic@globalscalingsoftware.com/prefdialog.git </developerConnection>
+        <url>scm:git:scm:git:ssh://gitpublic@globalscalingsoftware.com/prefdialog.git </url>
+    </scm>
+    
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
