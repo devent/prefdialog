@@ -44,9 +44,10 @@ import javax.swing.border.Border;
 class UiChildPanel extends javax.swing.JPanel {
 	private JLabel childLabel;
 	private JScrollPane jScrollPane1;
+	private JPanel fieldsPanel;
 	private JSeparator jSeparator2;
 	private JPanel buttonsPanel;
-	private JPanel fieldsPanel;
+	private JPanel scrollPanel;
 	private JButton applyButton;
 	private JButton restoreButton;
 	private JSeparator jSeparator1;
@@ -89,22 +90,32 @@ class UiChildPanel extends javax.swing.JPanel {
 			}
 			{
 				jScrollPane1 = new JScrollPane();
-				this.add(jScrollPane1, "0,2,f,t");
+				this.add(jScrollPane1, "0,2,f,f");
 				jScrollPane1.setOpaque(false);
 				Border border = BorderFactory.createEmptyBorder(0, 0, 0, 0);
 				jScrollPane1.setViewportBorder(border);
 				jScrollPane1.setBorder(border);
 				{
-					fieldsPanel = new JPanel();
-					jScrollPane1.setViewportView(fieldsPanel);
-					TableLayout fieldsPanelLayout = new TableLayout(
+					scrollPanel = new JPanel();
+					jScrollPane1.setViewportView(scrollPanel);
+					TableLayout scrollPanelLayout = new TableLayout(
 							new double[][] { { TableLayout.FILL },
-									{ TableLayout.FILL, TableLayout.FILL } });
-					fieldsPanelLayout.setHGap(5);
-					fieldsPanelLayout.setVGap(5);
-					fieldsPanel.setLayout(fieldsPanelLayout);
-					fieldsPanel.setBorder(BorderFactory.createEmptyBorder(6, 6,
+									{ TableLayout.PREFERRED, TableLayout.FILL } });
+					scrollPanelLayout.setHGap(5);
+					scrollPanelLayout.setVGap(5);
+					scrollPanel.setLayout(scrollPanelLayout);
+					scrollPanel.setBorder(BorderFactory.createEmptyBorder(6, 6,
 							6, 6));
+					{
+						fieldsPanel = new JPanel();
+						TableLayout fieldsPanelLayout = new TableLayout(
+								new double[][] { { TableLayout.FILL },
+										{ TableLayout.FILL, TableLayout.FILL } });
+						fieldsPanelLayout.setHGap(0);
+						fieldsPanelLayout.setVGap(0);
+						fieldsPanel.setLayout(fieldsPanelLayout);
+						scrollPanel.add(getFieldsPanel(), "0, 0");
+					}
 				}
 			}
 			{
@@ -150,6 +161,10 @@ class UiChildPanel extends javax.swing.JPanel {
 
 	public JButton getApplyButton() {
 		return applyButton;
+	}
+
+	public JPanel getScrollPanel() {
+		return scrollPanel;
 	}
 
 	public JPanel getFieldsPanel() {

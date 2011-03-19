@@ -118,12 +118,12 @@ public class ChildPanel extends AbstractFieldComponent<UiChildPanel> implements
 	@Override
 	public void addField(FieldHandler<?> inputField) {
 		int row = addRowToFieldsLayout();
-		panel.getFieldsPanel().add(inputField.getAWTComponent(),
+		panel.getScrollPanel().add(inputField.getAWTComponent(),
 				format("0, %d", row));
 	}
 
 	private int addRowToFieldsLayout() {
-		TableLayout layout = (TableLayout) panel.getFieldsPanel().getLayout();
+		TableLayout layout = (TableLayout) panel.getScrollPanel().getLayout();
 		int rows = layout.getNumRow();
 		int row = rows - 1;
 		layout.insertRow(row, TableLayout.PREFERRED);
