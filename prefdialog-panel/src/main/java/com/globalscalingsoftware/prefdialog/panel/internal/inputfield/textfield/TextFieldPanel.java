@@ -22,6 +22,8 @@ import static java.lang.String.format;
 
 import javax.swing.JTextField;
 
+import org.apache.commons.lang.WordUtils;
+
 import com.globalscalingsoftware.prefdialog.InputChangedCallback;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractLabelFieldPanel;
 import com.globalscalingsoftware.prefdialog.validators.Validator;
@@ -65,14 +67,17 @@ class TextFieldPanel extends AbstractLabelFieldPanel<JTextField> {
 
 	public void setValidatorText(String validatorText) {
 		inputValid = false;
-		String text = format("%s (%s): ", fieldTitle, validatorText);
-		setLabelText(text);
+		validatorText = WordUtils.wrap(validatorText, 42);
+		validatorText = validatorText.replace("\n", "<br/>");
+		String text = format("<html><strong>%s</strong> - %s</html>",
+				fieldTitle, validatorText);
+		setToolTipText(text);
+		showToolTip();
 	}
 
 	public void clearValidatorText() {
 		inputValid = true;
-		String text = format("%s: ", fieldTitle);
-		setLabelText(text);
+		hideToolTip();
 	}
 
 	@Override

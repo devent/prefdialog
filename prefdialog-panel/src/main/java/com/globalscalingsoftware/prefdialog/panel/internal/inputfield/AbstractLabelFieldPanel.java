@@ -20,9 +20,12 @@ package com.globalscalingsoftware.prefdialog.panel.internal.inputfield;
 
 import info.clearthought.layout.TableLayout;
 
+import java.awt.event.MouseEvent;
+
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.ToolTipManager;
 
 public abstract class AbstractLabelFieldPanel<FieldType extends JComponent>
 		extends AbstractFieldComponent<JPanel> {
@@ -92,6 +95,26 @@ public abstract class AbstractLabelFieldPanel<FieldType extends JComponent>
 	@Override
 	public void setEnabled(boolean enabled) {
 		field.setEnabled(enabled);
+	}
+
+	public void setToolTipText(String text) {
+		field.setToolTipText(text);
+	}
+
+	public void showToolTip() {
+		ToolTipManager.sharedInstance().mouseMoved(
+				new MouseEvent(field, 0, 0, 0, 0, 0, // X-Y of the
+														// mouse for the
+														// tool tip
+						0, false));
+	}
+
+	public void hideToolTip() {
+		ToolTipManager.sharedInstance().mouseExited(
+				new MouseEvent(field, 0, 0, 0, 0, 0, // X-Y of the
+														// mouse for the
+														// tool tip
+						0, false));
 	}
 
 }
