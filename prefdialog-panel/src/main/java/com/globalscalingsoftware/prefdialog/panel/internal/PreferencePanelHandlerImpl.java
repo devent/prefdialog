@@ -158,7 +158,7 @@ public class PreferencePanelHandlerImpl implements PreferencePanelHandler {
 			public void inputChanged(Object source) {
 				boolean enabled = childFieldHandler.isInputValid();
 				l.debug("Set apply action enabled to {}.", enabled);
-				childFieldHandler.setApplyEnabled(true);
+				childFieldHandler.setApplyEnabled(enabled);
 				PreferencePanelHandlerImpl.this.inputChanged();
 			}
 
