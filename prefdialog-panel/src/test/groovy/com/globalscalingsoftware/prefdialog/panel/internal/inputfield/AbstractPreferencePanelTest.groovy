@@ -82,7 +82,7 @@ abstract class AbstractPreferencePanelTest {
 	}
 	
 	def getFrame(def factory) {
-		def handler = factory.create(preferences, panelName)
+		def handler = factory.create(preferences, panelName).createPanel()
 		def panel = handler.getAWTComponent()
 		new SwingBuilder().frame(title: 'Preference Panel Test', pack: true) {
 			borderLayout()

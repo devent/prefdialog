@@ -12,6 +12,11 @@ import javax.swing.Action;
 public interface PreferencePanelHandler {
 
 	/**
+	 * Creates the {@link PreferencePanelHandler preference panel handler}.
+	 */
+	PreferencePanelHandler createPanel();
+
+	/**
 	 * Sets the {@link Action} for the "Apply" button of the panel.
 	 */
 	void setApplyAction(Action a);
