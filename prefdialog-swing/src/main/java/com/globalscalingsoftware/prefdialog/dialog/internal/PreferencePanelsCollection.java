@@ -151,7 +151,7 @@ public class PreferencePanelsCollection {
 			panels.next();
 			PreferencePanelHandler handler = (PreferencePanelHandler) panels
 					.getValue();
-			if (!handler.isInputValue()) {
+			if (!handler.isInputValid()) {
 				return false;
 			}
 		}

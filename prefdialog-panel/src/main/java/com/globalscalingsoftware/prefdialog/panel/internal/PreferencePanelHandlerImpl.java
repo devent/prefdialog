@@ -207,7 +207,7 @@ public class PreferencePanelHandlerImpl implements PreferencePanelHandler {
 	}
 
 	@Override
-	public boolean isInputValue() {
+	public boolean isInputValid() {
 		return childFieldHandler.isInputValid();
 	}
 }

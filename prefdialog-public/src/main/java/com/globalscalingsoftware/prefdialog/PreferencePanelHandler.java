@@ -43,5 +43,5 @@ public interface PreferencePanelHandler {
 
 	void setInputChangedCallback(InputChangedCallback inputChangedCallback);
 
-	boolean isInputValue();
+	boolean isInputValid();
 }
