@@ -32,9 +32,36 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.name.Named;
 
+/**
+ * Search the preferences object for the {@link Child} annotation and create a
+ * new {@link ChildFieldHandler} with all fields.
+ */
 public class ChildFieldHandlerWorker {
 
 	public interface ChildFieldHandlerWorkerFactory {
+
+		/**
+		 * Creates a new {@link ChildFieldHandlerWorker}.
+		 * 
+		 * @param preferences
+		 *            the preferences object, need to have one field annotated
+		 *            with the {@link Child} annotation.
+		 * @param panelName
+		 *            the name of the preferences panel.
+		 * @param applyAction
+		 *            the action associated with the "Apply" button of the
+		 *            panel. If the user clicks on this button all input made
+		 *            will be saved in the preferences object.
+		 * @param restoreAction
+		 *            the action associated with the "Restore" button of the
+		 *            panel. If the user clicks on this button all fields will
+		 *            be restored to the values of the preferences object.
+		 * @param inputChangedCallback
+		 *            the {@link InputChangedDelegateCallback callback} that
+		 *            will be called after the user inputs some data in the
+		 *            panel's fields.
+		 * @return the new created {@link ChildFieldHandlerWorker}.
+		 */
 		ChildFieldHandlerWorker create(@Assisted Object preferences,
 				@Assisted String panelName,
 				@Assisted("applyAction") Action applyAction,
@@ -92,6 +119,9 @@ public class ChildFieldHandlerWorker {
 		return childAnnotations;
 	}
 
+	/**
+	 * Returns a {@link ChildFieldHandler} created from the preferences object.
+	 */
 	public ChildFieldHandler getChildFieldHandler() {
 		ChildFieldHandler childFieldHandler = createChildFieldHandler(preferences);
 		setupChildFieldHandler(childFieldHandler);
