@@ -85,7 +85,7 @@ public class InternalModule extends AbstractModule {
 
 	@Provides
 	@Named("field_annotations")
-	Collection<Class<? extends Annotation>> bindAnnotations() {
+	Collection<Class<? extends Annotation>> bindFieldAnnotations() {
 		Collection<Class<? extends Annotation>> annotations = new ArrayList<Class<? extends Annotation>>();
 		annotations.add(Checkbox.class);
 		annotations.add(FormattedTextField.class);
@@ -96,6 +96,14 @@ public class InternalModule extends AbstractModule {
 		annotations.add(Group.class);
 		annotations.add(Child.class);
 		annotations.add(FileChooser.class);
+		return annotations;
+	}
+
+	@Provides
+	@Named("child_annotations")
+	Collection<Class<? extends Annotation>> bindChildAnnotations() {
+		Collection<Class<? extends Annotation>> annotations = new ArrayList<Class<? extends Annotation>>();
+		annotations.add(Child.class);
 		return annotations;
 	}
 

@@ -4,7 +4,6 @@ import static java.lang.String.format;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
@@ -92,6 +91,8 @@ class ChildFieldHandlerWorker {
 
 	private final InputChangedDelegateCallback inputChangedCallback;
 
+	private final Collection<Class<? extends Annotation>> childAnnotations;
+
 	@Inject
 	ChildFieldHandlerWorker(
 			AnnotationDiscoveryFactory annotationDiscoveryFactory,
@@ -99,6 +100,7 @@ class ChildFieldHandlerWorker {
 			FactoriesMapFactory factoriesMapFactory,
 			FieldsFactory fieldFactories,
 			@Named("field_handler_factories_map") Map<Class<? extends Annotation>, FieldHandlerFactory> fieldHandlerFactories,
+			@Named("child_annotations") Collection<Class<? extends Annotation>> childAnnotations,
 			@Assisted Object preferences, @Assisted String panelName,
 			@Assisted("applyAction") Action applyAction,
 			@Assisted("restoreAction") Action restoreAction,
@@ -113,12 +115,7 @@ class ChildFieldHandlerWorker {
 		this.applyAction = applyAction;
 		this.restoreAction = restoreAction;
 		this.inputChangedCallback = inputChangedCallback;
-	}
-
-	private Collection<Class<? extends Annotation>> createChildAnnotations() {
-		Collection<Class<? extends Annotation>> childAnnotations = new ArrayList<Class<? extends Annotation>>();
-		childAnnotations.add(Child.class);
-		return childAnnotations;
+		this.childAnnotations = childAnnotations;
 	}
 
 	/**
@@ -147,7 +144,7 @@ class ChildFieldHandlerWorker {
 
 	private ChildFieldHandler createChildFieldHandler(Object preferences) {
 		AnnotationFilter annotationFilter = annotationFilterFactory
-				.create(createChildAnnotations());
+				.create(childAnnotations);
 		DiscoverAnnotationsCallback callback = new DiscoverAnnotationsCallback();
 		annotationDiscoveryFactory.create(annotationFilter, preferences,
 				callback).discoverAnnotations();
