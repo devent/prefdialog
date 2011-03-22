@@ -74,11 +74,13 @@ class ChildFieldHandlerWorker {
 
 	private final AnnotationDiscoveryFactory annotationDiscoveryFactory;
 
-	private final AnnotationFilter annotationFilter;
+	private final AnnotationFilterFactory annotationFilterFactory;
 
 	private final FieldsFactory fieldFactories;
 
-	private final FactoriesMap factoriesMap;
+	private final FactoriesMapFactory factoriesMapFactory;
+
+	private final Map<Class<? extends Annotation>, FieldHandlerFactory> fieldHandlerFactories;
 
 	private final Object preferences;
 
@@ -102,10 +104,10 @@ class ChildFieldHandlerWorker {
 			@Assisted("restoreAction") Action restoreAction,
 			@Assisted InputChangedDelegateCallback inputChangedCallback) {
 		this.annotationDiscoveryFactory = annotationDiscoveryFactory;
-		this.annotationFilter = annotationFilterFactory
-				.create(createChildAnnotations());
+		this.annotationFilterFactory = annotationFilterFactory;
 		this.fieldFactories = fieldFactories;
-		this.factoriesMap = factoriesMapFactory.create(fieldHandlerFactories);
+		this.fieldHandlerFactories = fieldHandlerFactories;
+		this.factoriesMapFactory = factoriesMapFactory;
 		this.preferences = preferences;
 		this.panelName = panelName;
 		this.applyAction = applyAction;
@@ -144,6 +146,8 @@ class ChildFieldHandlerWorker {
 	}
 
 	private ChildFieldHandler createChildFieldHandler(Object preferences) {
+		AnnotationFilter annotationFilter = annotationFilterFactory
+				.create(createChildAnnotations());
 		DiscoverAnnotationsCallback callback = new DiscoverAnnotationsCallback();
 		annotationDiscoveryFactory.create(annotationFilter, preferences,
 				callback).discoverAnnotations();
@@ -162,6 +166,8 @@ class ChildFieldHandlerWorker {
 
 	private ChildFieldHandler createChildFieldHandler(Field field, Object value) {
 		l.debug("Create a new child field handler for field {}.", value);
+		FactoriesMap factoriesMap = factoriesMapFactory
+				.create(fieldHandlerFactories);
 		ChildFieldHandlerFactory factory = (ChildFieldHandlerFactory) factoriesMap
 				.getFactory(Child.class);
 		ChildFieldHandler panel = factory.create(preferences, value, field);
@@ -170,7 +176,7 @@ class ChildFieldHandlerWorker {
 
 		for (FieldHandler<?> fieldHandler : fieldFactories
 				.createFieldsHandlers(factoriesMap, value)) {
-			setupGroupFieldHandler(panel, fieldHandler);
+			setupGroupFieldHandler(panel, fieldHandler, factoriesMap);
 			panel.addFieldHandler(fieldHandler);
 		}
 
@@ -178,7 +184,7 @@ class ChildFieldHandlerWorker {
 	}
 
 	private void setupGroupFieldHandler(ChildFieldHandler child,
-			FieldHandler<?> handler) {
+			FieldHandler<?> handler, FactoriesMap factoriesMap) {
 		if (!(handler instanceof GroupFieldHandler)) {
 			return;
 		}
