@@ -20,7 +20,7 @@ package com.globalscalingsoftware.prefdialog.panel.internal.actions;
 
 import com.globalscalingsoftware.prefdialog.swingutils.actions.internal.AbstractDelegatedCallbackAction;
 
-public class RestoreAction extends AbstractDelegatedCallbackAction {
+class RestoreAction extends AbstractDelegatedCallbackAction {
 
 	RestoreAction() {
 		super("Restore");
