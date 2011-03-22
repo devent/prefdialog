@@ -79,13 +79,18 @@ class PreferenceDialog {
 		this.uiPreferencesDialog = new UiPreferencesDialog(owner);
 		this.owner = owner;
 		this.rootNode = rootNode;
-		setup();
 	}
 
-	private void setup() {
+	/**
+	 * Creates the UI of the dialog.
+	 * 
+	 * @return this {@link PreferenceDialog dialog} with created UI.
+	 */
+	public PreferenceDialog createDialog() {
 		setupChildTree();
 		setChildPanel(childPanel);
 		setupDialog();
+		return this;
 	}
 
 	private void setupDialog() {

@@ -96,7 +96,8 @@ class PreferenceDialogHandlerImpl implements PreferenceDialogHandler {
 		preferencePanelsHandler = preferencePanelsHandlerFactory.create(
 				preferences).createPanels();
 		DefaultMutableTreeNode rootNode = preferencePanelsHandler.getRootNode();
-		preferenceDialog = preferenceDialogFactory.create(owner, rootNode);
+		preferenceDialog = preferenceDialogFactory.create(owner, rootNode)
+				.createDialog();
 		preferenceDialog.setTitle(preferences.toString());
 	}
 
