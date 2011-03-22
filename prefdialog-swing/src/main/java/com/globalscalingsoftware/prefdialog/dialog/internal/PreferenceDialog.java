@@ -35,6 +35,12 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.internal.Nullable;
 
+/**
+ * Creates and manages the UI of the preference dialog. Use
+ * {@link PreferenceDialogFactory} to create a new {@link PreferenceDialog}.
+ * 
+ * @see PreferenceDialogFactory
+ */
 class PreferenceDialog {
 
 	private final UiPreferencesDialog uiPreferencesDialog;
