@@ -7,7 +7,7 @@
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>prefdialog-swing</module>
+		<module>prefdialog-dialog</module>
 		<module>prefdialog-public</module>
 		<module>prefdialog-panel</module>
 		<module>prefdialog-reflection</module>
