@@ -25,6 +25,7 @@ import org.apache.commons.collections.MapIterator;
 
 import com.globalscalingsoftware.prefdialog.InputChangedCallback;
 import com.globalscalingsoftware.prefdialog.PreferencePanelHandler;
+import com.globalscalingsoftware.prefdialog.dialog.internal.CreatePreferencePanelHandlersWorker.CreatePreferencePanelHandlersWorkerFactory;
 import com.globalscalingsoftware.prefdialog.swingutils.actions.internal.InputChangedDelegateCallback;
 import com.globalscalingsoftware.prefdialog.swingutils.actions.internal.InputChangedDelegateCallback.InputChangedDelegateCallbackFactory;
 import com.google.inject.Inject;
@@ -38,6 +39,22 @@ import com.google.inject.assistedinject.Assisted;
  * @see PreferencePanelsHandlerFactory
  */
 class PreferencePanelsHandler {
+
+	/**
+	 * Use this factory to create a {@link PreferencePanelsHandler}.
+	 */
+	interface PreferencePanelsHandlerFactory {
+
+		/**
+		 * Created a new {@link PreferencePanelsHandler}.
+		 * 
+		 * @param preferences
+		 *            the preferences object from which the handler will create
+		 *            all preference panels.
+		 * @return the new created {@link PreferencePanelsHandler}.
+		 */
+		PreferencePanelsHandler create(@Assisted Object preferences);
+	}
 
 	private final InputChangedDelegateCallback inputChangedCallback;
 

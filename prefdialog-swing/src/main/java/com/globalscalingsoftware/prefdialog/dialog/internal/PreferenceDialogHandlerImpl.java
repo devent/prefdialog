@@ -30,6 +30,7 @@ import com.globalscalingsoftware.prefdialog.InputChangedCallback;
 import com.globalscalingsoftware.prefdialog.Options;
 import com.globalscalingsoftware.prefdialog.PreferenceDialogHandler;
 import com.globalscalingsoftware.prefdialog.PreferencePanelHandler;
+import com.globalscalingsoftware.prefdialog.dialog.internal.PreferenceDialog.PreferenceDialogFactory;
 import com.globalscalingsoftware.prefdialog.dialog.internal.actions.ActionsHandler;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;

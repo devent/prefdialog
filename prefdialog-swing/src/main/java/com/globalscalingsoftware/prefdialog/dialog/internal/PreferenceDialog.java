@@ -43,6 +43,26 @@ import com.google.inject.internal.Nullable;
  */
 class PreferenceDialog {
 
+	/**
+	 * Use this factory to create a new {@link PreferenceDialog}.
+	 */
+	interface PreferenceDialogFactory {
+
+		/**
+		 * Creates a new {@link PreferenceDialog}.
+		 * 
+		 * @param owner
+		 *            the {@link Frame owner} of the preference dialog, can be
+		 *            <code>null</code>.
+		 * @param rootNode
+		 *            the {@link DefaultMutableTreeNode root tree node} that
+		 *            contains all panels.
+		 * @return the new created {@link PreferenceDialog}.
+		 */
+		PreferenceDialog create(@Assisted @Nullable Frame owner,
+				@Assisted DefaultMutableTreeNode rootNode);
+	}
+
 	private final UiPreferencesDialog uiPreferencesDialog;
 
 	private final Frame owner;

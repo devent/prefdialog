@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import com.globalscalingsoftware.prefdialog.InputChangedCallback;
 import com.globalscalingsoftware.prefdialog.PreferencePanelHandler;
 import com.globalscalingsoftware.prefdialog.PreferencePanelHandlerFactory;
+import com.globalscalingsoftware.prefdialog.dialog.internal.PreferencePanelsCollection.PreferencePanelsCollectionFactory;
 import com.globalscalingsoftware.prefdialog.reflection.AnnotationDiscoveryCallback;
 import com.globalscalingsoftware.prefdialog.reflection.AnnotationDiscoveryFactory;
 import com.globalscalingsoftware.prefdialog.reflection.AnnotationFilterFactory;
@@ -31,6 +32,28 @@ import com.google.inject.name.Named;
  * @see CreatePreferencePanelHandlersWorkerFactory
  */
 class CreatePreferencePanelHandlersWorker {
+
+	/**
+	 * Use the factory to create new {@link CreatePreferencePanelHandlersWorker}
+	 * .
+	 */
+	interface CreatePreferencePanelHandlersWorkerFactory {
+
+		/**
+		 * Creates new {@link CreatePreferencePanelHandlersWorker}.
+		 * 
+		 * @param preferences
+		 *            the preferences object from which the handler will create
+		 *            all preference panels.
+		 * @param inputChangedCallback
+		 *            the {@link InputChangedCallback callback} that will be
+		 *            called if the user inputs data in one of the panels.
+		 * @return the new created {@link CreatePreferencePanelHandlersWorker}.
+		 */
+		CreatePreferencePanelHandlersWorker create(
+				@Assisted Object preferences,
+				@Assisted InputChangedCallback inputChangedCallback);
+	}
 
 	private final Logger l = LoggerFactory
 			.getLogger(CreatePreferencePanelHandlersWorker.class);
