@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.globalscalingsoftware.prefdialog.PreferenceDialogHandler;
 import com.globalscalingsoftware.prefdialog.PreferenceDialogHandlerFactory;
 import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.dialog.internal.PreferencePanelsCollection.PreferencePanelsCollectionFactory;
@@ -12,6 +13,9 @@ import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryProvider;
 import com.google.inject.name.Named;
 
+/**
+ * Binds all dependencies for the {@link PreferenceDialogHandler}.
+ */
 public class InternalModule extends AbstractModule {
 
 	@Override
