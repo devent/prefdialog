@@ -28,6 +28,8 @@ import com.google.inject.name.Named;
  * Will create all {@link PreferencePanelHandler preference panel handlers} and
  * add them to the {@link DefaultMutableTreeNode root tree node}. Use the
  * {@link CreatePreferencePanelHandlersWorkerFactory} to create a new worker.
+ * Need to call the {@link #createWorker()} method to actually start doing the
+ * work.
  * 
  * @see CreatePreferencePanelHandlersWorkerFactory
  */
@@ -68,15 +70,19 @@ class CreatePreferencePanelHandlersWorker {
 
 	private final Object preferences;
 
-	private PreferencePanelHandler firstPreferencePanelHandler;
+	private final AnnotationFilterFactory annotationFilterFactory;
 
-	private final AnnotationFilter annotationFilter;
+	private final Collection<Class<? extends Annotation>> childAnnotations;
 
 	private final PreferencePanelsCollectionFactory preferencePanelsCollectionFactory;
 
-	private PreferencePanelsCollection preferencePanelsCollection;
-
 	private final InputChangedCallback inputChangedCallback;
+
+	private final AnnotationDiscoveryFactory annotationDiscoveryFactory;
+
+	private PreferencePanelHandler firstPreferencePanelHandler;
+
+	private PreferencePanelsCollection preferencePanelsCollection;
 
 	@Inject
 	CreatePreferencePanelHandlersWorker(
@@ -88,8 +94,9 @@ class CreatePreferencePanelHandlersWorker {
 			@Assisted Object preferences,
 			@Assisted InputChangedCallback inputChangedCallback) {
 		this.preferencePanelHandlerFactory = preferencePanelHandlerFactory;
-		this.annotationFilter = annotationFilterFactory
-				.create(childAnnotations);
+		this.annotationFilterFactory = annotationFilterFactory;
+		this.childAnnotations = childAnnotations;
+		this.annotationDiscoveryFactory = annotationDiscoveryFactory;
 		this.preferencePanelsCollectionFactory = preferencePanelsCollectionFactory;
 		this.panelHandlers = Maps.newHashMap();
 		this.treeNodes = Maps.newHashMap();
@@ -97,6 +104,23 @@ class CreatePreferencePanelHandlersWorker {
 		this.preferences = preferences;
 		this.firstPreferencePanelHandler = null;
 		this.inputChangedCallback = inputChangedCallback;
+	}
+
+	/**
+	 * Create the {@link PreferencePanelHandler preference panel handlers} from
+	 * the preferences object and add them to the {@link DefaultMutableTreeNode
+	 * root tree node}.
+	 * 
+	 * @return this {@link CreatePreferencePanelHandlersWorker worker}.
+	 */
+	public CreatePreferencePanelHandlersWorker createWorker() {
+		discoverAnnotations();
+		return this;
+	}
+
+	private void discoverAnnotations() {
+		AnnotationFilter annotationFilter = annotationFilterFactory
+				.create(childAnnotations);
 		annotationDiscoveryFactory.create(annotationFilter, preferences,
 				new AnnotationDiscoveryCallback() {
 

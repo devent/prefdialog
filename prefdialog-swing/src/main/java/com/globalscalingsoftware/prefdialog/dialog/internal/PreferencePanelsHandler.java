@@ -56,25 +56,43 @@ class PreferencePanelsHandler {
 		PreferencePanelsHandler create(@Assisted Object preferences);
 	}
 
-	private final InputChangedDelegateCallback inputChangedCallback;
+	private final InputChangedDelegateCallbackFactory inputChangedDelegateCallbackFactory;
 
-	private final PreferencePanelsCollection preferencePanelsCollection;
+	private final CreatePreferencePanelHandlersWorkerFactory createPreferencePanelHandlersWorkerFactory;
 
-	private final PreferencePanelHandler firstPreferencePanelHandler;
+	private final Object preferences;
+
+	private PreferencePanelsCollection preferencePanelsCollection;
+
+	private PreferencePanelHandler firstPreferencePanelHandler;
+
+	private InputChangedDelegateCallback inputChangedCallback;
 
 	@Inject
 	PreferencePanelsHandler(
 			InputChangedDelegateCallbackFactory inputChangedDelegateCallbackFactory,
 			CreatePreferencePanelHandlersWorkerFactory createPreferencePanelHandlersWorkerFactory,
 			@Assisted Object preferences) {
-		this.inputChangedCallback = inputChangedDelegateCallbackFactory
-				.create();
+		this.inputChangedDelegateCallbackFactory = inputChangedDelegateCallbackFactory;
+		this.createPreferencePanelHandlersWorkerFactory = createPreferencePanelHandlersWorkerFactory;
+		this.preferences = preferences;
+	}
+
+	/**
+	 * Create the {@link PreferencePanelHandler preference panel handlers} from
+	 * the preferences object.
+	 * 
+	 * @return this {@link PreferencePanelsHandler handler}.
+	 */
+	public PreferencePanelsHandler createPanels() {
+		inputChangedCallback = inputChangedDelegateCallbackFactory.create();
 		CreatePreferencePanelHandlersWorker createPreferencePanelHandlersWorker = createPreferencePanelHandlersWorkerFactory
-				.create(preferences, inputChangedCallback);
-		this.firstPreferencePanelHandler = createPreferencePanelHandlersWorker
+				.create(preferences, inputChangedCallback).createWorker();
+		firstPreferencePanelHandler = createPreferencePanelHandlersWorker
 				.getFirstPreferencePanelHandler();
-		this.preferencePanelsCollection = createPreferencePanelHandlersWorker
+		preferencePanelsCollection = createPreferencePanelHandlersWorker
 				.getPreferencePanelsCollection();
+		return this;
 	}
 
 	public void setInputChangedCallback(InputChangedCallback callback) {

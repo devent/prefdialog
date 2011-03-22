@@ -10,6 +10,7 @@ import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.dialog.internal.CreatePreferencePanelHandlersWorker.CreatePreferencePanelHandlersWorkerFactory;
 import com.globalscalingsoftware.prefdialog.dialog.internal.PreferenceDialog.PreferenceDialogFactory;
 import com.globalscalingsoftware.prefdialog.dialog.internal.PreferencePanelsCollection.PreferencePanelsCollectionFactory;
+import com.globalscalingsoftware.prefdialog.dialog.internal.PreferencePanelsHandler.PreferencePanelsHandlerFactory;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryProvider;
@@ -37,6 +38,10 @@ public class InternalModule extends AbstractModule {
 				FactoryProvider.newFactory(
 						CreatePreferencePanelHandlersWorkerFactory.class,
 						CreatePreferencePanelHandlersWorker.class));
+		bind(PreferencePanelsHandlerFactory.class).toProvider(
+				FactoryProvider.newFactory(
+						PreferencePanelsHandlerFactory.class,
+						PreferencePanelsHandler.class));
 	}
 
 	@Provides

@@ -23,6 +23,7 @@ import java.awt.Frame;
 
 import javax.swing.Action;
 import javax.swing.JPanel;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.apache.commons.collections.MapIterator;
 
@@ -31,6 +32,7 @@ import com.globalscalingsoftware.prefdialog.Options;
 import com.globalscalingsoftware.prefdialog.PreferenceDialogHandler;
 import com.globalscalingsoftware.prefdialog.PreferencePanelHandler;
 import com.globalscalingsoftware.prefdialog.dialog.internal.PreferenceDialog.PreferenceDialogFactory;
+import com.globalscalingsoftware.prefdialog.dialog.internal.PreferencePanelsHandler.PreferencePanelsHandlerFactory;
 import com.globalscalingsoftware.prefdialog.dialog.internal.actions.ActionsHandler;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -38,25 +40,31 @@ import com.google.inject.internal.Nullable;
 
 class PreferenceDialogHandlerImpl implements PreferenceDialogHandler {
 
-	private final PreferenceDialog preferenceDialog;
-
-	private final PreferencePanelsHandler preferencePanelsHandler;
+	private final PreferencePanelsHandlerFactory preferencePanelsHandlerFactory;
 
 	private final ActionsHandler actionsHandler;
 
-	private Options option;
+	private final PreferenceDialogFactory preferenceDialogFactory;
 
 	private final Object preferences;
 
+	private final Frame owner;
+
+	private PreferenceDialog preferenceDialog;
+
+	private Options option;
+
+	private PreferencePanelsHandler preferencePanelsHandler;
+
 	@Inject
 	PreferenceDialogHandlerImpl(ActionsHandler actionsHandler,
-			PreferencePanelsHandler preferencePanelsHandler,
+			PreferencePanelsHandlerFactory preferencePanelsHandlerFactory,
 			PreferenceDialogFactory preferenceDialogFactory,
 			@Assisted @Nullable Frame owner, @Assisted Object preferences) {
 		this.actionsHandler = actionsHandler;
-		this.preferencePanelsHandler = preferencePanelsHandler;
-		this.preferenceDialog = preferenceDialogFactory.create(owner,
-				preferencePanelsHandler.getRootNode());
+		this.preferenceDialogFactory = preferenceDialogFactory;
+		this.preferencePanelsHandlerFactory = preferencePanelsHandlerFactory;
+		this.owner = owner;
 		this.preferences = preferences;
 		this.option = Options.CANCEL;
 	}
@@ -85,6 +93,10 @@ class PreferenceDialogHandlerImpl implements PreferenceDialogHandler {
 	}
 
 	private void setupDialog() {
+		preferencePanelsHandler = preferencePanelsHandlerFactory.create(
+				preferences).createPanels();
+		DefaultMutableTreeNode rootNode = preferencePanelsHandler.getRootNode();
+		preferenceDialog = preferenceDialogFactory.create(owner, rootNode);
 		preferenceDialog.setTitle(preferences.toString());
 	}
 
