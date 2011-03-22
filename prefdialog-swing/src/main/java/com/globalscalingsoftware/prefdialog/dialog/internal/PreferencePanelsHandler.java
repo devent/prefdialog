@@ -33,13 +33,12 @@ import com.google.inject.assistedinject.Assisted;
 
 /**
  * Create the {@link PreferencePanelHandler preference panel handlers} from the
- * preferences.
+ * preferences. Use {@link PreferencePanelsHandlerFactory} to create a new
+ * preference panels handler.
+ * 
+ * @see PreferencePanelsHandlerFactory
  */
-public class PreferencePanelsHandler {
-
-	public interface PreferencePanelsHandlerFactory {
-		PreferencePanelsHandler create(@Assisted Object preferences);
-	}
+class PreferencePanelsHandler {
 
 	private final InputChangedDelegateCallback inputChangedCallback;
 
