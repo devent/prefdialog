@@ -24,13 +24,14 @@ import com.google.inject.assistedinject.Assisted;
 import com.google.inject.internal.Maps;
 import com.google.inject.name.Named;
 
-public class CreatePreferencePanelHandlersWorker {
-
-	public interface CreatePreferencePanelHandlersWorkerFactory {
-		CreatePreferencePanelHandlersWorker create(
-				@Assisted Object preferences,
-				@Assisted InputChangedCallback inputChangedCallback);
-	}
+/**
+ * Will create all {@link PreferencePanelHandler preference panel handlers} and
+ * add them to the {@link DefaultMutableTreeNode root tree node}. Use the
+ * {@link CreatePreferencePanelHandlersWorkerFactory} to create a new worker.
+ * 
+ * @see CreatePreferencePanelHandlersWorkerFactory
+ */
+class CreatePreferencePanelHandlersWorker {
 
 	private final Logger l = LoggerFactory
 			.getLogger(CreatePreferencePanelHandlersWorker.class);
@@ -125,10 +126,19 @@ public class CreatePreferencePanelHandlersWorker {
 		l.debug("New node path {} created for {}.", path, value);
 	}
 
+	/**
+	 * Returns the first {@link PreferencePanelHandler} that should be visible
+	 * when the user opens the dialog.
+	 */
 	public PreferencePanelHandler getFirstPreferencePanelHandler() {
 		return firstPreferencePanelHandler;
 	}
 
+	/**
+	 * Returns the {@link PreferencePanelsCollection collection} of
+	 * {@link PreferencePanelHandler preference panel handlers} that we have
+	 * created.
+	 */
 	public PreferencePanelsCollection getPreferencePanelsCollection() {
 		return preferencePanelsCollection;
 	}

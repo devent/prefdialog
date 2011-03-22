@@ -25,7 +25,6 @@ import org.apache.commons.collections.MapIterator;
 
 import com.globalscalingsoftware.prefdialog.InputChangedCallback;
 import com.globalscalingsoftware.prefdialog.PreferencePanelHandler;
-import com.globalscalingsoftware.prefdialog.dialog.internal.CreatePreferencePanelHandlersWorker.CreatePreferencePanelHandlersWorkerFactory;
 import com.globalscalingsoftware.prefdialog.swingutils.actions.internal.InputChangedDelegateCallback;
 import com.globalscalingsoftware.prefdialog.swingutils.actions.internal.InputChangedDelegateCallback.InputChangedDelegateCallbackFactory;
 import com.google.inject.Inject;
