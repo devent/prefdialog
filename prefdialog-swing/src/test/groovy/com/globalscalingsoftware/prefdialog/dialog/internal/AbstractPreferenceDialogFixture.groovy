@@ -54,7 +54,7 @@ abstract class AbstractPreferenceDialogFixture {
 	}
 	
 	def createDialog(def factory) {
-		def controller = factory.create(null, preferences)
+		def controller = factory.create(null, preferences).createDialog()
 		return controller.getPreferenceDialog()
 	}
 	

@@ -35,17 +35,16 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.internal.Nullable;
 
-public class PreferenceDialog {
-
-	public interface PreferenceDialogFactory {
-		PreferenceDialog create(@Assisted @Nullable Frame owner,
-				@Assisted DefaultMutableTreeNode rootNode);
-	}
+class PreferenceDialog {
 
 	private final UiPreferencesDialog uiPreferencesDialog;
-	private Component childPanel;
+
 	private final Frame owner;
+
 	private final DefaultMutableTreeNode rootNode;
+
+	private Component childPanel;
+
 	private ChildSelectedCallback childSelectedCallback;
 
 	@Inject

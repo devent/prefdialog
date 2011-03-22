@@ -45,6 +45,11 @@ import javax.swing.Action;
 public interface PreferenceDialogHandler {
 
 	/**
+	 * Creates the {@link PreferenceDialogHandler preference dialog handler}.
+	 */
+	PreferenceDialogHandler createDialog();
+
+	/**
 	 * Opens the dialog.
 	 */
 	void openDialog();

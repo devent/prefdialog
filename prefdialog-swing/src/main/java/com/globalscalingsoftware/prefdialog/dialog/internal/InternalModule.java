@@ -7,7 +7,6 @@ import java.util.Collection;
 import com.globalscalingsoftware.prefdialog.PreferenceDialogHandlerFactory;
 import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.dialog.internal.CreatePreferencePanelHandlersWorker.CreatePreferencePanelHandlersWorkerFactory;
-import com.globalscalingsoftware.prefdialog.dialog.internal.PreferenceDialog.PreferenceDialogFactory;
 import com.globalscalingsoftware.prefdialog.dialog.internal.PreferencePanelsCollection.PreferencePanelsCollectionFactory;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;

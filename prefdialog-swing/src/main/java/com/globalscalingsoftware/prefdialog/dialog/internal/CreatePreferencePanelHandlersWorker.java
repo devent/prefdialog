@@ -95,7 +95,7 @@ public class CreatePreferencePanelHandlersWorker {
 	private void createPreferencePanelHandler(Object preferences,
 			String panelName) {
 		PreferencePanelHandler handler = preferencePanelHandlerFactory.create(
-				preferences, panelName);
+				preferences, panelName).createPanel();
 		setFirstPreferencePanelHandler(handler);
 		l.debug("New preference panel handler created for {} panel in preferences {}.",
 				panelName, preferences);
