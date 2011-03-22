@@ -18,7 +18,7 @@
  */
 package com.globalscalingsoftware.prefdialog.dialog.module;
 
-import com.globalscalingsoftware.prefdialog.PreferenceDialogController;
+import com.globalscalingsoftware.prefdialog.PreferenceDialogHandler;
 import com.globalscalingsoftware.prefdialog.dialog.internal.InternalModule;
 import com.globalscalingsoftware.prefdialog.panel.module.PanelModule;
 import com.google.inject.Injector;
@@ -27,7 +27,7 @@ import com.google.inject.Injector;
  * Binds the default dependencies for the preference dialog.
  * 
  * We can use the module to create a new instance of
- * {@link PreferenceDialogController} with the help of an {@link Injector}. As
+ * {@link PreferenceDialogHandler} with the help of an {@link Injector}. As
  * in the example:
  * 
  * <pre>

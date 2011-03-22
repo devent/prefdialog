@@ -4,7 +4,7 @@ import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.globalscalingsoftware.prefdialog.PreferenceDialogControllerFactory;
+import com.globalscalingsoftware.prefdialog.PreferenceDialogHandlerFactory;
 import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.dialog.internal.CreatePreferencePanelHandlersWorker.CreatePreferencePanelHandlersWorkerFactory;
 import com.globalscalingsoftware.prefdialog.dialog.internal.PreferenceDialog.PreferenceDialogFactory;
@@ -18,10 +18,10 @@ public class InternalModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
-		bind(PreferenceDialogControllerFactory.class).toProvider(
+		bind(PreferenceDialogHandlerFactory.class).toProvider(
 				FactoryProvider.newFactory(
-						PreferenceDialogControllerFactory.class,
-						PreferenceDialogControllerImpl.class));
+						PreferenceDialogHandlerFactory.class,
+						PreferenceDialogHandlerImpl.class));
 		bind(PreferenceDialogFactory.class).toProvider(
 				FactoryProvider.newFactory(PreferenceDialogFactory.class,
 						PreferenceDialog.class));

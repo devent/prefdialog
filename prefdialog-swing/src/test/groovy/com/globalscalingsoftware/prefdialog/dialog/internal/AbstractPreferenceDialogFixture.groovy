@@ -26,7 +26,7 @@ import org.fest.swing.fixture.DialogFixture;
 import org.junit.After;
 import org.junit.Before;
 
-import com.globalscalingsoftware.prefdialog.PreferenceDialogControllerFactory;
+import com.globalscalingsoftware.prefdialog.PreferenceDialogHandlerFactory;
 import com.globalscalingsoftware.prefdialog.dialog.module.DialogModule 
 import com.google.inject.Guice;
 
@@ -47,7 +47,7 @@ abstract class AbstractPreferenceDialogFixture {
 	
 	def createFrameFixture(def preferences) {
 		def injector = Guice.createInjector(new DialogModule())
-		def factory = injector.getInstance(PreferenceDialogControllerFactory)
+		def factory = injector.getInstance(PreferenceDialogHandlerFactory)
 		
 		def dialog = GuiActionRunner.execute([executeInEDT: { return createDialog(factory) } ] as GuiQuery);
 		return new DialogFixture(dialog);

@@ -42,7 +42,7 @@ import javax.swing.Action;
  * 
  * </pre>
  */
-public interface PreferenceDialogController {
+public interface PreferenceDialogHandler {
 
 	/**
 	 * Opens the dialog.
