@@ -36,9 +36,9 @@ import com.google.inject.name.Named;
  * Search the preferences object for the {@link Child} annotation and create a
  * new {@link ChildFieldHandler} with all fields.
  */
-public class ChildFieldHandlerWorker {
+class ChildFieldHandlerWorker {
 
-	public interface ChildFieldHandlerWorkerFactory {
+	interface ChildFieldHandlerWorkerFactory {
 
 		/**
 		 * Creates a new {@link ChildFieldHandlerWorker}.
