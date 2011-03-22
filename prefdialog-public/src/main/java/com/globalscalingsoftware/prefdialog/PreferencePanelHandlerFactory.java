@@ -3,7 +3,21 @@ package com.globalscalingsoftware.prefdialog;
 import com.google.inject.assistedinject.Assisted;
 
 /**
- * A factory for {@link PreferencePanelHandler preference panel handlers}.
+ * Use this factory to create new {@link PreferencePanelHandler preference panel
+ * handler}. For example:
+ * 
+ * <pre>
+ * injector = Guice.createInjector(new PanelModule())
+ * factory = injector.getInstance(PreferencePanelHandlerFactory)
+ * handler = factory.create(preferences, panelName).createPanel()
+ * </pre>
+ * 
+ * After you created the preference panel handler you can add it to a dialog:
+ * 
+ * <pre>
+ * panel = handler.getAWTComponent()
+ * dialog.add(panel, BorderLayout.CENTER)
+ * </pre>
  * 
  * @see PreferencePanelHandler
  */
