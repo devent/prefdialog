@@ -36,36 +36,7 @@ import com.google.inject.assistedinject.Assisted;
  * Contains all {@link PreferencePanelHandler preference panels} in the dialog.
  * Also contains the {@link TreeNode tree nodes} to the preference panels.
  */
-public class PreferencePanelsCollection {
-
-	/**
-	 * Factory for {@link PreferencePanelsCollection}.
-	 */
-	public interface PreferencePanelsCollectionFactory {
-
-		/**
-		 * Creates a new collection for {@link PreferencePanelHandler}.
-		 * 
-		 * @param panelHandlers
-		 *            a map of the {@link PreferencePanelHandler}, assigned to
-		 *            the preferences value for which the panel was created.
-		 * @param firstPreferencePanelHandler
-		 *            a reference to the first created
-		 *            {@link PreferencePanelHandler}.
-		 * @param treeNodes
-		 *            a map of a path to the preference panels, assigned to the
-		 *            preferences value for which the panel was created.
-		 * @param rootNode
-		 *            the {@link TreeNode} that is the root node for all the
-		 *            {@link TreeNode tree nodes}.
-		 * @return a new created {@link PreferencePanelsCollection}.
-		 */
-		PreferencePanelsCollection create(
-				@Assisted("fieldHandlers") Map<Object, PreferencePanelHandler> panelHandlers,
-				@Assisted PreferencePanelHandler firstPreferencePanelHandler,
-				@Assisted("treeNodes") Map<Object, TreeNode[]> treeNodes,
-				@Assisted DefaultMutableTreeNode rootNode);
-	}
+class PreferencePanelsCollection {
 
 	private final Map<Object, PreferencePanelHandler> panelHandlers;
 
