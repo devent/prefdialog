@@ -66,7 +66,6 @@ class PreferenceDialogHandlerImpl implements PreferenceDialogHandler {
 		this.preferencePanelsHandlerFactory = preferencePanelsHandlerFactory;
 		this.owner = owner;
 		this.preferences = preferences;
-		this.option = Options.CANCEL;
 	}
 
 	@Override
@@ -146,6 +145,7 @@ class PreferenceDialogHandlerImpl implements PreferenceDialogHandler {
 	}
 
 	private void closeDialog(Options option) {
+		actionsHandler.setOkActionEnabled(false);
 		this.option = option;
 		preferenceDialog.close();
 	}
@@ -175,6 +175,7 @@ class PreferenceDialogHandlerImpl implements PreferenceDialogHandler {
 
 	@Override
 	public void openDialog() {
+		this.option = Options.CANCEL;
 		preferenceDialog.open();
 	}
 
