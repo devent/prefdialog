@@ -23,6 +23,7 @@ import java.awt.Frame;
 
 import javax.swing.Action;
 import javax.swing.JTree;
+import javax.swing.SwingUtilities;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -161,5 +162,9 @@ class PreferenceDialog {
 
 	public void setTitle(String title) {
 		uiPreferencesDialog.setTitle(title);
+	}
+
+	public void updateUI() {
+		SwingUtilities.updateComponentTreeUI(uiPreferencesDialog);
 	}
 }

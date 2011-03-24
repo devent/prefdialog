@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.Action;
+import javax.swing.SwingUtilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -142,4 +143,9 @@ public abstract class AbstractChildFieldHandler<ComponentType extends ChildCompo
 		}
 		return true;
 	}
+
+	public void updateUI() {
+		SwingUtilities.updateComponentTreeUI(getComponent().getAWTComponent());
+	}
+
 }

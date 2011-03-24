@@ -61,4 +61,9 @@ public interface PreferencePanelHandler {
 	 *         the input is not valid.
 	 */
 	boolean isInputValid();
+
+	/**
+	 * Updates the UI of the panel.
+	 */
+	void updateUI();
 }

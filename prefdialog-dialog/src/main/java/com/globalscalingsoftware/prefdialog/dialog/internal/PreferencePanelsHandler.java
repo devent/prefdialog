@@ -122,4 +122,8 @@ class PreferencePanelsHandler {
 	public boolean isInputValid() {
 		return preferencePanelsCollection.isInputValid();
 	}
+
+	public void updateUI() {
+		preferencePanelsCollection.updateUI();
+	}
 }

@@ -215,7 +215,13 @@ class PreferenceDialogHandlerImpl implements PreferenceDialogHandler {
 		}
 	}
 
-	public Component getPreferenceDialog() {
+	public Component getAWTComponent() {
 		return preferenceDialog.getAWTComponent();
+	}
+
+	@Override
+	public void updateUI() {
+		preferenceDialog.updateUI();
+		preferencePanelsHandler.updateUI();
 	}
 }

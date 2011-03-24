@@ -158,4 +158,14 @@ class PreferencePanelsCollection {
 		return true;
 	}
 
+	public void updateUI() {
+		MapIterator panels = getPreferencePanels();
+		while (panels.hasNext()) {
+			panels.next();
+			PreferencePanelHandler handler = (PreferencePanelHandler) panels
+					.getValue();
+			handler.updateUI();
+		}
+	}
+
 }
