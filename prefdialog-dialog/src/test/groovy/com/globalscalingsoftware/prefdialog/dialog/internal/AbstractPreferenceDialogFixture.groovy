@@ -20,44 +20,44 @@ package com.globalscalingsoftware.prefdialog.dialog.internal
 
 
 
-import org.fest.swing.edt.GuiActionRunner 
-import org.fest.swing.edt.GuiQuery 
-import org.fest.swing.fixture.DialogFixture;
-import org.junit.After;
-import org.junit.Before;
+import org.fest.swing.edt.GuiActionRunner
+import org.fest.swing.edt.GuiQuery
+import org.fest.swing.fixture.DialogFixture
+import org.junit.After
+import org.junit.Before
 
-import com.globalscalingsoftware.prefdialog.PreferenceDialogHandlerFactory;
-import com.globalscalingsoftware.prefdialog.dialog.module.DialogModule 
-import com.google.inject.Guice;
+import com.globalscalingsoftware.prefdialog.PreferenceDialogHandlerFactory
+import com.globalscalingsoftware.prefdialog.dialog.module.DialogModule
+import com.google.inject.Guice
 
 abstract class AbstractPreferenceDialogFixture {
-	
+
 	def preferences
-	
+
 	DialogFixture fixture
-	
+
 	@Before
 	void beforeTest() {
 		setupPreferences()
 		fixture = createFrameFixture(preferences)
 		fixture.show();
 	}
-	
+
 	abstract setupPreferences()
-	
+
 	def createFrameFixture(def preferences) {
 		def injector = Guice.createInjector(new DialogModule())
 		def factory = injector.getInstance(PreferenceDialogHandlerFactory)
-		
+
 		def dialog = GuiActionRunner.execute([executeInEDT: { return createDialog(factory) } ] as GuiQuery);
 		return new DialogFixture(dialog);
 	}
-	
+
 	def createDialog(def factory) {
 		def controller = factory.create(null, preferences).createDialog()
 		return controller.AWTComponent
 	}
-	
+
 	@After
 	void afterTest() {
 		fixture.cleanUp()

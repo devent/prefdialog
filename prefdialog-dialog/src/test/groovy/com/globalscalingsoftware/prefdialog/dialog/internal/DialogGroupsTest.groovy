@@ -18,86 +18,86 @@
  */
 package com.globalscalingsoftware.prefdialog.dialog.internal
 
-import java.util.List;
+import java.util.List
 
-import org.junit.Test;
+import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Checkbox;
-import com.globalscalingsoftware.prefdialog.annotations.Child;
-import com.globalscalingsoftware.prefdialog.annotations.ComboBox 
-import com.globalscalingsoftware.prefdialog.annotations.ComboBoxElements 
-import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField 
-import com.globalscalingsoftware.prefdialog.annotations.Group;
-import com.globalscalingsoftware.prefdialog.annotations.RadioButton 
-import com.globalscalingsoftware.prefdialog.annotations.TextField;
-import com.globalscalingsoftware.prefdialog.validators.NotEmptyString 
+import com.globalscalingsoftware.prefdialog.annotations.Checkbox
+import com.globalscalingsoftware.prefdialog.annotations.Child
+import com.globalscalingsoftware.prefdialog.annotations.ComboBox
+import com.globalscalingsoftware.prefdialog.annotations.ComboBoxElements
+import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField
+import com.globalscalingsoftware.prefdialog.annotations.Group
+import com.globalscalingsoftware.prefdialog.annotations.RadioButton
+import com.globalscalingsoftware.prefdialog.annotations.TextField
+import com.globalscalingsoftware.prefdialog.validators.NotEmptyString
 
 class DialogGroupsTest extends AbstractPreferenceDialogFixture {
-	
+
 	static class Preferences {
-		
+
 		@Child
 		General general = new General()
 	}
-	
+
 	static class General {
-		
+
 		@TextField(validator=NotEmptyString, validatorText="Must not be empty")
 		String name = ""
-		
+
 		@FormattedTextField(validator=FieldsValidator, validatorText="Must be a number and between 2 and 900")
 		int fields = 4
-		
+
 		@Group
 		Group1 group1 = new Group1()
-		
+
 		@Group
 		Group2 group2 = new Group2()
-		
+
 		@Checkbox
 		boolean automaticSave = false
-		
+
 		@RadioButton(columns=2)
 		Colors colors = Colors.BLACK
-		
+
 		@ComboBoxElements("combobox1")
 		List<String> comboBoxElements = [
 			"first element",
 			"second element",
 			"third element"
 		]
-		
+
 		@ComboBox(value="combobox1", elements="combobox1")
 		String comboBox
-		
+
 		@Override
 		public String toString() {
 			"General"
 		}
 	}
-	
+
 	static class Group1 {
-		
+
 		@TextField
 		String textField1 = ""
-		
+
 		@TextField
 		String textField2 = ""
 	}
-	
+
 	static class Group2 {
-		
+
 		@TextField
 		String textField3 = ""
-		
+
 		@TextField
 		String textField4 = ""
 	}
-	
+
 	def setupPreferences() {
 		preferences = new Preferences()
 	}
-	
+
 	@Test
 	void testClickOkAndClose() {
 		fixture.textBox("name").enterText "name"
@@ -106,7 +106,7 @@ class DialogGroupsTest extends AbstractPreferenceDialogFixture {
 		fixture.radioButton("colors-BLUE").click()
 		fixture.comboBox("comboBox").selectItem 1
 		fixture.button("ok").click()
-		
+
 		assert preferences.general.name == "name"
 		assert preferences.general.fields == 104
 		assert preferences.general.automaticSave == true

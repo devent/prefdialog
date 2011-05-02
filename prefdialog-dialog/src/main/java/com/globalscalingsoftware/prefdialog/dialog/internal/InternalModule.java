@@ -13,7 +13,8 @@ import com.globalscalingsoftware.prefdialog.dialog.internal.PreferencePanelsColl
 import com.globalscalingsoftware.prefdialog.dialog.internal.PreferencePanelsHandler.PreferencePanelsHandlerFactory;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
-import com.google.inject.assistedinject.FactoryProvider;
+import com.google.inject.TypeLiteral;
+import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.google.inject.name.Named;
 
 /**
@@ -23,25 +24,24 @@ public class InternalModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
-		bind(PreferenceDialogHandlerFactory.class).toProvider(
-				FactoryProvider.newFactory(
-						PreferenceDialogHandlerFactory.class,
-						PreferenceDialogHandlerImpl.class));
-		bind(PreferenceDialogFactory.class).toProvider(
-				FactoryProvider.newFactory(PreferenceDialogFactory.class,
-						PreferenceDialog.class));
-		bind(PreferencePanelsCollectionFactory.class).toProvider(
-				FactoryProvider.newFactory(
-						PreferencePanelsCollectionFactory.class,
-						PreferencePanelsCollection.class));
-		bind(CreatePreferencePanelHandlersWorkerFactory.class).toProvider(
-				FactoryProvider.newFactory(
-						CreatePreferencePanelHandlersWorkerFactory.class,
-						CreatePreferencePanelHandlersWorker.class));
-		bind(PreferencePanelsHandlerFactory.class).toProvider(
-				FactoryProvider.newFactory(
-						PreferencePanelsHandlerFactory.class,
-						PreferencePanelsHandler.class));
+		install(new FactoryModuleBuilder().implement(
+				new TypeLiteral<PreferenceDialogHandler>() {
+				}, PreferenceDialogHandlerImpl.class).build(
+				PreferenceDialogHandlerFactory.class));
+		install(new FactoryModuleBuilder().implement(PreferenceDialog.class,
+				PreferenceDialog.class).build(PreferenceDialogFactory.class));
+		install(new FactoryModuleBuilder().implement(
+				PreferencePanelsCollection.class,
+				PreferencePanelsCollection.class).build(
+				PreferencePanelsCollectionFactory.class));
+		install(new FactoryModuleBuilder().implement(
+				CreatePreferencePanelHandlersWorker.class,
+				CreatePreferencePanelHandlersWorker.class).build(
+				CreatePreferencePanelHandlersWorkerFactory.class));
+		install(new FactoryModuleBuilder().implement(
+				PreferencePanelsHandler.class, PreferencePanelsHandler.class)
+				.build(PreferencePanelsHandlerFactory.class));
+
 	}
 
 	@Provides

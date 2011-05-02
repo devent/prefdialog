@@ -21,6 +21,7 @@ package com.globalscalingsoftware.prefdialog.dialog.internal;
 import java.awt.Component;
 import java.awt.Frame;
 
+import javax.annotation.Nullable;
 import javax.swing.Action;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
@@ -34,7 +35,6 @@ import javax.swing.tree.TreeSelectionModel;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-import com.google.inject.internal.Nullable;
 
 /**
  * Creates and manages the UI of the preference dialog. Use

@@ -1,13 +1,12 @@
 package com.globalscalingsoftware.prefdialog.panel.internal;
 
-import static com.google.inject.assistedinject.FactoryProvider.newFactory;
-
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.globalscalingsoftware.prefdialog.PreferencePanelHandler;
 import com.globalscalingsoftware.prefdialog.PreferencePanelHandlerFactory;
 import com.globalscalingsoftware.prefdialog.annotations.Checkbox;
 import com.globalscalingsoftware.prefdialog.annotations.Child;
@@ -38,20 +37,23 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Provides;
+import com.google.inject.TypeLiteral;
+import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.google.inject.name.Named;
 
 public class InternalModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
-		bind(PreferencePanelHandlerFactory.class).toProvider(
-				newFactory(PreferencePanelHandlerFactory.class,
-						PreferencePanelHandlerImpl.class));
-		bind(FactoriesMapFactory.class).toProvider(
-				newFactory(FactoriesMapFactory.class, FactoriesMap.class));
-		bind(ChildFieldHandlerWorkerFactory.class).toProvider(
-				newFactory(ChildFieldHandlerWorkerFactory.class,
-						ChildFieldHandlerWorker.class));
+		install(new FactoryModuleBuilder().implement(
+				new TypeLiteral<PreferencePanelHandler>() {
+				}, PreferencePanelHandlerImpl.class).build(
+				PreferencePanelHandlerFactory.class));
+		install(new FactoryModuleBuilder().implement(FactoriesMap.class,
+				FactoriesMap.class).build(FactoriesMapFactory.class));
+		install(new FactoryModuleBuilder().implement(
+				ChildFieldHandlerWorker.class, ChildFieldHandlerWorker.class)
+				.build(ChildFieldHandlerWorkerFactory.class));
 		install(new ReflectionModule());
 		install(new FieldHandlersModule());
 		install(new ActionsModule());

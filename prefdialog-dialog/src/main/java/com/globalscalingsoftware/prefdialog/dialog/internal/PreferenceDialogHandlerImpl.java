@@ -21,6 +21,7 @@ package com.globalscalingsoftware.prefdialog.dialog.internal;
 import java.awt.Component;
 import java.awt.Frame;
 
+import javax.annotation.Nullable;
 import javax.swing.Action;
 import javax.swing.JPanel;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -36,7 +37,6 @@ import com.globalscalingsoftware.prefdialog.dialog.internal.PreferencePanelsHand
 import com.globalscalingsoftware.prefdialog.dialog.internal.actions.ActionsHandler;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-import com.google.inject.internal.Nullable;
 
 class PreferenceDialogHandlerImpl implements PreferenceDialogHandler {
 

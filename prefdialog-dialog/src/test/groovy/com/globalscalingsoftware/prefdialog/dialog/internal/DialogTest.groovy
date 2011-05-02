@@ -22,7 +22,7 @@ package com.globalscalingsoftware.prefdialog.dialog.internal
 import org.junit.Test;
 
 import com.globalscalingsoftware.prefdialog.annotations.Child;
-import com.globalscalingsoftware.prefdialog.annotations.TextField 
+import com.globalscalingsoftware.prefdialog.annotations.TextField;
 
 class DialogTest extends AbstractPreferenceDialogFixture {
 	

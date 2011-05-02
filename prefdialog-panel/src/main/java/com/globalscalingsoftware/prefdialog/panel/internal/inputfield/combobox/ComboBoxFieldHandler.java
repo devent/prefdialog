@@ -22,6 +22,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.Collection;
 
+import javax.annotation.Nullable;
 import javax.swing.ComboBoxModel;
 import javax.swing.ListCellRenderer;
 
@@ -34,7 +35,6 @@ import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractDe
 import com.globalscalingsoftware.prefdialog.reflection.internal.ReflectionToolbox;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-import com.google.inject.internal.Nullable;
 
 public class ComboBoxFieldHandler extends
 		AbstractDefaultFieldHandler<ComboBoxPanel> {

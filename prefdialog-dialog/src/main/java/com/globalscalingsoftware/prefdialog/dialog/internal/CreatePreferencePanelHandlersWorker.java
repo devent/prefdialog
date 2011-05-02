@@ -19,9 +19,9 @@ import com.globalscalingsoftware.prefdialog.reflection.AnnotationDiscoveryCallba
 import com.globalscalingsoftware.prefdialog.reflection.AnnotationDiscoveryFactory;
 import com.globalscalingsoftware.prefdialog.reflection.AnnotationFilterFactory;
 import com.globalscalingsoftware.prefdialog.reflection.internal.AnnotationFilter;
+import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-import com.google.inject.internal.Maps;
 import com.google.inject.name.Named;
 
 /**
