@@ -61,10 +61,10 @@ public class RadioButtonsPanel extends AbstractLabelFieldPanel<JPanel> {
 		this.rows = 0;
 		this.row = 0;
 		this.buttonsCount = 0;
-		setupPanel();
+		setup();
 	}
 
-	private void setupPanel() {
+	private void setup() {
 		getField().setLayout(layout);
 	}
 

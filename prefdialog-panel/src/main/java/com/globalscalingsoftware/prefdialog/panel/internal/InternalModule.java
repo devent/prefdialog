@@ -8,6 +8,7 @@ import java.util.Map;
 
 import com.globalscalingsoftware.prefdialog.PreferencePanelHandler;
 import com.globalscalingsoftware.prefdialog.PreferencePanelHandlerFactory;
+import com.globalscalingsoftware.prefdialog.annotations.ButtonGroup;
 import com.globalscalingsoftware.prefdialog.annotations.Checkbox;
 import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.annotations.ComboBox;
@@ -22,6 +23,7 @@ import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.FactoriesM
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.FactoriesMap.FactoriesMapFactory;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.FieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.FieldHandlersModule;
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.button.ButtonGroupFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.checkbox.CheckBoxFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.child.ChildFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.child.group.GroupFieldHandlerFactory;
@@ -82,6 +84,8 @@ public class InternalModule extends AbstractModule {
 				injector.getInstance(ChildFieldHandlerFactory.class));
 		fieldHandlerFactoriesMap.put(Group.class,
 				injector.getInstance(GroupFieldHandlerFactory.class));
+		fieldHandlerFactoriesMap.put(ButtonGroup.class,
+				injector.getInstance(ButtonGroupFieldHandlerFactory.class));
 		return fieldHandlerFactoriesMap;
 	}
 
@@ -98,6 +102,7 @@ public class InternalModule extends AbstractModule {
 		annotations.add(Group.class);
 		annotations.add(Child.class);
 		annotations.add(FileChooser.class);
+		annotations.add(ButtonGroup.class);
 		return annotations;
 	}
 

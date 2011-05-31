@@ -20,27 +20,19 @@ package com.globalscalingsoftware.prefdialog.panel.internal.inputfield;
 
 import info.clearthought.layout.TableLayout;
 
-import java.awt.event.MouseEvent;
-
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.ToolTipManager;
 
 public abstract class AbstractLabelFieldPanel<FieldType extends JComponent>
-		extends AbstractFieldComponent<JPanel> {
+		extends AbstractPanelField<FieldType> {
 
 	private final JLabel label;
 
-	private final TableLayout layout;
-
-	private final FieldType field;
-
 	public AbstractLabelFieldPanel(FieldType field) {
-		super(new JPanel());
-		this.field = field;
-		this.layout = createLayout();
+		super(field);
 		this.label = new JLabel();
+		setLayout(createLayout());
 		setupPanel();
 	}
 
@@ -52,21 +44,14 @@ public abstract class AbstractLabelFieldPanel<FieldType extends JComponent>
 
 	private void setupPanel() {
 		JPanel panel = (JPanel) getAWTComponent();
-		panel.setLayout(layout);
+		panel.setLayout(getLayout());
 
 		panel.add(label, "0, 0");
-		panel.add(field, "0, 1");
+		panel.add(getPanelField(), "0, 1");
 
-		label.setLabelFor(field);
-		field.requestFocus();
+		label.setLabelFor(getPanelField());
+		getPanelField().requestFocus();
 	}
-
-	public FieldType getPanelField() {
-		return field;
-	}
-
-	@Override
-	public abstract Object getValue();
 
 	@Override
 	public void setTitle(String title) {
@@ -79,42 +64,14 @@ public abstract class AbstractLabelFieldPanel<FieldType extends JComponent>
 
 	@Override
 	public void setName(String name) {
-		super.setName("panel-" + name);
+		super.setName(name);
 		label.setName("label-" + name);
-		field.setName(name);
 	}
 
-	@Override
-	public void setWidth(double width) {
-		JPanel panel = (JPanel) getAWTComponent();
-		layout.setColumn(0, width);
-		layout.layoutContainer(panel);
-		panel.repaint();
-	}
-
-	@Override
-	public void setEnabled(boolean enabled) {
-		field.setEnabled(enabled);
-	}
-
-	public void setToolTipText(String text) {
-		field.setToolTipText(text);
-	}
-
-	public void showToolTip() {
-		ToolTipManager.sharedInstance().mouseMoved(
-				new MouseEvent(field, 0, 0, 0, 0, 0, // X-Y of the
-														// mouse for the
-														// tool tip
-						0, false));
-	}
-
-	public void hideToolTip() {
-		ToolTipManager.sharedInstance().mouseExited(
-				new MouseEvent(field, 0, 0, 0, 0, 0, // X-Y of the
-														// mouse for the
-														// tool tip
-						0, false));
+	public void setShowTitle(boolean show) {
+		if (!show) {
+			label.setText("");
+		}
 	}
 
 }

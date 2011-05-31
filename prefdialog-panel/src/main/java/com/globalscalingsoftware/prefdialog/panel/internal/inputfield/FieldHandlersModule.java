@@ -1,6 +1,7 @@
 package com.globalscalingsoftware.prefdialog.panel.internal.inputfield;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.button.ButtonModule;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.checkbox.CheckBoxFieldHandler;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.checkbox.CheckBoxFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.child.ChildFieldHandler;
@@ -27,6 +28,7 @@ public class FieldHandlersModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
+		install(new ButtonModule());
 		install(new FactoryModuleBuilder().implement(
 				new TypeLiteral<FieldHandler<?>>() {
 				}, TextFieldHandler.class).build(TextFieldHandlerFactory.class));

@@ -16,20 +16,25 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.textfield
+package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.button
+
+import javax.swing.Action
 
 import org.junit.Test
 
+import com.globalscalingsoftware.prefdialog.annotations.ButtonGroup
 import com.globalscalingsoftware.prefdialog.annotations.Child
-import com.globalscalingsoftware.prefdialog.annotations.TextField
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest
 
-class TextFieldWidthTest extends AbstractPreferencePanelTest {
+class ManualButtonGroupTest extends AbstractPreferencePanelTest {
 
 	static class General {
 
-		@TextField(width=-2.0d)
-		String name = ""
+		@ButtonGroup
+		List<Action> buttons = [
+			new Button1Action(),
+			new Button2Action()
+		]
 
 		@Override
 		public String toString() {
@@ -43,16 +48,13 @@ class TextFieldWidthTest extends AbstractPreferencePanelTest {
 		General general = new General()
 	}
 
-
 	def setupPreferences() {
 		preferences = new Preferences()
 		panelName = "General"
 	}
 
 	@Test
-	void testEnterTextAndApply() {
-		fixture.textBox("name").enterText "test"
-		fixture.panel("general").button("apply").click()
-		assert preferences.general.name == "test"
+	void testManual() {
+		Thread.sleep(30000)
 	}
 }
