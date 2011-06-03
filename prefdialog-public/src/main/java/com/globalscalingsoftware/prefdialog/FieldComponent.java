@@ -44,10 +44,4 @@ public interface FieldComponent {
 	 */
 	boolean isInputValid();
 
-	/**
-	 * Set the {@link InputChangedCallback} that will be called if the input of
-	 * this field changes.
-	 */
-	void setInputChangedCallback(InputChangedCallback callback);
-
 }

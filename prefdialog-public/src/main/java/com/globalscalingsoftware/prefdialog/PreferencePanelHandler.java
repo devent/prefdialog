@@ -2,8 +2,6 @@ package com.globalscalingsoftware.prefdialog;
 
 import java.awt.Component;
 
-import javax.swing.Action;
-
 /**
  * Controls the preference panel that was created from the preferences. Use
  * {@link PreferencePanelHandlerFactory} to create a new preference panel
@@ -17,16 +15,6 @@ public interface PreferencePanelHandler {
 	 * Creates the {@link PreferencePanelHandler preference panel handler}.
 	 */
 	PreferencePanelHandler createPanel();
-
-	/**
-	 * Sets the {@link Action} for the "Apply" button of the panel.
-	 */
-	void setApplyAction(Action a);
-
-	/**
-	 * Sets the {@link Action} for the "Restore" button of the panel.
-	 */
-	void setRestoreAction(Action a);
 
 	/**
 	 * Returns the {@link Component} that can be added to a panel or dialog.
