@@ -18,52 +18,28 @@
  */
 package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.checkbox;
 
-import java.awt.event.ActionEvent;
-
-import javax.swing.AbstractAction;
 import javax.swing.JCheckBox;
 
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractFieldComponent;
 
-@SuppressWarnings("serial")
 class CheckBoxPanel extends AbstractFieldComponent<JCheckBox> {
-
-	private class Action extends AbstractAction {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			inputChanged();
-		}
-
-		public void setName(String name) {
-			putValue(NAME, name);
-		}
-
-		public void setSelected(boolean selected) {
-			putValue(SELECTED_KEY, selected);
-		}
-	}
-
-	private final Action action;
 
 	public CheckBoxPanel() {
 		super(new JCheckBox());
-		this.action = new Action();
-		setupCheckbox();
+		setup();
 	}
 
-	private void setupCheckbox() {
-		getField().setAction(action);
+	private void setup() {
 	}
 
 	@Override
 	public void setTitle(String title) {
-		action.setName(title);
+		getField().setText(title);
 	}
 
 	@Override
 	public void setValue(Object value) {
-		action.setSelected((Boolean) value);
+		getField().setSelected((Boolean) value);
 	}
 
 	@Override

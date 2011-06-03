@@ -19,9 +19,11 @@
 package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.button
 
 import javax.swing.Action
+import javax.swing.JFrame
 
 import org.junit.Test
 
+import com.globalscalingsoftware.prefdialog.PreferencePanelHandler
 import com.globalscalingsoftware.prefdialog.annotations.ButtonGroup
 import com.globalscalingsoftware.prefdialog.annotations.Child
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest
@@ -50,6 +52,10 @@ class ManualButtonGroupTest extends AbstractPreferencePanelTest {
 
 	def setupPreferences() {
 		preferences = new Preferences()
+		preferences.general.buttons[1].callback = {
+			panelHandler.applyInput()
+			Thread.start { fixture.close() }
+		}
 		panelName = "General"
 	}
 

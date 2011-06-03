@@ -19,24 +19,28 @@
 package com.globalscalingsoftware.prefdialog.panel.internal.inputfield
 
 
-import groovy.swing.SwingBuilder 
-import java.awt.event.ActionEvent 
+import groovy.swing.SwingBuilder
 
-import javax.swing.AbstractAction;
-import org.fest.swing.edt.GuiActionRunner 
-import org.fest.swing.edt.GuiQuery 
-import org.fest.swing.fixture.FrameFixture 
-import org.junit.After;
-import org.junit.Before;
+import java.awt.event.ActionEvent
 
-import com.globalscalingsoftware.prefdialog.PreferencePanelHandlerFactory;
-import com.globalscalingsoftware.prefdialog.panel.module.PanelModule;
-import com.google.inject.Guice;
+import javax.swing.AbstractAction
+import javax.swing.JFrame
+
+import org.fest.swing.edt.GuiActionRunner
+import org.fest.swing.edt.GuiQuery
+import org.fest.swing.fixture.FrameFixture
+import org.junit.After
+import org.junit.Before
+
+import com.globalscalingsoftware.prefdialog.PreferencePanelHandler
+import com.globalscalingsoftware.prefdialog.PreferencePanelHandlerFactory
+import com.globalscalingsoftware.prefdialog.panel.module.PanelModule
+import com.google.inject.Guice
 
 
 
 abstract class AbstractPreferencePanelTest {
-	
+
 	static class ApplyAction extends AbstractAction {
 		ApplyAction() {
 			super("Apply")
@@ -44,7 +48,7 @@ abstract class AbstractPreferencePanelTest {
 		void actionPerformed(ActionEvent e) {
 		}
 	}
-	
+
 	static class RestoreAction extends AbstractAction {
 		RestoreAction() {
 			super("Restore")
@@ -52,39 +56,44 @@ abstract class AbstractPreferencePanelTest {
 		void actionPerformed(ActionEvent e) {
 		}
 	}
-	
+
 	def preferences
-	
+
 	def panelName
-	
+
+	PreferencePanelHandler panelHandler
+
 	FrameFixture fixture
-	
+
+	JFrame frame
+
 	@Before
 	void beforeTest() {
 		setupPreferences()
 		fixture = createFrameFixture()
 		fixture.show();
 	}
-	
+
 	abstract setupPreferences()
-	
+
 	@After
 	void afterTest() {
 		fixture.cleanUp()
+		fixture = null
 	}
-	
+
 	def createFrameFixture() {
 		def injector = Guice.createInjector(new PanelModule())
 		def factory = injector.getInstance(PreferencePanelHandlerFactory)
-		
-		def frame = GuiActionRunner.execute([executeInEDT: { return getFrame(factory) } ] as GuiQuery);
-		return new FrameFixture(frame);
+		panelHandler = factory.create(preferences, panelName).createPanel()
+		createPanelFrame(panelHandler)
+		def result = GuiActionRunner.execute([executeInEDT: { frame } ] as GuiQuery);
+		return new FrameFixture(result);
 	}
-	
-	def getFrame(def factory) {
-		def handler = factory.create(preferences, panelName).createPanel()
-		def panel = handler.getAWTComponent()
-		new SwingBuilder().frame(title: 'Preference Panel Test', pack: true) {
+
+	def createPanelFrame(PreferencePanelHandler panelHandler) {
+		def panel = panelHandler.getAWTComponent()
+		frame = new SwingBuilder().frame(title: 'Preference Panel Test', pack: true) {
 			borderLayout()
 			widget(panel)
 		}

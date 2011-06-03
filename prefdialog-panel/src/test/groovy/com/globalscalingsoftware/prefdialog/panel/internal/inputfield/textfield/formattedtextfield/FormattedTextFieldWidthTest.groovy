@@ -19,44 +19,45 @@
 package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.textfield.formattedtextfield
 
 
-import org.junit.Test;
+import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child;
-import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField 
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest;
+import com.globalscalingsoftware.prefdialog.annotations.Child
+import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest
 
 class FormattedTextFieldWidthTest extends AbstractPreferencePanelTest {
-	
+
 	static class General {
-		
+
 		@FormattedTextField(width=-2.0d)
 		int fields = 4
-		
+
 		@Override
 		public String toString() {
 			"General"
 		}
 	}
-	
+
 	static class Preferences {
-		
+
 		@Child
 		General general = new General()
 	}
-	
-	
+
+
 	def setupPreferences() {
 		preferences = new Preferences()
 		panelName = "General"
 	}
-	
+
 	@Test
 	void testPanelClickApplyAndClose() {
+		assert fixture.label("label-fields").text() == "fields: "
 		fixture.textBox("fields").deleteText()
 		fixture.textBox("fields").enterText "10"
-		fixture.panel("general").button("apply").click()
-		
-		assert fixture.label("label-fields").text() == "fields: "
+		panelHandler.applyInput()
+
+		assert fixture.textBox("fields").text() == "10"
 		assert preferences.general.fields == 10
 	}
 }

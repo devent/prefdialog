@@ -21,7 +21,6 @@ package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.child;
 import info.clearthought.layout.TableLayout;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -45,11 +44,7 @@ class UiChildPanel extends javax.swing.JPanel {
 	private JLabel childLabel;
 	private JScrollPane jScrollPane1;
 	private JPanel fieldsPanel;
-	private JSeparator jSeparator2;
-	private JPanel buttonsPanel;
 	private JPanel scrollPanel;
-	private JButton applyButton;
-	private JButton restoreButton;
 	private JSeparator jSeparator1;
 
 	/**
@@ -72,8 +67,7 @@ class UiChildPanel extends javax.swing.JPanel {
 		try {
 			TableLayout thisLayout = new TableLayout(new double[][] {
 					{ TableLayout.FILL },
-					{ TableLayout.PREFERRED, TableLayout.PREFERRED,
-							TableLayout.FILL, TableLayout.PREFERRED } });
+					{ TableLayout.PREFERRED, TableLayout.PREFERRED } });
 			thisLayout.setHGap(5);
 			thisLayout.setVGap(5);
 			this.setLayout(thisLayout);
@@ -90,7 +84,7 @@ class UiChildPanel extends javax.swing.JPanel {
 			}
 			{
 				jScrollPane1 = new JScrollPane();
-				this.add(jScrollPane1, "0,2,f,f");
+				this.add(jScrollPane1, "0, 1");
 				jScrollPane1.setOpaque(false);
 				Border border = BorderFactory.createEmptyBorder(0, 0, 0, 0);
 				jScrollPane1.setViewportBorder(border);
@@ -118,34 +112,6 @@ class UiChildPanel extends javax.swing.JPanel {
 					}
 				}
 			}
-			{
-				buttonsPanel = new JPanel();
-				TableLayout buttonsPanelLayout = new TableLayout(
-						new double[][] {
-								{ TableLayout.FILL, TableLayout.PREFERRED,
-										TableLayout.PREFERRED },
-								{ TableLayout.PREFERRED, TableLayout.FILL } });
-				buttonsPanelLayout.setHGap(5);
-				buttonsPanelLayout.setVGap(5);
-				buttonsPanel.setLayout(buttonsPanelLayout);
-				this.add(buttonsPanel, "0, 3");
-				{
-					applyButton = new JButton();
-					buttonsPanel.add(applyButton, "1, 1");
-					applyButton.setName("apply");
-					applyButton.setText("Apply");
-				}
-				{
-					restoreButton = new JButton();
-					buttonsPanel.add(restoreButton, "2, 1");
-					restoreButton.setName("restore");
-					restoreButton.setText("Restore");
-				}
-				{
-					jSeparator2 = new JSeparator();
-					buttonsPanel.add(jSeparator2, "0, 0, 2, 0");
-				}
-			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -153,14 +119,6 @@ class UiChildPanel extends javax.swing.JPanel {
 
 	public JLabel getChildLabel() {
 		return childLabel;
-	}
-
-	public JButton getRestoreButton() {
-		return restoreButton;
-	}
-
-	public JButton getApplyButton() {
-		return applyButton;
 	}
 
 	public JPanel getScrollPanel() {

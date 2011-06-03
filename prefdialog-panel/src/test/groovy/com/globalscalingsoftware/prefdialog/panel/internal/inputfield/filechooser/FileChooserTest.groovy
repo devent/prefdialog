@@ -18,36 +18,36 @@
  */
 package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.filechooser
 
-import org.junit.Test;
+import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child 
-import com.globalscalingsoftware.prefdialog.annotations.FileChooser 
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest;
+import com.globalscalingsoftware.prefdialog.annotations.Child
+import com.globalscalingsoftware.prefdialog.annotations.FileChooser
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest
 
 class FileChooserTest extends AbstractPreferencePanelTest {
-	
+
 	static class General {
-		
+
 		@FileChooser
 		File file = new File("")
-		
+
 		@Override
 		public String toString() {
 			"General"
 		}
 	}
-	
+
 	static class Preferences {
-		
+
 		@Child
 		General general = new General()
 	}
-	
+
 	def setupPreferences() {
 		preferences = new Preferences()
 		panelName = "General"
 	}
-	
+
 	@Test
 	void testInputs() {
 		fixture.label("label-file").requireVisible()
@@ -56,35 +56,32 @@ class FileChooserTest extends AbstractPreferencePanelTest {
 		assert fixture.textBox("file").text() == ""
 		fixture.button("openfilebutton-file").requireVisible()
 	}
-	
+
 	@Test
 	void testSelectFileAndApply() {
 		File tmpfile = File.createTempFile("fileChooserTest", null)
 		tmpfile.deleteOnExit();
-		
+
 		fixture.panel("general").button("openfilebutton-file").click()
 		fixture.fileChooser("filechooser-file").setCurrentDirectory(tmpfile.getParentFile())
 		fixture.fileChooser("filechooser-file").selectFile tmpfile
 		fixture.fileChooser("filechooser-file").approve()
-		fixture.panel("general").button("apply").click()
-		fixture.panel("general").button("apply").requireDisabled()
-		
+		panelHandler.applyInput()
+
 		assert preferences.general.file == tmpfile
 	}
-	
+
 	@Test
 	void testSelectFileAndRestore() {
 		File tmpfile = File.createTempFile("fileChooserTest", null)
 		tmpfile.deleteOnExit();
-		
+
 		fixture.panel("general").button("openfilebutton-file").click()
 		fixture.fileChooser("filechooser-file").setCurrentDirectory(tmpfile.getParentFile())
 		fixture.fileChooser("filechooser-file").selectFile tmpfile
 		fixture.fileChooser("filechooser-file").approve()
-		fixture.panel("general").button("apply").requireEnabled()
-		fixture.panel("general").button("restore").click()
-		fixture.panel("general").button("apply").requireDisabled()
-		
+		panelHandler.restoreInput()
+
 		assert preferences.general.file == new File("")
 	}
 }

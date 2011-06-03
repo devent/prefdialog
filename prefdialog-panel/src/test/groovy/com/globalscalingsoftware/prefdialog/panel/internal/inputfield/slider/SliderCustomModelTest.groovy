@@ -19,48 +19,48 @@
 package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.slider
 
 
-import javax.swing.DefaultBoundedRangeModel;
+import javax.swing.DefaultBoundedRangeModel
 
-import org.junit.Test;
+import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child;
-import com.globalscalingsoftware.prefdialog.annotations.Slider 
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest;
+import com.globalscalingsoftware.prefdialog.annotations.Child
+import com.globalscalingsoftware.prefdialog.annotations.Slider
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest
 
 class SliderCustomModelTest extends AbstractPreferencePanelTest {
-	
+
 	static class CustomModel extends DefaultBoundedRangeModel {
-		
+
 		CustomModel() {
 			super(2, 1, 2, 1025)
 		}
-		
+
 		@Override
 		void setMinimum(int arg0) {
 		}
-		
+
 		@Override
 		int getMinimum() {
 			return 2
 		}
-		
+
 		@Override
 		void setMaximum(int arg0) {
 		}
-		
+
 		@Override
 		int getMaximum() {
 			return 1025
 		}
-		
+
 		void setExtent(int arg0) {
 		}
-		
+
 		@Override
 		public int getExtent() {
 			return 1
 		}
-		
+
 		@Override
 		void setValue(int value) {
 			def log2 = log2(value)
@@ -70,51 +70,52 @@ class SliderCustomModelTest extends AbstractPreferencePanelTest {
 			}
 			super.setValue(value)
 		}
-		
+
 		private log2(def x) {
 			Math.log(x) / Math.log(2)
 		}
 	}
-	
+
 	static class General {
-		
+
 		@Slider(model=CustomModel)
 		int slider = 2
-		
+
 		@Override
 		public String toString() {
 			"General"
 		}
 	}
-	
+
 	static class Preferences {
-		
+
 		@Child
 		General general = new General()
 	}
-	
+
 	def setupPreferences() {
 		preferences = new Preferences()
 		panelName = "General"
 	}
-	
+
 	@Test
 	void testMinimum() {
 		fixture.slider("slider").slideToMinimum()
-		fixture.panel("general").button("apply").requireDisabled()
 	}
-	
+
 	@Test
 	void testMaximum() {
 		fixture.slider("slider").slideToMaximum()
-		fixture.panel("general").button("apply").click()
+		panelHandler.applyInput()
+
 		assert preferences.general.slider == 1024
 	}
-	
+
 	@Test
 	void testRandomValue() {
 		fixture.slider("slider").slideTo 35
-		fixture.panel("general").button("apply").click()
+		panelHandler.applyInput()
+
 		assert preferences.general.slider == 64
 	}
 }

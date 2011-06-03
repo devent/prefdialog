@@ -23,14 +23,12 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.Action;
 import javax.swing.SwingUtilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
-import com.globalscalingsoftware.prefdialog.InputChangedCallback;
 import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractDefaultFieldHandler;
 import com.globalscalingsoftware.prefdialog.reflection.internal.ReflectionToolbox;
@@ -58,33 +56,10 @@ public abstract class AbstractChildFieldHandler<ComponentType extends ChildCompo
 		super(reflectionToolbox, parentObject, value, field, annotationClass,
 				component);
 		this.fieldHandlers = new ArrayList<FieldHandler<?>>();
-		setup();
-	}
-
-	private void setup() {
-		getComponent().setApplyCallback(new Runnable() {
-
-			@Override
-			public void run() {
-				applyInput();
-				getComponent().setApplyButtonEnabled(false);
-			}
-
-		});
-		getComponent().setRestoreCallback(new Runnable() {
-
-			@Override
-			public void run() {
-				restoreInput();
-				getComponent().setApplyButtonEnabled(false);
-			}
-
-		});
 	}
 
 	public void applyInput() {
 		applyInput(getComponentValue());
-		getComponent().setApplyButtonEnabled(false);
 	}
 
 	@Override
@@ -96,7 +71,6 @@ public abstract class AbstractChildFieldHandler<ComponentType extends ChildCompo
 
 	public void restoreInput() {
 		restoreInput(getComponentValue());
-		getComponent().setApplyButtonEnabled(false);
 	}
 
 	@Override
@@ -110,30 +84,6 @@ public abstract class AbstractChildFieldHandler<ComponentType extends ChildCompo
 		l.debug("Add new field handler {}.", fieldHandler);
 		getComponent().addField(fieldHandler);
 		fieldHandlers.add(fieldHandler);
-		fieldHandler.setInputChangedCallback(new InputChangedCallback() {
-
-			@Override
-			public void inputChanged(Object source) {
-				l.debug("Input has changed for field {}.", source);
-				AbstractChildFieldHandler.this.inputChanged();
-			}
-		});
-	}
-
-	public void setApplyEnabled(boolean b) {
-		getComponent().setApplyButtonEnabled(b);
-	}
-
-	public void setApplyAction(Action a) {
-		getComponent().setApplyAction(a);
-	}
-
-	public void setRestoreAction(Action a) {
-		getComponent().setRestoreAction(a);
-	}
-
-	public void setButtonsTransparent(boolean transparent) {
-		getComponent().setButtonsTransparent(transparent);
 	}
 
 	@Override

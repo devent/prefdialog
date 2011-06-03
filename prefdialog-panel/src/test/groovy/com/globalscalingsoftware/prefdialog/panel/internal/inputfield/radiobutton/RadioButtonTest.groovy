@@ -18,60 +18,57 @@
  */
 package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.radiobutton
 
-import org.junit.Test;
+import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child 
-import com.globalscalingsoftware.prefdialog.annotations.RadioButton 
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest;
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.Colors 
+import com.globalscalingsoftware.prefdialog.annotations.Child
+import com.globalscalingsoftware.prefdialog.annotations.RadioButton
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.Colors
 
 class RadioButtonTest extends AbstractPreferencePanelTest {
-	
+
 	static class General {
-		
+
 		@RadioButton
 		Colors colors = Colors.BLACK
-		
+
 		@Override
 		public String toString() {
 			"General"
 		}
 	}
-	
+
 	static class Preferences {
-		
+
 		@Child
 		General general = new General()
 	}
-	
+
 	def setupPreferences() {
 		preferences = new Preferences()
 		panelName = "General"
 	}
-	
+
 	@Test
 	void testField() {
 		assert fixture.label("label-colors").text() == "colors: "
-		fixture.panel("general").button("apply").requireDisabled()
-		fixture.panel("general").button("restore").requireEnabled()
 	}
-	
+
 	@Test
 	void testPanelChooseBlueAndApply() {
 		fixture.radioButton("colors-BLUE").click()
-		fixture.panel("general").button("apply").click()
-		fixture.panel("general").button("apply").requireDisabled()
-		
+		panelHandler.applyInput()
+		fixture.radioButton("colors-BLUE").requireSelected()
+
 		assert preferences.general.colors == Colors.BLUE
 	}
-	
+
 	@Test
 	void testPanelChooseBlueAndRestore() {
 		fixture.radioButton("colors-BLUE").click()
-		fixture.panel("general").button("apply").requireEnabled()
-		fixture.panel("general").button("restore").click()
-		fixture.panel("general").button("apply").requireDisabled()
-		
+		panelHandler.restoreInput()
+		fixture.radioButton("colors-BLACK").requireSelected()
+
 		assert preferences.general.colors == Colors.BLACK
 	}
 }

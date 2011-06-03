@@ -18,42 +18,42 @@
  */
 package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.textfield
 
-import org.junit.Test;
+import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child;
-import com.globalscalingsoftware.prefdialog.annotations.TextField;
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest;
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.textfield.TextFieldValidatorTest.StringValidator 
+import com.globalscalingsoftware.prefdialog.annotations.Child
+import com.globalscalingsoftware.prefdialog.annotations.TextField
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.textfield.TextFieldValidatorTest.StringValidator
 
 class ManualTextFieldTest extends AbstractPreferencePanelTest {
-	
+
 	static class General {
-		
+
 		@TextField
 		String name = ""
-		
+
 		@TextField(validator=StringValidator, validatorText="Can not be empty")
 		String name2 = ""
-		
+
 		@Override
 		public String toString() {
 			"General"
 		}
 	}
-	
+
 	static class Preferences {
-		
+
 		@Child
 		General general = new General()
 	}
-	
+
 	def setupPreferences() {
 		preferences = new Preferences()
 		panelName = "General"
 	}
-	
+
 	@Test
 	void testManual() {
-		Thread.sleep(1000)
+		Thread.sleep(30000)
 	}
 }

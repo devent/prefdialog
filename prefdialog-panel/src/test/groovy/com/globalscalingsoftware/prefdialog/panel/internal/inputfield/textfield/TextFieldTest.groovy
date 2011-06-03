@@ -18,61 +18,59 @@
  */
 package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.textfield
 
-import org.junit.Test;
+import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child;
-import com.globalscalingsoftware.prefdialog.annotations.TextField;
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest;
+import com.globalscalingsoftware.prefdialog.annotations.Child
+import com.globalscalingsoftware.prefdialog.annotations.TextField
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest
 
 class TextFieldTest extends AbstractPreferencePanelTest {
-	
+
 	static class General {
-		
+
 		@TextField
 		String name = ""
-		
+
 		@Override
 		public String toString() {
 			"General"
 		}
 	}
-	
+
 	static class Preferences {
-		
+
 		@Child
 		General general = new General()
 	}
-	
+
 	def setupPreferences() {
 		preferences = new Preferences()
 		panelName = "General"
 	}
-	
+
 	@Test
 	void testComponents() {
 		fixture.label("label-name").requireVisible()
-		assert fixture.label("label-name").text() == "name: "
 		fixture.textBox("name").requireVisible()
+		assert fixture.label("label-name").text() == "name: "
 		assert fixture.textBox("name").text() == ""
-		fixture.button("apply").requireVisible()
-		assert fixture.button("apply").text() == "Apply "
-		fixture.button("restore").requireVisible()
-		assert fixture.button("restore").text() == "Restore"
 	}
-	
+
 	@Test
 	void testEnterTextAndApply() {
 		fixture.textBox("name").enterText "test"
-		fixture.button("apply").click()
-		
-		assert fixture.label("label-name").text() == "name: "
+		panelHandler.applyInput()
+
+		assert fixture.textBox("name").text() == "test"
 		assert preferences.general.name == "test"
 	}
-	
+
 	@Test
 	void testEnterTextAndRestore() {
 		fixture.textBox("name").enterText "test"
-		fixture.button("restore").click()
+		panelHandler.restoreInput()
+
+		assert fixture.textBox("name").text() == ""
 		assert preferences.general.name == ""
 	}
 }

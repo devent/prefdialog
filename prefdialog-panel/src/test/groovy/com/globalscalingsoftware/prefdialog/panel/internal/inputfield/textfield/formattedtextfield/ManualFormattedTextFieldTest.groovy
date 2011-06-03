@@ -19,38 +19,38 @@
 package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.textfield.formattedtextfield
 
 
-import org.junit.Test;
+import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child;
-import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField;
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest;
+import com.globalscalingsoftware.prefdialog.annotations.Child
+import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest
 
 class ManualFormattedTextFieldTest extends AbstractPreferencePanelTest {
-	
+
 	static class General {
-		
+
 		@FormattedTextField
 		double fields = 4
-		
+
 		@Override
 		public String toString() {
 			"General"
 		}
 	}
-	
+
 	static class Preferences {
-		
+
 		@Child
 		General general = new General()
 	}
-	
+
 	def setupPreferences() {
 		preferences = new Preferences()
 		panelName = "General"
 	}
-	
+
 	@Test
 	void testManual() {
-		Thread.sleep(1000)
+		//Thread.sleep(1000)
 	}
 }

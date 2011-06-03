@@ -20,8 +20,6 @@ package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.slider;
 
 import javax.swing.BoundedRangeModel;
 import javax.swing.JSlider;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractLabelFieldPanel;
 
@@ -33,13 +31,6 @@ public class SliderPanel extends AbstractLabelFieldPanel<JSlider> {
 	}
 
 	private void setup() {
-		getPanelField().addChangeListener(new ChangeListener() {
-
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				inputChanged();
-			}
-		});
 	}
 
 	public void setMin(int min) {

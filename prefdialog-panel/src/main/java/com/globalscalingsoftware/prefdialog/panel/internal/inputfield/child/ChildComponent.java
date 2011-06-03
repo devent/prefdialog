@@ -18,8 +18,6 @@
  */
 package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.child;
 
-import javax.swing.Action;
-
 import com.globalscalingsoftware.prefdialog.FieldComponent;
 import com.globalscalingsoftware.prefdialog.FieldHandler;
 
@@ -27,17 +25,4 @@ public interface ChildComponent extends FieldComponent {
 
 	void addField(FieldHandler<?> inputField);
 
-	void setApplyCallback(Runnable e);
-
-	void setApplyAction(Action a);
-
-	void setApplyButtonEnabled(boolean enabled);
-
-	void setRestoreAction(Action a);
-
-	void setRestoreCallback(Runnable e);
-
-	void setRestoreButtonEnabled(boolean enabled);
-
-	public void setButtonsTransparent(boolean transparent);
 }

@@ -79,7 +79,6 @@ public class FileChooserPanel extends
 
 	public void setFile(File file) {
 		getPanelField().getFileNameText().setValue(file);
-		inputChanged();
 	}
 
 }

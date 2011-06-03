@@ -20,59 +20,54 @@ package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.slider
 
 
 
-import org.junit.Test;
+import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child;
-import com.globalscalingsoftware.prefdialog.annotations.Slider;
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest;
+import com.globalscalingsoftware.prefdialog.annotations.Child
+import com.globalscalingsoftware.prefdialog.annotations.Slider
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest
 
 class SliderTest extends AbstractPreferencePanelTest {
-	
+
 	static class General {
-		
+
 		@Slider
-		int slider = 50
-		
+		int slider = 0
+
 		@Override
 		public String toString() {
 			"General"
 		}
 	}
-	
+
 	static class Preferences {
-		
+
 		@Child
 		General general = new General()
 	}
-	
+
 	def setupPreferences() {
 		preferences = new Preferences()
 		panelName = "General"
 	}
-	
+
 	@Test
 	void testField() {
 		assert fixture.label("label-slider").text() == "slider: "
-		fixture.panel("general").button("apply").requireDisabled()
-		fixture.panel("general").button("restore").requireEnabled()
 	}
-	
+
 	@Test
 	void testPanelClickApply() {
 		fixture.slider("slider").slideTo 55
-		fixture.panel("general").button("apply").click()
-		fixture.panel("general").button("apply").requireDisabled()
-		
+		panelHandler.applyInput()
+
 		assert preferences.general.slider == 55
 	}
-	
+
 	@Test
 	void testPanelClickRestore() {
 		fixture.slider("slider").slideTo 55
-		fixture.panel("general").button("apply").requireEnabled()
-		fixture.panel("general").button("restore").click()
-		fixture.panel("general").button("apply").requireDisabled()
-		
-		assert preferences.general.slider == 50
+		panelHandler.restoreInput()
+
+		assert preferences.general.slider == 0
 	}
 }

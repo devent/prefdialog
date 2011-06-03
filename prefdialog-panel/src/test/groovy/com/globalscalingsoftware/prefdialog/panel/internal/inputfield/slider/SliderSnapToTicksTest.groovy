@@ -19,39 +19,42 @@
 package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.slider
 
 
-import org.junit.Test;
+import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child;
-import com.globalscalingsoftware.prefdialog.annotations.Slider 
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest;
+import com.globalscalingsoftware.prefdialog.annotations.Child
+import com.globalscalingsoftware.prefdialog.annotations.Slider
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest
 
 class SliderSnapToTicksTest extends AbstractPreferencePanelTest {
-	
+
 	static class General {
-		
+
 		@Slider(snapToTicks=true)
 		int slider = 50
-		
+
 		@Override
 		public String toString() {
 			"General"
 		}
 	}
-	
+
 	static class Preferences {
-		
+
 		@Child
 		General general = new General()
 	}
-	
+
 	def setupPreferences() {
 		preferences = new Preferences()
 		panelName = "General"
 	}
-	
+
 	@Test
 	void testPanelClickApplyAndClose() {
 		assert fixture.slider("slider").component().snapToTicks == true
 		fixture.slider("slider").slideTo 55
+		panelHandler.applyInput()
+
+		assert preferences.general.slider == 55
 	}
 }

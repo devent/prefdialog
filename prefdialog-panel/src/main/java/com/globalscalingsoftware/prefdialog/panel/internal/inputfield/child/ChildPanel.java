@@ -22,10 +22,6 @@ import static java.lang.String.format;
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.Action;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractFieldComponent;
@@ -52,50 +48,6 @@ public class ChildPanel extends AbstractFieldComponent<UiChildPanel> implements
 		panel.getChildLabel().setFont(
 				new Font(font.getFamily(), font.getStyle() | Font.BOLD, font
 						.getSize()));
-	}
-
-	@Override
-	public void setApplyAction(Action a) {
-		panel.getApplyButton().setAction(null);
-		panel.getApplyButton().setAction(a);
-	}
-
-	@Override
-	public void setApplyCallback(final Runnable callback) {
-		panel.getApplyButton().addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				callback.run();
-			}
-		});
-	}
-
-	@Override
-	public void setApplyButtonEnabled(boolean enabled) {
-		panel.getApplyButton().setEnabled(enabled);
-	}
-
-	@Override
-	public void setRestoreAction(Action a) {
-		panel.getRestoreButton().setAction(null);
-		panel.getRestoreButton().setAction(a);
-	}
-
-	@Override
-	public void setRestoreCallback(final Runnable callback) {
-		panel.getRestoreButton().addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				callback.run();
-			}
-		});
-	}
-
-	@Override
-	public void setRestoreButtonEnabled(boolean enabled) {
-		panel.getRestoreButton().setEnabled(enabled);
 	}
 
 	@Override
@@ -128,16 +80,6 @@ public class ChildPanel extends AbstractFieldComponent<UiChildPanel> implements
 		layout.layoutContainer(panel);
 		panel.repaint();
 		return row;
-	}
-
-	@Override
-	public void setButtonsTransparent(boolean transparent) {
-		panel.getApplyButton().setOpaque(!transparent);
-		panel.getApplyButton().setContentAreaFilled(!transparent);
-		panel.getApplyButton().setBorderPainted(!transparent);
-		panel.getRestoreButton().setOpaque(!transparent);
-		panel.getRestoreButton().setContentAreaFilled(!transparent);
-		panel.getRestoreButton().setBorderPainted(!transparent);
 	}
 
 	@Override

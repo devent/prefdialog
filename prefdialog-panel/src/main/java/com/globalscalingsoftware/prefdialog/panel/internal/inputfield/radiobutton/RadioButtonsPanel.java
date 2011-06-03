@@ -21,8 +21,6 @@ package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.radiobutt
 import static java.lang.String.format;
 import info.clearthought.layout.TableLayout;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -95,13 +93,6 @@ public class RadioButtonsPanel extends AbstractLabelFieldPanel<JPanel> {
 		JRadioButton button = new JRadioButton(text);
 		button.setName(format("%s-%s", name, text));
 		button.setEnabled(enabled);
-		button.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				inputChanged();
-			}
-		});
 		buttons.put(button.getModel(), value);
 		buttonsGroup.add(button);
 

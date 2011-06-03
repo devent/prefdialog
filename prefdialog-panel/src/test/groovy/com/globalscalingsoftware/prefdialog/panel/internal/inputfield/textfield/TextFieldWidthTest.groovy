@@ -52,7 +52,9 @@ class TextFieldWidthTest extends AbstractPreferencePanelTest {
 	@Test
 	void testEnterTextAndApply() {
 		fixture.textBox("name").enterText "test"
-		fixture.panel("general").button("apply").click()
+		panelHandler.applyInput()
+
+		assert fixture.textBox("name").text() == "test"
 		assert preferences.general.name == "test"
 	}
 }

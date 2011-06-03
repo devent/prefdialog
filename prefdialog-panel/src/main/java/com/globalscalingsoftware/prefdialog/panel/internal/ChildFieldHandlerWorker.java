@@ -7,13 +7,10 @@ import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Map;
 
-import javax.swing.Action;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
-import com.globalscalingsoftware.prefdialog.InputChangedCallback;
 import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.FactoriesMap;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.FactoriesMap.FactoriesMapFactory;
@@ -47,14 +44,6 @@ class ChildFieldHandlerWorker {
 		 *            with the {@link Child} annotation.
 		 * @param panelName
 		 *            the name of the preferences panel.
-		 * @param applyAction
-		 *            the action associated with the "Apply" button of the
-		 *            panel. If the user clicks on this button all input made
-		 *            will be saved in the preferences object.
-		 * @param restoreAction
-		 *            the action associated with the "Restore" button of the
-		 *            panel. If the user clicks on this button all fields will
-		 *            be restored to the values of the preferences object.
 		 * @param inputChangedCallback
 		 *            the {@link InputChangedDelegateCallback callback} that
 		 *            will be called after the user inputs some data in the
@@ -63,8 +52,6 @@ class ChildFieldHandlerWorker {
 		 */
 		ChildFieldHandlerWorker create(@Assisted Object preferences,
 				@Assisted String panelName,
-				@Assisted("applyAction") Action applyAction,
-				@Assisted("restoreAction") Action restoreAction,
 				@Assisted InputChangedDelegateCallback inputChangedCallback);
 	}
 
@@ -85,12 +72,6 @@ class ChildFieldHandlerWorker {
 
 	private final String panelName;
 
-	private final Action applyAction;
-
-	private final Action restoreAction;
-
-	private final InputChangedDelegateCallback inputChangedCallback;
-
 	private final Collection<Class<? extends Annotation>> childAnnotations;
 
 	@Inject
@@ -101,10 +82,7 @@ class ChildFieldHandlerWorker {
 			FieldsFactory fieldFactories,
 			@Named("field_handler_factories_map") Map<Class<? extends Annotation>, FieldHandlerFactory> fieldHandlerFactories,
 			@Named("child_annotations") Collection<Class<? extends Annotation>> childAnnotations,
-			@Assisted Object preferences, @Assisted String panelName,
-			@Assisted("applyAction") Action applyAction,
-			@Assisted("restoreAction") Action restoreAction,
-			@Assisted InputChangedDelegateCallback inputChangedCallback) {
+			@Assisted Object preferences, @Assisted String panelName) {
 		this.annotationDiscoveryFactory = annotationDiscoveryFactory;
 		this.annotationFilterFactory = annotationFilterFactory;
 		this.fieldFactories = fieldFactories;
@@ -112,9 +90,6 @@ class ChildFieldHandlerWorker {
 		this.factoriesMapFactory = factoriesMapFactory;
 		this.preferences = preferences;
 		this.panelName = panelName;
-		this.applyAction = applyAction;
-		this.restoreAction = restoreAction;
-		this.inputChangedCallback = inputChangedCallback;
 		this.childAnnotations = childAnnotations;
 	}
 
@@ -122,9 +97,7 @@ class ChildFieldHandlerWorker {
 	 * Returns a {@link ChildFieldHandler} created from the preferences object.
 	 */
 	public ChildFieldHandler getChildFieldHandler() {
-		ChildFieldHandler childFieldHandler = createChildFieldHandler(preferences);
-		setupChildFieldHandler(childFieldHandler);
-		return childFieldHandler;
+		return createChildFieldHandler(preferences);
 	}
 
 	private class DiscoverAnnotationsCallback implements
@@ -168,8 +141,6 @@ class ChildFieldHandlerWorker {
 		ChildFieldHandlerFactory factory = (ChildFieldHandlerFactory) factoriesMap
 				.getFactory(Child.class);
 		ChildFieldHandler panel = factory.create(preferences, value, field);
-		panel.setApplyAction(applyAction);
-		panel.setRestoreAction(restoreAction);
 
 		for (FieldHandler<?> fieldHandler : fieldFactories
 				.createFieldsHandlers(factoriesMap, value)) {
@@ -192,21 +163,6 @@ class ChildFieldHandlerWorker {
 				.createFieldsHandlers(factoriesMap, value)) {
 			groupFieldHandler.addFieldHandler(fieldHandler);
 		}
-	}
-
-	private void setupChildFieldHandler(
-			final ChildFieldHandler childFieldHandler) {
-		childFieldHandler.setInputChangedCallback(new InputChangedCallback() {
-
-			@Override
-			public void inputChanged(Object source) {
-				boolean enabled = childFieldHandler.isInputValid();
-				l.debug("Set apply action enabled to {}.", enabled);
-				childFieldHandler.setApplyEnabled(enabled);
-				inputChangedCallback.inputChanged(this);
-			}
-
-		});
 	}
 
 }

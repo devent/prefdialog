@@ -24,7 +24,6 @@ import javax.swing.JTextField;
 
 import org.apache.commons.lang.WordUtils;
 
-import com.globalscalingsoftware.prefdialog.InputChangedCallback;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractLabelFieldPanel;
 import com.globalscalingsoftware.prefdialog.validators.Validator;
 
@@ -36,27 +35,14 @@ class TextFieldPanel extends AbstractLabelFieldPanel<JTextField> {
 
 	private boolean inputValid;
 
-	private boolean ignoreInputChanged;
-
-	private Object oldValue;
-
 	public TextFieldPanel(ValidatingTextField<?> textField) {
 		super(textField.getField());
 		this.textField = textField;
 		this.inputValid = true;
-		this.ignoreInputChanged = true;
-		this.oldValue = "";
 		setup();
 	}
 
 	private void setup() {
-		this.textField.setInputChangedCallback(new InputChangedCallback() {
-
-			@Override
-			public void inputChanged(Object source) {
-				TextFieldPanel.this.inputChanged();
-			}
-		});
 	}
 
 	@Override
@@ -83,15 +69,12 @@ class TextFieldPanel extends AbstractLabelFieldPanel<JTextField> {
 	@Override
 	public Object getValue() {
 		Object value = textField.getValue();
-		oldValue = value;
 		return value;
 	}
 
 	@Override
 	public void setValue(Object value) {
 		textField.setValue(value);
-		oldValue = value;
-		ignoreInputChanged = false;
 	}
 
 	public void addValidListener(ValidListener l) {
@@ -107,10 +90,4 @@ class TextFieldPanel extends AbstractLabelFieldPanel<JTextField> {
 		return inputValid;
 	}
 
-	@Override
-	protected void inputChanged() {
-		if (!ignoreInputChanged && !oldValue.equals(getValue())) {
-			super.inputChanged();
-		}
-	}
 }

@@ -18,48 +18,49 @@
  */
 package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.checkbox
 
-import org.junit.Test;
+import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Checkbox 
-import com.globalscalingsoftware.prefdialog.annotations.Child 
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest;
+import com.globalscalingsoftware.prefdialog.annotations.Checkbox
+import com.globalscalingsoftware.prefdialog.annotations.Child
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest
 
 class CheckboxTest extends AbstractPreferencePanelTest {
-	
+
 	static class General {
-		
+
 		@Checkbox
 		boolean automaticSave = false
-		
+
 		@Override
 		public String toString() {
 			"General"
 		}
 	}
-	
+
 	static class Preferences {
-		
+
 		@Child
 		General general = new General()
 	}
-	
+
 	def setupPreferences() {
 		preferences = new Preferences()
 		panelName = "General"
 	}
-	
+
 	@Test
 	void testPanelClickApply() {
 		fixture.checkBox("automaticSave").click()
-		fixture.panel("general").button("apply").click()
-		fixture.panel("general").button("apply").requireDisabled()
+		panelHandler.applyInput()
+
+		assert preferences.general.automaticSave == true
 	}
-	
+
 	@Test
 	void testPanelClickRestore() {
 		fixture.checkBox("automaticSave").click()
-		fixture.panel("general").button("apply").requireEnabled()
-		fixture.panel("general").button("restore").click()
-		fixture.panel("general").button("apply").requireDisabled()
+		panelHandler.restoreInput()
+
+		assert preferences.general.automaticSave == false
 	}
 }

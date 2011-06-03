@@ -23,7 +23,6 @@ import info.clearthought.layout.TableLayout;
 
 import java.awt.Font;
 
-import javax.swing.Action;
 import javax.swing.border.TitledBorder;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
@@ -52,12 +51,6 @@ public class GroupPanel extends AbstractFieldComponent<UiGroupPanel> implements
 		Font font = border.getTitleFont();
 		border.setTitleFont(new Font(font.getFamily(), font.getStyle()
 				| Font.BOLD, font.getSize()));
-	}
-
-	@Override
-	public void setWidth(double width) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -91,34 +84,6 @@ public class GroupPanel extends AbstractFieldComponent<UiGroupPanel> implements
 		layout.layoutContainer(panel);
 		panel.repaint();
 		return row;
-	}
-
-	@Override
-	public void setApplyCallback(Runnable applyEvent) {
-	}
-
-	@Override
-	public void setApplyAction(Action a) {
-	}
-
-	@Override
-	public void setApplyButtonEnabled(boolean enabled) {
-	}
-
-	@Override
-	public void setRestoreAction(Action a) {
-	}
-
-	@Override
-	public void setRestoreCallback(Runnable e) {
-	}
-
-	@Override
-	public void setRestoreButtonEnabled(boolean enabled) {
-	}
-
-	@Override
-	public void setButtonsTransparent(boolean transparent) {
 	}
 
 	@Override

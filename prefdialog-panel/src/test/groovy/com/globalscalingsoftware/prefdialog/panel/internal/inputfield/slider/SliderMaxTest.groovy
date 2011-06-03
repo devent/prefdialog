@@ -19,41 +19,41 @@
 package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.slider
 
 
-import org.junit.Test;
+import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child;
-import com.globalscalingsoftware.prefdialog.annotations.Slider 
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest;
+import com.globalscalingsoftware.prefdialog.annotations.Child
+import com.globalscalingsoftware.prefdialog.annotations.Slider
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest
 
 class SliderMaxTest extends AbstractPreferencePanelTest {
-	
+
 	static class General {
-		
+
 		@Slider(max=210)
 		int slider = 50
-		
+
 		@Override
 		public String toString() {
 			"General"
 		}
 	}
-	
+
 	static class Preferences {
-		
+
 		@Child
 		General general = new General()
 	}
-	
+
 	def setupPreferences() {
 		preferences = new Preferences()
 		panelName = "General"
 	}
-	
+
 	@Test
 	void testPanelClickApplyAndClose() {
 		fixture.slider("slider").slideToMaximum()
-		fixture.panel("general").button("apply").click()
-		
+		panelHandler.applyInput()
+
 		assert preferences.general.slider == 200
 	}
 }

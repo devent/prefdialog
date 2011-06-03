@@ -19,43 +19,43 @@
 package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.textfield.formattedtextfield
 
 
-import org.junit.Test;
+import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child;
-import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField 
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest;
-import com.globalscalingsoftware.prefdialog.validators.Validator;
+import com.globalscalingsoftware.prefdialog.annotations.Child
+import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest
+import com.globalscalingsoftware.prefdialog.validators.Validator
 
 class FormattedTextFieldValidatorTest extends AbstractPreferencePanelTest {
-	
+
 	static class FieldsValidator implements Validator<Integer> {
 		public boolean isValid(Integer value) {
 			value >= 2 && value <= 100
 		}
 	}
-	
+
 	static class General {
-		
+
 		@FormattedTextField(validator=FieldsValidator, validatorText="Must be a number and between 2 and 100")
 		int fields = 4
-		
+
 		@Override
 		public String toString() {
 			"General"
 		}
 	}
-	
+
 	static class Preferences {
-		
+
 		@Child
 		General general = new General()
 	}
-	
+
 	def setupPreferences() {
 		preferences = new Preferences()
 		panelName = "General"
 	}
-	
+
 	@Test
 	void testPanelInvalidTextClickApplyAndClose() {
 		fixture.textBox("fields").deleteText()
@@ -63,12 +63,14 @@ class FormattedTextFieldValidatorTest extends AbstractPreferencePanelTest {
 		fixture.textBox("fields").requireToolTip "<html><strong>fields</strong> - Must be a number and between 2 and 100</html>"
 		assert fixture.label("label-fields").text() == "fields: "
 	}
-	
+
 	@Test
 	void testPanelClickApplyAndClose() {
 		fixture.textBox("fields").deleteText()
 		fixture.textBox("fields").enterText "10"
-		fixture.panel("general").button("apply").click()
+		panelHandler.applyInput()
+
+		assert fixture.textBox("fields").text() == "10"
 		assert preferences.general.fields == 10
 	}
 }
