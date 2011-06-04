@@ -44,12 +44,6 @@ public abstract class AbstractFieldComponent<FieldType extends JComponent>
 	}
 
 	@Override
-	public abstract void setValue(Object value);
-
-	@Override
-	public abstract Object getValue();
-
-	@Override
 	public void setName(String name) {
 		l.debug("Set name {} to field component {}.", name, field);
 		field.setName(name);

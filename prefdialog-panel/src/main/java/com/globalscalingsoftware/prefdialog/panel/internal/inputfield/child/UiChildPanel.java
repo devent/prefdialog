@@ -27,7 +27,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.WindowConstants;
-import javax.swing.border.Border;
 
 /**
  * This code was edited or generated using CloudGarden's Jigloo SWT/Swing GUI
@@ -67,12 +66,13 @@ class UiChildPanel extends javax.swing.JPanel {
 		try {
 			TableLayout thisLayout = new TableLayout(new double[][] {
 					{ TableLayout.FILL },
-					{ TableLayout.PREFERRED, TableLayout.FILL } });
+					{ TableLayout.PREFERRED, TableLayout.PREFERRED,
+							TableLayout.FILL } });
 			thisLayout.setHGap(5);
 			thisLayout.setVGap(5);
 			this.setLayout(thisLayout);
 			this.setPreferredSize(new java.awt.Dimension(416, 300));
-			this.setBorder(BorderFactory.createEmptyBorder(6, 6, 6, 6));
+			this.setBorder(BorderFactory.createEmptyBorder(6, 6, 0, 6));
 			{
 				childLabel = new JLabel();
 				this.add(childLabel, "0, 0");
@@ -84,29 +84,27 @@ class UiChildPanel extends javax.swing.JPanel {
 			}
 			{
 				jScrollPane1 = new JScrollPane();
-				this.add(jScrollPane1, "0, 1");
-				jScrollPane1.setOpaque(false);
-				Border border = BorderFactory.createEmptyBorder(0, 0, 0, 0);
-				jScrollPane1.setViewportBorder(border);
-				jScrollPane1.setBorder(border);
+				this.add(jScrollPane1, "0, 2");
+				jScrollPane1.setBorder(BorderFactory.createEmptyBorder(0, 0, 0,
+						0));
 				{
 					scrollPanel = new JPanel();
-					jScrollPane1.setViewportView(scrollPanel);
 					TableLayout scrollPanelLayout = new TableLayout(
 							new double[][] { { TableLayout.FILL },
 									{ TableLayout.PREFERRED, TableLayout.FILL } });
 					scrollPanelLayout.setHGap(5);
 					scrollPanelLayout.setVGap(5);
 					scrollPanel.setLayout(scrollPanelLayout);
-					scrollPanel.setBorder(BorderFactory.createEmptyBorder(6, 6,
-							6, 6));
+					jScrollPane1.setViewportView(getScrollPanel());
+					scrollPanel.setBorder(BorderFactory.createEmptyBorder(0, 6,
+							0, 6));
 					{
 						fieldsPanel = new JPanel();
 						TableLayout fieldsPanelLayout = new TableLayout(
 								new double[][] { { TableLayout.FILL },
-										{ TableLayout.FILL, TableLayout.FILL } });
-						fieldsPanelLayout.setHGap(0);
-						fieldsPanelLayout.setVGap(0);
+										{ TableLayout.FILL } });
+						fieldsPanelLayout.setHGap(5);
+						fieldsPanelLayout.setVGap(5);
 						fieldsPanel.setLayout(fieldsPanelLayout);
 						scrollPanel.add(getFieldsPanel(), "0, 0");
 					}

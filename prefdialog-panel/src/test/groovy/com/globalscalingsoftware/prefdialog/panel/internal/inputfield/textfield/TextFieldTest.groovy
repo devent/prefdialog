@@ -73,4 +73,9 @@ class TextFieldTest extends AbstractPreferencePanelTest {
 		assert fixture.textBox("name").text() == ""
 		assert preferences.general.name == ""
 	}
+
+	@Test
+	void testManually() {
+		Thread.sleep(60000)
+	}
 }
