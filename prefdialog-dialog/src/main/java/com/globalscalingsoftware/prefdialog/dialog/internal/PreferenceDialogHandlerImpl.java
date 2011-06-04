@@ -18,6 +18,10 @@
  */
 package com.globalscalingsoftware.prefdialog.dialog.internal;
 
+import static com.globalscalingsoftware.prefdialog.dialog.internal.actions.ActionsHandler.APPLY_ACTION_ID;
+import static com.globalscalingsoftware.prefdialog.dialog.internal.actions.ActionsHandler.CANCEL_ACTION_ID;
+import static com.globalscalingsoftware.prefdialog.dialog.internal.actions.ActionsHandler.OK_ACTION_ID;
+
 import java.awt.Component;
 import java.awt.Frame;
 
@@ -33,6 +37,7 @@ import com.globalscalingsoftware.prefdialog.PreferenceDialogHandler;
 import com.globalscalingsoftware.prefdialog.PreferencePanelHandler;
 import com.globalscalingsoftware.prefdialog.dialog.internal.PreferenceDialog.PreferenceDialogFactory;
 import com.globalscalingsoftware.prefdialog.dialog.internal.PreferencePanelsHandler.PreferencePanelsHandlerFactory;
+import com.globalscalingsoftware.prefdialog.dialog.internal.actions.ActionsHandler;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
@@ -52,13 +57,17 @@ class PreferenceDialogHandlerImpl implements PreferenceDialogHandler {
 
 	private PreferencePanelsHandler preferencePanelsHandler;
 
+	private final ActionsHandler actionsHandler;
+
 	@Inject
 	PreferenceDialogHandlerImpl(
 			PreferencePanelsHandlerFactory preferencePanelsHandlerFactory,
 			PreferenceDialogFactory preferenceDialogFactory,
-			@Assisted @Nullable Frame owner, @Assisted Object preferences) {
+			ActionsHandler actionsHandler, @Assisted @Nullable Frame owner,
+			@Assisted Object preferences) {
 		this.preferenceDialogFactory = preferenceDialogFactory;
 		this.preferencePanelsHandlerFactory = preferencePanelsHandlerFactory;
+		this.actionsHandler = actionsHandler;
 		this.owner = owner;
 		this.preferences = preferences;
 	}
@@ -82,7 +91,13 @@ class PreferenceDialogHandlerImpl implements PreferenceDialogHandler {
 	}
 
 	private void setupActions() {
-		preferenceDialog.setOkCallback(new Runnable() {
+		preferenceDialog.setOkAction(actionsHandler.getAction(OK_ACTION_ID));
+		preferenceDialog.setCancelAction(actionsHandler
+				.getAction(CANCEL_ACTION_ID));
+		preferenceDialog.setApplyAction(actionsHandler
+				.getAction(APPLY_ACTION_ID));
+
+		actionsHandler.setCallback(OK_ACTION_ID, new Runnable() {
 
 			@Override
 			public void run() {
@@ -90,7 +105,7 @@ class PreferenceDialogHandlerImpl implements PreferenceDialogHandler {
 				closeDialog(Options.OK);
 			}
 		});
-		preferenceDialog.setCancelCallback(new Runnable() {
+		actionsHandler.setCallback(CANCEL_ACTION_ID, new Runnable() {
 
 			@Override
 			public void run() {
@@ -98,7 +113,7 @@ class PreferenceDialogHandlerImpl implements PreferenceDialogHandler {
 				closeDialog(Options.CANCEL);
 			}
 		});
-		preferenceDialog.setApplyCallback(new Runnable() {
+		actionsHandler.setCallback(APPLY_ACTION_ID, new Runnable() {
 
 			@Override
 			public void run() {
@@ -168,17 +183,27 @@ class PreferenceDialogHandlerImpl implements PreferenceDialogHandler {
 
 	@Override
 	public void setOkAction(Action action) {
-		preferenceDialog.setOkAction(action);
+		actionsHandler.setDelegate(OK_ACTION_ID, action);
+		preferenceDialog.setOkAction(actionsHandler.getAction(OK_ACTION_ID));
+		preferenceDialog.setOkAction(actionsHandler.getAction(OK_ACTION_ID));
 	}
 
 	@Override
 	public void setCancelAction(Action action) {
-		preferenceDialog.setCancelAction(action);
+		actionsHandler.setDelegate(CANCEL_ACTION_ID, action);
+		preferenceDialog.setCancelAction(actionsHandler
+				.getAction(CANCEL_ACTION_ID));
+		preferenceDialog.setCancelAction(actionsHandler
+				.getAction(CANCEL_ACTION_ID));
 	}
 
 	@Override
 	public void setApplyAction(Action action) {
-		preferenceDialog.setApplyAction(action);
+		actionsHandler.setDelegate(APPLY_ACTION_ID, action);
+		preferenceDialog.setApplyAction(actionsHandler
+				.getAction(APPLY_ACTION_ID));
+		preferenceDialog.setApplyAction(actionsHandler
+				.getAction(APPLY_ACTION_ID));
 	}
 
 	public Component getAWTComponent() {

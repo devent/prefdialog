@@ -36,6 +36,8 @@ abstract class AbstractPreferenceDialogFixture {
 
 	DialogFixture fixture
 
+	def dialogHandler
+
 	@Before
 	void beforeTest() {
 		setupPreferences()
@@ -48,14 +50,14 @@ abstract class AbstractPreferenceDialogFixture {
 	def createFrameFixture(def preferences) {
 		def injector = Guice.createInjector(new DialogModule())
 		def factory = injector.getInstance(PreferenceDialogHandlerFactory)
+		dialogHandler = createDialogHandler(factory)
 
-		def dialog = GuiActionRunner.execute([executeInEDT: { return createDialog(factory) } ] as GuiQuery);
+		def dialog = GuiActionRunner.execute([executeInEDT: { return dialogHandler.AWTComponent } ] as GuiQuery);
 		return new DialogFixture(dialog);
 	}
 
-	def createDialog(def factory) {
-		def controller = factory.create(null, preferences).createDialog()
-		return controller.AWTComponent
+	def createDialogHandler(def factory) {
+		return factory.create(null, preferences).createDialog()
 	}
 
 	@After
