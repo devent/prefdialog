@@ -37,12 +37,6 @@ public interface PreferencePanelHandler {
 	Object getPreferences();
 
 	/**
-	 * Set the {@link InputChangedCallback callback} that will be called after
-	 * the user inputs new data in the panel.
-	 */
-	void setInputChangedCallback(InputChangedCallback inputChangedCallback);
-
-	/**
 	 * Checks if the input from the user is valid.
 	 * 
 	 * @return <code>true</code> if the input is valid or <code>false</code> if

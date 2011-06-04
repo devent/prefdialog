@@ -23,11 +23,8 @@ import javax.swing.tree.TreeNode;
 
 import org.apache.commons.collections.MapIterator;
 
-import com.globalscalingsoftware.prefdialog.InputChangedCallback;
 import com.globalscalingsoftware.prefdialog.PreferencePanelHandler;
 import com.globalscalingsoftware.prefdialog.dialog.internal.CreatePreferencePanelHandlersWorker.CreatePreferencePanelHandlersWorkerFactory;
-import com.globalscalingsoftware.prefdialog.swingutils.actions.internal.InputChangedDelegateCallback;
-import com.globalscalingsoftware.prefdialog.swingutils.actions.internal.InputChangedDelegateCallback.InputChangedDelegateCallbackFactory;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
@@ -56,8 +53,6 @@ class PreferencePanelsHandler {
 		PreferencePanelsHandler create(@Assisted Object preferences);
 	}
 
-	private final InputChangedDelegateCallbackFactory inputChangedDelegateCallbackFactory;
-
 	private final CreatePreferencePanelHandlersWorkerFactory createPreferencePanelHandlersWorkerFactory;
 
 	private final Object preferences;
@@ -66,14 +61,10 @@ class PreferencePanelsHandler {
 
 	private PreferencePanelHandler firstPreferencePanelHandler;
 
-	private InputChangedDelegateCallback inputChangedCallback;
-
 	@Inject
 	PreferencePanelsHandler(
-			InputChangedDelegateCallbackFactory inputChangedDelegateCallbackFactory,
 			CreatePreferencePanelHandlersWorkerFactory createPreferencePanelHandlersWorkerFactory,
 			@Assisted Object preferences) {
-		this.inputChangedDelegateCallbackFactory = inputChangedDelegateCallbackFactory;
 		this.createPreferencePanelHandlersWorkerFactory = createPreferencePanelHandlersWorkerFactory;
 		this.preferences = preferences;
 	}
@@ -85,18 +76,13 @@ class PreferencePanelsHandler {
 	 * @return this {@link PreferencePanelsHandler handler}.
 	 */
 	public PreferencePanelsHandler createPanels() {
-		inputChangedCallback = inputChangedDelegateCallbackFactory.create();
 		CreatePreferencePanelHandlersWorker createPreferencePanelHandlersWorker = createPreferencePanelHandlersWorkerFactory
-				.create(preferences, inputChangedCallback).createWorker();
+				.create(preferences).createWorker();
 		firstPreferencePanelHandler = createPreferencePanelHandlersWorker
 				.getFirstPreferencePanelHandler();
 		preferencePanelsCollection = createPreferencePanelHandlersWorker
 				.getPreferencePanelsCollection();
 		return this;
-	}
-
-	public void setInputChangedCallback(InputChangedCallback callback) {
-		inputChangedCallback.setDelegateCallback(callback);
 	}
 
 	public DefaultMutableTreeNode getRootNode() {

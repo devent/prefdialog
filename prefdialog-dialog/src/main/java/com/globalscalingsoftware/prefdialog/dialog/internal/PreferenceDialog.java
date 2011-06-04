@@ -20,6 +20,8 @@ package com.globalscalingsoftware.prefdialog.dialog.internal;
 
 import java.awt.Component;
 import java.awt.Frame;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.annotation.Nullable;
 import javax.swing.Action;
@@ -64,6 +66,13 @@ class PreferenceDialog {
 				@Assisted DefaultMutableTreeNode rootNode);
 	}
 
+	private static final Runnable EMPTY_CALLBACK = new Runnable() {
+
+		@Override
+		public void run() {
+		}
+	};
+
 	private final UiPreferencesDialog uiPreferencesDialog;
 
 	private final Frame owner;
@@ -74,12 +83,21 @@ class PreferenceDialog {
 
 	private ChildSelectedCallback childSelectedCallback;
 
+	private Runnable okCallback;
+
+	private Runnable cancelCallback;
+
+	private Runnable applyCallback;
+
 	@Inject
 	PreferenceDialog(@Assisted @Nullable Frame owner,
 			@Assisted DefaultMutableTreeNode rootNode) {
 		this.uiPreferencesDialog = new UiPreferencesDialog(owner);
 		this.owner = owner;
 		this.rootNode = rootNode;
+		this.okCallback = EMPTY_CALLBACK;
+		this.cancelCallback = EMPTY_CALLBACK;
+		this.applyCallback = EMPTY_CALLBACK;
 	}
 
 	/**
@@ -90,8 +108,36 @@ class PreferenceDialog {
 	public PreferenceDialog createDialog() {
 		setupChildTree();
 		setChildPanel(childPanel);
+		setupButtons();
 		setupDialog();
 		return this;
+	}
+
+	private void setupButtons() {
+		uiPreferencesDialog.getOkButton().addActionListener(
+				new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						okCallback.run();
+					}
+				});
+		uiPreferencesDialog.getCancelButton().addActionListener(
+				new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						cancelCallback.run();
+					}
+				});
+		uiPreferencesDialog.getApplyButton().addActionListener(
+				new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						applyCallback.run();
+					}
+				});
 	}
 
 	private void setupDialog() {
@@ -156,6 +202,22 @@ class PreferenceDialog {
 		uiPreferencesDialog.getCancelButton().setAction(action);
 	}
 
+	public void setApplyAction(Action action) {
+		uiPreferencesDialog.getApplyButton().setAction(action);
+	}
+
+	public void setOkCallback(Runnable callback) {
+		okCallback = callback;
+	}
+
+	public void setCancelCallback(Runnable callback) {
+		cancelCallback = callback;
+	}
+
+	public void setApplyCallback(Runnable callback) {
+		applyCallback = callback;
+	}
+
 	public Component getAWTComponent() {
 		return uiPreferencesDialog;
 	}
@@ -167,4 +229,5 @@ class PreferenceDialog {
 	public void updateUI() {
 		SwingUtilities.updateComponentTreeUI(uiPreferencesDialog);
 	}
+
 }

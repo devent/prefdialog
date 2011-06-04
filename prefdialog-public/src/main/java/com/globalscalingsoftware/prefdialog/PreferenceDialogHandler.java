@@ -76,11 +76,6 @@ public interface PreferenceDialogHandler {
 	void setApplyAction(Action a);
 
 	/**
-	 * Sets the {@link Action} for the "Restore" button of the dialog.
-	 */
-	void setRestoreAction(Action a);
-
-	/**
 	 * Updates the UI of the dialog.
 	 */
 	void updateUI();

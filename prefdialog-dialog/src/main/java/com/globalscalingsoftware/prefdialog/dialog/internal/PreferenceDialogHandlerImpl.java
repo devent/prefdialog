@@ -28,21 +28,17 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.apache.commons.collections.MapIterator;
 
-import com.globalscalingsoftware.prefdialog.InputChangedCallback;
 import com.globalscalingsoftware.prefdialog.Options;
 import com.globalscalingsoftware.prefdialog.PreferenceDialogHandler;
 import com.globalscalingsoftware.prefdialog.PreferencePanelHandler;
 import com.globalscalingsoftware.prefdialog.dialog.internal.PreferenceDialog.PreferenceDialogFactory;
 import com.globalscalingsoftware.prefdialog.dialog.internal.PreferencePanelsHandler.PreferencePanelsHandlerFactory;
-import com.globalscalingsoftware.prefdialog.dialog.internal.actions.ActionsHandler;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 class PreferenceDialogHandlerImpl implements PreferenceDialogHandler {
 
 	private final PreferencePanelsHandlerFactory preferencePanelsHandlerFactory;
-
-	private final ActionsHandler actionsHandler;
 
 	private final PreferenceDialogFactory preferenceDialogFactory;
 
@@ -57,11 +53,10 @@ class PreferenceDialogHandlerImpl implements PreferenceDialogHandler {
 	private PreferencePanelsHandler preferencePanelsHandler;
 
 	@Inject
-	PreferenceDialogHandlerImpl(ActionsHandler actionsHandler,
+	PreferenceDialogHandlerImpl(
 			PreferencePanelsHandlerFactory preferencePanelsHandlerFactory,
 			PreferenceDialogFactory preferenceDialogFactory,
 			@Assisted @Nullable Frame owner, @Assisted Object preferences) {
-		this.actionsHandler = actionsHandler;
 		this.preferenceDialogFactory = preferenceDialogFactory;
 		this.preferencePanelsHandlerFactory = preferencePanelsHandlerFactory;
 		this.owner = owner;
@@ -74,21 +69,7 @@ class PreferenceDialogHandlerImpl implements PreferenceDialogHandler {
 		setupChildSelectedAction();
 		setupFirstPreferencesPanelHandler();
 		setupActions();
-		setupInputChangedActions();
 		return this;
-	}
-
-	private void setupInputChangedActions() {
-		preferencePanelsHandler
-				.setInputChangedCallback(new InputChangedCallback() {
-
-					@Override
-					public void inputChanged(Object source) {
-						boolean inputValid = preferencePanelsHandler
-								.isInputValid();
-						actionsHandler.setOkActionEnabled(inputValid);
-					}
-				});
 	}
 
 	private void setupDialog() {
@@ -101,12 +82,7 @@ class PreferenceDialogHandlerImpl implements PreferenceDialogHandler {
 	}
 
 	private void setupActions() {
-		Action okAction = actionsHandler.getOkAction();
-		preferenceDialog.setOkAction(okAction);
-		Action cancelAction = actionsHandler.getCancelAction();
-		preferenceDialog.setCancelAction(cancelAction);
-
-		actionsHandler.setOkCallback(new Runnable() {
+		preferenceDialog.setOkCallback(new Runnable() {
 
 			@Override
 			public void run() {
@@ -114,12 +90,19 @@ class PreferenceDialogHandlerImpl implements PreferenceDialogHandler {
 				closeDialog(Options.OK);
 			}
 		});
-		actionsHandler.setCancelCallback(new Runnable() {
+		preferenceDialog.setCancelCallback(new Runnable() {
 
 			@Override
 			public void run() {
 				restoreAllInput();
 				closeDialog(Options.CANCEL);
+			}
+		});
+		preferenceDialog.setApplyCallback(new Runnable() {
+
+			@Override
+			public void run() {
+				applyAllInput();
 			}
 		});
 	}
@@ -145,7 +128,6 @@ class PreferenceDialogHandlerImpl implements PreferenceDialogHandler {
 	}
 
 	private void closeDialog(Options option) {
-		actionsHandler.setOkActionEnabled(false);
 		this.option = option;
 		preferenceDialog.close();
 	}
@@ -186,34 +168,17 @@ class PreferenceDialogHandlerImpl implements PreferenceDialogHandler {
 
 	@Override
 	public void setOkAction(Action action) {
-		actionsHandler.setOkParentAction(action);
+		preferenceDialog.setOkAction(action);
 	}
 
 	@Override
 	public void setCancelAction(Action action) {
-		actionsHandler.setCancelParentAction(action);
+		preferenceDialog.setCancelAction(action);
 	}
 
 	@Override
 	public void setApplyAction(Action action) {
-		MapIterator panels = preferencePanelsHandler.getPreferencePanels();
-		while (panels.hasNext()) {
-			panels.next();
-			PreferencePanelHandler handler = (PreferencePanelHandler) panels
-					.getValue();
-			handler.setApplyAction(action);
-		}
-	}
-
-	@Override
-	public void setRestoreAction(Action action) {
-		MapIterator panels = preferencePanelsHandler.getPreferencePanels();
-		while (panels.hasNext()) {
-			panels.next();
-			PreferencePanelHandler handler = (PreferencePanelHandler) panels
-					.getValue();
-			handler.setRestoreAction(action);
-		}
+		preferenceDialog.setApplyAction(action);
 	}
 
 	public Component getAWTComponent() {

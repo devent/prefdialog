@@ -68,7 +68,7 @@ class DialogGroupsTest extends AbstractPreferenceDialogFixture {
 		]
 
 		@ComboBox(value="combobox1", elements="combobox1")
-		String comboBox
+		String comboBox = "first element"
 
 		@Override
 		public String toString() {
@@ -99,13 +99,45 @@ class DialogGroupsTest extends AbstractPreferenceDialogFixture {
 	}
 
 	@Test
-	void testClickOkAndClose() {
+	void testClickOk() {
 		fixture.textBox("name").enterText "name"
 		fixture.textBox("fields").enterText "10"
 		fixture.checkBox("automaticSave").click()
 		fixture.radioButton("colors-BLUE").click()
 		fixture.comboBox("comboBox").selectItem 1
 		fixture.button("ok").click()
+
+		assert preferences.general.name == "name"
+		assert preferences.general.fields == 104
+		assert preferences.general.automaticSave == true
+		assert preferences.general.colors == Colors.BLUE
+		assert preferences.general.comboBox == "second element"
+	}
+
+	@Test
+	void testClickCancel() {
+		fixture.textBox("name").enterText "name"
+		fixture.textBox("fields").enterText "10"
+		fixture.checkBox("automaticSave").click()
+		fixture.radioButton("colors-BLUE").click()
+		fixture.comboBox("comboBox").selectItem 1
+		fixture.button("cancel").click()
+
+		assert preferences.general.name == ""
+		assert preferences.general.fields == 4
+		assert preferences.general.automaticSave == false
+		assert preferences.general.colors == Colors.BLACK
+		assert preferences.general.comboBox == "first element"
+	}
+
+	@Test
+	void testClickApply() {
+		fixture.textBox("name").enterText "name"
+		fixture.textBox("fields").enterText "10"
+		fixture.checkBox("automaticSave").click()
+		fixture.radioButton("colors-BLUE").click()
+		fixture.comboBox("comboBox").selectItem 1
+		fixture.button("apply").click()
 
 		assert preferences.general.name == "name"
 		assert preferences.general.fields == 104

@@ -54,13 +54,18 @@ class ManualButtonGroupTest extends AbstractPreferencePanelTest {
 		preferences = new Preferences()
 		preferences.general.buttons[1].callback = {
 			panelHandler.applyInput()
-			Thread.start { fixture.close() }
+			frame.visible = false
 		}
 		panelName = "General"
 	}
 
 	@Test
+	void testClickApplyAndClose() {
+		fixture.button("button-1-buttons").click()
+	}
+
+	@Test
 	void testManual() {
-		Thread.sleep(30000)
+		//Thread.sleep(30000)
 	}
 }

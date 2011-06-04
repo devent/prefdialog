@@ -19,102 +19,78 @@
 package com.globalscalingsoftware.prefdialog.dialog.internal
 
 
-import org.junit.Test;
+import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child;
-import com.globalscalingsoftware.prefdialog.annotations.TextField;
+import com.globalscalingsoftware.prefdialog.annotations.Child
+import com.globalscalingsoftware.prefdialog.annotations.TextField
 
 class DialogTest extends AbstractPreferenceDialogFixture {
-	
+
 	static class Preferences {
-		
+
 		@Child
 		General general = new General()
-		
+
 		@Override
 		String toString() {
 			"Preferences"
 		}
 	}
-	
+
 	static class General {
-		
+
 		@TextField
 		String name = ""
-		
+
 		@Override
 		public String toString() {
 			"General"
 		}
 	}
-	
+
 	def setupPreferences() {
 		preferences = new Preferences()
 	}
-	
+
 	@Test
 	void testComponents() {
 		assert fixture.target.title == "Preferences"
-		
+
 		fixture.textBox("name").requireVisible()
 		assert fixture.textBox("name").text() == ""
-		
-		fixture.button("ok").requireDisabled()
-		fixture.button("ok").requireVisible()
 		assert fixture.button("ok").text() == "Ok"
-		
-		fixture.button("cancel").requireEnabled()
-		fixture.button("cancel").requireVisible()
 		assert fixture.button("cancel").text() == "Cancel"
-		
-		fixture.button("restore").requireEnabled()
-		fixture.button("restore").requireVisible()
-		assert fixture.button("restore").text() == "Restore"
-		
-		fixture.button("apply").requireDisabled()
-		fixture.button("apply").requireVisible()
 		assert fixture.button("apply").text() == "Apply "
 	}
-	
+
 	@Test
 	void testClickEnterTextOk() {
-		fixture.button("ok").requireDisabled()
+		fixture.textBox("name").deleteText()
 		fixture.textBox("name").enterText "name"
-		fixture.button("ok").requireEnabled()
 		fixture.button("ok").click()
+
 		assert preferences.general.name == "name"
 	}
-	
+
 	@Test
 	void testClickEnterTextCancel() {
-		fixture.button("ok").requireDisabled()
 		fixture.textBox("name").enterText "name"
 		fixture.button("cancel").click()
+
 		assert preferences.general.name == ""
 	}
-	
+
 	@Test
 	void testClickEnterTextApply() {
-		fixture.button("ok").requireDisabled()
-		fixture.button("apply").requireDisabled()
-		
 		fixture.textBox("name").enterText "name"
 		fixture.button("apply").click()
-		fixture.button("apply").requireDisabled()
-		fixture.button("ok").requireEnabled()
+
+		assert fixture.textBox("name").text() == "name"
 		assert preferences.general.name == "name"
 	}
-	
+
 	@Test
-	void testClickEnterTextRestore() {
-		fixture.button("ok").requireDisabled()
-		fixture.button("apply").requireDisabled()
-		
-		fixture.textBox("name").enterText "name"
-		fixture.button("restore").click()
-		
-		fixture.button("apply").requireDisabled()
-		fixture.button("ok").requireEnabled()
-		assert preferences.general.name == ""
+	void testManual() {
+		//Thread.sleep(60000)
 	}
 }

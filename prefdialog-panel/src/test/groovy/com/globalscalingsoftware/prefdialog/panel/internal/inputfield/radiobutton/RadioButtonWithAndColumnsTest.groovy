@@ -18,42 +18,42 @@
  */
 package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.radiobutton
 
-import com.globalscalingsoftware.prefdialog.annotations.Child 
-import com.globalscalingsoftware.prefdialog.annotations.RadioButton 
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest;
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.Colors 
+import org.junit.Test
 
-import org.junit.Test;
+import com.globalscalingsoftware.prefdialog.annotations.Child
+import com.globalscalingsoftware.prefdialog.annotations.RadioButton
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.Colors
 
 class RadioButtonWithAndColumnsTest extends AbstractPreferencePanelTest {
-	
+
 	static class Preferences {
-		
+
 		@Child
 		General general = new General()
 	}
-	
+
 	static class General {
-		
+
 		@RadioButton(columns=2, width=-2.0d)
 		Colors colors = Colors.BLACK
-		
+
 		@Override
 		public String toString() {
 			"General"
 		}
 	}
-	
+
 	def setupPreferences() {
 		preferences = new Preferences()
 		panelName = "General"
 	}
-	
+
 	@Test
 	void testPanelClickApplyAndClose() {
 		fixture.radioButton("colors-BLUE").click()
-		fixture.panel("general").button("apply").click()
-		
+		panelHandler.applyInput()
+
 		assert fixture.label("label-colors").text() == "colors: "
 		assert preferences.general.colors == Colors.BLUE
 	}

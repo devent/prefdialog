@@ -31,8 +31,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.EventListenerList;
 
-import com.globalscalingsoftware.prefdialog.InputChangedCallback;
-import com.globalscalingsoftware.prefdialog.swingutils.actions.internal.InputChangedDelegateCallback;
 import com.globalscalingsoftware.prefdialog.validators.Validator;
 
 public class ValidatingTextField<TextFieldType extends JTextField> {
@@ -50,14 +48,11 @@ public class ValidatingTextField<TextFieldType extends JTextField> {
 
 	private final TextFieldType field;
 
-	private final InputChangedDelegateCallback inputChangedCallback;
-
 	public ValidatingTextField(TextFieldType field) {
 		this.field = field;
 		this.listenerList = new EventListenerList();
 		this.oldBorder = field.getBorder();
 		this.highlighBorder = new LineBorder(Color.red, 1, false);
-		this.inputChangedCallback = new InputChangedDelegateCallback();
 
 		setupTextField();
 		setupListeners();
@@ -74,13 +69,11 @@ public class ValidatingTextField<TextFieldType extends JTextField> {
 			@Override
 			public void removeUpdate(DocumentEvent e) {
 				validateInput();
-				inputChanged();
 			}
 
 			@Override
 			public void insertUpdate(DocumentEvent e) {
 				validateInput();
-				inputChanged();
 			}
 
 			@Override
@@ -134,10 +127,6 @@ public class ValidatingTextField<TextFieldType extends JTextField> {
 		}
 	}
 
-	private void inputChanged() {
-		inputChangedCallback.inputChanged(this);
-	}
-
 	public void setValidator(Validator<?> validator) {
 		this.validator = validator;
 	}
@@ -185,7 +174,4 @@ public class ValidatingTextField<TextFieldType extends JTextField> {
 		return field.getText();
 	}
 
-	public void setInputChangedCallback(InputChangedCallback callback) {
-		inputChangedCallback.setDelegateCallback(callback);
-	}
 }

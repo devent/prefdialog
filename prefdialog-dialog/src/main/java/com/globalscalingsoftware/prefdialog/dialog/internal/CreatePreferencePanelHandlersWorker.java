@@ -11,7 +11,6 @@ import javax.swing.tree.TreeNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.globalscalingsoftware.prefdialog.InputChangedCallback;
 import com.globalscalingsoftware.prefdialog.PreferencePanelHandler;
 import com.globalscalingsoftware.prefdialog.PreferencePanelHandlerFactory;
 import com.globalscalingsoftware.prefdialog.dialog.internal.PreferencePanelsCollection.PreferencePanelsCollectionFactory;
@@ -47,14 +46,9 @@ class CreatePreferencePanelHandlersWorker {
 		 * @param preferences
 		 *            the preferences object from which the handler will create
 		 *            all preference panels.
-		 * @param inputChangedCallback
-		 *            the {@link InputChangedCallback callback} that will be
-		 *            called if the user inputs data in one of the panels.
 		 * @return the new created {@link CreatePreferencePanelHandlersWorker}.
 		 */
-		CreatePreferencePanelHandlersWorker create(
-				@Assisted Object preferences,
-				@Assisted InputChangedCallback inputChangedCallback);
+		CreatePreferencePanelHandlersWorker create(@Assisted Object preferences);
 	}
 
 	private final Logger l = LoggerFactory
@@ -76,8 +70,6 @@ class CreatePreferencePanelHandlersWorker {
 
 	private final PreferencePanelsCollectionFactory preferencePanelsCollectionFactory;
 
-	private final InputChangedCallback inputChangedCallback;
-
 	private final AnnotationDiscoveryFactory annotationDiscoveryFactory;
 
 	private PreferencePanelHandler firstPreferencePanelHandler;
@@ -91,8 +83,7 @@ class CreatePreferencePanelHandlersWorker {
 			@Named("childAnnotations") Collection<Class<? extends Annotation>> childAnnotations,
 			PreferencePanelsCollectionFactory preferencePanelsCollectionFactory,
 			PreferencePanelHandlerFactory preferencePanelHandlerFactory,
-			@Assisted Object preferences,
-			@Assisted InputChangedCallback inputChangedCallback) {
+			@Assisted Object preferences) {
 		this.preferencePanelHandlerFactory = preferencePanelHandlerFactory;
 		this.annotationFilterFactory = annotationFilterFactory;
 		this.childAnnotations = childAnnotations;
@@ -103,7 +94,6 @@ class CreatePreferencePanelHandlersWorker {
 		this.rootNode = new DefaultMutableTreeNode();
 		this.preferences = preferences;
 		this.firstPreferencePanelHandler = null;
-		this.inputChangedCallback = inputChangedCallback;
 	}
 
 	/**
@@ -147,13 +137,6 @@ class CreatePreferencePanelHandlersWorker {
 		l.debug("New preference panel handler created for {} panel in preferences {}.",
 				panelName, preferences);
 		panelHandlers.put(handler.getPreferences(), handler);
-		handler.setInputChangedCallback(new InputChangedCallback() {
-
-			@Override
-			public void inputChanged(Object source) {
-				inputChangedCallback.inputChanged(source);
-			}
-		});
 		preferencePanelsCollection = preferencePanelsCollectionFactory.create(
 				panelHandlers, handler, treeNodes, rootNode);
 	}

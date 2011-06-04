@@ -49,6 +49,7 @@ class UiPreferencesDialog extends javax.swing.JDialog {
 	private JPanel dialogPanel;
 	private JSplitPane splitPane;
 	private JScrollPane jScrollPane1;
+	private JButton applyButton;
 	private JButton okButton;
 	private JButton cancelButton;
 	private JSeparator jSeparator1;
@@ -83,7 +84,7 @@ class UiPreferencesDialog extends javax.swing.JDialog {
 				dialogPanel = new JPanel();
 				TableLayout dialogPanelLayout = new TableLayout(new double[][] {
 						{ TableLayout.FILL, TableLayout.PREFERRED,
-								TableLayout.PREFERRED },
+								TableLayout.PREFERRED, TableLayout.PREFERRED },
 						{ TableLayout.FILL, TableLayout.PREFERRED,
 								TableLayout.PREFERRED } });
 				dialogPanelLayout.setHGap(5);
@@ -94,7 +95,7 @@ class UiPreferencesDialog extends javax.swing.JDialog {
 						6));
 				{
 					splitPane = new JSplitPane();
-					dialogPanel.add(getSplitPane(), "0, 0, 2, 0");
+					dialogPanel.add(splitPane, "0, 0, 3, 0");
 					splitPane.setBorder(BorderFactory.createEmptyBorder(0, 0,
 							0, 0));
 					{
@@ -114,7 +115,7 @@ class UiPreferencesDialog extends javax.swing.JDialog {
 				}
 				{
 					cancelButton = new JButton();
-					dialogPanel.add(getCancelButton(), "2, 2");
+					dialogPanel.add(cancelButton, "3, 2");
 					cancelButton.setName("cancel");
 					cancelButton.setText("Cancel");
 				}
@@ -123,6 +124,12 @@ class UiPreferencesDialog extends javax.swing.JDialog {
 					dialogPanel.add(getOkButton(), "1, 2");
 					okButton.setName("ok");
 					okButton.setText("Ok");
+				}
+				{
+					applyButton = new JButton();
+					dialogPanel.add(getApplyButton(), "2, 2");
+					applyButton.setText("Apply");
+					applyButton.setName("apply");
 				}
 			}
 			this.setSize(642, 522);
@@ -149,6 +156,10 @@ class UiPreferencesDialog extends javax.swing.JDialog {
 
 	public JButton getOkButton() {
 		return okButton;
+	}
+
+	public JButton getApplyButton() {
+		return applyButton;
 	}
 
 }

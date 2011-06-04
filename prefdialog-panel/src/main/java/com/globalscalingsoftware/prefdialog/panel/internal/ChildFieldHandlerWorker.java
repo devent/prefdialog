@@ -23,7 +23,6 @@ import com.globalscalingsoftware.prefdialog.reflection.AnnotationDiscoveryCallba
 import com.globalscalingsoftware.prefdialog.reflection.AnnotationDiscoveryFactory;
 import com.globalscalingsoftware.prefdialog.reflection.AnnotationFilterFactory;
 import com.globalscalingsoftware.prefdialog.reflection.internal.AnnotationFilter;
-import com.globalscalingsoftware.prefdialog.swingutils.actions.internal.InputChangedDelegateCallback;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.name.Named;
@@ -44,15 +43,10 @@ class ChildFieldHandlerWorker {
 		 *            with the {@link Child} annotation.
 		 * @param panelName
 		 *            the name of the preferences panel.
-		 * @param inputChangedCallback
-		 *            the {@link InputChangedDelegateCallback callback} that
-		 *            will be called after the user inputs some data in the
-		 *            panel's fields.
 		 * @return the new created {@link ChildFieldHandlerWorker}.
 		 */
 		ChildFieldHandlerWorker create(@Assisted Object preferences,
-				@Assisted String panelName,
-				@Assisted InputChangedDelegateCallback inputChangedCallback);
+				@Assisted String panelName);
 	}
 
 	private final Logger l = LoggerFactory

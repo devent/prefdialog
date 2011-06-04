@@ -34,7 +34,6 @@ import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.slider.Sli
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.textfield.TextFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.textfield.formattedtextfield.FormattedTextFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.reflection.module.ReflectionModule;
-import com.globalscalingsoftware.prefdialog.swingutils.actions.module.ActionsModule;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -58,7 +57,6 @@ public class InternalModule extends AbstractModule {
 				.build(ChildFieldHandlerWorkerFactory.class));
 		install(new ReflectionModule());
 		install(new FieldHandlersModule());
-		install(new ActionsModule());
 	}
 
 	@Provides
