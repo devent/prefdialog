@@ -19,57 +19,41 @@
 package com.globalscalingsoftware.prefdialog.internal
 
 import java.awt.BorderLayout;
-import java.lang.reflect.Field;
+import java.awt.event.ActionEvent 
 
+import javax.swing.AbstractAction;
 import javax.swing.JFrame;
-import javax.swing.SwingUtilities 
-import javax.swing.UIManager;
 import org.fest.swing.edt.GuiActionRunner 
 import org.fest.swing.edt.GuiQuery 
 import org.fest.swing.fixture.FrameFixture 
 import org.junit.After;
 import org.junit.Before;
 
-import com.globalscalingsoftware.prefdialog.internal.inputfield.FieldsFactory;
-import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbox;
+import com.globalscalingsoftware.prefdialog.PreferenceDialogFactory;
 
 
 
 abstract class AbstractPreferencePanelTest {
 	
-	static {
-		//setGTKLookAndFeel()
-		//setPlasticLookAndFeel()
-		//setSubstanceLookAndFeel()
-	}
-	
-	static setGTKLookAndFeel() {
-		setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel")
-	}
-	
-	static setPlasticLookAndFeel() {
-		setLookAndFeel("com.jgoodies.looks.plastic.Plastic3DLookAndFeel")
-	}
-	
-	static setSubstanceLookAndFeel() {
-		setLookAndFeel("org.pushingpixels.substance.api.skin.SubstanceBusinessLookAndFeel")
-	}
-	
-	static setLookAndFeel(def lookAndFeelClass) {
-		try {
-			SwingUtilities.invokeLater({UIManager.setLookAndFeel(lookAndFeelClass); }as Runnable)
-		} catch (Exception e) {
-			e.printStackTrace();
+	static class ApplyAction extends AbstractAction {
+		ApplyAction() {
+			super("Apply")
+		}
+		void actionPerformed(ActionEvent e) {
 		}
 	}
 	
-	protected preferencesClass
+	static class RestoreAction extends AbstractAction {
+		RestoreAction() {
+			super("Restore")
+		}
+		void actionPerformed(ActionEvent e) {
+		}
+	}
 	
 	protected preferences
 	
-	protected preferencesParentValue
-	
-	protected preferencesParentName
+	protected panelName
 	
 	protected FrameFixture window
 	
@@ -88,43 +72,28 @@ abstract class AbstractPreferencePanelTest {
 	}
 	
 	protected createFrameFixture() {
-		def injector = new PreferencesDialogInjectorFactory().create(preferences)
-		def field = getPreferencesField(preferencesClass, preferencesParentName)
-		//createFrame(injector, preferences, field, parentValue)
-		def frame = GuiActionRunner.execute([executeInEDT: { 
-				return createFrame(injector, preferences, field, preferencesParentValue)
-			} ] as GuiQuery);
+		def injector = new PreferencesDialogInjectorFactory().create()
+		def factory = injector.getInstance(PreferenceDialogFactory)
+		
+		getFrame(factory)
+		def frame = GuiActionRunner.execute([executeInEDT: { return getFrame(factory) } ] as GuiQuery);
 		return new FrameFixture(frame);
 	}
 	
-	protected Field getPreferencesField(def preferencesClass, def fieldName) {
-		def field
-		preferencesClass.getDeclaredFields().each{f->
-			if(f.getName().equals(fieldName)) {
-				field = f
-			}
-		}
-		return field
+	protected getFrame(PreferenceDialogFactory factory) {
+		def controller = factory.create(null, preferences)
+		controller.setup()
+		def panel = controller.getPreferencePanels().get(panelName)
+		return createFrame(panel)
 	}
 	
-	protected createFrame(def injector, def preferences, def field, def parentValue) {
-		def factory = injector.getInstance(FieldsFactory)
-		def reflectionToolbox = injector.getInstance(ReflectionToolbox)
-		def inputfield = factory.createField(preferences, field, parentValue)
-		
-		inputfield.setReflectionToolbox(reflectionToolbox)
-		inputfield.setFieldsFactory(factory)
-		inputfield.setup()
-		
-		return createFrame({ return inputfield.getAWTComponent() })
-	}
 	
-	private createFrame(def preferencesPanel) {
+	private createFrame(def panel) {
 		def frame = new JFrame("Preferences Panel")
 		frame.setSize 480, 640
 		frame.setLocationByPlatform true
 		frame.setLayout new BorderLayout()
-		frame.add preferencesPanel()
+		frame.add panel
 		return frame
 	}
 }

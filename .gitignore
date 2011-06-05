@@ -1,8 +1,8 @@
 .project
-.settings/
+.settings
 .classpath
-target/
-test-output/
+target
+test-output
 *~
 *~?
 *~??

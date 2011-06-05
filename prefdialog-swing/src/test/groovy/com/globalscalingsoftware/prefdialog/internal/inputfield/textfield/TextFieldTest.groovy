@@ -20,9 +20,9 @@ package com.globalscalingsoftware.prefdialog.internal.inputfield.textfield
 
 import org.junit.Test;
 
-import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
-import com.globalscalingsoftware.prefdialog.annotations.fields.TextField;
-import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest 
+import com.globalscalingsoftware.prefdialog.annotations.Child;
+import com.globalscalingsoftware.prefdialog.annotations.TextField;
+import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest;
 
 class TextFieldTest extends AbstractPreferencePanelTest {
 	
@@ -44,18 +44,35 @@ class TextFieldTest extends AbstractPreferencePanelTest {
 	}
 	
 	def setupPreferences() {
-		preferencesClass = Preferences
 		preferences = new Preferences()
-		preferencesParentName = "general"
-		preferencesParentValue = preferences.general
+		panelName = "General"
 	}
 	
 	@Test
-	void testPanelClickApplyAndClose() {
+	void testComponents() {
+		window.label("label-name").requireVisible()
+		assert window.label("label-name").text() == "name: "
+		window.textBox("name").requireVisible()
+		assert window.textBox("name").text() == ""
+		window.button("apply").requireVisible()
+		assert window.button("apply").text() == "Apply"
+		window.button("restore").requireVisible()
+		assert window.button("restore").text() == "Restore"
+	}
+	
+	@Test
+	void testEnterTextAndApply() {
 		window.textBox("name").enterText "test"
-		window.panel("general").button("apply").click()
+		window.button("apply").click()
 		
 		assert window.label("label-name").text() == "name: "
 		assert preferences.general.name == "test"
+	}
+	
+	@Test
+	void testEnterTextAndRestore() {
+		window.textBox("name").enterText "test"
+		window.button("restore").click()
+		assert preferences.general.name == ""
 	}
 }

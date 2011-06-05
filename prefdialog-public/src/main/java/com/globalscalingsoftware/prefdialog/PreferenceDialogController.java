@@ -19,8 +19,10 @@
 package com.globalscalingsoftware.prefdialog;
 
 import java.awt.Frame;
+import java.util.Map;
 
 import javax.swing.Action;
+import javax.swing.JDialog;
 
 /**
  * <p>
@@ -48,19 +50,10 @@ import javax.swing.Action;
 public interface PreferenceDialogController {
 
 	/**
-	 * Sets the preferences object.
-	 */
-	void setPreferences(Object preferences);
-
-	/**
 	 * Create the dialog and all the components with the {@link Frame owner} of
 	 * the dialog.
-	 * 
-	 * @param owner
-	 *            the {@link Frame owner} of the dialog, can be
-	 *            <code>null</code>.
 	 */
-	void setup(Frame owner);
+	void setup();
 
 	/**
 	 * Opens the dialog.
@@ -72,6 +65,10 @@ public interface PreferenceDialogController {
 	 * dialog.
 	 */
 	Options getOption();
+
+	JDialog getPreferenceDialog();
+
+	Map<String, ChildFieldHandler> getPreferencePanels();
 
 	/**
 	 * Sets the {@link Action} for the "Ok" button of the dialog.
@@ -92,5 +89,4 @@ public interface PreferenceDialogController {
 	 * Sets the {@link Action} for the "Restore" button of the dialog.
 	 */
 	void setRestoreAction(Action a);
-
 }

@@ -20,65 +20,55 @@ package com.globalscalingsoftware.prefdialog.internal.inputfield;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.globalscalingsoftware.annotations.Stateless;
 import com.globalscalingsoftware.prefdialog.FieldHandler;
-import com.globalscalingsoftware.prefdialog.internal.reflection.FieldsAnnotationFilter;
-import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbox;
-import com.google.inject.Inject;
+import com.globalscalingsoftware.prefdialog.FieldHandlerFactory;
+import com.globalscalingsoftware.prefdialog.internal.reflection.AnnotationDiscovery;
+import com.globalscalingsoftware.prefdialog.internal.reflection.AnnotationDiscoveryCallback;
+import com.globalscalingsoftware.prefdialog.internal.reflection.FieldFactories;
 
 @Stateless
 public class FieldsFactory {
 
-	private final ReflectionToolbox reflectionToolbox;
+	private class FactoryWorker implements AnnotationDiscoveryCallback {
 
-	private final Map<Class<? extends Annotation>, Class<? extends FieldHandler<?>>> inputFieldImplementations;
+		private final AnnotationDiscovery annotationDiscovery;
+		private final Object parentObject;
+		private final FieldFactories fieldFactories;
+		private final List<FieldHandler<?>> fieldHandlers;
 
-	private final FieldsAnnotationFilter annotationFilter;
-
-	@Inject
-	FieldsFactory(FieldsAnnotationFilter annotationFilter,
-			ReflectionToolbox reflectionToolbox) {
-		this.annotationFilter = annotationFilter;
-		this.reflectionToolbox = reflectionToolbox;
-		this.inputFieldImplementations = annotationFilter
-				.getFieldsImplementations();
-	}
-
-	public FieldHandler<?> createField(Object parentObject, Field field,
-			Object value) {
-		Class<? extends FieldHandler<?>> inputFieldClass = getInputFieldClassFrom(field);
-		if (inputFieldClass == null) {
-			return null;
-		} else {
-			return createInputField(parentObject, value, field, inputFieldClass);
+		public FactoryWorker(AnnotationDiscovery annotationDiscovery,
+				FieldFactories fieldFactories, Object parentObject) {
+			this.annotationDiscovery = annotationDiscovery;
+			this.fieldFactories = fieldFactories;
+			this.parentObject = parentObject;
+			this.fieldHandlers = new ArrayList<FieldHandler<?>>();
 		}
-	}
 
-	private Class<? extends FieldHandler<?>> getInputFieldClassFrom(Field field) {
-		Class<? extends Annotation> a = getInputFieldAnnotationFrom(field);
-		Class<? extends FieldHandler<?>> c = inputFieldImplementations.get(a);
-		return c;
-	}
-
-	private Class<? extends Annotation> getInputFieldAnnotationFrom(Field field) {
-		Annotation[] annotations = field.getAnnotations();
-		for (Annotation a : annotations) {
-			if (annotationFilter.accept(a)) {
-				return a.annotationType();
-			}
+		public List<FieldHandler<?>> createFieldsHandlers() {
+			annotationDiscovery.discoverAnnotations(parentObject, this);
+			return fieldHandlers;
 		}
-		return null;
+
+		@Override
+		public void fieldAnnotationDiscovered(Field field, Object value,
+				Annotation a) {
+			FieldHandlerFactory factory = fieldFactories.getFactory(a);
+			FieldHandler<?> handler = factory
+					.create(parentObject, value, field);
+			fieldHandlers.add(handler);
+		}
+
 	}
 
-	private FieldHandler<?> createInputField(Object parentObject, Object value,
-			Field field, Class<? extends FieldHandler<?>> inputFieldClass) {
-		Class<?>[] parameterTypes = new Class<?>[] { Object.class,
-				Object.class, Field.class };
-		FieldHandler<?> inputField = reflectionToolbox.newInstance(
-				inputFieldClass, parameterTypes, parentObject, value, field);
-		return inputField;
+	public List<FieldHandler<?>> createFieldsHandlers(
+			AnnotationDiscovery annotationDiscovery,
+			FieldFactories fieldFactories, Object value) {
+		return new FactoryWorker(annotationDiscovery, fieldFactories, value)
+				.createFieldsHandlers();
 	}
 
 }

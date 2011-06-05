@@ -21,9 +21,9 @@ package com.globalscalingsoftware.prefdialog.internal.inputfield.combobox
 import java.util.List;
 import org.junit.Test;
 
-import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
-import com.globalscalingsoftware.prefdialog.annotations.fields.ComboBox;
-import com.globalscalingsoftware.prefdialog.annotations.fields.ComboBoxElements;
+import com.globalscalingsoftware.prefdialog.annotations.Child 
+import com.globalscalingsoftware.prefdialog.annotations.ComboBox 
+import com.globalscalingsoftware.prefdialog.annotations.ComboBoxElements 
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest 
 
 class ComboBoxTest extends AbstractPreferencePanelTest {
@@ -53,10 +53,8 @@ class ComboBoxTest extends AbstractPreferencePanelTest {
 	}
 	
 	def setupPreferences() {
-		preferencesClass = Preferences
 		preferences = new Preferences()
-		preferencesParentName = "general"
-		preferencesParentValue = preferences.general
+		panelName = "General"
 	}
 	
 	@Test

@@ -19,16 +19,17 @@
 package com.globalscalingsoftware.prefdialog.internal.inputfield
 
 import java.util.List;
+
 import org.junit.Test;
 
-import com.globalscalingsoftware.prefdialog.annotations.fields.Checkbox;
-import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
-import com.globalscalingsoftware.prefdialog.annotations.fields.ComboBox;
-import com.globalscalingsoftware.prefdialog.annotations.fields.ComboBoxElements;
-import com.globalscalingsoftware.prefdialog.annotations.fields.FormattedTextField;
-import com.globalscalingsoftware.prefdialog.annotations.fields.Group 
-import com.globalscalingsoftware.prefdialog.annotations.fields.RadioButton;
-import com.globalscalingsoftware.prefdialog.annotations.fields.TextField;
+import com.globalscalingsoftware.prefdialog.annotations.Checkbox;
+import com.globalscalingsoftware.prefdialog.annotations.Child;
+import com.globalscalingsoftware.prefdialog.annotations.ComboBox 
+import com.globalscalingsoftware.prefdialog.annotations.ComboBoxElements 
+import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField 
+import com.globalscalingsoftware.prefdialog.annotations.Group;
+import com.globalscalingsoftware.prefdialog.annotations.RadioButton 
+import com.globalscalingsoftware.prefdialog.annotations.TextField;
 import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceDialogTest;
 import com.globalscalingsoftware.prefdialog.validators.NotEmptyString 
 

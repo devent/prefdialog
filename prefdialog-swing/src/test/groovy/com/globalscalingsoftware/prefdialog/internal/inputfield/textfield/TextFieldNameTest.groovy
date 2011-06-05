@@ -20,9 +20,9 @@ package com.globalscalingsoftware.prefdialog.internal.inputfield.textfield
 
 import org.junit.Test;
 
-import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
-import com.globalscalingsoftware.prefdialog.annotations.fields.TextField;
-import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest 
+import com.globalscalingsoftware.prefdialog.annotations.Child;
+import com.globalscalingsoftware.prefdialog.annotations.TextField 
+import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest;
 
 class TextFieldNameTest extends AbstractPreferencePanelTest {
 	
@@ -44,14 +44,12 @@ class TextFieldNameTest extends AbstractPreferencePanelTest {
 	}
 	
 	def setupPreferences() {
-		preferencesClass = Preferences
 		preferences = new Preferences()
-		preferencesParentName = "general"
-		preferencesParentValue = preferences.general
+		panelName = "General"
 	}
 	
 	@Test
-	void testPanelClickApplyAndClose() {
+	void testComponents() {
 		assert window.label("label-name").text() == "Project name: "
 	}
 }

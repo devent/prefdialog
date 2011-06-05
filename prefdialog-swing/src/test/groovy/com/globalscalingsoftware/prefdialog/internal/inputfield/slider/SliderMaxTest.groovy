@@ -21,15 +21,15 @@ package com.globalscalingsoftware.prefdialog.internal.inputfield.slider
 
 import org.junit.Test;
 
-import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
-import com.globalscalingsoftware.prefdialog.annotations.fields.Slider 
-import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest 
+import com.globalscalingsoftware.prefdialog.annotations.Child;
+import com.globalscalingsoftware.prefdialog.annotations.Slider 
+import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest;
 
 class SliderMaxTest extends AbstractPreferencePanelTest {
 	
 	static class General {
 		
-		@Slider(max=200)
+		@Slider(max=210)
 		int slider = 50
 		
 		@Override
@@ -45,10 +45,8 @@ class SliderMaxTest extends AbstractPreferencePanelTest {
 	}
 	
 	def setupPreferences() {
-		preferencesClass = Preferences
 		preferences = new Preferences()
-		preferencesParentName = "general"
-		preferencesParentValue = preferences.general
+		panelName = "General"
 	}
 	
 	@Test

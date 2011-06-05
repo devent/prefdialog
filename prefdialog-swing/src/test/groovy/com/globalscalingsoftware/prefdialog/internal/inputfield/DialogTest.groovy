@@ -18,18 +18,12 @@
  */
 package com.globalscalingsoftware.prefdialog.internal.inputfield
 
-import java.util.List;
+
 import org.junit.Test;
 
-import com.globalscalingsoftware.prefdialog.annotations.fields.Checkbox;
-import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
-import com.globalscalingsoftware.prefdialog.annotations.fields.ComboBox;
-import com.globalscalingsoftware.prefdialog.annotations.fields.ComboBoxElements;
-import com.globalscalingsoftware.prefdialog.annotations.fields.FormattedTextField;
-import com.globalscalingsoftware.prefdialog.annotations.fields.RadioButton;
-import com.globalscalingsoftware.prefdialog.annotations.fields.TextField;
-import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceDialogTest 
-import com.globalscalingsoftware.prefdialog.validators.NotEmptyString 
+import com.globalscalingsoftware.prefdialog.annotations.Child;
+import com.globalscalingsoftware.prefdialog.annotations.TextField 
+import com.globalscalingsoftware.prefdialog.internal.AbstractPreferenceDialogTest;
 
 class DialogTest extends AbstractPreferenceDialogTest {
 	
@@ -41,27 +35,8 @@ class DialogTest extends AbstractPreferenceDialogTest {
 	
 	static class General {
 		
-		@TextField(validator=NotEmptyString, validatorText="Must not be empty")
+		@TextField
 		String name = ""
-		
-		@FormattedTextField(validator=FieldsValidator, validatorText="Must be a number and between 2 and 100")
-		int fields = 4
-		
-		@Checkbox
-		boolean automaticSave = false
-		
-		@RadioButton(columns=2)
-		Colors colors = Colors.BLACK
-		
-		@ComboBoxElements("combobox1")
-		List<String> comboBoxElements = [
-			"first element",
-			"second element",
-			"third element"
-		]
-		
-		@ComboBox("combobox1")
-		String comboBox
 		
 		@Override
 		public String toString() {
@@ -74,18 +49,44 @@ class DialogTest extends AbstractPreferenceDialogTest {
 	}
 	
 	@Test
-	void testClickOkAndClose() {
+	void testComponents() {
+		window.textBox("name").requireVisible()
+		assert window.textBox("name").text() == ""
+		window.button("ok").requireVisible()
+		assert window.button("ok").text() == "Ok"
+		window.button("cancel").requireVisible()
+		assert window.button("cancel").text() == "Cancel"
+		window.button("restore").requireVisible()
+		assert window.button("restore").text() == "Restore"
+		window.button("apply").requireVisible()
+		assert window.button("apply").text() == "Apply"
+	}
+	
+	@Test
+	void testClickEnterTextOk() {
 		window.textBox("name").enterText "name"
-		window.textBox("fields").enterText "10"
-		window.checkBox("automaticSave").click()
-		window.radioButton("colors-BLUE").click()
-		window.comboBox("comboBox").selectItem 1
 		window.button("ok").click()
-		
 		assert preferences.general.name == "name"
-		assert preferences.general.fields == 10
-		assert preferences.general.automaticSave == true
-		assert preferences.general.colors == Colors.BLUE
-		assert preferences.general.comboBox == "second element"
+	}
+	
+	@Test
+	void testClickEnterTextCancel() {
+		window.textBox("name").enterText "name"
+		window.button("cancel").click()
+		assert preferences.general.name == ""
+	}
+	
+	@Test
+	void testClickEnterTextApply() {
+		window.textBox("name").enterText "name"
+		window.button("apply").click()
+		assert preferences.general.name == "name"
+	}
+	
+	@Test
+	void testClickEnterTextRestore() {
+		window.textBox("name").enterText "name"
+		window.button("restore").click()
+		assert preferences.general.name == ""
 	}
 }

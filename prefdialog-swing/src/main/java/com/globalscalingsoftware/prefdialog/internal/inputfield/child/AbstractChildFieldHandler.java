@@ -25,34 +25,34 @@ import java.util.List;
 
 import javax.swing.Action;
 
+import com.globalscalingsoftware.prefdialog.ChildFieldHandler;
 import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.internal.inputfield.AbstractDefaultFieldHandler;
-import com.globalscalingsoftware.prefdialog.internal.inputfield.FieldsFactory;
 import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbox;
 
-public abstract class AbstractChildFieldHandler<ComponentType extends IChildComponent>
-		extends AbstractDefaultFieldHandler<ComponentType> {
+public abstract class AbstractChildFieldHandler<ComponentType extends ChildComponent>
+		extends AbstractDefaultFieldHandler<ComponentType> implements
+		ChildFieldHandler {
 
-	private FieldsFactory fieldsFactory;
+	private final List<FieldHandler<?>> fieldHandlers;
 
-	private final List<FieldHandler<?>> inputFields;
-
-	private Action applyAction;
-
-	private Action restoreAction;
-
-	public AbstractChildFieldHandler(Object parentObject, Object value,
-			Field field, Class<? extends Annotation> annotationClass,
-			ComponentType component) {
-		super(parentObject, value, field, annotationClass, component);
-		inputFields = new ArrayList<FieldHandler<?>>();
+	public AbstractChildFieldHandler(ReflectionToolbox reflectionToolbox,
+			Object parentObject, Object value, Field field,
+			Class<? extends Annotation> annotationClass, ComponentType component) {
+		super(reflectionToolbox, parentObject, value, field, annotationClass,
+				component);
+		this.fieldHandlers = new ArrayList<FieldHandler<?>>();
 	}
 
 	@Override
 	public void setup() {
 		super.setup();
-		addAllInputFields();
 		setupActions();
+	}
+
+	public void addFieldHandler(FieldHandler<?> fieldHandler) {
+		getComponent().addField(fieldHandler);
+		fieldHandlers.add(fieldHandler);
 	}
 
 	private void setupActions() {
@@ -74,67 +74,15 @@ public abstract class AbstractChildFieldHandler<ComponentType extends IChildComp
 		});
 	}
 
-	private void addAllInputFields() {
-		fillInputFields(inputFields);
-		for (FieldHandler<?> inputField : inputFields) {
-			setupInputField(inputField);
-			getComponent().addField(inputField);
-		}
-	}
-
-	private void fillInputFields(List<FieldHandler<?>> inputFields) {
-		Object parentObject = getComponentValue();
-		ReflectionToolbox reflectionToolbox = getReflectionToolbox();
-		new AddAllInputFields(reflectionToolbox, fieldsFactory).addAllInto(
-				inputFields, parentObject);
-	}
-
-	private void setupInputField(FieldHandler<?> inputField) {
-		if (inputField instanceof AbstractDefaultFieldHandler) {
-			setupDefaultInputField(inputField);
-		}
-		if (inputField instanceof AbstractChildFieldHandler) {
-			setupChildInputField(inputField);
-		}
-		inputField.setup();
-	}
-
-	private void setupChildInputField(FieldHandler<?> inputField) {
-		AbstractChildFieldHandler<?> ainputfield = (AbstractChildFieldHandler<?>) inputField;
-		ainputfield.setFieldsFactory(fieldsFactory);
-		ainputfield.setApplyAction(applyAction);
-		ainputfield.setRestoreAction(restoreAction);
-	}
-
-	private void setupDefaultInputField(FieldHandler<?> inputField) {
-		AbstractDefaultFieldHandler<?> ainputfield = (AbstractDefaultFieldHandler<?>) inputField;
-		ReflectionToolbox reflectionToolbox = getReflectionToolbox();
-		ainputfield.setReflectionToolbox(reflectionToolbox);
-	}
-
 	public void applyInput() {
 		applyInput(getComponentValue());
 	}
 
 	@Override
 	public void applyInput(Object parent) {
-		for (FieldHandler<?> inputField : inputFields) {
+		for (FieldHandler<?> inputField : fieldHandlers) {
 			inputField.applyInput(parent);
 		}
-	}
-
-	public void setFieldsFactory(FieldsFactory fieldsFactory) {
-		this.fieldsFactory = fieldsFactory;
-	}
-
-	public void setApplyAction(Action a) {
-		this.applyAction = a;
-		getComponent().setApplyAction(a);
-	}
-
-	public void setRestoreAction(Action a) {
-		this.restoreAction = a;
-		getComponent().setRestoreAction(a);
 	}
 
 	public void restoreInput() {
@@ -143,11 +91,20 @@ public abstract class AbstractChildFieldHandler<ComponentType extends IChildComp
 
 	@Override
 	public void restoreInput(Object parent) {
-		for (FieldHandler<?> inputField : inputFields) {
+		for (FieldHandler<?> inputField : fieldHandlers) {
 			inputField.restoreInput(parent);
 		}
 	}
 
+	public void setApplyAction(Action a) {
+		getComponent().setApplyAction(a);
+	}
+
+	public void setRestoreAction(Action a) {
+		getComponent().setRestoreAction(a);
+	}
+
+	@Override
 	public void setButtonsTransparent(boolean transparent) {
 		getComponent().setButtonsTransparent(transparent);
 	}

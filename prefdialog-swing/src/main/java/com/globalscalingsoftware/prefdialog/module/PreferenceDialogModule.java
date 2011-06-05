@@ -18,18 +18,39 @@
  */
 package com.globalscalingsoftware.prefdialog.module;
 
+import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.globalscalingsoftware.prefdialog.PreferenceDialogController;
-import com.globalscalingsoftware.prefdialog.internal.dialog.InputFieldsFactory;
-import com.globalscalingsoftware.prefdialog.internal.dialog.PreferenceDialog;
-import com.globalscalingsoftware.prefdialog.internal.dialog.PreferenceDialogAnnotationsFilter;
+import com.globalscalingsoftware.prefdialog.PreferenceDialogFactory;
+import com.globalscalingsoftware.prefdialog.annotations.Checkbox;
+import com.globalscalingsoftware.prefdialog.annotations.Child;
+import com.globalscalingsoftware.prefdialog.annotations.ComboBox;
+import com.globalscalingsoftware.prefdialog.annotations.FileChooser;
+import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField;
+import com.globalscalingsoftware.prefdialog.annotations.Group;
+import com.globalscalingsoftware.prefdialog.annotations.RadioButton;
+import com.globalscalingsoftware.prefdialog.annotations.Slider;
+import com.globalscalingsoftware.prefdialog.annotations.TextField;
 import com.globalscalingsoftware.prefdialog.internal.dialog.PreferenceDialogControllerImpl;
-import com.globalscalingsoftware.prefdialog.internal.dialog.PreferenceDialogControllerInternal;
-import com.globalscalingsoftware.prefdialog.internal.inputfield.FieldsFactory;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.checkbox.CheckBoxFieldHandlerFactory;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.child.ChildFieldHandlerFactory;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.child.group.GroupFieldHandlerFactory;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.combobox.ComboBoxFieldHandlerFactory;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.filechooser.FileChooserFieldHandlerFactory;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.radiobutton.RadioButtonFieldHandlerFactory;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.slider.SliderFieldHandlerFactory;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.textfield.TextFieldHandlerFactory;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.textfield.formattedtextfield.FormattedTextFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.internal.reflection.AnnotationDiscovery;
-import com.globalscalingsoftware.prefdialog.internal.reflection.FieldsAnnotationFilter;
+import com.globalscalingsoftware.prefdialog.internal.reflection.AnnotationFilter;
+import com.globalscalingsoftware.prefdialog.internal.reflection.FactoriesMap;
 import com.globalscalingsoftware.prefdialog.internal.reflection.ReflectionToolbox;
 import com.google.inject.AbstractModule;
+import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.assistedinject.FactoryProvider;
 
 /**
  * Binds the default dependencies for the preference dialog.
@@ -71,22 +92,58 @@ public class PreferenceDialogModule extends AbstractModule {
 	protected void configure() {
 		bind(AnnotationDiscovery.class).asEagerSingleton();
 		bind(ReflectionToolbox.class).asEagerSingleton();
-		bindPreferencePanel();
 		bindPreferenceDialog();
+		bindFields();
+	}
+
+	private void bindFields() {
+		bindAnnotations();
+		bindFactories();
+	}
+
+	private void bindFactories() {
+		Injector injector = Guice.createInjector(new FieldHandlersModule());
+		FactoriesMap factories = new FactoriesMap();
+		factories.put(TextField.class,
+				injector.getInstance(TextFieldHandlerFactory.class));
+		factories.put(FormattedTextField.class,
+				injector.getInstance(FormattedTextFieldHandlerFactory.class));
+		factories.put(RadioButton.class,
+				injector.getInstance(RadioButtonFieldHandlerFactory.class));
+		factories.put(Checkbox.class,
+				injector.getInstance(CheckBoxFieldHandlerFactory.class));
+		factories.put(ComboBox.class,
+				injector.getInstance(ComboBoxFieldHandlerFactory.class));
+		factories.put(FileChooser.class,
+				injector.getInstance(FileChooserFieldHandlerFactory.class));
+		factories.put(Slider.class,
+				injector.getInstance(SliderFieldHandlerFactory.class));
+		factories.put(Child.class,
+				injector.getInstance(ChildFieldHandlerFactory.class));
+		factories.put(Group.class,
+				injector.getInstance(GroupFieldHandlerFactory.class));
+		bind(FactoriesMap.class).toInstance(factories);
+	}
+
+	private void bindAnnotations() {
+		List<Class<? extends Annotation>> annotations = new ArrayList<Class<? extends Annotation>>();
+		annotations.add(Checkbox.class);
+		annotations.add(FormattedTextField.class);
+		annotations.add(TextField.class);
+		annotations.add(RadioButton.class);
+		annotations.add(ComboBox.class);
+		annotations.add(Slider.class);
+		annotations.add(Group.class);
+		annotations.add(Child.class);
+		annotations.add(FileChooser.class);
+		bind(AnnotationFilter.class).toInstance(
+				new AnnotationFilter(annotations));
 	}
 
 	private void bindPreferenceDialog() {
-		bind(PreferenceDialogAnnotationsFilter.class).asEagerSingleton();
-		bind(PreferenceDialogController.class).to(
-				PreferenceDialogControllerImpl.class);
-		bind(PreferenceDialogControllerInternal.class).to(
-				PreferenceDialogControllerImpl.class);
-		bind(PreferenceDialog.class);
+		bind(PreferenceDialogFactory.class).toProvider(
+				FactoryProvider.newFactory(PreferenceDialogFactory.class,
+						PreferenceDialogControllerImpl.class));
 	}
 
-	private void bindPreferencePanel() {
-		bind(FieldsAnnotationFilter.class).asEagerSingleton();
-		bind(FieldsFactory.class).asEagerSingleton();
-		bind(InputFieldsFactory.class).asEagerSingleton();
-	}
 }

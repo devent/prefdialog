@@ -24,21 +24,21 @@ import java.util.Map;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 
-import com.globalscalingsoftware.prefdialog.FieldHandler;
+import com.globalscalingsoftware.prefdialog.internal.inputfield.child.ChildFieldHandlerImpl;
 
-class PreferencePanels {
+public class PreferencePanels {
 
-	private final Map<Object, FieldHandler<?>> fieldHandlers;
+	private final Map<Object, ChildFieldHandlerImpl> fieldHandlers;
 
 	private final Map<Object, TreeNode[]> treeNodes;
 
 	private final DefaultMutableTreeNode rootNode;
 
-	private final FieldHandler<?> preferencesStart;
+	private final ChildFieldHandlerImpl preferencesStart;
 
-	public PreferencePanels(Map<Object, FieldHandler<?>> fieldHandlers,
+	public PreferencePanels(Map<Object, ChildFieldHandlerImpl> fieldHandlers,
 			Map<Object, TreeNode[]> treeNodes, DefaultMutableTreeNode rootNode,
-			FieldHandler<?> preferencesStart) {
+			ChildFieldHandlerImpl preferencesStart) {
 		this.fieldHandlers = fieldHandlers;
 		this.treeNodes = treeNodes;
 		this.rootNode = rootNode;
@@ -53,15 +53,15 @@ class PreferencePanels {
 		return treeNodes.get(value);
 	}
 
-	public FieldHandler<?> getFieldHandler(Object value) {
+	public ChildFieldHandlerImpl getFieldHandler(Object value) {
 		return fieldHandlers.get(value);
 	}
 
-	public Map<Object, FieldHandler<?>> getPreferencePanels() {
+	public Map<Object, ChildFieldHandlerImpl> getPreferencePanels() {
 		return Collections.unmodifiableMap(fieldHandlers);
 	}
 
-	public FieldHandler<?> getPreferencesStart() {
+	public ChildFieldHandlerImpl getPreferencesStart() {
 		return preferencesStart;
 	}
 

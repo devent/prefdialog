@@ -20,10 +20,10 @@ package com.globalscalingsoftware.prefdialog.internal.inputfield.textfield
 
 import org.junit.Test;
 
-import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
-import com.globalscalingsoftware.prefdialog.annotations.fields.Group 
-import com.globalscalingsoftware.prefdialog.annotations.fields.TextField;
-import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest 
+import com.globalscalingsoftware.prefdialog.annotations.Child;
+import com.globalscalingsoftware.prefdialog.annotations.Group;
+import com.globalscalingsoftware.prefdialog.annotations.TextField;
+import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest;
 
 class TextFieldGroupTest extends AbstractPreferencePanelTest {
 	
@@ -70,21 +70,18 @@ class TextFieldGroupTest extends AbstractPreferencePanelTest {
 	
 	
 	def setupPreferences() {
-		preferencesClass = Preferences
 		preferences = new Preferences()
-		preferencesParentName = "general"
-		preferencesParentValue = preferences.general
+		panelName = "General"
 	}
 	
 	@Test
-	void testPanelClickApplyAndClose() {
+	void testEnterTextAndApply() {
 		window.textBox("textField1").enterText "test1"
 		window.textBox("textField2").enterText "test2"
 		window.textBox("textField3").enterText "test3"
 		window.textBox("textField4").enterText "test4"
 		window.panel("general").button("apply").click()
 		
-		assert window.label("label-textField1").text() == "textField1: "
 		assert preferences.general.group1.textField1 == "test1"
 		assert preferences.general.group1.textField2 == "test2"
 		assert preferences.general.group2.textField3 == "test3"

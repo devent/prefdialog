@@ -21,9 +21,9 @@ package com.globalscalingsoftware.prefdialog.internal.inputfield.slider
 
 import org.junit.Test;
 
-import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
-import com.globalscalingsoftware.prefdialog.annotations.fields.Slider 
-import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest 
+import com.globalscalingsoftware.prefdialog.annotations.Child;
+import com.globalscalingsoftware.prefdialog.annotations.Slider 
+import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest;
 
 class SliderPaintTicksTest extends AbstractPreferencePanelTest {
 	
@@ -45,10 +45,8 @@ class SliderPaintTicksTest extends AbstractPreferencePanelTest {
 	}
 	
 	def setupPreferences() {
-		preferencesClass = Preferences
 		preferences = new Preferences()
-		preferencesParentName = "general"
-		preferencesParentValue = preferences.general
+		panelName = "General"
 	}
 	
 	@Test

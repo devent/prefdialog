@@ -25,7 +25,7 @@ import org.fest.swing.fixture.DialogFixture;
 import org.junit.After;
 import org.junit.Before;
 
-import com.globalscalingsoftware.prefdialog.PreferenceDialogController;
+import com.globalscalingsoftware.prefdialog.PreferenceDialogFactory;
 
 abstract class AbstractPreferenceDialogTest {
 	
@@ -43,16 +43,17 @@ abstract class AbstractPreferenceDialogTest {
 	abstract setupPreferences()
 	
 	private createFrameFixture(def preferences) {
-		def injector = new PreferencesDialogInjectorFactory().create(preferences)
-		def controller = injector.getInstance(PreferenceDialogController)
+		def injector = new PreferencesDialogInjectorFactory().create()
+		def factory = injector.getInstance(PreferenceDialogFactory)
 		
-		//createDialog(controller)
-		def dialog = GuiActionRunner.execute([executeInEDT: { return createDialog(controller) } ] as GuiQuery);
+		//createDialog(factory)
+		def dialog = GuiActionRunner.execute([executeInEDT: { return createDialog(factory) } ] as GuiQuery);
 		return new DialogFixture(dialog);
 	}
 	
-	protected createDialog(def controller) {
-		controller.setup(null)
+	protected createDialog(def factory) {
+		def controller = factory.create(null, preferences)
+		controller.setup()
 		return controller.getPreferenceDialog()
 	}
 	

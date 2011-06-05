@@ -20,9 +20,9 @@ package com.globalscalingsoftware.prefdialog.internal.inputfield.textfield
 
 import org.junit.Test;
 
-import com.globalscalingsoftware.prefdialog.annotations.fields.Child;
-import com.globalscalingsoftware.prefdialog.annotations.fields.TextField;
-import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest 
+import com.globalscalingsoftware.prefdialog.annotations.Child;
+import com.globalscalingsoftware.prefdialog.annotations.TextField 
+import com.globalscalingsoftware.prefdialog.internal.AbstractPreferencePanelTest;
 
 class TextFieldWidthTest extends AbstractPreferencePanelTest {
 	
@@ -45,18 +45,14 @@ class TextFieldWidthTest extends AbstractPreferencePanelTest {
 	
 	
 	def setupPreferences() {
-		preferencesClass = Preferences
 		preferences = new Preferences()
-		preferencesParentName = "general"
-		preferencesParentValue = preferences.general
+		panelName = "General"
 	}
 	
 	@Test
-	void testPanelClickApplyAndClose() {
+	void testEnterTextAndApply() {
 		window.textBox("name").enterText "test"
 		window.panel("general").button("apply").click()
-		
-		assert window.label("label-name").text() == "name: "
 		assert preferences.general.name == "test"
 	}
 }
