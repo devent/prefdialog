@@ -3,8 +3,7 @@ package com.globalscalingsoftware.prefdialog;
 import com.google.inject.assistedinject.Assisted;
 
 /**
- * Use this factory to create new {@link PreferencePanelHandler preference panel
- * handler}. For example:
+ * A factory to create new {@link PreferencePanelHandler}.
  * 
  * <pre>
  * injector = Guice.createInjector(new PanelModule())

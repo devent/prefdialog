@@ -34,9 +34,9 @@ import javax.swing.Action;
  * Example code:
  * 
  * <pre>
- * controller.setPreferences(preferences);
- * controller.openDialog();
- * if (controller.getOption() == OK) {
+ * handler.createDialog();
+ * handler.openDialog();
+ * if (handler.getOption() == OK) {
  *     compute preferences
  * }
  * 
@@ -62,21 +62,34 @@ public interface PreferenceDialogHandler {
 
 	/**
 	 * Sets the {@link Action} for the "Ok" button of the dialog.
+	 * 
+	 * It is expected that if the user clicks on the "Ok" button the handler
+	 * will first apply all user input, close the dialog and then call the new
+	 * set action.
 	 */
 	void setOkAction(Action a);
 
 	/**
 	 * Sets the {@link Action} for the "Cancel" button of the dialog.
+	 * 
+	 * It is expected that if the user clicks on the "Cancel" button the handler
+	 * will first restore all user input, close the dialog and then call the new
+	 * set action.
 	 */
 	void setCancelAction(Action a);
 
 	/**
 	 * Sets the {@link Action} for the "Apply" button of the dialog.
+	 * 
+	 * It is expected that if the user clicks on the "Apply" button the handler
+	 * will first apply all user input and then call the new set action.
 	 */
 	void setApplyAction(Action a);
 
 	/**
 	 * Updates the UI of the dialog.
+	 * 
+	 * Is useful to set a new Look&Feel for the dialog.
 	 */
 	void updateUI();
 }

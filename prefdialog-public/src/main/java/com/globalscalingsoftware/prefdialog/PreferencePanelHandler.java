@@ -46,6 +46,8 @@ public interface PreferencePanelHandler {
 
 	/**
 	 * Updates the UI of the panel.
+	 * 
+	 * Is useful to set a new Swing Look&Feel.
 	 */
 	void updateUI();
 }

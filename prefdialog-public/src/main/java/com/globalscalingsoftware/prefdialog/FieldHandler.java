@@ -21,7 +21,7 @@ package com.globalscalingsoftware.prefdialog;
 import java.awt.Component;
 
 /**
- * Setups and Handles outside messages to the underlying {@link FieldComponent}.
+ * Setups and handles outside messages to the underlying {@link FieldComponent}.
  */
 public interface FieldHandler<FieldComponentType extends FieldComponent> {
 

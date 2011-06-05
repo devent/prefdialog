@@ -20,20 +20,50 @@ package com.globalscalingsoftware.prefdialog;
 
 import java.awt.Component;
 
+import com.globalscalingsoftware.prefdialog.annotations.TextField;
+
+/**
+ * The base interface for all Swing components that are used for the preferences
+ * fields.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ */
 public interface FieldComponent {
 
+	/**
+	 * Sets the width of the Swing component inside the preferences container.
+	 */
 	void setWidth(double width);
 
+	/**
+	 * Sets the name of the Swing component. The name should be a unique ID of
+	 * the component inside the preferences container.
+	 */
 	void setName(String name);
 
+	/**
+	 * Sets the title of the Swing component. The title is visible to the user.
+	 */
 	void setTitle(String title);
 
+	/**
+	 * Sets the value of the Swing component. The value can be a text as for
+	 * {@link TextField} or anything else. The value is taken from the
+	 * preferences bean object.
+	 */
 	void setValue(Object value);
 
+	/**
+	 * Returns the value of the Swing component. The value can be a new text
+	 * from a {@link TextField} or anything else. The returned value is set as
+	 * the new value in the preferences bean object.
+	 */
 	Object getValue();
 
-	Component getAWTComponent();
-
+	/**
+	 * Sets if the component is enabled or not. The component is usually
+	 * disabled for read-only fields.
+	 */
 	void setEnabled(boolean enabled);
 
 	/**
@@ -43,5 +73,11 @@ public interface FieldComponent {
 	 *         <code>false</code> if it is not valid.
 	 */
 	boolean isInputValid();
+
+	/**
+	 * Returns the Swing {@link Component} to be added in the preferences
+	 * container.
+	 */
+	Component getAWTComponent();
 
 }
