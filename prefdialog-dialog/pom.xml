@@ -4,12 +4,12 @@
 	<parent>
 		<artifactId>prefdialog</artifactId>
 		<groupId>com.globalscalingsoftware.prefdialog</groupId>
-		<version>1.7.3-SNAPSHOT</version>
+		<version>1.8-SNAPSHOT</version>
 	</parent>
 
 	<groupId>com.globalscalingsoftware.prefdialog</groupId>
 	<artifactId>prefdialog-dialog</artifactId>
-	<version>1.7.3-SNAPSHOT</version>
+	<version>1.8-SNAPSHOT</version>
 
 	<dependencies>
 		<dependency>
@@ -35,7 +35,7 @@
 		<dependency>
 			<groupId>com.globalscalingsoftware.prefdialog</groupId>
 			<artifactId>prefdialog-public</artifactId>
-			<version>1.7.3-SNAPSHOT</version>
+			<version>1.8-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.easytesting</groupId>
@@ -52,7 +52,7 @@
 		<dependency>
 			<groupId>com.globalscalingsoftware.prefdialog</groupId>
 			<artifactId>prefdialog-reflection</artifactId>
-			<version>1.7.3-SNAPSHOT</version>
+			<version>1.8-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-collections</groupId>
@@ -62,12 +62,12 @@
 		<dependency>
 			<groupId>com.globalscalingsoftware.prefdialog</groupId>
 			<artifactId>prefdialog-swingutils</artifactId>
-			<version>1.7.3-SNAPSHOT</version>
+			<version>1.8-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.globalscalingsoftware.prefdialog</groupId>
 			<artifactId>prefdialog-panel</artifactId>
-			<version>1.7.3-SNAPSHOT</version>
+			<version>1.8-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.guava</groupId>
