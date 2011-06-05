@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.globalscalingsoftware.prefdialog</groupId>
@@ -35,16 +36,16 @@
 		</developer>
 	</developers>
 
-    <scm>
-        <connection>scm:git:ssh://gitpublic@globalscalingsoftware.com/prefdialog.git </connection>
-        <developerConnection>scm:git:ssh://gitpublic@globalscalingsoftware.com/prefdialog.git </developerConnection>
-        <url>scm:git:scm:git:ssh://gitpublic@globalscalingsoftware.com/prefdialog.git </url>
-    </scm>
-    
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.build.groovy.version>1.7.5</project.build.groovy.version>
-    </properties>
+	<scm>
+		<connection>scm:git:ssh://gitpublic@globalscalingsoftware.com/prefdialog.git </connection>
+		<developerConnection>scm:git:ssh://gitpublic@globalscalingsoftware.com/prefdialog.git </developerConnection>
+		<url>scm:git:scm:git:ssh://gitpublic@globalscalingsoftware.com/prefdialog.git </url>
+	</scm>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.build.groovy.version>1.7.5</project.build.groovy.version>
+	</properties>
 
 	<dependencies>
 		<dependency>
@@ -54,29 +55,29 @@
 			<type>jar</type>
 			<scope>test</scope>
 		</dependency>
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.16</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.googlecode.sli4j</groupId>
-            <artifactId>sli4j-slf4j</artifactId>
-            <version>2.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.googlecode.sli4j</groupId>
-            <artifactId>sli4j-slf4j-log4j</artifactId>
-            <version>2.0</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-all</artifactId>
-            <version>${project.build.groovy.version}</version>
-            <scope>test</scope>
-        </dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.16</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.googlecode.sli4j</groupId>
+			<artifactId>sli4j-slf4j</artifactId>
+			<version>2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.googlecode.sli4j</groupId>
+			<artifactId>sli4j-slf4j-log4j</artifactId>
+			<version>2.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.groovy</groupId>
+			<artifactId>groovy-all</artifactId>
+			<version>${project.build.groovy.version}</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<distributionManagement>
@@ -169,28 +170,6 @@
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<version>2.1.2</version>
-				<executions>
-					<execution>
-						<id>package-source</id>
-						<phase>package</phase>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>attach-sources</id>
-						<phase>verify</phase>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
 				<version>2.1.1</version>
 				<configuration>
@@ -235,5 +214,28 @@
 
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>release</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+						<version>2.1.2</version>
+						<executions>
+							<execution>
+								<id>attach-sources</id>
+								<goals>
+									<goal>jar-no-fork</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 </project>
