@@ -28,7 +28,7 @@ import java.lang.annotation.Target;
 @Retention(RUNTIME)
 public @interface RadioButton {
 
-	String value() default "";
+	String title() default "";
 
 	int columns() default 1;
 

@@ -16,40 +16,46 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.textfield
+package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.radiobutton
 
-import org.junit.Test;
+import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child;
-import com.globalscalingsoftware.prefdialog.annotations.TextField 
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest;
+import com.globalscalingsoftware.prefdialog.annotations.Child
+import com.globalscalingsoftware.prefdialog.annotations.RadioButton
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.Colors
 
-class TextFieldNameTest extends AbstractPreferencePanelTest {
-	
+class RadioButtonTitleTest extends AbstractPreferencePanelTest {
+
 	static class General {
-		
-		@TextField("Project name")
-		String name = ""
-		
+
+		@RadioButton(title="Some colors")
+		Colors colors = Colors.BLACK
+
 		@Override
 		public String toString() {
 			"General"
 		}
 	}
-	
+
 	static class Preferences {
-		
+
 		@Child
 		General general = new General()
 	}
-	
+
 	def setupPreferences() {
 		preferences = new Preferences()
 		panelName = "General"
 	}
-	
+
 	@Test
-	void testComponents() {
-		assert fixture.label("label-name").text() == "Project name: "
+	void testPanelClickApplyAndClose() {
+		assert fixture.label("label-colors").text() == "Some colors: "
+	}
+
+	@Test
+	void testManually() {
+		//Thread.sleep 60000
 	}
 }

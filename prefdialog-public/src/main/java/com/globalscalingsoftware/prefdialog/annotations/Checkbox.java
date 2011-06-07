@@ -44,7 +44,7 @@ public @interface Checkbox {
 	/**
 	 * The text of the checkbox.
 	 */
-	String value() default "";
+	String title() default "";
 
 	/**
 	 * The width of the checkbox inside the container.

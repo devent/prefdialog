@@ -43,9 +43,9 @@ import java.lang.annotation.Target;
 public @interface Child {
 
 	/**
-	 * The name of the child.
+	 * The title of the child.
 	 */
-	String value() default "";
+	String title() default "";
 
 	/**
 	 * The width of the child inside the container.

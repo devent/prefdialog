@@ -24,11 +24,11 @@ import com.globalscalingsoftware.prefdialog.annotations.Checkbox
 import com.globalscalingsoftware.prefdialog.annotations.Child
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest
 
-class CheckboxNameTest extends AbstractPreferencePanelTest {
+class CheckboxTitleTest extends AbstractPreferencePanelTest {
 
 	static class General {
 
-		@Checkbox("save automatic")
+		@Checkbox(title="save automatic")
 		boolean automaticSave = false
 
 		@Override

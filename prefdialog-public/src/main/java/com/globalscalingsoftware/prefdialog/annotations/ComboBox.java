@@ -68,9 +68,9 @@ import javax.swing.ListCellRenderer;
 public @interface ComboBox {
 
 	/**
-	 * The name of the combobox.
+	 * The title of the combobox.
 	 */
-	String value() default "";
+	String title() default "";
 
 	/**
 	 * The width of the combobox inside the container.

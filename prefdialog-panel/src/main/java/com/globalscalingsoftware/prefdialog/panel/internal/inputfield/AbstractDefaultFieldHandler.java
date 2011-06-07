@@ -30,7 +30,7 @@ import com.globalscalingsoftware.prefdialog.swingutils.internal.AbstractFieldHan
 
 /**
  * Setups the width, name, title and read only property read from the field
- * annotation. Implements apply and restore input.
+ * annotation.
  * 
  * @param <FieldComponentType>
  *            the type of the underlying {@link FieldComponent}.
@@ -79,7 +79,7 @@ public abstract class AbstractDefaultFieldHandler<FieldComponentType extends Fie
 
 	private void setupComponentTitle(Field field,
 			Class<? extends Annotation> annotationClass) {
-		String title = getValueFromAnnotationIn("value", String.class, field,
+		String title = getValueFromAnnotationIn("title", String.class, field,
 				annotationClass);
 		title = defaultTitleIfNameNotSet(title, field);
 		l.debug("Set the title to {} for field {}.", title, field);

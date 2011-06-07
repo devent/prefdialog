@@ -16,42 +16,40 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.textfield.formattedtextfield
+package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.textfield
 
+import org.junit.Test
 
-import org.junit.Test;
+import com.globalscalingsoftware.prefdialog.annotations.Child
+import com.globalscalingsoftware.prefdialog.annotations.TextField
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest
 
-import com.globalscalingsoftware.prefdialog.annotations.Child 
-import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField 
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest;
+class TextFieldTitleTest extends AbstractPreferencePanelTest {
 
-class FormattedTextFieldNameTest extends AbstractPreferencePanelTest {
-	
 	static class General {
-		
-		@FormattedTextField("Number of fields")
-		double fields = 4
-		
+
+		@TextField(title="Project name")
+		String name = ""
+
 		@Override
 		public String toString() {
 			"General"
 		}
 	}
-	
+
 	static class Preferences {
-		
+
 		@Child
 		General general = new General()
 	}
-	
+
 	def setupPreferences() {
 		preferences = new Preferences()
 		panelName = "General"
 	}
-	
+
 	@Test
-	void testPanelClickApplyAndClose() {
-		fixture.textBox("fields").enterText "10"
-		assert fixture.label("label-fields").text() == "Number of fields: "
+	void testComponents() {
+		assert fixture.label("label-name").text() == "Project name: "
 	}
 }

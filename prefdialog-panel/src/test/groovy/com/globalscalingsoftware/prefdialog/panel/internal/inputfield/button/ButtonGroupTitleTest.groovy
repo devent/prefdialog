@@ -18,21 +18,21 @@
  */
 package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.button
 
+import java.util.List
+
 import javax.swing.Action
-import javax.swing.JFrame
 
 import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.PreferencePanelHandler
 import com.globalscalingsoftware.prefdialog.annotations.ButtonGroup
 import com.globalscalingsoftware.prefdialog.annotations.Child
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest
 
-class ManualButtonGroupTest extends AbstractPreferencePanelTest {
+class ButtonGroupTitleTest extends AbstractPreferencePanelTest {
 
 	static class General {
 
-		@ButtonGroup
+		@ButtonGroup(title='The title', showTitle=true)
 		List<Action> buttons = [
 			new Button1Action(),
 			new Button2Action()
@@ -52,20 +52,17 @@ class ManualButtonGroupTest extends AbstractPreferencePanelTest {
 
 	def setupPreferences() {
 		preferences = new Preferences()
-		preferences.general.buttons[1].callback = {
-			panelHandler.applyInput()
-			frame.visible = false
-		}
 		panelName = "General"
 	}
 
 	@Test
-	void testClickApplyAndClose() {
+	void testPanelClickApply() {
+		fixture.button("button-0-buttons").click()
 		fixture.button("button-1-buttons").click()
 	}
 
 	@Test
-	void testManual() {
-		//Thread.sleep(30000)
+	void testManually() {
+		Thread.sleep 60000
 	}
 }

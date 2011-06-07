@@ -32,23 +32,15 @@ import com.globalscalingsoftware.prefdialog.annotations.RadioButton
 import com.globalscalingsoftware.prefdialog.annotations.TextField
 import com.globalscalingsoftware.prefdialog.validators.NotEmptyString
 
-class ManualDialogTest extends AbstractPreferenceDialogFixture {
+class DialogGroupTitleTest extends AbstractPreferenceDialogFixture {
 
 	static class Preferences {
 
-		@Child
-		Child1 general = new Child1()
-
-		@Child
-		Child2 child2 = new Child2()
-
-		@Override
-		String toString() {
-			"Preferences"
-		}
+		@Child(title="General")
+		General general = new General()
 	}
 
-	static class Child1 {
+	static class General {
 
 		@TextField(validator=NotEmptyString, validatorText="Must not be empty")
 		String name = ""
@@ -56,10 +48,10 @@ class ManualDialogTest extends AbstractPreferenceDialogFixture {
 		@FormattedTextField(validator=FieldsValidator, validatorText="Must be a number and between 2 and 100")
 		int fields = 4
 
-		@Group
+		@Group(title="Group One")
 		Group1 group1 = new Group1()
 
-		@Group
+		@Group(title="Group Two")
 		Group2 group2 = new Group2()
 
 		@Checkbox
@@ -75,12 +67,12 @@ class ManualDialogTest extends AbstractPreferenceDialogFixture {
 			"third element"
 		]
 
-		@ComboBox(value="combobox1", elements="combobox1")
+		@ComboBox(title="combobox1", elements="combobox1")
 		String comboBox
 
 		@Override
 		public String toString() {
-			"Child1"
+			"General"
 		}
 	}
 
@@ -102,26 +94,32 @@ class ManualDialogTest extends AbstractPreferenceDialogFixture {
 		String textField4 = ""
 	}
 
-	static class Child2 {
-
-		@TextField
-		String something = ""
-
-		@FormattedTextField
-		int moreFields = 4
-
-		@Override
-		public String toString() {
-			"Child2"
-		}
-	}
-
 	def setupPreferences() {
 		preferences = new Preferences()
 	}
 
 	@Test
-	void testManual() {
-		Thread.sleep(1000)
+	void testClickOkAndClose() {
+		fixture.textBox("name").enterText "name"
+		fixture.textBox("fields").deleteText()
+		fixture.textBox("fields").enterText "10"
+		fixture.textBox("textField1").enterText "field1"
+		fixture.textBox("textField2").enterText "field2"
+		fixture.textBox("textField3").enterText "field3"
+		fixture.textBox("textField4").enterText "field4"
+		fixture.checkBox("automaticSave").click()
+		fixture.radioButton("colors-BLUE").click()
+		fixture.comboBox("comboBox").selectItem 1
+		fixture.button("ok").click()
+
+		assert preferences.general.name == "name"
+		//assert preferences.general.fields == 10
+		assert preferences.general.automaticSave == true
+		assert preferences.general.colors == Colors.BLUE
+		assert preferences.general.comboBox == "second element"
+		assert preferences.general.group1.textField1 == "field1"
+		assert preferences.general.group1.textField2 == "field2"
+		assert preferences.general.group2.textField3 == "field3"
+		assert preferences.general.group2.textField4 == "field4"
 	}
 }

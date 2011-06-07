@@ -28,7 +28,10 @@ import java.lang.annotation.Target;
 @Retention(RUNTIME)
 public @interface Group {
 
-	String value() default "";
+	/**
+	 * The title of the fields group.
+	 */
+	String title() default "";
 
 	double width() default -1.0;
 

@@ -6,7 +6,7 @@ import javax.swing.AbstractAction
 
 class Button2Action extends AbstractAction {
 
-	def callback
+	def callback = {}
 
 	Button2Action() {
 		super('Apply and Close')

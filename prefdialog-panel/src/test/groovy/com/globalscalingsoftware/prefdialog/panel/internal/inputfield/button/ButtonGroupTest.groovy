@@ -60,4 +60,9 @@ class ButtonGroupTest extends AbstractPreferencePanelTest {
 		fixture.button("button-0-buttons").click()
 		fixture.button("button-1-buttons").click()
 	}
+
+	@Test
+	void testManually() {
+		Thread.sleep 60000
+	}
 }

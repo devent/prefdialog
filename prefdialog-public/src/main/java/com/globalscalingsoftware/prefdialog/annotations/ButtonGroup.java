@@ -27,7 +27,7 @@ public @interface ButtonGroup {
 	/**
 	 * The title of the buttons group.
 	 */
-	String value() default "";
+	String title() default "";
 
 	/**
 	 * The width of the button inside the container.

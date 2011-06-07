@@ -31,8 +31,14 @@ import com.globalscalingsoftware.prefdialog.validators.Validator;
 @Retention(RUNTIME)
 public @interface TextField {
 
-	String value() default "";
+	/**
+	 * The title for the text field.
+	 */
+	String title() default "";
 
+	/**
+	 * The width of the text field inside the container.
+	 */
 	double width() default -1.0;
 
 	Class<? extends Validator<?>> validator() default AlwaysValid.class;

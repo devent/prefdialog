@@ -16,21 +16,21 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.radiobutton
+package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.textfield.formattedtextfield
+
 
 import org.junit.Test
 
 import com.globalscalingsoftware.prefdialog.annotations.Child
-import com.globalscalingsoftware.prefdialog.annotations.RadioButton
+import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.Colors
 
-class RadioButtonNameTest extends AbstractPreferencePanelTest {
+class FormattedTextFieldTitleTest extends AbstractPreferencePanelTest {
 
 	static class General {
 
-		@RadioButton("Some colors")
-		Colors colors = Colors.BLACK
+		@FormattedTextField(title="Number of fields")
+		double fields = 4
 
 		@Override
 		public String toString() {
@@ -51,6 +51,7 @@ class RadioButtonNameTest extends AbstractPreferencePanelTest {
 
 	@Test
 	void testPanelClickApplyAndClose() {
-		assert fixture.label("label-colors").text() == "Some colors: "
+		assert fixture.textBox("fields").text() == "4"
+		assert fixture.label("label-fields").text() == "Number of fields: "
 	}
 }

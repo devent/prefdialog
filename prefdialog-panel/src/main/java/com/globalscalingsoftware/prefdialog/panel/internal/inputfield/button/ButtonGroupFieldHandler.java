@@ -23,14 +23,14 @@ import java.lang.reflect.Field;
 
 import com.globalscalingsoftware.prefdialog.annotations.ButtonGroup;
 import com.globalscalingsoftware.prefdialog.annotations.HorizontalPosition;
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractDefaultFieldHandler;
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractLabelFieldHandler;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.button.LoggerFactory.Logger;
 import com.globalscalingsoftware.prefdialog.reflection.internal.ReflectionToolbox;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 public class ButtonGroupFieldHandler extends
-		AbstractDefaultFieldHandler<ButtonGroupPanel> {
+		AbstractLabelFieldHandler<ButtonGroupPanel> {
 
 	private final Logger log;
 
@@ -46,16 +46,7 @@ public class ButtonGroupFieldHandler extends
 	}
 
 	private void setup() {
-		setupShowTitle();
 		setupHorizontalPosition();
-	}
-
-	private void setupShowTitle() {
-		Annotation a = getField().getAnnotation(ButtonGroup.class);
-		boolean show = reflectionToolbox.invokeMethodWithReturnType(
-				"showTitle", Boolean.class, a);
-		log.setShowTitle(show);
-		getComponent().setShowTitle(show);
 	}
 
 	private void setupHorizontalPosition() {

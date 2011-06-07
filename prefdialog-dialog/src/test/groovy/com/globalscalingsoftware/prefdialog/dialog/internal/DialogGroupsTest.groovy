@@ -67,7 +67,7 @@ class DialogGroupsTest extends AbstractPreferenceDialogFixture {
 			"third element"
 		]
 
-		@ComboBox(value="combobox1", elements="combobox1")
+		@ComboBox(title="combobox1", elements="combobox1")
 		String comboBox = "first element"
 
 		@Override

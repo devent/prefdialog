@@ -13,7 +13,7 @@ import javax.swing.DefaultBoundedRangeModel;
 @Retention(RUNTIME)
 public @interface Slider {
 
-	String value() default "";
+	String title() default "";
 
 	int columns() default 1;
 

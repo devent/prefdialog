@@ -60,7 +60,7 @@ class DialogWidthTest extends AbstractPreferenceDialogFixture {
 			"third element"
 		]
 
-		@ComboBox(value="combobox1", elements="combobox1", width=-2.0d)
+		@ComboBox(title="combobox1", elements="combobox1", width=-2.0d)
 		String comboBox = "first element"
 
 		@Override
