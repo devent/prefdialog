@@ -19,6 +19,8 @@
 package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.textfield.formattedtextfield;
 
 import java.lang.reflect.Field;
+import java.text.DecimalFormat;
+import java.text.Format;
 
 import javax.swing.JFormattedTextField;
 
@@ -37,7 +39,15 @@ public class FormattedTextFieldHandler extends AbstractTextFieldHandler {
 			@Assisted("value") Object value, @Assisted Field field) {
 		super(reflectionToolbox, parentObject, value, field,
 				FormattedTextField.class, new ValidatingFormattedTextField(
-						new JFormattedTextField()));
+						create(field)));
+	}
+
+	private static JFormattedTextField create(Field field) {
+		if (field.getType() == double.class || field.getType() == Double.class) {
+			Format formatter = new DecimalFormat("#.########################");
+			return new JFormattedTextField(formatter);
+		}
+		return new JFormattedTextField();
 	}
 
 	@Override
