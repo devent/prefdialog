@@ -3,11 +3,11 @@
   <parent>
     <artifactId>prefdialog</artifactId>
     <groupId>com.globalscalingsoftware.prefdialog</groupId>
-    <version>1.8-SNAPSHOT</version>
+    <version>1.8</version>
   </parent>
   <groupId>com.globalscalingsoftware.prefdialog</groupId>
   <artifactId>prefdialog-reflection</artifactId>
-  <version>1.8-SNAPSHOT</version>
+  <version>1.8</version>
   <dependencies>
   	<dependency>
   		<groupId>com.google.inject.extensions</groupId>
@@ -22,7 +22,7 @@
   	<dependency>
   		<groupId>com.globalscalingsoftware.prefdialog</groupId>
   		<artifactId>prefdialog-public</artifactId>
-  		<version>1.8-SNAPSHOT</version>
+  		<version>1.8</version>
   		<scope>test</scope>
   	</dependency>
   </dependencies>
