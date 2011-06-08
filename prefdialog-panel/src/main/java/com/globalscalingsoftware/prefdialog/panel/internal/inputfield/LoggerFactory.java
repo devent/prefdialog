@@ -1,8 +1,7 @@
-package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.button;
+package com.globalscalingsoftware.prefdialog.panel.internal.inputfield;
 
 import java.lang.reflect.Field;
 
-import com.globalscalingsoftware.prefdialog.annotations.HorizontalPosition;
 import com.globalscalingsoftware.prefdialog.swingutils.internal.log.AbstractLogger;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -18,11 +17,14 @@ interface LoggerFactory {
 			super(contextClass);
 		}
 
-		public void setHorizontalPosition(Field field,
-				HorizontalPosition position) {
-			log.debug(
-					"Set horizontal position to ``{}'' for the field ``{}''.",
-					position, field);
+		public void setShowTitle(Field field, boolean show) {
+			log.debug("Set show title to ``{}'' for the field ``{}''.", show,
+					field);
+		}
+
+		public void setTitle(Field field, String title) {
+			log.debug("Set the title to ``{}'' for the field ``{}''.", title,
+					field);
 		}
 
 	}

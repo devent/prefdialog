@@ -28,12 +28,12 @@ class CheckboxTitleTest extends AbstractPreferencePanelTest {
 
 	static class General {
 
-		@Checkbox(title="save automatic")
+		@Checkbox(title='Should be save automatically?', text='yes/no')
 		boolean automaticSave = false
 
 		@Override
 		public String toString() {
-			"General"
+			'General'
 		}
 	}
 
@@ -45,15 +45,16 @@ class CheckboxTitleTest extends AbstractPreferencePanelTest {
 
 	def setupPreferences() {
 		preferences = new Preferences()
-		panelName = "General"
+		panelName = 'General'
 	}
 
 	@Test
 	void testPanelClickApplyAndClose() {
-		fixture.checkBox("automaticSave").click()
+		fixture.checkBox('automaticSave').click()
 		panelHandler.applyInput()
 
-		assert fixture.checkBox("automaticSave").text() == "save automatic"
+		assert fixture.label('label-automaticSave').text() == 'Should be save automatically?'
+		assert fixture.checkBox('automaticSave').text() == 'yes/no'
 		assert preferences.general.automaticSave == true
 	}
 }

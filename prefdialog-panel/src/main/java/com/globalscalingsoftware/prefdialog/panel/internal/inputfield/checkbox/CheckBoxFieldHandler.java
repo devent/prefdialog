@@ -18,23 +18,41 @@
  */
 package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.checkbox;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
 import com.globalscalingsoftware.prefdialog.annotations.Checkbox;
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractDefaultFieldHandler;
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractLabelFieldHandler;
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.checkbox.LoggerFactory.Logger;
 import com.globalscalingsoftware.prefdialog.reflection.internal.ReflectionToolbox;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
-public class CheckBoxFieldHandler extends
-		AbstractDefaultFieldHandler<CheckBoxPanel> {
+class CheckBoxFieldHandler extends AbstractLabelFieldHandler<CheckBoxPanel> {
+
+	private final Logger log;
 
 	@Inject
-	CheckBoxFieldHandler(ReflectionToolbox reflectionToolbox,
+	CheckBoxFieldHandler(LoggerFactory loggerFactory,
+			ReflectionToolbox reflectionToolbox,
 			@Assisted("parentObject") Object parentObject,
 			@Assisted("value") Object value, @Assisted Field field) {
 		super(reflectionToolbox, parentObject, value, field, Checkbox.class,
 				new CheckBoxPanel());
+		this.log = loggerFactory.create(CheckBoxFieldHandler.class);
+		setup();
 	}
 
+	private void setup() {
+		setupText();
+	}
+
+	private void setupText() {
+		Class<? extends Annotation> annotationClass = getAnnotationClass();
+		Annotation a = getField().getAnnotation(annotationClass);
+		String text = reflectionToolbox.invokeMethodWithReturnType("text",
+				String.class, a);
+		log.setText(text);
+		getComponent().setText(text);
+	}
 }

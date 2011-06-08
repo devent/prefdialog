@@ -18,39 +18,39 @@
  */
 package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.checkbox
 
-import org.junit.Test;
+import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Checkbox 
-import com.globalscalingsoftware.prefdialog.annotations.Child 
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest;
+import com.globalscalingsoftware.prefdialog.annotations.Checkbox
+import com.globalscalingsoftware.prefdialog.annotations.Child
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest
 
 class CheckboxReadOnlyTest extends AbstractPreferencePanelTest {
-	
+
 	static class General {
-		
+
 		@Checkbox(readonly=true)
-		boolean automaticSave = false
-		
+		boolean automaticSave = true
+
 		@Override
 		public String toString() {
 			"General"
 		}
 	}
-	
+
 	static class Preferences {
-		
+
 		@Child
 		General general = new General()
 	}
-	
+
 	def setupPreferences() {
 		preferences = new Preferences()
 		panelName = "General"
 	}
-	
+
 	@Test
 	void testPanelClickApplyAndClose() {
 		fixture.checkBox("automaticSave").requireDisabled()
-		fixture.checkBox("automaticSave").requireNotSelected()
+		fixture.checkBox("automaticSave").requireSelected()
 	}
 }

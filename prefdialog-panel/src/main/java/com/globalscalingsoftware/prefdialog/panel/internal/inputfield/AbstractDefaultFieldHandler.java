@@ -29,8 +29,15 @@ import com.globalscalingsoftware.prefdialog.reflection.internal.ReflectionToolbo
 import com.globalscalingsoftware.prefdialog.swingutils.internal.AbstractFieldHandler;
 
 /**
- * Setups the width, name, title and read only property read from the field
- * annotation.
+ * Reads the common annotation attributes from the field and sets them to the
+ * FieldComponent.
+ * 
+ * The common attributes are:
+ * <ul>
+ * <li>name</li>
+ * <li>width</li>
+ * <li>readonly</li>
+ * </ul>
  * 
  * @param <FieldComponentType>
  *            the type of the underlying {@link FieldComponent}.
@@ -59,7 +66,6 @@ public abstract class AbstractDefaultFieldHandler<FieldComponentType extends Fie
 		Class<? extends Annotation> annotationClass = getAnnotationClass();
 		setupComponentWidth(field, annotationClass);
 		setupComponentName(field);
-		setupComponentTitle(field, annotationClass);
 		setupComponentReadOnly(field, annotationClass);
 	}
 
@@ -75,22 +81,6 @@ public abstract class AbstractDefaultFieldHandler<FieldComponentType extends Fie
 		String name = field.getName();
 		l.debug("Set the name to {} for field {}.", name, field);
 		setComponentName(name);
-	}
-
-	private void setupComponentTitle(Field field,
-			Class<? extends Annotation> annotationClass) {
-		String title = getValueFromAnnotationIn("title", String.class, field,
-				annotationClass);
-		title = defaultTitleIfNameNotSet(title, field);
-		l.debug("Set the title to {} for field {}.", title, field);
-		setComponentTitle(title);
-	}
-
-	private String defaultTitleIfNameNotSet(String title, Field field) {
-		if (title.isEmpty()) {
-			title = field.getName();
-		}
-		return title;
 	}
 
 	private void setupComponentWidth(Field field,

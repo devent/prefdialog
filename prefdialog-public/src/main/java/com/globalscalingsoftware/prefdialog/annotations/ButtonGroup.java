@@ -25,11 +25,6 @@ import javax.swing.JButton;
 public @interface ButtonGroup {
 
 	/**
-	 * The title of the buttons group.
-	 */
-	String title() default "";
-
-	/**
 	 * The width of the button inside the container.
 	 */
 	double width() default -1.0d;
@@ -41,7 +36,13 @@ public @interface ButtonGroup {
 	boolean readonly() default false;
 
 	/**
-	 * If the title of the buttons group should be visible or not.
+	 * The title of the buttons group. The title is shown above of the buttons
+	 * group and should contain a description.
+	 */
+	String title() default "";
+
+	/**
+	 * If the title of the should be visible or not.
 	 */
 	boolean showTitle() default false;
 

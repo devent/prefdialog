@@ -55,7 +55,7 @@ public abstract class AbstractLabelFieldPanel<FieldType extends JComponent>
 
 	@Override
 	public void setTitle(String title) {
-		label.setText(title + ": ");
+		label.setText(title);
 	}
 
 	public void setLabelText(String text) {

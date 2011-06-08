@@ -54,7 +54,7 @@ public class ButtonGroupFieldHandler extends
 		HorizontalPosition position = reflectionToolbox
 				.invokeMethodWithReturnType("horizontalPosition",
 						HorizontalPosition.class, a);
-		log.setHorizontalPosition(position);
+		log.setHorizontalPosition(getField(), position);
 		getComponent().setHorizontalPosition(position);
 	}
 }

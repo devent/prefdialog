@@ -3,8 +3,7 @@ package com.globalscalingsoftware.prefdialog.panel.internal.inputfield;
 import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.LoggerFactory.Logger;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.button.ButtonModule;
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.checkbox.CheckBoxFieldHandler;
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.checkbox.CheckBoxFieldHandlerFactory;
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.checkbox.CheckboxModule;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.child.ChildFieldHandler;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.child.ChildFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.child.group.GroupFieldHandler;
@@ -31,6 +30,7 @@ public class FieldHandlersModule extends AbstractModule {
 	protected void configure() {
 		requestStaticInjection(AbstractLabelFieldHandler.class);
 		install(new ButtonModule());
+		install(new CheckboxModule());
 		install(new FactoryModuleBuilder()
 				.implement(Logger.class, Logger.class).build(
 						LoggerFactory.class));
@@ -45,10 +45,6 @@ public class FieldHandlersModule extends AbstractModule {
 				new TypeLiteral<FieldHandler<?>>() {
 				}, RadioButtonFieldHandler.class).build(
 				RadioButtonFieldHandlerFactory.class));
-		install(new FactoryModuleBuilder().implement(
-				new TypeLiteral<FieldHandler<?>>() {
-				}, CheckBoxFieldHandler.class).build(
-				CheckBoxFieldHandlerFactory.class));
 		install(new FactoryModuleBuilder().implement(
 				new TypeLiteral<FieldHandler<?>>() {
 				}, ComboBoxFieldHandler.class).build(

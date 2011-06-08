@@ -33,18 +33,13 @@ import javax.swing.JCheckBox;
  * Example:
  * 
  * <pre>
- * &#064;Checkbox(&quot;Is Important&quot;)
+ * &#064;Checkbox(text = &quot;Is Important&quot;)
  * private boolean isImportant;
  * </pre>
  */
 @Target(FIELD)
 @Retention(RUNTIME)
 public @interface Checkbox {
-
-	/**
-	 * The text of the checkbox.
-	 */
-	String title() default "";
 
 	/**
 	 * The width of the checkbox inside the container.
@@ -56,4 +51,22 @@ public @interface Checkbox {
 	 * information for the user without that the user can modify the value.
 	 */
 	boolean readonly() default false;
+
+	/**
+	 * The title of the check box. The title is shown above of the check box and
+	 * should contain a description.
+	 */
+	String title() default "";
+
+	/**
+	 * If the title of the should be visible or not.
+	 */
+	boolean showTitle() default true;
+
+	/**
+	 * The text of the check box. The text is usually shown right next of the
+	 * check box.
+	 */
+	String text() default "";
+
 }

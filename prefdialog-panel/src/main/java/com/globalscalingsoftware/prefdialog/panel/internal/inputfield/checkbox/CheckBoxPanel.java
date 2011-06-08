@@ -20,9 +20,9 @@ package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.checkbox;
 
 import javax.swing.JCheckBox;
 
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractFieldComponent;
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractLabelFieldPanel;
 
-class CheckBoxPanel extends AbstractFieldComponent<JCheckBox> {
+class CheckBoxPanel extends AbstractLabelFieldPanel<JCheckBox> {
 
 	public CheckBoxPanel() {
 		super(new JCheckBox());
@@ -32,19 +32,18 @@ class CheckBoxPanel extends AbstractFieldComponent<JCheckBox> {
 	private void setup() {
 	}
 
-	@Override
-	public void setTitle(String title) {
-		getField().setText(title);
+	public void setText(String title) {
+		getPanelField().setText(title);
 	}
 
 	@Override
 	public void setValue(Object value) {
-		getField().setSelected((Boolean) value);
+		getPanelField().setSelected((Boolean) value);
 	}
 
 	@Override
 	public Object getValue() {
-		return getField().isSelected();
+		return getPanelField().isSelected();
 	}
 
 	@Override
