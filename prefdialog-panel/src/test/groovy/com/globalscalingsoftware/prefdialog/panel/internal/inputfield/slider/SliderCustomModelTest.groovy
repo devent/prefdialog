@@ -32,33 +32,7 @@ class SliderCustomModelTest extends AbstractPreferencePanelTest {
 	static class CustomModel extends DefaultBoundedRangeModel {
 
 		CustomModel() {
-			super(2, 1, 2, 1025)
-		}
-
-		@Override
-		void setMinimum(int arg0) {
-		}
-
-		@Override
-		int getMinimum() {
-			return 2
-		}
-
-		@Override
-		void setMaximum(int arg0) {
-		}
-
-		@Override
-		int getMaximum() {
-			return 1025
-		}
-
-		void setExtent(int arg0) {
-		}
-
-		@Override
-		public int getExtent() {
-			return 1
+			super(32, 0, 2, 1024)
 		}
 
 		@Override
@@ -83,7 +57,7 @@ class SliderCustomModelTest extends AbstractPreferencePanelTest {
 
 		@Override
 		public String toString() {
-			"General"
+			'General'
 		}
 	}
 
@@ -95,27 +69,32 @@ class SliderCustomModelTest extends AbstractPreferencePanelTest {
 
 	def setupPreferences() {
 		preferences = new Preferences()
-		panelName = "General"
+		panelName = 'General'
 	}
 
 	@Test
 	void testMinimum() {
-		fixture.slider("slider").slideToMinimum()
+		fixture.slider('slider').slideToMinimum()
+		panelHandler.applyInput()
+		assert preferences.general.slider == 2
 	}
 
 	@Test
 	void testMaximum() {
-		fixture.slider("slider").slideToMaximum()
+		fixture.slider('slider').slideToMaximum()
 		panelHandler.applyInput()
-
 		assert preferences.general.slider == 1024
 	}
 
 	@Test
 	void testRandomValue() {
-		fixture.slider("slider").slideTo 35
+		fixture.slider('slider').slideTo 35
 		panelHandler.applyInput()
-
 		assert preferences.general.slider == 64
+	}
+
+	@Test
+	void testManually() {
+		//Thread.sleep 60000
 	}
 }

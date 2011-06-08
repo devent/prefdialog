@@ -19,18 +19,25 @@
 package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.slider
 
 
+
 import org.junit.Test
 
 import com.globalscalingsoftware.prefdialog.annotations.Child
 import com.globalscalingsoftware.prefdialog.annotations.Slider
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest
 
-class SliderReadOnlyTest extends AbstractPreferencePanelTest {
+class SliderTitleTest extends AbstractPreferencePanelTest {
 
 	static class General {
 
-		@Slider(readonly=true)
-		int slider = 50
+		@Slider
+		int slider1 = 0
+
+		@Slider(title='Some slider')
+		int slider2 = 0
+
+		@Slider(showTitle=false)
+		int slider3 = 0
 
 		@Override
 		public String toString() {
@@ -50,7 +57,8 @@ class SliderReadOnlyTest extends AbstractPreferencePanelTest {
 	}
 
 	@Test
-	void testPanelClickApplyAndClose() {
-		fixture.slider('slider').requireDisabled()
+	void testField() {
+		assert fixture.label('label-slider1').text() == 'slider1'
+		assert fixture.label('label-slider2').text() == 'Some slider'
 	}
 }

@@ -25,28 +25,35 @@ import javax.swing.BoundedRangeModel;
 import javax.swing.DefaultBoundedRangeModel;
 
 import com.globalscalingsoftware.prefdialog.annotations.Slider;
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractDefaultFieldHandler;
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractLabelFieldHandler;
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.slider.LoggerFactory.Logger;
 import com.globalscalingsoftware.prefdialog.reflection.internal.ReflectionToolbox;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
-public class SliderFieldHandler extends
-		AbstractDefaultFieldHandler<SliderPanel> {
+class SliderFieldHandler extends AbstractLabelFieldHandler<SliderPanel> {
+
+	private final Logger log;
 
 	@Inject
-	SliderFieldHandler(ReflectionToolbox reflectionToolbox,
+	SliderFieldHandler(LoggerFactory loggerFactory,
+			ReflectionToolbox reflectionToolbox,
 			@Assisted("parentObject") Object parentObject,
 			@Assisted("value") Object value, @Assisted Field field) {
 		super(reflectionToolbox, parentObject, value, field, Slider.class,
 				new SliderPanel());
+		this.log = loggerFactory.create(SliderFieldHandler.class);
 		setup();
 	}
 
 	private void setup() {
-		setupCustomModel();
-		setupMin();
-		setupMax();
-		setupExtent();
+		if (isCustomModelSet()) {
+			setupCustomModel();
+		} else {
+			setupMin();
+			setupMax();
+			setupExtent();
+		}
 		setupMajorTicks();
 		setupMinorTicks();
 		setupPaintLabels();
@@ -55,79 +62,91 @@ public class SliderFieldHandler extends
 		setupSnapToTicks();
 	}
 
+	private boolean isCustomModelSet() {
+		Class<? extends BoundedRangeModel> modelClass = getModelClass();
+		return modelClass != DefaultBoundedRangeModel.class;
+	}
+
 	private void setupExtent() {
 		int extent = getValueFromAnnotation("extent", Integer.class);
+		log.setExtent(getField(), extent);
 		getComponent().setExtent(extent);
 	}
 
 	private void setupCustomModel() {
-		@SuppressWarnings("unchecked")
-		Class<? extends BoundedRangeModel> modelClass = getValueFromAnnotation(
-				"model", Class.class);
-		BoundedRangeModel model = createNewInstance(modelClass);
+		Class<? extends BoundedRangeModel> modelClass = getModelClass();
+		BoundedRangeModel model = createNewModel(modelClass);
+		log.setModel(getField(), model);
 		getComponent().setModel(model);
 	}
 
-	private BoundedRangeModel createNewInstance(
+	@SuppressWarnings("unchecked")
+	private Class<? extends BoundedRangeModel> getModelClass() {
+		return getValueFromAnnotation("model", Class.class);
+	}
+
+	private BoundedRangeModel createNewModel(
 			Class<? extends BoundedRangeModel> modelClass) {
 		try {
 			return modelClass.newInstance();
 		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
-		return new DefaultBoundedRangeModel();
 	}
 
 	private void setupMin() {
 		int min = getValueFromAnnotation("min", Integer.class);
+		log.setMin(getField(), min);
 		getComponent().setMin(min);
 	}
 
 	private void setupMax() {
 		int max = getValueFromAnnotation("max", Integer.class);
+		log.setMax(getField(), max);
 		getComponent().setMax(max);
 	}
 
 	private void setupMajorTicks() {
 		int value = getValueFromAnnotation("majorTicks", Integer.class);
+		log.setMajorTicks(getField(), value);
 		getComponent().setMajorTicks(value);
 	}
 
 	private void setupMinorTicks() {
 		int value = getValueFromAnnotation("minorTicks", Integer.class);
+		log.setMinorTicks(getField(), value);
 		getComponent().setMinorTicks(value);
 	}
 
 	private void setupPaintTicks() {
 		boolean value = getValueFromAnnotation("paintTicks", Boolean.class);
+		log.setPaintTicks(getField(), value);
 		getComponent().setPaintTicks(value);
 	}
 
 	private void setupPaintLabels() {
 		boolean value = getValueFromAnnotation("paintLabels", Boolean.class);
+		log.setPaintLabels(getField(), value);
 		getComponent().setPaintLabels(value);
 	}
 
 	private void setupPaintTrack() {
 		boolean value = getValueFromAnnotation("paintTrack", Boolean.class);
+		log.setPaintTrack(getField(), value);
 		getComponent().setPaintTrack(value);
 	}
 
 	private void setupSnapToTicks() {
 		boolean value = getValueFromAnnotation("snapToTicks", Boolean.class);
+		log.setSnapToTicks(getField(), value);
 		getComponent().setSnapToTicks(value);
 	}
 
-	private <T> T getValueFromAnnotation(String name, Class<T> returnType) {
-		Field field = getField();
-		Class<? extends Annotation> annotationClass = getAnnotationClass();
-		T value = getValueFromAnnotationIn(name, returnType, field,
-				annotationClass);
-		return value;
+	private <T> T getValueFromAnnotation(String name, Class<T> classType) {
+		Annotation a = getField().getAnnotation(Slider.class);
+		return reflectionToolbox.invokeMethodWithReturnType(name, classType, a);
 	}
 
 }

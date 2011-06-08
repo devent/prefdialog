@@ -35,7 +35,7 @@ class SliderTest extends AbstractPreferencePanelTest {
 
 		@Override
 		public String toString() {
-			"General"
+			'General'
 		}
 	}
 
@@ -47,17 +47,12 @@ class SliderTest extends AbstractPreferencePanelTest {
 
 	def setupPreferences() {
 		preferences = new Preferences()
-		panelName = "General"
-	}
-
-	@Test
-	void testField() {
-		assert fixture.label("label-slider").text() == "slider: "
+		panelName = 'General'
 	}
 
 	@Test
 	void testPanelClickApply() {
-		fixture.slider("slider").slideTo 55
+		fixture.slider('slider').slideTo 55
 		panelHandler.applyInput()
 
 		assert preferences.general.slider == 55
@@ -65,7 +60,7 @@ class SliderTest extends AbstractPreferencePanelTest {
 
 	@Test
 	void testPanelClickRestore() {
-		fixture.slider("slider").slideTo 55
+		fixture.slider('slider').slideTo 55
 		panelHandler.restoreInput()
 
 		assert preferences.general.slider == 0

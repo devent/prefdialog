@@ -19,40 +19,40 @@
 package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.slider
 
 
-import org.junit.Test;
+import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child;
-import com.globalscalingsoftware.prefdialog.annotations.Slider 
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest;
+import com.globalscalingsoftware.prefdialog.annotations.Child
+import com.globalscalingsoftware.prefdialog.annotations.Slider
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest
 
 class SliderPaintTicksTest extends AbstractPreferencePanelTest {
-	
+
 	static class General {
-		
+
 		@Slider(paintTicks=true, majorTicks=10, minorTicks=1)
 		int slider = 50
-		
+
 		@Override
 		public String toString() {
-			"General"
+			'General'
 		}
 	}
-	
+
 	static class Preferences {
-		
+
 		@Child
 		General general = new General()
 	}
-	
+
 	def setupPreferences() {
 		preferences = new Preferences()
-		panelName = "General"
+		panelName = 'General'
 	}
-	
+
 	@Test
 	void testPanelClickApplyAndClose() {
-		assert fixture.slider("slider").component().paintTicks == true
-		assert fixture.slider("slider").component().majorTickSpacing == 10
-		assert fixture.slider("slider").component().minorTickSpacing == 1
+		assert fixture.slider('slider').component().paintTicks == true
+		assert fixture.slider('slider').component().majorTickSpacing == 10
+		assert fixture.slider('slider').component().minorTickSpacing == 1
 	}
 }

@@ -29,12 +29,12 @@ class SliderMaxTest extends AbstractPreferencePanelTest {
 
 	static class General {
 
-		@Slider(max=210)
+		@Slider(max=200)
 		int slider = 50
 
 		@Override
 		public String toString() {
-			"General"
+			'General'
 		}
 	}
 
@@ -46,12 +46,12 @@ class SliderMaxTest extends AbstractPreferencePanelTest {
 
 	def setupPreferences() {
 		preferences = new Preferences()
-		panelName = "General"
+		panelName = 'General'
 	}
 
 	@Test
 	void testPanelClickApplyAndClose() {
-		fixture.slider("slider").slideToMaximum()
+		fixture.slider('slider').slideToMaximum()
 		panelHandler.applyInput()
 
 		assert preferences.general.slider == 200

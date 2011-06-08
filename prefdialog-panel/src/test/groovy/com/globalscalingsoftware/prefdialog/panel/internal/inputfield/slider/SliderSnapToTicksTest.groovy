@@ -34,7 +34,7 @@ class SliderSnapToTicksTest extends AbstractPreferencePanelTest {
 
 		@Override
 		public String toString() {
-			"General"
+			'General'
 		}
 	}
 
@@ -46,13 +46,13 @@ class SliderSnapToTicksTest extends AbstractPreferencePanelTest {
 
 	def setupPreferences() {
 		preferences = new Preferences()
-		panelName = "General"
+		panelName = 'General'
 	}
 
 	@Test
 	void testPanelClickApplyAndClose() {
-		assert fixture.slider("slider").component().snapToTicks == true
-		fixture.slider("slider").slideTo 55
+		assert fixture.slider('slider').component().snapToTicks == true
+		fixture.slider('slider').slideTo 55
 		panelHandler.applyInput()
 
 		assert preferences.general.slider == 55
