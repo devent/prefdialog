@@ -16,12 +16,26 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.textfield;
+package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.textfield.shared;
 
-import java.util.EventListener;
 
-interface ValidListener extends EventListener {
+class ValidEvent {
 
-	void validChanged(ValidEvent validEvent);
+	private final ValidatingTextField<?> textField;
+
+	private final boolean editValid;
+
+	public ValidEvent(ValidatingTextField<?> textField, boolean editValid) {
+		this.textField = textField;
+		this.editValid = editValid;
+	}
+
+	public ValidatingTextField<?> getTextField() {
+		return textField;
+	}
+
+	public boolean isEditValid() {
+		return editValid;
+	}
 
 }

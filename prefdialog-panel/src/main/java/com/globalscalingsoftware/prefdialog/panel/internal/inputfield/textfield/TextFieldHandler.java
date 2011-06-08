@@ -23,18 +23,22 @@ import java.lang.reflect.Field;
 import javax.swing.JTextField;
 
 import com.globalscalingsoftware.prefdialog.annotations.TextField;
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.textfield.shared.AbstractTextFieldHandler;
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.textfield.shared.ValidatingTextField;
 import com.globalscalingsoftware.prefdialog.reflection.internal.ReflectionToolbox;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
-public class TextFieldHandler extends AbstractTextFieldHandler {
+class TextFieldHandler extends AbstractTextFieldHandler {
 
 	@Inject
-	TextFieldHandler(ReflectionToolbox reflectionToolbox,
+	TextFieldHandler(LoggerFactory loggerFactory,
+			ReflectionToolbox reflectionToolbox,
 			@Assisted("parentObject") Object parentObject,
 			@Assisted("value") Object value, @Assisted Field field) {
-		super(reflectionToolbox, parentObject, value, field, TextField.class,
-				new ValidatingTextField<JTextField>(new JTextField()));
+		super(loggerFactory, reflectionToolbox, parentObject, value, field,
+				TextField.class, new ValidatingTextField<JTextField>(
+						new JTextField()));
 	}
 
 }

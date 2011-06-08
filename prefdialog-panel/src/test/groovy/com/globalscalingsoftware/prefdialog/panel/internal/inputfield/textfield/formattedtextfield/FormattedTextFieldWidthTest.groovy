@@ -34,7 +34,7 @@ class FormattedTextFieldWidthTest extends AbstractPreferencePanelTest {
 
 		@Override
 		public String toString() {
-			"General"
+			'General'
 		}
 	}
 
@@ -47,17 +47,16 @@ class FormattedTextFieldWidthTest extends AbstractPreferencePanelTest {
 
 	def setupPreferences() {
 		preferences = new Preferences()
-		panelName = "General"
+		panelName = 'General'
 	}
 
 	@Test
 	void testPanelClickApplyAndClose() {
-		assert fixture.label("label-fields").text() == "fields: "
-		fixture.textBox("fields").deleteText()
-		fixture.textBox("fields").enterText "10"
+		fixture.textBox('fields').deleteText()
+		fixture.textBox('fields').enterText '10'
 		panelHandler.applyInput()
 
-		assert fixture.textBox("fields").text() == "10"
+		assert fixture.textBox('fields').text() == '10'
 		assert preferences.general.fields == 10
 	}
 }

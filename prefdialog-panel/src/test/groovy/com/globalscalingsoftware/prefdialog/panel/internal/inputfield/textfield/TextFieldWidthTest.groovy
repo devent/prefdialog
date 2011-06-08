@@ -29,11 +29,11 @@ class TextFieldWidthTest extends AbstractPreferencePanelTest {
 	static class General {
 
 		@TextField(width=-2.0d)
-		String name = ""
+		String name = ''
 
 		@Override
 		public String toString() {
-			"General"
+			'General'
 		}
 	}
 
@@ -46,15 +46,15 @@ class TextFieldWidthTest extends AbstractPreferencePanelTest {
 
 	def setupPreferences() {
 		preferences = new Preferences()
-		panelName = "General"
+		panelName = 'General'
 	}
 
 	@Test
 	void testEnterTextAndApply() {
-		fixture.textBox("name").enterText "test"
+		fixture.textBox('name').enterText 'test'
 		panelHandler.applyInput()
 
-		assert fixture.textBox("name").text() == "test"
-		assert preferences.general.name == "test"
+		assert fixture.textBox('name').text() == 'test'
+		assert preferences.general.name == 'test'
 	}
 }

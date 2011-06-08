@@ -30,25 +30,25 @@ class TextFieldGroupTest extends AbstractPreferencePanelTest {
 	static class Group1 {
 
 		@TextField
-		String textField1 = ""
+		String textField1 = ''
 
 		@TextField
-		String textField2 = ""
+		String textField2 = ''
 	}
 
 	static class Group2 {
 
 		@TextField
-		String textField3 = ""
+		String textField3 = ''
 
 		@TextField
-		String textField4 = ""
+		String textField4 = ''
 	}
 
 	static class General {
 
 		@TextField
-		String preGroup = ""
+		String preGroup = ''
 
 		@Group
 		Group1 group1 = new Group1()
@@ -58,7 +58,7 @@ class TextFieldGroupTest extends AbstractPreferencePanelTest {
 
 		@Override
 		public String toString() {
-			"General"
+			'General'
 		}
 	}
 
@@ -71,28 +71,28 @@ class TextFieldGroupTest extends AbstractPreferencePanelTest {
 
 	def setupPreferences() {
 		preferences = new Preferences()
-		panelName = "General"
+		panelName = 'General'
 	}
 
 	@Test
 	void testEnterTextAndApply() {
-		fixture.textBox("textField1").deleteText()
-		fixture.textBox("textField1").enterText "test1"
-		fixture.textBox("textField2").deleteText()
-		fixture.textBox("textField2").enterText "test2"
-		fixture.textBox("textField3").deleteText()
-		fixture.textBox("textField3").enterText "test3"
-		fixture.textBox("textField4").deleteText()
-		fixture.textBox("textField4").enterText "test4"
+		fixture.textBox('textField1').deleteText()
+		fixture.textBox('textField1').enterText 'test1'
+		fixture.textBox('textField2').deleteText()
+		fixture.textBox('textField2').enterText 'test2'
+		fixture.textBox('textField3').deleteText()
+		fixture.textBox('textField3').enterText 'test3'
+		fixture.textBox('textField4').deleteText()
+		fixture.textBox('textField4').enterText 'test4'
 		panelHandler.applyInput()
 
-		assert fixture.textBox("textField1").text() == "test1"
-		assert preferences.general.group1.textField1 == "test1"
-		assert fixture.textBox("textField2").text() == "test2"
-		assert preferences.general.group1.textField2 == "test2"
-		assert fixture.textBox("textField3").text() == "test3"
-		assert preferences.general.group2.textField3 == "test3"
-		assert fixture.textBox("textField4").text() == "test4"
-		assert preferences.general.group2.textField4 == "test4"
+		assert fixture.textBox('textField1').text() == 'test1'
+		assert preferences.general.group1.textField1 == 'test1'
+		assert fixture.textBox('textField2').text() == 'test2'
+		assert preferences.general.group1.textField2 == 'test2'
+		assert fixture.textBox('textField3').text() == 'test3'
+		assert preferences.general.group2.textField3 == 'test3'
+		assert fixture.textBox('textField4').text() == 'test4'
+		assert preferences.general.group2.textField4 == 'test4'
 	}
 }

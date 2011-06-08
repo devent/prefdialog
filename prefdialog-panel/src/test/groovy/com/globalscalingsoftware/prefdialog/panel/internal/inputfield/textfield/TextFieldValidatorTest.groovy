@@ -36,12 +36,12 @@ class TextFieldValidatorTest extends AbstractPreferencePanelTest {
 
 	static class General {
 
-		@TextField(validator=StringValidator, validatorText="Can not be empty")
-		String name = ""
+		@TextField(validator=StringValidator, validatorText='Can not be empty')
+		String name = ''
 
 		@Override
 		public String toString() {
-			"General"
+			'General'
 		}
 	}
 
@@ -53,23 +53,22 @@ class TextFieldValidatorTest extends AbstractPreferencePanelTest {
 
 	def setupPreferences() {
 		preferences = new Preferences()
-		panelName = "General"
+		panelName = 'General'
 	}
 
 	@Test
 	void testEnterInvalidTextAndApply() {
-		fixture.textBox("name").selectAll()
-		fixture.textBox("name").enterText " "
-		fixture.textBox("name").requireToolTip "<html><strong>name</strong> - Can not be empty</html>"
-		assert fixture.label("label-name").text() == "name: "
+		fixture.textBox('name').selectAll()
+		fixture.textBox('name').enterText ' '
+		fixture.textBox('name').requireToolTip '<html><strong>name</strong> - Can not be empty</html>'
 	}
 
 	@Test
 	void testEnterValidTextAndApply() {
-		fixture.textBox("name").enterText "test"
+		fixture.textBox('name').enterText 'test'
 		panelHandler.applyInput()
 
-		assert fixture.textBox("name").text() == "test"
-		assert preferences.general.name == "test"
+		assert fixture.textBox('name').text() == 'test'
+		assert preferences.general.name == 'test'
 	}
 }

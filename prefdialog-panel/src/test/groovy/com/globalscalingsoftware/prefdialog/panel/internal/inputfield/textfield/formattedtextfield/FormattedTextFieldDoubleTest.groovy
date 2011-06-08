@@ -33,7 +33,7 @@ class FormattedTextFieldDoubleTest extends AbstractPreferencePanelTest {
 		double decimal = 0d
 
 		@FormattedTextField
-		Double decimal_second = 0d
+		double decimal_second = 0d
 
 		@Override
 		public String toString() {
@@ -59,11 +59,11 @@ class FormattedTextFieldDoubleTest extends AbstractPreferencePanelTest {
 		panelHandler.applyInput()
 
 		assert fixture.textBox('decimal').text() == '0.001'
-		assert preferences.general.decimal == 0.001d
+		assert preferences.general.decimal == 0.001
 	}
 
 	@Test
 	void testManually() {
-		Thread.sleep 60000
+		//Thread.sleep 60000
 	}
 }

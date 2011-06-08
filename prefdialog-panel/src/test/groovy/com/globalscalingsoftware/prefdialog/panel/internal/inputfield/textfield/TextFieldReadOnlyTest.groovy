@@ -18,39 +18,39 @@
  */
 package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.textfield
 
-import org.junit.Test;
+import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child;
-import com.globalscalingsoftware.prefdialog.annotations.TextField 
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest;
+import com.globalscalingsoftware.prefdialog.annotations.Child
+import com.globalscalingsoftware.prefdialog.annotations.TextField
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest
 
 class TextFieldReadOnlyTest extends AbstractPreferencePanelTest {
-	
+
 	static class General {
-		
+
 		@TextField(readonly=true)
-		String name = "Erwin Mueller"
-		
+		String name = 'Erwin Mueller'
+
 		@Override
 		public String toString() {
-			"General"
+			'General'
 		}
 	}
-	
+
 	static class Preferences {
-		
+
 		@Child
 		General general = new General()
 	}
-	
+
 	def setupPreferences() {
 		preferences = new Preferences()
-		panelName = "General"
+		panelName = 'General'
 	}
-	
+
 	@Test
 	void testPanelClickApplyAndClose() {
-		fixture.textBox("name").requireDisabled()
-		fixture.textBox("name").requireText("Erwin Mueller")
+		fixture.textBox('name').requireDisabled()
+		fixture.textBox('name').requireText('Erwin Mueller')
 	}
 }

@@ -22,7 +22,7 @@ import java.text.ParseException;
 
 import javax.swing.JFormattedTextField;
 
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.textfield.ValidatingTextField;
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.textfield.shared.ValidatingTextField;
 
 public class ValidatingFormattedTextField extends
 		ValidatingTextField<JFormattedTextField> {

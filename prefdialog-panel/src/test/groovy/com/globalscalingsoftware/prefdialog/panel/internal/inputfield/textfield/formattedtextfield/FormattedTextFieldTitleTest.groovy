@@ -29,12 +29,18 @@ class FormattedTextFieldTitleTest extends AbstractPreferencePanelTest {
 
 	static class General {
 
-		@FormattedTextField(title="Number of fields")
-		double fields = 4
+		@FormattedTextField
+		double fields1 = 4
+
+		@FormattedTextField(title='Number of fields')
+		double fields2 = 4
+
+		@FormattedTextField(showTitle=false)
+		double fields3 = 4
 
 		@Override
 		public String toString() {
-			"General"
+			'General'
 		}
 	}
 
@@ -46,12 +52,15 @@ class FormattedTextFieldTitleTest extends AbstractPreferencePanelTest {
 
 	def setupPreferences() {
 		preferences = new Preferences()
-		panelName = "General"
+		panelName = 'General'
 	}
 
 	@Test
 	void testPanelClickApplyAndClose() {
-		assert fixture.textBox("fields").text() == "4"
-		assert fixture.label("label-fields").text() == "Number of fields: "
+		assert fixture.textBox('fields1').text() == '4'
+		assert fixture.label('label-fields1').text() == 'fields1'
+		assert fixture.textBox('fields2').text() == '4'
+		assert fixture.label('label-fields2').text() == 'Number of fields'
+		assert fixture.textBox('fields3').text() == '4'
 	}
 }

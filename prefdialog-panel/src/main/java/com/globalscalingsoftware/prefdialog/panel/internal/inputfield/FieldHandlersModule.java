@@ -12,10 +12,8 @@ import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.combobox.C
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.filechooser.FileChooserModule;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.radiobutton.RadioButtonModule;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.slider.SliderModule;
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.textfield.TextFieldHandler;
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.textfield.TextFieldHandlerFactory;
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.textfield.formattedtextfield.FormattedTextFieldHandler;
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.textfield.formattedtextfield.FormattedTextFieldHandlerFactory;
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.textfield.TextFieldModule;
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.textfield.formattedtextfield.FormattedTextFieldModule;
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
@@ -31,16 +29,11 @@ public class FieldHandlersModule extends AbstractModule {
 		install(new FileChooserModule());
 		install(new RadioButtonModule());
 		install(new SliderModule());
+		install(new TextFieldModule());
+		install(new FormattedTextFieldModule());
 		install(new FactoryModuleBuilder()
 				.implement(Logger.class, Logger.class).build(
 						LoggerFactory.class));
-		install(new FactoryModuleBuilder().implement(
-				new TypeLiteral<FieldHandler<?>>() {
-				}, TextFieldHandler.class).build(TextFieldHandlerFactory.class));
-		install(new FactoryModuleBuilder().implement(
-				new TypeLiteral<FieldHandler<?>>() {
-				}, FormattedTextFieldHandler.class).build(
-				FormattedTextFieldHandlerFactory.class));
 		install(new FactoryModuleBuilder().implement(
 				new TypeLiteral<FieldHandler<?>>() {
 				}, ChildFieldHandler.class).build(

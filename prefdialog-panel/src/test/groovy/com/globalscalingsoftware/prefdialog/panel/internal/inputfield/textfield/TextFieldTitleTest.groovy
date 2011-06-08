@@ -28,12 +28,18 @@ class TextFieldTitleTest extends AbstractPreferencePanelTest {
 
 	static class General {
 
-		@TextField(title="Project name")
-		String name = ""
+		@TextField
+		String name1 = ''
+
+		@TextField(title='Project name')
+		String name2 = ''
+
+		@TextField(showTitle=false)
+		String name3 = ''
 
 		@Override
 		public String toString() {
-			"General"
+			'General'
 		}
 	}
 
@@ -45,11 +51,14 @@ class TextFieldTitleTest extends AbstractPreferencePanelTest {
 
 	def setupPreferences() {
 		preferences = new Preferences()
-		panelName = "General"
+		panelName = 'General'
 	}
 
 	@Test
 	void testComponents() {
-		assert fixture.label("label-name").text() == "Project name: "
+		fixture.textBox('name1').requireVisible()
+		assert fixture.label('label-name1').text() == 'name1'
+		fixture.textBox('name2').requireVisible()
+		assert fixture.label('label-name2').text() == 'Project name'
 	}
 }

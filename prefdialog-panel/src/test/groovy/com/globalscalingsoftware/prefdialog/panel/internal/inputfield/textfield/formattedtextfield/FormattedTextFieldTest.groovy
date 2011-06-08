@@ -34,7 +34,7 @@ class FormattedTextFieldTest extends AbstractPreferencePanelTest {
 
 		@Override
 		public String toString() {
-			"General"
+			'General'
 		}
 	}
 
@@ -46,34 +46,26 @@ class FormattedTextFieldTest extends AbstractPreferencePanelTest {
 
 	def setupPreferences() {
 		preferences = new Preferences()
-		panelName = "General"
-	}
-
-	@Test
-	void testComponents() {
-		fixture.label("label-fields").requireVisible()
-		assert fixture.label("label-fields").text() == "fields: "
-		fixture.textBox("fields").requireVisible()
-		assert fixture.textBox("fields").text() == "4"
+		panelName = 'General'
 	}
 
 	@Test
 	void testEnterTextAndApply() {
-		fixture.textBox("fields").deleteText()
-		fixture.textBox("fields").enterText "10"
+		fixture.textBox('fields').deleteText()
+		fixture.textBox('fields').enterText '10'
 		panelHandler.applyInput()
 
-		assert fixture.textBox("fields").text() == "10"
+		assert fixture.textBox('fields').text() == '10'
 		assert preferences.general.fields == 10
 	}
 
 	@Test
 	void testEnterTextAndRestore() {
-		fixture.textBox("fields").deleteText()
-		fixture.textBox("fields").enterText "10"
+		fixture.textBox('fields').deleteText()
+		fixture.textBox('fields').enterText '10'
 		panelHandler.restoreInput()
 
-		assert fixture.textBox("fields").text() == "4"
+		assert fixture.textBox('fields').text() == '4'
 		assert preferences.general.fields == 4
 	}
 }

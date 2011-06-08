@@ -16,40 +16,57 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.textfield;
+package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.textfield.shared;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractDefaultFieldHandler;
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractLabelFieldHandler;
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.textfield.shared.LoggerFactory.Logger;
 import com.globalscalingsoftware.prefdialog.reflection.internal.ReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.validators.Validator;
 
 public abstract class AbstractTextFieldHandler extends
-		AbstractDefaultFieldHandler<TextFieldPanel> {
+		AbstractLabelFieldHandler<TextFieldPanel> {
 
 	private String validatorText;
 
-	public AbstractTextFieldHandler(ReflectionToolbox reflectionToolbox,
-			Object parentObject, Object value, Field field,
+	private final Logger log;
+
+	public AbstractTextFieldHandler(LoggerFactory loggerFactory,
+			ReflectionToolbox reflectionToolbox, Object parentObject,
+			Object value, Field field,
 			Class<? extends Annotation> annotationClass,
 			ValidatingTextField<?> textField) {
 		super(reflectionToolbox, parentObject, value, field, annotationClass,
 				new TextFieldPanel(textField));
+		this.log = loggerFactory.create(AbstractTextFieldHandler.class);
 		setup();
 	}
 
 	private void setup() {
-		validatorText = getValidatorTextFromFieldAnnotation();
+		validatorText = getAnnotationValue("validatorText", String.class);
 		setupValidatorFromFieldAnnotation();
 		setupValidListenerToComponent();
 	}
 
-	private String getValidatorTextFromFieldAnnotation() {
+	private <T> T getAnnotationValue(String name, Class<T> classType) {
 		Annotation a = getField().getAnnotation(getAnnotationClass());
-		String text = reflectionToolbox.invokeMethodWithReturnType(
-				"validatorText", String.class, a);
-		return text;
+		return reflectionToolbox.invokeMethodWithReturnType(name, classType, a);
+	}
+
+	private void setupValidatorFromFieldAnnotation() {
+		Validator<?> validator = createValidator();
+		log.setValidator(getField(), validator);
+		getComponent().setValidator(validator);
+	}
+
+	private <T> T createValidator() {
+		Annotation a = getField().getAnnotation(getAnnotationClass());
+		@SuppressWarnings("unchecked")
+		Class<? extends T> validatorClass = reflectionToolbox
+				.invokeMethodWithReturnType("validator", Class.class, a);
+		return reflectionToolbox.newInstance(validatorClass);
 	}
 
 	private void setupValidListenerToComponent() {
@@ -58,9 +75,11 @@ public abstract class AbstractTextFieldHandler extends
 			@Override
 			public void validChanged(ValidEvent validEvent) {
 				if (validEvent.isEditValid()) {
+					log.editValidClearValidatorText(getField());
 					getComponent().clearValidatorText();
 				} else {
 					String validatorText = getValidatorText();
+					log.setValidatorText(getField(), validatorText);
 					getComponent().setValidatorText(validatorText);
 				}
 			}
@@ -69,19 +88,6 @@ public abstract class AbstractTextFieldHandler extends
 
 	protected String getValidatorText() {
 		return validatorText;
-	}
-
-	private void setupValidatorFromFieldAnnotation() {
-		Annotation a = getField().getAnnotation(getAnnotationClass());
-		Object validator = createValidator(a);
-		getComponent().setValidator((Validator<?>) validator);
-	}
-
-	private Object createValidator(Annotation a) {
-		Class<?> validatorClass = reflectionToolbox.invokeMethodWithReturnType(
-				"validator", Class.class, a);
-		Object validator = reflectionToolbox.newInstance(validatorClass);
-		return validator;
 	}
 
 	@Override

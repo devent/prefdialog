@@ -19,39 +19,39 @@
 package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.textfield.formattedtextfield
 
 
-import org.junit.Test;
+import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child;
-import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField 
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest;
+import com.globalscalingsoftware.prefdialog.annotations.Child
+import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest
 
 class FormattedTextFieldReadOnlyTest extends AbstractPreferencePanelTest {
-	
+
 	static class General {
-		
+
 		@FormattedTextField(readonly=true)
 		double fields = 4
-		
+
 		@Override
 		public String toString() {
-			"General"
+			'General'
 		}
 	}
-	
+
 	static class Preferences {
-		
+
 		@Child
 		General general = new General()
 	}
-	
+
 	def setupPreferences() {
 		preferences = new Preferences()
-		panelName = "General"
+		panelName = 'General'
 	}
-	
+
 	@Test
 	void testPanelClickApplyAndClose() {
-		fixture.textBox("fields").requireDisabled()
-		fixture.textBox("fields").requireText "4"
+		fixture.textBox('fields').requireDisabled()
+		fixture.textBox('fields').requireText '4'
 	}
 }

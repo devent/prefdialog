@@ -29,11 +29,11 @@ class TextFieldTest extends AbstractPreferencePanelTest {
 	static class General {
 
 		@TextField
-		String name = ""
+		String name = ''
 
 		@Override
 		public String toString() {
-			"General"
+			'General'
 		}
 	}
 
@@ -45,33 +45,25 @@ class TextFieldTest extends AbstractPreferencePanelTest {
 
 	def setupPreferences() {
 		preferences = new Preferences()
-		panelName = "General"
-	}
-
-	@Test
-	void testComponents() {
-		fixture.label("label-name").requireVisible()
-		fixture.textBox("name").requireVisible()
-		assert fixture.label("label-name").text() == "name: "
-		assert fixture.textBox("name").text() == ""
+		panelName = 'General'
 	}
 
 	@Test
 	void testEnterTextAndApply() {
-		fixture.textBox("name").enterText "test"
+		fixture.textBox('name').enterText 'test'
 		panelHandler.applyInput()
 
-		assert fixture.textBox("name").text() == "test"
-		assert preferences.general.name == "test"
+		assert fixture.textBox('name').text() == 'test'
+		assert preferences.general.name == 'test'
 	}
 
 	@Test
 	void testEnterTextAndRestore() {
-		fixture.textBox("name").enterText "test"
+		fixture.textBox('name').enterText 'test'
 		panelHandler.restoreInput()
 
-		assert fixture.textBox("name").text() == ""
-		assert preferences.general.name == ""
+		assert fixture.textBox('name').text() == ''
+		assert preferences.general.name == ''
 	}
 
 	@Test
