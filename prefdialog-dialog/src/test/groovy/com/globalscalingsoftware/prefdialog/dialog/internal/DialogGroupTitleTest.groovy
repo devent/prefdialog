@@ -36,22 +36,22 @@ class DialogGroupTitleTest extends AbstractPreferenceDialogFixture {
 
 	static class Preferences {
 
-		@Child(title="General")
+		@Child(title='General')
 		General general = new General()
 	}
 
 	static class General {
 
-		@TextField(validator=NotEmptyString, validatorText="Must not be empty")
-		String name = ""
+		@TextField(validator=NotEmptyString, validatorText='Must not be empty')
+		String name = ''
 
-		@FormattedTextField(validator=FieldsValidator, validatorText="Must be a number and between 2 and 100")
+		@FormattedTextField(validator=FieldsValidator, validatorText='Must be a number and between 2 and 100')
 		int fields = 4
 
-		@Group(title="Group One")
+		@Group(title='Group One')
 		Group1 group1 = new Group1()
 
-		@Group(title="Group Two")
+		@Group(title='Group Two')
 		Group2 group2 = new Group2()
 
 		@Checkbox
@@ -60,38 +60,38 @@ class DialogGroupTitleTest extends AbstractPreferenceDialogFixture {
 		@RadioButton(columns=2)
 		Colors colors = Colors.BLACK
 
-		@ComboBoxElements("combobox1")
+		@ComboBoxElements('combobox1')
 		List<String> comboBoxElements = [
-			"first element",
-			"second element",
-			"third element"
+			'first element',
+			'second element',
+			'third element'
 		]
 
-		@ComboBox(title="combobox1", elements="combobox1")
+		@ComboBox(title='combobox1', elements='combobox1')
 		String comboBox
 
 		@Override
 		public String toString() {
-			"General"
+			'General'
 		}
 	}
 
 	static class Group1 {
 
 		@TextField
-		String textField1 = ""
+		String textField1 = ''
 
 		@TextField
-		String textField2 = ""
+		String textField2 = ''
 	}
 
 	static class Group2 {
 
 		@TextField
-		String textField3 = ""
+		String textField3 = ''
 
 		@TextField
-		String textField4 = ""
+		String textField4 = ''
 	}
 
 	def setupPreferences() {
@@ -100,26 +100,25 @@ class DialogGroupTitleTest extends AbstractPreferenceDialogFixture {
 
 	@Test
 	void testClickOkAndClose() {
-		fixture.textBox("name").enterText "name"
-		fixture.textBox("fields").deleteText()
-		fixture.textBox("fields").enterText "10"
-		fixture.textBox("textField1").enterText "field1"
-		fixture.textBox("textField2").enterText "field2"
-		fixture.textBox("textField3").enterText "field3"
-		fixture.textBox("textField4").enterText "field4"
-		fixture.checkBox("automaticSave").click()
-		fixture.radioButton("colors-BLUE").click()
-		fixture.comboBox("comboBox").selectItem 1
-		fixture.button("ok").click()
+		fixture.textBox('name').enterText 'name'
+		fixture.textBox('fields').enterText '10'
+		fixture.textBox('textField1').enterText 'field1'
+		fixture.textBox('textField2').enterText 'field2'
+		fixture.textBox('textField3').enterText 'field3'
+		fixture.textBox('textField4').enterText 'field4'
+		fixture.checkBox('automaticSave').click()
+		fixture.radioButton('colors-BLUE').click()
+		fixture.comboBox('comboBox').selectItem 1
+		fixture.button('ok').click()
 
-		assert preferences.general.name == "name"
-		//assert preferences.general.fields == 10
+		assert preferences.general.name == 'name'
+		assert preferences.general.fields == 104
 		assert preferences.general.automaticSave == true
 		assert preferences.general.colors == Colors.BLUE
-		assert preferences.general.comboBox == "second element"
-		assert preferences.general.group1.textField1 == "field1"
-		assert preferences.general.group1.textField2 == "field2"
-		assert preferences.general.group2.textField3 == "field3"
-		assert preferences.general.group2.textField4 == "field4"
+		assert preferences.general.comboBox == 'second element'
+		assert preferences.general.group1.textField1 == 'field1'
+		assert preferences.general.group1.textField2 == 'field2'
+		assert preferences.general.group2.textField3 == 'field3'
+		assert preferences.general.group2.textField4 == 'field4'
 	}
 }

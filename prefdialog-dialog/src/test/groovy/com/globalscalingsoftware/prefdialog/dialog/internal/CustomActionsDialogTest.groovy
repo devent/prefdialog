@@ -37,18 +37,18 @@ class CustomActionsDialogTest extends AbstractPreferenceDialogFixture {
 
 		@Override
 		String toString() {
-			"Preferences"
+			'Preferences'
 		}
 	}
 
 	static class General {
 
 		@TextField
-		String name = ""
+		String name = ''
 
 		@Override
 		public String toString() {
-			"General"
+			'General'
 		}
 	}
 
@@ -96,39 +96,39 @@ class CustomActionsDialogTest extends AbstractPreferenceDialogFixture {
 
 	@Test
 	void testComponents() {
-		assert fixture.target.title == "Preferences"
+		assert fixture.target.title == 'Preferences'
 
-		fixture.textBox("name").requireVisible()
-		assert fixture.textBox("name").text() == ""
-		assert fixture.button("ok").text() == "Custom Ok"
-		assert fixture.button("cancel").text() == "Custom Cancel"
-		assert fixture.button("apply").text() == "Custom Apply"
+		fixture.textBox('name').requireVisible()
+		assert fixture.textBox('name').text() == ''
+		assert fixture.button('ok').text() == 'Custom Ok'
+		assert fixture.button('cancel').text() == 'Custom Cancel'
+		assert fixture.button('apply').text() == 'Custom Apply'
 	}
 
 	@Test
 	void testClickEnterTextOk() {
-		fixture.textBox("name").deleteText()
-		fixture.textBox("name").enterText "name"
-		fixture.button("ok").click()
+		fixture.textBox('name').deleteText()
+		fixture.textBox('name').enterText 'name'
+		fixture.button('ok').click()
 
-		assert preferences.general.name == "name"
+		assert preferences.general.name == 'name'
 	}
 
 	@Test
 	void testClickEnterTextCancel() {
-		fixture.textBox("name").enterText "name"
-		fixture.button("cancel").click()
+		fixture.textBox('name').enterText 'name'
+		fixture.button('cancel').click()
 
-		assert preferences.general.name == ""
+		assert preferences.general.name == ''
 	}
 
 	@Test
 	void testClickEnterTextApply() {
-		fixture.textBox("name").enterText "name"
-		fixture.button("apply").click()
+		fixture.textBox('name').enterText 'name'
+		fixture.button('apply').click()
 
-		assert fixture.textBox("name").text() == "name"
-		assert preferences.general.name == "name"
+		assert fixture.textBox('name').text() == 'name'
+		assert preferences.general.name == 'name'
 	}
 
 	@Test

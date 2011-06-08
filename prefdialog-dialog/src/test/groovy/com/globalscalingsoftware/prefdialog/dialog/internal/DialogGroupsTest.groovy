@@ -42,10 +42,10 @@ class DialogGroupsTest extends AbstractPreferenceDialogFixture {
 
 	static class General {
 
-		@TextField(validator=NotEmptyString, validatorText="Must not be empty")
-		String name = ""
+		@TextField(validator=NotEmptyString, validatorText='Must not be empty')
+		String name = ''
 
-		@FormattedTextField(validator=FieldsValidator, validatorText="Must be a number and between 2 and 900")
+		@FormattedTextField(validator=FieldsValidator, validatorText='Must be a number and between 2 and 900')
 		int fields = 4
 
 		@Group
@@ -60,38 +60,38 @@ class DialogGroupsTest extends AbstractPreferenceDialogFixture {
 		@RadioButton(columns=2)
 		Colors colors = Colors.BLACK
 
-		@ComboBoxElements("combobox1")
+		@ComboBoxElements('combobox1')
 		List<String> comboBoxElements = [
-			"first element",
-			"second element",
-			"third element"
+			'first element',
+			'second element',
+			'third element'
 		]
 
-		@ComboBox(title="combobox1", elements="combobox1")
-		String comboBox = "first element"
+		@ComboBox(title='combobox1', elements='combobox1')
+		String comboBox = 'first element'
 
 		@Override
 		public String toString() {
-			"General"
+			'General'
 		}
 	}
 
 	static class Group1 {
 
 		@TextField
-		String textField1 = ""
+		String textField1 = ''
 
 		@TextField
-		String textField2 = ""
+		String textField2 = ''
 	}
 
 	static class Group2 {
 
 		@TextField
-		String textField3 = ""
+		String textField3 = ''
 
 		@TextField
-		String textField4 = ""
+		String textField4 = ''
 	}
 
 	def setupPreferences() {
@@ -100,49 +100,49 @@ class DialogGroupsTest extends AbstractPreferenceDialogFixture {
 
 	@Test
 	void testClickOk() {
-		fixture.textBox("name").enterText "name"
-		fixture.textBox("fields").enterText "10"
-		fixture.checkBox("automaticSave").click()
-		fixture.radioButton("colors-BLUE").click()
-		fixture.comboBox("comboBox").selectItem 1
-		fixture.button("ok").click()
+		fixture.textBox('name').enterText 'name'
+		fixture.textBox('fields').enterText '10'
+		fixture.checkBox('automaticSave').click()
+		fixture.radioButton('colors-BLUE').click()
+		fixture.comboBox('comboBox').selectItem 1
+		fixture.button('ok').click()
 
-		assert preferences.general.name == "name"
+		assert preferences.general.name == 'name'
 		assert preferences.general.fields == 104
 		assert preferences.general.automaticSave == true
 		assert preferences.general.colors == Colors.BLUE
-		assert preferences.general.comboBox == "second element"
+		assert preferences.general.comboBox == 'second element'
 	}
 
 	@Test
 	void testClickCancel() {
-		fixture.textBox("name").enterText "name"
-		fixture.textBox("fields").enterText "10"
-		fixture.checkBox("automaticSave").click()
-		fixture.radioButton("colors-BLUE").click()
-		fixture.comboBox("comboBox").selectItem 1
-		fixture.button("cancel").click()
+		fixture.textBox('name').enterText 'name'
+		fixture.textBox('fields').enterText '10'
+		fixture.checkBox('automaticSave').click()
+		fixture.radioButton('colors-BLUE').click()
+		fixture.comboBox('comboBox').selectItem 1
+		fixture.button('cancel').click()
 
-		assert preferences.general.name == ""
+		assert preferences.general.name == ''
 		assert preferences.general.fields == 4
 		assert preferences.general.automaticSave == false
 		assert preferences.general.colors == Colors.BLACK
-		assert preferences.general.comboBox == "first element"
+		assert preferences.general.comboBox == 'first element'
 	}
 
 	@Test
 	void testClickApply() {
-		fixture.textBox("name").enterText "name"
-		fixture.textBox("fields").enterText "10"
-		fixture.checkBox("automaticSave").click()
-		fixture.radioButton("colors-BLUE").click()
-		fixture.comboBox("comboBox").selectItem 1
-		fixture.button("apply").click()
+		fixture.textBox('name').enterText 'name'
+		fixture.textBox('fields').enterText '10'
+		fixture.checkBox('automaticSave').click()
+		fixture.radioButton('colors-BLUE').click()
+		fixture.comboBox('comboBox').selectItem 1
+		fixture.button('apply').click()
 
-		assert preferences.general.name == "name"
+		assert preferences.general.name == 'name'
 		assert preferences.general.fields == 104
 		assert preferences.general.automaticSave == true
 		assert preferences.general.colors == Colors.BLUE
-		assert preferences.general.comboBox == "second element"
+		assert preferences.general.comboBox == 'second element'
 	}
 }
