@@ -4,23 +4,23 @@
 	<parent>
 		<artifactId>prefdialog</artifactId>
 		<groupId>com.globalscalingsoftware.prefdialog</groupId>
-		<version>1.8</version>
+		<version>1.9-SNAPSHOT</version>
 	</parent>
 
 	<groupId>com.globalscalingsoftware.prefdialog</groupId>
 	<artifactId>prefdialog-panel</artifactId>
-	<version>1.8</version>
+	<version>1.9-SNAPSHOT</version>
 
 	<dependencies>
 		<dependency>
 			<groupId>com.globalscalingsoftware.prefdialog</groupId>
 			<artifactId>prefdialog-public</artifactId>
-			<version>1.8</version>
+			<version>1.9-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.globalscalingsoftware.prefdialog</groupId>
 			<artifactId>prefdialog-reflection</artifactId>
-			<version>1.8</version>
+			<version>1.9-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>tablelayout</groupId>
@@ -30,7 +30,7 @@
 		<dependency>
 			<groupId>com.globalscalingsoftware.prefdialog</groupId>
 			<artifactId>prefdialog-swingutils</artifactId>
-			<version>1.8</version>
+			<version>1.9-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-collections</groupId>
