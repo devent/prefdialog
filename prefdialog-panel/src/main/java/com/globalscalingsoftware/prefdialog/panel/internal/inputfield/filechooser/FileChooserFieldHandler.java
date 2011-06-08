@@ -27,20 +27,25 @@ import java.lang.reflect.Field;
 import javax.swing.JFileChooser;
 
 import com.globalscalingsoftware.prefdialog.annotations.FileChooser;
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractDefaultFieldHandler;
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractLabelFieldHandler;
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.filechooser.LoggerFactory.Logger;
 import com.globalscalingsoftware.prefdialog.reflection.internal.ReflectionToolbox;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
-public class FileChooserFieldHandler extends
-		AbstractDefaultFieldHandler<FileChooserPanel> {
+class FileChooserFieldHandler extends
+		AbstractLabelFieldHandler<FileChooserPanel> {
+
+	private final Logger log;
 
 	@Inject
-	FileChooserFieldHandler(ReflectionToolbox reflectionToolbox,
+	FileChooserFieldHandler(LoggerFactory loggerFactory,
+			ReflectionToolbox reflectionToolbox,
 			@Assisted("parentObject") Object parentObject,
 			@Assisted("value") Object value, @Assisted Field field) {
 		super(reflectionToolbox, parentObject, value, field, FileChooser.class,
 				new FileChooserPanel());
+		this.log = loggerFactory.create(FileChooserFieldHandler.class);
 		setup();
 	}
 
@@ -55,6 +60,7 @@ public class FileChooserFieldHandler extends
 	}
 
 	private void openFileChooserDialog() {
+		log.openFileChooserDialog(getField());
 		JFileChooser chooser = createFileChooserDialog();
 		int option = showFileChooserDialog(chooser);
 		if (option == JFileChooser.APPROVE_OPTION) {

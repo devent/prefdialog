@@ -29,11 +29,13 @@ import javax.swing.JFileChooser;
 import javax.swing.JTextField;
 
 /**
- * <p>
  * Annotation to create a {@link JTextField} and {@link JButton} for this field.
  * If the user click on the button a {@link JFileChooser} will open for the user
  * to select a file. The text field will show the selected path of the file.
- * </p>
+ * 
+ * The value can be <code>null</code> and if not <code>null</code> the value is
+ * the selected file in the {@link JFileChooser}.
+ * 
  * Example:
  * 
  * <pre>
@@ -45,8 +47,9 @@ import javax.swing.JTextField;
 @Retention(RUNTIME)
 public @interface FileChooser {
 
-	String value() default "";
-
+	/**
+	 * The width of the file chooser inside the container.
+	 */
 	double width() default -1.0;
 
 	/**
@@ -54,4 +57,16 @@ public @interface FileChooser {
 	 * information for the user without that the user can modify the value.
 	 */
 	boolean readonly() default false;
+
+	/**
+	 * The title of the combo box. The title is shown above of the check box and
+	 * should contain a description.
+	 */
+	String title() default "";
+
+	/**
+	 * If the title of the should be visible or not.
+	 */
+	boolean showTitle() default true;
+
 }

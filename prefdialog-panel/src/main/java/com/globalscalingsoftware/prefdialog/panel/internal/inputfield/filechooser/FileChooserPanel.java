@@ -35,7 +35,7 @@ public class FileChooserPanel extends
 	}
 
 	private void setup() {
-		getPanelField().getFileNameText().setEditable(false);
+		getPanelField().getFileNameText().setEditable(true);
 	}
 
 	public void setOpenFileAction(final Runnable runnable) {
@@ -56,25 +56,33 @@ public class FileChooserPanel extends
 
 	@Override
 	public void setValue(Object value) {
-		getPanelField().getFileNameText().setValue(value);
+		File file;
+		if (value instanceof File) {
+			file = (File) value;
+		} else {
+			file = new File(value.toString());
+		}
+		getPanelField().getFileNameText().setValue(file);
 	}
 
 	@Override
 	public void setName(String name) {
 		super.setName(name);
-		getPanelField().getFileNameText().setName(format("%s", name));
+		getPanelField().getFileNameText().setName(
+				format("filetextfield-%s", name));
 		getPanelField().getOpenFileButton().setName(
 				format("openfilebutton-%s", name));
 	}
 
 	@Override
 	public void setEnabled(boolean enabled) {
+		getPanelField().getFileNameText().setEnabled(enabled);
 		getPanelField().getOpenFileButton().setEnabled(enabled);
 	}
 
 	@Override
 	public boolean isInputValid() {
-		return true;
+		return getPanelField().getFileNameText().isEditValid();
 	}
 
 	public void setFile(File file) {

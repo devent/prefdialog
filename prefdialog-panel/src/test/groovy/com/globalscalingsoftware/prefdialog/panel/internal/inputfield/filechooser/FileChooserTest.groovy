@@ -18,6 +18,9 @@
  */
 package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.filechooser
 
+import java.awt.event.KeyEvent
+
+import org.fest.swing.core.KeyPressInfo
 import org.junit.Test
 
 import com.globalscalingsoftware.prefdialog.annotations.Child
@@ -29,11 +32,11 @@ class FileChooserTest extends AbstractPreferencePanelTest {
 	static class General {
 
 		@FileChooser
-		File file = new File("")
+		File file = new File('')
 
 		@Override
 		public String toString() {
-			"General"
+			'General'
 		}
 	}
 
@@ -45,43 +48,70 @@ class FileChooserTest extends AbstractPreferencePanelTest {
 
 	def setupPreferences() {
 		preferences = new Preferences()
-		panelName = "General"
+		panelName = 'General'
 	}
 
 	@Test
 	void testInputs() {
-		fixture.label("label-file").requireVisible()
-		assert fixture.label("label-file").text() == "file: "
-		fixture.textBox("file").requireVisible()
-		assert fixture.textBox("file").text() == ""
-		fixture.button("openfilebutton-file").requireVisible()
+		fixture.label('label-file').requireVisible()
+		assert fixture.label('label-file').text() == 'file'
+		fixture.textBox('file').requireVisible()
+		assert fixture.textBox('file').text() == ''
+		fixture.button('openfilebutton-file').requireVisible()
 	}
 
 	@Test
 	void testSelectFileAndApply() {
-		File tmpfile = File.createTempFile("fileChooserTest", null)
+		File tmpfile = File.createTempFile('fileChooserTest', null)
 		tmpfile.deleteOnExit();
 
-		fixture.panel("general").button("openfilebutton-file").click()
-		fixture.fileChooser("filechooser-file").setCurrentDirectory(tmpfile.getParentFile())
-		fixture.fileChooser("filechooser-file").selectFile tmpfile
-		fixture.fileChooser("filechooser-file").approve()
+		fixture.panel('general').button('openfilebutton-file').click()
+		fixture.fileChooser('filechooser-file').setCurrentDirectory(tmpfile.getParentFile())
+		fixture.fileChooser('filechooser-file').selectFile tmpfile
+		fixture.fileChooser('filechooser-file').approve()
 		panelHandler.applyInput()
 
 		assert preferences.general.file == tmpfile
 	}
 
 	@Test
-	void testSelectFileAndRestore() {
-		File tmpfile = File.createTempFile("fileChooserTest", null)
+	void testEnterFileAndApply() {
+		File tmpfile = File.createTempFile('fileChooserTest', null)
 		tmpfile.deleteOnExit();
 
-		fixture.panel("general").button("openfilebutton-file").click()
-		fixture.fileChooser("filechooser-file").setCurrentDirectory(tmpfile.getParentFile())
-		fixture.fileChooser("filechooser-file").selectFile tmpfile
-		fixture.fileChooser("filechooser-file").approve()
+		fixture.textBox('filetextfield-file').enterText tmpfile.absolutePath
+		fixture.textBox('filetextfield-file').pressAndReleaseKey KeyPressInfo.keyCode(KeyEvent.VK_ENTER)
+		panelHandler.applyInput()
+		assert preferences.general.file == tmpfile
+	}
+
+	@Test
+	void testEnterFileAndRestore() {
+		File tmpfile = File.createTempFile('fileChooserTest', null)
+		tmpfile.deleteOnExit();
+
+		fixture.textBox('filetextfield-file').enterText tmpfile.absolutePath
+		fixture.textBox('filetextfield-file').pressAndReleaseKey KeyPressInfo.keyCode(KeyEvent.VK_ENTER)
+		panelHandler.restoreInput()
+		assert preferences.general.file == new File('')
+	}
+
+	@Test
+	void testSelectFileAndRestore() {
+		File tmpfile = File.createTempFile('fileChooserTest', null)
+		tmpfile.deleteOnExit();
+
+		fixture.panel('general').button('openfilebutton-file').click()
+		fixture.fileChooser('filechooser-file').setCurrentDirectory(tmpfile.getParentFile())
+		fixture.fileChooser('filechooser-file').selectFile tmpfile
+		fixture.fileChooser('filechooser-file').approve()
 		panelHandler.restoreInput()
 
-		assert preferences.general.file == new File("")
+		assert preferences.general.file == new File('')
+	}
+
+	@Test
+	void testManual() {
+		//Thread.sleep(30000)
 	}
 }

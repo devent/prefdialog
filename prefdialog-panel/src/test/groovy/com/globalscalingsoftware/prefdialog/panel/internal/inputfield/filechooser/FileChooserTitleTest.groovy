@@ -18,38 +18,50 @@
  */
 package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.filechooser
 
-import org.junit.Test;
+import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child 
-import com.globalscalingsoftware.prefdialog.annotations.FileChooser 
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest;
+import com.globalscalingsoftware.prefdialog.annotations.Child
+import com.globalscalingsoftware.prefdialog.annotations.FileChooser
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest
 
-class ManualFileChooserTest extends AbstractPreferencePanelTest {
-	
+class FileChooserTitleTest extends AbstractPreferencePanelTest {
+
 	static class General {
-		
+
 		@FileChooser
-		File file = new File("")
-		
+		File file1 = new File('')
+
+		@FileChooser(title='Save to file:')
+		File file2 = new File('')
+
+		@FileChooser(showTitle=false)
+		File file3 = new File('')
+
 		@Override
 		public String toString() {
-			"General"
+			'General'
 		}
 	}
-	
+
 	static class Preferences {
-		
+
 		@Child
 		General general = new General()
 	}
-	
+
 	def setupPreferences() {
 		preferences = new Preferences()
-		panelName = "General"
+		panelName = 'General'
 	}
-	
+
+	@Test
+	void testInputs() {
+		assert fixture.label('label-file1').text() == 'file1'
+		assert fixture.label('label-file2').text() == 'Save to file:'
+	}
+
 	@Test
 	void testManual() {
-		//Thread.sleep(30000)
+		Thread.sleep(30000)
 	}
 }
