@@ -55,8 +55,8 @@ class FileChooserTest extends AbstractPreferencePanelTest {
 	void testInputs() {
 		fixture.label('label-file').requireVisible()
 		assert fixture.label('label-file').text() == 'file'
-		fixture.textBox('file').requireVisible()
-		assert fixture.textBox('file').text() == ''
+		fixture.textBox('filetextfield-file').requireVisible()
+		assert fixture.textBox('filetextfield-file').text() == ''
 		fixture.button('openfilebutton-file').requireVisible()
 	}
 
@@ -72,6 +72,20 @@ class FileChooserTest extends AbstractPreferencePanelTest {
 		panelHandler.applyInput()
 
 		assert preferences.general.file == tmpfile
+	}
+
+	@Test
+	void testSelectFileAndRestore() {
+		File tmpfile = File.createTempFile('fileChooserTest', null)
+		tmpfile.deleteOnExit();
+
+		fixture.panel('general').button('openfilebutton-file').click()
+		fixture.fileChooser('filechooser-file').setCurrentDirectory(tmpfile.getParentFile())
+		fixture.fileChooser('filechooser-file').selectFile tmpfile
+		fixture.fileChooser('filechooser-file').approve()
+		panelHandler.restoreInput()
+
+		assert preferences.general.file == new File('')
 	}
 
 	@Test
@@ -93,20 +107,6 @@ class FileChooserTest extends AbstractPreferencePanelTest {
 		fixture.textBox('filetextfield-file').enterText tmpfile.absolutePath
 		fixture.textBox('filetextfield-file').pressAndReleaseKey KeyPressInfo.keyCode(KeyEvent.VK_ENTER)
 		panelHandler.restoreInput()
-		assert preferences.general.file == new File('')
-	}
-
-	@Test
-	void testSelectFileAndRestore() {
-		File tmpfile = File.createTempFile('fileChooserTest', null)
-		tmpfile.deleteOnExit();
-
-		fixture.panel('general').button('openfilebutton-file').click()
-		fixture.fileChooser('filechooser-file').setCurrentDirectory(tmpfile.getParentFile())
-		fixture.fileChooser('filechooser-file').selectFile tmpfile
-		fixture.fileChooser('filechooser-file').approve()
-		panelHandler.restoreInput()
-
 		assert preferences.general.file == new File('')
 	}
 
