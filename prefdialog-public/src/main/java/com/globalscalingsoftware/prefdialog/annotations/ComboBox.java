@@ -68,12 +68,7 @@ import javax.swing.ListCellRenderer;
 public @interface ComboBox {
 
 	/**
-	 * The title of the combobox.
-	 */
-	String title() default "";
-
-	/**
-	 * The width of the combobox inside the container.
+	 * The width of the combo box inside the container.
 	 */
 	double width() default -1.0;
 
@@ -82,6 +77,17 @@ public @interface ComboBox {
 	 * information for the user without that the user can modify the value.
 	 */
 	boolean readonly() default false;
+
+	/**
+	 * The title of the combo box. The title is shown above of the check box and
+	 * should contain a description.
+	 */
+	String title() default "";
+
+	/**
+	 * If the title of the should be visible or not.
+	 */
+	boolean showTitle() default true;
 
 	/**
 	 * Optional the name of the field to use for the elements of the combo box.

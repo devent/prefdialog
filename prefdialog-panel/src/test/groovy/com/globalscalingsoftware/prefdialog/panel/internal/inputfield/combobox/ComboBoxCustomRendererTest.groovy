@@ -42,19 +42,19 @@ class ComboBoxCustomRendererTest extends AbstractPreferencePanelTest {
 
 	static class General {
 
-		@ComboBoxElements("Some combo box")
+		@ComboBoxElements('Some combo box')
 		List<String> comboBoxElements = [
-			"first element",
-			"second element",
-			"third element"
+			'first element',
+			'second element',
+			'third element'
 		]
 
-		@ComboBox(renderer=CustomComboBoxRenderer, elements="Some combo box")
-		String comboBox = "first element"
+		@ComboBox(renderer=CustomComboBoxRenderer, elements='Some combo box')
+		String comboBox = 'first element'
 
 		@Override
 		public String toString() {
-			"General"
+			'General'
 		}
 	}
 
@@ -66,25 +66,23 @@ class ComboBoxCustomRendererTest extends AbstractPreferencePanelTest {
 
 	def setupPreferences() {
 		preferences = new Preferences()
-		panelName = "General"
+		panelName = 'General'
 	}
 
 	@Test
 	void testChooseFirstAndApply() {
-		fixture.comboBox("comboBox").selectItem 1
+		fixture.comboBox('comboBox').selectItem 1
 		panelHandler.applyInput()
-
-		assert fixture.label("label-comboBox").text() == "comboBox: "
-		assert preferences.general.comboBox == "second element"
+		assert preferences.general.comboBox == 'second element'
 	}
 
 	@Test
 	void testChooseFirstAndRestore() {
-		fixture.comboBox("comboBox").selectItem 1
+		fixture.comboBox('comboBox').selectItem 1
 		panelHandler.restoreInput()
 
-		fixture.comboBox("comboBox").requireSelection 0
-		assert preferences.general.comboBox == "first element"
+		fixture.comboBox('comboBox').requireSelection 0
+		assert preferences.general.comboBox == 'first element'
 	}
 }
 

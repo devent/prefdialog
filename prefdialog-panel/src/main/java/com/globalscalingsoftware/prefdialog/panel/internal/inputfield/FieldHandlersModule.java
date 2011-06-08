@@ -8,8 +8,7 @@ import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.child.Chil
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.child.ChildFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.child.group.GroupFieldHandler;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.child.group.GroupFieldHandlerFactory;
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.combobox.ComboBoxFieldHandler;
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.combobox.ComboBoxFieldHandlerFactory;
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.combobox.ComboBoxModule;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.filechooser.FileChooserFieldHandler;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.filechooser.FileChooserFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.radiobutton.RadioButtonFieldHandler;
@@ -31,6 +30,7 @@ public class FieldHandlersModule extends AbstractModule {
 		requestStaticInjection(AbstractLabelFieldHandler.class);
 		install(new ButtonModule());
 		install(new CheckboxModule());
+		install(new ComboBoxModule());
 		install(new FactoryModuleBuilder()
 				.implement(Logger.class, Logger.class).build(
 						LoggerFactory.class));
@@ -45,10 +45,6 @@ public class FieldHandlersModule extends AbstractModule {
 				new TypeLiteral<FieldHandler<?>>() {
 				}, RadioButtonFieldHandler.class).build(
 				RadioButtonFieldHandlerFactory.class));
-		install(new FactoryModuleBuilder().implement(
-				new TypeLiteral<FieldHandler<?>>() {
-				}, ComboBoxFieldHandler.class).build(
-				ComboBoxFieldHandlerFactory.class));
 		install(new FactoryModuleBuilder().implement(
 				new TypeLiteral<FieldHandler<?>>() {
 				}, FileChooserFieldHandler.class).build(

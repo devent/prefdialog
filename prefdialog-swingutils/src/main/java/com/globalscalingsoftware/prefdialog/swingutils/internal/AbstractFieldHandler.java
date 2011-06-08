@@ -27,7 +27,7 @@ import com.globalscalingsoftware.prefdialog.FieldHandler;
 
 /**
  * Adds attributes to the getter methods in {@link FieldHandler} and delegates
- * the the component getter and setter to an underlying {@link FieldComponent}.
+ * the component getter and setter to an underlying {@link FieldComponent}.
  * 
  * @param <FieldComponentType>
  *            the type of the underlying {@link FieldComponent}.

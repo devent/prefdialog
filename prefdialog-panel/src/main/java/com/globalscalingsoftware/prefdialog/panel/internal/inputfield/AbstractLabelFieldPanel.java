@@ -69,9 +69,7 @@ public abstract class AbstractLabelFieldPanel<FieldType extends JComponent>
 	}
 
 	public void setShowTitle(boolean show) {
-		if (!show) {
-			label.setText("");
-		}
+		label.setVisible(show);
 	}
 
 }

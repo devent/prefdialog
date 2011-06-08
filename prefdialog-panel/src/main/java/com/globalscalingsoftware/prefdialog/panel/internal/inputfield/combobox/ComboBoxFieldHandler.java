@@ -26,28 +26,26 @@ import javax.annotation.Nullable;
 import javax.swing.ComboBoxModel;
 import javax.swing.ListCellRenderer;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.globalscalingsoftware.prefdialog.annotations.ComboBox;
 import com.globalscalingsoftware.prefdialog.annotations.ComboBoxElements;
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractDefaultFieldHandler;
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractLabelFieldHandler;
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.combobox.LoggerFactory.Logger;
 import com.globalscalingsoftware.prefdialog.reflection.internal.ReflectionToolbox;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
-public class ComboBoxFieldHandler extends
-		AbstractDefaultFieldHandler<ComboBoxPanel> {
+class ComboBoxFieldHandler extends AbstractLabelFieldHandler<ComboBoxPanel> {
 
-	private final Logger log = LoggerFactory
-			.getLogger(ComboBoxFieldHandler.class);
+	private final Logger log;
 
 	@Inject
-	ComboBoxFieldHandler(ReflectionToolbox reflectionToolbox,
+	ComboBoxFieldHandler(LoggerFactory loggerFactory,
+			ReflectionToolbox reflectionToolbox,
 			@Assisted("parentObject") Object parentObject,
 			@Assisted("value") @Nullable Object value, @Assisted Field field) {
 		super(reflectionToolbox, parentObject, value, field, ComboBox.class,
 				new ComboBoxPanel());
+		this.log = loggerFactory.create(ComboBoxFieldHandler.class);
 		setup();
 		setComponentValue(value);
 	}
@@ -61,33 +59,39 @@ public class ComboBoxFieldHandler extends
 	private void setupCustomRenderer() {
 		Field field = getField();
 		Annotation a = field.getAnnotation(ComboBox.class);
-		@SuppressWarnings("unchecked")
-		Class<? extends ListCellRenderer> rendererClass = getAnnotationField(
-				Class.class, a, "renderer");
+		Class<? extends ListCellRenderer> rendererClass = getRenderer(a);
 		ListCellRenderer renderer = createInstance(rendererClass);
-		log.debug("Set new list cell renderer {}.", renderer);
+		log.setRenderer(getField(), renderer);
 		getComponent().setRenderer(renderer);
+	}
+
+	@SuppressWarnings("unchecked")
+	private Class<? extends ListCellRenderer> getRenderer(Annotation a) {
+		return reflectionToolbox.invokeMethodWithReturnType("renderer",
+				Class.class, a);
 	}
 
 	private void setupCustomModel() {
 		Field field = getField();
 		Annotation a = field.getAnnotation(ComboBox.class);
-		@SuppressWarnings("unchecked")
-		Class<? extends ComboBoxModel> modelClass = getAnnotationField(
-				Class.class, a, "model");
+		Class<? extends ComboBoxModel> modelClass = getModel(a);
 		ComboBoxModel model = createInstance(modelClass);
-		log.debug("Set new combo box model {}.", model);
+		log.setModel(getField(), model);
 		getComponent().setModel(model);
+	}
+
+	@SuppressWarnings("unchecked")
+	private Class<? extends ComboBoxModel> getModel(Annotation a) {
+		return reflectionToolbox.invokeMethodWithReturnType("model",
+				Class.class, a);
 	}
 
 	private <T> T createInstance(Class<? extends T> clazz) {
 		try {
 			return clazz.newInstance();
 		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
 			throw new RuntimeException(e);
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
 			throw new RuntimeException(e);
 		}
 	}
@@ -95,7 +99,7 @@ public class ComboBoxFieldHandler extends
 	private void setupElements() {
 		Collection<?> values = getValuesFromAnnotationIn();
 		if (values != null) {
-			log.debug("Set new values {}.", values);
+			log.setValues(getField(), values);
 			getComponent().setValues(values);
 		}
 	}
@@ -104,17 +108,20 @@ public class ComboBoxFieldHandler extends
 		Object parentObject = getParentObject();
 		Field field = getField();
 		Annotation a = field.getAnnotation(ComboBox.class);
-		String comboBoxName = getAnnotationField(String.class, a, "elements");
-
-		Collection<?> values = (Collection<?>) reflectionToolbox
-				.searchObjectWithAnnotationValueIn(parentObject,
-						ComboBoxElements.class, comboBoxName, Collection.class);
-		return values;
+		String elements = getElements(a);
+		return getElementsCollection(parentObject, elements);
 	}
 
-	private <T> T getAnnotationField(Class<? extends T> clazz, Annotation a,
-			String name) {
-		return reflectionToolbox.invokeMethodWithReturnType(name, clazz, a);
+	private Collection<?> getElementsCollection(Object parentObject,
+			String elements) {
+		return ((Collection<?>) reflectionToolbox
+				.searchObjectWithAnnotationValueIn(parentObject,
+						ComboBoxElements.class, elements, Collection.class));
+	}
+
+	private String getElements(Annotation a) {
+		return reflectionToolbox.invokeMethodWithReturnType("elements",
+				String.class, a);
 	}
 
 }

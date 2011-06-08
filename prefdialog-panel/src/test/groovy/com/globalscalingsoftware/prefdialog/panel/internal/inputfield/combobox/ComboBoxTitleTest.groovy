@@ -27,7 +27,7 @@ import com.globalscalingsoftware.prefdialog.annotations.ComboBox
 import com.globalscalingsoftware.prefdialog.annotations.ComboBoxElements
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest
 
-class ComboBoxReadOnlyTest extends AbstractPreferencePanelTest {
+class ComboBoxTitleTest extends AbstractPreferencePanelTest {
 
 	static class General {
 
@@ -38,8 +38,14 @@ class ComboBoxReadOnlyTest extends AbstractPreferencePanelTest {
 			'third element'
 		]
 
-		@ComboBox(elements='Some combo box', readonly=true)
-		String comboBox = 'first element'
+		@ComboBox(elements='Some combo box')
+		String comboBox1 = 'first element'
+
+		@ComboBox(title='Second combo box:', elements='Some combo box')
+		String comboBox2 = 'first element'
+
+		@ComboBox(showTitle=false, elements='Some combo box')
+		String comboBox3= 'first element'
 
 		@Override
 		public String toString() {
@@ -59,8 +65,9 @@ class ComboBoxReadOnlyTest extends AbstractPreferencePanelTest {
 	}
 
 	@Test
-	void testPanelClickApplyAndClose() {
-		fixture.comboBox('comboBox').requireDisabled()
-		fixture.comboBox('comboBox').requireSelection 0
+	void testTitle() {
+		assert fixture.label('label-comboBox1').text() == 'comboBox1'
+		assert fixture.label('label-comboBox2').text() == 'Second combo box:'
 	}
 }
+

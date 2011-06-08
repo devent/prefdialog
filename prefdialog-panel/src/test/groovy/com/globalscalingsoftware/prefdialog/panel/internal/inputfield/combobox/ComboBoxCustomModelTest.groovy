@@ -32,9 +32,9 @@ class ComboBoxCustomModelTest extends AbstractPreferencePanelTest {
 
 		CustomComboBoxModel() {
 			super([
-				"first element",
-				"second element",
-				"third element"
+				'first element',
+				'second element',
+				'third element'
 			].toArray())
 		}
 	}
@@ -42,11 +42,11 @@ class ComboBoxCustomModelTest extends AbstractPreferencePanelTest {
 	static class General {
 
 		@ComboBox(model=CustomComboBoxModel)
-		String comboBox = "second element"
+		String comboBox = 'second element'
 
 		@Override
 		public String toString() {
-			"General"
+			'General'
 		}
 	}
 
@@ -58,27 +58,25 @@ class ComboBoxCustomModelTest extends AbstractPreferencePanelTest {
 
 	def setupPreferences() {
 		preferences = new Preferences()
-		panelName = "General"
+		panelName = 'General'
 	}
 
 	@Test
 	void testChooseThirdAndApply() {
-		assert preferences.general.comboBox == "second element"
-		fixture.comboBox("comboBox").selectItem 2
+		assert preferences.general.comboBox == 'second element'
+		fixture.comboBox('comboBox').selectItem 2
 		panelHandler.applyInput()
-
-		assert fixture.label("label-comboBox").text() == "comboBox: "
-		assert preferences.general.comboBox == "third element"
+		assert preferences.general.comboBox == 'third element'
 	}
 
 	@Test
 	void testChooseThirdAndRestore() {
-		assert preferences.general.comboBox == "second element"
-		fixture.comboBox("comboBox").selectItem 2
+		assert preferences.general.comboBox == 'second element'
+		fixture.comboBox('comboBox').selectItem 2
 		panelHandler.restoreInput()
 
-		fixture.comboBox("comboBox").requireSelection 1
-		assert preferences.general.comboBox == "second element"
+		fixture.comboBox('comboBox').requireSelection 1
+		assert preferences.general.comboBox == 'second element'
 	}
 }
 

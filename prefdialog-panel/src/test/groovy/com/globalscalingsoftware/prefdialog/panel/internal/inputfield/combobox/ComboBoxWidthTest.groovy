@@ -31,19 +31,19 @@ class ComboBoxWidthTest extends AbstractPreferencePanelTest {
 
 	static class General {
 
-		@ComboBoxElements("combobox1")
+		@ComboBoxElements('combobox1')
 		List<String> comboBoxElements = [
-			"first element",
-			"second element",
-			"third element"
+			'first element',
+			'second element',
+			'third element'
 		]
 
-		@ComboBox(elements = "combobox1", width = -2.0d)
-		String comboBox = ""
+		@ComboBox(elements = 'combobox1', width = -2.0d)
+		String comboBox = ''
 
 		@Override
 		public String toString() {
-			"General"
+			'General'
 		}
 	}
 
@@ -55,15 +55,13 @@ class ComboBoxWidthTest extends AbstractPreferencePanelTest {
 
 	def setupPreferences() {
 		preferences = new Preferences()
-		panelName = "General"
+		panelName = 'General'
 	}
 
 	@Test
 	void testPanelClickApplyAndClose() {
-		fixture.comboBox("comboBox").selectItem 1
+		fixture.comboBox('comboBox').selectItem 1
 		panelHandler.applyInput()
-
-		assert fixture.label("label-comboBox").text() == "comboBox: "
-		assert preferences.general.comboBox == "second element"
+		assert preferences.general.comboBox == 'second element'
 	}
 }

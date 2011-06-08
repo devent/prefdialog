@@ -25,14 +25,9 @@ import javax.swing.JComboBox;
 import javax.swing.ListCellRenderer;
 import javax.swing.MutableComboBoxModel;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractLabelFieldPanel;
 
 public class ComboBoxPanel extends AbstractLabelFieldPanel<JComboBox> {
-
-	private final Logger log = LoggerFactory.getLogger(ComboBoxPanel.class);
 
 	public ComboBoxPanel() {
 		super(new JComboBox());
@@ -42,18 +37,6 @@ public class ComboBoxPanel extends AbstractLabelFieldPanel<JComboBox> {
 	private void setup() {
 	}
 
-	public void setValues(Collection<?> values) {
-		MutableComboBoxModel model = (MutableComboBoxModel) getPanelField()
-				.getModel();
-		for (Object object : values) {
-			model.addElement(object);
-		}
-	}
-
-	public void setModel(ComboBoxModel model) {
-		getPanelField().setModel(model);
-	}
-
 	@Override
 	public Object getValue() {
 		return getPanelField().getSelectedItem();
@@ -61,16 +44,31 @@ public class ComboBoxPanel extends AbstractLabelFieldPanel<JComboBox> {
 
 	@Override
 	public void setValue(Object value) {
-		log.debug("Set new value {}.", value);
 		getPanelField().setSelectedItem(value);
-	}
-
-	public void setRenderer(ListCellRenderer renderer) {
-		getPanelField().setRenderer(renderer);
 	}
 
 	@Override
 	public boolean isInputValid() {
 		return true;
 	}
+
+	public void setValues(Collection<?> values) {
+		MutableComboBoxModel model = getMutableModel();
+		for (Object object : values) {
+			model.addElement(object);
+		}
+	}
+
+	private MutableComboBoxModel getMutableModel() {
+		return (MutableComboBoxModel) getPanelField().getModel();
+	}
+
+	public void setRenderer(ListCellRenderer renderer) {
+		getPanelField().setRenderer(renderer);
+	}
+
+	public void setModel(ComboBoxModel model) {
+		getPanelField().setModel(model);
+	}
+
 }
