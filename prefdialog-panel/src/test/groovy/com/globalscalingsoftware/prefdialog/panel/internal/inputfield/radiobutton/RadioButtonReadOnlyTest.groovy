@@ -18,40 +18,40 @@
  */
 package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.radiobutton
 
-import org.junit.Test;
+import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child 
-import com.globalscalingsoftware.prefdialog.annotations.RadioButton 
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest;
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.Colors 
+import com.globalscalingsoftware.prefdialog.annotations.Child
+import com.globalscalingsoftware.prefdialog.annotations.RadioButton
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.Colors
 
 class RadioButtonReadOnlyTest extends AbstractPreferencePanelTest {
-	
+
 	static class General {
-		
+
 		@RadioButton(readonly=true)
 		Colors colors = Colors.BLACK
-		
+
 		@Override
 		public String toString() {
-			"General"
+			'General'
 		}
 	}
-	
+
 	static class Preferences {
-		
+
 		@Child
 		General general = new General()
 	}
-	
+
 	def setupPreferences() {
 		preferences = new Preferences()
-		panelName = "General"
+		panelName = 'General'
 	}
-	
+
 	@Test
 	void testPanelClickApplyAndClose() {
-		fixture.radioButton("colors-BLACK").requireDisabled()
-		fixture.radioButton("colors-BLACK").requireSelected()
+		fixture.radioButton('colors-BLACK').requireDisabled()
+		fixture.radioButton('colors-BLACK').requireSelected()
 	}
 }

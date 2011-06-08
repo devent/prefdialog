@@ -43,7 +43,7 @@ class MultipleRadioButtonTest extends AbstractPreferencePanelTest {
 
 		@Override
 		public String toString() {
-			"General"
+			'General'
 		}
 	}
 
@@ -55,19 +55,19 @@ class MultipleRadioButtonTest extends AbstractPreferencePanelTest {
 
 	def setupPreferences() {
 		preferences = new Preferences()
-		panelName = "General"
+		panelName = 'General'
 	}
 
 	@Test
 	void testPanelClickApplyAndClose() {
-		fixture.label("label-colors1").requireText "colors1: "
-		fixture.label("label-colors2").requireText "colors2: "
-		fixture.label("label-colors3").requireText "colors3: "
-		fixture.label("label-colors4").requireText "colors4: "
-		fixture.radioButton("colors1-BLUE").click()
-		fixture.radioButton("colors2-BLUE").click()
-		fixture.radioButton("colors3-BLUE").click()
-		fixture.radioButton("colors4-BLUE").click()
+		fixture.label('label-colors1').requireText 'colors1'
+		fixture.label('label-colors2').requireText 'colors2'
+		fixture.label('label-colors3').requireText 'colors3'
+		fixture.label('label-colors4').requireText 'colors4'
+		fixture.radioButton('colors1-BLUE').click()
+		fixture.radioButton('colors2-BLUE').click()
+		fixture.radioButton('colors3-BLUE').click()
+		fixture.radioButton('colors4-BLUE').click()
 		panelHandler.applyInput()
 
 		assert preferences.general.colors1 == Colors.BLUE

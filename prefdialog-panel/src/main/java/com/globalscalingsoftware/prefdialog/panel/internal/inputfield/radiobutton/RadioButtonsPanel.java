@@ -63,7 +63,7 @@ public class RadioButtonsPanel extends AbstractLabelFieldPanel<JPanel> {
 	}
 
 	private void setup() {
-		getField().setLayout(layout);
+		getPanelField().setLayout(layout);
 	}
 
 	@Override
@@ -100,7 +100,7 @@ public class RadioButtonsPanel extends AbstractLabelFieldPanel<JPanel> {
 		if (row >= rows) {
 			row = 0;
 		}
-		getField().add(button, format("%d, %d", column, row));
+		getPanelField().add(button, format("%d, %d", column, row));
 
 		row++;
 		buttonsCount++;

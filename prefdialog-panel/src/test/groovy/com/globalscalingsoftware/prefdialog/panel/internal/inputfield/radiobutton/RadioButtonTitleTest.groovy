@@ -29,12 +29,18 @@ class RadioButtonTitleTest extends AbstractPreferencePanelTest {
 
 	static class General {
 
-		@RadioButton(title="Some colors")
-		Colors colors = Colors.BLACK
+		@RadioButton
+		Colors colors1 = Colors.BLACK
+
+		@RadioButton(title='Some colors')
+		Colors colors2 = Colors.BLACK
+
+		@RadioButton(showTitle=false)
+		Colors colors3 = Colors.BLACK
 
 		@Override
 		public String toString() {
-			"General"
+			'General'
 		}
 	}
 
@@ -46,12 +52,13 @@ class RadioButtonTitleTest extends AbstractPreferencePanelTest {
 
 	def setupPreferences() {
 		preferences = new Preferences()
-		panelName = "General"
+		panelName = 'General'
 	}
 
 	@Test
 	void testPanelClickApplyAndClose() {
-		assert fixture.label("label-colors").text() == "Some colors: "
+		assert fixture.label('label-colors1').text() == 'colors1'
+		assert fixture.label('label-colors2').text() == 'Some colors'
 	}
 
 	@Test

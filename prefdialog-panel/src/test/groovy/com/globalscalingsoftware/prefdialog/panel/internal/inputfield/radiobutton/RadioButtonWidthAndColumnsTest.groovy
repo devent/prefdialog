@@ -25,7 +25,7 @@ import com.globalscalingsoftware.prefdialog.annotations.RadioButton
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractPreferencePanelTest
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.Colors
 
-class RadioButtonWithAndColumnsTest extends AbstractPreferencePanelTest {
+class RadioButtonWidthAndColumnsTest extends AbstractPreferencePanelTest {
 
 	static class Preferences {
 
@@ -40,21 +40,19 @@ class RadioButtonWithAndColumnsTest extends AbstractPreferencePanelTest {
 
 		@Override
 		public String toString() {
-			"General"
+			'General'
 		}
 	}
 
 	def setupPreferences() {
 		preferences = new Preferences()
-		panelName = "General"
+		panelName = 'General'
 	}
 
 	@Test
 	void testPanelClickApplyAndClose() {
-		fixture.radioButton("colors-BLUE").click()
+		fixture.radioButton('colors-BLUE').click()
 		panelHandler.applyInput()
-
-		assert fixture.label("label-colors").text() == "colors: "
 		assert preferences.general.colors == Colors.BLUE
 	}
 }

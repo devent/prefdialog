@@ -34,7 +34,7 @@ class RadioButtonTest extends AbstractPreferencePanelTest {
 
 		@Override
 		public String toString() {
-			"General"
+			'General'
 		}
 	}
 
@@ -46,29 +46,34 @@ class RadioButtonTest extends AbstractPreferencePanelTest {
 
 	def setupPreferences() {
 		preferences = new Preferences()
-		panelName = "General"
+		panelName = 'General'
 	}
 
 	@Test
 	void testField() {
-		assert fixture.label("label-colors").text() == "colors: "
+		assert fixture.label('label-colors').text() == 'colors'
 	}
 
 	@Test
 	void testPanelChooseBlueAndApply() {
-		fixture.radioButton("colors-BLUE").click()
+		fixture.radioButton('colors-BLUE').click()
 		panelHandler.applyInput()
-		fixture.radioButton("colors-BLUE").requireSelected()
+		fixture.radioButton('colors-BLUE').requireSelected()
 
 		assert preferences.general.colors == Colors.BLUE
 	}
 
 	@Test
 	void testPanelChooseBlueAndRestore() {
-		fixture.radioButton("colors-BLUE").click()
+		fixture.radioButton('colors-BLUE').click()
 		panelHandler.restoreInput()
-		fixture.radioButton("colors-BLACK").requireSelected()
+		fixture.radioButton('colors-BLACK').requireSelected()
 
 		assert preferences.general.colors == Colors.BLACK
+	}
+
+	@Test
+	void testManually() {
+		//Thread.sleep 60000
 	}
 }

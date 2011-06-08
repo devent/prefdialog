@@ -21,22 +21,27 @@ package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.radiobutt
 import java.lang.reflect.Field;
 
 import com.globalscalingsoftware.prefdialog.annotations.RadioButton;
-import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractDefaultFieldHandler;
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractLabelFieldHandler;
+import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.radiobutton.LoggerFactory.Logger;
 import com.globalscalingsoftware.prefdialog.reflection.internal.ReflectionToolbox;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
-public class RadioButtonFieldHandler extends
-		AbstractDefaultFieldHandler<RadioButtonsPanel> {
+class RadioButtonFieldHandler extends
+		AbstractLabelFieldHandler<RadioButtonsPanel> {
 
 	private final Object value;
 
+	private final Logger log;
+
 	@Inject
-	RadioButtonFieldHandler(ReflectionToolbox reflectionToolbox,
+	RadioButtonFieldHandler(LoggerFactory loggerFactory,
+			ReflectionToolbox reflectionToolbox,
 			@Assisted("parentObject") Object parentObject,
 			@Assisted("value") Object value, @Assisted Field field) {
 		super(reflectionToolbox, parentObject, value, field, RadioButton.class,
 				new RadioButtonsPanel());
+		this.log = loggerFactory.create(RadioButtonFieldHandler.class);
 		this.value = value;
 		setup();
 	}
@@ -51,15 +56,15 @@ public class RadioButtonFieldHandler extends
 		Enum<?>[] enumFields = getEnumFields(valueClass);
 		int columns = reflectionToolbox.getColumns(getField());
 		int rows = enumFields.length;
+		log.setColumnsRows(getField(), columns, rows);
 		getComponent().setColumnsRows(columns, rows);
+		log.addEnumFields(getField(), enumFields);
 		addEnumFields(enumFields);
 	}
 
+	@SuppressWarnings("unchecked")
 	private Class<? extends Enum<?>> getValueClass(Object value) {
-		@SuppressWarnings("unchecked")
-		Class<? extends Enum<?>> valueclass = (Class<? extends Enum<?>>) value
-				.getClass();
-		return valueclass;
+		return ((Class<? extends Enum<?>>) value.getClass());
 	}
 
 	private Enum<?>[] getEnumFields(Class<? extends Enum<?>> enumClass) {

@@ -24,19 +24,56 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import javax.swing.JRadioButton;
+
+/**
+ * Annotation to create a group of {@link JRadioButton} for a field.
+ * 
+ * Example:
+ * 
+ * <pre>
+ * enum Colors {
+ *     BLACK, BLUE, RED
+ * }
+ * 
+ * ...
+ * 
+ * &#064;RadioButton
+ * private Colors colors;
+ * </pre>
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * 
+ */
 @Target(FIELD)
 @Retention(RUNTIME)
 public @interface RadioButton {
 
-	String title() default "";
-
-	int columns() default 1;
-
+	/**
+	 * The width of the radio buttons group inside the container.
+	 */
 	double width() default -1.0;
 
 	/**
-	 * If this input field should be read-only. Read-only fields are to show
+	 * If this input fields should be read-only. Read-only fields are to show
 	 * information for the user without that the user can modify the value.
 	 */
 	boolean readonly() default false;
+
+	/**
+	 * The title of the radio buttons group. The title is shown above of the
+	 * group and should contain a description.
+	 */
+	String title() default "";
+
+	/**
+	 * If the title of the should be visible or not.
+	 */
+	boolean showTitle() default true;
+
+	/**
+	 * How many columns should the group have. The radio buttons are distributed
+	 * evenly in the columns.
+	 */
+	int columns() default 1;
 }

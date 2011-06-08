@@ -27,9 +27,8 @@ import java.lang.annotation.Target;
 import javax.swing.JCheckBox;
 
 /**
- * <p>
  * Annotation to create a {@link JCheckBox} for this field.
- * </p>
+ * 
  * Example:
  * 
  * <pre>
