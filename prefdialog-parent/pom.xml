@@ -2,16 +2,16 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.globalscalingsoftware.prefdialog</groupId>
-	<artifactId>prefdialog</artifactId>
+	<artifactId>prefdialog-parent</artifactId>
 	<version>1.9-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>prefdialog-dialog</module>
-		<module>prefdialog-public</module>
-		<module>prefdialog-panel</module>
-		<module>prefdialog-reflection</module>
-		<module>prefdialog-swingutils</module>
+        <module>../prefdialog-dialog</module>
+		<module>../prefdialog-public</module>
+		<module>../prefdialog-panel</module>
+		<module>../prefdialog-reflection</module>
+		<module>../prefdialog-swingutils</module>
 	</modules>
 
 	<licenses>

@@ -2,9 +2,10 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<artifactId>prefdialog</artifactId>
+		<artifactId>prefdialog-parent</artifactId>
 		<groupId>com.globalscalingsoftware.prefdialog</groupId>
 		<version>1.9-SNAPSHOT</version>
+        <relativePath>../prefdialog-parent</relativePath>
 	</parent>
 
 	<groupId>com.globalscalingsoftware.prefdialog</groupId>
