@@ -23,6 +23,7 @@ import java.lang.reflect.Field;
 
 import com.globalscalingsoftware.prefdialog.reflection.api.AnnotationDiscoveryCallback;
 import com.globalscalingsoftware.prefdialog.reflection.api.AnnotationDiscoveryWorker;
+import com.globalscalingsoftware.prefdialog.reflection.api.AnnotationFilter;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
@@ -32,11 +33,11 @@ class AnnotationDiscoveryWorkerImpl implements AnnotationDiscoveryWorker {
 
 	private final AnnotationDiscoveryCallback callback;
 
-	private final PredefinedAnnotationFilter filter;
+	private final AnnotationFilter filter;
 
 	@Inject
 	AnnotationDiscoveryWorkerImpl(ReflectionToolbox reflectionToolbox,
-			@Assisted PredefinedAnnotationFilter filter,
+			@Assisted AnnotationFilter filter,
 			@Assisted AnnotationDiscoveryCallback callback) {
 		this.reflectionToolbox = reflectionToolbox;
 		this.filter = filter;
