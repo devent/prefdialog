@@ -25,9 +25,9 @@ import java.util.Collection;
 import java.util.List;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
-import com.globalscalingsoftware.prefdialog.reflection.PredefinedAnnotationFilter;
 import com.globalscalingsoftware.prefdialog.reflection.api.AnnotationDiscoveryCallback;
 import com.globalscalingsoftware.prefdialog.reflection.api.AnnotationDiscoveryWorkerFactory;
+import com.globalscalingsoftware.prefdialog.reflection.api.AnnotationFilter;
 import com.globalscalingsoftware.prefdialog.reflection.api.PredefinedAnnotationFilterFactory;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
@@ -38,7 +38,7 @@ import com.google.inject.name.Named;
  */
 public class FieldsFactory {
 
-	private final PredefinedAnnotationFilter annotationFilter;
+	private final AnnotationFilter annotationFilter;
 
 	private final AnnotationDiscoveryWorkerFactory annotationDiscoveryFactory;
 
@@ -70,7 +70,7 @@ public class FieldsFactory {
 	public List<FieldHandler<?>> createFieldsHandlers(
 			final FactoriesMap factoriesMap, final Object object) {
 		final ArrayList<FieldHandler<?>> fieldHandlers = new ArrayList<FieldHandler<?>>();
-		annotationDiscoveryFactory.create(annotationFilter, object,
+		annotationDiscoveryFactory.create(annotationFilter,
 				new AnnotationDiscoveryCallback() {
 
 					@Override
@@ -81,7 +81,7 @@ public class FieldsFactory {
 						fieldHandlers.add(handler);
 					}
 
-				}).discoverAnnotations();
+				}).discoverAnnotations(object);
 		return fieldHandlers;
 	}
 

@@ -14,9 +14,9 @@ import org.slf4j.LoggerFactory;
 import com.globalscalingsoftware.prefdialog.PreferencePanelHandler;
 import com.globalscalingsoftware.prefdialog.PreferencePanelHandlerFactory;
 import com.globalscalingsoftware.prefdialog.dialog.internal.PreferencePanelsCollection.PreferencePanelsCollectionFactory;
-import com.globalscalingsoftware.prefdialog.reflection.PredefinedAnnotationFilter;
 import com.globalscalingsoftware.prefdialog.reflection.api.AnnotationDiscoveryCallback;
 import com.globalscalingsoftware.prefdialog.reflection.api.AnnotationDiscoveryWorkerFactory;
+import com.globalscalingsoftware.prefdialog.reflection.api.AnnotationFilter;
 import com.globalscalingsoftware.prefdialog.reflection.api.PredefinedAnnotationFilterFactory;
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
@@ -109,9 +109,9 @@ class CreatePreferencePanelHandlersWorker {
 	}
 
 	private void discoverAnnotations() {
-		PredefinedAnnotationFilter annotationFilter = annotationFilterFactory
+		AnnotationFilter annotationFilter = annotationFilterFactory
 				.create(childAnnotations);
-		annotationDiscoveryFactory.create(annotationFilter, preferences,
+		annotationDiscoveryFactory.create(annotationFilter,
 				new AnnotationDiscoveryCallback() {
 
 					@Override
@@ -120,7 +120,7 @@ class CreatePreferencePanelHandlersWorker {
 						CreatePreferencePanelHandlersWorker.this
 								.fieldAnnotationDiscovered(field, value, a);
 					}
-				}).discoverAnnotations();
+				}).discoverAnnotations(preferences);
 	}
 
 	private void fieldAnnotationDiscovered(Field field, Object value,

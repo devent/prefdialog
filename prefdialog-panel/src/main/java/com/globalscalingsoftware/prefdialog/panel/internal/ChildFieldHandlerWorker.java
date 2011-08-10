@@ -113,8 +113,8 @@ class ChildFieldHandlerWorker {
 		AnnotationFilter annotationFilter = annotationFilterFactory
 				.create(childAnnotations);
 		DiscoverAnnotationsCallback callback = new DiscoverAnnotationsCallback();
-		annotationDiscoveryFactory.create(annotationFilter, preferences,
-				callback).discoverAnnotations();
+		annotationDiscoveryFactory.create(annotationFilter, callback)
+				.discoverAnnotations(preferences);
 		checkChildFieldHandlerCreated(callback.childFieldHandler);
 		return callback.childFieldHandler;
 	}
