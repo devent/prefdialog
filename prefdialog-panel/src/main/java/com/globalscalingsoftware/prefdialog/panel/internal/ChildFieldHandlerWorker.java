@@ -19,9 +19,9 @@ import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.FieldsFact
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.child.ChildFieldHandler;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.child.ChildFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.child.group.GroupFieldHandler;
-import com.globalscalingsoftware.prefdialog.reflection.AnnotationDiscoveryCallback;
-import com.globalscalingsoftware.prefdialog.reflection.AnnotationDiscoveryFactory;
-import com.globalscalingsoftware.prefdialog.reflection.PredefinedAnnotationFilter;
+import com.globalscalingsoftware.prefdialog.reflection.api.AnnotationDiscoveryCallback;
+import com.globalscalingsoftware.prefdialog.reflection.api.AnnotationDiscoveryWorkerFactory;
+import com.globalscalingsoftware.prefdialog.reflection.api.AnnotationFilter;
 import com.globalscalingsoftware.prefdialog.reflection.api.PredefinedAnnotationFilterFactory;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -52,7 +52,7 @@ class ChildFieldHandlerWorker {
 	private final Logger l = LoggerFactory
 			.getLogger(ChildFieldHandlerWorker.class);
 
-	private final AnnotationDiscoveryFactory annotationDiscoveryFactory;
+	private final AnnotationDiscoveryWorkerFactory annotationDiscoveryFactory;
 
 	private final PredefinedAnnotationFilterFactory annotationFilterFactory;
 
@@ -70,7 +70,7 @@ class ChildFieldHandlerWorker {
 
 	@Inject
 	ChildFieldHandlerWorker(
-			AnnotationDiscoveryFactory annotationDiscoveryFactory,
+			AnnotationDiscoveryWorkerFactory annotationDiscoveryFactory,
 			PredefinedAnnotationFilterFactory annotationFilterFactory,
 			FactoriesMapFactory factoriesMapFactory,
 			FieldsFactory fieldFactories,
@@ -110,7 +110,7 @@ class ChildFieldHandlerWorker {
 	}
 
 	private ChildFieldHandler createChildFieldHandler(Object preferences) {
-		PredefinedAnnotationFilter annotationFilter = annotationFilterFactory
+		AnnotationFilter annotationFilter = annotationFilterFactory
 				.create(childAnnotations);
 		DiscoverAnnotationsCallback callback = new DiscoverAnnotationsCallback();
 		annotationDiscoveryFactory.create(annotationFilter, preferences,

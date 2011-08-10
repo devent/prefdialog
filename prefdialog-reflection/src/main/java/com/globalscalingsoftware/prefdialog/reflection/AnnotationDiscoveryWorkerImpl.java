@@ -21,35 +21,25 @@ package com.globalscalingsoftware.prefdialog.reflection;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
+import com.globalscalingsoftware.prefdialog.reflection.api.AnnotationDiscoveryCallback;
+import com.globalscalingsoftware.prefdialog.reflection.api.AnnotationDiscoveryWorker;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
-/**
- * Search an object's fields for {@link Annotation annotations} and if an
- * annotation is found it will call a {@link AnnotationDiscoveryCallback
- * callback}. The annotations are defined by a {@link PredefinedAnnotationFilter filter}
- * 
- * @see PredefinedAnnotationFilter
- * @see AnnotationDiscoveryCallback
- * @see Annotation
- */
-public class AnnotationDiscovery {
+class AnnotationDiscoveryWorkerImpl implements AnnotationDiscoveryWorker {
 
 	private final ReflectionToolbox reflectionToolbox;
-
-	private final Object object;
 
 	private final AnnotationDiscoveryCallback callback;
 
 	private final PredefinedAnnotationFilter filter;
 
 	@Inject
-	AnnotationDiscovery(ReflectionToolbox reflectionToolbox,
-			@Assisted PredefinedAnnotationFilter filter, @Assisted Object object,
+	AnnotationDiscoveryWorkerImpl(ReflectionToolbox reflectionToolbox,
+			@Assisted PredefinedAnnotationFilter filter,
 			@Assisted AnnotationDiscoveryCallback callback) {
 		this.reflectionToolbox = reflectionToolbox;
 		this.filter = filter;
-		this.object = object;
 		this.callback = callback;
 	}
 
@@ -57,9 +47,10 @@ public class AnnotationDiscovery {
 	 * Discovers the {@link Annotation annotations} in the given object's
 	 * fields.
 	 */
-	public void discoverAnnotations() {
+	@Override
+	public void discoverAnnotations(Object object) {
 		checkNull(object);
-		discoverFields();
+		discoverFields(object);
 	}
 
 	private void checkNull(Object object) {
@@ -69,26 +60,27 @@ public class AnnotationDiscovery {
 		}
 	}
 
-	public void discoverFields() {
+	public void discoverFields(Object object) {
 		Class<? extends Object> clazz = object.getClass();
 		Field[] fields = clazz.getDeclaredFields();
 		for (Field field : fields) {
 			Annotation[] annotations = field.getDeclaredAnnotations();
-			searchAnnotations(field, annotations);
+			searchAnnotations(field, object, annotations);
 		}
 	}
 
-	private void searchAnnotations(Field field, Annotation[] annotations) {
+	private void searchAnnotations(Field field, Object object,
+			Annotation[] annotations) {
 		for (Annotation annotation : annotations) {
 			if (filter.accept(annotation)) {
-				informCallback(field, annotation);
+				informCallback(field, object, annotation);
 			}
 		}
 	}
 
-	private void informCallback(Field field, Annotation annotation) {
+	private void informCallback(Field field, Object object, Annotation a) {
 		Object value = reflectionToolbox.getValueFrom(field, object);
-		callback.fieldAnnotationDiscovered(field, value, annotation);
+		callback.fieldAnnotationDiscovered(field, value, a);
 	}
 
 }

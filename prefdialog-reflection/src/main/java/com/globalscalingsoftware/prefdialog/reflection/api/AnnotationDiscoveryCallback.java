@@ -16,13 +16,30 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.reflection;
+package com.globalscalingsoftware.prefdialog.reflection.api;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
+/**
+ * Callback that is called if a {@link Annotation} is found.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ */
 public interface AnnotationDiscoveryCallback {
 
+	/**
+	 * Called if an {@link Annotation} was found in the field.
+	 * 
+	 * @param field
+	 *            the {@link Field} where the {@link Annotation} was found.
+	 * 
+	 * @param value
+	 *            the {@link Object value} of the field.
+	 * 
+	 * @param a
+	 *            the {@link Annotation} that was found.
+	 */
 	void fieldAnnotationDiscovered(Field field, Object value, Annotation a);
 
 }

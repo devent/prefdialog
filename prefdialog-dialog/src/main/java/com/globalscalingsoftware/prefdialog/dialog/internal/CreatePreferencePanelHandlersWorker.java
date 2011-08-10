@@ -14,9 +14,9 @@ import org.slf4j.LoggerFactory;
 import com.globalscalingsoftware.prefdialog.PreferencePanelHandler;
 import com.globalscalingsoftware.prefdialog.PreferencePanelHandlerFactory;
 import com.globalscalingsoftware.prefdialog.dialog.internal.PreferencePanelsCollection.PreferencePanelsCollectionFactory;
-import com.globalscalingsoftware.prefdialog.reflection.AnnotationDiscoveryCallback;
-import com.globalscalingsoftware.prefdialog.reflection.AnnotationDiscoveryFactory;
 import com.globalscalingsoftware.prefdialog.reflection.PredefinedAnnotationFilter;
+import com.globalscalingsoftware.prefdialog.reflection.api.AnnotationDiscoveryCallback;
+import com.globalscalingsoftware.prefdialog.reflection.api.AnnotationDiscoveryWorkerFactory;
 import com.globalscalingsoftware.prefdialog.reflection.api.PredefinedAnnotationFilterFactory;
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
@@ -70,7 +70,7 @@ class CreatePreferencePanelHandlersWorker {
 
 	private final PreferencePanelsCollectionFactory preferencePanelsCollectionFactory;
 
-	private final AnnotationDiscoveryFactory annotationDiscoveryFactory;
+	private final AnnotationDiscoveryWorkerFactory annotationDiscoveryFactory;
 
 	private PreferencePanelHandler firstPreferencePanelHandler;
 
@@ -79,7 +79,7 @@ class CreatePreferencePanelHandlersWorker {
 	@Inject
 	CreatePreferencePanelHandlersWorker(
 			PredefinedAnnotationFilterFactory annotationFilterFactory,
-			AnnotationDiscoveryFactory annotationDiscoveryFactory,
+			AnnotationDiscoveryWorkerFactory annotationDiscoveryFactory,
 			@Named("childAnnotations") Collection<Class<? extends Annotation>> childAnnotations,
 			PreferencePanelsCollectionFactory preferencePanelsCollectionFactory,
 			PreferencePanelHandlerFactory preferencePanelHandlerFactory,
