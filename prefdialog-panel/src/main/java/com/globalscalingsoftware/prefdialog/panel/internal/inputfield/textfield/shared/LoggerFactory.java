@@ -2,7 +2,7 @@ package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.textfield
 
 import java.lang.reflect.Field;
 
-import com.globalscalingsoftware.prefdialog.swingutils.internal.log.AbstractLogger;
+import com.globalscalingsoftware.prefdialog.swingutils.log.AbstractLogger;
 import com.globalscalingsoftware.prefdialog.validators.Validator;
 import com.google.inject.Inject;
 

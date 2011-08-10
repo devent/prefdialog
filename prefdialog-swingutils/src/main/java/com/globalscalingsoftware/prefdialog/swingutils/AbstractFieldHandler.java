@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-public. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.swingutils.internal;
+package com.globalscalingsoftware.prefdialog.swingutils;
 
 import java.awt.Component;
 import java.lang.annotation.Annotation;
@@ -31,6 +31,7 @@ import com.globalscalingsoftware.prefdialog.FieldHandler;
  * 
  * @param <FieldComponentType>
  *            the type of the underlying {@link FieldComponent}.
+ * 
  * @see FieldHandler
  * @see FieldComponent
  */

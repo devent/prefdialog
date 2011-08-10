@@ -1,4 +1,4 @@
-package com.globalscalingsoftware.prefdialog.swingutils.internal.log;
+package com.globalscalingsoftware.prefdialog.swingutils.log;
 
 public abstract class AbstractLogger {
 

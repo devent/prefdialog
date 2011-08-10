@@ -1,6 +1,6 @@
 package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.checkbox;
 
-import com.globalscalingsoftware.prefdialog.swingutils.internal.log.AbstractLogger;
+import com.globalscalingsoftware.prefdialog.swingutils.log.AbstractLogger;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 

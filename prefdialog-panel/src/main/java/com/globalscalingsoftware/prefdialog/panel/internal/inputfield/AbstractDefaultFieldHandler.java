@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
 
 import com.globalscalingsoftware.prefdialog.FieldComponent;
 import com.globalscalingsoftware.prefdialog.reflection.internal.ReflectionToolbox;
-import com.globalscalingsoftware.prefdialog.swingutils.internal.AbstractFieldHandler;
+import com.globalscalingsoftware.prefdialog.swingutils.AbstractFieldHandler;
 
 /**
  * Reads the common annotation attributes from the field and sets them to the

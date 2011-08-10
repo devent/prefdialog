@@ -3,7 +3,7 @@ package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.button;
 import java.lang.reflect.Field;
 
 import com.globalscalingsoftware.prefdialog.annotations.HorizontalPosition;
-import com.globalscalingsoftware.prefdialog.swingutils.internal.log.AbstractLogger;
+import com.globalscalingsoftware.prefdialog.swingutils.log.AbstractLogger;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 

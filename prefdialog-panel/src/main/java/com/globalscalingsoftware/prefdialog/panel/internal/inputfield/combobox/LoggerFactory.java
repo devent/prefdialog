@@ -6,7 +6,7 @@ import java.util.Collection;
 import javax.swing.ComboBoxModel;
 import javax.swing.ListCellRenderer;
 
-import com.globalscalingsoftware.prefdialog.swingutils.internal.log.AbstractLogger;
+import com.globalscalingsoftware.prefdialog.swingutils.log.AbstractLogger;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
