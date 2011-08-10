@@ -1,79 +1,68 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
 		<artifactId>prefdialog-parent</artifactId>
 		<groupId>com.globalscalingsoftware.prefdialog</groupId>
 		<version>1.9-SNAPSHOT</version>
-        <relativePath>../prefdialog-parent</relativePath>
+		<relativePath>../prefdialog-parent</relativePath>
 	</parent>
 
-	<groupId>com.globalscalingsoftware.prefdialog</groupId>
 	<artifactId>prefdialog-dialog</artifactId>
-	<version>1.9-SNAPSHOT</version>
 
 	<dependencies>
 		<dependency>
 			<groupId>tablelayout</groupId>
 			<artifactId>TableLayout</artifactId>
-			<version>20050920</version>
 		</dependency>
 		<dependency>
 			<groupId>org.easytesting</groupId>
 			<artifactId>fest-reflect</artifactId>
-			<version>1.2</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.inject.extensions</groupId>
 			<artifactId>guice-assistedinject</artifactId>
-			<version>3.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.kenai.nbpwr</groupId>
 			<artifactId>javax-annotation</artifactId>
-			<version>1.3.7-201002241900</version>
 		</dependency>
 		<dependency>
 			<groupId>com.globalscalingsoftware.prefdialog</groupId>
 			<artifactId>prefdialog-public</artifactId>
-			<version>1.9-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.easytesting</groupId>
 			<artifactId>fest-swing-junit-4.5</artifactId>
-			<version>1.2.1</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.easytesting</groupId>
 			<artifactId>fest-util</artifactId>
-			<version>1.1.3</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.globalscalingsoftware.prefdialog</groupId>
 			<artifactId>prefdialog-reflection</artifactId>
-			<version>1.9-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-collections</groupId>
 			<artifactId>commons-collections</artifactId>
-			<version>3.2.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.globalscalingsoftware.prefdialog</groupId>
 			<artifactId>prefdialog-swingutils</artifactId>
-			<version>1.9-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.globalscalingsoftware.prefdialog</groupId>
 			<artifactId>prefdialog-panel</artifactId>
-			<version>1.9-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-			<version>r09</version>
 		</dependency>
 	</dependencies>
+
 </project>
