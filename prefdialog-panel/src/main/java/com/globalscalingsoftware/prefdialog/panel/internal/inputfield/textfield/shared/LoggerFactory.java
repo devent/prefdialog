@@ -2,7 +2,7 @@ package com.globalscalingsoftware.prefdialog.panel.internal.inputfield.textfield
 
 import java.lang.reflect.Field;
 
-import com.globalscalingsoftware.prefdialog.swingutils.log.AbstractLogger;
+import com.globalscalingsoftware.prefdialog.swingutils.AbstractSwingLogger;
 import com.globalscalingsoftware.prefdialog.validators.Validator;
 import com.google.inject.Inject;
 
@@ -10,7 +10,7 @@ public interface LoggerFactory {
 
 	Logger create(Class<?> clazz);
 
-	public abstract class Logger extends AbstractLogger {
+	public abstract class Logger extends AbstractSwingLogger {
 
 		@Inject
 		protected Logger(Class<?> contextClass) {
