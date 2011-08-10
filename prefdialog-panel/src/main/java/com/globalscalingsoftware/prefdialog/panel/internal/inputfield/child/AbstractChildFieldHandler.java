@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
 import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractDefaultFieldHandler;
-import com.globalscalingsoftware.prefdialog.reflection.internal.ReflectionToolbox;
+import com.globalscalingsoftware.prefdialog.reflection.ReflectionToolbox;
 
 /**
  * Implements combined behavior for {@link Child} fields. Can contain other

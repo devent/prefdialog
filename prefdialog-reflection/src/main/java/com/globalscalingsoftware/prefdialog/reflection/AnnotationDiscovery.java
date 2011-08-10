@@ -16,21 +16,20 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.reflection.internal;
+package com.globalscalingsoftware.prefdialog.reflection;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
-import com.globalscalingsoftware.prefdialog.reflection.AnnotationDiscoveryCallback;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 /**
  * Search an object's fields for {@link Annotation annotations} and if an
  * annotation is found it will call a {@link AnnotationDiscoveryCallback
- * callback}. The annotations are defined by a {@link AnnotationFilter filter}
+ * callback}. The annotations are defined by a {@link PredefinedAnnotationFilter filter}
  * 
- * @see AnnotationFilter
+ * @see PredefinedAnnotationFilter
  * @see AnnotationDiscoveryCallback
  * @see Annotation
  */
@@ -42,11 +41,11 @@ public class AnnotationDiscovery {
 
 	private final AnnotationDiscoveryCallback callback;
 
-	private final AnnotationFilter filter;
+	private final PredefinedAnnotationFilter filter;
 
 	@Inject
 	AnnotationDiscovery(ReflectionToolbox reflectionToolbox,
-			@Assisted AnnotationFilter filter, @Assisted Object object,
+			@Assisted PredefinedAnnotationFilter filter, @Assisted Object object,
 			@Assisted AnnotationDiscoveryCallback callback) {
 		this.reflectionToolbox = reflectionToolbox;
 		this.filter = filter;

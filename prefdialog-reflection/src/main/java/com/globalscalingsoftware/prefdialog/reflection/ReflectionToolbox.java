@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.reflection.internal;
+package com.globalscalingsoftware.prefdialog.reflection;
 
 import static java.lang.String.format;
 import static org.fest.reflect.core.Reflection.constructor;

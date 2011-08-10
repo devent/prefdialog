@@ -5,7 +5,7 @@ import java.lang.reflect.Field;
 
 import com.globalscalingsoftware.prefdialog.FieldComponent;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.LoggerFactory.Logger;
-import com.globalscalingsoftware.prefdialog.reflection.internal.ReflectionToolbox;
+import com.globalscalingsoftware.prefdialog.reflection.ReflectionToolbox;
 import com.google.inject.Inject;
 
 /**

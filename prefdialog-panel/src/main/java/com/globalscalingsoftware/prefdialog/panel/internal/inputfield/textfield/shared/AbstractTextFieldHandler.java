@@ -23,7 +23,7 @@ import java.lang.reflect.Field;
 
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractLabelFieldHandler;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.textfield.shared.LoggerFactory.Logger;
-import com.globalscalingsoftware.prefdialog.reflection.internal.ReflectionToolbox;
+import com.globalscalingsoftware.prefdialog.reflection.ReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.validators.Validator;
 
 public abstract class AbstractTextFieldHandler extends

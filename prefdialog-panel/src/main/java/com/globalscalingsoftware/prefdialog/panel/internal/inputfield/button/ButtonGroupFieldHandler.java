@@ -25,7 +25,7 @@ import com.globalscalingsoftware.prefdialog.annotations.ButtonGroup;
 import com.globalscalingsoftware.prefdialog.annotations.HorizontalPosition;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.AbstractLabelFieldHandler;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.button.LoggerFactory.Logger;
-import com.globalscalingsoftware.prefdialog.reflection.internal.ReflectionToolbox;
+import com.globalscalingsoftware.prefdialog.reflection.ReflectionToolbox;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 

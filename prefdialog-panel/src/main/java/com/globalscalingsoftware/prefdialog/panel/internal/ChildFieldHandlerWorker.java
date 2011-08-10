@@ -21,8 +21,8 @@ import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.child.Chil
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.child.group.GroupFieldHandler;
 import com.globalscalingsoftware.prefdialog.reflection.AnnotationDiscoveryCallback;
 import com.globalscalingsoftware.prefdialog.reflection.AnnotationDiscoveryFactory;
-import com.globalscalingsoftware.prefdialog.reflection.AnnotationFilterFactory;
-import com.globalscalingsoftware.prefdialog.reflection.internal.AnnotationFilter;
+import com.globalscalingsoftware.prefdialog.reflection.PredefinedAnnotationFilter;
+import com.globalscalingsoftware.prefdialog.reflection.api.PredefinedAnnotationFilterFactory;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.name.Named;
@@ -54,7 +54,7 @@ class ChildFieldHandlerWorker {
 
 	private final AnnotationDiscoveryFactory annotationDiscoveryFactory;
 
-	private final AnnotationFilterFactory annotationFilterFactory;
+	private final PredefinedAnnotationFilterFactory annotationFilterFactory;
 
 	private final FieldsFactory fieldFactories;
 
@@ -71,7 +71,7 @@ class ChildFieldHandlerWorker {
 	@Inject
 	ChildFieldHandlerWorker(
 			AnnotationDiscoveryFactory annotationDiscoveryFactory,
-			AnnotationFilterFactory annotationFilterFactory,
+			PredefinedAnnotationFilterFactory annotationFilterFactory,
 			FactoriesMapFactory factoriesMapFactory,
 			FieldsFactory fieldFactories,
 			@Named("field_handler_factories_map") Map<Class<? extends Annotation>, FieldHandlerFactory> fieldHandlerFactories,
@@ -110,7 +110,7 @@ class ChildFieldHandlerWorker {
 	}
 
 	private ChildFieldHandler createChildFieldHandler(Object preferences) {
-		AnnotationFilter annotationFilter = annotationFilterFactory
+		PredefinedAnnotationFilter annotationFilter = annotationFilterFactory
 				.create(childAnnotations);
 		DiscoverAnnotationsCallback callback = new DiscoverAnnotationsCallback();
 		annotationDiscoveryFactory.create(annotationFilter, preferences,

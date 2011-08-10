@@ -25,7 +25,7 @@ import javax.swing.JTextField;
 import com.globalscalingsoftware.prefdialog.annotations.TextField;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.textfield.shared.AbstractTextFieldHandler;
 import com.globalscalingsoftware.prefdialog.panel.internal.inputfield.textfield.shared.ValidatingTextField;
-import com.globalscalingsoftware.prefdialog.reflection.internal.ReflectionToolbox;
+import com.globalscalingsoftware.prefdialog.reflection.ReflectionToolbox;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 

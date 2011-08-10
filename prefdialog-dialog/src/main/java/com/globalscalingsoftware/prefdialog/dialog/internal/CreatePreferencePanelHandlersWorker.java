@@ -16,8 +16,8 @@ import com.globalscalingsoftware.prefdialog.PreferencePanelHandlerFactory;
 import com.globalscalingsoftware.prefdialog.dialog.internal.PreferencePanelsCollection.PreferencePanelsCollectionFactory;
 import com.globalscalingsoftware.prefdialog.reflection.AnnotationDiscoveryCallback;
 import com.globalscalingsoftware.prefdialog.reflection.AnnotationDiscoveryFactory;
-import com.globalscalingsoftware.prefdialog.reflection.AnnotationFilterFactory;
-import com.globalscalingsoftware.prefdialog.reflection.internal.AnnotationFilter;
+import com.globalscalingsoftware.prefdialog.reflection.PredefinedAnnotationFilter;
+import com.globalscalingsoftware.prefdialog.reflection.api.PredefinedAnnotationFilterFactory;
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -64,7 +64,7 @@ class CreatePreferencePanelHandlersWorker {
 
 	private final Object preferences;
 
-	private final AnnotationFilterFactory annotationFilterFactory;
+	private final PredefinedAnnotationFilterFactory annotationFilterFactory;
 
 	private final Collection<Class<? extends Annotation>> childAnnotations;
 
@@ -78,7 +78,7 @@ class CreatePreferencePanelHandlersWorker {
 
 	@Inject
 	CreatePreferencePanelHandlersWorker(
-			AnnotationFilterFactory annotationFilterFactory,
+			PredefinedAnnotationFilterFactory annotationFilterFactory,
 			AnnotationDiscoveryFactory annotationDiscoveryFactory,
 			@Named("childAnnotations") Collection<Class<? extends Annotation>> childAnnotations,
 			PreferencePanelsCollectionFactory preferencePanelsCollectionFactory,
@@ -109,7 +109,7 @@ class CreatePreferencePanelHandlersWorker {
 	}
 
 	private void discoverAnnotations() {
-		AnnotationFilter annotationFilter = annotationFilterFactory
+		PredefinedAnnotationFilter annotationFilter = annotationFilterFactory
 				.create(childAnnotations);
 		annotationDiscoveryFactory.create(annotationFilter, preferences,
 				new AnnotationDiscoveryCallback() {

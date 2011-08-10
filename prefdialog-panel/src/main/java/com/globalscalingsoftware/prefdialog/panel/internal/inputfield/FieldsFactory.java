@@ -27,8 +27,8 @@ import java.util.List;
 import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.reflection.AnnotationDiscoveryCallback;
 import com.globalscalingsoftware.prefdialog.reflection.AnnotationDiscoveryFactory;
-import com.globalscalingsoftware.prefdialog.reflection.AnnotationFilterFactory;
-import com.globalscalingsoftware.prefdialog.reflection.internal.AnnotationFilter;
+import com.globalscalingsoftware.prefdialog.reflection.PredefinedAnnotationFilter;
+import com.globalscalingsoftware.prefdialog.reflection.api.PredefinedAnnotationFilterFactory;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
@@ -38,14 +38,14 @@ import com.google.inject.name.Named;
  */
 public class FieldsFactory {
 
-	private final AnnotationFilter annotationFilter;
+	private final PredefinedAnnotationFilter annotationFilter;
 
 	private final AnnotationDiscoveryFactory annotationDiscoveryFactory;
 
 	@Inject
 	FieldsFactory(
 			@Named("field_annotations") Collection<Class<? extends Annotation>> fieldAnnotations,
-			AnnotationFilterFactory annotationFilterFactory,
+			PredefinedAnnotationFilterFactory annotationFilterFactory,
 			AnnotationDiscoveryFactory annotationDiscoveryFactory) {
 		this.annotationFilter = annotationFilterFactory
 				.create(fieldAnnotations);
