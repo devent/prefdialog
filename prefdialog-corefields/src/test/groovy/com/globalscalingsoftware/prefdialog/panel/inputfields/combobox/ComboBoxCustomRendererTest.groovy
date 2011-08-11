@@ -25,12 +25,14 @@ import javax.swing.JList
 
 import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child
 import com.globalscalingsoftware.prefdialog.annotations.ComboBox
 import com.globalscalingsoftware.prefdialog.annotations.ComboBoxElements
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractPreferencePanelTest
+import com.globalscalingsoftware.prefdialog.panel.inputfields.AbstractFieldFixture
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.ComboBoxFieldHandlerFactory
 
-class ComboBoxCustomRendererTest extends AbstractPreferencePanelTest {
+class ComboBoxCustomRendererTest extends AbstractFieldFixture {
+
+	static factory = injector.getInstance(ComboBoxFieldHandlerFactory)
 
 	static class CustomComboBoxRenderer extends DefaultListCellRenderer {
 		Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
@@ -51,38 +53,28 @@ class ComboBoxCustomRendererTest extends AbstractPreferencePanelTest {
 
 		@ComboBox(renderer=CustomComboBoxRenderer, elements='Some combo box')
 		String comboBox = 'first element'
-
-		@Override
-		public String toString() {
-			'General'
-		}
 	}
 
-	static class Preferences {
-
-		@Child
-		General general = new General()
-	}
-
-	def setupPreferences() {
-		preferences = new Preferences()
-		panelName = 'General'
+	ComboBoxCustomRendererTest() {
+		super(new General(), 'comboBox', factory)
 	}
 
 	@Test
-	void testChooseFirstAndApply() {
+	void "choose second element and apply input"() {
 		fixture.comboBox('comboBox').selectItem 1
-		panelHandler.applyInput()
-		assert preferences.general.comboBox == 'second element'
+		inputField.applyInput parentObject
+
+		fixture.comboBox('comboBox').requireSelection 1
+		assert parentObject.comboBox == 'second element'
 	}
 
 	@Test
-	void testChooseFirstAndRestore() {
+	void "choose second element and restore input"() {
 		fixture.comboBox('comboBox').selectItem 1
-		panelHandler.restoreInput()
+		inputField.restoreInput parentObject
 
 		fixture.comboBox('comboBox').requireSelection 0
-		assert preferences.general.comboBox == 'first element'
+		assert parentObject.comboBox == 'first element'
 	}
 }
 

@@ -22,11 +22,13 @@ import javax.swing.DefaultComboBoxModel
 
 import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child
 import com.globalscalingsoftware.prefdialog.annotations.ComboBox
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractPreferencePanelTest
+import com.globalscalingsoftware.prefdialog.panel.inputfields.AbstractFieldFixture
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.ComboBoxFieldHandlerFactory
 
-class ComboBoxCustomModelTest extends AbstractPreferencePanelTest {
+class ComboBoxCustomModelTest extends AbstractFieldFixture {
+
+	static factory = injector.getInstance(ComboBoxFieldHandlerFactory)
 
 	static class CustomComboBoxModel extends DefaultComboBoxModel {
 
@@ -43,40 +45,28 @@ class ComboBoxCustomModelTest extends AbstractPreferencePanelTest {
 
 		@ComboBox(model=CustomComboBoxModel)
 		String comboBox = 'second element'
-
-		@Override
-		public String toString() {
-			'General'
-		}
 	}
 
-	static class Preferences {
-
-		@Child
-		General general = new General()
-	}
-
-	def setupPreferences() {
-		preferences = new Preferences()
-		panelName = 'General'
+	ComboBoxCustomModelTest() {
+		super(new General(), 'comboBox', factory)
 	}
 
 	@Test
-	void testChooseThirdAndApply() {
-		assert preferences.general.comboBox == 'second element'
+	void "choose third element and apply input"() {
 		fixture.comboBox('comboBox').selectItem 2
-		panelHandler.applyInput()
-		assert preferences.general.comboBox == 'third element'
+		inputField.applyInput parentObject
+
+		fixture.comboBox('comboBox').requireSelection 2
+		assert parentObject.comboBox == 'third element'
 	}
 
 	@Test
-	void testChooseThirdAndRestore() {
-		assert preferences.general.comboBox == 'second element'
+	void "choose third element and restore input"() {
 		fixture.comboBox('comboBox').selectItem 2
-		panelHandler.restoreInput()
+		inputField.restoreInput parentObject
 
 		fixture.comboBox('comboBox').requireSelection 1
-		assert preferences.general.comboBox == 'second element'
+		assert parentObject.comboBox == 'second element'
 	}
 }
 

@@ -1,6 +1,7 @@
 package com.globalscalingsoftware.prefdialog.panel.inputfields.combobox;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.ComboBoxFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.combobox.LoggerFactory.Logger;
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;

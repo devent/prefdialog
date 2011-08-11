@@ -22,12 +22,14 @@ import java.util.List
 
 import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child
 import com.globalscalingsoftware.prefdialog.annotations.ComboBox
 import com.globalscalingsoftware.prefdialog.annotations.ComboBoxElements
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractPreferencePanelTest
+import com.globalscalingsoftware.prefdialog.panel.inputfields.AbstractFieldFixture
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.ComboBoxFieldHandlerFactory
 
-class ComboBoxReadOnlyTest extends AbstractPreferencePanelTest {
+class ComboBoxReadOnlyTest extends AbstractFieldFixture {
+
+	static factory = injector.getInstance(ComboBoxFieldHandlerFactory)
 
 	static class General {
 
@@ -40,26 +42,14 @@ class ComboBoxReadOnlyTest extends AbstractPreferencePanelTest {
 
 		@ComboBox(elements='Some combo box', readonly=true)
 		String comboBox = 'first element'
-
-		@Override
-		public String toString() {
-			'General'
-		}
 	}
 
-	static class Preferences {
-
-		@Child
-		General general = new General()
-	}
-
-	def setupPreferences() {
-		preferences = new Preferences()
-		panelName = 'General'
+	ComboBoxReadOnlyTest() {
+		super(new General(), 'comboBox', factory)
 	}
 
 	@Test
-	void testPanelClickApplyAndClose() {
+	void "read only checkbox"() {
 		fixture.comboBox('comboBox').requireDisabled()
 		fixture.comboBox('comboBox').requireSelection 0
 	}

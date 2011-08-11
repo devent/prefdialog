@@ -22,12 +22,14 @@ import java.util.List
 
 import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child
 import com.globalscalingsoftware.prefdialog.annotations.ComboBox
 import com.globalscalingsoftware.prefdialog.annotations.ComboBoxElements
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractPreferencePanelTest
+import com.globalscalingsoftware.prefdialog.panel.inputfields.AbstractFieldFixture
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.ComboBoxFieldHandlerFactory
 
-class ComboBoxWidthTest extends AbstractPreferencePanelTest {
+class ComboBoxWidthTest extends AbstractFieldFixture {
+
+	static factory = injector.getInstance(ComboBoxFieldHandlerFactory)
 
 	static class General {
 
@@ -40,28 +42,14 @@ class ComboBoxWidthTest extends AbstractPreferencePanelTest {
 
 		@ComboBox(elements = 'combobox1', width = -2.0d)
 		String comboBox = ''
-
-		@Override
-		public String toString() {
-			'General'
-		}
 	}
 
-	static class Preferences {
-
-		@Child
-		General general = new General()
-	}
-
-	def setupPreferences() {
-		preferences = new Preferences()
-		panelName = 'General'
+	ComboBoxWidthTest() {
+		super(new General(), 'comboBox', factory)
 	}
 
 	@Test
-	void testPanelClickApplyAndClose() {
+	void "set preferred width"() {
 		fixture.comboBox('comboBox').selectItem 1
-		panelHandler.applyInput()
-		assert preferences.general.comboBox == 'second element'
 	}
 }

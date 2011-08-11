@@ -19,66 +19,25 @@
 package com.globalscalingsoftware.prefdialog.panel.inputfields
 
 
-import groovy.swing.SwingBuilder
-
-import java.awt.BorderLayout
-
 import javax.swing.JFrame
 
-import org.fest.swing.edt.GuiActionRunner
-import org.fest.swing.edt.GuiQuery
 import org.fest.swing.fixture.FrameFixture
 import org.junit.After
 import org.junit.Before
 
-import com.google.inject.Guice
-import com.google.inject.Injector
-
-abstract class AbstractFieldFixture {
-
-	public static Injector injector = Guice.createInjector(new CoreFieldsModule())
-
-	def parentObject
-
-	def value
-
-	def field
-
-	def inputField
-
-	FrameFixture fixture
-
-	JFrame frame
+abstract class AbstractFieldFixture extends FieldFixtureHandler {
 
 	AbstractFieldFixture(def parentObject, def fieldName, def fieldFactory) {
-		this.parentObject = parentObject
-		this.value = parentObject."$fieldName"
-		this.field = parentObject.class.declaredFields.find { it.name == fieldName }
-		this.inputField = fieldFactory.create(parentObject, value, field)
-		this.frame = createPanelFrame()
-	}
-
-	def createPanelFrame() {
-		return new SwingBuilder().frame(title: 'Core Field Test', pack: true, preferredSize: [480, 360]) {
-			borderLayout()
-			widget(inputField.getAWTComponent(), constraints: BorderLayout.CENTER)
-		}
+		createFieldFixture(parentObject, fieldName, fieldFactory)
 	}
 
 	@Before
 	void beforeTest() {
-		fixture = createFrameFixture()
-		fixture.show();
+		beginFixture()
 	}
 
 	@After
 	void afterTest() {
-		fixture.cleanUp()
-		fixture = null
-	}
-
-	def createFrameFixture() {
-		def result = GuiActionRunner.execute([executeInEDT: { frame } ] as GuiQuery);
-		return new FrameFixture(result);
+		endFixture()
 	}
 }

@@ -22,12 +22,14 @@ import java.util.List
 
 import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child
 import com.globalscalingsoftware.prefdialog.annotations.ComboBox
 import com.globalscalingsoftware.prefdialog.annotations.ComboBoxElements
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractPreferencePanelTest
+import com.globalscalingsoftware.prefdialog.panel.inputfields.FieldFixtureHandler
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.ComboBoxFieldHandlerFactory
 
-class ComboBoxTitleTest extends AbstractPreferencePanelTest {
+class ComboBoxTitleTest extends FieldFixtureHandler {
+
+	static factory = injector.getInstance(ComboBoxFieldHandlerFactory)
 
 	static class General {
 
@@ -46,28 +48,31 @@ class ComboBoxTitleTest extends AbstractPreferencePanelTest {
 
 		@ComboBox(showTitle=false, elements='Some combo box')
 		String comboBox3= 'first element'
-
-		@Override
-		public String toString() {
-			'General'
-		}
-	}
-
-	static class Preferences {
-
-		@Child
-		General general = new General()
-	}
-
-	def setupPreferences() {
-		preferences = new Preferences()
-		panelName = 'General'
 	}
 
 	@Test
-	void testTitle() {
+	void "set default tile"() {
+		createFieldFixture(new General(), 'comboBox1', factory)
+		beginFixture()
 		assert fixture.label('label-comboBox1').text() == 'comboBox1'
+		endFixture()
+	}
+
+	@Test
+	void "set custom tile"() {
+		createFieldFixture(new General(), 'comboBox2', factory)
+		beginFixture()
 		assert fixture.label('label-comboBox2').text() == 'Second combo box:'
+		endFixture()
+	}
+
+	@Test
+	void "set no tile"() {
+		createFieldFixture(new General(), 'comboBox3', factory)
+		beginFixture()
+		// Why it can't find an invisible label?
+		// fixture.label('label-comboBox3').requireNotVisible()
+		endFixture()
 	}
 }
 

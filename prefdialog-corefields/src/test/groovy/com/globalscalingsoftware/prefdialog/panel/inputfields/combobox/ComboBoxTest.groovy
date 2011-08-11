@@ -22,12 +22,14 @@ import java.util.List
 
 import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child
 import com.globalscalingsoftware.prefdialog.annotations.ComboBox
 import com.globalscalingsoftware.prefdialog.annotations.ComboBoxElements
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractPreferencePanelTest
+import com.globalscalingsoftware.prefdialog.panel.inputfields.AbstractFieldFixture
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.ComboBoxFieldHandlerFactory
 
-class ComboBoxTest extends AbstractPreferencePanelTest {
+class ComboBoxTest extends AbstractFieldFixture {
+
+	static factory = injector.getInstance(ComboBoxFieldHandlerFactory)
 
 	static class General {
 
@@ -40,40 +42,28 @@ class ComboBoxTest extends AbstractPreferencePanelTest {
 
 		@ComboBox(elements='Some combo box')
 		String comboBox = 'first element'
-
-		@Override
-		public String toString() {
-			'General'
-		}
 	}
 
-	static class Preferences {
-
-		@Child
-		General general = new General()
-	}
-
-	def setupPreferences() {
-		preferences = new Preferences()
-		panelName = 'General'
+	ComboBoxTest() {
+		super(new General(), 'comboBox', factory)
 	}
 
 	@Test
-	void testChooseFirstAndApply() {
+	void "choose second element and apply input"() {
 		fixture.comboBox('comboBox').selectItem 1
-		panelHandler.applyInput()
+		inputField.applyInput parentObject
 
-		assert fixture.label('label-comboBox').text() == 'comboBox'
-		assert preferences.general.comboBox == 'second element'
+		fixture.comboBox('comboBox').requireSelection 1
+		assert parentObject.comboBox == 'second element'
 	}
 
 	@Test
-	void testChooseFirstAndRestore() {
+	void "choose second element and restore input"() {
 		fixture.comboBox('comboBox').selectItem 1
-		panelHandler.restoreInput()
+		inputField.restoreInput parentObject
+
 		fixture.comboBox('comboBox').requireSelection 0
-
-		assert preferences.general.comboBox == 'first element'
+		assert parentObject.comboBox == 'first element'
 	}
 }
 
