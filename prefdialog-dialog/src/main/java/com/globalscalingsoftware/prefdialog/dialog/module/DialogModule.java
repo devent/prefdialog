@@ -20,7 +20,7 @@ package com.globalscalingsoftware.prefdialog.dialog.module;
 
 import com.globalscalingsoftware.prefdialog.PreferenceDialogHandler;
 import com.globalscalingsoftware.prefdialog.dialog.internal.InternalModule;
-import com.globalscalingsoftware.prefdialog.panel.module.PanelModule;
+import com.globalscalingsoftware.prefdialog.panel.PanelModule;
 import com.google.inject.Injector;
 
 /**
