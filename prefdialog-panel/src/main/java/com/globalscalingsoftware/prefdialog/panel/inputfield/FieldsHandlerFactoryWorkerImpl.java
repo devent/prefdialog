@@ -45,11 +45,10 @@ class FieldsHandlerFactoryWorkerImpl implements FieldsHandlerFactoryWorker {
 	@Inject
 	FieldsHandlerFactoryWorkerImpl(
 			@Named("field_annotations") Collection<Class<? extends Annotation>> fieldAnnotations,
-			PredefinedAnnotationFilterFactory annotationFilterFactory,
-			AnnotationDiscoveryWorkerFactory annotationDiscoveryFactory) {
-		this.annotationFilter = annotationFilterFactory
-				.create(fieldAnnotations);
-		this.annotationDiscoveryFactory = annotationDiscoveryFactory;
+			PredefinedAnnotationFilterFactory filterFactory,
+			AnnotationDiscoveryWorkerFactory discoveryFactory) {
+		this.annotationFilter = filterFactory.create(fieldAnnotations);
+		this.annotationDiscoveryFactory = discoveryFactory;
 	}
 
 	@Override
