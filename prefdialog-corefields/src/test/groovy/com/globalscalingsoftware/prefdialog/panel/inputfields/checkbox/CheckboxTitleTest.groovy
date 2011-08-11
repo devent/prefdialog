@@ -21,40 +21,26 @@ package com.globalscalingsoftware.prefdialog.panel.inputfields.checkbox
 import org.junit.Test
 
 import com.globalscalingsoftware.prefdialog.annotations.Checkbox
-import com.globalscalingsoftware.prefdialog.annotations.Child
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractPreferencePanelTest
+import com.globalscalingsoftware.prefdialog.panel.inputfields.AbstractFieldFixture
 
-class CheckboxTitleTest extends AbstractPreferencePanelTest {
+class CheckboxTitleTest extends AbstractFieldFixture {
+
+	static factory = injector.getInstance(CheckBoxFieldHandlerFactory)
 
 	static class General {
 
 		@Checkbox(title='Should be save automatically?', text='yes/no')
-		boolean automaticSave = false
-
-		@Override
-		public String toString() {
-			'General'
-		}
+		def automaticSave = false
 	}
 
-	static class Preferences {
-
-		@Child
-		General general = new General()
-	}
-
-	def setupPreferences() {
-		preferences = new Preferences()
-		panelName = 'General'
+	CheckboxTitleTest() {
+		super(new General(), 'automaticSave', factory)
 	}
 
 	@Test
-	void testPanelClickApplyAndClose() {
+	void "checkbox set title and text"() {
 		fixture.checkBox('automaticSave').click()
-		panelHandler.applyInput()
-
 		assert fixture.label('label-automaticSave').text() == 'Should be save automatically?'
 		assert fixture.checkBox('automaticSave').text() == 'yes/no'
-		assert preferences.general.automaticSave == true
 	}
 }

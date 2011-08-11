@@ -21,46 +21,33 @@ package com.globalscalingsoftware.prefdialog.panel.inputfields.checkbox
 import org.junit.Test
 
 import com.globalscalingsoftware.prefdialog.annotations.Checkbox
-import com.globalscalingsoftware.prefdialog.annotations.Child
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractPreferencePanelTest
+import com.globalscalingsoftware.prefdialog.panel.inputfields.AbstractFieldFixture
 
-class CheckboxTest extends AbstractPreferencePanelTest {
+class CheckboxTest extends AbstractFieldFixture {
+
+	static factory = injector.getInstance(CheckBoxFieldHandlerFactory)
 
 	static class General {
 
 		@Checkbox
-		boolean automaticSave = false
-
-		@Override
-		public String toString() {
-			"General"
-		}
+		def automaticSave = false
 	}
 
-	static class Preferences {
-
-		@Child
-		General general = new General()
-	}
-
-	def setupPreferences() {
-		preferences = new Preferences()
-		panelName = "General"
+	CheckboxTest() {
+		super(new General(), 'automaticSave', factory)
 	}
 
 	@Test
-	void testPanelClickApply() {
+	void "click and apply input"() {
 		fixture.checkBox("automaticSave").click()
-		panelHandler.applyInput()
-
-		assert preferences.general.automaticSave == true
+		inputField.applyInput parentObject
+		assert parentObject.automaticSave == true
 	}
 
 	@Test
-	void testPanelClickRestore() {
+	void "click and restore input"() {
 		fixture.checkBox("automaticSave").click()
-		panelHandler.restoreInput()
-
-		assert preferences.general.automaticSave == false
+		inputField.restoreInput parentObject
+		assert parentObject.automaticSave == false
 	}
 }

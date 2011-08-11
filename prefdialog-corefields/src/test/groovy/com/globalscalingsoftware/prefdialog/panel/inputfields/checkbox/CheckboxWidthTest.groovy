@@ -21,38 +21,24 @@ package com.globalscalingsoftware.prefdialog.panel.inputfields.checkbox
 import org.junit.Test
 
 import com.globalscalingsoftware.prefdialog.annotations.Checkbox
-import com.globalscalingsoftware.prefdialog.annotations.Child
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractPreferencePanelTest
+import com.globalscalingsoftware.prefdialog.panel.inputfields.AbstractFieldFixture
 
-class CheckboxWidthTest extends AbstractPreferencePanelTest {
+class CheckboxWidthTest extends AbstractFieldFixture {
+
+	static factory = injector.getInstance(CheckBoxFieldHandlerFactory)
 
 	static class General {
 
 		@Checkbox(width=-2.0d)
-		boolean automaticSave = false
-
-		@Override
-		public String toString() {
-			"General"
-		}
+		def automaticSave = false
 	}
 
-	static class Preferences {
-
-		@Child
-		General general = new General()
-	}
-
-	def setupPreferences() {
-		preferences = new Preferences()
-		panelName = "General"
+	CheckboxWidthTest() {
+		super(new General(), 'automaticSave', factory)
 	}
 
 	@Test
-	void testPanelClickApplyAndClose() {
+	void "checkbox preferred width"() {
 		fixture.checkBox("automaticSave").click()
-		panelHandler.applyInput()
-
-		assert preferences.general.automaticSave == true
 	}
 }

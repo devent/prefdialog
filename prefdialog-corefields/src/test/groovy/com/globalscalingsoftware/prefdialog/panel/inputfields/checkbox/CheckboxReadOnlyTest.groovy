@@ -21,35 +21,24 @@ package com.globalscalingsoftware.prefdialog.panel.inputfields.checkbox
 import org.junit.Test
 
 import com.globalscalingsoftware.prefdialog.annotations.Checkbox
-import com.globalscalingsoftware.prefdialog.annotations.Child
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractPreferencePanelTest
+import com.globalscalingsoftware.prefdialog.panel.inputfields.AbstractFieldFixture
 
-class CheckboxReadOnlyTest extends AbstractPreferencePanelTest {
+class CheckboxReadOnlyTest extends AbstractFieldFixture {
+
+	static factory = injector.getInstance(CheckBoxFieldHandlerFactory)
 
 	static class General {
 
 		@Checkbox(readonly=true)
-		boolean automaticSave = true
-
-		@Override
-		public String toString() {
-			"General"
-		}
+		def automaticSave = true
 	}
 
-	static class Preferences {
-
-		@Child
-		General general = new General()
-	}
-
-	def setupPreferences() {
-		preferences = new Preferences()
-		panelName = "General"
+	CheckboxReadOnlyTest() {
+		super(new General(), 'automaticSave', factory)
 	}
 
 	@Test
-	void testPanelClickApplyAndClose() {
+	void "checkbox is read only"() {
 		fixture.checkBox("automaticSave").requireDisabled()
 		fixture.checkBox("automaticSave").requireSelected()
 	}
