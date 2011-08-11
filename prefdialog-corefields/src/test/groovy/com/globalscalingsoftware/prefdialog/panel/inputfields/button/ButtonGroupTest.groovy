@@ -18,15 +18,11 @@
  */
 package com.globalscalingsoftware.prefdialog.panel.inputfields.button
 
-import java.util.List
-
-import javax.swing.Action
-
 import org.junit.Test
 
 import com.globalscalingsoftware.prefdialog.annotations.ButtonGroup
 import com.globalscalingsoftware.prefdialog.panel.inputfields.AbstractFieldFixture
-import com.globalscalingsoftware.prefdialog.panel.inputfields.api.ButtonGroupFieldHandlerFactory;
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.ButtonGroupFieldHandlerFactory
 
 class ButtonGroupTest extends AbstractFieldFixture {
 
@@ -35,15 +31,10 @@ class ButtonGroupTest extends AbstractFieldFixture {
 	static class General {
 
 		@ButtonGroup
-		public List<Action> buttons = [
+		def buttons = [
 			new Button1Action(),
 			new Button2Action()
 		]
-
-		@Override
-		public String toString() {
-			"General"
-		}
 	}
 
 	ButtonGroupTest() {
@@ -51,13 +42,13 @@ class ButtonGroupTest extends AbstractFieldFixture {
 	}
 
 	@Test
-	void testPanelClickApply() {
+	void "click on buttons"() {
 		fixture.button("button-0-buttons").click()
 		fixture.button("button-1-buttons").click()
 	}
 
 	@Test
 	void testManually() {
-		//Thread.sleep 60000
+		Thread.sleep 0
 	}
 }

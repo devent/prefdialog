@@ -18,15 +18,11 @@
  */
 package com.globalscalingsoftware.prefdialog.panel.inputfields.button
 
-import java.util.List
-
-import javax.swing.Action
-
 import org.junit.Test
 
 import com.globalscalingsoftware.prefdialog.annotations.ButtonGroup
 import com.globalscalingsoftware.prefdialog.panel.inputfields.AbstractFieldFixture
-import com.globalscalingsoftware.prefdialog.panel.inputfields.api.ButtonGroupFieldHandlerFactory;
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.ButtonGroupFieldHandlerFactory
 
 class ButtonGroupTitleTest extends AbstractFieldFixture {
 
@@ -35,15 +31,10 @@ class ButtonGroupTitleTest extends AbstractFieldFixture {
 	static class General {
 
 		@ButtonGroup(title='The title', showTitle=true)
-		public List<Action> buttons = [
+		def buttons = [
 			new Button1Action(),
 			new Button2Action()
 		]
-
-		@Override
-		public String toString() {
-			"General"
-		}
 	}
 
 	ButtonGroupTitleTest() {
@@ -51,13 +42,13 @@ class ButtonGroupTitleTest extends AbstractFieldFixture {
 	}
 
 	@Test
-	void testPanelClickApply() {
-		fixture.button("button-0-buttons").click()
-		fixture.button("button-1-buttons").click()
+	void "title set and visible"() {
+		fixture.label("label-buttons").requireVisible()
+		fixture.label("label-buttons").text() == 'The title'
 	}
 
 	@Test
 	void testManually() {
-		// Thread.sleep 60000
+		Thread.sleep 0
 	}
 }

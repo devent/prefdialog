@@ -53,13 +53,13 @@ abstract class AbstractFieldFixture {
 	AbstractFieldFixture(def parentObject, def fieldName, def fieldFactory) {
 		this.parentObject = parentObject
 		this.value = parentObject."$fieldName"
-		this.field = parentObject.class.fields.find { it.name == fieldName }
+		this.field = parentObject.class.declaredFields.find { it.name == fieldName }
 		this.inputField = fieldFactory.create(parentObject, value, field)
 		this.frame = createPanelFrame()
 	}
 
 	def createPanelFrame() {
-		return new SwingBuilder().frame(title: 'Core Field Test', pack: true) {
+		return new SwingBuilder().frame(title: 'Core Field Test', pack: true, preferredSize: [480, 360]) {
 			borderLayout()
 			widget(inputField.getAWTComponent(), constraints: BorderLayout.CENTER)
 		}
