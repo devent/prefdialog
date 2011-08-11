@@ -20,11 +20,13 @@ package com.globalscalingsoftware.prefdialog.panel.inputfields.filechooser
 
 import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child
 import com.globalscalingsoftware.prefdialog.annotations.FileChooser
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractPreferencePanelTest
+import com.globalscalingsoftware.prefdialog.panel.inputfields.FieldFixtureHandler
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.FileChooserFieldHandlerFactory
 
-class FileChooserTitleTest extends AbstractPreferencePanelTest {
+class FileChooserTitleTest extends FieldFixtureHandler {
+
+	static factory = injector.getInstance(FileChooserFieldHandlerFactory)
 
 	static class General {
 
@@ -36,28 +38,30 @@ class FileChooserTitleTest extends AbstractPreferencePanelTest {
 
 		@FileChooser(showTitle=false)
 		File file3 = new File('')
-
-		@Override
-		public String toString() {
-			'General'
-		}
-	}
-
-	static class Preferences {
-
-		@Child
-		General general = new General()
-	}
-
-	def setupPreferences() {
-		preferences = new Preferences()
-		panelName = 'General'
 	}
 
 	@Test
-	void testInputs() {
+	void "default title"() {
+		createFieldFixture(new General(), 'file1', factory)
+		beginFixture()
 		assert fixture.label('label-file1').text() == 'file1'
+		endFixture()
+	}
+
+	@Test
+	void "custom title"() {
+		createFieldFixture(new General(), 'file2', factory)
+		beginFixture()
 		assert fixture.label('label-file2').text() == 'Save to file:'
+		endFixture()
+	}
+
+	@Test
+	void "no title"() {
+		createFieldFixture(new General(), 'file3', factory)
+		beginFixture()
+		//assert fixture.label('label-file3').text() == 'file3'
+		endFixture()
 	}
 
 	@Test

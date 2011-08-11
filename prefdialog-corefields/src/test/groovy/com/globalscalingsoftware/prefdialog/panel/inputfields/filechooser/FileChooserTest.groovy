@@ -23,36 +23,26 @@ import java.awt.event.KeyEvent
 import org.fest.swing.core.KeyPressInfo
 import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child
 import com.globalscalingsoftware.prefdialog.annotations.FileChooser
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractPreferencePanelTest
+import com.globalscalingsoftware.prefdialog.panel.inputfields.AbstractFieldFixture
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.FileChooserFieldHandlerFactory
 
-class FileChooserTest extends AbstractPreferencePanelTest {
+class FileChooserTest extends AbstractFieldFixture {
+
+	static factory = injector.getInstance(FileChooserFieldHandlerFactory)
 
 	static class General {
 
 		@FileChooser
 		File file = new File('')
-
-		@Override
-		public String toString() {
-			'General'
-		}
 	}
 
-	static class Preferences {
-
-		@Child
-		General general = new General()
-	}
-
-	def setupPreferences() {
-		preferences = new Preferences()
-		panelName = 'General'
+	FileChooserTest() {
+		super(new General(), 'file', factory)
 	}
 
 	@Test
-	void testInputs() {
+	void "titels"() {
 		fixture.label('label-file').requireVisible()
 		assert fixture.label('label-file').text() == 'file'
 		fixture.textBox('filetextfield-file').requireVisible()
@@ -61,57 +51,59 @@ class FileChooserTest extends AbstractPreferencePanelTest {
 	}
 
 	@Test
-	void testSelectFileAndApply() {
+	void "select a file from the dialog and apply input"() {
 		File tmpfile = File.createTempFile('fileChooserTest', null)
 		tmpfile.deleteOnExit();
 
-		fixture.panel('general').button('openfilebutton-file').click()
+		fixture.button('openfilebutton-file').click()
 		fixture.fileChooser('filechooser-file').setCurrentDirectory(tmpfile.getParentFile())
 		fixture.fileChooser('filechooser-file').selectFile tmpfile
 		fixture.fileChooser('filechooser-file').approve()
-		panelHandler.applyInput()
+		inputField.applyInput parentObject
 
-		assert preferences.general.file == tmpfile
+		assert parentObject.file == tmpfile
 	}
 
 	@Test
-	void testSelectFileAndRestore() {
+	void "select a file from the dialog and restore input"() {
 		File tmpfile = File.createTempFile('fileChooserTest', null)
 		tmpfile.deleteOnExit();
 
-		fixture.panel('general').button('openfilebutton-file').click()
+		fixture.button('openfilebutton-file').click()
 		fixture.fileChooser('filechooser-file').setCurrentDirectory(tmpfile.getParentFile())
 		fixture.fileChooser('filechooser-file').selectFile tmpfile
 		fixture.fileChooser('filechooser-file').approve()
-		panelHandler.restoreInput()
+		inputField.restoreInput parentObject
 
-		assert preferences.general.file == new File('')
+		assert parentObject.file == new File('')
 	}
 
 	@Test
-	void testEnterFileAndApply() {
+	void "enter file name and apply input"() {
 		File tmpfile = File.createTempFile('fileChooserTest', null)
 		tmpfile.deleteOnExit();
 
 		fixture.textBox('filetextfield-file').enterText tmpfile.absolutePath
 		fixture.textBox('filetextfield-file').pressAndReleaseKey KeyPressInfo.keyCode(KeyEvent.VK_ENTER)
-		panelHandler.applyInput()
-		assert preferences.general.file == tmpfile
+		inputField.applyInput parentObject
+
+		assert parentObject.file == tmpfile
 	}
 
 	@Test
-	void testEnterFileAndRestore() {
+	void "enter file name and restore input"() {
 		File tmpfile = File.createTempFile('fileChooserTest', null)
 		tmpfile.deleteOnExit();
 
 		fixture.textBox('filetextfield-file').enterText tmpfile.absolutePath
 		fixture.textBox('filetextfield-file').pressAndReleaseKey KeyPressInfo.keyCode(KeyEvent.VK_ENTER)
-		panelHandler.restoreInput()
-		assert preferences.general.file == new File('')
+		inputField.restoreInput parentObject
+
+		assert parentObject.file == new File('')
 	}
 
 	@Test
-	void testManual() {
-		//Thread.sleep(30000)
+	void "manually"() {
+		Thread.sleep 0
 	}
 }
