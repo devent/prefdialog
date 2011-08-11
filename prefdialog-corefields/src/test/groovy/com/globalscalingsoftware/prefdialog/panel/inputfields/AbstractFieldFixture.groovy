@@ -21,9 +21,8 @@ package com.globalscalingsoftware.prefdialog.panel.inputfields
 
 import groovy.swing.SwingBuilder
 
-import java.awt.event.ActionEvent
+import java.awt.BorderLayout
 
-import javax.swing.AbstractAction
 import javax.swing.JFrame
 
 import org.fest.swing.edt.GuiActionRunner
@@ -32,49 +31,45 @@ import org.fest.swing.fixture.FrameFixture
 import org.junit.After
 import org.junit.Before
 
-import com.globalscalingsoftware.prefdialog.PreferencePanelHandler
-import com.globalscalingsoftware.prefdialog.PreferencePanelHandlerFactory
-import com.globalscalingsoftware.prefdialog.panel.PanelModule;
 import com.google.inject.Guice
+import com.google.inject.Injector
 
+abstract class AbstractFieldFixture {
 
+	public static Injector injector = Guice.createInjector(new CoreFieldsModule())
 
-abstract class AbstractPreferencePanelTest {
+	def parentObject
 
-	static class ApplyAction extends AbstractAction {
-		ApplyAction() {
-			super("Apply")
-		}
-		void actionPerformed(ActionEvent e) {
-		}
-	}
+	def value
 
-	static class RestoreAction extends AbstractAction {
-		RestoreAction() {
-			super("Restore")
-		}
-		void actionPerformed(ActionEvent e) {
-		}
-	}
+	def field
 
-	def preferences
-
-	def panelName
-
-	PreferencePanelHandler panelHandler
+	def inputField
 
 	FrameFixture fixture
 
 	JFrame frame
 
+	AbstractFieldFixture(def parentObject, def fieldName, def fieldFactory) {
+		this.parentObject = parentObject
+		this.value = parentObject."$fieldName"
+		this.field = parentObject.class.fields.find { it.name == fieldName }
+		this.inputField = fieldFactory.create(parentObject, value, field)
+		this.frame = createPanelFrame()
+	}
+
+	def createPanelFrame() {
+		return new SwingBuilder().frame(title: 'Core Field Test', pack: true) {
+			borderLayout()
+			widget(inputField.getAWTComponent(), constraints: BorderLayout.CENTER)
+		}
+	}
+
 	@Before
 	void beforeTest() {
-		setupPreferences()
 		fixture = createFrameFixture()
 		fixture.show();
 	}
-
-	abstract setupPreferences()
 
 	@After
 	void afterTest() {
@@ -83,19 +78,7 @@ abstract class AbstractPreferencePanelTest {
 	}
 
 	def createFrameFixture() {
-		def injector = Guice.createInjector(new PanelModule())
-		def factory = injector.getInstance(PreferencePanelHandlerFactory)
-		panelHandler = factory.create(preferences, panelName).createPanel()
-		createPanelFrame(panelHandler)
 		def result = GuiActionRunner.execute([executeInEDT: { frame } ] as GuiQuery);
 		return new FrameFixture(result);
-	}
-
-	def createPanelFrame(PreferencePanelHandler panelHandler) {
-		def panel = panelHandler.getAWTComponent()
-		frame = new SwingBuilder().frame(title: 'Preference Panel Test', pack: true) {
-			borderLayout()
-			widget(panel)
-		}
 	}
 }

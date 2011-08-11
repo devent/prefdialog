@@ -25,15 +25,16 @@ import javax.swing.Action
 import org.junit.Test
 
 import com.globalscalingsoftware.prefdialog.annotations.ButtonGroup
-import com.globalscalingsoftware.prefdialog.annotations.Child
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractPreferencePanelTest
+import com.globalscalingsoftware.prefdialog.panel.inputfields.AbstractFieldFixture
 
-class ButtonGroupTest extends AbstractPreferencePanelTest {
+class ButtonGroupTest extends AbstractFieldFixture {
+
+	static factory = injector.getInstance(ButtonGroupFieldHandlerFactory)
 
 	static class General {
 
 		@ButtonGroup
-		List<Action> buttons = [
+		public List<Action> buttons = [
 			new Button1Action(),
 			new Button2Action()
 		]
@@ -44,15 +45,8 @@ class ButtonGroupTest extends AbstractPreferencePanelTest {
 		}
 	}
 
-	static class Preferences {
-
-		@Child
-		General general = new General()
-	}
-
-	def setupPreferences() {
-		preferences = new Preferences()
-		panelName = "General"
+	ButtonGroupTest() {
+		super(new General(), 'buttons', factory)
 	}
 
 	@Test
