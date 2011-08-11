@@ -18,7 +18,6 @@ import com.globalscalingsoftware.prefdialog.annotations.Group;
 import com.globalscalingsoftware.prefdialog.annotations.RadioButton;
 import com.globalscalingsoftware.prefdialog.annotations.Slider;
 import com.globalscalingsoftware.prefdialog.annotations.TextField;
-import com.globalscalingsoftware.prefdialog.panel.ChildFieldHandlerWorker.ChildFieldHandlerWorkerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.FactoriesMap;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.FactoriesMap.FactoriesMapFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.FieldHandlerFactory;

@@ -13,9 +13,9 @@ import org.slf4j.LoggerFactory;
 import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.FactoriesMap;
+import com.globalscalingsoftware.prefdialog.panel.inputfield.FactoriesMap.FactoriesMapFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.FieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.FieldsFactory;
-import com.globalscalingsoftware.prefdialog.panel.inputfield.FactoriesMap.FactoriesMapFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.child.ChildFieldHandler;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.child.ChildFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.child.group.GroupFieldHandler;
@@ -32,22 +32,6 @@ import com.google.inject.name.Named;
  * new {@link ChildFieldHandler} with all fields.
  */
 class ChildFieldHandlerWorker {
-
-	interface ChildFieldHandlerWorkerFactory {
-
-		/**
-		 * Creates a new {@link ChildFieldHandlerWorker}.
-		 * 
-		 * @param preferences
-		 *            the preferences object, need to have one field annotated
-		 *            with the {@link Child} annotation.
-		 * @param panelName
-		 *            the name of the preferences panel.
-		 * @return the new created {@link ChildFieldHandlerWorker}.
-		 */
-		ChildFieldHandlerWorker create(@Assisted Object preferences,
-				@Assisted String panelName);
-	}
 
 	private final Logger l = LoggerFactory
 			.getLogger(ChildFieldHandlerWorker.class);
