@@ -25,7 +25,7 @@ import javax.swing.JComboBox;
 import javax.swing.ListCellRenderer;
 import javax.swing.MutableComboBoxModel;
 
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractLabelFieldPanel;
+import com.globalscalingsoftware.prefdialog.panel.inputfield.shared.AbstractLabelFieldPanel;
 
 public class ComboBoxPanel extends AbstractLabelFieldPanel<JComboBox> {
 

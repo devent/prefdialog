@@ -15,7 +15,7 @@ public class TextFieldModule extends AbstractModule {
 				}, TextFieldHandler.class).build(TextFieldHandlerFactory.class));
 		install(new FactoryModuleBuilder()
 				.implement(
-						new TypeLiteral<com.globalscalingsoftware.prefdialog.panel.inputfield.textfield.shared.LoggerFactory.Logger>() {
+						new TypeLiteral<com.globalscalingsoftware.prefdialog.panel.inputfield.textfield.shared.SharedTextFieldLoggerFactory.SharedTextFieldLogger>() {
 						}, Logger.class).build(LoggerFactory.class));
 	}
 

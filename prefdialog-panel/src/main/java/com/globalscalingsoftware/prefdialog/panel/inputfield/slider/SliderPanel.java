@@ -21,7 +21,7 @@ package com.globalscalingsoftware.prefdialog.panel.inputfield.slider;
 import javax.swing.BoundedRangeModel;
 import javax.swing.JSlider;
 
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractLabelFieldPanel;
+import com.globalscalingsoftware.prefdialog.panel.inputfield.shared.AbstractLabelFieldPanel;
 
 public class SliderPanel extends AbstractLabelFieldPanel<JSlider> {
 

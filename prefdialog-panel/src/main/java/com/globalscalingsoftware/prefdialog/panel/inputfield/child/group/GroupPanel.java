@@ -26,8 +26,8 @@ import java.awt.Font;
 import javax.swing.border.TitledBorder;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractFieldComponent;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.child.ChildComponent;
+import com.globalscalingsoftware.prefdialog.panel.inputfield.shared.AbstractFieldComponent;
 
 public class GroupPanel extends AbstractFieldComponent<UiGroupPanel> implements
 		ChildComponent {

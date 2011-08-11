@@ -24,7 +24,7 @@ import info.clearthought.layout.TableLayout;
 import java.awt.Font;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractFieldComponent;
+import com.globalscalingsoftware.prefdialog.panel.inputfield.shared.AbstractFieldComponent;
 
 public class ChildPanel extends AbstractFieldComponent<UiChildPanel> implements
 		ChildComponent {

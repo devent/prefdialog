@@ -16,7 +16,7 @@ public class FormattedTextFieldModule extends AbstractModule {
 				FormattedTextFieldHandlerFactory.class));
 		install(new FactoryModuleBuilder()
 				.implement(
-						new TypeLiteral<com.globalscalingsoftware.prefdialog.panel.inputfield.textfield.shared.LoggerFactory.Logger>() {
+						new TypeLiteral<com.globalscalingsoftware.prefdialog.panel.inputfield.textfield.shared.SharedTextFieldLoggerFactory.SharedTextFieldLogger>() {
 						}, Logger.class).build(LoggerFactory.class));
 	}
 

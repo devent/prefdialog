@@ -11,6 +11,7 @@ import com.globalscalingsoftware.prefdialog.panel.inputfield.child.group.GroupFi
 import com.globalscalingsoftware.prefdialog.panel.inputfield.combobox.ComboBoxModule;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.filechooser.FileChooserModule;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.radiobutton.RadioButtonModule;
+import com.globalscalingsoftware.prefdialog.panel.inputfield.shared.AbstractLabelFieldHandler;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.slider.SliderModule;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.textfield.TextFieldModule;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.textfield.formattedtextfield.FormattedTextFieldModule;

@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractLabelFieldPanel;
+import com.globalscalingsoftware.prefdialog.panel.inputfield.shared.AbstractLabelFieldPanel;
 
 public class FileChooserPanel extends
 		AbstractLabelFieldPanel<UiFileChooserPanel> {

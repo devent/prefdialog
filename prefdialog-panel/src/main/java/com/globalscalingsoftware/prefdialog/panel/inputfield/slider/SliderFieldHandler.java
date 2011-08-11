@@ -25,7 +25,7 @@ import javax.swing.BoundedRangeModel;
 import javax.swing.DefaultBoundedRangeModel;
 
 import com.globalscalingsoftware.prefdialog.annotations.Slider;
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractLabelFieldHandler;
+import com.globalscalingsoftware.prefdialog.panel.inputfield.shared.AbstractLabelFieldHandler;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.slider.LoggerFactory.Logger;
 import com.globalscalingsoftware.prefdialog.reflection.ReflectionToolbox;
 import com.google.inject.Inject;
@@ -40,8 +40,8 @@ class SliderFieldHandler extends AbstractLabelFieldHandler<SliderPanel> {
 			ReflectionToolbox reflectionToolbox,
 			@Assisted("parentObject") Object parentObject,
 			@Assisted("value") Object value, @Assisted Field field) {
-		super(reflectionToolbox, parentObject, value, field, Slider.class,
-				new SliderPanel());
+		super(loggerFactory, reflectionToolbox, parentObject, value, field,
+				Slider.class, new SliderPanel());
 		this.log = loggerFactory.create(SliderFieldHandler.class);
 		setup();
 	}

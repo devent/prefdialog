@@ -22,8 +22,8 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
 import com.globalscalingsoftware.prefdialog.annotations.Checkbox;
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractLabelFieldHandler;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.checkbox.LoggerFactory.Logger;
+import com.globalscalingsoftware.prefdialog.panel.inputfield.shared.AbstractLabelFieldHandler;
 import com.globalscalingsoftware.prefdialog.reflection.ReflectionToolbox;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -37,8 +37,8 @@ class CheckBoxFieldHandler extends AbstractLabelFieldHandler<CheckBoxPanel> {
 			ReflectionToolbox reflectionToolbox,
 			@Assisted("parentObject") Object parentObject,
 			@Assisted("value") Object value, @Assisted Field field) {
-		super(reflectionToolbox, parentObject, value, field, Checkbox.class,
-				new CheckBoxPanel());
+		super(loggerFactory, reflectionToolbox, parentObject, value, field,
+				Checkbox.class, new CheckBoxPanel());
 		this.log = loggerFactory.create(CheckBoxFieldHandler.class);
 		setup();
 	}

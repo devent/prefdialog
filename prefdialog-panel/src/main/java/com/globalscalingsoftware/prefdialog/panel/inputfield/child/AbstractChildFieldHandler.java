@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.annotations.Child;
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractDefaultFieldHandler;
+import com.globalscalingsoftware.prefdialog.panel.inputfield.shared.AbstractDefaultFieldHandler;
 import com.globalscalingsoftware.prefdialog.reflection.ReflectionToolbox;
 
 /**

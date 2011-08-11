@@ -21,8 +21,8 @@ package com.globalscalingsoftware.prefdialog.panel.inputfield.radiobutton;
 import java.lang.reflect.Field;
 
 import com.globalscalingsoftware.prefdialog.annotations.RadioButton;
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractLabelFieldHandler;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.radiobutton.LoggerFactory.Logger;
+import com.globalscalingsoftware.prefdialog.panel.inputfield.shared.AbstractLabelFieldHandler;
 import com.globalscalingsoftware.prefdialog.reflection.ReflectionToolbox;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -39,8 +39,8 @@ class RadioButtonFieldHandler extends
 			ReflectionToolbox reflectionToolbox,
 			@Assisted("parentObject") Object parentObject,
 			@Assisted("value") Object value, @Assisted Field field) {
-		super(reflectionToolbox, parentObject, value, field, RadioButton.class,
-				new RadioButtonsPanel());
+		super(loggerFactory, reflectionToolbox, parentObject, value, field,
+				RadioButton.class, new RadioButtonsPanel());
 		this.log = loggerFactory.create(RadioButtonFieldHandler.class);
 		this.value = value;
 		setup();

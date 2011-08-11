@@ -28,8 +28,8 @@ import javax.swing.ListCellRenderer;
 
 import com.globalscalingsoftware.prefdialog.annotations.ComboBox;
 import com.globalscalingsoftware.prefdialog.annotations.ComboBoxElements;
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractLabelFieldHandler;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.combobox.LoggerFactory.Logger;
+import com.globalscalingsoftware.prefdialog.panel.inputfield.shared.AbstractLabelFieldHandler;
 import com.globalscalingsoftware.prefdialog.reflection.ReflectionToolbox;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -43,8 +43,8 @@ class ComboBoxFieldHandler extends AbstractLabelFieldHandler<ComboBoxPanel> {
 			ReflectionToolbox reflectionToolbox,
 			@Assisted("parentObject") Object parentObject,
 			@Assisted("value") @Nullable Object value, @Assisted Field field) {
-		super(reflectionToolbox, parentObject, value, field, ComboBox.class,
-				new ComboBoxPanel());
+		super(loggerFactory, reflectionToolbox, parentObject, value, field,
+				ComboBox.class, new ComboBoxPanel());
 		this.log = loggerFactory.create(ComboBoxFieldHandler.class);
 		setup();
 		setComponentValue(value);

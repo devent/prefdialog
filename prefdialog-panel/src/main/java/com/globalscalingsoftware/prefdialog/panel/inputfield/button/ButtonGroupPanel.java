@@ -29,7 +29,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import com.globalscalingsoftware.prefdialog.annotations.HorizontalPosition;
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractLabelFieldPanel;
+import com.globalscalingsoftware.prefdialog.panel.inputfield.shared.AbstractLabelFieldPanel;
 
 class ButtonGroupPanel extends AbstractLabelFieldPanel<JPanel> {
 

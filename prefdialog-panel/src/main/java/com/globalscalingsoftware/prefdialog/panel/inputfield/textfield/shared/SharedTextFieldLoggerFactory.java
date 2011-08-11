@@ -2,18 +2,19 @@ package com.globalscalingsoftware.prefdialog.panel.inputfield.textfield.shared;
 
 import java.lang.reflect.Field;
 
-import com.globalscalingsoftware.prefdialog.swingutils.AbstractSwingLogger;
+import com.globalscalingsoftware.prefdialog.panel.inputfield.shared.SharedSwingLoggerFactory;
 import com.globalscalingsoftware.prefdialog.validators.Validator;
 import com.google.inject.Inject;
 
-public interface LoggerFactory {
+public interface SharedTextFieldLoggerFactory extends SharedSwingLoggerFactory {
 
-	Logger create(Class<?> clazz);
+	@Override
+	SharedTextFieldLogger create(Class<?> clazz);
 
-	public abstract class Logger extends AbstractSwingLogger {
+	public class SharedTextFieldLogger extends SharedSwingLogger {
 
 		@Inject
-		protected Logger(Class<?> contextClass) {
+		protected SharedTextFieldLogger(Class<?> contextClass) {
 			super(contextClass);
 		}
 

@@ -27,8 +27,8 @@ import java.lang.reflect.Field;
 import javax.swing.JFileChooser;
 
 import com.globalscalingsoftware.prefdialog.annotations.FileChooser;
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractLabelFieldHandler;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.filechooser.LoggerFactory.Logger;
+import com.globalscalingsoftware.prefdialog.panel.inputfield.shared.AbstractLabelFieldHandler;
 import com.globalscalingsoftware.prefdialog.reflection.ReflectionToolbox;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -43,8 +43,8 @@ class FileChooserFieldHandler extends
 			ReflectionToolbox reflectionToolbox,
 			@Assisted("parentObject") Object parentObject,
 			@Assisted("value") Object value, @Assisted Field field) {
-		super(reflectionToolbox, parentObject, value, field, FileChooser.class,
-				new FileChooserPanel());
+		super(loggerFactory, reflectionToolbox, parentObject, value, field,
+				FileChooser.class, new FileChooserPanel());
 		this.log = loggerFactory.create(FileChooserFieldHandler.class);
 		setup();
 	}

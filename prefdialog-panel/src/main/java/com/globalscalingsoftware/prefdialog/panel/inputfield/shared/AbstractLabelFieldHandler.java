@@ -1,12 +1,11 @@
-package com.globalscalingsoftware.prefdialog.panel.inputfield;
+package com.globalscalingsoftware.prefdialog.panel.inputfield.shared;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
 import com.globalscalingsoftware.prefdialog.FieldComponent;
-import com.globalscalingsoftware.prefdialog.panel.inputfield.LoggerFactory.Logger;
+import com.globalscalingsoftware.prefdialog.panel.inputfield.shared.SharedSwingLoggerFactory.SharedSwingLogger;
 import com.globalscalingsoftware.prefdialog.reflection.ReflectionToolbox;
-import com.google.inject.Inject;
 
 /**
  * Adds a label on top of the {@link FieldComponent} and read additional
@@ -24,13 +23,11 @@ import com.google.inject.Inject;
 public class AbstractLabelFieldHandler<FieldComponentType extends AbstractLabelFieldPanel<?>>
 		extends AbstractDefaultFieldHandler<FieldComponentType> {
 
-	@Inject
-	private static LoggerFactory loggerFactory;
+	private final SharedSwingLogger log;
 
-	private final Logger log;
-
-	public AbstractLabelFieldHandler(ReflectionToolbox reflectionToolbox,
-			Object parentObject, Object value, Field field,
+	public AbstractLabelFieldHandler(SharedSwingLoggerFactory loggerFactory,
+			ReflectionToolbox reflectionToolbox, Object parentObject,
+			Object value, Field field,
 			Class<? extends Annotation> annotationClass,
 			FieldComponentType component) {
 		super(reflectionToolbox, parentObject, value, field, annotationClass,

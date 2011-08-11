@@ -20,7 +20,7 @@ package com.globalscalingsoftware.prefdialog.panel.inputfield.checkbox;
 
 import javax.swing.JCheckBox;
 
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractLabelFieldPanel;
+import com.globalscalingsoftware.prefdialog.panel.inputfield.shared.AbstractLabelFieldPanel;
 
 class CheckBoxPanel extends AbstractLabelFieldPanel<JCheckBox> {
 

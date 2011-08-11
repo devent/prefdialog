@@ -3,15 +3,16 @@ package com.globalscalingsoftware.prefdialog.panel.inputfield.button;
 import java.lang.reflect.Field;
 
 import com.globalscalingsoftware.prefdialog.annotations.HorizontalPosition;
-import com.globalscalingsoftware.prefdialog.swingutils.AbstractSwingLogger;
+import com.globalscalingsoftware.prefdialog.panel.inputfield.shared.SharedSwingLoggerFactory;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
-interface LoggerFactory {
+interface LoggerFactory extends SharedSwingLoggerFactory {
 
+	@Override
 	Logger create(@Assisted Class<?> clazz);
 
-	class Logger extends AbstractSwingLogger {
+	class Logger extends SharedSwingLogger {
 
 		@Inject
 		Logger(@Assisted Class<?> contextClass) {

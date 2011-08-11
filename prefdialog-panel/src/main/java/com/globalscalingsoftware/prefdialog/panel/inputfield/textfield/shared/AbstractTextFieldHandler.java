@@ -21,8 +21,8 @@ package com.globalscalingsoftware.prefdialog.panel.inputfield.textfield.shared;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractLabelFieldHandler;
-import com.globalscalingsoftware.prefdialog.panel.inputfield.textfield.shared.LoggerFactory.Logger;
+import com.globalscalingsoftware.prefdialog.panel.inputfield.shared.AbstractLabelFieldHandler;
+import com.globalscalingsoftware.prefdialog.panel.inputfield.textfield.shared.SharedTextFieldLoggerFactory.SharedTextFieldLogger;
 import com.globalscalingsoftware.prefdialog.reflection.ReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.validators.Validator;
 
@@ -31,15 +31,15 @@ public abstract class AbstractTextFieldHandler extends
 
 	private String validatorText;
 
-	private final Logger log;
+	private final SharedTextFieldLogger log;
 
-	public AbstractTextFieldHandler(LoggerFactory loggerFactory,
+	public AbstractTextFieldHandler(SharedTextFieldLoggerFactory loggerFactory,
 			ReflectionToolbox reflectionToolbox, Object parentObject,
 			Object value, Field field,
 			Class<? extends Annotation> annotationClass,
 			ValidatingTextField<?> textField) {
-		super(reflectionToolbox, parentObject, value, field, annotationClass,
-				new TextFieldPanel(textField));
+		super(loggerFactory, reflectionToolbox, parentObject, value, field,
+				annotationClass, new TextFieldPanel(textField));
 		this.log = loggerFactory.create(AbstractTextFieldHandler.class);
 		setup();
 	}
