@@ -22,6 +22,7 @@ import org.junit.Test
 
 import com.globalscalingsoftware.prefdialog.annotations.Checkbox
 import com.globalscalingsoftware.prefdialog.panel.inputfields.AbstractFieldFixture
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.CheckBoxFieldHandlerFactory;
 
 class CheckboxTitleTest extends AbstractFieldFixture {
 
