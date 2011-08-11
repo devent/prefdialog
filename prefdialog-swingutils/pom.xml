@@ -21,6 +21,14 @@
 			<groupId>com.globalscalingsoftware.prefdialog</groupId>
 			<artifactId>prefdialog-public</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.globalscalingsoftware.prefdialog</groupId>
+			<artifactId>prefdialog-reflection</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>tablelayout</groupId>
+			<artifactId>TableLayout</artifactId>
+		</dependency>
 	</dependencies>
 
 </project>

@@ -3,6 +3,7 @@ package com.globalscalingsoftware.prefdialog.panel.inputfield.api;
 import java.lang.annotation.Annotation;
 import java.util.Map;
 
+import com.globalscalingsoftware.prefdialog.FieldHandlerFactory;
 import com.google.inject.Module;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.internal.Annotations;

@@ -26,8 +26,8 @@ import java.util.Collection;
 import java.util.List;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
+import com.globalscalingsoftware.prefdialog.FieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.api.FieldHandlerFactoriesMap;
-import com.globalscalingsoftware.prefdialog.panel.inputfield.api.FieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.api.FieldsHandlerFactoryWorker;
 import com.globalscalingsoftware.prefdialog.reflection.api.AnnotationDiscoveryCallback;
 import com.globalscalingsoftware.prefdialog.reflection.api.AnnotationDiscoveryWorkerFactory;

@@ -4,6 +4,8 @@ import java.lang.annotation.Annotation;
 
 import org.apache.commons.collections.MapIterator;
 
+import com.globalscalingsoftware.prefdialog.FieldHandlerFactory;
+
 /**
  * Manages all {@link FieldHandlerFactory field handler factories} assigned to
  * each of the fields {@link Annotation}s. {@link FieldFactories} will look up

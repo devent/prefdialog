@@ -11,10 +11,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
+import com.globalscalingsoftware.prefdialog.FieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.api.FactoriesMapFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.api.FieldHandlerFactoriesMap;
-import com.globalscalingsoftware.prefdialog.panel.inputfield.api.FieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.api.FieldsHandlerFactoryWorker;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.child.ChildFieldHandler;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.child.ChildFieldHandlerFactory;

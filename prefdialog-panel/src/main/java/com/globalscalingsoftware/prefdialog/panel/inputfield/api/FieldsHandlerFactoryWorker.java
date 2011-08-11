@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.util.List;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
+import com.globalscalingsoftware.prefdialog.FieldHandlerFactory;
 
 /**
  * Creates all {@link FieldHandler}s for which object's fields it can find a

@@ -9,8 +9,8 @@ import java.util.Map;
 import org.apache.commons.collections.MapIterator;
 import org.apache.commons.collections.map.UnmodifiableMap;
 
+import com.globalscalingsoftware.prefdialog.FieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.api.FieldHandlerFactoriesMap;
-import com.globalscalingsoftware.prefdialog.panel.inputfield.api.FieldHandlerFactory;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 

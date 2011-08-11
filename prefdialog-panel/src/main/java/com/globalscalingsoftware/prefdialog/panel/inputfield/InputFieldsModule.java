@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
+import com.globalscalingsoftware.prefdialog.FieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.annotations.ButtonGroup;
 import com.globalscalingsoftware.prefdialog.annotations.Checkbox;
 import com.globalscalingsoftware.prefdialog.annotations.Child;
@@ -20,7 +21,6 @@ import com.globalscalingsoftware.prefdialog.annotations.TextField;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.LoggerFactory.Logger;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.api.FactoriesMapFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.api.FieldHandlerFactoriesMap;
-import com.globalscalingsoftware.prefdialog.panel.inputfield.api.FieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.api.FieldsHandlerFactoryWorker;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.button.ButtonGroupFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.button.ButtonModule;
