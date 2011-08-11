@@ -16,11 +16,11 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.dialog.internal;
+package com.globalscalingsoftware.prefdialog.dialog;
 
-import static com.globalscalingsoftware.prefdialog.dialog.internal.actions.ActionsHandler.APPLY_ACTION_ID;
-import static com.globalscalingsoftware.prefdialog.dialog.internal.actions.ActionsHandler.CANCEL_ACTION_ID;
-import static com.globalscalingsoftware.prefdialog.dialog.internal.actions.ActionsHandler.OK_ACTION_ID;
+import static com.globalscalingsoftware.prefdialog.dialog.actions.ActionsHandler.APPLY_ACTION_ID;
+import static com.globalscalingsoftware.prefdialog.dialog.actions.ActionsHandler.CANCEL_ACTION_ID;
+import static com.globalscalingsoftware.prefdialog.dialog.actions.ActionsHandler.OK_ACTION_ID;
 
 import java.awt.Component;
 import java.awt.Frame;
@@ -35,9 +35,9 @@ import org.apache.commons.collections.MapIterator;
 import com.globalscalingsoftware.prefdialog.Options;
 import com.globalscalingsoftware.prefdialog.PreferenceDialogHandler;
 import com.globalscalingsoftware.prefdialog.PreferencePanelHandler;
-import com.globalscalingsoftware.prefdialog.dialog.internal.PreferenceDialog.PreferenceDialogFactory;
-import com.globalscalingsoftware.prefdialog.dialog.internal.PreferencePanelsHandler.PreferencePanelsHandlerFactory;
-import com.globalscalingsoftware.prefdialog.dialog.internal.actions.ActionsHandler;
+import com.globalscalingsoftware.prefdialog.dialog.PreferenceDialog.PreferenceDialogFactory;
+import com.globalscalingsoftware.prefdialog.dialog.PreferencePanelsHandler.PreferencePanelsHandlerFactory;
+import com.globalscalingsoftware.prefdialog.dialog.actions.ActionsHandler;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.dialog.internal;
+package com.globalscalingsoftware.prefdialog.dialog;
 
 import java.awt.Component;
 import java.awt.Frame;

@@ -16,15 +16,8 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.dialog.internal
+package com.globalscalingsoftware.prefdialog.dialog;
 
-
-import com.globalscalingsoftware.prefdialog.validators.Validator;
-
-class FieldsValidator implements Validator<Integer> {
-	
-	@Override
-	public boolean isValid(Integer value) {
-		return value > 1 && value <= 900;
-	}
+public enum Colors {
+	RED, BLUE, GREEN, LILA, VIOLET, CYAN, WHITE, BLACK
 }

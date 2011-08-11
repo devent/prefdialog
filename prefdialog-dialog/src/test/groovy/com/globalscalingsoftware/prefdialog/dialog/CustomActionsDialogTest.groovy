@@ -16,15 +16,19 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.dialog.internal
+package com.globalscalingsoftware.prefdialog.dialog
 
+
+import java.awt.event.ActionEvent
+
+import javax.swing.AbstractAction
 
 import org.junit.Test
 
 import com.globalscalingsoftware.prefdialog.annotations.Child
 import com.globalscalingsoftware.prefdialog.annotations.TextField
 
-class DialogTest extends AbstractPreferenceDialogFixture {
+class CustomActionsDialogTest extends AbstractPreferenceDialogFixture {
 
 	static class Preferences {
 
@@ -48,8 +52,46 @@ class DialogTest extends AbstractPreferenceDialogFixture {
 		}
 	}
 
+	static class OkAction extends AbstractAction {
+
+		OkAction() {
+			super('Custom Ok')
+		}
+
+		void actionPerformed(ActionEvent e) {
+		}
+	}
+
+	static class CancelAction extends AbstractAction {
+
+		CancelAction() {
+			super('Custom Cancel')
+		}
+
+		void actionPerformed(ActionEvent e) {
+		}
+	}
+
+	static class ApplyAction extends AbstractAction {
+
+		ApplyAction() {
+			super('Custom Apply')
+		}
+
+		void actionPerformed(ActionEvent e) {
+		}
+	}
+
 	def setupPreferences() {
 		preferences = new Preferences()
+	}
+
+	def createDialogHandler(def factory) {
+		def handler = super.createDialogHandler(factory)
+		handler.okAction = new OkAction()
+		handler.cancelAction = new CancelAction()
+		handler.applyAction = new ApplyAction()
+		return handler
 	}
 
 	@Test
@@ -58,9 +100,9 @@ class DialogTest extends AbstractPreferenceDialogFixture {
 
 		fixture.textBox('name').requireVisible()
 		assert fixture.textBox('name').text() == ''
-		assert fixture.button('ok').text() == 'Ok'
-		assert fixture.button('cancel').text() == 'Cancel'
-		assert fixture.button('apply').text() == 'Apply'
+		assert fixture.button('ok').text() == 'Custom Ok'
+		assert fixture.button('cancel').text() == 'Custom Cancel'
+		assert fixture.button('apply').text() == 'Custom Apply'
 	}
 
 	@Test

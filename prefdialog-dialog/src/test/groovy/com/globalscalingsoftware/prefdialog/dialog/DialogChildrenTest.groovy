@@ -16,56 +16,50 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.dialog.internal
-
-import java.util.List
+package com.globalscalingsoftware.prefdialog.dialog
 
 import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Checkbox
 import com.globalscalingsoftware.prefdialog.annotations.Child
-import com.globalscalingsoftware.prefdialog.annotations.ComboBox
-import com.globalscalingsoftware.prefdialog.annotations.ComboBoxElements
 import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField
-import com.globalscalingsoftware.prefdialog.annotations.RadioButton
 import com.globalscalingsoftware.prefdialog.annotations.TextField
-import com.globalscalingsoftware.prefdialog.validators.NotEmptyString
 
-class DialogWidthTest extends AbstractPreferenceDialogFixture {
+class DialogChildrenTest extends AbstractPreferenceDialogFixture {
 
 	static class Preferences {
 
 		@Child
-		General general = new General()
+		Child1 general = new Child1()
+
+		@Child
+		Child2 child2 = new Child2()
 	}
 
-	static class General {
+	static class Child1 {
 
-		@TextField(width=-2.0d, validator=NotEmptyString, validatorText='Must not be empty')
+		@TextField
 		String name = ''
 
-		@FormattedTextField(width=-2.0d, validator=FieldsValidator, validatorText='Must be a number and between 2 and 100')
+		@FormattedTextField
 		int fields = 4
-
-		@Checkbox(width=-2.0d)
-		boolean automaticSave = false
-
-		@RadioButton(width=-2.0d, columns=2)
-		Colors colors = Colors.BLACK
-
-		@ComboBoxElements('combobox1')
-		List<String> comboBoxElements = [
-			'first element',
-			'second element',
-			'third element'
-		]
-
-		@ComboBox(title='combobox1', elements='combobox1', width=-2.0d)
-		String comboBox = 'first element'
 
 		@Override
 		public String toString() {
-			'General'
+			'Child1'
+		}
+	}
+
+	static class Child2 {
+
+		@TextField
+		String something = ''
+
+		@FormattedTextField
+		int moreFields = 4
+
+		@Override
+		public String toString() {
+			'Child2'
 		}
 	}
 
@@ -77,15 +71,14 @@ class DialogWidthTest extends AbstractPreferenceDialogFixture {
 	void testClickOkAndClose() {
 		fixture.textBox('name').enterText 'name'
 		fixture.textBox('fields').enterText '10'
-		fixture.checkBox('automaticSave').click()
-		fixture.radioButton('colors-BLUE').click()
-		fixture.comboBox('comboBox').selectItem 1
+		fixture.tree('child_tree').clickPath 'Child2'
+		fixture.textBox('something').enterText 'text'
+		fixture.textBox('moreFields').enterText '20'
 		fixture.button('ok').click()
 
 		assert preferences.general.name == 'name'
 		assert preferences.general.fields == 104
-		assert preferences.general.automaticSave == true
-		assert preferences.general.colors == Colors.BLUE
-		assert preferences.general.comboBox == 'second element'
+		assert preferences.child2.something == 'text'
+		assert preferences.child2.moreFields == 204
 	}
 }

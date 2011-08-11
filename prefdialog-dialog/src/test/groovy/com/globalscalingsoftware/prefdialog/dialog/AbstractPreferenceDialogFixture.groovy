@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.dialog.internal
+package com.globalscalingsoftware.prefdialog.dialog
 
 
 
@@ -27,7 +27,7 @@ import org.junit.After
 import org.junit.Before
 
 import com.globalscalingsoftware.prefdialog.PreferenceDialogHandlerFactory
-import com.globalscalingsoftware.prefdialog.dialog.module.DialogModule
+import com.globalscalingsoftware.prefdialog.dialog.PrefdialogModule;
 import com.google.inject.Guice
 
 abstract class AbstractPreferenceDialogFixture {
@@ -48,7 +48,7 @@ abstract class AbstractPreferenceDialogFixture {
 	abstract setupPreferences()
 
 	def createFrameFixture(def preferences) {
-		def injector = Guice.createInjector(new DialogModule())
+		def injector = Guice.createInjector(new PrefdialogModule())
 		def factory = injector.getInstance(PreferenceDialogHandlerFactory)
 		dialogHandler = createDialogHandler(factory)
 

@@ -1,4 +1,4 @@
-package com.globalscalingsoftware.prefdialog.dialog.internal.actions;
+package com.globalscalingsoftware.prefdialog.dialog.actions;
 
 import java.util.HashMap;
 

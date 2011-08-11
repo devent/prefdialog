@@ -1,4 +1,4 @@
-package com.globalscalingsoftware.prefdialog.dialog.internal;
+package com.globalscalingsoftware.prefdialog.dialog;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import com.globalscalingsoftware.prefdialog.PreferencePanelHandler;
 import com.globalscalingsoftware.prefdialog.PreferencePanelHandlerFactory;
-import com.globalscalingsoftware.prefdialog.dialog.internal.PreferencePanelsCollection.PreferencePanelsCollectionFactory;
+import com.globalscalingsoftware.prefdialog.dialog.PreferencePanelsCollection.PreferencePanelsCollectionFactory;
 import com.globalscalingsoftware.prefdialog.reflection.api.AnnotationDiscoveryCallback;
 import com.globalscalingsoftware.prefdialog.reflection.api.AnnotationDiscoveryWorkerFactory;
 import com.globalscalingsoftware.prefdialog.reflection.api.AnnotationFilter;

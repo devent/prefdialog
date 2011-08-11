@@ -1,4 +1,4 @@
-package com.globalscalingsoftware.prefdialog.dialog.internal;
+package com.globalscalingsoftware.prefdialog.dialog;
 
 /**
  * Callback that is called if the user selects a new child panel.

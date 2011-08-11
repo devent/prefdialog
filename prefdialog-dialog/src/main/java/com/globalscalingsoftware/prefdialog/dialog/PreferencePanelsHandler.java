@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.dialog.internal;
+package com.globalscalingsoftware.prefdialog.dialog;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
@@ -24,7 +24,7 @@ import javax.swing.tree.TreeNode;
 import org.apache.commons.collections.MapIterator;
 
 import com.globalscalingsoftware.prefdialog.PreferencePanelHandler;
-import com.globalscalingsoftware.prefdialog.dialog.internal.CreatePreferencePanelHandlersWorker.CreatePreferencePanelHandlersWorkerFactory;
+import com.globalscalingsoftware.prefdialog.dialog.CreatePreferencePanelHandlersWorker.CreatePreferencePanelHandlersWorkerFactory;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
