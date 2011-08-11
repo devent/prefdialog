@@ -26,6 +26,7 @@ import org.junit.Test
 
 import com.globalscalingsoftware.prefdialog.annotations.ButtonGroup
 import com.globalscalingsoftware.prefdialog.panel.inputfields.AbstractFieldFixture
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.ButtonGroupFieldHandlerFactory;
 
 class ButtonGroupTest extends AbstractFieldFixture {
 

@@ -29,7 +29,7 @@ import com.globalscalingsoftware.prefdialog.swingutils.AbstractLabelFieldHandler
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
-public class ButtonGroupFieldHandler extends
+class ButtonGroupFieldHandler extends
 		AbstractLabelFieldHandler<ButtonGroupPanel> {
 
 	private final Logger log;
