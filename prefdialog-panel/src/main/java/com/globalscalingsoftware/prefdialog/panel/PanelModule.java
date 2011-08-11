@@ -18,10 +18,8 @@ import com.globalscalingsoftware.prefdialog.annotations.Group;
 import com.globalscalingsoftware.prefdialog.annotations.RadioButton;
 import com.globalscalingsoftware.prefdialog.annotations.Slider;
 import com.globalscalingsoftware.prefdialog.annotations.TextField;
-import com.globalscalingsoftware.prefdialog.panel.inputfield.FactoriesMap;
-import com.globalscalingsoftware.prefdialog.panel.inputfield.FactoriesMap.FactoriesMapFactory;
-import com.globalscalingsoftware.prefdialog.panel.inputfield.FieldHandlerFactory;
-import com.globalscalingsoftware.prefdialog.panel.inputfield.FieldHandlersModule;
+import com.globalscalingsoftware.prefdialog.panel.inputfield.InputFieldsModule;
+import com.globalscalingsoftware.prefdialog.panel.inputfield.api.FieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.button.ButtonGroupFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.checkbox.CheckBoxFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.child.ChildFieldHandlerFactory;
@@ -49,20 +47,18 @@ public class PanelModule extends AbstractModule {
 				new TypeLiteral<PreferencePanelHandler>() {
 				}, PreferencePanelHandlerImpl.class).build(
 				PreferencePanelHandlerFactory.class));
-		install(new FactoryModuleBuilder().implement(FactoriesMap.class,
-				FactoriesMap.class).build(FactoriesMapFactory.class));
 		install(new FactoryModuleBuilder().implement(
 				ChildFieldHandlerWorker.class, ChildFieldHandlerWorker.class)
 				.build(ChildFieldHandlerWorkerFactory.class));
 		install(new ReflectionModule());
-		install(new FieldHandlersModule());
+		install(new InputFieldsModule());
 	}
 
 	@Provides
 	@Named("field_handler_factories_map")
 	Map<Class<? extends Annotation>, FieldHandlerFactory> bindFactoriesMap() {
 		Map<Class<? extends Annotation>, FieldHandlerFactory> fieldHandlerFactoriesMap = new HashMap<Class<? extends Annotation>, FieldHandlerFactory>();
-		Injector injector = Guice.createInjector(new FieldHandlersModule());
+		Injector injector = Guice.createInjector(new InputFieldsModule());
 		fieldHandlerFactoriesMap.put(TextField.class,
 				injector.getInstance(TextFieldHandlerFactory.class));
 		fieldHandlerFactoriesMap.put(FormattedTextField.class,

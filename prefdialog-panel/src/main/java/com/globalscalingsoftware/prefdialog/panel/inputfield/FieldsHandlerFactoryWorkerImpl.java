@@ -18,13 +18,17 @@
  */
 package com.globalscalingsoftware.prefdialog.panel.inputfield;
 
+import static com.google.common.collect.Lists.newArrayList;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
+import com.globalscalingsoftware.prefdialog.panel.inputfield.api.FieldHandlerFactoriesMap;
+import com.globalscalingsoftware.prefdialog.panel.inputfield.api.FieldHandlerFactory;
+import com.globalscalingsoftware.prefdialog.panel.inputfield.api.FieldsHandlerFactoryWorker;
 import com.globalscalingsoftware.prefdialog.reflection.api.AnnotationDiscoveryCallback;
 import com.globalscalingsoftware.prefdialog.reflection.api.AnnotationDiscoveryWorkerFactory;
 import com.globalscalingsoftware.prefdialog.reflection.api.AnnotationFilter;
@@ -32,18 +36,14 @@ import com.globalscalingsoftware.prefdialog.reflection.api.PredefinedAnnotationF
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
-/**
- * Creates all {@link FieldHandler field handler} for which object's fields it
- * can find a {@link Annotation field annotation}.
- */
-public class FieldsFactory {
+class FieldsHandlerFactoryWorkerImpl implements FieldsHandlerFactoryWorker {
 
 	private final AnnotationFilter annotationFilter;
 
 	private final AnnotationDiscoveryWorkerFactory annotationDiscoveryFactory;
 
 	@Inject
-	FieldsFactory(
+	FieldsHandlerFactoryWorkerImpl(
 			@Named("field_annotations") Collection<Class<? extends Annotation>> fieldAnnotations,
 			PredefinedAnnotationFilterFactory annotationFilterFactory,
 			AnnotationDiscoveryWorkerFactory annotationDiscoveryFactory) {
@@ -52,24 +52,10 @@ public class FieldsFactory {
 		this.annotationDiscoveryFactory = annotationDiscoveryFactory;
 	}
 
-	/**
-	 * Search a object's fields for {@link Annotation field annotations} and
-	 * create for each valid annotation a new {@link FieldHandler field handler}
-	 * .
-	 * 
-	 * @param factoriesMap
-	 *            the {@link FactoriesMap map} that contains the mapping between
-	 *            {@link Annotation field annotations} and
-	 *            {@link FieldHandlerFactory field handler factories}.
-	 * @param object
-	 *            the {@link Object} which fields will be searched for valid
-	 *            annotations.
-	 * @return a {@link List} of all created {@link FieldHandler field handlers}
-	 *         .
-	 */
+	@Override
 	public List<FieldHandler<?>> createFieldsHandlers(
-			final FactoriesMap factoriesMap, final Object object) {
-		final ArrayList<FieldHandler<?>> fieldHandlers = new ArrayList<FieldHandler<?>>();
+			final FieldHandlerFactoriesMap factoriesMap, final Object object) {
+		final List<FieldHandler<?>> fieldHandlers = newArrayList();
 		annotationDiscoveryFactory.create(annotationFilter,
 				new AnnotationDiscoveryCallback() {
 
@@ -86,8 +72,8 @@ public class FieldsFactory {
 	}
 
 	private FieldHandler<?> createDiscoveredFieldHandler(
-			FactoriesMap factoriesMap, Object parentObject, Field field,
-			Object value, Annotation a) {
+			FieldHandlerFactoriesMap factoriesMap, Object parentObject,
+			Field field, Object value, Annotation a) {
 		FieldHandlerFactory factory = factoriesMap.getFactory(a.getClass());
 		return factory.create(parentObject, value, field);
 	}

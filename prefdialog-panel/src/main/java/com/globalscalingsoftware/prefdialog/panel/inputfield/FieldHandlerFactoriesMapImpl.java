@@ -1,6 +1,7 @@
 package com.globalscalingsoftware.prefdialog.panel.inputfield;
 
 import static java.lang.String.format;
+import static org.apache.commons.collections.map.UnmodifiableMap.decorate;
 
 import java.lang.annotation.Annotation;
 import java.util.Map;
@@ -8,42 +9,22 @@ import java.util.Map;
 import org.apache.commons.collections.MapIterator;
 import org.apache.commons.collections.map.UnmodifiableMap;
 
+import com.globalscalingsoftware.prefdialog.panel.inputfield.api.FieldHandlerFactoriesMap;
+import com.globalscalingsoftware.prefdialog.panel.inputfield.api.FieldHandlerFactory;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
-/**
- * Contains all {@link FieldHandlerFactory field handler factories} assigned to
- * each of the fields {@link Annotation annotations}. {@link FieldFactories}
- * will look up the field handler factory to use to create a new field based on
- * the annotation.
- * 
- * Each of the fields {@link Annotation annotations} can have only one
- * {@link FieldHandlerFactory field handler factory} assigned to it.
- */
-public class FactoriesMap {
-
-	public interface FactoriesMapFactory {
-		FactoriesMap create(
-				@Assisted Map<Class<? extends Annotation>, FieldHandlerFactory> fieldHandlerFactories);
-	}
+class FieldHandlerFactoriesMapImpl implements FieldHandlerFactoriesMap {
 
 	private final Map<Class<? extends Annotation>, FieldHandlerFactory> fieldHandlerFactories;
 
 	@Inject
-	FactoriesMap(
+	FieldHandlerFactoriesMapImpl(
 			@Assisted Map<Class<? extends Annotation>, FieldHandlerFactory> fieldHandlerFactories) {
 		this.fieldHandlerFactories = fieldHandlerFactories;
 	}
 
-	/**
-	 * Adds a new {@link FieldHandlerFactory field handler factory} assigned to
-	 * the field {@link Annotation annotation}.
-	 * 
-	 * @param fieldAnnotationClass
-	 *            the class of the field {@link Annotation annotation}.
-	 * @param factory
-	 *            the {@link FieldHandlerFactory field handler factory}.
-	 */
+	@Override
 	public void addFieldHandlerFactory(
 			Class<? extends Annotation> fieldAnnotationClass,
 			FieldHandlerFactory factory) {
@@ -68,23 +49,13 @@ public class FactoriesMap {
 		}
 	}
 
-	/**
-	 * Returns a {@link MapIterator iterator} over the values of the factories
-	 * map. The iterator cannot modify the map.
-	 */
+	@Override
 	public MapIterator mapIterator() {
-		UnmodifiableMap map = (UnmodifiableMap) UnmodifiableMap
-				.decorate(fieldHandlerFactories);
+		UnmodifiableMap map = (UnmodifiableMap) decorate(fieldHandlerFactories);
 		return map.mapIterator();
 	}
 
-	/**
-	 * Returns the {@link FieldHandlerFactory field handler factory} based on
-	 * the field {@link Annotation annotation} class.
-	 * 
-	 * @throws NullPointerException
-	 *             if there was no mapping of the field annotation class found.
-	 */
+	@Override
 	public FieldHandlerFactory getFactory(Class<? extends Annotation> annotation) {
 		for (MapIterator it = mapIterator(); it.hasNext();) {
 			it.next();

@@ -12,10 +12,10 @@ import org.slf4j.LoggerFactory;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.annotations.Child;
-import com.globalscalingsoftware.prefdialog.panel.inputfield.FactoriesMap;
-import com.globalscalingsoftware.prefdialog.panel.inputfield.FactoriesMap.FactoriesMapFactory;
-import com.globalscalingsoftware.prefdialog.panel.inputfield.FieldHandlerFactory;
-import com.globalscalingsoftware.prefdialog.panel.inputfield.FieldsFactory;
+import com.globalscalingsoftware.prefdialog.panel.inputfield.api.FactoriesMapFactory;
+import com.globalscalingsoftware.prefdialog.panel.inputfield.api.FieldHandlerFactoriesMap;
+import com.globalscalingsoftware.prefdialog.panel.inputfield.api.FieldHandlerFactory;
+import com.globalscalingsoftware.prefdialog.panel.inputfield.api.FieldsHandlerFactoryWorker;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.child.ChildFieldHandler;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.child.ChildFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.child.group.GroupFieldHandler;
@@ -40,7 +40,7 @@ class ChildFieldHandlerWorker {
 
 	private final PredefinedAnnotationFilterFactory annotationFilterFactory;
 
-	private final FieldsFactory fieldFactories;
+	private final FieldsHandlerFactoryWorker fieldFactoryWorker;
 
 	private final FactoriesMapFactory factoriesMapFactory;
 
@@ -57,13 +57,13 @@ class ChildFieldHandlerWorker {
 			AnnotationDiscoveryWorkerFactory annotationDiscoveryFactory,
 			PredefinedAnnotationFilterFactory annotationFilterFactory,
 			FactoriesMapFactory factoriesMapFactory,
-			FieldsFactory fieldFactories,
+			FieldsHandlerFactoryWorker fieldFactories,
 			@Named("field_handler_factories_map") Map<Class<? extends Annotation>, FieldHandlerFactory> fieldHandlerFactories,
 			@Named("child_annotations") Collection<Class<? extends Annotation>> childAnnotations,
 			@Assisted Object preferences, @Assisted String panelName) {
 		this.annotationDiscoveryFactory = annotationDiscoveryFactory;
 		this.annotationFilterFactory = annotationFilterFactory;
-		this.fieldFactories = fieldFactories;
+		this.fieldFactoryWorker = fieldFactories;
 		this.fieldHandlerFactories = fieldHandlerFactories;
 		this.factoriesMapFactory = factoriesMapFactory;
 		this.preferences = preferences;
@@ -114,13 +114,13 @@ class ChildFieldHandlerWorker {
 
 	private ChildFieldHandler createChildFieldHandler(Field field, Object value) {
 		l.debug("Create a new child field handler for field {}.", value);
-		FactoriesMap factoriesMap = factoriesMapFactory
+		FieldHandlerFactoriesMap factoriesMap = factoriesMapFactory
 				.create(fieldHandlerFactories);
 		ChildFieldHandlerFactory factory = (ChildFieldHandlerFactory) factoriesMap
 				.getFactory(Child.class);
 		ChildFieldHandler panel = factory.create(preferences, value, field);
 
-		for (FieldHandler<?> fieldHandler : fieldFactories
+		for (FieldHandler<?> fieldHandler : fieldFactoryWorker
 				.createFieldsHandlers(factoriesMap, value)) {
 			setupGroupFieldHandler(panel, fieldHandler, factoriesMap);
 			panel.addFieldHandler(fieldHandler);
@@ -130,14 +130,14 @@ class ChildFieldHandlerWorker {
 	}
 
 	private void setupGroupFieldHandler(ChildFieldHandler child,
-			FieldHandler<?> handler, FactoriesMap factoriesMap) {
+			FieldHandler<?> handler, FieldHandlerFactoriesMap factoriesMap) {
 		if (!(handler instanceof GroupFieldHandler)) {
 			return;
 		}
 		l.debug("Create a new group field hanlder for child field {}.", child);
 		GroupFieldHandler groupFieldHandler = (GroupFieldHandler) handler;
 		Object value = handler.getComponentValue();
-		for (FieldHandler<?> fieldHandler : fieldFactories
+		for (FieldHandler<?> fieldHandler : fieldFactoryWorker
 				.createFieldsHandlers(factoriesMap, value)) {
 			groupFieldHandler.addFieldHandler(fieldHandler);
 		}

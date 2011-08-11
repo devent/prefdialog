@@ -2,6 +2,8 @@ package com.globalscalingsoftware.prefdialog.panel.inputfield;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.LoggerFactory.Logger;
+import com.globalscalingsoftware.prefdialog.panel.inputfield.api.FactoriesMapFactory;
+import com.globalscalingsoftware.prefdialog.panel.inputfield.api.FieldsHandlerFactoryWorker;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.button.ButtonModule;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.checkbox.CheckboxModule;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.child.ChildFieldHandler;
@@ -11,7 +13,6 @@ import com.globalscalingsoftware.prefdialog.panel.inputfield.child.group.GroupFi
 import com.globalscalingsoftware.prefdialog.panel.inputfield.combobox.ComboBoxModule;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.filechooser.FileChooserModule;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.radiobutton.RadioButtonModule;
-import com.globalscalingsoftware.prefdialog.panel.inputfield.shared.AbstractLabelFieldHandler;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.slider.SliderModule;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.textfield.TextFieldModule;
 import com.globalscalingsoftware.prefdialog.panel.inputfield.textfield.formattedtextfield.FormattedTextFieldModule;
@@ -19,11 +20,10 @@ import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 
-public class FieldHandlersModule extends AbstractModule {
+public class InputFieldsModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
-		requestStaticInjection(AbstractLabelFieldHandler.class);
 		install(new ButtonModule());
 		install(new CheckboxModule());
 		install(new ComboBoxModule());
@@ -43,6 +43,12 @@ public class FieldHandlersModule extends AbstractModule {
 				new TypeLiteral<FieldHandler<?>>() {
 				}, GroupFieldHandler.class).build(
 				GroupFieldHandlerFactory.class));
+		install(new FactoryModuleBuilder().implement(
+				FieldHandlerFactoriesMapImpl.class,
+				FieldHandlerFactoriesMapImpl.class).build(
+				FactoriesMapFactory.class));
+		bind(FieldsHandlerFactoryWorker.class).to(
+				FieldsHandlerFactoryWorkerImpl.class);
 	}
 
 }
