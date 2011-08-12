@@ -68,7 +68,7 @@ class DialogGroupTitleTest extends AbstractPreferenceDialogFixture {
 		]
 
 		@ComboBox(title='combobox1', elements='combobox1')
-		String comboBox
+		String comboBox = 'first element'
 
 		@Override
 		public String toString() {
