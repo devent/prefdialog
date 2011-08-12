@@ -23,11 +23,13 @@ import javax.swing.DefaultBoundedRangeModel
 
 import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child
 import com.globalscalingsoftware.prefdialog.annotations.Slider
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractPreferencePanelTest
+import com.globalscalingsoftware.prefdialog.panel.inputfields.AbstractFieldFixture
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.SliderFieldHandlerFactory
 
-class SliderCustomModelTest extends AbstractPreferencePanelTest {
+class SliderCustomModelTest extends AbstractFieldFixture {
+
+	static factory = injector.getInstance(SliderFieldHandlerFactory)
 
 	static class CustomModel extends DefaultBoundedRangeModel {
 
@@ -54,47 +56,38 @@ class SliderCustomModelTest extends AbstractPreferencePanelTest {
 
 		@Slider(model=CustomModel)
 		int slider = 2
-
-		@Override
-		public String toString() {
-			'General'
-		}
 	}
 
-	static class Preferences {
-
-		@Child
-		General general = new General()
-	}
-
-	def setupPreferences() {
-		preferences = new Preferences()
-		panelName = 'General'
+	SliderCustomModelTest() {
+		super(new General(), 'slider', factory)
 	}
 
 	@Test
-	void testMinimum() {
+	void "choose minimum and apply input"() {
 		fixture.slider('slider').slideToMinimum()
-		panelHandler.applyInput()
-		assert preferences.general.slider == 2
+		inputField.applyInput parentObject
+
+		assert parentObject.slider == 2
 	}
 
 	@Test
-	void testMaximum() {
+	void "choose maximum and apply input"() {
 		fixture.slider('slider').slideToMaximum()
-		panelHandler.applyInput()
-		assert preferences.general.slider == 1024
+		inputField.applyInput parentObject
+
+		assert parentObject.slider == 1024
 	}
 
 	@Test
-	void testRandomValue() {
-		fixture.slider('slider').slideTo 35
-		panelHandler.applyInput()
-		assert preferences.general.slider == 64
+	void "choose close and apply input"() {
+		fixture.slider('slider').slideTo 62
+		inputField.applyInput parentObject
+
+		assert parentObject.slider == 64
 	}
 
 	@Test
 	void testManually() {
-		//Thread.sleep 60000
+		Thread.sleep 0
 	}
 }

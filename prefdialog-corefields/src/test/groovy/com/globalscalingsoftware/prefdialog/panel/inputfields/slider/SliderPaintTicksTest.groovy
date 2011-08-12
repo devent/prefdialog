@@ -18,41 +18,35 @@
  */
 package com.globalscalingsoftware.prefdialog.panel.inputfields.slider
 
-
 import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child
 import com.globalscalingsoftware.prefdialog.annotations.Slider
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractPreferencePanelTest
+import com.globalscalingsoftware.prefdialog.panel.inputfields.AbstractFieldFixture
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.SliderFieldHandlerFactory
 
-class SliderPaintTicksTest extends AbstractPreferencePanelTest {
+class SliderPaintTicksTest extends AbstractFieldFixture {
+
+	static factory = injector.getInstance(SliderFieldHandlerFactory)
 
 	static class General {
 
-		@Slider(paintTicks=true, majorTicks=10, minorTicks=1)
-		int slider = 50
-
-		@Override
-		public String toString() {
-			'General'
-		}
+		@Slider(paintTicks=true, majorTicks=20, minorTicks=5)
+		int slider = 100
 	}
 
-	static class Preferences {
-
-		@Child
-		General general = new General()
-	}
-
-	def setupPreferences() {
-		preferences = new Preferences()
-		panelName = 'General'
+	SliderPaintTicksTest() {
+		super(new General(), 'slider', factory)
 	}
 
 	@Test
-	void testPanelClickApplyAndClose() {
+	void "paint ticks with major and minor ticks"() {
 		assert fixture.slider('slider').component().paintTicks == true
 		assert fixture.slider('slider').component().majorTickSpacing == 10
 		assert fixture.slider('slider').component().minorTickSpacing == 1
+	}
+
+	@Test
+	void "manually"() {
+		Thread.sleep 0
 	}
 }

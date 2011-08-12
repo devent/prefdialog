@@ -18,51 +18,39 @@
  */
 package com.globalscalingsoftware.prefdialog.panel.inputfields.slider
 
-
-
 import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child
 import com.globalscalingsoftware.prefdialog.annotations.Slider
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractPreferencePanelTest
+import com.globalscalingsoftware.prefdialog.panel.inputfields.AbstractFieldFixture
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.SliderFieldHandlerFactory
 
-class SliderTest extends AbstractPreferencePanelTest {
+class SliderTest extends AbstractFieldFixture {
+
+	static factory = injector.getInstance(SliderFieldHandlerFactory)
 
 	static class General {
 
 		@Slider
 		int slider = 0
-
-		@Override
-		public String toString() {
-			'General'
-		}
 	}
 
-	static class Preferences {
-
-		@Child
-		General general = new General()
-	}
-
-	def setupPreferences() {
-		preferences = new Preferences()
-		panelName = 'General'
+	SliderTest() {
+		super(new General(), 'slider', factory)
 	}
 
 	@Test
-	void testPanelClickApply() {
+	void "select and apply input"() {
 		fixture.slider('slider').slideTo 55
-		panelHandler.applyInput()
+		inputField.applyInput parentObject
 
-		assert preferences.general.slider == 55
+		assert parentObject.slider == 55
 	}
 
 	@Test
-	void testPanelClickRestore() {
+	void "select and restore input"() {
 		fixture.slider('slider').slideTo 55
-		panelHandler.restoreInput()
+		inputField.restoreInput parentObject
 
-		assert preferences.general.slider == 0
+		assert parentObject.slider == 0
 	}
 }

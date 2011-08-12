@@ -18,39 +18,28 @@
  */
 package com.globalscalingsoftware.prefdialog.panel.inputfields.slider
 
-
 import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child
 import com.globalscalingsoftware.prefdialog.annotations.Slider
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractPreferencePanelTest
+import com.globalscalingsoftware.prefdialog.panel.inputfields.AbstractFieldFixture
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.SliderFieldHandlerFactory
 
-class SliderReadOnlyTest extends AbstractPreferencePanelTest {
+class SliderReadOnlyTest extends AbstractFieldFixture {
+
+	static factory = injector.getInstance(SliderFieldHandlerFactory)
 
 	static class General {
 
 		@Slider(readonly=true)
 		int slider = 50
-
-		@Override
-		public String toString() {
-			'General'
-		}
 	}
 
-	static class Preferences {
-
-		@Child
-		General general = new General()
-	}
-
-	def setupPreferences() {
-		preferences = new Preferences()
-		panelName = 'General'
+	SliderReadOnlyTest() {
+		super(new General(), 'slider', factory)
 	}
 
 	@Test
-	void testPanelClickApplyAndClose() {
+	void "read only"() {
 		fixture.slider('slider').requireDisabled()
 	}
 }

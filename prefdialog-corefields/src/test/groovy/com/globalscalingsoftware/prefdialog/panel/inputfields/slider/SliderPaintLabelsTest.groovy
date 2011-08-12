@@ -18,39 +18,28 @@
  */
 package com.globalscalingsoftware.prefdialog.panel.inputfields.slider
 
-
 import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child
 import com.globalscalingsoftware.prefdialog.annotations.Slider
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractPreferencePanelTest
+import com.globalscalingsoftware.prefdialog.panel.inputfields.AbstractFieldFixture
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.SliderFieldHandlerFactory
 
-class SliderPaintLabelsTest extends AbstractPreferencePanelTest {
+class SliderPaintLabelsTest extends AbstractFieldFixture {
+
+	static factory = injector.getInstance(SliderFieldHandlerFactory)
 
 	static class General {
 
 		@Slider(paintLabels=true, majorTicks=10)
 		int slider = 50
-
-		@Override
-		public String toString() {
-			'General'
-		}
 	}
 
-	static class Preferences {
-
-		@Child
-		General general = new General()
-	}
-
-	def setupPreferences() {
-		preferences = new Preferences()
-		panelName = 'General'
+	SliderPaintLabelsTest() {
+		super(new General(), 'slider', factory)
 	}
 
 	@Test
-	void testPanelClickApplyAndClose() {
+	void "paint labels and major tick spacing"() {
 		assert fixture.slider('slider').component().paintLabels == true
 		assert fixture.slider('slider').component().majorTickSpacing == 10
 	}

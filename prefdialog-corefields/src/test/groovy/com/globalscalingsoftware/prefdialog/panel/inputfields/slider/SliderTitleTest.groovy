@@ -18,15 +18,15 @@
  */
 package com.globalscalingsoftware.prefdialog.panel.inputfields.slider
 
-
-
 import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child
 import com.globalscalingsoftware.prefdialog.annotations.Slider
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractPreferencePanelTest
+import com.globalscalingsoftware.prefdialog.panel.inputfields.FieldFixtureHandler
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.SliderFieldHandlerFactory
 
-class SliderTitleTest extends AbstractPreferencePanelTest {
+class SliderTitleTest extends FieldFixtureHandler {
+
+	static factory = injector.getInstance(SliderFieldHandlerFactory)
 
 	static class General {
 
@@ -38,27 +38,21 @@ class SliderTitleTest extends AbstractPreferencePanelTest {
 
 		@Slider(showTitle=false)
 		int slider3 = 0
-
-		@Override
-		public String toString() {
-			'General'
-		}
-	}
-
-	static class Preferences {
-
-		@Child
-		General general = new General()
-	}
-
-	def setupPreferences() {
-		preferences = new Preferences()
-		panelName = 'General'
 	}
 
 	@Test
-	void testField() {
+	void "default title"() {
+		createFieldFixture(new General(), 'slider1', factory)
+		beginFixture()
 		assert fixture.label('label-slider1').text() == 'slider1'
+		endFixture()
+	}
+
+	@Test
+	void "custom title"() {
+		createFieldFixture(new General(), 'slider2', factory)
+		beginFixture()
 		assert fixture.label('label-slider2').text() == 'Some slider'
+		endFixture()
 	}
 }

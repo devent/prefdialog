@@ -18,39 +18,28 @@
  */
 package com.globalscalingsoftware.prefdialog.panel.inputfields.slider
 
-
 import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child
 import com.globalscalingsoftware.prefdialog.annotations.Slider
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractPreferencePanelTest
+import com.globalscalingsoftware.prefdialog.panel.inputfields.AbstractFieldFixture
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.SliderFieldHandlerFactory
 
-class SliderNotPaintTrackTest extends AbstractPreferencePanelTest {
+class SliderNotPaintTrackTest extends AbstractFieldFixture {
+
+	static factory = injector.getInstance(SliderFieldHandlerFactory)
 
 	static class General {
 
 		@Slider(paintTrack=false)
 		int slider = 50
-
-		@Override
-		public String toString() {
-			'General'
-		}
 	}
 
-	static class Preferences {
-
-		@Child
-		General general = new General()
-	}
-
-	def setupPreferences() {
-		preferences = new Preferences()
-		panelName = 'General'
+	SliderNotPaintTrackTest() {
+		super(new General(), 'slider', factory)
 	}
 
 	@Test
-	void testPanelClickApplyAndClose() {
+	void "paint track"() {
 		assert fixture.slider('slider').component().paintTrack == false
 	}
 }

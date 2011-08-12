@@ -21,39 +21,29 @@ package com.globalscalingsoftware.prefdialog.panel.inputfields.slider
 
 import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child
 import com.globalscalingsoftware.prefdialog.annotations.Slider
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractPreferencePanelTest
+import com.globalscalingsoftware.prefdialog.panel.inputfields.AbstractFieldFixture
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.SliderFieldHandlerFactory
 
-class SliderMaxTest extends AbstractPreferencePanelTest {
+class SliderMaxTest extends AbstractFieldFixture {
+
+	static factory = injector.getInstance(SliderFieldHandlerFactory)
 
 	static class General {
 
 		@Slider(max=200)
 		int slider = 50
-
-		@Override
-		public String toString() {
-			'General'
-		}
 	}
 
-	static class Preferences {
-
-		@Child
-		General general = new General()
-	}
-
-	def setupPreferences() {
-		preferences = new Preferences()
-		panelName = 'General'
+	SliderMaxTest() {
+		super(new General(), 'slider', factory)
 	}
 
 	@Test
-	void testPanelClickApplyAndClose() {
+	void "choose maximum and apply input"() {
 		fixture.slider('slider').slideToMaximum()
-		panelHandler.applyInput()
+		inputField.applyInput parentObject
 
-		assert preferences.general.slider == 200
+		assert parentObject.slider == 200
 	}
 }

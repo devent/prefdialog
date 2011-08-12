@@ -21,39 +21,29 @@ package com.globalscalingsoftware.prefdialog.panel.inputfields.slider
 
 import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child
 import com.globalscalingsoftware.prefdialog.annotations.Slider
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractPreferencePanelTest
+import com.globalscalingsoftware.prefdialog.panel.inputfields.AbstractFieldFixture
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.SliderFieldHandlerFactory
 
-class SliderMinTest extends AbstractPreferencePanelTest {
+class SliderMinTest extends AbstractFieldFixture {
+
+	static factory = injector.getInstance(SliderFieldHandlerFactory)
 
 	static class General {
 
 		@Slider(min=-50)
 		int slider = 50
-
-		@Override
-		public String toString() {
-			'General'
-		}
 	}
 
-	static class Preferences {
-
-		@Child
-		General general = new General()
-	}
-
-	def setupPreferences() {
-		preferences = new Preferences()
-		panelName = 'General'
+	SliderMinTest() {
+		super(new General(), 'slider', factory)
 	}
 
 	@Test
-	void testPanelClickApplyAndClose() {
+	void "choose minimum and apply input"() {
 		fixture.slider('slider').slideToMinimum()
-		panelHandler.applyInput()
+		inputField.applyInput parentObject
 
-		assert preferences.general.slider == -50
+		assert parentObject.slider == -50
 	}
 }

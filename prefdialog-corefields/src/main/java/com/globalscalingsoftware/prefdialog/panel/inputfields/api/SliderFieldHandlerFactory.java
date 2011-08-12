@@ -1,4 +1,4 @@
-package com.globalscalingsoftware.prefdialog.panel.inputfields.slider;
+package com.globalscalingsoftware.prefdialog.panel.inputfields.api;
 
 import java.lang.reflect.Field;
 

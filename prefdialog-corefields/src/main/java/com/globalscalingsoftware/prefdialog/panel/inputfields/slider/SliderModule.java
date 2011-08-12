@@ -1,6 +1,7 @@
 package com.globalscalingsoftware.prefdialog.panel.inputfields.slider;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.SliderFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.slider.LoggerFactory.Logger;
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;

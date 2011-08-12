@@ -18,43 +18,32 @@
  */
 package com.globalscalingsoftware.prefdialog.panel.inputfields.slider
 
-
 import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child
 import com.globalscalingsoftware.prefdialog.annotations.Slider
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractPreferencePanelTest
+import com.globalscalingsoftware.prefdialog.panel.inputfields.AbstractFieldFixture
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.SliderFieldHandlerFactory
 
-class SliderSnapToTicksTest extends AbstractPreferencePanelTest {
+class SliderSnapToTicksTest extends AbstractFieldFixture {
+
+	static factory = injector.getInstance(SliderFieldHandlerFactory)
 
 	static class General {
 
 		@Slider(snapToTicks=true)
 		int slider = 50
-
-		@Override
-		public String toString() {
-			'General'
-		}
 	}
 
-	static class Preferences {
-
-		@Child
-		General general = new General()
-	}
-
-	def setupPreferences() {
-		preferences = new Preferences()
-		panelName = 'General'
+	SliderSnapToTicksTest() {
+		super(new General(), 'slider', factory)
 	}
 
 	@Test
-	void testPanelClickApplyAndClose() {
+	void "snap to tick and apply input"() {
 		assert fixture.slider('slider').component().snapToTicks == true
 		fixture.slider('slider').slideTo 55
-		panelHandler.applyInput()
+		inputField.applyInput parentObject
 
-		assert preferences.general.slider == 55
+		assert parentObject.slider == 55
 	}
 }
