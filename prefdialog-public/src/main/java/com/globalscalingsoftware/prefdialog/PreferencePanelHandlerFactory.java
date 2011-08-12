@@ -6,7 +6,6 @@ import com.google.inject.assistedinject.Assisted;
  * A factory to create new {@link PreferencePanelHandler}.
  * 
  * <pre>
- * injector = Guice.createInjector(new PanelModule())
  * factory = injector.getInstance(PreferencePanelHandlerFactory)
  * handler = factory.create(preferences, panelName).createPanel()
  * </pre>
