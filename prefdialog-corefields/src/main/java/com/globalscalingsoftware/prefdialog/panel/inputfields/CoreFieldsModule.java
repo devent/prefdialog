@@ -22,6 +22,7 @@ import com.globalscalingsoftware.prefdialog.panel.inputfields.api.ButtonGroupFie
 import com.globalscalingsoftware.prefdialog.panel.inputfields.api.CheckBoxFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.api.ComboBoxFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.api.FileChooserFieldHandlerFactory;
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.RadioButtonFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.button.ButtonModule;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.checkbox.CheckboxModule;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.child.ChildFieldHandler;
@@ -30,7 +31,6 @@ import com.globalscalingsoftware.prefdialog.panel.inputfields.child.group.GroupF
 import com.globalscalingsoftware.prefdialog.panel.inputfields.child.group.GroupFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.combobox.ComboBoxModule;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.filechooser.FileChooserModule;
-import com.globalscalingsoftware.prefdialog.panel.inputfields.radiobutton.RadioButtonFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.radiobutton.RadioButtonModule;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.slider.SliderFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.slider.SliderModule;

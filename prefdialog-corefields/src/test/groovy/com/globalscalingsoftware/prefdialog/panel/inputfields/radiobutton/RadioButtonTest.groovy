@@ -20,60 +20,45 @@ package com.globalscalingsoftware.prefdialog.panel.inputfields.radiobutton
 
 import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child
 import com.globalscalingsoftware.prefdialog.annotations.RadioButton
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractPreferencePanelTest
-import com.globalscalingsoftware.prefdialog.panel.inputfield.Colors
+import com.globalscalingsoftware.prefdialog.panel.inputfields.AbstractFieldFixture
+import com.globalscalingsoftware.prefdialog.panel.inputfields.Colors
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.RadioButtonFieldHandlerFactory
 
-class RadioButtonTest extends AbstractPreferencePanelTest {
+class RadioButtonTest extends AbstractFieldFixture {
+
+	static factory = injector.getInstance(RadioButtonFieldHandlerFactory)
 
 	static class General {
 
 		@RadioButton
 		Colors colors = Colors.BLACK
-
-		@Override
-		public String toString() {
-			'General'
-		}
 	}
 
-	static class Preferences {
-
-		@Child
-		General general = new General()
-	}
-
-	def setupPreferences() {
-		preferences = new Preferences()
-		panelName = 'General'
+	RadioButtonTest() {
+		super(new General(), 'colors', factory)
 	}
 
 	@Test
-	void testField() {
-		assert fixture.label('label-colors').text() == 'colors'
-	}
-
-	@Test
-	void testPanelChooseBlueAndApply() {
+	void "choose blue and apply input"() {
 		fixture.radioButton('colors-BLUE').click()
-		panelHandler.applyInput()
+		inputField.applyInput parentObject
+
 		fixture.radioButton('colors-BLUE').requireSelected()
-
-		assert preferences.general.colors == Colors.BLUE
+		assert parentObject.colors == Colors.BLUE
 	}
 
 	@Test
-	void testPanelChooseBlueAndRestore() {
+	void "choose blue and restore input"() {
 		fixture.radioButton('colors-BLUE').click()
-		panelHandler.restoreInput()
-		fixture.radioButton('colors-BLACK').requireSelected()
+		inputField.restoreInput parentObject
 
-		assert preferences.general.colors == Colors.BLACK
+		fixture.radioButton('colors-BLACK').requireSelected()
+		assert parentObject.colors == Colors.BLACK
 	}
 
 	@Test
 	void testManually() {
-		//Thread.sleep 60000
+		Thread.sleep 0
 	}
 }

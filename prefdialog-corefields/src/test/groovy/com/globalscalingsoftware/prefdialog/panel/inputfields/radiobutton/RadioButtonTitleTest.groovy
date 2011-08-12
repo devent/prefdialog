@@ -20,12 +20,14 @@ package com.globalscalingsoftware.prefdialog.panel.inputfields.radiobutton
 
 import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child
 import com.globalscalingsoftware.prefdialog.annotations.RadioButton
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractPreferencePanelTest
-import com.globalscalingsoftware.prefdialog.panel.inputfield.Colors
+import com.globalscalingsoftware.prefdialog.panel.inputfields.Colors
+import com.globalscalingsoftware.prefdialog.panel.inputfields.FieldFixtureHandler
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.RadioButtonFieldHandlerFactory
 
-class RadioButtonTitleTest extends AbstractPreferencePanelTest {
+class RadioButtonTitleTest extends FieldFixtureHandler {
+
+	static factory = injector.getInstance(RadioButtonFieldHandlerFactory)
 
 	static class General {
 
@@ -37,32 +39,29 @@ class RadioButtonTitleTest extends AbstractPreferencePanelTest {
 
 		@RadioButton(showTitle=false)
 		Colors colors3 = Colors.BLACK
-
-		@Override
-		public String toString() {
-			'General'
-		}
-	}
-
-	static class Preferences {
-
-		@Child
-		General general = new General()
-	}
-
-	def setupPreferences() {
-		preferences = new Preferences()
-		panelName = 'General'
 	}
 
 	@Test
-	void testPanelClickApplyAndClose() {
+	void "default title"() {
+		createFieldFixture(new General(), 'colors1', factory)
+		beginFixture()
 		assert fixture.label('label-colors1').text() == 'colors1'
-		assert fixture.label('label-colors2').text() == 'Some colors'
+		endFixture()
 	}
 
 	@Test
-	void testManually() {
-		//Thread.sleep 60000
+	void "custom title"() {
+		createFieldFixture(new General(), 'colors2', factory)
+		beginFixture()
+		assert fixture.label('label-colors2').text() == 'Some colors'
+		endFixture()
+	}
+
+	@Test
+	void "no title"() {
+		createFieldFixture(new General(), 'colors3', factory)
+		beginFixture()
+		//assert fixture.label('label-colors2').text() == 'colors3'
+		endFixture()
 	}
 }

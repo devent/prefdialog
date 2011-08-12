@@ -20,39 +20,29 @@ package com.globalscalingsoftware.prefdialog.panel.inputfields.radiobutton
 
 import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child
 import com.globalscalingsoftware.prefdialog.annotations.RadioButton
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractPreferencePanelTest
-import com.globalscalingsoftware.prefdialog.panel.inputfield.Colors
+import com.globalscalingsoftware.prefdialog.panel.inputfields.AbstractFieldFixture
+import com.globalscalingsoftware.prefdialog.panel.inputfields.Colors
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.RadioButtonFieldHandlerFactory
 
-class RadioButtonWidthAndColumnsTest extends AbstractPreferencePanelTest {
+class RadioButtonWidthAndColumnsTest extends AbstractFieldFixture {
 
-	static class Preferences {
-
-		@Child
-		General general = new General()
-	}
+	static factory = injector.getInstance(RadioButtonFieldHandlerFactory)
 
 	static class General {
 
 		@RadioButton(columns=2, width=-2.0d)
 		Colors colors = Colors.BLACK
-
-		@Override
-		public String toString() {
-			'General'
-		}
 	}
 
-	def setupPreferences() {
-		preferences = new Preferences()
-		panelName = 'General'
+	RadioButtonWidthAndColumnsTest() {
+		super(new General(), 'colors', factory)
 	}
 
 	@Test
-	void testPanelClickApplyAndClose() {
+	void "choose blue and apply input"() {
 		fixture.radioButton('colors-BLUE').click()
-		panelHandler.applyInput()
-		assert preferences.general.colors == Colors.BLUE
+		inputField.applyInput parentObject
+		assert parentObject.colors == Colors.BLUE
 	}
 }

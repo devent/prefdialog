@@ -1,6 +1,7 @@
 package com.globalscalingsoftware.prefdialog.panel.inputfields.radiobutton;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.RadioButtonFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.radiobutton.LoggerFactory.Logger;
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
