@@ -111,7 +111,7 @@ class UiPreferencesDialog extends javax.swing.JDialog {
 				}
 				{
 					jSeparator1 = new JSeparator();
-					dialogPanel.add(jSeparator1, "0, 1, 2, 1");
+					dialogPanel.add(jSeparator1, "0, 1, 3, 1");
 				}
 				{
 					cancelButton = new JButton();
