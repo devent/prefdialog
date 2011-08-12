@@ -27,7 +27,7 @@ import org.junit.After
 import org.junit.Before
 
 import com.globalscalingsoftware.prefdialog.PreferenceDialogHandlerFactory
-import com.globalscalingsoftware.prefdialog.dialog.PrefdialogModule;
+import com.globalscalingsoftware.prefdialog.panel.inputfields.PrefdialogCoreFieldsModule
 import com.google.inject.Guice
 
 abstract class AbstractPreferenceDialogFixture {
@@ -48,7 +48,7 @@ abstract class AbstractPreferenceDialogFixture {
 	abstract setupPreferences()
 
 	def createFrameFixture(def preferences) {
-		def injector = Guice.createInjector(new PrefdialogModule())
+		def injector = Guice.createInjector(new PrefdialogModule(), new PrefdialogCoreFieldsModule())
 		def factory = injector.getInstance(PreferenceDialogHandlerFactory)
 		dialogHandler = createDialogHandler(factory)
 
