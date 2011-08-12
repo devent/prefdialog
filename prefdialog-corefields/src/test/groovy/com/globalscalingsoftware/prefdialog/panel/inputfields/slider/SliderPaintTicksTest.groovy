@@ -41,8 +41,8 @@ class SliderPaintTicksTest extends AbstractFieldFixture {
 	@Test
 	void "paint ticks with major and minor ticks"() {
 		assert fixture.slider('slider').component().paintTicks == true
-		assert fixture.slider('slider').component().majorTickSpacing == 10
-		assert fixture.slider('slider').component().minorTickSpacing == 1
+		assert fixture.slider('slider').component().majorTickSpacing == 20
+		assert fixture.slider('slider').component().minorTickSpacing == 5
 	}
 
 	@Test
