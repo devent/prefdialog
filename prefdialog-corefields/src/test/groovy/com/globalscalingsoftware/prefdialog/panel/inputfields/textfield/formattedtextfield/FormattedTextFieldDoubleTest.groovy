@@ -18,52 +18,38 @@
  */
 package com.globalscalingsoftware.prefdialog.panel.inputfields.textfield.formattedtextfield
 
-
 import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child
 import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractPreferencePanelTest
+import com.globalscalingsoftware.prefdialog.panel.inputfields.AbstractFieldFixture
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.FormattedTextFieldHandlerFactory
 
-class FormattedTextFieldDoubleTest extends AbstractPreferencePanelTest {
+class FormattedTextFieldDoubleTest extends AbstractFieldFixture {
+
+	static factory = injector.getInstance(FormattedTextFieldHandlerFactory)
 
 	static class General {
 
 		@FormattedTextField
 		double decimal = 0d
-
-		@FormattedTextField
-		double decimal_second = 0d
-
-		@Override
-		public String toString() {
-			'General'
-		}
 	}
 
-	static class Preferences {
-
-		@Child
-		General general = new General()
-	}
-
-	def setupPreferences() {
-		preferences = new Preferences()
-		panelName = 'General'
+	FormattedTextFieldDoubleTest() {
+		super(new General(), 'decimal', factory)
 	}
 
 	@Test
-	void testEnterValidAndApply() {
+	void "enter valid input and apply"() {
 		fixture.textBox('decimal').deleteText()
 		fixture.textBox('decimal').enterText '0.001'
-		panelHandler.applyInput()
+		inputField.applyInput parentObject
 
 		assert fixture.textBox('decimal').text() == '0.001'
-		assert preferences.general.decimal == 0.001
+		assert parentObject.decimal == 0.001
 	}
 
 	@Test
-	void testManually() {
-		//Thread.sleep 60000
+	void "manually"() {
+		Thread.sleep 0
 	}
 }

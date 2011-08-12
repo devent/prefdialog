@@ -18,45 +18,29 @@
  */
 package com.globalscalingsoftware.prefdialog.panel.inputfields.textfield.formattedtextfield
 
-
 import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child
 import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractPreferencePanelTest
+import com.globalscalingsoftware.prefdialog.panel.inputfields.AbstractFieldFixture
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.FormattedTextFieldHandlerFactory
 
-class FormattedTextFieldWidthTest extends AbstractPreferencePanelTest {
+class FormattedTextFieldWidthTest extends AbstractFieldFixture {
+
+	static factory = injector.getInstance(FormattedTextFieldHandlerFactory)
 
 	static class General {
 
 		@FormattedTextField(width=-2.0d)
 		int fields = 4
-
-		@Override
-		public String toString() {
-			'General'
-		}
 	}
 
-	static class Preferences {
-
-		@Child
-		General general = new General()
-	}
-
-
-	def setupPreferences() {
-		preferences = new Preferences()
-		panelName = 'General'
+	FormattedTextFieldWidthTest() {
+		super(new General(), 'fields', factory)
 	}
 
 	@Test
-	void testPanelClickApplyAndClose() {
+	void "set preferred width"() {
 		fixture.textBox('fields').deleteText()
 		fixture.textBox('fields').enterText '10'
-		panelHandler.applyInput()
-
-		assert fixture.textBox('fields').text() == '10'
-		assert preferences.general.fields == 10
 	}
 }

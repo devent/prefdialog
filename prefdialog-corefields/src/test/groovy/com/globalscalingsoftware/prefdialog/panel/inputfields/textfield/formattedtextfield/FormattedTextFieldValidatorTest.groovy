@@ -18,15 +18,16 @@
  */
 package com.globalscalingsoftware.prefdialog.panel.inputfields.textfield.formattedtextfield
 
-
 import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child
 import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractPreferencePanelTest
+import com.globalscalingsoftware.prefdialog.panel.inputfields.AbstractFieldFixture
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.FormattedTextFieldHandlerFactory
 import com.globalscalingsoftware.prefdialog.validators.Validator
 
-class FormattedTextFieldValidatorTest extends AbstractPreferencePanelTest {
+class FormattedTextFieldValidatorTest extends AbstractFieldFixture {
+
+	static factory = injector.getInstance(FormattedTextFieldHandlerFactory)
 
 	static class FieldsValidator implements Validator<Integer> {
 		public boolean isValid(Integer value) {
@@ -38,38 +39,26 @@ class FormattedTextFieldValidatorTest extends AbstractPreferencePanelTest {
 
 		@FormattedTextField(validator=FieldsValidator, validatorText='Must be a number and between 2 and 100')
 		int fields = 4
-
-		@Override
-		public String toString() {
-			'General'
-		}
 	}
 
-	static class Preferences {
-
-		@Child
-		General general = new General()
-	}
-
-	def setupPreferences() {
-		preferences = new Preferences()
-		panelName = 'General'
+	FormattedTextFieldValidatorTest() {
+		super(new General(), 'fields', factory)
 	}
 
 	@Test
-	void testPanelInvalidTextClickApplyAndClose() {
+	void "enter invalid text"() {
 		fixture.textBox('fields').deleteText()
 		fixture.textBox('fields').enterText '1'
 		fixture.textBox('fields').requireToolTip '<html><strong>fields</strong> - Must be a number and between 2 and 100</html>'
 	}
 
 	@Test
-	void testPanelClickApplyAndClose() {
+	void "enter valid text and apply input"() {
 		fixture.textBox('fields').deleteText()
 		fixture.textBox('fields').enterText '10'
-		panelHandler.applyInput()
+		inputField.applyInput parentObject
 
 		assert fixture.textBox('fields').text() == '10'
-		assert preferences.general.fields == 10
+		assert parentObject.fields == 10
 	}
 }

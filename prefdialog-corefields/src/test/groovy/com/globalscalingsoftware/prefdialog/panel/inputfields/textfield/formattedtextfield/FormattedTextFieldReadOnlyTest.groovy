@@ -18,39 +18,28 @@
  */
 package com.globalscalingsoftware.prefdialog.panel.inputfields.textfield.formattedtextfield
 
-
 import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child
 import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractPreferencePanelTest
+import com.globalscalingsoftware.prefdialog.panel.inputfields.AbstractFieldFixture
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.FormattedTextFieldHandlerFactory
 
-class FormattedTextFieldReadOnlyTest extends AbstractPreferencePanelTest {
+class FormattedTextFieldReadOnlyTest extends AbstractFieldFixture {
+
+	static factory = injector.getInstance(FormattedTextFieldHandlerFactory)
 
 	static class General {
 
 		@FormattedTextField(readonly=true)
 		double fields = 4
-
-		@Override
-		public String toString() {
-			'General'
-		}
 	}
 
-	static class Preferences {
-
-		@Child
-		General general = new General()
-	}
-
-	def setupPreferences() {
-		preferences = new Preferences()
-		panelName = 'General'
+	FormattedTextFieldReadOnlyTest() {
+		super(new General(), 'fields', factory)
 	}
 
 	@Test
-	void testPanelClickApplyAndClose() {
+	void "read only"() {
 		fixture.textBox('fields').requireDisabled()
 		fixture.textBox('fields').requireText '4'
 	}

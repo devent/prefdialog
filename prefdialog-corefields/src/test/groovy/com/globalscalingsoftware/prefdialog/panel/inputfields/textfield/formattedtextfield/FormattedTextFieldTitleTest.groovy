@@ -18,14 +18,15 @@
  */
 package com.globalscalingsoftware.prefdialog.panel.inputfields.textfield.formattedtextfield
 
-
 import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child
 import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractPreferencePanelTest
+import com.globalscalingsoftware.prefdialog.panel.inputfields.FieldFixtureHandler
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.FormattedTextFieldHandlerFactory
 
-class FormattedTextFieldTitleTest extends AbstractPreferencePanelTest {
+class FormattedTextFieldTitleTest extends FieldFixtureHandler {
+
+	static factory = injector.getInstance(FormattedTextFieldHandlerFactory)
 
 	static class General {
 
@@ -37,30 +38,23 @@ class FormattedTextFieldTitleTest extends AbstractPreferencePanelTest {
 
 		@FormattedTextField(showTitle=false)
 		double fields3 = 4
-
-		@Override
-		public String toString() {
-			'General'
-		}
-	}
-
-	static class Preferences {
-
-		@Child
-		General general = new General()
-	}
-
-	def setupPreferences() {
-		preferences = new Preferences()
-		panelName = 'General'
 	}
 
 	@Test
-	void testPanelClickApplyAndClose() {
+	void "default title"() {
+		createFieldFixture(new General(), 'fields1', factory)
+		beginFixture()
 		assert fixture.textBox('fields1').text() == '4'
 		assert fixture.label('label-fields1').text() == 'fields1'
+		endFixture()
+	}
+
+	@Test
+	void "custom title"() {
+		createFieldFixture(new General(), 'fields2', factory)
+		beginFixture()
 		assert fixture.textBox('fields2').text() == '4'
 		assert fixture.label('label-fields2').text() == 'Number of fields'
-		assert fixture.textBox('fields3').text() == '4'
+		endFixture()
 	}
 }
