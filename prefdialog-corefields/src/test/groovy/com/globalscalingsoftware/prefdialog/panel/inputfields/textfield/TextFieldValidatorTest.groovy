@@ -20,12 +20,14 @@ package com.globalscalingsoftware.prefdialog.panel.inputfields.textfield
 
 import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child
 import com.globalscalingsoftware.prefdialog.annotations.TextField
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractPreferencePanelTest
+import com.globalscalingsoftware.prefdialog.panel.inputfields.AbstractFieldFixture
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.TextFieldHandlerFactory
 import com.globalscalingsoftware.prefdialog.validators.Validator
 
-class TextFieldValidatorTest extends AbstractPreferencePanelTest {
+class TextFieldValidatorTest extends AbstractFieldFixture {
+
+	static factory = injector.getInstance(TextFieldHandlerFactory)
 
 	static class StringValidator implements Validator<String> {
 
@@ -38,37 +40,25 @@ class TextFieldValidatorTest extends AbstractPreferencePanelTest {
 
 		@TextField(validator=StringValidator, validatorText='Can not be empty')
 		String name = ''
-
-		@Override
-		public String toString() {
-			'General'
-		}
 	}
 
-	static class Preferences {
-
-		@Child
-		General general = new General()
-	}
-
-	def setupPreferences() {
-		preferences = new Preferences()
-		panelName = 'General'
+	TextFieldValidatorTest() {
+		super(new General(), 'name', factory)
 	}
 
 	@Test
-	void testEnterInvalidTextAndApply() {
+	void "enter invalid text"() {
 		fixture.textBox('name').selectAll()
 		fixture.textBox('name').enterText ' '
 		fixture.textBox('name').requireToolTip '<html><strong>name</strong> - Can not be empty</html>'
 	}
 
 	@Test
-	void testEnterValidTextAndApply() {
+	void "enter ivalid text and apply input"() {
 		fixture.textBox('name').enterText 'test'
-		panelHandler.applyInput()
+		inputField.applyInput parentObject
 
 		assert fixture.textBox('name').text() == 'test'
-		assert preferences.general.name == 'test'
+		assert parentObject.name == 'test'
 	}
 }

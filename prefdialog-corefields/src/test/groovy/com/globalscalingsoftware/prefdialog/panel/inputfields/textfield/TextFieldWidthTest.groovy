@@ -20,41 +20,26 @@ package com.globalscalingsoftware.prefdialog.panel.inputfields.textfield
 
 import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child
 import com.globalscalingsoftware.prefdialog.annotations.TextField
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractPreferencePanelTest
+import com.globalscalingsoftware.prefdialog.panel.inputfields.AbstractFieldFixture
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.TextFieldHandlerFactory
 
-class TextFieldWidthTest extends AbstractPreferencePanelTest {
+class TextFieldWidthTest extends AbstractFieldFixture {
+
+	static factory = injector.getInstance(TextFieldHandlerFactory)
 
 	static class General {
 
 		@TextField(width=-2.0d)
 		String name = ''
-
-		@Override
-		public String toString() {
-			'General'
-		}
 	}
 
-	static class Preferences {
-
-		@Child
-		General general = new General()
-	}
-
-
-	def setupPreferences() {
-		preferences = new Preferences()
-		panelName = 'General'
+	TextFieldWidthTest() {
+		super(new General(), 'name', factory)
 	}
 
 	@Test
-	void testEnterTextAndApply() {
+	void "test preferred width"() {
 		fixture.textBox('name').enterText 'test'
-		panelHandler.applyInput()
-
-		assert fixture.textBox('name').text() == 'test'
-		assert preferences.general.name == 'test'
 	}
 }

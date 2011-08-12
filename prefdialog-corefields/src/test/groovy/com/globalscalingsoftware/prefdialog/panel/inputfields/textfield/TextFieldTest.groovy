@@ -20,54 +20,44 @@ package com.globalscalingsoftware.prefdialog.panel.inputfields.textfield
 
 import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child
 import com.globalscalingsoftware.prefdialog.annotations.TextField
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractPreferencePanelTest
+import com.globalscalingsoftware.prefdialog.panel.inputfields.AbstractFieldFixture
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.TextFieldHandlerFactory
 
-class TextFieldTest extends AbstractPreferencePanelTest {
+class TextFieldTest extends AbstractFieldFixture {
+
+	static factory = injector.getInstance(TextFieldHandlerFactory)
 
 	static class General {
 
 		@TextField
 		String name = ''
-
-		@Override
-		public String toString() {
-			'General'
-		}
 	}
 
-	static class Preferences {
-
-		@Child
-		General general = new General()
-	}
-
-	def setupPreferences() {
-		preferences = new Preferences()
-		panelName = 'General'
+	TextFieldTest() {
+		super(new General(), 'name', factory)
 	}
 
 	@Test
-	void testEnterTextAndApply() {
+	void "enter text and apply input"() {
 		fixture.textBox('name').enterText 'test'
-		panelHandler.applyInput()
+		inputField.applyInput parentObject
 
 		assert fixture.textBox('name').text() == 'test'
-		assert preferences.general.name == 'test'
+		assert parentObject.name == 'test'
 	}
 
 	@Test
-	void testEnterTextAndRestore() {
+	void "enter text and restore input"() {
 		fixture.textBox('name').enterText 'test'
-		panelHandler.restoreInput()
+		inputField.restoreInput parentObject
 
 		assert fixture.textBox('name').text() == ''
-		assert preferences.general.name == ''
+		assert parentObject.name == ''
 	}
 
 	@Test
 	void testManually() {
-		//Thread.sleep(60000)
+		Thread.sleep 0
 	}
 }

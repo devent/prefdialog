@@ -20,11 +20,13 @@ package com.globalscalingsoftware.prefdialog.panel.inputfields.textfield
 
 import org.junit.Test
 
-import com.globalscalingsoftware.prefdialog.annotations.Child
 import com.globalscalingsoftware.prefdialog.annotations.TextField
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractPreferencePanelTest
+import com.globalscalingsoftware.prefdialog.panel.inputfields.FieldFixtureHandler
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.TextFieldHandlerFactory
 
-class TextFieldTitleTest extends AbstractPreferencePanelTest {
+class TextFieldTitleTest extends FieldFixtureHandler {
+
+	static factory = injector.getInstance(TextFieldHandlerFactory)
 
 	static class General {
 
@@ -36,29 +38,23 @@ class TextFieldTitleTest extends AbstractPreferencePanelTest {
 
 		@TextField(showTitle=false)
 		String name3 = ''
-
-		@Override
-		public String toString() {
-			'General'
-		}
-	}
-
-	static class Preferences {
-
-		@Child
-		General general = new General()
-	}
-
-	def setupPreferences() {
-		preferences = new Preferences()
-		panelName = 'General'
 	}
 
 	@Test
-	void testComponents() {
+	void "default title"() {
+		createFieldFixture(new General(), 'name1', factory)
+		beginFixture()
 		fixture.textBox('name1').requireVisible()
 		assert fixture.label('label-name1').text() == 'name1'
+		endFixture()
+	}
+
+	@Test
+	void "custom title"() {
+		createFieldFixture(new General(), 'name2', factory)
+		beginFixture()
 		fixture.textBox('name2').requireVisible()
 		assert fixture.label('label-name2').text() == 'Project name'
+		endFixture()
 	}
 }

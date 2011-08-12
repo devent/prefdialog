@@ -1,6 +1,7 @@
 package com.globalscalingsoftware.prefdialog.panel.inputfields.textfield;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.TextFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.textfield.LoggerFactory.Logger;
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;

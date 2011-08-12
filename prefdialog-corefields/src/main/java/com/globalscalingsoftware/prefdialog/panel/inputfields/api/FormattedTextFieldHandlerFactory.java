@@ -1,4 +1,4 @@
-package com.globalscalingsoftware.prefdialog.panel.inputfields.textfield;
+package com.globalscalingsoftware.prefdialog.panel.inputfields.api;
 
 import java.lang.reflect.Field;
 
@@ -6,7 +6,7 @@ import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.FieldHandlerFactory;
 import com.google.inject.assistedinject.Assisted;
 
-public interface TextFieldHandlerFactory extends FieldHandlerFactory {
+public interface FormattedTextFieldHandlerFactory extends FieldHandlerFactory {
 
 	@Override
 	FieldHandler<?> create(@Assisted("parentObject") Object parentObject,
