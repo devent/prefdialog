@@ -1,4 +1,4 @@
-package com.globalscalingsoftware.prefdialog.panel.inputfield;
+package com.globalscalingsoftware.prefdialog.panel.fields;
 
 import static java.lang.String.format;
 import static org.apache.commons.collections.map.UnmodifiableMap.decorate;
@@ -10,7 +10,7 @@ import org.apache.commons.collections.MapIterator;
 import org.apache.commons.collections.map.UnmodifiableMap;
 
 import com.globalscalingsoftware.prefdialog.FieldHandlerFactory;
-import com.globalscalingsoftware.prefdialog.panel.inputfield.api.FieldHandlerFactoriesMap;
+import com.globalscalingsoftware.prefdialog.panel.api.FieldHandlerFactoriesMap;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 

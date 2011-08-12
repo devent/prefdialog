@@ -16,8 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.panel.inputfields
-
+package com.globalscalingsoftware.prefdialog.panel
 
 import groovy.swing.SwingBuilder
 
@@ -29,37 +28,38 @@ import org.fest.swing.edt.GuiActionRunner
 import org.fest.swing.edt.GuiQuery
 import org.fest.swing.fixture.FrameFixture
 
+import com.globalscalingsoftware.prefdialog.PreferencePanelHandlerFactory
+import com.globalscalingsoftware.prefdialog.panel.inputfields.PrefdialogCoreFieldsModule
 import com.google.inject.Guice
 import com.google.inject.Injector
 
-abstract class FieldFixtureHandler {
+abstract class PanelFixtureHandler {
 
-	public static Injector injector = Guice.createInjector(new PrefdialogCoreFieldsModule())
+	static Injector injector = Guice.createInjector(new PrefdialogPanelModule(), new PrefdialogCoreFieldsModule())
 
-	def parentObject
+	static factory = injector.getInstance(PreferencePanelHandlerFactory)
 
-	def value
+	def preferences
 
-	def field
+	def panelName
 
-	def inputField
+	def panel
 
 	FrameFixture fixture
 
 	JFrame frame
 
-	def createFieldFixture(def parentObject, def fieldName, def fieldFactory) {
-		this.parentObject = parentObject
-		this.value = parentObject."$fieldName"
-		this.field = parentObject.class.declaredFields.find { it.name == fieldName }
-		this.inputField = fieldFactory.create(parentObject, value, field)
+	def createFieldFixture(def preferences, def panelName) {
+		this.preferences = preferences
+		this.panelName = panelName
+		this.panel = factory.create(preferences, panelName).createPanel()
 		this.frame = createPanelFrame()
 	}
 
 	def createPanelFrame() {
-		return new SwingBuilder().frame(title: 'Core Field Test', pack: true, preferredSize: [480, 360]) {
+		return new SwingBuilder().frame(title: 'Prefdialog Panel $panelName Test', pack: true, preferredSize: [480, 360]) {
 			borderLayout()
-			widget(inputField.getAWTComponent(), constraints: BorderLayout.CENTER)
+			widget(panel.getAWTComponent(), constraints: BorderLayout.CENTER)
 		}
 	}
 

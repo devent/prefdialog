@@ -1,4 +1,4 @@
-package com.globalscalingsoftware.prefdialog.panel.inputfield.api;
+package com.globalscalingsoftware.prefdialog.panel.api;
 
 import java.lang.annotation.Annotation;
 import java.util.Map;

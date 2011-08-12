@@ -29,7 +29,7 @@ import com.globalscalingsoftware.prefdialog.dialog.CreatePreferencePanelHandlers
 import com.globalscalingsoftware.prefdialog.dialog.PreferenceDialog.PreferenceDialogFactory;
 import com.globalscalingsoftware.prefdialog.dialog.PreferencePanelsCollection.PreferencePanelsCollectionFactory;
 import com.globalscalingsoftware.prefdialog.dialog.PreferencePanelsHandler.PreferencePanelsHandlerFactory;
-import com.globalscalingsoftware.prefdialog.panel.PanelModule;
+import com.globalscalingsoftware.prefdialog.panel.PrefdialogPanelModule;
 import com.google.inject.Injector;
 import com.google.inject.Provides;
 import com.google.inject.TypeLiteral;
@@ -53,7 +53,7 @@ import com.google.inject.name.Named;
  * }
  * </pre>
  */
-public class PrefdialogModule extends PanelModule {
+public class PrefdialogModule extends PrefdialogPanelModule {
 
 	@Override
 	protected void configure() {

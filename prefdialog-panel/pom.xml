@@ -51,6 +51,10 @@
 			<groupId>com.kenai.nbpwr</groupId>
 			<artifactId>javax-annotation</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.globalscalingsoftware.prefdialog</groupId>
+			<artifactId>prefdialog-corefields</artifactId>
+		</dependency>
 	</dependencies>
 
 </project>

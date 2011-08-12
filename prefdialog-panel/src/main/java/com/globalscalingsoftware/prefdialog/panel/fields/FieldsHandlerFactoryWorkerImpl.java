@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.panel.inputfield;
+package com.globalscalingsoftware.prefdialog.panel.fields;
 
 import static com.google.common.collect.Lists.newArrayList;
 
@@ -27,8 +27,8 @@ import java.util.List;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.FieldHandlerFactory;
-import com.globalscalingsoftware.prefdialog.panel.inputfield.api.FieldHandlerFactoriesMap;
-import com.globalscalingsoftware.prefdialog.panel.inputfield.api.FieldsHandlerFactoryWorker;
+import com.globalscalingsoftware.prefdialog.panel.api.FieldHandlerFactoriesMap;
+import com.globalscalingsoftware.prefdialog.panel.api.FieldsHandlerFactoryWorker;
 import com.globalscalingsoftware.prefdialog.reflection.api.AnnotationDiscoveryCallback;
 import com.globalscalingsoftware.prefdialog.reflection.api.AnnotationDiscoveryWorkerFactory;
 import com.globalscalingsoftware.prefdialog.reflection.api.AnnotationFilter;

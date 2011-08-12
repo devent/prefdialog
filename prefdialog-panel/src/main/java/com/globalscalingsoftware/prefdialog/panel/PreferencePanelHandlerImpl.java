@@ -3,7 +3,7 @@ package com.globalscalingsoftware.prefdialog.panel;
 import java.awt.Component;
 
 import com.globalscalingsoftware.prefdialog.PreferencePanelHandler;
-import com.globalscalingsoftware.prefdialog.panel.inputfield.child.ChildFieldHandler;
+import com.globalscalingsoftware.prefdialog.panel.inputfields.child.ChildFieldHandler;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 

@@ -47,7 +47,7 @@ import com.google.inject.TypeLiteral;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.google.inject.name.Named;
 
-public class CoreFieldsModule extends AbstractModule {
+public class PrefdialogCoreFieldsModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
@@ -73,7 +73,7 @@ public class CoreFieldsModule extends AbstractModule {
 	@Named("field_handler_factories_map")
 	Map<Class<? extends Annotation>, FieldHandlerFactory> bindFactoriesMap() {
 		Map<Class<? extends Annotation>, FieldHandlerFactory> fieldHandlerFactoriesMap = new HashMap<Class<? extends Annotation>, FieldHandlerFactory>();
-		Injector injector = Guice.createInjector(new CoreFieldsModule(),
+		Injector injector = Guice.createInjector(new PrefdialogCoreFieldsModule(),
 				new ReflectionModule());
 		fieldHandlerFactoriesMap.put(TextField.class,
 				injector.getInstance(TextFieldHandlerFactory.class));

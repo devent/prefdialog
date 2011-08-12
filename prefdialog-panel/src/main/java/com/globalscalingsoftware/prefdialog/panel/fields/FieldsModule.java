@@ -1,13 +1,13 @@
-package com.globalscalingsoftware.prefdialog.panel.inputfield;
+package com.globalscalingsoftware.prefdialog.panel.fields;
 
-import com.globalscalingsoftware.prefdialog.panel.inputfield.LoggerFactory.Logger;
-import com.globalscalingsoftware.prefdialog.panel.inputfield.api.FactoriesMapFactory;
-import com.globalscalingsoftware.prefdialog.panel.inputfield.api.FieldHandlerFactoriesMap;
-import com.globalscalingsoftware.prefdialog.panel.inputfield.api.FieldsHandlerFactoryWorker;
+import com.globalscalingsoftware.prefdialog.panel.api.FactoriesMapFactory;
+import com.globalscalingsoftware.prefdialog.panel.api.FieldHandlerFactoriesMap;
+import com.globalscalingsoftware.prefdialog.panel.api.FieldsHandlerFactoryWorker;
+import com.globalscalingsoftware.prefdialog.panel.fields.LoggerFactory.Logger;
 import com.google.inject.AbstractModule;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 
-public class InputFieldsModule extends AbstractModule {
+public class FieldsModule extends AbstractModule {
 
 	@Override
 	protected void configure() {

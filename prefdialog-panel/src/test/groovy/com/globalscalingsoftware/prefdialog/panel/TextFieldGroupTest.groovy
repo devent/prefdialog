@@ -16,16 +16,17 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.panel.inputfields.textfield
+package com.globalscalingsoftware.prefdialog.panel
+
+import groovy.time.TimeCategory
 
 import org.junit.Test
 
 import com.globalscalingsoftware.prefdialog.annotations.Child
 import com.globalscalingsoftware.prefdialog.annotations.Group
 import com.globalscalingsoftware.prefdialog.annotations.TextField
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractPreferencePanelTest
 
-class TextFieldGroupTest extends AbstractPreferencePanelTest {
+class TextFieldGroupTest extends AbstractPanelFixture {
 
 	static class Group1 {
 
@@ -68,14 +69,12 @@ class TextFieldGroupTest extends AbstractPreferencePanelTest {
 		General general = new General()
 	}
 
-
-	def setupPreferences() {
-		preferences = new Preferences()
-		panelName = 'General'
+	TextFieldGroupTest() {
+		super(new Preferences(), "General")
 	}
 
 	@Test
-	void testEnterTextAndApply() {
+	void "enter text in all text boxes and apply input"() {
 		fixture.textBox('textField1').deleteText()
 		fixture.textBox('textField1').enterText 'test1'
 		fixture.textBox('textField2').deleteText()
@@ -84,7 +83,7 @@ class TextFieldGroupTest extends AbstractPreferencePanelTest {
 		fixture.textBox('textField3').enterText 'test3'
 		fixture.textBox('textField4').deleteText()
 		fixture.textBox('textField4').enterText 'test4'
-		panelHandler.applyInput()
+		panel.applyInput()
 
 		assert fixture.textBox('textField1').text() == 'test1'
 		assert preferences.general.group1.textField1 == 'test1'
@@ -94,5 +93,10 @@ class TextFieldGroupTest extends AbstractPreferencePanelTest {
 		assert preferences.general.group2.textField3 == 'test3'
 		assert fixture.textBox('textField4').text() == 'test4'
 		assert preferences.general.group2.textField4 == 'test4'
+	}
+
+	@Test
+	void "manually"() {
+		use ( TimeCategory ) { Thread.sleep 0.minutes.toMilliseconds() }
 	}
 }
