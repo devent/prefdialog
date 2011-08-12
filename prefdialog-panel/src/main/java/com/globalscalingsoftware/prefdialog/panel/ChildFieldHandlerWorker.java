@@ -13,11 +13,12 @@ import org.slf4j.LoggerFactory;
 import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.FieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.annotations.Child;
+import com.globalscalingsoftware.prefdialog.annotations.Group;
 import com.globalscalingsoftware.prefdialog.panel.api.FactoriesMapFactory;
+import com.globalscalingsoftware.prefdialog.panel.api.FieldHandlerEntry;
 import com.globalscalingsoftware.prefdialog.panel.api.FieldHandlerFactoriesMap;
 import com.globalscalingsoftware.prefdialog.panel.api.FieldsHandlerFactoryWorker;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.api.ChildFieldHandlerFactory;
-import com.globalscalingsoftware.prefdialog.panel.inputfields.child.group.GroupFieldHandler;
 import com.globalscalingsoftware.prefdialog.reflection.api.AnnotationDiscoveryCallback;
 import com.globalscalingsoftware.prefdialog.reflection.api.AnnotationDiscoveryWorkerFactory;
 import com.globalscalingsoftware.prefdialog.reflection.api.AnnotationFilter;
@@ -118,26 +119,29 @@ class ChildFieldHandlerWorker {
 				.getFactory(Child.class);
 		FieldHandler<?> panel = factory.create(preferences, value, field);
 
-		for (FieldHandler<?> fieldHandler : fieldFactoryWorker
-				.createFieldsHandlers(factoriesMap, value)) {
-			setupGroupFieldHandler(panel, fieldHandler, factoriesMap);
-			panel.addFieldHandler(fieldHandler);
+		Iterable<FieldHandlerEntry> handlers = fieldFactoryWorker
+				.createFieldsHandlers(factoriesMap, value);
+		for (FieldHandlerEntry entry : handlers) {
+			FieldHandler<?> handler = entry.getFieldHandler();
+			setupGroupFieldHandler(entry.getAnnotation(), panel, handler,
+					factoriesMap);
+			panel.addFieldHandler(handler);
 		}
 
 		return panel;
 	}
 
-	private void setupGroupFieldHandler(FieldHandler<?> child,
+	private void setupGroupFieldHandler(Annotation a, FieldHandler<?> child,
 			FieldHandler<?> handler, FieldHandlerFactoriesMap factoriesMap) {
-		if (!(handler instanceof GroupFieldHandler)) {
+		if (a.getClass() == Group.class) {
 			return;
 		}
-		l.debug("Create a new group field hanlder for child field {}.", child);
-		GroupFieldHandler groupFieldHandler = (GroupFieldHandler) handler;
+		l.debug("Create a new group field handler for child field {}.", child);
 		Object value = handler.getComponentValue();
-		for (FieldHandler<?> fieldHandler : fieldFactoryWorker
-				.createFieldsHandlers(factoriesMap, value)) {
-			groupFieldHandler.addFieldHandler(fieldHandler);
+		Iterable<FieldHandlerEntry> handlers = fieldFactoryWorker
+				.createFieldsHandlers(factoriesMap, value);
+		for (FieldHandlerEntry entry : handlers) {
+			handler.addFieldHandler(entry.getFieldHandler());
 		}
 	}
 

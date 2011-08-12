@@ -1,7 +1,6 @@
 package com.globalscalingsoftware.prefdialog.panel.api;
 
 import java.lang.annotation.Annotation;
-import java.util.List;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.FieldHandlerFactory;
@@ -25,9 +24,9 @@ public interface FieldsHandlerFactoryWorker {
 	 *            the {@link Object} which fields will be searched for valid
 	 *            annotations.
 	 * 
-	 * @return a {@link List} of all created {@link FieldHandler} .
+	 * @return a {@link Iterable} of all created {@link FieldHandler} .
 	 */
-	List<FieldHandler<?>> createFieldsHandlers(
+	Iterable<FieldHandlerEntry> createFieldsHandlers(
 			FieldHandlerFactoriesMap factoriesMap, Object object);
 
 }

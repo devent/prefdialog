@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.FieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.annotations.ButtonGroup;
 import com.globalscalingsoftware.prefdialog.annotations.Checkbox;
@@ -24,16 +23,16 @@ import com.globalscalingsoftware.prefdialog.panel.inputfields.api.ChildFieldHand
 import com.globalscalingsoftware.prefdialog.panel.inputfields.api.ComboBoxFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.api.FileChooserFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.api.FormattedTextFieldHandlerFactory;
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.GroupFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.api.RadioButtonFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.api.SliderFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.api.TextFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.button.ButtonModule;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.checkbox.CheckboxModule;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.child.ChildModule;
-import com.globalscalingsoftware.prefdialog.panel.inputfields.child.group.GroupFieldHandler;
-import com.globalscalingsoftware.prefdialog.panel.inputfields.child.group.GroupFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.combobox.ComboBoxModule;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.filechooser.FileChooserModule;
+import com.globalscalingsoftware.prefdialog.panel.inputfields.group.GroupModule;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.radiobutton.RadioButtonModule;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.slider.SliderModule;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.textfield.TextFieldModule;
@@ -43,8 +42,6 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Provides;
-import com.google.inject.TypeLiteral;
-import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.google.inject.name.Named;
 
 public class PrefdialogCoreFieldsModule extends AbstractModule {
@@ -60,10 +57,7 @@ public class PrefdialogCoreFieldsModule extends AbstractModule {
 		install(new TextFieldModule());
 		install(new FormattedTextFieldModule());
 		install(new ChildModule());
-		install(new FactoryModuleBuilder().implement(
-				new TypeLiteral<FieldHandler<?>>() {
-				}, GroupFieldHandler.class).build(
-				GroupFieldHandlerFactory.class));
+		install(new GroupModule());
 	}
 
 	@Provides

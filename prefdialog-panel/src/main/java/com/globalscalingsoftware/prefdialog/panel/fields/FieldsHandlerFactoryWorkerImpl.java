@@ -27,6 +27,7 @@ import java.util.List;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.FieldHandlerFactory;
+import com.globalscalingsoftware.prefdialog.panel.api.FieldHandlerEntry;
 import com.globalscalingsoftware.prefdialog.panel.api.FieldHandlerFactoriesMap;
 import com.globalscalingsoftware.prefdialog.panel.api.FieldsHandlerFactoryWorker;
 import com.globalscalingsoftware.prefdialog.reflection.api.AnnotationDiscoveryCallback;
@@ -52,18 +53,39 @@ class FieldsHandlerFactoryWorkerImpl implements FieldsHandlerFactoryWorker {
 	}
 
 	@Override
-	public List<FieldHandler<?>> createFieldsHandlers(
+	public Iterable<FieldHandlerEntry> createFieldsHandlers(
 			final FieldHandlerFactoriesMap factoriesMap, final Object object) {
-		final List<FieldHandler<?>> fieldHandlers = newArrayList();
+		final List<FieldHandlerEntry> fieldHandlers = newArrayList();
 		annotationDiscoveryFactory.create(annotationFilter,
 				new AnnotationDiscoveryCallback() {
 
 					@Override
-					public void fieldAnnotationDiscovered(Field field,
-							Object value, Annotation a) {
-						FieldHandler<?> handler = createDiscoveredFieldHandler(
+					public void fieldAnnotationDiscovered(final Field field,
+							final Object value, final Annotation a) {
+						final FieldHandler<?> handler = createDiscoveredFieldHandler(
 								factoriesMap, object, field, value, a);
-						fieldHandlers.add(handler);
+						fieldHandlers.add(new FieldHandlerEntry() {
+
+							@Override
+							public Object getValue() {
+								return value;
+							}
+
+							@Override
+							public FieldHandler<?> getFieldHandler() {
+								return handler;
+							}
+
+							@Override
+							public Field getField() {
+								return field;
+							}
+
+							@Override
+							public Annotation getAnnotation() {
+								return a;
+							}
+						});
 					}
 
 				}).discoverAnnotations(object);

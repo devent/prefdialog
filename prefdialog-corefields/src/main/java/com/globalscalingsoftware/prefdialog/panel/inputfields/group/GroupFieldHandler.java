@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.panel.inputfields.child.group;
+package com.globalscalingsoftware.prefdialog.panel.inputfields.group;
 
 import java.lang.reflect.Field;
 
@@ -26,7 +26,7 @@ import com.globalscalingsoftware.prefdialog.reflection.ReflectionToolbox;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
-public class GroupFieldHandler extends AbstractChildFieldHandler<GroupPanel> {
+class GroupFieldHandler extends AbstractChildFieldHandler<GroupPanel> {
 
 	@Inject
 	GroupFieldHandler(ReflectionToolbox reflectionToolbox,
