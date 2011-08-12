@@ -16,16 +16,16 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.panel.inputfields.radiobutton
+package com.globalscalingsoftware.prefdialog.panel
+
+import groovy.time.TimeCategory
 
 import org.junit.Test
 
 import com.globalscalingsoftware.prefdialog.annotations.Child
 import com.globalscalingsoftware.prefdialog.annotations.RadioButton
-import com.globalscalingsoftware.prefdialog.panel.inputfield.AbstractPreferencePanelTest
-import com.globalscalingsoftware.prefdialog.panel.inputfield.Colors
 
-class MultipleRadioButtonTest extends AbstractPreferencePanelTest {
+class MultipleRadioButtonTest extends AbstractPanelFixture {
 
 	static class General {
 
@@ -53,9 +53,8 @@ class MultipleRadioButtonTest extends AbstractPreferencePanelTest {
 		General general = new General()
 	}
 
-	def setupPreferences() {
-		preferences = new Preferences()
-		panelName = 'General'
+	MultipleRadioButtonTest() {
+		super(new Preferences(), "General")
 	}
 
 	@Test
@@ -68,7 +67,7 @@ class MultipleRadioButtonTest extends AbstractPreferencePanelTest {
 		fixture.radioButton('colors2-BLUE').click()
 		fixture.radioButton('colors3-BLUE').click()
 		fixture.radioButton('colors4-BLUE').click()
-		panelHandler.applyInput()
+		panel.applyInput()
 
 		assert preferences.general.colors1 == Colors.BLUE
 		assert preferences.general.colors2 == Colors.BLUE
@@ -77,7 +76,7 @@ class MultipleRadioButtonTest extends AbstractPreferencePanelTest {
 	}
 
 	@Test
-	void testManual() {
-		//Thread.sleep(30000)
+	void "manually"() {
+		use ( TimeCategory ) { Thread.sleep 0.minutes.toMilliseconds() }
 	}
 }
