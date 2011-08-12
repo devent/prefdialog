@@ -54,6 +54,7 @@
 		<dependency>
 			<groupId>com.globalscalingsoftware.prefdialog</groupId>
 			<artifactId>prefdialog-corefields</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 

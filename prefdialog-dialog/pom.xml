@@ -63,6 +63,11 @@
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 		</dependency>
+        <dependency>
+            <groupId>com.globalscalingsoftware.prefdialog</groupId>
+            <artifactId>prefdialog-corefields</artifactId>
+            <scope>test</scope>
+        </dependency>
 	</dependencies>
 
 </project>
