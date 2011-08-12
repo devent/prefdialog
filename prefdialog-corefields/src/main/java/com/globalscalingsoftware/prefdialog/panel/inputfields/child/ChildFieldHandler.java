@@ -25,7 +25,7 @@ import com.globalscalingsoftware.prefdialog.reflection.ReflectionToolbox;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
-public class ChildFieldHandler extends AbstractChildFieldHandler<ChildPanel> {
+class ChildFieldHandler extends AbstractChildFieldHandler<ChildPanel> {
 
 	@Inject
 	ChildFieldHandler(ReflectionToolbox reflectionToolbox,

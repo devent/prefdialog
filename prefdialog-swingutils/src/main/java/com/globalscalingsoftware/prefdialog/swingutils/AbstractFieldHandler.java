@@ -120,4 +120,7 @@ public abstract class AbstractFieldHandler<FieldComponentType extends FieldCompo
 		return component.getAWTComponent();
 	}
 
+	@Override
+	public void addFieldHandler(FieldHandler<?> fieldHandler) {
+	}
 }

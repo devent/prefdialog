@@ -16,8 +16,7 @@ import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.panel.api.FactoriesMapFactory;
 import com.globalscalingsoftware.prefdialog.panel.api.FieldHandlerFactoriesMap;
 import com.globalscalingsoftware.prefdialog.panel.api.FieldsHandlerFactoryWorker;
-import com.globalscalingsoftware.prefdialog.panel.inputfields.child.ChildFieldHandler;
-import com.globalscalingsoftware.prefdialog.panel.inputfields.child.ChildFieldHandlerFactory;
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.ChildFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.child.group.GroupFieldHandler;
 import com.globalscalingsoftware.prefdialog.reflection.api.AnnotationDiscoveryCallback;
 import com.globalscalingsoftware.prefdialog.reflection.api.AnnotationDiscoveryWorkerFactory;
@@ -74,14 +73,14 @@ class ChildFieldHandlerWorker {
 	/**
 	 * Returns a {@link ChildFieldHandler} created from the preferences object.
 	 */
-	public ChildFieldHandler getChildFieldHandler() {
+	public FieldHandler<?> getChildFieldHandler() {
 		return createChildFieldHandler(preferences);
 	}
 
 	private class DiscoverAnnotationsCallback implements
 			AnnotationDiscoveryCallback {
 
-		public ChildFieldHandler childFieldHandler;
+		public FieldHandler<?> childFieldHandler;
 
 		@Override
 		public void fieldAnnotationDiscovered(Field field, Object value,
@@ -93,7 +92,7 @@ class ChildFieldHandlerWorker {
 		}
 	}
 
-	private ChildFieldHandler createChildFieldHandler(Object preferences) {
+	private FieldHandler<?> createChildFieldHandler(Object preferences) {
 		AnnotationFilter annotationFilter = annotationFilterFactory
 				.create(childAnnotations);
 		DiscoverAnnotationsCallback callback = new DiscoverAnnotationsCallback();
@@ -103,8 +102,7 @@ class ChildFieldHandlerWorker {
 		return callback.childFieldHandler;
 	}
 
-	private void checkChildFieldHandlerCreated(
-			ChildFieldHandler childFieldHandler) {
+	private void checkChildFieldHandlerCreated(FieldHandler<?> childFieldHandler) {
 		if (childFieldHandler == null) {
 			throw new NullPointerException(format(
 					"Could not find a preference field with the name %s.",
@@ -112,13 +110,13 @@ class ChildFieldHandlerWorker {
 		}
 	}
 
-	private ChildFieldHandler createChildFieldHandler(Field field, Object value) {
+	private FieldHandler<?> createChildFieldHandler(Field field, Object value) {
 		l.debug("Create a new child field handler for field {}.", value);
 		FieldHandlerFactoriesMap factoriesMap = factoriesMapFactory
 				.create(fieldHandlerFactories);
 		ChildFieldHandlerFactory factory = (ChildFieldHandlerFactory) factoriesMap
 				.getFactory(Child.class);
-		ChildFieldHandler panel = factory.create(preferences, value, field);
+		FieldHandler<?> panel = factory.create(preferences, value, field);
 
 		for (FieldHandler<?> fieldHandler : fieldFactoryWorker
 				.createFieldsHandlers(factoriesMap, value)) {
@@ -129,7 +127,7 @@ class ChildFieldHandlerWorker {
 		return panel;
 	}
 
-	private void setupGroupFieldHandler(ChildFieldHandler child,
+	private void setupGroupFieldHandler(FieldHandler<?> child,
 			FieldHandler<?> handler, FieldHandlerFactoriesMap factoriesMap) {
 		if (!(handler instanceof GroupFieldHandler)) {
 			return;

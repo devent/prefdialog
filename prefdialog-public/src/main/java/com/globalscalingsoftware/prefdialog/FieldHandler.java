@@ -93,4 +93,9 @@ public interface FieldHandler<FieldComponentType extends FieldComponent> {
 	 */
 	void setComponentEnabled(boolean enabled);
 
+	/**
+	 * Add a new child {@link FieldHandler}.
+	 */
+	void addFieldHandler(FieldHandler<?> fieldHandler);
+
 }

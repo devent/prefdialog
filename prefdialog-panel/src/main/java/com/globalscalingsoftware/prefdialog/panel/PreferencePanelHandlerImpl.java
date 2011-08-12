@@ -2,8 +2,10 @@ package com.globalscalingsoftware.prefdialog.panel;
 
 import java.awt.Component;
 
+import javax.swing.SwingUtilities;
+
+import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.PreferencePanelHandler;
-import com.globalscalingsoftware.prefdialog.panel.inputfields.child.ChildFieldHandler;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
@@ -15,7 +17,7 @@ class PreferencePanelHandlerImpl implements PreferencePanelHandler {
 
 	private final ChildFieldHandlerWorkerFactory childFieldHandlerWorkerFactory;
 
-	private ChildFieldHandler childFieldHandler;
+	private FieldHandler<?> childFieldHandler;
 
 	@Inject
 	PreferencePanelHandlerImpl(
@@ -41,12 +43,14 @@ class PreferencePanelHandlerImpl implements PreferencePanelHandler {
 
 	@Override
 	public void applyInput() {
-		childFieldHandler.applyInput();
+		Object value = childFieldHandler.getComponentValue();
+		childFieldHandler.applyInput(value);
 	}
 
 	@Override
 	public void restoreInput() {
-		childFieldHandler.restoreInput();
+		Object value = childFieldHandler.getComponentValue();
+		childFieldHandler.restoreInput(value);
 	}
 
 	@Override
@@ -61,6 +65,6 @@ class PreferencePanelHandlerImpl implements PreferencePanelHandler {
 
 	@Override
 	public void updateUI() {
-		childFieldHandler.updateUI();
+		SwingUtilities.updateComponentTreeUI(getAWTComponent());
 	}
 }

@@ -20,6 +20,7 @@ import com.globalscalingsoftware.prefdialog.annotations.Slider;
 import com.globalscalingsoftware.prefdialog.annotations.TextField;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.api.ButtonGroupFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.api.CheckBoxFieldHandlerFactory;
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.ChildFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.api.ComboBoxFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.api.FileChooserFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.api.FormattedTextFieldHandlerFactory;
@@ -28,8 +29,7 @@ import com.globalscalingsoftware.prefdialog.panel.inputfields.api.SliderFieldHan
 import com.globalscalingsoftware.prefdialog.panel.inputfields.api.TextFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.button.ButtonModule;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.checkbox.CheckboxModule;
-import com.globalscalingsoftware.prefdialog.panel.inputfields.child.ChildFieldHandler;
-import com.globalscalingsoftware.prefdialog.panel.inputfields.child.ChildFieldHandlerFactory;
+import com.globalscalingsoftware.prefdialog.panel.inputfields.child.ChildModule;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.child.group.GroupFieldHandler;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.child.group.GroupFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.combobox.ComboBoxModule;
@@ -59,10 +59,7 @@ public class PrefdialogCoreFieldsModule extends AbstractModule {
 		install(new SliderModule());
 		install(new TextFieldModule());
 		install(new FormattedTextFieldModule());
-		install(new FactoryModuleBuilder().implement(
-				new TypeLiteral<FieldHandler<?>>() {
-				}, ChildFieldHandler.class).build(
-				ChildFieldHandlerFactory.class));
+		install(new ChildModule());
 		install(new FactoryModuleBuilder().implement(
 				new TypeLiteral<FieldHandler<?>>() {
 				}, GroupFieldHandler.class).build(
@@ -73,8 +70,8 @@ public class PrefdialogCoreFieldsModule extends AbstractModule {
 	@Named("field_handler_factories_map")
 	Map<Class<? extends Annotation>, FieldHandlerFactory> bindFactoriesMap() {
 		Map<Class<? extends Annotation>, FieldHandlerFactory> fieldHandlerFactoriesMap = new HashMap<Class<? extends Annotation>, FieldHandlerFactory>();
-		Injector injector = Guice.createInjector(new PrefdialogCoreFieldsModule(),
-				new ReflectionModule());
+		Injector injector = Guice.createInjector(
+				new PrefdialogCoreFieldsModule(), new ReflectionModule());
 		fieldHandlerFactoriesMap.put(TextField.class,
 				injector.getInstance(TextFieldHandlerFactory.class));
 		fieldHandlerFactoriesMap.put(FormattedTextField.class,
