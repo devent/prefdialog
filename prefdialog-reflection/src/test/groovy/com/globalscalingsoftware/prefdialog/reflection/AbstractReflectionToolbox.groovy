@@ -25,9 +25,9 @@ import com.globalscalingsoftware.prefdialog.validators.NotEmptyString
 
 class AbstractReflectionToolbox {
 
-	static final PROPERTY_VALUE = "property_value"
+	public static final PROPERTY_VALUE = "property_value"
 
-	static final HELP_TEXT = "help text"
+	public static final HELP_TEXT = "help text"
 
 	static class Bean {
 
