@@ -9,12 +9,12 @@
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>../prefdialog-dialog</module>
-		<module>../prefdialog-public</module>
-		<module>../prefdialog-panel</module>
-		<module>../prefdialog-reflection</module>
-		<module>../prefdialog-swingutils</module>
+        <module>../prefdialog-public</module>
+        <module>../prefdialog-reflection</module>
+        <module>../prefdialog-swingutils</module>
         <module>../prefdialog-corefields</module>
+        <module>../prefdialog-panel</module>
+		<module>../prefdialog-dialog</module>
 	</modules>
 
 	<licenses>
@@ -39,9 +39,9 @@
 	</developers>
 
 	<scm>
-		<connection>scm:git:${git.repository.root}/prefdialog.git</connection>
-		<developerConnection>scm:git:${git.repository.root}/prefdialog.git</developerConnection>
-		<url>scm:git:scm:git:${git.repository.root}/prefdialog.git</url>
+		<connection>scm:git:${gitpublic.repository.root}prefdialog.git</connection>
+		<developerConnection>scm:git:${gitpublic.repository.root}prefdialog.git</developerConnection>
+		<url>scm:git:${gitpublic.repository.root}prefdialog.git</url>
 	</scm>
 
 	<properties>
