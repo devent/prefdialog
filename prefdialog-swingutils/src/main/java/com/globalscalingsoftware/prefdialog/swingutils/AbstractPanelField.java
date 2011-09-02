@@ -86,6 +86,7 @@ public abstract class AbstractPanelField<FieldType extends JComponent> extends
 
 	@Override
 	public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
 		field.setEnabled(enabled);
 	}
 
