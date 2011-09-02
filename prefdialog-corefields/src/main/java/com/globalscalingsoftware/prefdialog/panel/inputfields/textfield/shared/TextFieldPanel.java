@@ -58,7 +58,7 @@ class TextFieldPanel extends AbstractLabelFieldPanel<JTextField> {
 		String text = format("<html><strong>%s</strong> - %s</html>",
 				fieldTitle, validatorText);
 		setToolTipText(text);
-		showToolTip();
+		setShowToolTip(true);
 	}
 
 	public void clearValidatorText() {

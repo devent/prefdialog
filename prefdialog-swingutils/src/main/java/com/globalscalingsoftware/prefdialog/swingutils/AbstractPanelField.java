@@ -8,12 +8,18 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.ToolTipManager;
 
+/**
+ * Encloses the {@link FieldType} in a {@link JPanel} container. We add methods
+ * to set and get the layout of the panel.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ */
 public abstract class AbstractPanelField<FieldType extends JComponent> extends
 		AbstractFieldComponent<JPanel> {
 
-	private TableLayout layout;
-
 	private final FieldType field;
+
+	private TableLayout layout;
 
 	public AbstractPanelField(FieldType field) {
 		super(new JPanel());
@@ -31,27 +37,42 @@ public abstract class AbstractPanelField<FieldType extends JComponent> extends
 	private void setupPanel() {
 		JPanel panel = (JPanel) getAWTComponent();
 		panel.setLayout(layout);
-
 		panel.add(field, "0, 0");
 
 		field.requestFocus();
 	}
 
+	/**
+	 * Sets the new {@link TableLayout} for the container to use.
+	 */
 	public void setLayout(TableLayout layout) {
 		this.layout = layout;
 	}
 
-	public FieldType getPanelField() {
-		return field;
-	}
-
+	/**
+	 * Returns the {@link TableLayout} the the container is using.
+	 */
 	public TableLayout getLayout() {
 		return layout;
 	}
 
+	/**
+	 * Returns the {@link FieldType} that the container is enclosing.
+	 */
+	public FieldType getPanelField() {
+		return field;
+	}
+
+	/**
+	 * Returns the {@link JPanel} container that we are using.
+	 */
+	public JPanel getPanel() {
+		return (JPanel) getAWTComponent();
+	}
+
 	@Override
 	public void setWidth(double width) {
-		JPanel panel = (JPanel) getAWTComponent();
+		JPanel panel = getPanel();
 		layout.setColumn(0, width);
 		layout.layoutContainer(panel);
 		panel.repaint();
@@ -68,11 +89,25 @@ public abstract class AbstractPanelField<FieldType extends JComponent> extends
 		field.setEnabled(enabled);
 	}
 
+	/**
+	 * Set the text of the tool-tip for the field.
+	 */
 	public void setToolTipText(String text) {
 		field.setToolTipText(text);
 	}
 
-	public void showToolTip() {
+	/**
+	 * Show or hide the tool-tip for the field.
+	 */
+	public void setShowToolTip(boolean show) {
+		if (show) {
+			showToolTip();
+		} else {
+			hideToolTip();
+		}
+	}
+
+	private void showToolTip() {
 		int id = 0;
 		long when = 0;
 		int modifiers = 0;

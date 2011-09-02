@@ -32,6 +32,7 @@ import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.reflection.ReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.swingutils.AbstractDefaultFieldHandler;
+import com.globalscalingsoftware.prefdialog.swingutils.SharedSwingLoggerFactory;
 
 /**
  * Implements combined behavior for {@link Child} fields. Can contain other
@@ -50,11 +51,12 @@ public abstract class AbstractChildFieldHandler<ComponentType extends ChildCompo
 
 	private final List<FieldHandler<?>> fieldHandlers;
 
-	public AbstractChildFieldHandler(ReflectionToolbox reflectionToolbox,
-			Object parentObject, Object value, Field field,
+	public AbstractChildFieldHandler(SharedSwingLoggerFactory loggerFactory,
+			ReflectionToolbox reflectionToolbox, Object parentObject,
+			Object value, Field field,
 			Class<? extends Annotation> annotationClass, ComponentType component) {
-		super(reflectionToolbox, parentObject, value, field, annotationClass,
-				component);
+		super(loggerFactory, reflectionToolbox, parentObject, value, field,
+				annotationClass, component);
 		this.fieldHandlers = new ArrayList<FieldHandler<?>>();
 	}
 
@@ -80,6 +82,7 @@ public abstract class AbstractChildFieldHandler<ComponentType extends ChildCompo
 		}
 	}
 
+	@Override
 	public void addFieldHandler(FieldHandler<?> fieldHandler) {
 		l.debug("Add new field handler {}.", fieldHandler);
 		getComponent().addField(fieldHandler);

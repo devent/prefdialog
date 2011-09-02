@@ -22,8 +22,11 @@ import java.awt.Component;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 import com.globalscalingsoftware.prefdialog.FieldComponent;
 import com.globalscalingsoftware.prefdialog.FieldHandler;
+import com.globalscalingsoftware.prefdialog.swingutils.SharedSwingLoggerFactory.SharedSwingLogger;
 
 /**
  * Adds attributes to the getter methods in {@link FieldHandler} and delegates
@@ -43,10 +46,13 @@ public abstract class AbstractFieldHandler<FieldComponentType extends FieldCompo
 	private final Field field;
 	private final Class<? extends Annotation> annotationClass;
 	private final FieldComponentType component;
+	private final SharedSwingLogger log;
 
-	public AbstractFieldHandler(Object parentObject, Object value, Field field,
+	public AbstractFieldHandler(SharedSwingLoggerFactory loggerFactory,
+			Object parentObject, Object value, Field field,
 			Class<? extends Annotation> annotationClass,
 			FieldComponentType component) {
+		this.log = loggerFactory.create(AbstractFieldHandler.class);
 		this.parentObject = parentObject;
 		this.value = value;
 		this.field = field;
@@ -87,26 +93,31 @@ public abstract class AbstractFieldHandler<FieldComponentType extends FieldCompo
 
 	@Override
 	public void setComponentWidth(double width) {
+		log.setWidth(width, this);
 		component.setWidth(width);
 	}
 
 	@Override
 	public void setComponentName(String name) {
+		log.setName(name, this);
 		component.setName(name);
 	}
 
 	@Override
 	public void setComponentTitle(String title) {
+		log.setTitle(title, this);
 		component.setTitle(title);
 	}
 
 	@Override
 	public void setComponentEnabled(boolean enabled) {
+		log.setEnabled(enabled, this);
 		component.setEnabled(enabled);
 	}
 
 	@Override
 	public void setComponentValue(Object value) {
+		log.setValue(value, this);
 		component.setValue(value);
 	}
 
@@ -122,5 +133,12 @@ public abstract class AbstractFieldHandler<FieldComponentType extends FieldCompo
 
 	@Override
 	public void addFieldHandler(FieldHandler<?> fieldHandler) {
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).append("parent object", parentObject)
+				.append("field", field).append("value", value)
+				.append("annotation", annotationClass).toString();
 	}
 }

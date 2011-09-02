@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	
+
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -18,17 +18,23 @@
 			<artifactId>guice-assistedinject</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.globalscalingsoftware.prefdialog</groupId>
-			<artifactId>prefdialog-public</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.globalscalingsoftware.prefdialog</groupId>
-			<artifactId>prefdialog-reflection</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>tablelayout</groupId>
 			<artifactId>TableLayout</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+		</dependency>
+		
+		<!-- modules -->
+        <dependency>
+            <groupId>com.globalscalingsoftware.prefdialog</groupId>
+            <artifactId>prefdialog-public</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.globalscalingsoftware.prefdialog</groupId>
+            <artifactId>prefdialog-reflection</artifactId>
+        </dependency>
 	</dependencies>
 
 </project>

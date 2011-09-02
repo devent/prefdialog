@@ -22,17 +22,19 @@ import java.lang.reflect.Field;
 
 import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.reflection.ReflectionToolbox;
+import com.globalscalingsoftware.prefdialog.swingutils.SharedSwingLoggerFactory;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 class ChildFieldHandler extends AbstractChildFieldHandler<ChildPanel> {
 
 	@Inject
-	ChildFieldHandler(ReflectionToolbox reflectionToolbox,
+	ChildFieldHandler(SharedSwingLoggerFactory loggerFactory,
+			ReflectionToolbox reflectionToolbox,
 			@Assisted("parentObject") Object parentObject,
 			@Assisted("value") Object value, @Assisted Field field) {
-		super(reflectionToolbox, parentObject, value, field, Child.class,
-				new ChildPanel());
+		super(loggerFactory, reflectionToolbox, parentObject, value, field,
+				Child.class, new ChildPanel());
 	}
 
 }

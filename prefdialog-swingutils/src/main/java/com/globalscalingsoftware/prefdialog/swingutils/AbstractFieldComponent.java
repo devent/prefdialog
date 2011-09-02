@@ -22,16 +22,16 @@ import java.awt.Component;
 
 import javax.swing.JComponent;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.globalscalingsoftware.prefdialog.FieldComponent;
 
+/**
+ * Implements a {@link FieldComponent} that captures a generic
+ * {@link JComponent} field.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ */
 public abstract class AbstractFieldComponent<FieldType extends JComponent>
 		implements FieldComponent {
-
-	private final Logger l = LoggerFactory
-			.getLogger(AbstractFieldComponent.class);
 
 	private final FieldType field;
 
@@ -39,18 +39,11 @@ public abstract class AbstractFieldComponent<FieldType extends JComponent>
 		this.field = field;
 	}
 
+	/**
+	 * Returns the {@link FieldType} that we are capturing.
+	 */
 	public FieldType getField() {
 		return field;
-	}
-
-	@Override
-	public void setName(String name) {
-		l.debug("Set name {} to field component {}.", name, field);
-		field.setName(name);
-	}
-
-	@Override
-	public void setWidth(double width) {
 	}
 
 	@Override
@@ -59,8 +52,16 @@ public abstract class AbstractFieldComponent<FieldType extends JComponent>
 	}
 
 	@Override
+	public void setName(String name) {
+		field.setName(name);
+	}
+
+	@Override
+	public void setWidth(double width) {
+	}
+
+	@Override
 	public void setEnabled(boolean enabled) {
-		l.debug("Set enabled {} to field component {}.", enabled, field);
 		field.setEnabled(enabled);
 	}
 

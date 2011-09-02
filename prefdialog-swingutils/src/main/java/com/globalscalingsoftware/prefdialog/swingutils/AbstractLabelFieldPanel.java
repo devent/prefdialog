@@ -24,6 +24,12 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+/**
+ * Adds to the {@link FieldType} a {@link JLabel} that displays the titel of the
+ * field.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ */
 public abstract class AbstractLabelFieldPanel<FieldType extends JComponent>
 		extends AbstractPanelField<FieldType> {
 
@@ -58,6 +64,9 @@ public abstract class AbstractLabelFieldPanel<FieldType extends JComponent>
 		label.setText(title);
 	}
 
+	/**
+	 * Sets the label text.
+	 */
 	public void setLabelText(String text) {
 		label.setText(text);
 	}
@@ -65,9 +74,13 @@ public abstract class AbstractLabelFieldPanel<FieldType extends JComponent>
 	@Override
 	public void setName(String name) {
 		super.setName(name);
-		label.setName("label-" + name);
+		name = "label-" + name;
+		label.setName(name);
 	}
 
+	/**
+	 * Shows or hides the title of the field.
+	 */
 	public void setShowTitle(boolean show) {
 		label.setVisible(show);
 	}

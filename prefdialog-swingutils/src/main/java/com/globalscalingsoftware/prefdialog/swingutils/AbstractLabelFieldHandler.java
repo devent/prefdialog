@@ -30,8 +30,8 @@ public class AbstractLabelFieldHandler<FieldComponentType extends AbstractLabelF
 			Object value, Field field,
 			Class<? extends Annotation> annotationClass,
 			FieldComponentType component) {
-		super(reflectionToolbox, parentObject, value, field, annotationClass,
-				component);
+		super(loggerFactory, reflectionToolbox, parentObject, value, field,
+				annotationClass, component);
 		this.log = loggerFactory.create(AbstractLabelFieldHandler.class);
 		setup();
 	}
@@ -46,7 +46,7 @@ public class AbstractLabelFieldHandler<FieldComponentType extends AbstractLabelF
 		Annotation a = getField().getAnnotation(annotationClass);
 		boolean show = reflectionToolbox.invokeMethodWithReturnType(
 				"showTitle", Boolean.class, a);
-		log.setShowTitle(getField(), show);
+		log.setShowTitle(show, this);
 		getComponent().setShowTitle(show);
 	}
 
@@ -56,7 +56,7 @@ public class AbstractLabelFieldHandler<FieldComponentType extends AbstractLabelF
 		String title = getValueFromAnnotationIn("title", String.class, field,
 				annotationClass);
 		title = defaultTitleIfNameNotSet(title, field);
-		log.setTitle(field, title);
+		log.setTitle(title, this);
 		setComponentTitle(title);
 	}
 

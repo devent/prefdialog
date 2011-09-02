@@ -26,8 +26,7 @@ import java.io.File;
 
 import com.globalscalingsoftware.prefdialog.swingutils.AbstractLabelFieldPanel;
 
-public class FileChooserPanel extends
-		AbstractLabelFieldPanel<UiFileChooserPanel> {
+class FileChooserPanel extends AbstractLabelFieldPanel<UiFileChooserPanel> {
 
 	public FileChooserPanel() {
 		super(new UiFileChooserPanel());
