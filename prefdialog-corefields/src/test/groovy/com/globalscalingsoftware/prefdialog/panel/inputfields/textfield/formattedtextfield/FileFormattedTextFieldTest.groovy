@@ -24,38 +24,18 @@ import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField
 import com.globalscalingsoftware.prefdialog.panel.inputfields.AbstractFieldFixture
 import com.globalscalingsoftware.prefdialog.panel.inputfields.api.FormattedTextFieldHandlerFactory
 
-class FormattedTextFieldTest extends AbstractFieldFixture {
+class FileFormattedTextFieldTest extends AbstractFieldFixture {
 
 	static factory = injector.getInstance(FormattedTextFieldHandlerFactory)
 
 	static class General {
 
 		@FormattedTextField
-		double fields = 4
+		File file = new File(".")
 	}
 
-	FormattedTextFieldTest() {
-		super(new General(), 'fields', factory)
-	}
-
-	@Test
-	void "enter number and apply input"() {
-		fixture.textBox('fields').deleteText()
-		fixture.textBox('fields').enterText '10'
-		inputField.applyInput parentObject
-
-		assert fixture.textBox('fields').text() == '10'
-		assert parentObject.fields == 10
-	}
-
-	@Test
-	void "enter number and restore input"() {
-		fixture.textBox('fields').deleteText()
-		fixture.textBox('fields').enterText '10'
-		inputField.restoreInput parentObject
-
-		assert fixture.textBox('fields').text() == '4'
-		assert parentObject.fields == 4
+	FileFormattedTextFieldTest() {
+		super(new General(), 'file', factory)
 	}
 
 	@Test
