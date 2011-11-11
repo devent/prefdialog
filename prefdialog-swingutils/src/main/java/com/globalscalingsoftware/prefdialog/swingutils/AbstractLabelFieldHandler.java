@@ -57,7 +57,6 @@ public class AbstractLabelFieldHandler<FieldComponentType extends AbstractLabelF
 		String title = valueFromAnnotationInField("title", String.class, field,
 				annotationClass);
 		title = defaultTitleIfNameNotSet(title, field);
-		log.setTitle(title, this);
 		setComponentTitle(title);
 	}
 

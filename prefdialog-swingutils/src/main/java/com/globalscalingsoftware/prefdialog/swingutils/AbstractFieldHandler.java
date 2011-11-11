@@ -82,11 +82,10 @@ public abstract class AbstractFieldHandler<FieldComponentType extends FieldCompo
 	}
 
 	/**
-	 * Sets the component title and value.
+	 * Sets the component value.
 	 */
 	@Override
 	public FieldHandler<FieldComponentType> setup() {
-		setComponentTitle(field.getName());
 		setComponentValue(value);
 		return this;
 	}
