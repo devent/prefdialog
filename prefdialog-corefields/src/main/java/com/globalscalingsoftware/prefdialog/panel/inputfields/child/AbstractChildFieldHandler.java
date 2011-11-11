@@ -23,39 +23,69 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import com.globalscalingsoftware.prefdialog.FieldComponent;
 import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.swingutils.AbstractDefaultFieldHandler;
+import com.google.inject.Inject;
 
 /**
- * Implements combined behavior for {@link Child} fields. Can contain other
- * {@link FieldHandler}.
+ * Implements combined behavior for {@link Child} fields. The child-field
+ * contains the fields from the value.
  * 
  * @param <ComponentType>
- *            the type of the underlying {@link ChildComponent}.
+ *            the type of the underlying {@link ChildComponent}. For example a
+ *            {@link JPanel}.
+ * 
  * @see AbstractDefaultFieldHandler
  * @see ChildComponent
  */
 public abstract class AbstractChildFieldHandler<ComponentType extends ChildComponent>
 		extends AbstractDefaultFieldHandler<ComponentType> {
 
-	private final Logger l = LoggerFactory
-			.getLogger(AbstractChildFieldHandler.class);
+	private LoggerFactory.Logger log;
 
 	private final List<FieldHandler<?>> fieldHandlers;
 
-	public AbstractChildFieldHandler(Object parentObject, Object value,
+	/**
+	 * Sets the parameter of the {@link FieldHandler}.
+	 * 
+	 * @param parentObject
+	 *            the {@link Object} where the field is defined.
+	 * 
+	 * @param value
+	 *            the value of the field.
+	 * 
+	 * @param field
+	 *            the {@link Field}.
+	 * 
+	 * @param annotationClass
+	 *            the {@link Annotation} {@link Class} of the field.
+	 * 
+	 * @param component
+	 *            the {@link FieldComponent} that is manages by this handler.
+	 */
+	protected AbstractChildFieldHandler(Object parentObject, Object value,
 			Field field, Class<? extends Annotation> annotationClass,
 			ComponentType component) {
 		super(parentObject, value, field, annotationClass, component);
 		this.fieldHandlers = new ArrayList<FieldHandler<?>>();
 	}
 
+	/**
+	 * Injects the child field {@link LoggerFactory}.
+	 */
+	@Inject
+	public void setChildFieldLoggerFactory(LoggerFactory loggerFactory) {
+		log = loggerFactory.create(AbstractChildFieldHandler.class);
+	}
+
+	/**
+	 * Apply the input of all fields.
+	 */
 	public void applyInput() {
 		applyInput(getComponentValue());
 	}
@@ -67,6 +97,9 @@ public abstract class AbstractChildFieldHandler<ComponentType extends ChildCompo
 		}
 	}
 
+	/**
+	 * Restore the input of all fields.
+	 */
 	public void restoreInput() {
 		restoreInput(getComponentValue());
 	}
@@ -80,9 +113,9 @@ public abstract class AbstractChildFieldHandler<ComponentType extends ChildCompo
 
 	@Override
 	public void addFieldHandler(FieldHandler<?> fieldHandler) {
-		l.debug("Add new field handler {}.", fieldHandler);
 		getComponent().addField(fieldHandler);
 		fieldHandlers.add(fieldHandler);
+		log.fieldHandlerAdded(fieldHandler, this);
 	}
 
 	@Override

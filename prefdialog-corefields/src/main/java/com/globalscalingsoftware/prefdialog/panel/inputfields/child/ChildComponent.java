@@ -21,8 +21,17 @@ package com.globalscalingsoftware.prefdialog.panel.inputfields.child;
 import com.globalscalingsoftware.prefdialog.FieldComponent;
 import com.globalscalingsoftware.prefdialog.FieldHandler;
 
+/**
+ * A child component is a {@link FieldComponent} that contains other fields.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.1
+ */
 public interface ChildComponent extends FieldComponent {
 
+	/**
+	 * Adds a new field {@link FieldHandler}.
+	 */
 	void addField(FieldHandler<?> inputField);
 
 }

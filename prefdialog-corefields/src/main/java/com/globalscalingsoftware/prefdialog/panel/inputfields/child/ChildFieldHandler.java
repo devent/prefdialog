@@ -24,12 +24,20 @@ import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
+/**
+ * A {@link AbstractChildFieldHandler} that contains the children in the
+ * {@link ChildPanel}.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.1
+ */
 class ChildFieldHandler extends AbstractChildFieldHandler<ChildPanel> {
 
 	@Inject
-	ChildFieldHandler(@Assisted("parentObject") Object parentObject,
+	ChildFieldHandler(ChildPanel childPanel,
+			@Assisted("parentObject") Object parentObject,
 			@Assisted("value") Object value, @Assisted Field field) {
-		super(parentObject, value, field, Child.class, new ChildPanel());
+		super(parentObject, value, field, Child.class, childPanel);
 	}
 
 }

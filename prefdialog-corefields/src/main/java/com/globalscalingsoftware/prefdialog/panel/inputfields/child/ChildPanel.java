@@ -23,23 +23,34 @@ import info.clearthought.layout.TableLayout;
 
 import java.awt.Font;
 
+import javax.swing.JPanel;
+
 import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.swingutils.AbstractFieldComponent;
 
-public class ChildPanel extends AbstractFieldComponent<UiChildPanel> implements
+/**
+ * A {@link JPanel} that contains all fields in rows.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.1
+ */
+class ChildPanel extends AbstractFieldComponent<UiChildPanel> implements
 		ChildComponent {
 
 	private final UiChildPanel panel;
 
 	private Object value;
 
-	public ChildPanel() {
+	ChildPanel() {
 		super(new UiChildPanel());
 		this.panel = getField();
-		setupPanel();
+		setup();
 	}
 
-	private void setupPanel() {
+	/**
+	 * Sets the font for the child label.
+	 */
+	private void setup() {
 		setBoldFontForChildLabel();
 	}
 
