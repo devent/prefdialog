@@ -44,6 +44,12 @@ import com.google.inject.Injector;
 import com.google.inject.Provides;
 import com.google.inject.name.Named;
 
+/**
+ * Binds the core fields classes.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.1
+ */
 public class PrefdialogCoreFieldsModule extends AbstractModule {
 
 	@Override
