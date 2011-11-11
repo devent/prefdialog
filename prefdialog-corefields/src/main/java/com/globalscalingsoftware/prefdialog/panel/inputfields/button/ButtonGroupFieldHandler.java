@@ -46,10 +46,10 @@ class ButtonGroupFieldHandler extends
 	private Logger log;
 
 	@Inject
-	ButtonGroupFieldHandler(@Assisted("parentObject") Object parentObject,
+	ButtonGroupFieldHandler(ButtonGroupPanel buttonGroupPanel,
+			@Assisted("parentObject") Object parentObject,
 			@Assisted("value") Object value, @Assisted Field field) {
-		super(parentObject, value, field, ButtonGroup.class,
-				new ButtonGroupPanel());
+		super(parentObject, value, field, ButtonGroup.class, buttonGroupPanel);
 	}
 
 	/**

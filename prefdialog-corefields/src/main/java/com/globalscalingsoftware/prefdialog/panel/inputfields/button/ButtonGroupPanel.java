@@ -31,6 +31,12 @@ import javax.swing.JPanel;
 import com.globalscalingsoftware.prefdialog.annotations.HorizontalPosition;
 import com.globalscalingsoftware.prefdialog.swingutils.AbstractLabelFieldPanel;
 
+/**
+ * Creates a new panel that aligns the buttons in a row.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.0
+ */
 class ButtonGroupPanel extends AbstractLabelFieldPanel<JPanel> {
 
 	private TableLayout layout;
@@ -41,7 +47,10 @@ class ButtonGroupPanel extends AbstractLabelFieldPanel<JPanel> {
 
 	private final List<JButton> buttons;
 
-	public ButtonGroupPanel() {
+	/**
+	 * Create the {@link JPanel} and sets a one-row {@link TableLayout}.
+	 */
+	ButtonGroupPanel() {
 		super(new JPanel());
 		this.name = "";
 		this.buttons = new ArrayList<JButton>();
