@@ -26,6 +26,11 @@ import java.awt.Component;
 public interface FieldHandler<FieldComponentType extends FieldComponent> {
 
 	/**
+	 * Sets fields of the component.
+	 */
+	FieldHandler<FieldComponentType> setup();
+
+	/**
 	 * Apply the user input.
 	 * 
 	 * @param parent
