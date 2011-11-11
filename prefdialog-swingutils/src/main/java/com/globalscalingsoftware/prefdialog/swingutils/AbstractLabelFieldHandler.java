@@ -4,8 +4,8 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
 import com.globalscalingsoftware.prefdialog.FieldComponent;
-import com.globalscalingsoftware.prefdialog.reflection.ReflectionToolbox;
-import com.globalscalingsoftware.prefdialog.swingutils.SharedSwingLoggerFactory.SharedSwingLogger;
+import com.globalscalingsoftware.prefdialog.swingutils.LoggerFactory.Logger;
+import com.google.inject.Inject;
 
 /**
  * Adds a label on top of the {@link FieldComponent} and read additional
@@ -23,28 +23,28 @@ import com.globalscalingsoftware.prefdialog.swingutils.SharedSwingLoggerFactory.
 public class AbstractLabelFieldHandler<FieldComponentType extends AbstractLabelFieldPanel<?>>
 		extends AbstractDefaultFieldHandler<FieldComponentType> {
 
-	private final SharedSwingLogger log;
+	private Logger log;
 
-	public AbstractLabelFieldHandler(SharedSwingLoggerFactory loggerFactory,
-			ReflectionToolbox reflectionToolbox, Object parentObject,
-			Object value, Field field,
-			Class<? extends Annotation> annotationClass,
+	public AbstractLabelFieldHandler(Object parentObject, Object value,
+			Field field, Class<? extends Annotation> annotationClass,
 			FieldComponentType component) {
-		super(loggerFactory, reflectionToolbox, parentObject, value, field,
-				annotationClass, component);
-		this.log = loggerFactory.create(AbstractLabelFieldHandler.class);
-		setup();
+		super(parentObject, value, field, annotationClass, component);
 	}
 
-	private void setup() {
+	/**
+	 * Sets if the title is visible and the title text.
+	 */
+	@Override
+	public AbstractFieldHandler<FieldComponentType> setup() {
 		setupTitle();
 		setupShowTitle();
+		return super.setup();
 	}
 
 	private void setupShowTitle() {
 		Class<? extends Annotation> annotationClass = getAnnotationClass();
 		Annotation a = getField().getAnnotation(annotationClass);
-		boolean show = reflectionToolbox.invokeMethodWithReturnType(
+		boolean show = getReflectionToolbox().invokeMethodWithReturnType(
 				"showTitle", Boolean.class, a);
 		log.setShowTitle(show, this);
 		getComponent().setShowTitle(show);
@@ -53,7 +53,7 @@ public class AbstractLabelFieldHandler<FieldComponentType extends AbstractLabelF
 	private void setupTitle() {
 		Class<? extends Annotation> annotationClass = getAnnotationClass();
 		Field field = getField();
-		String title = getValueFromAnnotationIn("title", String.class, field,
+		String title = valueFromAnnotationInField("title", String.class, field,
 				annotationClass);
 		title = defaultTitleIfNameNotSet(title, field);
 		log.setTitle(title, this);
@@ -65,6 +65,16 @@ public class AbstractLabelFieldHandler<FieldComponentType extends AbstractLabelF
 			title = field.getName();
 		}
 		return title;
+	}
+
+	/**
+	 * Injects the {@link LoggerFactory}.
+	 */
+	@Override
+	@Inject
+	public void setLoggerFactory(LoggerFactory loggerFactory) {
+		log = loggerFactory.create(AbstractLabelFieldHandler.class);
+		super.setLoggerFactory(loggerFactory);
 	}
 
 }

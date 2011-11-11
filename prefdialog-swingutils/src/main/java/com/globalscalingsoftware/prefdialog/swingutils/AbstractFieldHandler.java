@@ -26,7 +26,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 
 import com.globalscalingsoftware.prefdialog.FieldComponent;
 import com.globalscalingsoftware.prefdialog.FieldHandler;
-import com.globalscalingsoftware.prefdialog.swingutils.SharedSwingLoggerFactory.SharedSwingLogger;
+import com.google.inject.Inject;
 
 /**
  * Adds attributes to the getter methods in {@link FieldHandler} and delegates
@@ -42,46 +42,93 @@ public abstract class AbstractFieldHandler<FieldComponentType extends FieldCompo
 		implements FieldHandler<FieldComponentType> {
 
 	private final Object parentObject;
-	private final Object value;
-	private final Field field;
-	private final Class<? extends Annotation> annotationClass;
-	private final FieldComponentType component;
-	private final SharedSwingLogger log;
 
-	public AbstractFieldHandler(SharedSwingLoggerFactory loggerFactory,
-			Object parentObject, Object value, Field field,
-			Class<? extends Annotation> annotationClass,
+	private final Object value;
+
+	private final Field field;
+
+	private final Class<? extends Annotation> annotationClass;
+
+	private final FieldComponentType component;
+
+	private LoggerFactory.Logger log;
+
+	/**
+	 * Sets the parameter of the {@link FieldHandler}.
+	 * 
+	 * @param parentObject
+	 *            the {@link Object} where the field is defined.
+	 * 
+	 * @param value
+	 *            the value of the field.
+	 * 
+	 * @param field
+	 *            the {@link Field}.
+	 * 
+	 * @param annotationClass
+	 *            the {@link Annotation} {@link Class} of the field.
+	 * 
+	 * @param component
+	 *            the {@link FieldComponent} that is manages by this handler.
+	 */
+	protected AbstractFieldHandler(Object parentObject, Object value,
+			Field field, Class<? extends Annotation> annotationClass,
 			FieldComponentType component) {
-		this.log = loggerFactory.create(AbstractFieldHandler.class);
 		this.parentObject = parentObject;
 		this.value = value;
 		this.field = field;
 		this.annotationClass = annotationClass;
 		this.component = component;
-		setup();
 	}
 
-	private void setup() {
+	/**
+	 * Sets the component title and value.
+	 */
+	public AbstractFieldHandler<FieldComponentType> setup() {
 		setComponentTitle(field.getName());
 		setComponentValue(value);
+		return this;
 	}
 
+	/**
+	 * Injects the {@link LoggerFactory}.
+	 */
+	@Inject
+	public void setLoggerFactory(LoggerFactory loggerFactory) {
+		log = loggerFactory.create(AbstractFieldHandler.class);
+	}
+
+	/**
+	 * Returns the {@link FieldComponent} that is manages by this handler.
+	 */
 	protected FieldComponentType getComponent() {
 		return component;
 	}
 
+	/**
+	 * Returns the {@link Annotation} {@link Class} of the field.
+	 */
 	protected Class<? extends Annotation> getAnnotationClass() {
 		return annotationClass;
 	}
 
+	/**
+	 * Returns the {@link Field}.
+	 */
 	protected Field getField() {
 		return field;
 	}
 
+	/**
+	 * Returns the {@link Object} where the field is defined.
+	 */
 	protected Object getParentObject() {
 		return parentObject;
 	}
 
+	/**
+	 * Returns the value of the field.
+	 */
 	protected Object getValue() {
 		return value;
 	}

@@ -22,8 +22,10 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
 import com.globalscalingsoftware.prefdialog.FieldComponent;
+import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.reflection.ReflectionToolbox;
-import com.globalscalingsoftware.prefdialog.swingutils.SharedSwingLoggerFactory.SharedSwingLogger;
+import com.globalscalingsoftware.prefdialog.swingutils.LoggerFactory.Logger;
+import com.google.inject.Inject;
 
 /**
  * Reads the common annotation attributes from the field and sets them to the
@@ -44,34 +46,51 @@ import com.globalscalingsoftware.prefdialog.swingutils.SharedSwingLoggerFactory.
 public abstract class AbstractDefaultFieldHandler<FieldComponentType extends FieldComponent>
 		extends AbstractFieldHandler<FieldComponentType> {
 
-	protected final ReflectionToolbox reflectionToolbox;
+	private Logger log;
 
-	private final SharedSwingLogger log;
+	private ReflectionToolbox reflectionToolbox;
 
-	public AbstractDefaultFieldHandler(SharedSwingLoggerFactory loggerFactory,
-			ReflectionToolbox reflectionToolbox, Object parentObject,
-			Object value, Field field,
-			Class<? extends Annotation> annotationClass,
+	/**
+	 * Sets the parameter of the {@link FieldHandler}.
+	 * 
+	 * @param parentObject
+	 *            the {@link Object} where the field is defined.
+	 * 
+	 * @param value
+	 *            the value of the field.
+	 * 
+	 * @param field
+	 *            the {@link Field}.
+	 * 
+	 * @param annotationClass
+	 *            the {@link Annotation} {@link Class} of the field.
+	 * 
+	 * @param component
+	 *            the {@link FieldComponent} that is manages by this handler.
+	 */
+	protected AbstractDefaultFieldHandler(Object parentObject, Object value,
+			Field field, Class<? extends Annotation> annotationClass,
 			FieldComponentType component) {
-		super(loggerFactory, parentObject, value, field, annotationClass,
-				component);
-		this.log = loggerFactory.create(AbstractDefaultFieldHandler.class);
-		this.reflectionToolbox = reflectionToolbox;
-		setup();
+		super(parentObject, value, field, annotationClass, component);
 	}
 
-	private void setup() {
+	/**
+	 * Sets the component width, name and read-only.
+	 */
+	@Override
+	public AbstractFieldHandler<FieldComponentType> setup() {
 		Field field = getField();
 		Class<? extends Annotation> annotationClass = getAnnotationClass();
 		setupComponentWidth(field, annotationClass);
 		setupComponentName(field);
 		setupComponentReadOnly(field, annotationClass);
+		return super.setup();
 	}
 
 	private void setupComponentReadOnly(Field field,
 			Class<? extends Annotation> annotationClass) {
-		boolean readonly = getValueFromAnnotationIn("readonly", Boolean.class,
-				field, annotationClass);
+		boolean readonly = valueFromAnnotationInField("readonly",
+				Boolean.class, field, annotationClass);
 		setComponentEnabled(!readonly);
 	}
 
@@ -82,16 +101,40 @@ public abstract class AbstractDefaultFieldHandler<FieldComponentType extends Fie
 
 	private void setupComponentWidth(Field field,
 			Class<? extends Annotation> annotationClass) {
-		double width = getValueFromAnnotationIn("width", Double.class, field,
+		double width = valueFromAnnotationInField("width", Double.class, field,
 				annotationClass);
 		setComponentWidth(width);
 	}
 
-	protected <T> T getValueFromAnnotationIn(String name, Class<T> returnType,
-			Field field, Class<? extends Annotation> annotationClass) {
+	protected <T> T valueFromAnnotationInField(String name,
+			Class<T> returnType, Field field,
+			Class<? extends Annotation> annotationClass) {
 		Annotation a = field.getAnnotation(annotationClass);
 		return reflectionToolbox
 				.invokeMethodWithReturnType(name, returnType, a);
+	}
+
+	/**
+	 * Injects the {@link LoggerFactory}.
+	 */
+	@Override
+	@Inject
+	public void setLoggerFactory(LoggerFactory loggerFactory) {
+		log = loggerFactory.create(AbstractDefaultFieldHandler.class);
+		super.setLoggerFactory(loggerFactory);
+	}
+
+	/**
+	 * Injects the {@link ReflectionToolbox} that is used to access and modify
+	 * fields.
+	 */
+	@Inject
+	public void setReflectionToolbox(ReflectionToolbox reflectionToolbox) {
+		this.reflectionToolbox = reflectionToolbox;
+	}
+
+	protected ReflectionToolbox getReflectionToolbox() {
+		return reflectionToolbox;
 	}
 
 	@Override
