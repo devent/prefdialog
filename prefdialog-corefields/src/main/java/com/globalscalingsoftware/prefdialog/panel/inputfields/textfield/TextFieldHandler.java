@@ -25,20 +25,16 @@ import javax.swing.JTextField;
 import com.globalscalingsoftware.prefdialog.annotations.TextField;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.textfield.shared.AbstractTextFieldHandler;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.textfield.shared.ValidatingTextField;
-import com.globalscalingsoftware.prefdialog.reflection.ReflectionToolbox;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 class TextFieldHandler extends AbstractTextFieldHandler {
 
 	@Inject
-	TextFieldHandler(LoggerFactory loggerFactory,
-			ReflectionToolbox reflectionToolbox,
-			@Assisted("parentObject") Object parentObject,
+	TextFieldHandler(@Assisted("parentObject") Object parentObject,
 			@Assisted("value") Object value, @Assisted Field field) {
-		super(loggerFactory, reflectionToolbox, parentObject, value, field,
-				TextField.class, new ValidatingTextField<JTextField>(
-						new JTextField()));
+		super(parentObject, value, field, TextField.class,
+				new ValidatingTextField<JTextField>(new JTextField()));
 	}
 
 }

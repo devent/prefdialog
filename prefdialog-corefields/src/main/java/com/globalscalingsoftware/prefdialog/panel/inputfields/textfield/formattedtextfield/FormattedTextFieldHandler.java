@@ -27,20 +27,16 @@ import javax.swing.JFormattedTextField;
 import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.textfield.ValidatorTexts;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.textfield.shared.AbstractTextFieldHandler;
-import com.globalscalingsoftware.prefdialog.reflection.ReflectionToolbox;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 class FormattedTextFieldHandler extends AbstractTextFieldHandler {
 
 	@Inject
-	FormattedTextFieldHandler(LoggerFactory loggerFactory,
-			ReflectionToolbox reflectionToolbox,
-			@Assisted("parentObject") Object parentObject,
+	FormattedTextFieldHandler(@Assisted("parentObject") Object parentObject,
 			@Assisted("value") Object value, @Assisted Field field) {
-		super(loggerFactory, reflectionToolbox, parentObject, value, field,
-				FormattedTextField.class, new ValidatingFormattedTextField(
-						create(field)));
+		super(parentObject, value, field, FormattedTextField.class,
+				new ValidatingFormattedTextField(create(field)));
 	}
 
 	private static JFormattedTextField create(Field field) {

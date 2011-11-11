@@ -20,6 +20,7 @@ package com.globalscalingsoftware.prefdialog.panel.inputfields.textfield;
 
 import static java.lang.String.format;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -64,6 +65,7 @@ public class ValidatorTexts {
 				format("Must be a float point number from %e to %e",
 						Double.MIN_VALUE, Double.MAX_VALUE));
 		DEFAULT_CLASS_TYPE_TEXTS.put(String.class, "Must be a string");
+		DEFAULT_CLASS_TYPE_TEXTS.put(File.class, "Must be a valid file name");
 	}
 
 	public static String getDefaultValidatorText(Class<?> valueClass) {
