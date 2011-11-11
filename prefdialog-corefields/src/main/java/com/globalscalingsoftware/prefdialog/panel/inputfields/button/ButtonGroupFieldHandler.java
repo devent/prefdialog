@@ -21,40 +21,60 @@ package com.globalscalingsoftware.prefdialog.panel.inputfields.button;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
+import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.annotations.ButtonGroup;
 import com.globalscalingsoftware.prefdialog.annotations.HorizontalPosition;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.button.LoggerFactory.Logger;
-import com.globalscalingsoftware.prefdialog.reflection.ReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.swingutils.AbstractLabelFieldHandler;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
+/**
+ * * Sets the {@link ButtonGroupPanel} as the manages component.
+ * 
+ * The additional attributes are:
+ * <ul>
+ * <li>horizontalPosition</li>
+ * </ul>
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.1
+ */
 class ButtonGroupFieldHandler extends
 		AbstractLabelFieldHandler<ButtonGroupPanel> {
 
-	private final Logger log;
+	private Logger log;
 
 	@Inject
-	ButtonGroupFieldHandler(LoggerFactory loggerFactory,
-			ReflectionToolbox reflectionToolbox,
-			@Assisted("parentObject") Object parentObject,
+	ButtonGroupFieldHandler(@Assisted("parentObject") Object parentObject,
 			@Assisted("value") Object value, @Assisted Field field) {
-		super(loggerFactory, reflectionToolbox, parentObject, value, field,
-				ButtonGroup.class, new ButtonGroupPanel());
-		this.log = loggerFactory.create(ButtonGroupFieldHandler.class);
-		setup();
+		super(parentObject, value, field, ButtonGroup.class,
+				new ButtonGroupPanel());
 	}
 
-	private void setup() {
+	/**
+	 * Sets the horizontal position of the buttons.
+	 */
+	@Override
+	public FieldHandler<ButtonGroupPanel> setup() {
 		setupHorizontalPosition();
+		return super.setup();
 	}
 
 	private void setupHorizontalPosition() {
 		Annotation a = getField().getAnnotation(ButtonGroup.class);
-		HorizontalPosition position = reflectionToolbox
+		HorizontalPosition position = getReflectionToolbox()
 				.invokeMethodWithReturnType("horizontalPosition",
 						HorizontalPosition.class, a);
-		log.setHorizontalPosition(getField(), position);
 		getComponent().setHorizontalPosition(position);
+		log.setHorizontalPosition(position, this);
+	}
+
+	/**
+	 * Injects the button field {@link LoggerFactory}.
+	 */
+	@Inject
+	public void setButtonFieldLoggerFactory(LoggerFactory loggerFactory) {
+		log = loggerFactory.create(ButtonGroupFieldHandler.class);
 	}
 }

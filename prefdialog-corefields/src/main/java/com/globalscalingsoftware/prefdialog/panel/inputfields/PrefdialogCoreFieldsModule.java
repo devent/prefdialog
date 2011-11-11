@@ -38,6 +38,7 @@ import com.globalscalingsoftware.prefdialog.panel.inputfields.slider.SliderModul
 import com.globalscalingsoftware.prefdialog.panel.inputfields.textfield.TextFieldModule;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.textfield.formattedtextfield.FormattedTextFieldModule;
 import com.globalscalingsoftware.prefdialog.reflection.ReflectionModule;
+import com.globalscalingsoftware.prefdialog.swingutils.SwingUtilsModule;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -54,6 +55,7 @@ public class PrefdialogCoreFieldsModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
+		install(new SwingUtilsModule());
 		install(new ButtonModule());
 		install(new CheckboxModule());
 		install(new ComboBoxModule());

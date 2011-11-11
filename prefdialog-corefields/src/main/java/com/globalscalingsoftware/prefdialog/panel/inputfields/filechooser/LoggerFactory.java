@@ -2,16 +2,15 @@ package com.globalscalingsoftware.prefdialog.panel.inputfields.filechooser;
 
 import java.lang.reflect.Field;
 
-import com.globalscalingsoftware.prefdialog.swingutils.LoggerFactory;
+import com.globalscalingsoftware.prefdialog.swingutils.AbstractSwingLogger;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
-interface LoggerFactory extends LoggerFactory {
+interface LoggerFactory {
 
-	@Override
 	Logger create(@Assisted Class<?> clazz);
 
-	class Logger extends Logger {
+	class Logger extends AbstractSwingLogger {
 
 		@Inject
 		Logger(@Assisted Class<?> contextClass) {

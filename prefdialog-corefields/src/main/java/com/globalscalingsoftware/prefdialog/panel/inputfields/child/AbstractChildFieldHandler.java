@@ -30,9 +30,7 @@ import org.slf4j.LoggerFactory;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.annotations.Child;
-import com.globalscalingsoftware.prefdialog.reflection.ReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.swingutils.AbstractDefaultFieldHandler;
-import com.globalscalingsoftware.prefdialog.swingutils.LoggerFactory;
 
 /**
  * Implements combined behavior for {@link Child} fields. Can contain other
@@ -51,12 +49,10 @@ public abstract class AbstractChildFieldHandler<ComponentType extends ChildCompo
 
 	private final List<FieldHandler<?>> fieldHandlers;
 
-	public AbstractChildFieldHandler(LoggerFactory loggerFactory,
-			ReflectionToolbox reflectionToolbox, Object parentObject,
-			Object value, Field field,
-			Class<? extends Annotation> annotationClass, ComponentType component) {
-		super(loggerFactory, reflectionToolbox, parentObject, value, field,
-				annotationClass, component);
+	public AbstractChildFieldHandler(Object parentObject, Object value,
+			Field field, Class<? extends Annotation> annotationClass,
+			ComponentType component) {
+		super(parentObject, value, field, annotationClass, component);
 		this.fieldHandlers = new ArrayList<FieldHandler<?>>();
 	}
 

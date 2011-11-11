@@ -25,16 +25,21 @@ import java.awt.BorderLayout
 
 import javax.swing.JFrame
 
+import org.apache.commons.lang.builder.ToStringBuilder
+import org.apache.commons.lang.builder.ToStringStyle
 import org.fest.swing.edt.GuiActionRunner
 import org.fest.swing.edt.GuiQuery
 import org.fest.swing.fixture.FrameFixture
 
+import com.globalscalingsoftware.prefdialog.FieldHandlerFactory
 import com.google.inject.Guice
 import com.google.inject.Injector
 
 abstract class FieldFixtureHandler {
 
 	public static Injector injector = Guice.createInjector(new PrefdialogCoreFieldsModule())
+
+	static toStringStyle = ToStringBuilder.setDefaultStyle(ToStringStyle.SHORT_PREFIX_STYLE)
 
 	def parentObject
 
@@ -48,11 +53,11 @@ abstract class FieldFixtureHandler {
 
 	JFrame frame
 
-	def createFieldFixture(def parentObject, def fieldName, def fieldFactory) {
+	def createFieldFixture(def parentObject, def fieldName, FieldHandlerFactory fieldFactory) {
 		this.parentObject = parentObject
 		this.value = parentObject."$fieldName"
 		this.field = parentObject.class.declaredFields.find { it.name == fieldName }
-		this.inputField = fieldFactory.create(parentObject, value, field)
+		this.inputField = fieldFactory.create(parentObject, value, field).setup()
 		this.frame = createPanelFrame()
 	}
 
