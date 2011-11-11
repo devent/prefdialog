@@ -1,7 +1,5 @@
 package com.globalscalingsoftware.prefdialog.swingutils;
 
-import java.lang.reflect.Field;
-
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
@@ -31,53 +29,53 @@ interface LoggerFactory {
 			super(contextClass);
 		}
 
-		void setShowTitle(Field field, boolean show) {
-			log.debug("Set show title to {} for the field {}.", show, field);
+		void setWidth(double width, Object handler) {
+			log.debug("Set width to {} for the handler {}.", width, handler);
 		}
 
-		void setTitle(String title, Object field) {
-			log.debug("Set the title to ``{}'' for the field {}.", title, field);
+		void setName(String name, Object handler) {
+			log.debug("Set name to ``{}'' for the handler {}.", name, handler);
 		}
 
-		void setWidth(double width, Object field) {
-			log.debug("Set width to {} for the field {}.", width, field);
+		void setReadOnly(boolean readonly, Object handler) {
+			log.debug("Set read only to {} for the handler {}.", readonly,
+					handler);
 		}
 
-		void setName(String name, Object field) {
-			log.debug("Set name to ``{}'' for the field {}.", name, field);
+		void setEnabled(boolean enabled, Object handler) {
+			log.debug("Set enabled to {} for the handler {}.", enabled, handler);
 		}
 
-		void setReadOnly(boolean readonly, Object field) {
-			log.debug("Set read only to {} for the field {}.", readonly, field);
+		void setValue(Object value, Object handler) {
+			log.debug("Set value to ``{}'' for the handler {}.", value, handler);
 		}
 
-		void setEnabled(boolean enabled, Object field) {
-			log.debug("Set enabled to {} for the field {}.", enabled, field);
+		void setToolTipText(String text, Object handler) {
+			log.debug("Set tool-tip text to ``{}'' for the handler {}.", text,
+					handler);
 		}
 
-		void setValue(Object value, Object field) {
-			log.debug("Set value to ``{}'' for the field {}.", value, field);
+		void setShowToolTip(boolean show, Object handler) {
+			log.debug("Set show tool-tip to {} for the handler {}.", show,
+					handler);
 		}
 
-		void setToolTipText(String text, Object field) {
-			log.debug("Set tool-tip text to ``{}'' for the field {}.", text,
-					field);
+		void setShowTitle(boolean show, Object handler) {
+			log.debug("Set show title to {} for the handler {}.", show, handler);
 		}
 
-		void setShowToolTip(boolean show, Object field) {
-			log.debug("Set show tool-tip to {} for the field {}.", show, field);
+		void setTitle(String title, Object handler) {
+			log.debug("Set the title to ``{}'' for the handler {}.", title,
+					handler);
 		}
 
-		void setShowTitle(boolean show, Object field) {
-			log.debug("Set show title to {} for the field {}.", show, field);
+		void applyInput(Object value, Object handler) {
+			log.debug("Apply the input ``{}'' for the handler.", value, handler);
 		}
 
-		void applyInput(Object value, Object field) {
-			log.debug("Apply the input ``{}'' for the field.", value, field);
-		}
-
-		void restoreInput(Object value, Object field) {
-			log.debug("Restore the input ``{}'' for the field.", value, field);
+		void restoreInput(Object value, Object handler) {
+			log.debug("Restore the input ``{}'' for the handler.", value,
+					handler);
 		}
 
 	}

@@ -78,7 +78,7 @@ public abstract class AbstractDefaultFieldHandler<FieldComponentType extends Fie
 	 * Sets the component width, name and read-only.
 	 */
 	@Override
-	public AbstractFieldHandler<FieldComponentType> setup() {
+	public FieldHandler<FieldComponentType> setup() {
 		Field field = getField();
 		Class<? extends Annotation> annotationClass = getAnnotationClass();
 		setupComponentWidth(field, annotationClass);

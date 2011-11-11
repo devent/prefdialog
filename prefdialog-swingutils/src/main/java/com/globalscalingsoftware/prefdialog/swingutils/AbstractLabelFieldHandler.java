@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
 import com.globalscalingsoftware.prefdialog.FieldComponent;
+import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.swingutils.LoggerFactory.Logger;
 import com.google.inject.Inject;
 
@@ -35,7 +36,7 @@ public class AbstractLabelFieldHandler<FieldComponentType extends AbstractLabelF
 	 * Sets if the title is visible and the title text.
 	 */
 	@Override
-	public AbstractFieldHandler<FieldComponentType> setup() {
+	public FieldHandler<FieldComponentType> setup() {
 		setupTitle();
 		setupShowTitle();
 		return super.setup();
