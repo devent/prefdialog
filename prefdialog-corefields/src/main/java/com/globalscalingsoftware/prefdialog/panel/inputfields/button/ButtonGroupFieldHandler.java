@@ -30,7 +30,7 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 /**
- * * Sets the {@link ButtonGroupPanel} as the manages component.
+ * Sets the {@link ButtonGroupPanel} as the managed component.
  * 
  * The additional attributes are:
  * <ul>
