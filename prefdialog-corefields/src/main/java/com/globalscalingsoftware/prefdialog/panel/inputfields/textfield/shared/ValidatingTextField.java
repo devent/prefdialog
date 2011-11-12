@@ -33,6 +33,13 @@ import javax.swing.event.EventListenerList;
 
 import com.globalscalingsoftware.prefdialog.validators.Validator;
 
+/**
+ * Will test the input of a {@link JTextField} and mark the field and show a
+ * tool-tip text if the input is not valid.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.1
+ */
 public class ValidatingTextField<TextFieldType extends JTextField> {
 
 	private final EventListenerList listenerList;
@@ -48,6 +55,9 @@ public class ValidatingTextField<TextFieldType extends JTextField> {
 
 	private final TextFieldType field;
 
+	/**
+	 * Sets the {@link JTextField} for with the input will be validated.
+	 */
 	public ValidatingTextField(TextFieldType field) {
 		this.field = field;
 		this.listenerList = new EventListenerList();
@@ -91,7 +101,7 @@ public class ValidatingTextField<TextFieldType extends JTextField> {
 	}
 
 	private void validateInput() {
-		if (isNotValidInput()) {
+		if (!isValidInput()) {
 			highlighField();
 			fireValidChanged(false);
 		} else {
@@ -101,9 +111,9 @@ public class ValidatingTextField<TextFieldType extends JTextField> {
 	}
 
 	private void restoreValueIfInvalid() {
-		if (isNotValidInput()) {
+		if (!isValidInput()) {
 			setValue(value);
-			if (isNotValidInput()) {
+			if (!isValidInput()) {
 				highlighField();
 				fireValidChanged(false);
 			} else {
@@ -127,49 +137,70 @@ public class ValidatingTextField<TextFieldType extends JTextField> {
 		}
 	}
 
+	/**
+	 * Sets the {@link Validator} for this field.
+	 */
 	public void setValidator(Validator<?> validator) {
 		this.validator = validator;
 	}
 
+	/**
+	 * Returns the {@link JTextField} that is tested.
+	 */
 	public TextFieldType getField() {
 		return field;
 	}
 
+	/**
+	 * Adds the {@link ValidListener} that is called if the input is tested.
+	 */
 	public void addValidListener(ValidListener l) {
 		listenerList.add(ValidListener.class, l);
 		validateInput();
 	}
 
-	private boolean isNotValidInput() {
+	private boolean isValidInput() {
 		try {
 			commitEdit();
 		} catch (ParseException e) {
-			return true;
+			return false;
 		}
 
-		boolean valueInvalid = isValueInvalid();
-		boolean b = !isEditValid() || valueInvalid;
+		boolean valueValid = isValueValid();
+		boolean b = isEditValid() && valueValid;
 		return b;
 	}
 
+	/**
+	 * Commits the entered text for validation.
+	 */
 	protected void commitEdit() throws ParseException {
 	}
 
 	@SuppressWarnings("unchecked")
-	private boolean isValueInvalid() {
-		return validator == null ? false : !validator.isValid(getValue());
+	private boolean isValueValid() {
+		return validator == null ? true : validator.isValid(getValue());
 	}
 
+	/**
+	 * Test if the entered text is valid.
+	 */
 	protected boolean isEditValid() {
 		return true;
 	}
 
+	/**
+	 * Sets the value to the field.
+	 */
 	protected void setValue(Object value) {
 		this.value = value;
 		String string = value == null ? "" : value.toString();
 		field.setText(string);
 	}
 
+	/**
+	 * Returns the value of the field.
+	 */
 	protected Object getValue() {
 		return field.getText();
 	}

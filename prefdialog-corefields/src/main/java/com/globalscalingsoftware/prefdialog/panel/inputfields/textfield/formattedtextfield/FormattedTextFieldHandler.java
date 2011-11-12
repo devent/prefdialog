@@ -19,49 +19,56 @@
 package com.globalscalingsoftware.prefdialog.panel.inputfields.textfield.formattedtextfield;
 
 import java.lang.reflect.Field;
-import java.text.DecimalFormat;
-import java.text.Format;
+import java.util.Map;
 
 import javax.swing.JFormattedTextField;
+import javax.swing.JFormattedTextField.AbstractFormatterFactory;
 
 import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField;
-import com.globalscalingsoftware.prefdialog.panel.inputfields.textfield.ValidatorTexts;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.textfield.shared.AbstractTextFieldHandler;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
+import com.google.inject.name.Named;
 
+/**
+ * Sets the {@link ValidatingFormattedTextField} as the managed component.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.1
+ */
 class FormattedTextFieldHandler extends AbstractTextFieldHandler {
 
+	private final Map<Class<?>, String> validatorTexts;
+
 	@Inject
-	FormattedTextFieldHandler(@Assisted("parentObject") Object parentObject,
+	FormattedTextFieldHandler(
+			@Named("ValidatorTexts") Map<Class<?>, String> validatorTexts,
+			@Named("ValidatorFormats") Map<Class<?>, AbstractFormatterFactory> validatorFormats,
+			@Assisted("parentObject") Object parentObject,
 			@Assisted("value") Object value, @Assisted Field field) {
 		super(parentObject, value, field, FormattedTextField.class,
-				new ValidatingFormattedTextField(create(field)));
+				new ValidatingFormattedTextField(createTextField(field,
+						validatorFormats)));
+		this.validatorTexts = validatorTexts;
 	}
 
-	private static JFormattedTextField create(Field field) {
-		if (field.getType() == double.class || field.getType() == Double.class) {
-			Format formatter = new DecimalFormat("#.########################");
-			return new JFormattedTextField(formatter);
-		}
-		return new JFormattedTextField();
+	private static JFormattedTextField createTextField(Field field,
+			Map<Class<?>, AbstractFormatterFactory> validatorFormats) {
+		return new JFormattedTextField(validatorFormats.get(field.getType()));
 	}
 
 	@Override
 	protected String getValidatorText() {
 		String text = super.getValidatorText();
-		if (isTextEmpty(text)) {
-			text = getDefaultValidatorText();
-		}
-
-		return text;
-	}
-
-	private String getDefaultValidatorText() {
-		return ValidatorTexts.getDefaultValidatorText(getField().getType());
+		return isTextEmpty(text) ? getDefaultValidatorText() : text;
 	}
 
 	private boolean isTextEmpty(String text) {
 		return text.isEmpty();
 	}
+
+	private String getDefaultValidatorText() {
+		return validatorTexts.get(getField().getType());
+	}
+
 }

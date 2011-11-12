@@ -28,6 +28,12 @@ import com.globalscalingsoftware.prefdialog.panel.inputfields.textfield.shared.V
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
+/**
+ * Sets the {@link ValidatingTextField} as the managed component.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.1
+ */
 class TextFieldHandler extends AbstractTextFieldHandler {
 
 	@Inject
