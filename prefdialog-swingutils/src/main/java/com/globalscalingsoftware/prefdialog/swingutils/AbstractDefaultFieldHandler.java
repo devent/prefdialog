@@ -42,6 +42,7 @@ import com.google.inject.Inject;
  *            the type of the underlying {@link FieldComponent}.
  * @see AbstractFieldHandler
  * @see FieldComponent
+ * @since 2.1
  */
 public abstract class AbstractDefaultFieldHandler<FieldComponentType extends FieldComponent>
 		extends AbstractFieldHandler<FieldComponentType> {

@@ -40,6 +40,27 @@ class FormattedTextFieldHandler extends AbstractTextFieldHandler {
 
 	private final Map<Class<?>, String> validatorTexts;
 
+	/**
+	 * Sets the parameter of the {@link TextFieldPanel}.
+	 * 
+	 * @param validatorTexts
+	 *            a {@link Map} of all known types and their text for the
+	 *            validator.
+	 * 
+	 * @param validatorFormats
+	 *            a {@link Map} of all known types and their
+	 *            {@link AbstractFormatterFactory} for the text field.
+	 * 
+	 * @param parentObject
+	 *            the {@link Object} where the field is defined.
+	 * 
+	 * @param value
+	 *            the value of the field.
+	 * 
+	 * @param field
+	 *            the {@link Field}.
+	 * 
+	 */
 	@Inject
 	FormattedTextFieldHandler(
 			@Named("ValidatorTexts") Map<Class<?>, String> validatorTexts,

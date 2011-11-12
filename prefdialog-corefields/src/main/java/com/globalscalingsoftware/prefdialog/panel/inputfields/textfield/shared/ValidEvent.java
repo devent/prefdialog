@@ -18,22 +18,42 @@
  */
 package com.globalscalingsoftware.prefdialog.panel.inputfields.textfield.shared;
 
-
+/**
+ * Contains information when the input validation of the text field was changed.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.1
+ */
 class ValidEvent {
 
 	private final ValidatingTextField<?> textField;
 
 	private final boolean editValid;
 
+	/**
+	 * Sets the information for later retrieval.
+	 * 
+	 * @param textField
+	 *            the {@link ValidatingTextField} which input was validated.
+	 * 
+	 * @param editValid
+	 *            if the input is valid or not.
+	 */
 	public ValidEvent(ValidatingTextField<?> textField, boolean editValid) {
 		this.textField = textField;
 		this.editValid = editValid;
 	}
 
+	/**
+	 * Returns the {@link ValidatingTextField} which input was validated.
+	 */
 	public ValidatingTextField<?> getTextField() {
 		return textField;
 	}
 
+	/**
+	 * Returns if the input is valid or not.
+	 */
 	public boolean isEditValid() {
 		return editValid;
 	}

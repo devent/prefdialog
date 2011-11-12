@@ -27,6 +27,13 @@ import org.apache.commons.lang.WordUtils;
 import com.globalscalingsoftware.prefdialog.swingutils.AbstractLabelFieldPanel;
 import com.globalscalingsoftware.prefdialog.validators.Validator;
 
+/**
+ * Will show a tool-tip text from the validator and decorate the
+ * {@link JTextField} if the input was not valid.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.1
+ */
 class TextFieldPanel extends AbstractLabelFieldPanel<JTextField> {
 
 	private final ValidatingTextField<?> textField;
@@ -35,14 +42,16 @@ class TextFieldPanel extends AbstractLabelFieldPanel<JTextField> {
 
 	private boolean inputValid;
 
+	/**
+	 * Sets the text field.
+	 * 
+	 * @param textField
+	 *            the {@link ValidatingTextField}.
+	 */
 	public TextFieldPanel(ValidatingTextField<?> textField) {
 		super(textField.getField());
 		this.textField = textField;
 		this.inputValid = true;
-		setup();
-	}
-
-	private void setup() {
 	}
 
 	@Override
@@ -51,19 +60,29 @@ class TextFieldPanel extends AbstractLabelFieldPanel<JTextField> {
 		super.setTitle(title);
 	}
 
+	/**
+	 * Sets the text of the validator. The text will be shown in a tool-tip.
+	 * 
+	 * @param validatorText
+	 *            the validator text or <code>null</code> if no text should be
+	 *            set.
+	 */
 	public void setValidatorText(String validatorText) {
-		inputValid = false;
-		validatorText = WordUtils.wrap(validatorText, 42);
-		validatorText = validatorText.replace("\n", "<br/>");
-		String text = format("<html><strong>%s</strong> - %s</html>",
-				fieldTitle, validatorText);
-		setToolTipText(text);
-		setShowToolTip(true);
+		if (validatorText == null) {
+			setToolTipText(null);
+			setShowToolTip(false);
+		} else {
+			String text = formatValidatorText(validatorText);
+			setToolTipText(text);
+			setShowToolTip(true);
+		}
 	}
 
-	public void clearValidatorText() {
-		inputValid = true;
-		hideToolTip();
+	private String formatValidatorText(String validatorText) {
+		validatorText = WordUtils.wrap(validatorText, 42);
+		validatorText = validatorText.replace("\n", "<br/>");
+		return format("<html><strong>%s</strong> - %s</html>", fieldTitle,
+				validatorText);
 	}
 
 	@Override
@@ -77,12 +96,25 @@ class TextFieldPanel extends AbstractLabelFieldPanel<JTextField> {
 		textField.setValue(value);
 	}
 
+	/**
+	 * Add the {@link ValidListener} to the text field.
+	 */
 	public void addValidListener(ValidListener l) {
 		textField.addValidListener(l);
 	}
 
+	/**
+	 * Sets the {@link Validator} to the text field.
+	 */
 	public void setValidator(Validator<?> validator) {
 		textField.setValidator(validator);
+	}
+
+	/**
+	 * Sets if the current input is valid.
+	 */
+	public void setInputValid(boolean inputValid) {
+		this.inputValid = inputValid;
 	}
 
 	@Override

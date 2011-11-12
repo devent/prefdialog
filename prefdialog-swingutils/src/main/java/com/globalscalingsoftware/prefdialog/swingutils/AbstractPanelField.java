@@ -13,6 +13,7 @@ import javax.swing.ToolTipManager;
  * to set and get the layout of the panel.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.1
  */
 public abstract class AbstractPanelField<FieldType extends JComponent> extends
 		AbstractFieldComponent<JPanel> {
@@ -21,6 +22,12 @@ public abstract class AbstractPanelField<FieldType extends JComponent> extends
 
 	private TableLayout layout;
 
+	/**
+	 * Create the panel that will contain the component.
+	 * 
+	 * @param field
+	 *            the {@link JComponent}.
+	 */
 	public AbstractPanelField(FieldType field) {
 		super(new JPanel());
 		this.field = field;
@@ -120,7 +127,7 @@ public abstract class AbstractPanelField<FieldType extends JComponent> extends
 						false));
 	}
 
-	public void hideToolTip() {
+	private void hideToolTip() {
 		int id = 0;
 		long when = 0;
 		int modifiers = 0;

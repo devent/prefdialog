@@ -25,16 +25,23 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
- * Adds to the {@link FieldType} a {@link JLabel} that displays the titel of the
- * field.
+ * Adds on top of the {@link FieldType} a {@link JLabel} that displays the titel
+ * of the field.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.1
  */
 public abstract class AbstractLabelFieldPanel<FieldType extends JComponent>
 		extends AbstractPanelField<FieldType> {
 
 	private final JLabel label;
 
+	/**
+	 * Create and add the {@link JLabel} for the title of the component.
+	 * 
+	 * @param field
+	 *            the {@link JComponent}.
+	 */
 	public AbstractLabelFieldPanel(FieldType field) {
 		super(field);
 		this.label = new JLabel();

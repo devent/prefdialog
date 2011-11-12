@@ -19,6 +19,7 @@ import com.google.inject.Inject;
  * </ul>
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.1
  * @param <FieldComponentType>
  */
 public class AbstractLabelFieldHandler<FieldComponentType extends AbstractLabelFieldPanel<?>>
@@ -26,6 +27,24 @@ public class AbstractLabelFieldHandler<FieldComponentType extends AbstractLabelF
 
 	private Logger log;
 
+	/**
+	 * Sets the parameter of the {@link FieldHandler}.
+	 * 
+	 * @param parentObject
+	 *            the {@link Object} where the field is defined.
+	 * 
+	 * @param value
+	 *            the value of the field.
+	 * 
+	 * @param field
+	 *            the {@link Field}.
+	 * 
+	 * @param annotationClass
+	 *            the {@link Annotation} {@link Class} of the field.
+	 * 
+	 * @param component
+	 *            the {@link FieldComponent} that is manages by this handler.
+	 */
 	public AbstractLabelFieldHandler(Object parentObject, Object value,
 			Field field, Class<? extends Annotation> annotationClass,
 			FieldComponentType component) {

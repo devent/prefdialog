@@ -20,9 +20,21 @@ package com.globalscalingsoftware.prefdialog.panel.inputfields.textfield.shared;
 
 import java.util.EventListener;
 
-
+/**
+ * The listener is called when the input validation of the text field is
+ * changed.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.1
+ */
 interface ValidListener extends EventListener {
 
+	/**
+	 * Called when the input validation of the text field is changed.
+	 * 
+	 * @param validEvent
+	 *            the {@link ValidEvent} that contains more information.
+	 */
 	void validChanged(ValidEvent validEvent);
 
 }

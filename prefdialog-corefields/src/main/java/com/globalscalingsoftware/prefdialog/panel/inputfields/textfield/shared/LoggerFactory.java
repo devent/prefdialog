@@ -5,10 +5,26 @@ import com.globalscalingsoftware.prefdialog.validators.Validator;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
+/**
+ * Factory to create a new formatted text field {@link Logger}.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.1
+ */
 interface LoggerFactory {
 
+	/**
+	 * Creates a new ormatted text field {@link Logger} for the given
+	 * {@link Class}.
+	 */
 	Logger create(Class<?> clazz);
 
+	/**
+	 * Log messages for the ormatted text field.
+	 * 
+	 * @author Erwin Mueller, erwin.mueller@deventm.org
+	 * @since 2.1
+	 */
 	public class Logger extends AbstractSwingLogger {
 
 		@Inject

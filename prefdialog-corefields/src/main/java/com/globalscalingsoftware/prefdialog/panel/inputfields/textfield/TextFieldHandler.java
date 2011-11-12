@@ -18,6 +18,7 @@
  */
 package com.globalscalingsoftware.prefdialog.panel.inputfields.textfield;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
 import javax.swing.JTextField;
@@ -36,6 +37,25 @@ import com.google.inject.assistedinject.Assisted;
  */
 class TextFieldHandler extends AbstractTextFieldHandler {
 
+	/**
+	 * Sets the parameter of the {@link TextFieldPanel}.
+	 * 
+	 * @param parentObject
+	 *            the {@link Object} where the field is defined.
+	 * 
+	 * @param value
+	 *            the value of the field.
+	 * 
+	 * @param field
+	 *            the {@link Field}.
+	 * 
+	 * @param annotationClass
+	 *            the {@link Annotation} {@link Class} of the field.
+	 * 
+	 * @param textField
+	 *            the {@link ValidatingTextField} that is manages by this
+	 *            handler.
+	 */
 	@Inject
 	TextFieldHandler(@Assisted("parentObject") Object parentObject,
 			@Assisted("value") Object value, @Assisted Field field) {

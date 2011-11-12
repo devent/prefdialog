@@ -27,6 +27,13 @@ import com.globalscalingsoftware.prefdialog.swingutils.AbstractLabelFieldHandler
 import com.globalscalingsoftware.prefdialog.validators.Validator;
 import com.google.inject.Inject;
 
+/**
+ * Sets a {@link TextFieldPanel} and sets the validator text if the input is not
+ * valid.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.1
+ */
 public abstract class AbstractTextFieldHandler extends
 		AbstractLabelFieldHandler<TextFieldPanel> {
 
@@ -34,6 +41,25 @@ public abstract class AbstractTextFieldHandler extends
 
 	private Logger log;
 
+	/**
+	 * Sets the parameter of the {@link TextFieldPanel}.
+	 * 
+	 * @param parentObject
+	 *            the {@link Object} where the field is defined.
+	 * 
+	 * @param value
+	 *            the value of the field.
+	 * 
+	 * @param field
+	 *            the {@link Field}.
+	 * 
+	 * @param annotationClass
+	 *            the {@link Annotation} {@link Class} of the field.
+	 * 
+	 * @param textField
+	 *            the {@link ValidatingTextField} that is manages by this
+	 *            handler.
+	 */
 	public AbstractTextFieldHandler(Object parentObject, Object value,
 			Field field, Class<? extends Annotation> annotationClass,
 			ValidatingTextField<?> textField) {
@@ -76,10 +102,12 @@ public abstract class AbstractTextFieldHandler extends
 			public void validChanged(ValidEvent validEvent) {
 				if (validEvent.isEditValid()) {
 					log.editValidClearValidatorText(getField());
-					getComponent().clearValidatorText();
+					getComponent().setInputValid(true);
+					getComponent().setValidatorText(null);
 				} else {
 					String validatorText = getValidatorText();
 					log.setValidatorText(validatorText, this);
+					getComponent().setInputValid(false);
 					getComponent().setValidatorText(validatorText);
 				}
 			}

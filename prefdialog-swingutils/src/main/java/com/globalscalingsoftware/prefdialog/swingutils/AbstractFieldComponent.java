@@ -25,22 +25,29 @@ import javax.swing.JComponent;
 import com.globalscalingsoftware.prefdialog.FieldComponent;
 
 /**
- * Implements a {@link FieldComponent} that captures a generic
+ * Implements a {@link FieldComponent} that contains a generic
  * {@link JComponent} field.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.1
  */
 public abstract class AbstractFieldComponent<FieldType extends JComponent>
 		implements FieldComponent {
 
 	private final FieldType field;
 
+	/**
+	 * Sets the {@link JComponent} that we contain.
+	 * 
+	 * @param field
+	 *            the {@link JComponent}.
+	 */
 	public AbstractFieldComponent(FieldType field) {
 		this.field = field;
 	}
 
 	/**
-	 * Returns the {@link FieldType} that we are capturing.
+	 * Returns the {@link FieldType} that is contained.
 	 */
 	public FieldType getField() {
 		return field;
