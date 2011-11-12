@@ -24,9 +24,19 @@ import javax.swing.JFormattedTextField;
 
 import com.globalscalingsoftware.prefdialog.panel.inputfields.textfield.shared.ValidatingTextField;
 
-public class ValidatingFormattedTextField extends
+/**
+ * Test the input of a {@link JFormattedTextField}.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.1
+ */
+class ValidatingFormattedTextField extends
 		ValidatingTextField<JFormattedTextField> {
 
+	/**
+	 * Sets the {@link JFormattedTextField} for with the input will be
+	 * validated.
+	 */
 	public ValidatingFormattedTextField(JFormattedTextField field) {
 		super(field);
 	}
