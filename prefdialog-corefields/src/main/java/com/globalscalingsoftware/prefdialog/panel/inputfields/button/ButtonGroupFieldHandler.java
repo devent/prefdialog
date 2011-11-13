@@ -45,11 +45,27 @@ class ButtonGroupFieldHandler extends
 
 	private Logger log;
 
+	/**
+	 * Sets the parameter of the {@link ButtonGroupPanel}.
+	 * 
+	 * @param panel
+	 *            the {@link ButtonGroupPanel}.
+	 * 
+	 * @param parentObject
+	 *            the {@link Object} where the field is defined.
+	 * 
+	 * @param value
+	 *            the value of the field.
+	 * 
+	 * @param field
+	 *            the {@link Field}.
+	 * 
+	 */
 	@Inject
-	ButtonGroupFieldHandler(ButtonGroupPanel buttonGroupPanel,
+	ButtonGroupFieldHandler(ButtonGroupPanel panel,
 			@Assisted("parentObject") Object parentObject,
 			@Assisted("value") Object value, @Assisted Field field) {
-		super(parentObject, value, field, ButtonGroup.class, buttonGroupPanel);
+		super(parentObject, value, field, ButtonGroup.class, panel);
 	}
 
 	/**

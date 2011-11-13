@@ -22,9 +22,18 @@ import javax.swing.JCheckBox;
 
 import com.globalscalingsoftware.prefdialog.swingutils.AbstractLabelFieldPanel;
 
+/**
+ * Sets the {@link JCheckBox} as the field.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.1
+ */
 class CheckBoxPanel extends AbstractLabelFieldPanel<JCheckBox> {
 
-	public CheckBoxPanel() {
+	/**
+	 * Create and setup the {@link JCheckBox}.
+	 */
+	CheckBoxPanel() {
 		super(new JCheckBox());
 		setup();
 	}
@@ -32,8 +41,11 @@ class CheckBoxPanel extends AbstractLabelFieldPanel<JCheckBox> {
 	private void setup() {
 	}
 
-	public void setText(String title) {
-		getPanelField().setText(title);
+	/**
+	 * Set the text of the {@link JCheckBox}.
+	 */
+	public void setText(String text) {
+		getPanelField().setText(text);
 	}
 
 	@Override

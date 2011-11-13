@@ -21,38 +21,73 @@ package com.globalscalingsoftware.prefdialog.panel.inputfields.checkbox;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
+import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.annotations.Checkbox;
-import com.globalscalingsoftware.prefdialog.panel.inputfields.checkbox.LoggerFactory.Logger;
-import com.globalscalingsoftware.prefdialog.reflection.ReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.swingutils.AbstractLabelFieldHandler;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
+/**
+ * Sets the {@link CheckBoxPanel} as the managed component.
+ * 
+ * The additional attributes are:
+ * <ul>
+ * <li>text</li>
+ * </ul>
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.1
+ */
 class CheckBoxFieldHandler extends AbstractLabelFieldHandler<CheckBoxPanel> {
 
-	private final Logger log;
+	private LoggerFactory.Logger log;
 
+	/**
+	 * Sets the parameter of the {@link CheckBoxPanel}.
+	 * 
+	 * @param panel
+	 *            the {@link ButtonGroupPanel}.
+	 * 
+	 * @param parentObject
+	 *            the {@link Object} where the field is defined.
+	 * 
+	 * @param value
+	 *            the value of the field.
+	 * 
+	 * @param field
+	 *            the {@link Field}.
+	 * 
+	 */
 	@Inject
-	CheckBoxFieldHandler(LoggerFactory loggerFactory,
-			ReflectionToolbox reflectionToolbox,
+	CheckBoxFieldHandler(CheckBoxPanel panel,
 			@Assisted("parentObject") Object parentObject,
 			@Assisted("value") Object value, @Assisted Field field) {
-		super(loggerFactory, reflectionToolbox, parentObject, value, field,
-				Checkbox.class, new CheckBoxPanel());
-		this.log = loggerFactory.create(CheckBoxFieldHandler.class);
-		setup();
+		super(parentObject, value, field, Checkbox.class, panel);
 	}
 
-	private void setup() {
+	/**
+	 * Sets the text of the checkbox.
+	 */
+	@Override
+	public FieldHandler<CheckBoxPanel> setup() {
 		setupText();
+		return super.setup();
 	}
 
 	private void setupText() {
 		Class<? extends Annotation> annotationClass = getAnnotationClass();
 		Annotation a = getField().getAnnotation(annotationClass);
-		String text = reflectionToolbox.invokeMethodWithReturnType("text",
+		String text = getReflectionToolbox().invokeMethodWithReturnType("text",
 				String.class, a);
-		log.setText(text);
 		getComponent().setText(text);
+		log.setText(text, this);
+	}
+
+	/**
+	 * Injects the checkbox field {@link LoggerFactory}.
+	 */
+	@Inject
+	public void setButtonFieldLoggerFactory(LoggerFactory loggerFactory) {
+		log = loggerFactory.create(CheckBoxFieldHandler.class);
 	}
 }
