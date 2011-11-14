@@ -60,32 +60,12 @@ class FieldsHandlerFactoryWorkerImpl implements FieldsHandlerFactoryWorker {
 				new AnnotationDiscoveryCallback() {
 
 					@Override
-					public void fieldAnnotationDiscovered(final Field field,
-							final Object value, final Annotation a) {
-						final FieldHandler<?> handler = createDiscoveredFieldHandler(
+					public void fieldAnnotationDiscovered(Field field,
+							Object value, Annotation a) {
+						FieldHandler<?> handler = createDiscoveredFieldHandler(
 								factoriesMap, object, field, value, a);
-						fieldHandlers.add(new FieldHandlerEntry() {
-
-							@Override
-							public Object getValue() {
-								return value;
-							}
-
-							@Override
-							public FieldHandler<?> getFieldHandler() {
-								return handler;
-							}
-
-							@Override
-							public Field getField() {
-								return field;
-							}
-
-							@Override
-							public Annotation getAnnotation() {
-								return a;
-							}
-						});
+						fieldHandlers.add(createFieldHandlerEntry(field, value,
+								a, handler));
 					}
 
 				}).discoverAnnotations(object);
@@ -96,6 +76,35 @@ class FieldsHandlerFactoryWorkerImpl implements FieldsHandlerFactoryWorker {
 			FieldHandlerFactoriesMap factoriesMap, Object parentObject,
 			Field field, Object value, Annotation a) {
 		FieldHandlerFactory factory = factoriesMap.getFactory(a.getClass());
-		return factory.create(parentObject, value, field);
+		FieldHandler<?> handler = factory.create(parentObject, value, field);
+		return handler.setup();
 	}
+
+	private FieldHandlerEntry createFieldHandlerEntry(final Field field,
+			final Object value, final Annotation a,
+			final FieldHandler<?> handler) {
+		return new FieldHandlerEntry() {
+
+			@Override
+			public Object getValue() {
+				return value;
+			}
+
+			@Override
+			public FieldHandler<?> getFieldHandler() {
+				return handler;
+			}
+
+			@Override
+			public Field getField() {
+				return field;
+			}
+
+			@Override
+			public Annotation getAnnotation() {
+				return a;
+			}
+		};
+	}
+
 }

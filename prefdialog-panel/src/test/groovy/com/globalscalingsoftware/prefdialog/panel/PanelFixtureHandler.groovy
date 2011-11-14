@@ -24,6 +24,8 @@ import java.awt.BorderLayout
 
 import javax.swing.JFrame
 
+import org.apache.commons.lang.builder.ToStringBuilder
+import org.apache.commons.lang.builder.ToStringStyle
 import org.fest.swing.edt.GuiActionRunner
 import org.fest.swing.edt.GuiQuery
 import org.fest.swing.fixture.FrameFixture
@@ -38,6 +40,8 @@ abstract class PanelFixtureHandler {
 	static Injector injector = Guice.createInjector(new PrefdialogPanelModule(), new PrefdialogCoreFieldsModule())
 
 	static factory = injector.getInstance(PreferencePanelHandlerFactory)
+
+	static toStringStyle = ToStringBuilder.setDefaultStyle(ToStringStyle.SHORT_PREFIX_STYLE)
 
 	def preferences
 

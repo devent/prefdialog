@@ -117,18 +117,19 @@ class ChildFieldHandlerWorker {
 				.create(fieldHandlerFactories);
 		ChildFieldHandlerFactory factory = (ChildFieldHandlerFactory) factoriesMap
 				.getFactory(Child.class);
-		FieldHandler<?> panel = factory.create(preferences, value, field);
+		FieldHandler<?> childHandler = factory
+				.create(preferences, value, field).setup();
 
 		Iterable<FieldHandlerEntry> handlers = fieldFactoryWorker
 				.createFieldsHandlers(factoriesMap, value);
 		for (FieldHandlerEntry entry : handlers) {
 			FieldHandler<?> handler = entry.getFieldHandler();
-			setupGroupFieldHandler(entry.getAnnotation(), panel, handler,
-					factoriesMap);
-			panel.addFieldHandler(handler);
+			setupGroupFieldHandler(entry.getAnnotation(), childHandler,
+					handler, factoriesMap);
+			childHandler.addFieldHandler(handler);
 		}
 
-		return panel;
+		return childHandler;
 	}
 
 	private void setupGroupFieldHandler(Annotation a, FieldHandler<?> child,
