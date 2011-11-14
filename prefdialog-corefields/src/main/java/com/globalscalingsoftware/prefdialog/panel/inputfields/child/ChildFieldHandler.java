@@ -33,6 +33,21 @@ import com.google.inject.assistedinject.Assisted;
  */
 class ChildFieldHandler extends AbstractChildFieldHandler<ChildPanel> {
 
+	/**
+	 * Sets the parameter of the {@link ChildPanel}.
+	 * 
+	 * @param childPanel
+	 *            the {@link ChildPanel}.
+	 * 
+	 * @param parentObject
+	 *            the {@link Object} where the field is defined.
+	 * 
+	 * @param value
+	 *            the value of the field.
+	 * 
+	 * @param field
+	 *            the {@link Field}.
+	 */
 	@Inject
 	ChildFieldHandler(ChildPanel childPanel,
 			@Assisted("parentObject") Object parentObject,

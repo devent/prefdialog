@@ -40,6 +40,7 @@ import com.google.inject.Inject;
  *            the type of the underlying {@link ChildComponent}. For example a
  *            {@link JPanel}.
  * 
+ * @since 2.1
  * @see AbstractDefaultFieldHandler
  * @see ChildComponent
  */
@@ -128,6 +129,11 @@ public abstract class AbstractChildFieldHandler<ComponentType extends ChildCompo
 		return true;
 	}
 
+	/**
+	 * Updates the component tree UI beginning with the child component.
+	 * 
+	 * @see SwingUtilities#updateComponentTreeUI(java.awt.Component)
+	 */
 	public void updateUI() {
 		SwingUtilities.updateComponentTreeUI(getComponent().getAWTComponent());
 	}

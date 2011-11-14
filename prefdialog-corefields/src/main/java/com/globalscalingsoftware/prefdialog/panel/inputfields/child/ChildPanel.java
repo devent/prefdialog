@@ -27,6 +27,7 @@ import javax.swing.JPanel;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.swingutils.AbstractFieldComponent;
+import com.google.inject.Inject;
 
 /**
  * A {@link JPanel} that contains all fields in rows.
@@ -41,8 +42,12 @@ class ChildPanel extends AbstractFieldComponent<UiChildPanel> implements
 
 	private Object value;
 
-	ChildPanel() {
-		super(new UiChildPanel());
+	/**
+	 * Setups the {@link UiChildPanel}.
+	 */
+	@Inject
+	ChildPanel(UiChildPanel panel) {
+		super(panel);
 		this.panel = getField();
 		setup();
 	}
