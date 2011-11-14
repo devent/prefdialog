@@ -1,17 +1,30 @@
 package com.globalscalingsoftware.prefdialog.panel.inputfields.slider;
 
-import java.lang.reflect.Field;
-
 import javax.swing.BoundedRangeModel;
 
 import com.globalscalingsoftware.prefdialog.swingutils.AbstractSwingLogger;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
+/**
+ * Factory to create a new slider handler {@link Logger}.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.1
+ */
 interface LoggerFactory {
 
+	/**
+	 * Creates a new slider handler {@link Logger} for the given {@link Class}.
+	 */
 	Logger create(@Assisted Class<?> clazz);
 
+	/**
+	 * Log messages for the slider handler.
+	 * 
+	 * @author Erwin Mueller, erwin.mueller@deventm.org
+	 * @since 2.1
+	 */
 	class Logger extends AbstractSwingLogger {
 
 		@Inject
@@ -19,52 +32,52 @@ interface LoggerFactory {
 			super(contextClass);
 		}
 
-		public void setExtent(Field field, int extent) {
-			log.debug("Set the extent {} for the field ``{}''.", extent, field);
+		void setExtent(int extent, Object handler) {
+			log.debug("Set the extent {} for the handler {}.", extent, handler);
 		}
 
-		public void setModel(Field field, BoundedRangeModel model) {
-			log.debug("Set the model {} for the field ``{}''.", model, field);
+		void setModel(BoundedRangeModel model, Object handler) {
+			log.debug("Set the model {} for the handler {}.", model, handler);
 		}
 
-		public void setMin(Field field, int min) {
-			log.debug("Set the minimum value {} for the field ``{}''.", min,
-					field);
+		void setMin(int min, Object handler) {
+			log.debug("Set the minimum value {} for the handler {}.", min,
+					handler);
 		}
 
-		public void setMax(Field field, int max) {
-			log.debug("Set the maximum value {} for the field ``{}''.", max,
-					field);
+		void setMax(int max, Object handler) {
+			log.debug("Set the maximum value {} for the handler {}.", max,
+					handler);
 		}
 
-		public void setMajorTicks(Field field, int value) {
-			log.debug("Set the major ticks at {} for the field ``{}''.", value,
-					field);
+		void setMajorTicks(int value, Object handler) {
+			log.debug("Set the major ticks at {} for the handler {}.", value,
+					handler);
 		}
 
-		public void setMinorTicks(Field field, int value) {
-			log.debug("Set the minor ticks at {} for the field ``{}''.", value,
-					field);
+		void setMinorTicks(int value, Object handler) {
+			log.debug("Set the minor ticks at {} for the handler {}.", value,
+					handler);
 		}
 
-		public void setPaintTicks(Field field, boolean value) {
-			log.debug("Set paint ticks to {} for the field ``{}''.", value,
-					field);
+		void setPaintTicks(boolean value, Object handler) {
+			log.debug("Set paint ticks to {} for the handler {}.", value,
+					handler);
 		}
 
-		public void setPaintLabels(Field field, boolean value) {
-			log.debug("Set paint labels to {} for the field ``{}''.", value,
-					field);
+		void setPaintLabels(boolean value, Object handler) {
+			log.debug("Set paint labels to {} for the handler {}.", value,
+					handler);
 		}
 
-		public void setPaintTrack(Field field, boolean value) {
-			log.debug("Set paint track to {} for the field ``{}''.", value,
-					field);
+		void setPaintTrack(boolean value, Object handler) {
+			log.debug("Set paint track to {} for the handler {}.", value,
+					handler);
 		}
 
-		public void setSnapToTicks(Field field, boolean value) {
-			log.debug("Set snap to ticks to {} for the field ``{}''.", value,
-					field);
+		void setSnapToTicks(boolean value, Object handler) {
+			log.debug("Set snap to ticks to {} for the handler {}.", value,
+					handler);
 		}
 
 	}

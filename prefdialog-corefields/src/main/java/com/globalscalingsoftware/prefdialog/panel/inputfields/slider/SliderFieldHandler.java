@@ -24,29 +24,50 @@ import java.lang.reflect.Field;
 import javax.swing.BoundedRangeModel;
 import javax.swing.DefaultBoundedRangeModel;
 
+import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.annotations.Slider;
-import com.globalscalingsoftware.prefdialog.panel.inputfields.slider.LoggerFactory.Logger;
-import com.globalscalingsoftware.prefdialog.reflection.ReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.swingutils.AbstractLabelFieldHandler;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
+/**
+ * Sets the {@link SliderPanel} as the managed component.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.1
+ */
 class SliderFieldHandler extends AbstractLabelFieldHandler<SliderPanel> {
 
-	private final Logger log;
+	private LoggerFactory.Logger log;
 
+	/**
+	 * Sets the parameter of the {@link SliderPanel}.
+	 * 
+	 * @param panel
+	 *            the {@link SliderPanel}.
+	 * 
+	 * @param parentObject
+	 *            the {@link Object} where the field is defined.
+	 * 
+	 * @param value
+	 *            the value of the field.
+	 * 
+	 * @param field
+	 *            the {@link Field}.
+	 */
 	@Inject
-	SliderFieldHandler(LoggerFactory loggerFactory,
-			ReflectionToolbox reflectionToolbox,
+	SliderFieldHandler(SliderPanel panel,
 			@Assisted("parentObject") Object parentObject,
 			@Assisted("value") Object value, @Assisted Field field) {
-		super(loggerFactory, reflectionToolbox, parentObject, value, field,
-				Slider.class, new SliderPanel());
-		this.log = loggerFactory.create(SliderFieldHandler.class);
-		setup();
+		super(parentObject, value, field, Slider.class, panel);
 	}
 
-	private void setup() {
+	/**
+	 * Set the attributes min, max, majorTicks, minorTicks, paintTicks,
+	 * paintLabels, snapToTicks, extent, model.
+	 */
+	@Override
+	public FieldHandler<SliderPanel> setup() {
 		if (isCustomModelSet()) {
 			setupCustomModel();
 		} else {
@@ -60,6 +81,7 @@ class SliderFieldHandler extends AbstractLabelFieldHandler<SliderPanel> {
 		setupPaintTicks();
 		setupPaintTrack();
 		setupSnapToTicks();
+		return super.setup();
 	}
 
 	private boolean isCustomModelSet() {
@@ -69,14 +91,14 @@ class SliderFieldHandler extends AbstractLabelFieldHandler<SliderPanel> {
 
 	private void setupExtent() {
 		int extent = getValueFromAnnotation("extent", Integer.class);
-		log.setExtent(getField(), extent);
+		log.setExtent(extent, this);
 		getComponent().setExtent(extent);
 	}
 
 	private void setupCustomModel() {
 		Class<? extends BoundedRangeModel> modelClass = getModelClass();
 		BoundedRangeModel model = createNewModel(modelClass);
-		log.setModel(getField(), model);
+		log.setModel(model, this);
 		getComponent().setModel(model);
 	}
 
@@ -98,55 +120,63 @@ class SliderFieldHandler extends AbstractLabelFieldHandler<SliderPanel> {
 
 	private void setupMin() {
 		int min = getValueFromAnnotation("min", Integer.class);
-		log.setMin(getField(), min);
+		log.setMin(min, this);
 		getComponent().setMin(min);
 	}
 
 	private void setupMax() {
 		int max = getValueFromAnnotation("max", Integer.class);
-		log.setMax(getField(), max);
+		log.setMax(max, this);
 		getComponent().setMax(max);
 	}
 
 	private void setupMajorTicks() {
 		int value = getValueFromAnnotation("majorTicks", Integer.class);
-		log.setMajorTicks(getField(), value);
+		log.setMajorTicks(value, this);
 		getComponent().setMajorTicks(value);
 	}
 
 	private void setupMinorTicks() {
 		int value = getValueFromAnnotation("minorTicks", Integer.class);
-		log.setMinorTicks(getField(), value);
+		log.setMinorTicks(value, this);
 		getComponent().setMinorTicks(value);
 	}
 
 	private void setupPaintTicks() {
 		boolean value = getValueFromAnnotation("paintTicks", Boolean.class);
-		log.setPaintTicks(getField(), value);
+		log.setPaintTicks(value, this);
 		getComponent().setPaintTicks(value);
 	}
 
 	private void setupPaintLabels() {
 		boolean value = getValueFromAnnotation("paintLabels", Boolean.class);
-		log.setPaintLabels(getField(), value);
+		log.setPaintLabels(value, this);
 		getComponent().setPaintLabels(value);
 	}
 
 	private void setupPaintTrack() {
 		boolean value = getValueFromAnnotation("paintTrack", Boolean.class);
-		log.setPaintTrack(getField(), value);
+		log.setPaintTrack(value, this);
 		getComponent().setPaintTrack(value);
 	}
 
 	private void setupSnapToTicks() {
 		boolean value = getValueFromAnnotation("snapToTicks", Boolean.class);
-		log.setSnapToTicks(getField(), value);
+		log.setSnapToTicks(value, this);
 		getComponent().setSnapToTicks(value);
 	}
 
 	private <T> T getValueFromAnnotation(String name, Class<T> classType) {
 		Annotation a = getField().getAnnotation(Slider.class);
-		return reflectionToolbox.invokeMethodWithReturnType(name, classType, a);
+		return getReflectionToolbox().invokeMethodWithReturnType(name,
+				classType, a);
 	}
 
+	/**
+	 * Injects the slider field {@link LoggerFactory}.
+	 */
+	@Inject
+	public void setSliderFieldLoggerFactory(LoggerFactory loggerFactory) {
+		log = loggerFactory.create(SliderFieldHandler.class);
+	}
 }

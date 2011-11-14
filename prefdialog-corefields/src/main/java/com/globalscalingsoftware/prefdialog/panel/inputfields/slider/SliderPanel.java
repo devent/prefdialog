@@ -23,22 +23,23 @@ import javax.swing.JSlider;
 
 import com.globalscalingsoftware.prefdialog.swingutils.AbstractLabelFieldPanel;
 
-public class SliderPanel extends AbstractLabelFieldPanel<JSlider> {
+/**
+ * Sets a {@link JSlider} to the panel.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.1
+ */
+class SliderPanel extends AbstractLabelFieldPanel<JSlider> {
 
-	public SliderPanel() {
+	/**
+	 * Create the {@link JSlider}.
+	 */
+	SliderPanel() {
 		super(new JSlider());
 		setup();
 	}
 
 	private void setup() {
-	}
-
-	public void setMin(int min) {
-		getPanelField().setMinimum(min);
-	}
-
-	public void setMax(int max) {
-		getPanelField().setMaximum(max);
 	}
 
 	@Override
@@ -51,40 +52,101 @@ public class SliderPanel extends AbstractLabelFieldPanel<JSlider> {
 		getPanelField().setValue((Integer) value);
 	}
 
-	public void setMajorTicks(int value) {
-		getPanelField().setMajorTickSpacing(value);
-	}
-
-	public void setMinorTicks(int value) {
-		getPanelField().setMinorTickSpacing(value);
-	}
-
-	public void setPaintTicks(boolean value) {
-		getPanelField().setPaintTicks(value);
-	}
-
-	public void setPaintLabels(boolean value) {
-		getPanelField().setPaintLabels(value);
-	}
-
-	public void setPaintTrack(boolean value) {
-		getPanelField().setPaintTrack(value);
-	}
-
-	public void setSnapToTicks(boolean value) {
-		getPanelField().setSnapToTicks(value);
-	}
-
-	public void setModel(BoundedRangeModel model) {
-		getPanelField().setModel(model);
-	}
-
-	public void setExtent(int extent) {
-		getPanelField().setExtent(extent);
-	}
-
 	@Override
 	public boolean isInputValid() {
 		return true;
 	}
+
+	/**
+	 * Sets the slider's minimum value.
+	 * 
+	 * @see JSlider#setMinimum(int)
+	 */
+	public void setMin(int min) {
+		getPanelField().setMinimum(min);
+	}
+
+	/**
+	 * Sets the slider's maximum value.
+	 * 
+	 * @see JSlider#setMaximum(int)
+	 */
+	public void setMax(int max) {
+		getPanelField().setMaximum(max);
+	}
+
+	/**
+	 * Sets the major tick spacing.
+	 * 
+	 * @see JSlider#setMajorTickSpacing(int)
+	 */
+	public void setMajorTicks(int value) {
+		getPanelField().setMajorTickSpacing(value);
+	}
+
+	/**
+	 * Sets the minor tick spacing.
+	 * 
+	 * @see JSlider#setMinorTickSpacing(int)
+	 */
+	public void setMinorTicks(int value) {
+		getPanelField().setMinorTickSpacing(value);
+	}
+
+	/**
+	 * Sets whether tick marks are painted on the slider.
+	 * 
+	 * @see JSlider#setPaintTicks(boolean)
+	 */
+	public void setPaintTicks(boolean value) {
+		getPanelField().setPaintTicks(value);
+	}
+
+	/**
+	 * Sets whether the labels are painted on the slider.
+	 * 
+	 * @see JSlider#setPaintLabels(boolean)
+	 */
+	public void setPaintLabels(boolean value) {
+		getPanelField().setPaintLabels(value);
+	}
+
+	/**
+	 * Sets whether the track is painted on the slider.
+	 * 
+	 * @see JSlider#setPaintTrack(boolean)
+	 */
+	public void setPaintTrack(boolean value) {
+		getPanelField().setPaintTrack(value);
+	}
+
+	/**
+	 * Sets whether the knob (and the data value it represents) resolve to the
+	 * closest tick mark next to where the user positioned the knob.
+	 * 
+	 * @see JSlider#setSnapToTicks(boolean)
+	 */
+	public void setSnapToTicks(boolean value) {
+		getPanelField().setSnapToTicks(value);
+	}
+
+	/**
+	 * Sets the {@code BoundedRangeModel} that handles the slider's three
+	 * fundamental properties: minimum, maximum, value.
+	 * 
+	 * @see JSlider#setModel(BoundedRangeModel)
+	 */
+	public void setModel(BoundedRangeModel model) {
+		getPanelField().setModel(model);
+	}
+
+	/**
+	 * Sets whether tick marks are painted on the slider.
+	 * 
+	 * @see JSlider#setExtent(int)
+	 */
+	public void setExtent(int extent) {
+		getPanelField().setExtent(extent);
+	}
+
 }
