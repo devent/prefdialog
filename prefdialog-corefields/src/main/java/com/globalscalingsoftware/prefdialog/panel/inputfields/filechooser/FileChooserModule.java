@@ -7,6 +7,12 @@ import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 
+/**
+ * Binds the file chooser field classes.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.1
+ */
 public class FileChooserModule extends AbstractModule {
 
 	@Override

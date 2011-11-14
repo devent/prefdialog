@@ -37,7 +37,7 @@ class UiFileChooserPanel extends javax.swing.JPanel {
 		frame.setVisible(true);
 	}
 
-	public UiFileChooserPanel() {
+	UiFileChooserPanel() {
 		super();
 		initGUI();
 	}

@@ -26,30 +26,50 @@ import java.lang.reflect.Field;
 
 import javax.swing.JFileChooser;
 
+import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.annotations.FileChooser;
-import com.globalscalingsoftware.prefdialog.panel.inputfields.filechooser.LoggerFactory.Logger;
-import com.globalscalingsoftware.prefdialog.reflection.ReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.swingutils.AbstractLabelFieldHandler;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
+/**
+ * Sets the {@link FileChooserPanel} as the managed component.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.1
+ */
 class FileChooserFieldHandler extends
 		AbstractLabelFieldHandler<FileChooserPanel> {
 
-	private final Logger log;
+	private LoggerFactory.Logger log;
 
+	/**
+	 * Sets the parameter of the {@link FileChooserPanel}.
+	 * 
+	 * @param panel
+	 *            the {@link FileChooserPanel}.
+	 * 
+	 * @param parentObject
+	 *            the {@link Object} where the field is defined.
+	 * 
+	 * @param value
+	 *            the value of the field.
+	 * 
+	 * @param field
+	 *            the {@link Field}.
+	 */
 	@Inject
-	FileChooserFieldHandler(LoggerFactory loggerFactory,
-			ReflectionToolbox reflectionToolbox,
+	FileChooserFieldHandler(FileChooserPanel panel,
 			@Assisted("parentObject") Object parentObject,
 			@Assisted("value") Object value, @Assisted Field field) {
-		super(loggerFactory, reflectionToolbox, parentObject, value, field,
-				FileChooser.class, new FileChooserPanel());
-		this.log = loggerFactory.create(FileChooserFieldHandler.class);
-		setup();
+		super(parentObject, value, field, FileChooser.class, panel);
 	}
 
-	private void setup() {
+	/**
+	 * Set the open file chooser action.
+	 */
+	@Override
+	public FieldHandler<FileChooserPanel> setup() {
 		getComponent().setOpenFileAction(new Runnable() {
 
 			@Override
@@ -57,10 +77,11 @@ class FileChooserFieldHandler extends
 				openFileChooserDialog();
 			}
 		});
+		return super.setup();
 	}
 
 	private void openFileChooserDialog() {
-		log.openFileChooserDialog(getField());
+		log.openFileChooserDialog(this);
 		JFileChooser chooser = createFileChooserDialog();
 		int option = showFileChooserDialog(chooser);
 		if (option == JFileChooser.APPROVE_OPTION) {
@@ -82,4 +103,11 @@ class FileChooserFieldHandler extends
 		return option;
 	}
 
+	/**
+	 * Injects the combobox field {@link LoggerFactory}.
+	 */
+	@Inject
+	public void setFileChooserFieldLoggerFactory(LoggerFactory loggerFactory) {
+		log = loggerFactory.create(FileChooserFieldHandler.class);
+	}
 }

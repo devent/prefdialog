@@ -24,12 +24,27 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
-import com.globalscalingsoftware.prefdialog.swingutils.AbstractLabelFieldPanel;
+import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 
+import com.globalscalingsoftware.prefdialog.swingutils.AbstractLabelFieldPanel;
+import com.google.inject.Inject;
+
+/**
+ * Sets a {@link JFormattedTextField} with a {@link JButton}. In the text field
+ * we can enter and show the file.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.1
+ */
 class FileChooserPanel extends AbstractLabelFieldPanel<UiFileChooserPanel> {
 
-	public FileChooserPanel() {
-		super(new UiFileChooserPanel());
+	/**
+	 * Set the {@link UiFileChooserPanel}.
+	 */
+	@Inject
+	FileChooserPanel(UiFileChooserPanel panel) {
+		super(panel);
 		setup();
 	}
 
@@ -37,6 +52,10 @@ class FileChooserPanel extends AbstractLabelFieldPanel<UiFileChooserPanel> {
 		getPanelField().getFileNameText().setEditable(true);
 	}
 
+	/**
+	 * Set a {@link Runnable} that is called if the user clicks on the open file
+	 * button.
+	 */
 	public void setOpenFileAction(final Runnable runnable) {
 		getPanelField().getOpenFileButton().addActionListener(
 				new ActionListener() {
@@ -84,6 +103,9 @@ class FileChooserPanel extends AbstractLabelFieldPanel<UiFileChooserPanel> {
 		return getPanelField().getFileNameText().isEditValid();
 	}
 
+	/**
+	 * Set the {@link File} that will be shown in the file name text field.
+	 */
 	public void setFile(File file) {
 		getPanelField().getFileNameText().setValue(file);
 	}
