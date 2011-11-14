@@ -2,7 +2,6 @@ package com.globalscalingsoftware.prefdialog.panel.inputfields.filechooser;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.api.FileChooserFieldHandlerFactory;
-import com.globalscalingsoftware.prefdialog.panel.inputfields.filechooser.LoggerFactory.Logger;
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
@@ -21,9 +20,9 @@ public class FileChooserModule extends AbstractModule {
 				new TypeLiteral<FieldHandler<?>>() {
 				}, FileChooserFieldHandler.class).build(
 				FileChooserFieldHandlerFactory.class));
-		install(new FactoryModuleBuilder()
-				.implement(Logger.class, Logger.class).build(
-						LoggerFactory.class));
+		install(new FactoryModuleBuilder().implement(
+				LoggerFactory.Logger.class, LoggerFactory.Logger.class).build(
+				LoggerFactory.class));
 	}
 
 }

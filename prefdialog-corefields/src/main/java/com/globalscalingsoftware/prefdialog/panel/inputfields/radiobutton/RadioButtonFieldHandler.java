@@ -20,45 +20,67 @@ package com.globalscalingsoftware.prefdialog.panel.inputfields.radiobutton;
 
 import java.lang.reflect.Field;
 
+import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.annotations.RadioButton;
-import com.globalscalingsoftware.prefdialog.panel.inputfields.radiobutton.LoggerFactory.Logger;
-import com.globalscalingsoftware.prefdialog.reflection.ReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.swingutils.AbstractLabelFieldHandler;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
+/**
+ * Sets the {@link RadioButtonsPanel} as the managed component.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.1
+ */
 class RadioButtonFieldHandler extends
 		AbstractLabelFieldHandler<RadioButtonsPanel> {
 
 	private final Object value;
 
-	private final Logger log;
+	private LoggerFactory.Logger log;
 
+	/**
+	 * Sets the parameter of the {@link RadioButtonsPanel}.
+	 * 
+	 * @param panel
+	 *            the {@link RadioButtonsPanel}.
+	 * 
+	 * @param parentObject
+	 *            the {@link Object} where the field is defined.
+	 * 
+	 * @param value
+	 *            the value of the field.
+	 * 
+	 * @param field
+	 *            the {@link Field}.
+	 */
 	@Inject
-	RadioButtonFieldHandler(LoggerFactory loggerFactory,
-			ReflectionToolbox reflectionToolbox,
+	RadioButtonFieldHandler(RadioButtonsPanel panel,
 			@Assisted("parentObject") Object parentObject,
 			@Assisted("value") Object value, @Assisted Field field) {
-		super(loggerFactory, reflectionToolbox, parentObject, value, field,
-				RadioButton.class, new RadioButtonsPanel());
-		this.log = loggerFactory.create(RadioButtonFieldHandler.class);
+		super(parentObject, value, field, RadioButton.class, panel);
 		this.value = value;
-		setup();
 	}
 
-	private void setup() {
+	/**
+	 * Sets the columns and the value.
+	 */
+	@Override
+	public FieldHandler<RadioButtonsPanel> setup() {
 		setupColumns();
 		setupValue(value);
+		return super.setup();
 	}
 
 	private void setupColumns() {
 		Class<? extends Enum<?>> valueClass = getValueClass(value);
 		Enum<?>[] enumFields = getEnumFields(valueClass);
-		int columns = reflectionToolbox.getColumns(getField());
+		int columns = getReflectionToolbox().getColumns(getField());
 		int rows = enumFields.length;
-		log.setColumnsRows(getField(), columns, rows);
+		log.setColumns(columns, this);
+		log.setRows(rows, this);
 		getComponent().setColumnsRows(columns, rows);
-		log.addEnumFields(getField(), enumFields);
+		log.addEnumFields(enumFields, this);
 		addEnumFields(enumFields);
 	}
 
@@ -81,4 +103,11 @@ class RadioButtonFieldHandler extends
 		getComponent().setValue(value);
 	}
 
+	/**
+	 * Injects the radio button field {@link LoggerFactory}.
+	 */
+	@Inject
+	public void setRadioButtonFieldLoggerFactory(LoggerFactory loggerFactory) {
+		log = loggerFactory.create(RadioButtonFieldHandler.class);
+	}
 }

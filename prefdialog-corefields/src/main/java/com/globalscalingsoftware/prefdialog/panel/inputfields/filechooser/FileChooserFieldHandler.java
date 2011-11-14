@@ -104,7 +104,7 @@ class FileChooserFieldHandler extends
 	}
 
 	/**
-	 * Injects the combobox field {@link LoggerFactory}.
+	 * Injects the file chooser field {@link LoggerFactory}.
 	 */
 	@Inject
 	public void setFileChooserFieldLoggerFactory(LoggerFactory loggerFactory) {

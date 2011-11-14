@@ -21,9 +21,11 @@ package com.globalscalingsoftware.prefdialog.panel.inputfields.radiobutton;
 import static java.lang.String.format;
 import info.clearthought.layout.TableLayout;
 
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
 import javax.swing.JPanel;
@@ -31,15 +33,19 @@ import javax.swing.JRadioButton;
 
 import com.globalscalingsoftware.prefdialog.swingutils.AbstractLabelFieldPanel;
 
-public class RadioButtonsPanel extends AbstractLabelFieldPanel<JPanel> {
+/**
+ * Adds in the panel {@link JRadioButton}s.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.1
+ */
+class RadioButtonsPanel extends AbstractLabelFieldPanel<JPanel> {
 
 	private final TableLayout layout;
 
 	private final ButtonGroup buttonsGroup;
 
 	private final Map<ButtonModel, Object> buttons;
-
-	private String name;
 
 	private boolean enabled;
 
@@ -49,7 +55,10 @@ public class RadioButtonsPanel extends AbstractLabelFieldPanel<JPanel> {
 
 	private int row;
 
-	public RadioButtonsPanel() {
+	/**
+	 * Create and add the {@link JRadioButton}s for the value.
+	 */
+	RadioButtonsPanel() {
 		super(new JPanel());
 		this.layout = new TableLayout(new double[] { TableLayout.PREFERRED },
 				new double[] {});
@@ -73,6 +82,9 @@ public class RadioButtonsPanel extends AbstractLabelFieldPanel<JPanel> {
 		return value;
 	}
 
+	/**
+	 * Set the columns and rows for the buttons.
+	 */
 	public void setColumnsRows(int columns, int rows) {
 		double[] column = new double[columns];
 		for (int i = 0; i < columns; i++) {
@@ -89,27 +101,47 @@ public class RadioButtonsPanel extends AbstractLabelFieldPanel<JPanel> {
 		layout.setRow(row);
 	}
 
+	/**
+	 * Add a new {@link JRadioButton}.
+	 * 
+	 * @param value
+	 *            the value of the button.
+	 * 
+	 * @param text
+	 *            the text of the button, is used for the name and the title.
+	 */
 	public void addRadioButton(Object value, String text) {
-		JRadioButton button = new JRadioButton(text);
-		button.setName(format("%s-%s", name, text));
-		button.setEnabled(enabled);
-		buttons.put(button.getModel(), value);
-		buttonsGroup.add(button);
+		JRadioButton button = createButton(value, text);
+		addButtonToPanel(button);
+		row++;
+		buttonsCount++;
+	}
 
+	private void addButtonToPanel(JRadioButton button) {
 		int column = buttonsCount / rows;
 		if (row >= rows) {
 			row = 0;
 		}
 		getPanelField().add(button, format("%d, %d", column, row));
+	}
 
-		row++;
-		buttonsCount++;
+	private JRadioButton createButton(Object value, String text) {
+		JRadioButton button = new JRadioButton(text);
+		button.setName(text);
+		button.setEnabled(enabled);
+		buttons.put(button.getModel(), value);
+		buttonsGroup.add(button);
+		return button;
 	}
 
 	@Override
 	public void setName(String name) {
-		this.name = name;
 		super.setName(name);
+		Enumeration<AbstractButton> enu = buttonsGroup.getElements();
+		while (enu.hasMoreElements()) {
+			AbstractButton button = enu.nextElement();
+			button.setName(format("%s-%s", name, button.getName()));
+		}
 	}
 
 	@Override
