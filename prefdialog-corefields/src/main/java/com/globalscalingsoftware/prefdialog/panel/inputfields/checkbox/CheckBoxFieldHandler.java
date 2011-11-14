@@ -46,7 +46,7 @@ class CheckBoxFieldHandler extends AbstractLabelFieldHandler<CheckBoxPanel> {
 	 * Sets the parameter of the {@link CheckBoxPanel}.
 	 * 
 	 * @param panel
-	 *            the {@link ButtonGroupPanel}.
+	 *            the {@link CheckBoxPanel}.
 	 * 
 	 * @param parentObject
 	 *            the {@link Object} where the field is defined.
@@ -87,7 +87,7 @@ class CheckBoxFieldHandler extends AbstractLabelFieldHandler<CheckBoxPanel> {
 	 * Injects the checkbox field {@link LoggerFactory}.
 	 */
 	@Inject
-	public void setButtonFieldLoggerFactory(LoggerFactory loggerFactory) {
+	public void setCheckBoxFieldLoggerFactory(LoggerFactory loggerFactory) {
 		log = loggerFactory.create(CheckBoxFieldHandler.class);
 	}
 }

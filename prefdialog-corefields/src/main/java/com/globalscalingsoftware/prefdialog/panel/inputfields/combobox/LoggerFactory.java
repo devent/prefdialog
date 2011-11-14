@@ -1,19 +1,30 @@
 package com.globalscalingsoftware.prefdialog.panel.inputfields.combobox;
 
-import java.lang.reflect.Field;
 import java.util.Collection;
-
-import javax.swing.ComboBoxModel;
-import javax.swing.ListCellRenderer;
 
 import com.globalscalingsoftware.prefdialog.swingutils.AbstractSwingLogger;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
+/**
+ * Factory to create a new combobox field {@link Logger}.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.1
+ */
 interface LoggerFactory {
 
+	/**
+	 * Creates a new combobox field {@link Logger} for the given {@link Class}.
+	 */
 	Logger create(@Assisted Class<?> clazz);
 
+	/**
+	 * Log messages for the combobox field.
+	 * 
+	 * @author Erwin Mueller, erwin.mueller@deventm.org
+	 * @since 2.1
+	 */
 	class Logger extends AbstractSwingLogger {
 
 		@Inject
@@ -21,20 +32,19 @@ interface LoggerFactory {
 			super(contextClass);
 		}
 
-		public void setRenderer(Field field, ListCellRenderer renderer) {
-			log.debug(
-					"Set new list cell renderer ``{}'' for the field ``{}''.",
-					renderer, field);
+		void setRenderer(Object renderer, Object handler) {
+			log.debug("Set new list cell renderer {} for the handler {}.",
+					renderer, handler);
 		}
 
-		public void setModel(Field field, ComboBoxModel model) {
-			log.debug("Set new combo box model ``{}'' for the field ``{}''.",
-					model, field);
+		void setModel(Object model, Object handler) {
+			log.debug("Set new combo box model {} for the handler {}.", model,
+					handler);
 		}
 
-		public void setValues(Field field, Collection<?> values) {
-			log.debug("Set new values ``{}'' for the field ``{}''.", values,
-					field);
+		void setValues(Collection<?> values, Object handler) {
+			log.debug("Set new values ``{}'' for the handler {}.", values,
+					handler);
 		}
 
 	}

@@ -26,34 +26,61 @@ import javax.annotation.Nullable;
 import javax.swing.ComboBoxModel;
 import javax.swing.ListCellRenderer;
 
+import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.annotations.ComboBox;
 import com.globalscalingsoftware.prefdialog.annotations.ComboBoxElements;
-import com.globalscalingsoftware.prefdialog.panel.inputfields.combobox.LoggerFactory.Logger;
-import com.globalscalingsoftware.prefdialog.reflection.ReflectionToolbox;
 import com.globalscalingsoftware.prefdialog.swingutils.AbstractLabelFieldHandler;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
+/**
+ * Sets the {@link ComboBoxPanel} as the managed component.
+ * 
+ * The additional attributes are:
+ * <ul>
+ * <li>renderer</li>
+ * <li>model</li>
+ * <li>elements</li>
+ * </ul>
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.1
+ */
 class ComboBoxFieldHandler extends AbstractLabelFieldHandler<ComboBoxPanel> {
 
-	private final Logger log;
+	private LoggerFactory.Logger log;
 
+	/**
+	 * Sets the parameter of the {@link ComboBoxPanel}.
+	 * 
+	 * @param panel
+	 *            the {@link ComboBoxPanel}.
+	 * 
+	 * @param parentObject
+	 *            the {@link Object} where the field is defined.
+	 * 
+	 * @param value
+	 *            the value of the field.
+	 * 
+	 * @param field
+	 *            the {@link Field}.
+	 */
 	@Inject
-	ComboBoxFieldHandler(LoggerFactory loggerFactory,
-			ReflectionToolbox reflectionToolbox,
+	ComboBoxFieldHandler(ComboBoxPanel panel,
 			@Assisted("parentObject") Object parentObject,
 			@Assisted("value") @Nullable Object value, @Assisted Field field) {
-		super(loggerFactory, reflectionToolbox, parentObject, value, field,
-				ComboBox.class, new ComboBoxPanel());
-		this.log = loggerFactory.create(ComboBoxFieldHandler.class);
-		setup();
-		setComponentValue(value);
+		super(parentObject, value, field, ComboBox.class, panel);
 	}
 
-	public void setup() {
+	/**
+	 * Set a custom model, a custom renderer and the elements for the combobox.
+	 */
+	@Override
+	public FieldHandler<ComboBoxPanel> setup() {
 		setupCustomModel();
 		setupCustomRenderer();
 		setupElements();
+		return super.setup();
 	}
 
 	private void setupCustomRenderer() {
@@ -61,13 +88,13 @@ class ComboBoxFieldHandler extends AbstractLabelFieldHandler<ComboBoxPanel> {
 		Annotation a = field.getAnnotation(ComboBox.class);
 		Class<? extends ListCellRenderer> rendererClass = getRenderer(a);
 		ListCellRenderer renderer = createInstance(rendererClass);
-		log.setRenderer(getField(), renderer);
 		getComponent().setRenderer(renderer);
+		log.setRenderer(renderer, this);
 	}
 
 	@SuppressWarnings("unchecked")
 	private Class<? extends ListCellRenderer> getRenderer(Annotation a) {
-		return reflectionToolbox.invokeMethodWithReturnType("renderer",
+		return getReflectionToolbox().invokeMethodWithReturnType("renderer",
 				Class.class, a);
 	}
 
@@ -76,13 +103,13 @@ class ComboBoxFieldHandler extends AbstractLabelFieldHandler<ComboBoxPanel> {
 		Annotation a = field.getAnnotation(ComboBox.class);
 		Class<? extends ComboBoxModel> modelClass = getModel(a);
 		ComboBoxModel model = createInstance(modelClass);
-		log.setModel(getField(), model);
 		getComponent().setModel(model);
+		log.setModel(model, this);
 	}
 
 	@SuppressWarnings("unchecked")
 	private Class<? extends ComboBoxModel> getModel(Annotation a) {
-		return reflectionToolbox.invokeMethodWithReturnType("model",
+		return getReflectionToolbox().invokeMethodWithReturnType("model",
 				Class.class, a);
 	}
 
@@ -99,7 +126,7 @@ class ComboBoxFieldHandler extends AbstractLabelFieldHandler<ComboBoxPanel> {
 	private void setupElements() {
 		Collection<?> values = getValuesFromAnnotationIn();
 		if (values != null) {
-			log.setValues(getField(), values);
+			log.setValues(values, this);
 			getComponent().setValues(values);
 		}
 	}
@@ -114,14 +141,21 @@ class ComboBoxFieldHandler extends AbstractLabelFieldHandler<ComboBoxPanel> {
 
 	private Collection<?> getElementsCollection(Object parentObject,
 			String elements) {
-		return ((Collection<?>) reflectionToolbox
+		return ((Collection<?>) getReflectionToolbox()
 				.searchObjectWithAnnotationValueIn(parentObject,
 						ComboBoxElements.class, elements, Collection.class));
 	}
 
 	private String getElements(Annotation a) {
-		return reflectionToolbox.invokeMethodWithReturnType("elements",
+		return getReflectionToolbox().invokeMethodWithReturnType("elements",
 				String.class, a);
 	}
 
+	/**
+	 * Injects the combobox field {@link LoggerFactory}.
+	 */
+	@Inject
+	public void setComboBoxFieldLoggerFactory(LoggerFactory loggerFactory) {
+		log = loggerFactory.create(ComboBoxFieldHandler.class);
+	}
 }

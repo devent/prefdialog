@@ -27,9 +27,18 @@ import javax.swing.MutableComboBoxModel;
 
 import com.globalscalingsoftware.prefdialog.swingutils.AbstractLabelFieldPanel;
 
-public class ComboBoxPanel extends AbstractLabelFieldPanel<JComboBox> {
+/**
+ * Sets a {@link JComboBox} as the field.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.1
+ */
+class ComboBoxPanel extends AbstractLabelFieldPanel<JComboBox> {
 
-	public ComboBoxPanel() {
+	/**
+	 * Create and setup the {@link JComboBox}.
+	 */
+	ComboBoxPanel() {
 		super(new JComboBox());
 		setup();
 	}
@@ -52,6 +61,9 @@ public class ComboBoxPanel extends AbstractLabelFieldPanel<JComboBox> {
 		return true;
 	}
 
+	/**
+	 * Sets the new {@link Collection} of values for the combobox.
+	 */
 	public void setValues(Collection<?> values) {
 		MutableComboBoxModel model = getMutableModel();
 		for (Object object : values) {
@@ -63,10 +75,16 @@ public class ComboBoxPanel extends AbstractLabelFieldPanel<JComboBox> {
 		return (MutableComboBoxModel) getPanelField().getModel();
 	}
 
+	/**
+	 * Sets a new {@link ListCellRenderer} for the combobox.
+	 */
 	public void setRenderer(ListCellRenderer renderer) {
 		getPanelField().setRenderer(renderer);
 	}
 
+	/**
+	 * Sets a new {@link ComboBoxModel} for the combobox.
+	 */
 	public void setModel(ComboBoxModel model) {
 		getPanelField().setModel(model);
 	}
