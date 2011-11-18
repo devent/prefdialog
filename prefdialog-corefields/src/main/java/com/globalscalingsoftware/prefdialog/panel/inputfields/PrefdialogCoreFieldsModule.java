@@ -10,6 +10,7 @@ import com.globalscalingsoftware.prefdialog.FieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.annotations.ButtonGroup;
 import com.globalscalingsoftware.prefdialog.annotations.Checkbox;
 import com.globalscalingsoftware.prefdialog.annotations.Child;
+import com.globalscalingsoftware.prefdialog.annotations.Color;
 import com.globalscalingsoftware.prefdialog.annotations.ComboBox;
 import com.globalscalingsoftware.prefdialog.annotations.FileChooser;
 import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField;
@@ -20,6 +21,7 @@ import com.globalscalingsoftware.prefdialog.annotations.TextField;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.api.ButtonGroupFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.api.CheckBoxFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.api.ChildFieldHandlerFactory;
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.ColorFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.api.ComboBoxFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.api.FileChooserFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.api.FormattedTextFieldHandlerFactory;
@@ -30,6 +32,7 @@ import com.globalscalingsoftware.prefdialog.panel.inputfields.api.TextFieldHandl
 import com.globalscalingsoftware.prefdialog.panel.inputfields.button.ButtonModule;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.checkbox.CheckboxModule;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.child.ChildModule;
+import com.globalscalingsoftware.prefdialog.panel.inputfields.color.ColorModule;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.combobox.ComboBoxModule;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.filechooser.FileChooserModule;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.group.GroupModule;
@@ -66,6 +69,7 @@ public class PrefdialogCoreFieldsModule extends AbstractModule {
 		install(new FormattedTextFieldModule());
 		install(new ChildModule());
 		install(new GroupModule());
+		install(new ColorModule());
 	}
 
 	@Provides
@@ -94,6 +98,8 @@ public class PrefdialogCoreFieldsModule extends AbstractModule {
 				injector.getInstance(GroupFieldHandlerFactory.class));
 		fieldHandlerFactoriesMap.put(ButtonGroup.class,
 				injector.getInstance(ButtonGroupFieldHandlerFactory.class));
+		fieldHandlerFactoriesMap.put(Color.class,
+				injector.getInstance(ColorFieldHandlerFactory.class));
 		return fieldHandlerFactoriesMap;
 	}
 
@@ -111,6 +117,7 @@ public class PrefdialogCoreFieldsModule extends AbstractModule {
 		annotations.add(Child.class);
 		annotations.add(FileChooser.class);
 		annotations.add(ButtonGroup.class);
+		annotations.add(Color.class);
 		return annotations;
 	}
 
