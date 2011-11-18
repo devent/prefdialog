@@ -90,7 +90,7 @@ class ColorFieldHandler extends AbstractLabelFieldHandler<ColorPanel> {
 	}
 
 	private Color getValueAsColor() {
-		return (Color) getValue();
+		return (Color) getComponent().getValue();
 	}
 
 	/**

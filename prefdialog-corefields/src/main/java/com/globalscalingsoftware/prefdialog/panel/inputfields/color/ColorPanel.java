@@ -40,6 +40,7 @@ import com.google.inject.Inject;
 class ColorPanel extends AbstractLabelFieldPanel<UiColorPanel> {
 
 	private Color color;
+
 	private String title;
 
 	/**
@@ -125,4 +126,11 @@ class ColorPanel extends AbstractLabelFieldPanel<UiColorPanel> {
 		return true;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
+	public Color getColor() {
+		return color;
+	}
 }
