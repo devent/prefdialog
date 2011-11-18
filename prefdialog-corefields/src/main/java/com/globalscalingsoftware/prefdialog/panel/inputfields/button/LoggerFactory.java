@@ -1,6 +1,6 @@
 package com.globalscalingsoftware.prefdialog.panel.inputfields.button;
 
-import com.globalscalingsoftware.prefdialog.annotations.HorizontalPosition;
+import com.globalscalingsoftware.prefdialog.annotations.HorizontalPositions;
 import com.globalscalingsoftware.prefdialog.swingutils.AbstractSwingLogger;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -31,7 +31,7 @@ interface LoggerFactory {
 			super(contextClass);
 		}
 
-		void setHorizontalPosition(HorizontalPosition position, Object handler) {
+		void setHorizontalPosition(HorizontalPositions position, Object handler) {
 			log.debug("Set horizontal position to {} for the handler {}.",
 					position, handler);
 		}

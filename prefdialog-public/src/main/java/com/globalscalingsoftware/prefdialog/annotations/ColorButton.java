@@ -36,7 +36,7 @@ import java.lang.annotation.Target;
  */
 @Target(FIELD)
 @Retention(RUNTIME)
-public @interface Color {
+public @interface ColorButton {
 
 	/**
 	 * The width of the color field inside the container.
@@ -59,5 +59,12 @@ public @interface Color {
 	 * If the title of the should be visible or not.
 	 */
 	boolean showTitle() default true;
+
+	/**
+	 * The horizontal position of the button as defined in
+	 * {@link HorizontalPositions}. The default is
+	 * {@link HorizontalPositions#RIGHT}
+	 */
+	HorizontalPositions horizontalPositions() default HorizontalPositions.RIGHT;
 
 }

@@ -16,26 +16,27 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.panel.inputfields.color
+package com.globalscalingsoftware.prefdialog.panel.inputfields.colorbutton
 
 import java.awt.Color
 
 import org.junit.Test
 
+import com.globalscalingsoftware.prefdialog.annotations.ColorButton
 import com.globalscalingsoftware.prefdialog.panel.inputfields.AbstractFieldFixture
 import com.globalscalingsoftware.prefdialog.panel.inputfields.api.ColorFieldHandlerFactory
 
-class ColorTest extends AbstractFieldFixture {
+class ColorButtonTest extends AbstractFieldFixture {
 
 	static factory = injector.getInstance(ColorFieldHandlerFactory)
 
 	static class General {
 
-		@com.globalscalingsoftware.prefdialog.annotations.Color
+		@ColorButton
 		Color color = Color.WHITE
 	}
 
-	ColorTest() {
+	ColorButtonTest() {
 		super(new General(), 'color', factory)
 	}
 

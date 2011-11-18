@@ -23,7 +23,7 @@ import java.lang.reflect.Field;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.annotations.ButtonGroup;
-import com.globalscalingsoftware.prefdialog.annotations.HorizontalPosition;
+import com.globalscalingsoftware.prefdialog.annotations.HorizontalPositions;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.button.LoggerFactory.Logger;
 import com.globalscalingsoftware.prefdialog.swingutils.AbstractLabelFieldHandler;
 import com.google.inject.Inject;
@@ -79,9 +79,9 @@ class ButtonGroupFieldHandler extends
 
 	private void setupHorizontalPosition() {
 		Annotation a = getField().getAnnotation(ButtonGroup.class);
-		HorizontalPosition position = getReflectionToolbox()
+		HorizontalPositions position = getReflectionToolbox()
 				.invokeMethodWithReturnType("horizontalPosition",
-						HorizontalPosition.class, a);
+						HorizontalPositions.class, a);
 		getComponent().setHorizontalPosition(position);
 		log.setHorizontalPosition(position, this);
 	}

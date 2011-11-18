@@ -1,4 +1,4 @@
-package com.globalscalingsoftware.prefdialog.panel.inputfields.color;
+package com.globalscalingsoftware.prefdialog.panel.inputfields.colorbutton;
 
 import info.clearthought.layout.TableLayout;
 
@@ -17,7 +17,7 @@ import javax.swing.WindowConstants;
  * ANY CORPORATE OR COMMERCIAL PURPOSE.
  */
 @SuppressWarnings("serial")
-class UiColorPanel extends javax.swing.JPanel {
+class UiColorButtonPanel extends javax.swing.JPanel {
 	private JButton colorButton;
 
 	/**
@@ -25,13 +25,13 @@ class UiColorPanel extends javax.swing.JPanel {
 	 */
 	public static void main(String[] args) {
 		JFrame frame = new JFrame();
-		frame.getContentPane().add(new UiColorPanel());
+		frame.getContentPane().add(new UiColorButtonPanel());
 		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		frame.pack();
 		frame.setVisible(true);
 	}
 
-	UiColorPanel() {
+	UiColorButtonPanel() {
 		super();
 		initGUI();
 	}

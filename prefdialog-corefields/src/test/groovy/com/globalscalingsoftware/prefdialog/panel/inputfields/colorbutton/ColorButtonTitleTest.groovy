@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.panel.inputfields.color
+package com.globalscalingsoftware.prefdialog.panel.inputfields.colorbutton
 
 import org.junit.Test
 
@@ -24,7 +24,7 @@ import com.globalscalingsoftware.prefdialog.annotations.FileChooser
 import com.globalscalingsoftware.prefdialog.panel.inputfields.FieldFixtureHandler
 import com.globalscalingsoftware.prefdialog.panel.inputfields.api.FileChooserFieldHandlerFactory
 
-class ColorTitleTest extends FieldFixtureHandler {
+class ColorButtonTitleTest extends FieldFixtureHandler {
 
 	static factory = injector.getInstance(FileChooserFieldHandlerFactory)
 

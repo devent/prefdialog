@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.panel.inputfields.color;
+package com.globalscalingsoftware.prefdialog.panel.inputfields.colorbutton;
 
 import static java.lang.String.format;
 
@@ -25,19 +25,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JFormattedTextField;
 
 import com.globalscalingsoftware.prefdialog.swingutils.AbstractLabelFieldPanel;
 import com.google.inject.Inject;
 
 /**
- * Sets a {@link JFormattedTextField} with a {@link JButton}. In the text field
- * we can enter and show the file.
+ * Sets a {@link JButton} that shows the current color. The button have a
+ * background color of the current color.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 2.1
  */
-class ColorPanel extends AbstractLabelFieldPanel<UiColorPanel> {
+class ColorButtonPanel extends AbstractLabelFieldPanel<UiColorButtonPanel> {
 
 	private Color color;
 
@@ -47,7 +46,7 @@ class ColorPanel extends AbstractLabelFieldPanel<UiColorPanel> {
 	 * Set the {@link UiFileChooserPanel}.
 	 */
 	@Inject
-	ColorPanel(UiColorPanel panel) {
+	ColorButtonPanel(UiColorButtonPanel panel) {
 		super(panel);
 	}
 
@@ -126,11 +125,4 @@ class ColorPanel extends AbstractLabelFieldPanel<UiColorPanel> {
 		return true;
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
-	public Color getColor() {
-		return color;
-	}
 }

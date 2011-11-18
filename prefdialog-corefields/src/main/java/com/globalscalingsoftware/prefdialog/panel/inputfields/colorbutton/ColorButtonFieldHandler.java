@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.globalscalingsoftware.prefdialog.panel.inputfields.color;
+package com.globalscalingsoftware.prefdialog.panel.inputfields.colorbutton;
 
 import java.awt.Color;
 import java.lang.reflect.Field;
@@ -24,25 +24,27 @@ import java.lang.reflect.Field;
 import javax.swing.JColorChooser;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
+import com.globalscalingsoftware.prefdialog.annotations.ColorButton;
 import com.globalscalingsoftware.prefdialog.swingutils.AbstractLabelFieldHandler;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 /**
- * Sets the {@link ColorPanel} as the managed component.
+ * Sets the {@link ColorButtonPanel} as the managed component.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 2.1
  */
-class ColorFieldHandler extends AbstractLabelFieldHandler<ColorPanel> {
+class ColorButtonFieldHandler extends
+		AbstractLabelFieldHandler<ColorButtonPanel> {
 
 	private LoggerFactory.Logger log;
 
 	/**
-	 * Sets the parameter of the {@link ColorPanel}.
+	 * Sets the parameter of the {@link ColorButtonPanel}.
 	 * 
 	 * @param panel
-	 *            the {@link ColorPanel}.
+	 *            the {@link ColorButtonPanel}.
 	 * 
 	 * @param parentObject
 	 *            the {@link Object} where the field is defined.
@@ -54,19 +56,17 @@ class ColorFieldHandler extends AbstractLabelFieldHandler<ColorPanel> {
 	 *            the {@link Field}.
 	 */
 	@Inject
-	ColorFieldHandler(ColorPanel panel,
+	ColorButtonFieldHandler(ColorButtonPanel panel,
 			@Assisted("parentObject") Object parentObject,
 			@Assisted("value") Object value, @Assisted Field field) {
-		super(parentObject, value, field,
-				com.globalscalingsoftware.prefdialog.annotations.Color.class,
-				panel);
+		super(parentObject, value, field, ColorButton.class, panel);
 	}
 
 	/**
 	 * Set the open color panel action.
 	 */
 	@Override
-	public FieldHandler<ColorPanel> setup() {
+	public FieldHandler<ColorButtonPanel> setup() {
 		getComponent().setOpenColorChoserAction(new Runnable() {
 
 			@Override
@@ -98,6 +98,6 @@ class ColorFieldHandler extends AbstractLabelFieldHandler<ColorPanel> {
 	 */
 	@Inject
 	public void setFileChooserFieldLoggerFactory(LoggerFactory loggerFactory) {
-		log = loggerFactory.create(ColorFieldHandler.class);
+		log = loggerFactory.create(ColorButtonFieldHandler.class);
 	}
 }

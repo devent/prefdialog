@@ -28,7 +28,7 @@ import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import com.globalscalingsoftware.prefdialog.annotations.HorizontalPosition;
+import com.globalscalingsoftware.prefdialog.annotations.HorizontalPositions;
 import com.globalscalingsoftware.prefdialog.swingutils.AbstractLabelFieldPanel;
 
 /**
@@ -111,7 +111,7 @@ class ButtonGroupPanel extends AbstractLabelFieldPanel<JPanel> {
 		return true;
 	}
 
-	public void setHorizontalPosition(HorizontalPosition position) {
+	public void setHorizontalPosition(HorizontalPositions position) {
 		switch (position) {
 		case RIGHT:
 			layout.insertColumn(0, TableLayout.FILL);
