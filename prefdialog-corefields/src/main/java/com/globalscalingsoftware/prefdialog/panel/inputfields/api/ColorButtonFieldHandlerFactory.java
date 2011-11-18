@@ -17,7 +17,7 @@ import com.google.inject.assistedinject.Assisted;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 2.1
  */
-public interface ColorFieldHandlerFactory extends FieldHandlerFactory {
+public interface ColorButtonFieldHandlerFactory extends FieldHandlerFactory {
 
 	@Override
 	FieldHandler<?> create(@Assisted("parentObject") Object parentObject,

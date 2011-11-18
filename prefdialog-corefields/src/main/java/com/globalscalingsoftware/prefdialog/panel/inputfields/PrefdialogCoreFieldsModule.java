@@ -21,7 +21,7 @@ import com.globalscalingsoftware.prefdialog.annotations.TextField;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.api.ButtonGroupFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.api.CheckBoxFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.api.ChildFieldHandlerFactory;
-import com.globalscalingsoftware.prefdialog.panel.inputfields.api.ColorFieldHandlerFactory;
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.ColorButtonFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.api.ComboBoxFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.api.FileChooserFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.api.FormattedTextFieldHandlerFactory;
@@ -99,7 +99,7 @@ public class PrefdialogCoreFieldsModule extends AbstractModule {
 		fieldHandlerFactoriesMap.put(ButtonGroup.class,
 				injector.getInstance(ButtonGroupFieldHandlerFactory.class));
 		fieldHandlerFactoriesMap.put(ColorButton.class,
-				injector.getInstance(ColorFieldHandlerFactory.class));
+				injector.getInstance(ColorButtonFieldHandlerFactory.class));
 		return fieldHandlerFactoriesMap;
 	}
 

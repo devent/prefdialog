@@ -23,57 +23,72 @@ import java.awt.Color
 import org.junit.Test
 
 import com.globalscalingsoftware.prefdialog.annotations.ColorButton
+import com.globalscalingsoftware.prefdialog.annotations.HorizontalPositions
 import com.globalscalingsoftware.prefdialog.panel.inputfields.FieldFixtureHandler
 import com.globalscalingsoftware.prefdialog.panel.inputfields.api.ColorButtonFieldHandlerFactory
 
 /**
- * Test the title and showTitle attributes of the color button.
+ * Test the horizontal positions of the color button.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 2.1
  */
-class ColorButtonTitleTest extends FieldFixtureHandler {
+class ColorButtonHorizontalPositionTest extends FieldFixtureHandler {
 
 	static factory = injector.getInstance(ColorButtonFieldHandlerFactory)
 
 	static class General {
 
 		@ColorButton
-		Color color1 = Color.WHITE
+		Color colorDefault = Color.WHITE
 
-		@ColorButton(title='Color:')
-		Color color2 = Color.WHITE
+		@ColorButton(horizontalPosition=HorizontalPositions.LEFT)
+		Color colorLeft = Color.WHITE
 
-		@ColorButton(showTitle=false)
-		Color color3 = Color.WHITE
+		@ColorButton(horizontalPosition=HorizontalPositions.RIGHT)
+		Color colorRight = Color.WHITE
+
+		@ColorButton(horizontalPosition=HorizontalPositions.MIDDLE)
+		Color colorMiddle = Color.WHITE
 	}
 
 	@Test
-	void "default title"() {
-		createFieldFixture(new General(), 'color1', factory)
+	void "default horizontal position"() {
+		createFieldFixture(new General(), 'colorDefault', factory)
 		beginFixture()
-		assert fixture.label('label-color1').text() == 'color1'
+		assert fixture.label('label-colorDefault').text() == 'colorDefault'
 		endFixture()
 	}
 
 	@Test
-	void "custom title"() {
-		createFieldFixture(new General(), 'color2', factory)
+	void "left horizontal position"() {
+		createFieldFixture(new General(), 'colorLeft', factory)
 		beginFixture()
-		assert fixture.label('label-color2').text() == 'Color:'
+		assert fixture.label('label-colorLeft').text() == 'colorLeft'
 		endFixture()
 	}
 
 	@Test
-	void "no title"() {
-		createFieldFixture(new General(), 'color3', factory)
+	void "right horizontal position"() {
+		createFieldFixture(new General(), 'colorRight', factory)
 		beginFixture()
-		//assert fixture.label('label-file3').text() == 'file3'
+		assert fixture.label('label-colorRight').text() == 'colorRight'
+		endFixture()
+	}
+
+	@Test
+	void "middle horizontal position"() {
+		createFieldFixture(new General(), 'colorMiddle', factory)
+		beginFixture()
+		assert fixture.label('label-colorMiddle').text() == 'colorMiddle'
 		endFixture()
 	}
 
 	@Test
 	void testManual() {
+		createFieldFixture(new General(), 'colorMiddle', factory)
+		beginFixture()
 		//Thread.sleep(30000)
+		endFixture()
 	}
 }

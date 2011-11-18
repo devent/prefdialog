@@ -1,7 +1,7 @@
 package com.globalscalingsoftware.prefdialog.panel.inputfields.colorbutton;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
-import com.globalscalingsoftware.prefdialog.panel.inputfields.api.ColorFieldHandlerFactory;
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.ColorButtonFieldHandlerFactory;
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
@@ -19,7 +19,7 @@ public class ColorButtonModule extends AbstractModule {
 		install(new FactoryModuleBuilder().implement(
 				new TypeLiteral<FieldHandler<?>>() {
 				}, ColorButtonFieldHandler.class).build(
-				ColorFieldHandlerFactory.class));
+				ColorButtonFieldHandlerFactory.class));
 		install(new FactoryModuleBuilder().implement(
 				LoggerFactory.Logger.class, LoggerFactory.Logger.class).build(
 				LoggerFactory.class));

@@ -24,11 +24,17 @@ import org.junit.Test
 
 import com.globalscalingsoftware.prefdialog.annotations.ColorButton
 import com.globalscalingsoftware.prefdialog.panel.inputfields.AbstractFieldFixture
-import com.globalscalingsoftware.prefdialog.panel.inputfields.api.ColorFieldHandlerFactory
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.ColorButtonFieldHandlerFactory
 
+/**
+ * Test the behavior the color button.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.1
+ */
 class ColorButtonTest extends AbstractFieldFixture {
 
-	static factory = injector.getInstance(ColorFieldHandlerFactory)
+	static factory = injector.getInstance(ColorButtonFieldHandlerFactory)
 
 	static class General {
 
@@ -50,6 +56,6 @@ class ColorButtonTest extends AbstractFieldFixture {
 
 	@Test
 	void "manually"() {
-		Thread.sleep 30000
+		Thread.sleep 0
 	}
 }
