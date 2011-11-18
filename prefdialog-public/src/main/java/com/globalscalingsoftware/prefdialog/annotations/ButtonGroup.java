@@ -47,7 +47,7 @@ public @interface ButtonGroup {
 	boolean showTitle() default false;
 
 	/**
-	 * The {@link HorizontalPosition} of the buttons in the group.
+	 * The {@link HorizontalPositions} of the buttons in the group.
 	 */
-	HorizontalPosition horizontalPosition() default HorizontalPosition.RIGHT;
+	HorizontalPositions horizontalPosition() default HorizontalPositions.RIGHT;
 }

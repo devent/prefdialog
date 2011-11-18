@@ -19,12 +19,14 @@
 package com.globalscalingsoftware.prefdialog.panel.inputfields.colorbutton;
 
 import java.awt.Color;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
 import javax.swing.JColorChooser;
 
 import com.globalscalingsoftware.prefdialog.FieldHandler;
 import com.globalscalingsoftware.prefdialog.annotations.ColorButton;
+import com.globalscalingsoftware.prefdialog.annotations.HorizontalPositions;
 import com.globalscalingsoftware.prefdialog.swingutils.AbstractLabelFieldHandler;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -63,10 +65,16 @@ class ColorButtonFieldHandler extends
 	}
 
 	/**
-	 * Set the open color panel action.
+	 * Set the open color panel action and the horizontal position.
 	 */
 	@Override
 	public FieldHandler<ColorButtonPanel> setup() {
+		setupOpenColorChoser();
+		setupHorizontalPosition();
+		return super.setup();
+	}
+
+	private void setupOpenColorChoser() {
 		getComponent().setOpenColorChoserAction(new Runnable() {
 
 			@Override
@@ -74,7 +82,6 @@ class ColorButtonFieldHandler extends
 				openFileChooserDialog();
 			}
 		});
-		return super.setup();
 	}
 
 	private void openFileChooserDialog() {
@@ -91,6 +98,15 @@ class ColorButtonFieldHandler extends
 
 	private Color getValueAsColor() {
 		return (Color) getComponent().getValue();
+	}
+
+	private void setupHorizontalPosition() {
+		Annotation a = getField().getAnnotation(ColorButton.class);
+		HorizontalPositions position = getReflectionToolbox()
+				.invokeMethodWithReturnType("horizontalPosition",
+						HorizontalPositions.class, a);
+		getComponent().setHorizontalPosition(position);
+		log.setHorizontalPosition(position, this);
 	}
 
 	/**

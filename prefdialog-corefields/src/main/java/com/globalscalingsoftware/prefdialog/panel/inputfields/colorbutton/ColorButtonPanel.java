@@ -19,6 +19,7 @@
 package com.globalscalingsoftware.prefdialog.panel.inputfields.colorbutton;
 
 import static java.lang.String.format;
+import info.clearthought.layout.TableLayout;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -26,6 +27,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
+import com.globalscalingsoftware.prefdialog.annotations.HorizontalPositions;
 import com.globalscalingsoftware.prefdialog.swingutils.AbstractLabelFieldPanel;
 import com.google.inject.Inject;
 
@@ -123,6 +125,24 @@ class ColorButtonPanel extends AbstractLabelFieldPanel<UiColorButtonPanel> {
 	@Override
 	public boolean isInputValid() {
 		return true;
+	}
+
+	/**
+	 * Set the horizontal position of the color button.
+	 */
+	public void setHorizontalPosition(HorizontalPositions position) {
+		switch (position) {
+		case LEFT:
+			getPanelField().getThisLayout().setColumn(0, 0);
+			break;
+		case RIGHT:
+			getPanelField().getThisLayout().setColumn(2, 0);
+			break;
+		case MIDDLE:
+			getPanelField().getThisLayout().setColumn(0, TableLayout.FILL);
+			getPanelField().getThisLayout().setColumn(2, TableLayout.FILL);
+			break;
+		}
 	}
 
 }

@@ -65,6 +65,6 @@ public @interface ColorButton {
 	 * {@link HorizontalPositions}. The default is
 	 * {@link HorizontalPositions#RIGHT}
 	 */
-	HorizontalPositions horizontalPositions() default HorizontalPositions.RIGHT;
+	HorizontalPositions horizontalPosition() default HorizontalPositions.RIGHT;
 
 }

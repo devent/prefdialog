@@ -19,6 +19,7 @@ import javax.swing.WindowConstants;
 @SuppressWarnings("serial")
 class UiColorButtonPanel extends javax.swing.JPanel {
 	private JButton colorButton;
+	private TableLayout thisLayout;
 
 	/**
 	 * Auto-generated main method to display this JPanel inside a new JFrame.
@@ -38,7 +39,7 @@ class UiColorButtonPanel extends javax.swing.JPanel {
 
 	private void initGUI() {
 		try {
-			TableLayout thisLayout = new TableLayout(
+			thisLayout = new TableLayout(
 					new double[][] {
 							{ TableLayout.FILL, TableLayout.PREFERRED,
 									TableLayout.FILL }, { TableLayout.FILL } });
@@ -59,4 +60,7 @@ class UiColorButtonPanel extends javax.swing.JPanel {
 		return colorButton;
 	}
 
+	public TableLayout getThisLayout() {
+		return thisLayout;
+	}
 }

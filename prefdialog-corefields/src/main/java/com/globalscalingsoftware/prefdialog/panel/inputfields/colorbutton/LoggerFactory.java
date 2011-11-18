@@ -1,5 +1,6 @@
 package com.globalscalingsoftware.prefdialog.panel.inputfields.colorbutton;
 
+import com.globalscalingsoftware.prefdialog.annotations.HorizontalPositions;
 import com.globalscalingsoftware.prefdialog.swingutils.AbstractSwingLogger;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -33,6 +34,12 @@ interface LoggerFactory {
 
 		void openColorChooserDialog(Object handler) {
 			log.debug("Open color chooser dialog for the handler {}.", handler);
+		}
+
+		void setHorizontalPosition(HorizontalPositions position, Object handler) {
+			log.debug(
+					"Set the horizontal position of the color button to {} for the handler {}.",
+					position, handler);
 		}
 
 	}
