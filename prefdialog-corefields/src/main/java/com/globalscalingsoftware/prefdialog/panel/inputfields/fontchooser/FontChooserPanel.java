@@ -23,9 +23,12 @@ import static java.lang.String.format;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 import javax.swing.JButton;
 
+import com.globalscalingsoftware.prefdialog.panel.inputfields.fontchooser.FontChooserComboBox.Item;
 import com.globalscalingsoftware.prefdialog.swingutils.AbstractLabelFieldPanel;
 import com.google.inject.Inject;
 
@@ -39,6 +42,7 @@ import com.google.inject.Inject;
 class FontChooserPanel extends AbstractLabelFieldPanel<UiFontChooserPanel> {
 
 	private Font font;
+
 	private String title;
 
 	/**
@@ -51,6 +55,14 @@ class FontChooserPanel extends AbstractLabelFieldPanel<UiFontChooserPanel> {
 	}
 
 	private void setup() {
+		getPanelField().getFontBox().addItemListener(new ItemListener() {
+
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				Item item = (FontChooserComboBox.Item) e.getItem();
+				font = item.getItemFont();
+			}
+		});
 	}
 
 	/**

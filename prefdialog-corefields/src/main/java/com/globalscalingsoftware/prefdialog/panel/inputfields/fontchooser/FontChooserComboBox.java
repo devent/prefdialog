@@ -338,7 +338,7 @@ class FontChooserComboBox extends JComboBox implements ItemListener {
 	 * 
 	 * @author Andreas Wenger
 	 */
-	class Item extends JPanel {
+	public class Item extends JPanel {
 
 		private final Font font;
 		private final boolean isSeparator;
@@ -388,6 +388,10 @@ class FontChooserComboBox extends JComboBox implements ItemListener {
 				return font.getFamily();
 			else
 				return "";
+		}
+
+		public Font getItemFont() {
+			return font;
 		}
 
 	}
