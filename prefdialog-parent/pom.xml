@@ -9,11 +9,11 @@
 	<packaging>pom</packaging>
 
 	<modules>
-        <module>../prefdialog-public</module>
-        <module>../prefdialog-reflection</module>
-        <module>../prefdialog-swingutils</module>
-        <module>../prefdialog-corefields</module>
-        <module>../prefdialog-panel</module>
+		<module>../prefdialog-public</module>
+		<module>../prefdialog-reflection</module>
+		<module>../prefdialog-swingutils</module>
+		<module>../prefdialog-corefields</module>
+		<module>../prefdialog-panel</module>
 		<module>../prefdialog-dialog</module>
 	</modules>
 
@@ -46,7 +46,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.build.groovy.version>1.8.0</project.build.groovy.version>
+		<project.build.groovy.version>1.8.0</project.build.groovy.version>
 	</properties>
 
 	<dependencies>
@@ -161,6 +161,7 @@
 				<artifactId>guava</artifactId>
 				<version>r09</version>
 			</dependency>
+			
 			<!-- prefdialog modules -->
 			<dependency>
 				<groupId>com.globalscalingsoftware.prefdialog</groupId>
@@ -180,13 +181,13 @@
 			<dependency>
 				<groupId>com.globalscalingsoftware.prefdialog</groupId>
 				<artifactId>prefdialog-panel</artifactId>
-                <version>${project.version}</version>
+				<version>${project.version}</version>
 			</dependency>
-            <dependency>
-                <groupId>com.globalscalingsoftware.prefdialog</groupId>
-                <artifactId>prefdialog-corefields</artifactId>
-                <version>${project.version}</version>
-            </dependency>
+			<dependency>
+				<groupId>com.globalscalingsoftware.prefdialog</groupId>
+				<artifactId>prefdialog-corefields</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -244,7 +245,7 @@
 					<dependency>
 						<groupId>org.codehaus.groovy</groupId>
 						<artifactId>groovy-all</artifactId>
-                        <version>${project.build.groovy.version}</version>
+						<version>${project.build.groovy.version}</version>
 					</dependency>
 				</dependencies>
 			</plugin>

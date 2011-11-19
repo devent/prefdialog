@@ -13,6 +13,7 @@ import com.globalscalingsoftware.prefdialog.annotations.Child;
 import com.globalscalingsoftware.prefdialog.annotations.ColorButton;
 import com.globalscalingsoftware.prefdialog.annotations.ComboBox;
 import com.globalscalingsoftware.prefdialog.annotations.FileChooser;
+import com.globalscalingsoftware.prefdialog.annotations.FontChooser;
 import com.globalscalingsoftware.prefdialog.annotations.FormattedTextField;
 import com.globalscalingsoftware.prefdialog.annotations.Group;
 import com.globalscalingsoftware.prefdialog.annotations.RadioButton;
@@ -24,6 +25,7 @@ import com.globalscalingsoftware.prefdialog.panel.inputfields.api.ChildFieldHand
 import com.globalscalingsoftware.prefdialog.panel.inputfields.api.ColorButtonFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.api.ComboBoxFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.api.FileChooserFieldHandlerFactory;
+import com.globalscalingsoftware.prefdialog.panel.inputfields.api.FontChooserFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.api.FormattedTextFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.api.GroupFieldHandlerFactory;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.api.RadioButtonFieldHandlerFactory;
@@ -35,6 +37,7 @@ import com.globalscalingsoftware.prefdialog.panel.inputfields.child.ChildModule;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.colorbutton.ColorButtonModule;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.combobox.ComboBoxModule;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.filechooser.FileChooserModule;
+import com.globalscalingsoftware.prefdialog.panel.inputfields.fontchooser.FontChooserModule;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.group.GroupModule;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.radiobutton.RadioButtonModule;
 import com.globalscalingsoftware.prefdialog.panel.inputfields.slider.SliderModule;
@@ -70,6 +73,7 @@ public class PrefdialogCoreFieldsModule extends AbstractModule {
 		install(new ChildModule());
 		install(new GroupModule());
 		install(new ColorButtonModule());
+		install(new FontChooserModule());
 	}
 
 	@Provides
@@ -100,6 +104,8 @@ public class PrefdialogCoreFieldsModule extends AbstractModule {
 				injector.getInstance(ButtonGroupFieldHandlerFactory.class));
 		fieldHandlerFactoriesMap.put(ColorButton.class,
 				injector.getInstance(ColorButtonFieldHandlerFactory.class));
+		fieldHandlerFactoriesMap.put(FontChooser.class,
+				injector.getInstance(FontChooserFieldHandlerFactory.class));
 		return fieldHandlerFactoriesMap;
 	}
 
@@ -118,6 +124,7 @@ public class PrefdialogCoreFieldsModule extends AbstractModule {
 		annotations.add(FileChooser.class);
 		annotations.add(ButtonGroup.class);
 		annotations.add(ColorButton.class);
+		annotations.add(FontChooser.class);
 		return annotations;
 	}
 

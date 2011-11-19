@@ -45,7 +45,7 @@ class ColorButtonPanel extends AbstractLabelFieldPanel<UiColorButtonPanel> {
 	private String title;
 
 	/**
-	 * Set the {@link UiFileChooserPanel}.
+	 * Set the {@link UiFontChooserPanel}.
 	 */
 	@Inject
 	ColorButtonPanel(UiColorButtonPanel panel) {
