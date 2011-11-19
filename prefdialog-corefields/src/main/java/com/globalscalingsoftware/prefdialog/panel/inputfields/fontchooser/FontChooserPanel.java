@@ -28,7 +28,8 @@ import java.awt.event.ItemListener;
 
 import javax.swing.JButton;
 
-import com.globalscalingsoftware.prefdialog.panel.inputfields.fontchooser.FontChooserComboBox.Item;
+import com.globalscalingsoftware.prefdialog.panel.inputfields.fontchooser.fontcombobox.FontComboBox;
+import com.globalscalingsoftware.prefdialog.panel.inputfields.fontchooser.fontcombobox.FontComboBoxFactory;
 import com.globalscalingsoftware.prefdialog.swingutils.AbstractLabelFieldPanel;
 import com.google.inject.Inject;
 
@@ -41,6 +42,8 @@ import com.google.inject.Inject;
  */
 class FontChooserPanel extends AbstractLabelFieldPanel<UiFontChooserPanel> {
 
+	private final FontComboBox fontComboBox;
+
 	private Font font;
 
 	private String title;
@@ -49,18 +52,25 @@ class FontChooserPanel extends AbstractLabelFieldPanel<UiFontChooserPanel> {
 	 * Set the {@link UiFontChooserPanel}.
 	 */
 	@Inject
-	FontChooserPanel(UiFontChooserPanel panel) {
+	FontChooserPanel(UiFontChooserPanel panel,
+			FontComboBoxFactory fontComboBoxFactory) {
 		super(panel);
+		this.fontComboBox = fontComboBoxFactory.create(FontComboBox
+				.getAvailableFontNames());
 		setup();
 	}
 
 	private void setup() {
-		getPanelField().getFontBox().addItemListener(new ItemListener() {
+		getPanelField().add(fontComboBox, "0, 0");
+		fontComboBox.addItemListener(new ItemListener() {
 
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				Item item = (FontChooserComboBox.Item) e.getItem();
-				font = item.getItemFont();
+				Object object = fontComboBox.getSelectedItem();
+				if (object instanceof String) {
+					String name = (String) object;
+					font = new Font(name, font.getStyle(), font.getSize());
+				}
 			}
 		});
 	}
@@ -89,21 +99,21 @@ class FontChooserPanel extends AbstractLabelFieldPanel<UiFontChooserPanel> {
 	public void setValue(Object value) {
 		if (value instanceof Font) {
 			font = (Font) value;
-			getPanelField().getFontBox().setSelectedItem(font.getName());
+			fontComboBox.setSelectedItem(font.getName());
 		}
 	}
 
 	@Override
 	public void setName(String name) {
 		super.setName(name);
-		getPanelField().getFontBox().setName(format("fontbox-%s", name));
+		fontComboBox.setName(format("fontbox-%s", name));
 		getPanelField().getOpenFontChooserButton().setName(
 				format("openfontbutton-%s", name));
 	}
 
 	@Override
 	public void setEnabled(boolean enabled) {
-		getPanelField().getFontBox().setEnabled(enabled);
+		fontComboBox.setEnabled(enabled);
 		getPanelField().getOpenFontChooserButton().setEnabled(enabled);
 	}
 

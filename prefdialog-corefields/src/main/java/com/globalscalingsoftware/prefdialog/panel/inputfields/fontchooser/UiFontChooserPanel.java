@@ -4,9 +4,9 @@ import info.clearthought.layout.TableLayout;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
 import javax.swing.border.BevelBorder;
+
+import com.google.inject.Inject;
 
 /**
  * This code was edited or generated using CloudGarden's Jigloo SWT/Swing GUI
@@ -23,19 +23,7 @@ class UiFontChooserPanel extends javax.swing.JPanel {
 
 	private JButton openFileButton;
 
-	private FontChooserComboBox fontBox;
-
-	/**
-	 * Auto-generated main method to display this JPanel inside a new JFrame.
-	 */
-	public static void main(String[] args) {
-		JFrame frame = new JFrame();
-		frame.getContentPane().add(new UiFontChooserPanel());
-		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		frame.pack();
-		frame.setVisible(true);
-	}
-
+	@Inject
 	UiFontChooserPanel() {
 		super();
 		initGUI();
@@ -50,9 +38,6 @@ class UiFontChooserPanel extends javax.swing.JPanel {
 			thisLayout.setVGap(5);
 			this.setLayout(thisLayout);
 			{
-				fontBox = new FontChooserComboBox();
-				this.add(fontBox, "0, 0");
-
 				openFileButton = new JButton();
 				this.add(getOpenFontChooserButton(), "1, 0");
 				openFileButton.setText("...");
@@ -63,10 +48,6 @@ class UiFontChooserPanel extends javax.swing.JPanel {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	public FontChooserComboBox getFontBox() {
-		return fontBox;
 	}
 
 	public JButton getOpenFontChooserButton() {
