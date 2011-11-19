@@ -330,6 +330,7 @@ class JFontChooser extends JComponent {
 		for (int i = 0; i < names.length; i++) {
 			if (names[i].toLowerCase().equals(name.toLowerCase())) {
 				getFontFamilyList().setSelectedIndex(i);
+				getFontFamilyList().ensureIndexIsVisible(i - 1);
 				break;
 			}
 		}
