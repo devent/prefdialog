@@ -30,15 +30,7 @@
 			<artifactId>fest-swing-junit-4.5</artifactId>
 		</dependency>
 
-		<!-- prefdialog -->
-		<dependency>
-			<groupId>com.globalscalingsoftware.prefdialog</groupId>
-			<artifactId>prefdialog-public</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.globalscalingsoftware.prefdialog</groupId>
-			<artifactId>prefdialog-reflection</artifactId>
-		</dependency>
+		<!-- own libraries -->
 		<dependency>
 			<groupId>com.globalscalingsoftware.prefdialog</groupId>
 			<artifactId>prefdialog-swingutils</artifactId>

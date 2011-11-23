@@ -14,20 +14,8 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.globalscalingsoftware.prefdialog</groupId>
-			<artifactId>prefdialog-public</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.globalscalingsoftware.prefdialog</groupId>
-			<artifactId>prefdialog-reflection</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>tablelayout</groupId>
 			<artifactId>TableLayout</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.globalscalingsoftware.prefdialog</groupId>
-			<artifactId>prefdialog-swingutils</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>commons-collections</groupId>
@@ -51,6 +39,14 @@
 			<groupId>com.kenai.nbpwr</groupId>
 			<artifactId>javax-annotation</artifactId>
 		</dependency>
+
+		<!-- own libraries -->
+		<dependency>
+			<groupId>com.globalscalingsoftware.prefdialog</groupId>
+			<artifactId>prefdialog-swingutils</artifactId>
+		</dependency>
+
+        <!-- test dependencies -->
 		<dependency>
 			<groupId>com.globalscalingsoftware.prefdialog</groupId>
 			<artifactId>prefdialog-corefields</artifactId>
