@@ -2,8 +2,6 @@ package com.anrisoftware.prefdialog;
 
 import java.lang.reflect.Field;
 
-import com.google.inject.assistedinject.Assisted;
-
 /**
  * Factory to create a new {@link FieldHandler}. Each {@link FieldHandler} need
  * to have a constructor that have the parameters defined here injected. The
@@ -29,6 +27,5 @@ public interface FieldHandlerFactory {
 	 * 
 	 * @return the new created {@link FieldHandler}.
 	 */
-	FieldHandler<?> create(@Assisted("parentObject") Object parentObject,
-			@Assisted("value") Object value, @Assisted Field field);
+	FieldHandler<?> create(Object parentObject, Object value, Field field);
 }

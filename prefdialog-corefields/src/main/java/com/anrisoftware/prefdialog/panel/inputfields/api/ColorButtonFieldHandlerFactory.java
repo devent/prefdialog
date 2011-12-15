@@ -21,5 +21,5 @@ public interface ColorButtonFieldHandlerFactory extends FieldHandlerFactory {
 
 	@Override
 	FieldHandler<?> create(@Assisted("parentObject") Object parentObject,
-			@Assisted("value") Object value, @Assisted Field field);
+			@Assisted("value") Object value, Field field);
 }
