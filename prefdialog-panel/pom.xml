@@ -11,39 +11,20 @@
 	</parent>
 
 	<artifactId>prefdialog-panel</artifactId>
+	<name>Preferences Panel</name>
 
 	<dependencies>
-		<dependency>
-			<groupId>tablelayout</groupId>
-			<artifactId>TableLayout</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>com.anrisoftware.prefdialog</groupId>
+            <artifactId>prefdialog-swingutils</artifactId>
+        </dependency>
 		<dependency>
 			<groupId>commons-collections</groupId>
 			<artifactId>commons-collections</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.easytesting</groupId>
-			<artifactId>fest-swing-junit-4.5</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.easytesting</groupId>
-			<artifactId>fest-util</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>com.kenai.nbpwr</groupId>
 			<artifactId>javax-annotation</artifactId>
-		</dependency>
-
-		<!-- own libraries -->
-		<dependency>
-			<groupId>com.anrisoftware.prefdialog</groupId>
-			<artifactId>prefdialog-swingutils</artifactId>
 		</dependency>
 
         <!-- test dependencies -->
@@ -52,6 +33,11 @@
 			<artifactId>prefdialog-corefields</artifactId>
 			<scope>test</scope>
 		</dependency>
+        <dependency>
+            <groupId>org.easytesting</groupId>
+            <artifactId>fest-swing-junit-4.5</artifactId>
+            <scope>test</scope>
+        </dependency>
 	</dependencies>
 
 </project>

@@ -13,20 +13,6 @@
 	<artifactId>prefdialog-swingutils</artifactId>
 
 	<dependencies>
-		<dependency>
-			<groupId>com.google.inject.extensions</groupId>
-			<artifactId>guice-assistedinject</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>tablelayout</groupId>
-			<artifactId>TableLayout</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-		</dependency>
-		
-		<!-- modules -->
         <dependency>
             <groupId>com.anrisoftware.prefdialog</groupId>
             <artifactId>prefdialog-public</artifactId>
@@ -35,6 +21,14 @@
             <groupId>com.anrisoftware.prefdialog</groupId>
             <artifactId>prefdialog-reflection</artifactId>
         </dependency>
+		<dependency>
+			<groupId>tablelayout</groupId>
+			<artifactId>TableLayout</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+		</dependency>
 	</dependencies>
 
 </project>
