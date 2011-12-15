@@ -5,7 +5,7 @@
 
 	<parent>
 		<artifactId>prefdialog-parent</artifactId>
-		<groupId>com.globalscalingsoftware.prefdialog</groupId>
+		<groupId>com.anrisoftware.prefdialog</groupId>
 		<version>2.1-SNAPSHOT</version>
 		<relativePath>../prefdialog-parent</relativePath>
 	</parent>
@@ -50,13 +50,13 @@
 
 		<!-- own libraries -->
 		<dependency>
-			<groupId>com.globalscalingsoftware.prefdialog</groupId>
+			<groupId>com.anrisoftware.prefdialog</groupId>
 			<artifactId>prefdialog-panel</artifactId>
 		</dependency>
 
         <!-- test dependencies -->
 		<dependency>
-			<groupId>com.globalscalingsoftware.prefdialog</groupId>
+			<groupId>com.anrisoftware.prefdialog</groupId>
 			<artifactId>prefdialog-corefields</artifactId>
 			<scope>test</scope>
 		</dependency>
