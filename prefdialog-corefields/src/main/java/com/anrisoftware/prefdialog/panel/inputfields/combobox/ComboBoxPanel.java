@@ -40,10 +40,6 @@ class ComboBoxPanel extends AbstractLabelFieldPanel<JComboBox> {
 	 */
 	ComboBoxPanel() {
 		super(new JComboBox());
-		setup();
-	}
-
-	private void setup() {
 	}
 
 	@Override

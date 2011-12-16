@@ -27,7 +27,7 @@ import com.anrisoftware.prefdialog.annotations.ComboBoxElements
 import com.anrisoftware.prefdialog.panel.inputfields.AbstractFieldFixture
 import com.anrisoftware.prefdialog.panel.inputfields.api.ComboBoxFieldHandlerFactory
 
-class ComboBoxTest extends AbstractFieldFixture {
+class ComboBoxGtkTest extends AbstractFieldFixture {
 
 	static factory = injector.getInstance(ComboBoxFieldHandlerFactory)
 
@@ -44,25 +44,13 @@ class ComboBoxTest extends AbstractFieldFixture {
 		String comboBox = 'first element'
 	}
 
-	ComboBoxTest() {
-		super(new General(), 'comboBox', factory)
+	ComboBoxGtkTest() {
+		super(new General(), 'comboBox', factory, "com.sun.java.swing.plaf.gtk.GTKLookAndFeel")
 	}
 
 	@Test
-	void "choose second element and apply input"() {
-		fixture.comboBox('comboBox').selectItem 1
-		inputField.applyInput parentObject
-
-		fixture.comboBox('comboBox').requireSelection 1
-		assert parentObject.comboBox == 'second element'
-	}
-
-	@Test
-	void "choose second element and restore input"() {
-		fixture.comboBox('comboBox').selectItem 1
-		inputField.restoreInput parentObject
-
-		fixture.comboBox('comboBox').requireSelection 0
-		assert parentObject.comboBox == 'first element'
+	void "manually"() {
+		//Thread.sleep 60000
 	}
 }
+

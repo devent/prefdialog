@@ -18,7 +18,10 @@
  */
 package com.anrisoftware.prefdialog.panel.inputfields.combobox
 
-import java.util.List
+import java.awt.Component
+
+import javax.swing.DefaultListCellRenderer
+import javax.swing.JList
 
 import org.junit.Test
 
@@ -27,9 +30,17 @@ import com.anrisoftware.prefdialog.annotations.ComboBoxElements
 import com.anrisoftware.prefdialog.panel.inputfields.AbstractFieldFixture
 import com.anrisoftware.prefdialog.panel.inputfields.api.ComboBoxFieldHandlerFactory
 
-class ComboBoxTest extends AbstractFieldFixture {
+class ComboBoxCustomRendererGtkTest extends AbstractFieldFixture {
 
 	static factory = injector.getInstance(ComboBoxFieldHandlerFactory)
+
+	static class CustomComboBoxRenderer extends DefaultListCellRenderer {
+		Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+			super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus)
+			setText(value.toString().toUpperCase());
+			return this
+		}
+	}
 
 	static class General {
 
@@ -40,29 +51,17 @@ class ComboBoxTest extends AbstractFieldFixture {
 			'third element'
 		]
 
-		@ComboBox(elements='Some combo box')
+		@ComboBox(renderer=CustomComboBoxRenderer, elements='Some combo box')
 		String comboBox = 'first element'
 	}
 
-	ComboBoxTest() {
-		super(new General(), 'comboBox', factory)
+	ComboBoxCustomRendererGtkTest() {
+		super(new General(), 'comboBox', factory, "com.sun.java.swing.plaf.gtk.GTKLookAndFeel")
 	}
 
 	@Test
-	void "choose second element and apply input"() {
-		fixture.comboBox('comboBox').selectItem 1
-		inputField.applyInput parentObject
-
-		fixture.comboBox('comboBox').requireSelection 1
-		assert parentObject.comboBox == 'second element'
-	}
-
-	@Test
-	void "choose second element and restore input"() {
-		fixture.comboBox('comboBox').selectItem 1
-		inputField.restoreInput parentObject
-
-		fixture.comboBox('comboBox').requireSelection 0
-		assert parentObject.comboBox == 'first element'
+	void "manually"() {
+		//Thread.sleep 60000
 	}
 }
+

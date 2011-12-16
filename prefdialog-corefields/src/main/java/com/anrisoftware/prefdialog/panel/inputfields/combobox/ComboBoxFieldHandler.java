@@ -24,6 +24,7 @@ import java.util.Collection;
 
 import javax.annotation.Nullable;
 import javax.swing.ComboBoxModel;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.ListCellRenderer;
 
 import com.anrisoftware.prefdialog.FieldHandler;
@@ -87,6 +88,9 @@ class ComboBoxFieldHandler extends AbstractLabelFieldHandler<ComboBoxPanel> {
 		Field field = getField();
 		Annotation a = field.getAnnotation(ComboBox.class);
 		Class<? extends ListCellRenderer> rendererClass = getRenderer(a);
+		if (rendererClass == DefaultListCellRenderer.class) {
+			return;
+		}
 		ListCellRenderer renderer = createInstance(rendererClass);
 		getComponent().setRenderer(renderer);
 		log.setRenderer(renderer, this);

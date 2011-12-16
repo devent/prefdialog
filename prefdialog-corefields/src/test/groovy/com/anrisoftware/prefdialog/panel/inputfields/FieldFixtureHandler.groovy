@@ -24,6 +24,7 @@ import groovy.swing.SwingBuilder
 import java.awt.BorderLayout
 
 import javax.swing.JFrame
+import javax.swing.UIManager
 
 import org.apache.commons.lang.builder.ToStringBuilder
 import org.apache.commons.lang.builder.ToStringStyle
@@ -39,6 +40,10 @@ abstract class FieldFixtureHandler {
 
 	public static Injector injector = Guice.createInjector(new PrefdialogCoreFieldsModule())
 
+	public static SYSTEM_LOOK_AND_FEEL = "javax.swing.plaf.metal.MetalLookAndFeel"
+
+	public static GTK_LOOK_AND_FEEL = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel"
+
 	static toStringStyle = ToStringBuilder.setDefaultStyle(ToStringStyle.SHORT_PREFIX_STYLE)
 
 	def parentObject
@@ -53,7 +58,8 @@ abstract class FieldFixtureHandler {
 
 	JFrame frame
 
-	def createFieldFixture(def parentObject, def fieldName, FieldHandlerFactory fieldFactory) {
+	def createFieldFixture(def parentObject, def fieldName, FieldHandlerFactory fieldFactory, def lookAndFeel="javax.swing.plaf.metal.MetalLookAndFeel") {
+		UIManager.setLookAndFeel(lookAndFeel)
 		this.parentObject = parentObject
 		this.value = parentObject."$fieldName"
 		this.field = parentObject.class.declaredFields.find { it.name == fieldName }

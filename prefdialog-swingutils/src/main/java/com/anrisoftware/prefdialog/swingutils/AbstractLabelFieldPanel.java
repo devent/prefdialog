@@ -57,8 +57,7 @@ public abstract class AbstractLabelFieldPanel<FieldType extends JComponent>
 
 	private void setupPanel() {
 		JPanel panel = (JPanel) getAWTComponent();
-		panel.setLayout(getLayout());
-
+		panel.removeAll();
 		panel.add(label, "0, 0");
 		panel.add(getPanelField(), "0, 1");
 

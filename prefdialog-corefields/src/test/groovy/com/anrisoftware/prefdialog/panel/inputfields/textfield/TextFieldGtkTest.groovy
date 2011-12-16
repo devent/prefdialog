@@ -16,28 +16,30 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.panel.inputfields
+package com.anrisoftware.prefdialog.panel.inputfields.textfield
 
+import org.junit.Test
 
-import javax.swing.JFrame
+import com.anrisoftware.prefdialog.annotations.TextField
+import com.anrisoftware.prefdialog.panel.inputfields.AbstractFieldFixture
+import com.anrisoftware.prefdialog.panel.inputfields.api.TextFieldHandlerFactory
 
-import org.fest.swing.fixture.FrameFixture
-import org.junit.After
-import org.junit.Before
+class TextFieldGtkTest extends AbstractFieldFixture {
 
-abstract class AbstractFieldFixture extends FieldFixtureHandler {
+	static factory = injector.getInstance(TextFieldHandlerFactory)
 
-	AbstractFieldFixture(def parentObject, def fieldName, def fieldFactory, def lookAndFeel="javax.swing.plaf.metal.MetalLookAndFeel") {
-		createFieldFixture(parentObject, fieldName, fieldFactory, lookAndFeel)
+	static class General {
+
+		@TextField
+		String name = ''
 	}
 
-	@Before
-	void beforeTest() {
-		beginFixture()
+	TextFieldGtkTest() {
+		super(new General(), 'name', factory, "com.sun.java.swing.plaf.gtk.GTKLookAndFeel")
 	}
 
-	@After
-	void afterTest() {
-		endFixture()
+	@Test
+	void testManually() {
+		//Thread.sleep 60000
 	}
 }

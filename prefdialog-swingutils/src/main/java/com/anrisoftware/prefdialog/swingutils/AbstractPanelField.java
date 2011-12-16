@@ -45,8 +45,6 @@ public abstract class AbstractPanelField<FieldType extends JComponent> extends
 		JPanel panel = (JPanel) getAWTComponent();
 		panel.setLayout(layout);
 		panel.add(field, "0, 0");
-
-		field.requestFocus();
 	}
 
 	/**
@@ -54,6 +52,8 @@ public abstract class AbstractPanelField<FieldType extends JComponent> extends
 	 */
 	public void setLayout(TableLayout layout) {
 		this.layout = layout;
+		JPanel panel = getPanel();
+		panel.setLayout(layout);
 	}
 
 	/**
