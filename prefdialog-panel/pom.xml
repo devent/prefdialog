@@ -18,6 +18,10 @@
             <groupId>com.anrisoftware.prefdialog</groupId>
             <artifactId>prefdialog-swingutils</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.anrisoftware.prefdialog</groupId>
+            <artifactId>prefdialog-corefields</artifactId>
+        </dependency>
 		<dependency>
 			<groupId>commons-collections</groupId>
 			<artifactId>commons-collections</artifactId>
@@ -28,11 +32,6 @@
 		</dependency>
 
         <!-- test dependencies -->
-		<dependency>
-			<groupId>com.anrisoftware.prefdialog</groupId>
-			<artifactId>prefdialog-corefields</artifactId>
-			<scope>test</scope>
-		</dependency>
         <dependency>
             <groupId>org.easytesting</groupId>
             <artifactId>fest-swing-junit-4.5</artifactId>
