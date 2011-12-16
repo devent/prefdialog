@@ -23,6 +23,8 @@ import info.clearthought.layout.TableLayout;
 
 import java.awt.Font;
 
+import javax.swing.JLabel;
+import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 
 import com.anrisoftware.prefdialog.FieldHandler;
@@ -48,9 +50,16 @@ public class GroupPanel extends AbstractFieldComponent<UiGroupPanel> implements
 
 	private void setBoldFontForGroupLabel() {
 		TitledBorder border = (TitledBorder) panel.getBorder();
-		Font font = border.getTitleFont();
+		Font font = defaultFontFor(border);
 		border.setTitleFont(new Font(font.getFamily(), font.getStyle()
 				| Font.BOLD, font.getSize()));
+	}
+
+	private Font defaultFontFor(TitledBorder border) {
+		Font font = border.getTitleFont();
+		font = font == null ? UIManager.getFont("Label.font") : font;
+		font = font == null ? new JLabel().getFont() : font;
+		return font;
 	}
 
 	@Override
