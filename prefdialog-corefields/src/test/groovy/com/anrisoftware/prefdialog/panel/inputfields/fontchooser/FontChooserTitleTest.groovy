@@ -76,7 +76,7 @@ class FontChooserTitleTest extends FieldFixtureHandler {
 	void testManual() {
 		createFieldFixture(new General(), 'font2', factory)
 		beginFixture()
-		Thread.sleep(30000)
+		//Thread.sleep(30000)
 		endFixture()
 	}
 }

@@ -65,6 +65,6 @@ class FontComboBoxTest extends AbstractFixtureHandler {
 
 	@Test
 	void "manually"() {
-		Thread.sleep 30000
+		//Thread.sleep 30000
 	}
 }

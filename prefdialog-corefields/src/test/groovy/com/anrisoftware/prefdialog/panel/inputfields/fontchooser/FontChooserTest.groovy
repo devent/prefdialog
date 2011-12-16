@@ -56,6 +56,6 @@ class FontChooserTest extends AbstractFieldFixture {
 
 	@Test
 	void "manually"() {
-		Thread.sleep 30000
+		//Thread.sleep 30000
 	}
 }
