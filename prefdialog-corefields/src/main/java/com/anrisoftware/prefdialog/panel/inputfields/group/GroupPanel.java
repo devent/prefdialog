@@ -31,14 +31,24 @@ import com.anrisoftware.prefdialog.FieldHandler;
 import com.anrisoftware.prefdialog.panel.inputfields.child.ChildComponent;
 import com.anrisoftware.prefdialog.swingutils.AbstractFieldComponent;
 
-public class GroupPanel extends AbstractFieldComponent<UiGroupPanel> implements
+/**
+ * Sets a {@link UiGroupPanel} that will contain the fields that are in the
+ * group.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.1
+ */
+class GroupPanel extends AbstractFieldComponent<UiGroupPanel> implements
 		ChildComponent {
 
 	private final UiGroupPanel panel;
 
 	private Object value;
 
-	public GroupPanel() {
+	/**
+	 * Set the {@link UiGroupPanel}.
+	 */
+	GroupPanel() {
 		super(new UiGroupPanel());
 		panel = getField();
 		setupPanel();

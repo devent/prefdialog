@@ -25,12 +25,34 @@ import com.anrisoftware.prefdialog.panel.inputfields.child.AbstractChildFieldHan
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
+/**
+ * Sets the {@link GroupPanel} as the managed component.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.1
+ */
 class GroupFieldHandler extends AbstractChildFieldHandler<GroupPanel> {
 
+	/**
+	 * Sets the parameter of the {@link GroupPanel}.
+	 * 
+	 * @param panel
+	 *            the {@link GroupPanel}.
+	 * 
+	 * @param parentObject
+	 *            the {@link Object} where the field is defined.
+	 * 
+	 * @param value
+	 *            the value of the group field.
+	 * 
+	 * @param field
+	 *            the group {@link Field}.
+	 */
 	@Inject
-	GroupFieldHandler(@Assisted("parentObject") Object parentObject,
+	GroupFieldHandler(GroupPanel panel,
+			@Assisted("parentObject") Object parentObject,
 			@Assisted("value") Object value, @Assisted Field field) {
-		super(parentObject, value, field, Group.class, new GroupPanel());
+		super(parentObject, value, field, Group.class, panel);
 	}
 
 	@Override
