@@ -26,6 +26,7 @@ import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
+import javax.swing.text.DefaultFormatterFactory;
 
 import com.anrisoftware.prefdialog.swingutils.AbstractLabelFieldPanel;
 import com.google.inject.Inject;
@@ -49,7 +50,11 @@ class FileChooserPanel extends AbstractLabelFieldPanel<UiFileChooserPanel> {
 	}
 
 	private void setup() {
-		getPanelField().getFileNameText().setEditable(true);
+		JFormattedTextField fileNameText = getPanelField().getFileNameText();
+		fileNameText.setEditable(true);
+		fileNameText.setFormatterFactory(new DefaultFormatterFactory(
+				new FileDisplayFormatter(), new FileDisplayFormatter(),
+				new FileEditFormatter()));
 	}
 
 	/**
@@ -67,6 +72,9 @@ class FileChooserPanel extends AbstractLabelFieldPanel<UiFileChooserPanel> {
 				});
 	}
 
+	/**
+	 * Returns the {@link File} that the user have choosen.
+	 */
 	@Override
 	public Object getValue() {
 		return getPanelField().getFileNameText().getValue();
@@ -80,7 +88,7 @@ class FileChooserPanel extends AbstractLabelFieldPanel<UiFileChooserPanel> {
 		} else {
 			file = new File(value.toString());
 		}
-		getPanelField().getFileNameText().setValue(file);
+		setFile(file);
 	}
 
 	@Override

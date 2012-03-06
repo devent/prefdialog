@@ -34,7 +34,7 @@ class FileChooserTest extends AbstractFieldFixture {
 	static class General {
 
 		@FileChooser
-		File file = new File('')
+		File file = new File("")
 	}
 
 	FileChooserTest() {
@@ -46,7 +46,7 @@ class FileChooserTest extends AbstractFieldFixture {
 		fixture.label('label-file').requireVisible()
 		assert fixture.label('label-file').text() == 'file'
 		fixture.textBox('filetextfield-file').requireVisible()
-		assert fixture.textBox('filetextfield-file').text() == ''
+		assert fixture.textBox('filetextfield-file').text() == new File("").absolutePath
 		fixture.button('openfilebutton-file').requireVisible()
 	}
 
@@ -83,6 +83,7 @@ class FileChooserTest extends AbstractFieldFixture {
 		File tmpfile = File.createTempFile('fileChooserTest', null)
 		tmpfile.deleteOnExit();
 
+		fixture.textBox('filetextfield-file').deleteText()
 		fixture.textBox('filetextfield-file').enterText tmpfile.absolutePath
 		fixture.textBox('filetextfield-file').pressAndReleaseKey KeyPressInfo.keyCode(KeyEvent.VK_ENTER)
 		inputField.applyInput parentObject
@@ -95,6 +96,7 @@ class FileChooserTest extends AbstractFieldFixture {
 		File tmpfile = File.createTempFile('fileChooserTest', null)
 		tmpfile.deleteOnExit();
 
+		fixture.textBox('filetextfield-file').deleteText()
 		fixture.textBox('filetextfield-file').enterText tmpfile.absolutePath
 		fixture.textBox('filetextfield-file').pressAndReleaseKey KeyPressInfo.keyCode(KeyEvent.VK_ENTER)
 		inputField.restoreInput parentObject
@@ -104,6 +106,6 @@ class FileChooserTest extends AbstractFieldFixture {
 
 	@Test
 	void "manually"() {
-		Thread.sleep 0
+		Thread.sleep 60000
 	}
 }

@@ -53,7 +53,7 @@ class FileChooserFieldHandler extends
 	 *            the {@link Object} where the field is defined.
 	 * 
 	 * @param value
-	 *            the value of the field.
+	 *            the {@link File} of the field.
 	 * 
 	 * @param field
 	 *            the {@link Field}.
