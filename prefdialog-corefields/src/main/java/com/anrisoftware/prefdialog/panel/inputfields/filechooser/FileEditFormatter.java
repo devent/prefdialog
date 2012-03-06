@@ -5,6 +5,13 @@ import java.text.ParseException;
 
 import javax.swing.text.DefaultFormatter;
 
+/**
+ * Custom edit {@link DefaultFormatter} for a {@link File} bean. It will show
+ * the whole path of the file.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.1
+ */
 @SuppressWarnings("serial")
 class FileEditFormatter extends DefaultFormatter {
 

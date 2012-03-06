@@ -9,6 +9,14 @@ import javax.swing.text.DefaultFormatter;
 
 import org.apache.commons.lang.StringUtils;
 
+/**
+ * Custom display {@link DefaultFormatter} for a {@link File} bean. It will trim
+ * directories so that we can see at most a maximum length of the file path.
+ * Useful so the user can see the selected file.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.1
+ */
 @SuppressWarnings("serial")
 class FileDisplayFormatter extends DefaultFormatter {
 
