@@ -40,21 +40,25 @@ import com.google.inject.Inject;
  */
 class FileChooserPanel extends AbstractLabelFieldPanel<UiFileChooserPanel> {
 
+	private FileDisplayFormatter defaultFormat;
+
 	/**
 	 * Set the {@link UiFileChooserPanel}.
 	 */
 	@Inject
-	FileChooserPanel(UiFileChooserPanel panel) {
+	FileChooserPanel(UiFileChooserPanel panel,
+			FileDisplayFormatter defaultFormat) {
 		super(panel);
+		this.defaultFormat = defaultFormat;
 		setup();
 	}
 
 	private void setup() {
 		JFormattedTextField fileNameText = getPanelField().getFileNameText();
 		fileNameText.setEditable(true);
+		defaultFormat = new FileDisplayFormatter();
 		fileNameText.setFormatterFactory(new DefaultFormatterFactory(
-				new FileDisplayFormatter(), new FileDisplayFormatter(),
-				new FileEditFormatter()));
+				defaultFormat, defaultFormat, new FileEditFormatter()));
 	}
 
 	/**
@@ -118,4 +122,7 @@ class FileChooserPanel extends AbstractLabelFieldPanel<UiFileChooserPanel> {
 		getPanelField().getFileNameText().setValue(file);
 	}
 
+	public void setPathMaxLength(int length) {
+		defaultFormat.setPathMaxLength(length);
+	}
 }

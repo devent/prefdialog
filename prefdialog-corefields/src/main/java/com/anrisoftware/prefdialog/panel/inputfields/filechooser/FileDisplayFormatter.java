@@ -26,7 +26,7 @@ class FileDisplayFormatter extends DefaultFormatter {
 		this.maxLength = 40;
 	}
 
-	public void setMaxLength(int maxLength) {
+	public void setPathMaxLength(int maxLength) {
 		this.maxLength = maxLength;
 	}
 

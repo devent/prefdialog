@@ -69,4 +69,8 @@ public @interface FileChooser {
 	 */
 	boolean showTitle() default true;
 
+	/**
+	 * The file path will be trimmed if it is longer than the maximum length.
+	 */
+	int pathMaxLength() default 40;
 }

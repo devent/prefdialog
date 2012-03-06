@@ -35,5 +35,10 @@ interface LoggerFactory {
 			log.debug("Open file chooser dialog for the handler {}.", handler);
 		}
 
+		void setPathMaxLength(Object handler, int length) {
+			log.debug("Set the path maximum length to {} for the handler {}.",
+					length, handler);
+		}
+
 	}
 }
