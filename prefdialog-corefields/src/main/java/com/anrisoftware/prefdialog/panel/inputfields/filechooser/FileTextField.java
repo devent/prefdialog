@@ -47,12 +47,14 @@ class FileTextField extends JFormattedTextField {
 
 	@Inject
 	FileTextField(final FileDisplayFormatter displayFormatter,
-			FileEditFormatter editFormatter) {
+			FileEditFormatter editFormatter,
+			FileTextTransferHandler fileTextTransferHandler) {
 		this.displayFormatter = displayFormatter;
 		setupUpdateOnResizing(displayFormatter);
 		setupCaretToLastCharacterOnFocus();
 		setFormatterFactory(new DefaultFormatterFactory(displayFormatter,
 				displayFormatter, editFormatter));
+		setTransferHandler(fileTextTransferHandler);
 	}
 
 	private void setupCaretToLastCharacterOnFocus() {

@@ -41,6 +41,10 @@ public class FileChooserModule extends AbstractModule {
 		install(new FactoryModuleBuilder().implement(
 				LoggerFactory.Logger.class, LoggerFactory.Logger.class).build(
 				LoggerFactory.class));
+		install(new FactoryModuleBuilder().implement(
+				FileTextTransferHandlerLoggerFactory.Logger.class,
+				FileTextTransferHandlerLoggerFactory.Logger.class).build(
+				FileTextTransferHandlerLoggerFactory.class));
 	}
 
 }
