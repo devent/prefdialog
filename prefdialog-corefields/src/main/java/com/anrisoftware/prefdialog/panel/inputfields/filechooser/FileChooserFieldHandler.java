@@ -23,13 +23,20 @@ import static java.lang.String.format;
 
 import java.awt.Component;
 import java.io.File;
+import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.net.URL;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 
 import com.anrisoftware.prefdialog.FieldHandler;
 import com.anrisoftware.prefdialog.annotations.FileChooser;
+import com.anrisoftware.prefdialog.annotations.IconSize;
 import com.anrisoftware.prefdialog.swingutils.AbstractLabelFieldHandler;
+import com.google.common.io.Resources;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
@@ -72,7 +79,32 @@ class FileChooserFieldHandler extends
 	@Override
 	public FieldHandler<FileChooserPanel> setup() {
 		setupOpenFileAction();
+		setupIcon();
 		return super.setup();
+	}
+
+	private void setupIcon() {
+		String resourceName = valueFromA("icon", String.class);
+		int iconSize = valueFromA("iconSize", IconSize.class).getWidth();
+		resourceName = String.format(resourceName, iconSize);
+		URL iconUrl = Resources.getResource(resourceName);
+		ImageIcon icon = loadIcon(iconUrl);
+		getComponent().setIcon(icon);
+	}
+
+	private ImageIcon loadIcon(URL iconUrl) {
+		try {
+			return new ImageIcon(ImageIO.read(iconUrl));
+		} catch (IOException e) {
+			log.errorLoadIcon(this, e);
+			return null;
+		}
+	}
+
+	private <T> T valueFromA(String name, Class<T> classType) {
+		Annotation a = getField().getAnnotation(FileChooser.class);
+		return getReflectionToolbox().invokeMethodWithReturnType(name,
+				classType, a);
 	}
 
 	private void setupOpenFileAction() {

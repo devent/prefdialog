@@ -24,6 +24,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 
@@ -120,4 +121,17 @@ class FileChooserPanel extends AbstractLabelFieldPanel<UiFileChooserPanel> {
 		getPanelField().getFileTextField().setValue(file);
 	}
 
+	/**
+	 * Sets a new text for the open file chooser button.
+	 */
+	public void setText(String text) {
+		getPanelField().getOpenFileButton().setText(text);
+	}
+
+	/**
+	 * Sets a new {@link Icon} for the open file chooser button.
+	 */
+	public void setIcon(Icon icon) {
+		getPanelField().getOpenFileButton().setIcon(icon);
+	}
 }

@@ -22,11 +22,9 @@ import info.clearthought.layout.TableLayout;
 
 import java.awt.Dimension;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
-import javax.swing.border.BevelBorder;
 
 import com.google.inject.Inject;
 
@@ -80,9 +78,6 @@ class UiFileChooserPanel extends javax.swing.JPanel {
 				openFileButton = new JButton();
 				this.add(getOpenFileButton(), "1, 0");
 				openFileButton.setText("...");
-				openFileButton.setBorder(BorderFactory
-						.createEtchedBorder(BevelBorder.LOWERED));
-				openFileButton.setContentAreaFilled(false);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

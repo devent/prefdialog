@@ -18,6 +18,10 @@
  */
 package com.anrisoftware.prefdialog.panel.inputfields.filechooser;
 
+import static java.lang.String.format;
+
+import java.io.IOException;
+
 import com.anrisoftware.prefdialog.swingutils.AbstractSwingLogger;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -53,9 +57,10 @@ interface LoggerFactory {
 			log.debug("Open file chooser dialog for the handler {}.", handler);
 		}
 
-		void setPathMaxLength(Object handler, int length) {
-			log.debug("Set the path maximum length to {} for the handler {}.",
-					length, handler);
+		void errorLoadIcon(Object handler, IOException e) {
+			log.error(
+					format("Error load the icon for the file chooser %s.",
+							handler), e);
 		}
 
 	}
