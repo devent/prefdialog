@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Erwin Müller <erwin.mueller@deventm.org>
  * 
- * This file is part of prefdialog-swing.
+ * This file is part of prefdialog-corefields.
  * 
  * prefdialog-swing is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
