@@ -54,7 +54,7 @@ class FileDisplayFormatter extends DefaultFormatter {
 	}
 
 	public void updatePathMaxWidth(int newMaxWidth) {
-		if (fontMetrics == null) {
+		if (fontMetrics == null || splitAbsolutePath == null) {
 			return;
 		}
 		newMaxWidth = newMaxWidth - 50;

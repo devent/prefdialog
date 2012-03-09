@@ -5,8 +5,11 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 import javax.swing.JFormattedTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.text.DefaultFormatterFactory;
 
 import com.google.inject.Inject;
@@ -24,6 +27,19 @@ public class FileTextField extends JFormattedTextField {
 			@Override
 			public void componentResized(ComponentEvent e) {
 				displayFormatter.updatePathMaxWidth(getWidth());
+			}
+		});
+		addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				SwingUtilities.invokeLater(new Runnable() {
+
+					@Override
+					public void run() {
+						int length = getDocument().getLength();
+						setCaretPosition(length);
+					}
+				});
 			}
 		});
 		setFormatterFactory(new DefaultFormatterFactory(displayFormatter,
