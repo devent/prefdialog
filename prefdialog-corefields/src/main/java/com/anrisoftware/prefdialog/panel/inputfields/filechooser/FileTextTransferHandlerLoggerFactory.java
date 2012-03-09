@@ -28,7 +28,7 @@ import com.anrisoftware.prefdialog.swingutils.AbstractSwingLogger;
 import com.google.inject.Inject;
 
 /**
- * Factory to create a new file chooser field {@link Logger}.
+ * Factory to create a new file text transfer handler {@link Logger}.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 2.1
@@ -36,13 +36,13 @@ import com.google.inject.Inject;
 interface FileTextTransferHandlerLoggerFactory {
 
 	/**
-	 * Creates a new file chooser field {@link Logger} for the given
+	 * Creates a new file text transfer handler {@link Logger} for the given
 	 * {@link Class}.
 	 */
 	Logger create();
 
 	/**
-	 * Log messages for the file chooser field.
+	 * Log messages for the file text transfer handler.
 	 * 
 	 * @author Erwin Mueller, erwin.mueller@deventm.org
 	 * @since 2.1

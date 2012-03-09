@@ -1,7 +1,24 @@
+/*
+ * Copyright 2012 Erwin Müller <erwin.mueller@deventm.org>
+ * 
+ * This file is part of prefdialog-corefields.
+ * 
+ * prefdialog-corefields is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
+ * 
+ * prefdialog-corefields is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with prefdialog-corefields. If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.anrisoftware.prefdialog.panel.inputfields.filechooser;
 
 import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.File;
@@ -16,6 +33,12 @@ import javax.swing.TransferHandler;
 import com.anrisoftware.prefdialog.panel.inputfields.filechooser.FileTextTransferHandlerLoggerFactory.Logger;
 import com.google.inject.Inject;
 
+/**
+ * Supports the import a URI string representation of a file.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.1
+ */
 @SuppressWarnings("serial")
 class FileTextTransferHandler extends TransferHandler {
 
@@ -28,7 +51,7 @@ class FileTextTransferHandler extends TransferHandler {
 
 	@Override
 	public int getSourceActions(JComponent c) {
-		return COPY;
+		return NONE;
 	}
 
 	@Override
@@ -36,18 +59,7 @@ class FileTextTransferHandler extends TransferHandler {
 		if (support.isDataFlavorSupported(DataFlavor.stringFlavor)) {
 			return true;
 		}
-		if (support.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
-			return true;
-		}
 		return false;
-	}
-
-	@Override
-	protected Transferable createTransferable(JComponent c) {
-		JFormattedTextField field = (JFormattedTextField) c;
-		File file = (File) field.getValue();
-		URI uri = file.toURI();
-		return new StringSelection(uri.toString());
 	}
 
 	@Override
@@ -55,7 +67,7 @@ class FileTextTransferHandler extends TransferHandler {
 		if (support.isDataFlavorSupported(DataFlavor.stringFlavor)) {
 			return importFile(support);
 		}
-		return true;
+		return false;
 	}
 
 	private boolean importFile(TransferSupport support) {
