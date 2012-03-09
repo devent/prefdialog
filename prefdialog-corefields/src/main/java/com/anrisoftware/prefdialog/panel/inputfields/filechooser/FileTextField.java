@@ -1,6 +1,5 @@
 package com.anrisoftware.prefdialog.panel.inputfields.filechooser;
 
-import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.event.ComponentAdapter;
@@ -48,7 +47,7 @@ public class FileTextField extends JFormattedTextField {
 
 	@Override
 	public void paint(Graphics g) {
-		g.setFont(new Font("SansSerif", Font.BOLD, 12));
+		g.setFont(getFont());
 		FontMetrics fm = g.getFontMetrics();
 		displayFormatter.setFontMetrics(fm, getWidth());
 		super.paint(g);

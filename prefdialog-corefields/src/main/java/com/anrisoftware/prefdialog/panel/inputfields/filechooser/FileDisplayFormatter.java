@@ -57,7 +57,7 @@ class FileDisplayFormatter extends DefaultFormatter {
 		if (fontMetrics == null || splitAbsolutePath == null) {
 			return;
 		}
-		newMaxWidth = newMaxWidth - 50;
+		newMaxWidth = newMaxWidth - 100;
 		if (maxWidth == newMaxWidth && oldAbsolutePath == absolutePath) {
 			return;
 		}
