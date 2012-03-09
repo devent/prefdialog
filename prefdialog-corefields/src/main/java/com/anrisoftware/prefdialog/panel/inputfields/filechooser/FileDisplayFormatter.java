@@ -2,6 +2,7 @@ package com.anrisoftware.prefdialog.panel.inputfields.filechooser;
 
 import static java.io.File.separatorChar;
 
+import java.awt.FontMetrics;
 import java.io.File;
 import java.text.ParseException;
 
@@ -20,15 +21,17 @@ import org.apache.commons.lang.StringUtils;
 @SuppressWarnings("serial")
 class FileDisplayFormatter extends DefaultFormatter {
 
-	private int maxLength;
+	private String absolutePath;
 
-	public FileDisplayFormatter() {
-		this.maxLength = 40;
-	}
+	private String text;
 
-	public void setPathMaxLength(int maxLength) {
-		this.maxLength = maxLength;
-	}
+	private int maxWidth;
+
+	private FontMetrics fontMetrics;
+
+	private String oldAbsolutePath;
+
+	private String[] splitAbsolutePath;
 
 	@Override
 	public boolean getOverwriteMode() {
@@ -40,26 +43,55 @@ class FileDisplayFormatter extends DefaultFormatter {
 		if (value == null) {
 			return "";
 		}
-		String path = createPath((File) value);
-		return path;
+		absolutePath = asAbsolutePath((File) value);
+		splitAbsolutePath = StringUtils.split(absolutePath, separatorChar);
+		updatePathMaxWidth(getFormattedTextField().getWidth());
+		return text;
 	}
 
-	private String createPath(File value) {
-		String path = value.getAbsolutePath();
-		if (path.length() > maxLength) {
-			path = shortPath(path);
+	private String asAbsolutePath(File file) {
+		return file.getAbsolutePath();
+	}
+
+	public void updatePathMaxWidth(int newMaxWidth) {
+		if (fontMetrics == null) {
+			return;
 		}
-		return path;
+		newMaxWidth = newMaxWidth - 50;
+		if (maxWidth == newMaxWidth && oldAbsolutePath == absolutePath) {
+			return;
+		}
+		oldAbsolutePath = absolutePath;
+		maxWidth = newMaxWidth;
+		text = createShortPath();
+		getFormattedTextField().setValue(getFormattedTextField().getValue());
 	}
 
-	private String shortPath(String path) {
-		String[] split = StringUtils.split(path, separatorChar);
+	private String createShortPath() {
 		StringBuilder builder = new StringBuilder();
-		for (int i = split.length - 1; i > 0 && builder.length() < maxLength; i--) {
-			builder.insert(0, split[i]);
+		int i;
+		for (i = splitAbsolutePath.length - 1; i >= 0 && isInMaxWidth(builder); i--) {
+			builder.insert(0, splitAbsolutePath[i]);
 			builder.insert(0, separatorChar);
 		}
-		builder.insert(0, "..");
+		if (i > 0) {
+			builder.insert(0, "..");
+		}
 		return builder.toString();
+	}
+
+	private boolean isInMaxWidth(StringBuilder builder) {
+		return pixelsWidth(builder.toString()) < maxWidth;
+	}
+
+	private int pixelsWidth(String string) {
+		return fontMetrics.stringWidth(string);
+	}
+
+	public void setFontMetrics(FontMetrics fm, int maxWidth) {
+		if (fontMetrics == null) {
+			this.fontMetrics = fm;
+			updatePathMaxWidth(maxWidth);
+		}
 	}
 }

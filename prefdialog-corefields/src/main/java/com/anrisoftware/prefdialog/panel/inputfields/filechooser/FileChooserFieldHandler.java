@@ -22,7 +22,6 @@ import static java.lang.String.format;
 
 import java.awt.Component;
 import java.io.File;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
 import javax.swing.JFileChooser;
@@ -72,20 +71,7 @@ class FileChooserFieldHandler extends
 	@Override
 	public FieldHandler<FileChooserPanel> setup() {
 		setupOpenFileAction();
-		setupPathMaxLength();
 		return super.setup();
-	}
-
-	private void setupPathMaxLength() {
-		int length = getValueFromAnnotation("pathMaxLength", Integer.class);
-		log.setPathMaxLength(this, length);
-		getComponent().setPathMaxLength(length);
-	}
-
-	private <T> T getValueFromAnnotation(String name, Class<T> classType) {
-		Annotation a = getField().getAnnotation(FileChooser.class);
-		return getReflectionToolbox().invokeMethodWithReturnType(name,
-				classType, a);
 	}
 
 	private void setupOpenFileAction() {

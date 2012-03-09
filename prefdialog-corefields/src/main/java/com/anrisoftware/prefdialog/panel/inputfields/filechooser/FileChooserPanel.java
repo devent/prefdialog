@@ -26,7 +26,6 @@ import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
-import javax.swing.text.DefaultFormatterFactory;
 
 import com.anrisoftware.prefdialog.swingutils.AbstractLabelFieldPanel;
 import com.google.inject.Inject;
@@ -40,25 +39,24 @@ import com.google.inject.Inject;
  */
 class FileChooserPanel extends AbstractLabelFieldPanel<UiFileChooserPanel> {
 
-	private FileDisplayFormatter defaultFormat;
+	private final FileTextField fileNameText;
 
 	/**
 	 * Set the {@link UiFileChooserPanel}.
 	 */
 	@Inject
-	FileChooserPanel(UiFileChooserPanel panel,
-			FileDisplayFormatter defaultFormat) {
+	FileChooserPanel(UiFileChooserPanel panel) {
 		super(panel);
-		this.defaultFormat = defaultFormat;
+		this.fileNameText = getPanelField().getFileTextField();
 		setup();
 	}
 
 	private void setup() {
-		JFormattedTextField fileNameText = getPanelField().getFileNameText();
+		setupFileFormatter();
+	}
+
+	private void setupFileFormatter() {
 		fileNameText.setEditable(true);
-		defaultFormat = new FileDisplayFormatter();
-		fileNameText.setFormatterFactory(new DefaultFormatterFactory(
-				defaultFormat, defaultFormat, new FileEditFormatter()));
 	}
 
 	/**
@@ -81,7 +79,7 @@ class FileChooserPanel extends AbstractLabelFieldPanel<UiFileChooserPanel> {
 	 */
 	@Override
 	public Object getValue() {
-		return getPanelField().getFileNameText().getValue();
+		return getPanelField().getFileTextField().getValue();
 	}
 
 	@Override
@@ -98,7 +96,7 @@ class FileChooserPanel extends AbstractLabelFieldPanel<UiFileChooserPanel> {
 	@Override
 	public void setName(String name) {
 		super.setName(name);
-		getPanelField().getFileNameText().setName(
+		getPanelField().getFileTextField().setName(
 				format("filetextfield-%s", name));
 		getPanelField().getOpenFileButton().setName(
 				format("openfilebutton-%s", name));
@@ -106,23 +104,20 @@ class FileChooserPanel extends AbstractLabelFieldPanel<UiFileChooserPanel> {
 
 	@Override
 	public void setEnabled(boolean enabled) {
-		getPanelField().getFileNameText().setEnabled(enabled);
+		getPanelField().getFileTextField().setEnabled(enabled);
 		getPanelField().getOpenFileButton().setEnabled(enabled);
 	}
 
 	@Override
 	public boolean isInputValid() {
-		return getPanelField().getFileNameText().isEditValid();
+		return getPanelField().getFileTextField().isEditValid();
 	}
 
 	/**
 	 * Set the {@link File} that will be shown in the file name text field.
 	 */
 	public void setFile(File file) {
-		getPanelField().getFileNameText().setValue(file);
+		getPanelField().getFileTextField().setValue(file);
 	}
 
-	public void setPathMaxLength(int length) {
-		defaultFormat.setPathMaxLength(length);
-	}
 }
