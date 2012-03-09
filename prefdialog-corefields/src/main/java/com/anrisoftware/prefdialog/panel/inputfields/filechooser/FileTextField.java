@@ -14,7 +14,7 @@ import javax.swing.text.DefaultFormatterFactory;
 import com.google.inject.Inject;
 
 @SuppressWarnings("serial")
-public class FileTextField extends JFormattedTextField {
+class FileTextField extends JFormattedTextField {
 
 	private final FileDisplayFormatter displayFormatter;
 
@@ -35,14 +35,19 @@ public class FileTextField extends JFormattedTextField {
 
 					@Override
 					public void run() {
-						int length = getDocument().getLength();
-						setCaretPosition(length);
+						setCaretToLastCharacter();
 					}
+
 				});
 			}
 		});
 		setFormatterFactory(new DefaultFormatterFactory(displayFormatter,
 				displayFormatter, editFormatter));
+	}
+
+	private void setCaretToLastCharacter() {
+		int length = getDocument().getLength();
+		setCaretPosition(length);
 	}
 
 	@Override
