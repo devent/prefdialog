@@ -21,7 +21,9 @@ package com.anrisoftware.prefdialog.panel.inputfields.filechooser;
 import static java.lang.String.format;
 
 import java.io.IOException;
+import java.net.URL;
 
+import com.anrisoftware.prefdialog.annotations.TextPosition;
 import com.anrisoftware.prefdialog.swingutils.AbstractSwingLogger;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -61,6 +63,18 @@ interface LoggerFactory {
 			log.error(
 					format("Error load the icon for the file chooser %s.",
 							handler), e);
+		}
+
+		void setupButtonIcon(Object handler, URL iconUrl) {
+			log.debug(
+					"Setup the icon {} for the file chooser button for the handler {}.",
+					iconUrl, handler);
+		}
+
+		void setupText(Object handler, TextPosition position, String text) {
+			log.debug(
+					"Setup the text ``{}'' with the text position {} for the file chooser button for the handler {}.",
+					new Object[] { text, position, handler });
 		}
 
 	}

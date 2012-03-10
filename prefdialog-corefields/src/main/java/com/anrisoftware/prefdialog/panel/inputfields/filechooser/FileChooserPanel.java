@@ -27,6 +27,7 @@ import java.io.File;
 import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
+import javax.swing.SwingConstants;
 
 import com.anrisoftware.prefdialog.swingutils.AbstractLabelFieldPanel;
 import com.google.inject.Inject;
@@ -133,5 +134,23 @@ class FileChooserPanel extends AbstractLabelFieldPanel<UiFileChooserPanel> {
 	 */
 	public void setIcon(Icon icon) {
 		getPanelField().getOpenFileButton().setIcon(icon);
+	}
+
+	/**
+	 * Set the text of the open file chooser button under the icon.
+	 * 
+	 * @param underIcon
+	 *            if <code>true</code> then set the text under the icon or left
+	 *            from the icon otherwise.
+	 */
+	public void setTextUnderIcon(boolean underIcon) {
+		JButton button = getPanelField().getOpenFileButton();
+		if (underIcon) {
+			button.setVerticalTextPosition(SwingConstants.BOTTOM);
+			button.setHorizontalTextPosition(SwingConstants.CENTER);
+		} else {
+			button.setVerticalTextPosition(SwingConstants.CENTER);
+			button.setHorizontalTextPosition(SwingConstants.TRAILING);
+		}
 	}
 }

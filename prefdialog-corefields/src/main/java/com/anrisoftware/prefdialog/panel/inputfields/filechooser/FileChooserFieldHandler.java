@@ -35,6 +35,7 @@ import javax.swing.JFileChooser;
 import com.anrisoftware.prefdialog.FieldHandler;
 import com.anrisoftware.prefdialog.annotations.FileChooser;
 import com.anrisoftware.prefdialog.annotations.IconSize;
+import com.anrisoftware.prefdialog.annotations.TextPosition;
 import com.anrisoftware.prefdialog.swingutils.AbstractLabelFieldHandler;
 import com.google.common.io.Resources;
 import com.google.inject.Inject;
@@ -80,7 +81,30 @@ class FileChooserFieldHandler extends
 	public FieldHandler<FileChooserPanel> setup() {
 		setupOpenFileAction();
 		setupIcon();
+		setupText();
 		return super.setup();
+	}
+
+	private void setupText() {
+		TextPosition position = valueFromA("textPosition", TextPosition.class);
+		String text = valueFromA("text", String.class);
+		switch (position) {
+		case ICON_ONLY:
+			getComponent().setText(null);
+			break;
+		case TEXT_ONLY:
+			getComponent().setIcon(null);
+			break;
+		case TEXT_ALONGSIDE_ICON:
+			getComponent().setTextUnderIcon(false);
+			getComponent().setText(text);
+			break;
+		case TEXT_UNDER_ICON:
+			getComponent().setTextUnderIcon(true);
+			getComponent().setText(text);
+			break;
+		}
+		log.setupText(this, position, text);
 	}
 
 	private void setupIcon() {
@@ -90,6 +114,7 @@ class FileChooserFieldHandler extends
 		URL iconUrl = Resources.getResource(resourceName);
 		ImageIcon icon = loadIcon(iconUrl);
 		getComponent().setIcon(icon);
+		log.setupButtonIcon(this, iconUrl);
 	}
 
 	private ImageIcon loadIcon(URL iconUrl) {
