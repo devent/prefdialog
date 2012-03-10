@@ -63,10 +63,4 @@ public @interface Child {
 	 */
 	double width() default -1.0;
 
-	/**
-	 * If this input field should be read-only. Read-only fields are to show
-	 * information for the user without that the user can modify the value. If
-	 * you set to read only, every child field will be set to read-only as well.
-	 */
-	boolean readonly() default false;
 }

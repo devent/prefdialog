@@ -23,6 +23,8 @@ import static org.apache.commons.lang.StringUtils.isEmpty;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
+import org.fest.reflect.exception.ReflectionError;
+
 import com.anrisoftware.prefdialog.FieldComponent;
 import com.anrisoftware.prefdialog.FieldHandler;
 import com.anrisoftware.prefdialog.reflection.ReflectionToolbox;
@@ -86,15 +88,17 @@ public abstract class AbstractDefaultFieldHandler<FieldComponentType extends Fie
 		Class<? extends Annotation> annotationClass = getAnnotationClass();
 		setupComponentWidth(field, annotationClass);
 		setupComponentName(field);
-		setupComponentReadOnly(field, annotationClass);
+		setupComponentReadOnly();
 		return super.setup();
 	}
 
-	private void setupComponentReadOnly(Field field,
-			Class<? extends Annotation> annotationClass) {
-		boolean readonly = valueFromAnnotationInField("readonly",
-				Boolean.class, field, annotationClass);
-		setComponentEnabled(!readonly);
+	private void setupComponentReadOnly() {
+		try {
+			boolean readonly = getReflectionToolbox().valueFromA(getField(),
+					"readonly", Boolean.class, getAnnotationClass());
+			setComponentEnabled(!readonly);
+		} catch (ReflectionError e) {
+		}
 	}
 
 	private void setupComponentName(Field field) {

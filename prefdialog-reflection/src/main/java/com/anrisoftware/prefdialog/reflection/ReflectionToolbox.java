@@ -122,6 +122,7 @@ public class ReflectionToolbox {
 	 *            the object in which the method is declared.
 	 * @param value
 	 *            the value for the parameter.
+	 * 
 	 * @throws ReflectionError
 	 *             if the method can't be found or invoked.
 	 */
@@ -144,6 +145,9 @@ public class ReflectionToolbox {
 	 * 
 	 * @param annotationClass
 	 *            the {@link Annotation} {@link Class}.
+	 * 
+	 * @throws ReflectionError
+	 *             if the annotation element can't be found.
 	 * 
 	 * @since 2.1
 	 */
