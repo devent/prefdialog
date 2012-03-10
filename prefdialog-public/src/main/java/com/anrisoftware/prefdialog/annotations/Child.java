@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Erwin Müller <erwin.mueller@deventm.org>
+ * Copyright 2010-2012 Erwin Müller <erwin.mueller@deventm.org>
  * 
  * This file is part of prefdialog-public.
  * 
@@ -43,18 +43,30 @@ import java.lang.annotation.Target;
 public @interface Child {
 
 	/**
-	 * The title of the child.
+	 * The title of the child. If left empty the title will be field name.
+	 * Default is the empty string "".
 	 */
 	String title() default "";
 
 	/**
-	 * The width of the child inside the container.
+	 * The width of the child inside the container. Default value is -1.0. Valid
+	 * width can be a double value or the special values of:
+	 * <dl>
+	 * <dt>-1.0</dt>
+	 * <dd>fill the available space;</dd>
+	 * <dt>-2.0</dt>
+	 * <dd>enough space to accommodate the preferred size of the field;</dd>
+	 * <dt>-3.0</dt>
+	 * <dd>allocated just enough space to accommodate the minimum size of the
+	 * field.</dd>
+	 * </dl>
 	 */
 	double width() default -1.0;
 
 	/**
 	 * If this input field should be read-only. Read-only fields are to show
-	 * information for the user without that the user can modify the value.
+	 * information for the user without that the user can modify the value. If
+	 * you set to read only, every child field will be set to read-only as well.
 	 */
 	boolean readonly() default false;
 }
