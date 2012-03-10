@@ -67,6 +67,14 @@ class ChildPanel extends AbstractFieldComponent<UiChildPanel> implements
 	}
 
 	@Override
+	public void setName(String name) {
+		panel.getChildLabel().setName(format("label-%s", name));
+		panel.getScrollPanel().setName(format("scroll-%s", name));
+		panel.getFieldsPanel().setName(format("fields-%s", name));
+		super.setName(name);
+	}
+
+	@Override
 	public void setTitle(String title) {
 		panel.getChildLabel().setText(title);
 	}
