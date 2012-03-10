@@ -90,7 +90,7 @@ public @interface FileChooser {
 	String icon() default "com/anrisoftware/prefdialog/panel/inputfields/filechooser/oxygen/document-open-folder-%d.png";
 
 	/**
-	 * The file chooser button text, default is the shortcut text "...".
+	 * The file chooser button text, default is the unicode text "Open…".
 	 */
-	String text() default "...";
+	String text() default "Open…";
 }
