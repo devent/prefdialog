@@ -54,5 +54,4 @@ class ChildFieldHandler extends AbstractChildFieldHandler<ChildPanel> {
 			@Assisted("value") Object value, @Assisted Field field) {
 		super(parentObject, value, field, Child.class, childPanel);
 	}
-
 }

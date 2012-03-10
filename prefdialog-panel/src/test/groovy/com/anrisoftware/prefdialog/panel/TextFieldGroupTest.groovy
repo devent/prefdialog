@@ -95,6 +95,6 @@ class TextFieldGroupTest extends AbstractPanelFixture {
 
 	@Test
 	void "manually"() {
-		//Thread.sleep 60000
+		Thread.sleep 60000
 	}
 }

@@ -71,19 +71,10 @@ public class AbstractLabelFieldHandler<FieldComponentType extends AbstractLabelF
 	}
 
 	private void setupTitle() {
-		Class<? extends Annotation> annotationClass = getAnnotationClass();
-		Field field = getField();
-		String title = valueFromAnnotationInField("title", String.class, field,
-				annotationClass);
-		title = defaultTitleIfNameNotSet(title, field);
+		String title = getReflectionToolbox().valueFromA(getField(), "title",
+				String.class, getAnnotationClass());
+		title = defaultTitle(title);
 		setComponentTitle(title);
-	}
-
-	private String defaultTitleIfNameNotSet(String title, Field field) {
-		if (title.isEmpty()) {
-			title = field.getName();
-		}
-		return title;
 	}
 
 	/**

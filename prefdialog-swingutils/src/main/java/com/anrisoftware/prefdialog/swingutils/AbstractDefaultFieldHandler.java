@@ -18,6 +18,8 @@
  */
 package com.anrisoftware.prefdialog.swingutils;
 
+import static org.apache.commons.lang.StringUtils.isEmpty;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
@@ -113,6 +115,13 @@ public abstract class AbstractDefaultFieldHandler<FieldComponentType extends Fie
 		Annotation a = field.getAnnotation(annotationClass);
 		return reflectionToolbox
 				.invokeMethodWithReturnType(name, returnType, a);
+	}
+
+	protected String defaultTitle(String title) {
+		if (isEmpty(title)) {
+			title = getField().getName();
+		}
+		return title;
 	}
 
 	/**

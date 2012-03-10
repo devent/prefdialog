@@ -131,6 +131,29 @@ public class ReflectionToolbox {
 	}
 
 	/**
+	 * Return a value from a annotation element.
+	 * 
+	 * @param field
+	 *            the {@link Field} where the annotation is declared.
+	 * 
+	 * @param name
+	 *            the name of the annotation element.
+	 * 
+	 * @param classType
+	 *            the {@link Class} of the annotation element.
+	 * 
+	 * @param annotationClass
+	 *            the {@link Annotation} {@link Class}.
+	 * 
+	 * @since 2.1
+	 */
+	public <T> T valueFromA(Field field, String name, Class<T> classType,
+			Class<? extends Annotation> annotationClass) {
+		Annotation a = field.getAnnotation(annotationClass);
+		return invokeMethodWithReturnType(name, classType, a);
+	}
+
+	/**
 	 * Invoke a method with no parameters and a return value.
 	 * 
 	 * @param <T>

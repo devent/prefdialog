@@ -18,8 +18,6 @@
  */
 package com.anrisoftware.prefdialog.panel
 
-import groovy.time.TimeCategory
-
 import org.junit.Test
 
 import com.anrisoftware.prefdialog.annotations.Child
@@ -77,6 +75,6 @@ class MultipleRadioButtonTest extends AbstractPanelFixture {
 
 	@Test
 	void "manually"() {
-		use ( TimeCategory ) { Thread.sleep 0.minutes.toMilliseconds() }
+		Thread.sleep 60000
 	}
 }

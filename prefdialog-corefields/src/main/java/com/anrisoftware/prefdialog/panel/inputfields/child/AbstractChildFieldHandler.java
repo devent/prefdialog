@@ -76,6 +76,19 @@ public abstract class AbstractChildFieldHandler<ComponentType extends ChildCompo
 		this.fieldHandlers = new ArrayList<FieldHandler<?>>();
 	}
 
+	@Override
+	public FieldHandler<ComponentType> setup() {
+		setupTitle();
+		return super.setup();
+	}
+
+	private void setupTitle() {
+		String title = getReflectionToolbox().valueFromA(getField(), "title",
+				String.class, getAnnotationClass());
+		title = defaultTitle(title);
+		setComponentTitle(title);
+	}
+
 	/**
 	 * Injects the child field {@link LoggerFactory}.
 	 */
