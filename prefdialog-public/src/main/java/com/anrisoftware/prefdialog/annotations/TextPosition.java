@@ -37,12 +37,12 @@ public enum TextPosition {
 	TEXT_ONLY,
 
 	/**
-	 * Text alongside the icon.
+	 * Show the text alongside the icon.
 	 */
 	TEXT_ALONGSIDE_ICON,
 
 	/**
-	 * Text is under the icon.
+	 * Show the text is under the icon.
 	 */
 	TEXT_UNDER_ICON
 }

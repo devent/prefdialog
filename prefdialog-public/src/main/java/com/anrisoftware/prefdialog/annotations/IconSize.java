@@ -42,7 +42,7 @@ public enum IconSize {
 	LARGE(32),
 
 	/**
-	 * 48x48.
+	 * Size 48x48.
 	 */
 	HUGE(48);
 

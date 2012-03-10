@@ -48,24 +48,38 @@ import javax.swing.JTextField;
 public @interface FileChooser {
 
 	/**
-	 * The width of the file chooser inside the container.
+	 * The width of the file chooser inside the container. Default value is
+	 * -1.0. Valid width can be a double value or the special values of:
+	 * <dl>
+	 * <dt>-1.0</dt>
+	 * <dd>fill the available space;</dd>
+	 * <dt>-2.0</dt>
+	 * <dd>enough space to accommodate the preferred size of the field;</dd>
+	 * <dt>-3.0</dt>
+	 * <dd>allocated just enough space to accommodate the minimum size of the
+	 * field.</dd>
+	 * </dl>
 	 */
 	double width() default -1.0;
 
 	/**
 	 * If this input field should be read-only. Read-only fields are to show
 	 * information for the user without that the user can modify the value.
+	 * Default value is <code>false</code>.
 	 */
 	boolean readonly() default false;
 
 	/**
-	 * The title of the combo box. The title is shown above of the check box and
-	 * should contain a description.
+	 * The title of the file chooser. The title is shown above of the file
+	 * chooser field and should be a description. If left empty, the title is
+	 * the same as the name of the field in the class. Default is the empty
+	 * string <code>""</code>.
 	 */
 	String title() default "";
 
 	/**
-	 * If the title of the should be visible or not.
+	 * If the title of the should be visible or not. Default value is
+	 * <code>true</code>.
 	 */
 	boolean showTitle() default true;
 
@@ -83,7 +97,9 @@ public @interface FileChooser {
 
 	/**
 	 * The icon for the button, should be a resource name. The resource name
-	 * needs to have the place holder %d for the icon size. Default is
+	 * needs to have the place holder %d for the icon size. There must be one
+	 * file for each of the used icon sizes. The icon sizes are 16, 22, 32 and
+	 * 48. Default is
 	 * "com/anrisoftware/prefdialog/panel/inputfields/filechooser/oxygen/document-open-folder-%d.png"
 	 * .
 	 */
