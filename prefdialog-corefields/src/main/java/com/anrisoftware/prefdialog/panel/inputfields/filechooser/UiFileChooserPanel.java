@@ -23,7 +23,9 @@ import info.clearthought.layout.TableLayout;
 import java.awt.Dimension;
 
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import com.google.inject.Inject;
@@ -37,6 +39,13 @@ import com.google.inject.Inject;
  * acceptance of these licensing terms. A COMMERCIAL LICENSE HAS NOT BEEN
  * PURCHASED FOR THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED LEGALLY FOR
  * ANY CORPORATE OR COMMERCIAL PURPOSE.
+ */
+/**
+ * The {@link JPanel} that contains the {@link JFormattedTextField} and the
+ * {@link JButton} to open the file chooser.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.1
  */
 @SuppressWarnings("serial")
 class UiFileChooserPanel extends javax.swing.JPanel {
