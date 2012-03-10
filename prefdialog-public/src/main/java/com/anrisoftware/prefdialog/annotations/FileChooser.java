@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Erwin Müller <erwin.mueller@deventm.org>
+ * Copyright 2010-2012 Erwin Müller <erwin.mueller@deventm.org>
  * 
  * This file is part of prefdialog-public.
  * 
