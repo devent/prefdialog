@@ -1,20 +1,20 @@
 /*
- * Copyright 2010 Erwin Müller <erwin.mueller@deventm.org>
+ * Copyright 2012 Erwin Müller <erwin.mueller@deventm.org>
  * 
- * This file is part of prefdialog-swing.
+ * This file is part of prefdialog-corefields.
  * 
- * prefdialog-swing is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
+ * prefdialog-corefields is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
  * 
- * prefdialog-swing is distributed in the hope that it will be useful, but
+ * prefdialog-corefields is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
+ * along with prefdialog-corefields. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.anrisoftware.prefdialog.panel.inputfields.child;
 
@@ -29,12 +29,13 @@ import javax.swing.SwingUtilities;
 import com.anrisoftware.prefdialog.FieldComponent;
 import com.anrisoftware.prefdialog.FieldHandler;
 import com.anrisoftware.prefdialog.annotations.Child;
+import com.anrisoftware.prefdialog.annotations.Group;
 import com.anrisoftware.prefdialog.swingutils.AbstractDefaultFieldHandler;
 import com.google.inject.Inject;
 
 /**
- * Implements combined behavior for {@link Child} fields. The child-field
- * contains the fields from the value.
+ * Implements combined behavior for {@link Child} and {@link Group} fields. The
+ * child-field contains the fields from the value.
  * 
  * @param <ComponentType>
  *            the type of the underlying {@link ChildComponent}. For example a
