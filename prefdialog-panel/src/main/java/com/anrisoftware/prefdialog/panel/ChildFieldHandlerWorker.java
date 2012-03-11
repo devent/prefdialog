@@ -87,7 +87,8 @@ class ChildFieldHandlerWorker {
 		public void fieldAnnotationDiscovered(Field field, Object value,
 				Annotation a) {
 			l.debug("Discrovered child annotation for field value {}.", value);
-			if (value.toString().equals(panelName)) {
+			if (field.getName().equals(panelName)
+					|| value.toString().equals(panelName)) {
 				childFieldHandler = createChildFieldHandler(field, value);
 			}
 		}
