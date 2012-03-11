@@ -61,7 +61,7 @@ abstract class PanelFixtureHandler {
 	}
 
 	def createPanelFrame() {
-		return new SwingBuilder().frame(title: 'Prefdialog Panel $panelName Test', pack: true, preferredSize: [480, 360]) {
+		return new SwingBuilder().frame(title: "Prefdialog Panel $panelName Test", pack: true, preferredSize: [480, 360]) {
 			borderLayout()
 			widget(panel.getAWTComponent(), constraints: BorderLayout.CENTER)
 		}
