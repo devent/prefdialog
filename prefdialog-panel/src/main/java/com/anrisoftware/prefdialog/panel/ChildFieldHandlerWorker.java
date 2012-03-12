@@ -7,9 +7,6 @@ import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.anrisoftware.prefdialog.FieldHandler;
 import com.anrisoftware.prefdialog.FieldHandlerFactory;
 import com.anrisoftware.prefdialog.annotations.Child;
@@ -33,9 +30,6 @@ import com.google.inject.name.Named;
  */
 class ChildFieldHandlerWorker {
 
-	private final Logger l = LoggerFactory
-			.getLogger(ChildFieldHandlerWorker.class);
-
 	private final AnnotationDiscoveryWorkerFactory annotationDiscoveryFactory;
 
 	private final PredefinedAnnotationFilterFactory annotationFilterFactory;
@@ -52,8 +46,11 @@ class ChildFieldHandlerWorker {
 
 	private final Collection<Class<? extends Annotation>> childAnnotations;
 
+	private final WorkerLoggerFactory.Logger log;
+
 	@Inject
 	ChildFieldHandlerWorker(
+			WorkerLoggerFactory loggerFactory,
 			AnnotationDiscoveryWorkerFactory annotationDiscoveryFactory,
 			PredefinedAnnotationFilterFactory annotationFilterFactory,
 			FactoriesMapFactory factoriesMapFactory,
@@ -61,6 +58,7 @@ class ChildFieldHandlerWorker {
 			@Named("field_handler_factories_map") Map<Class<? extends Annotation>, FieldHandlerFactory> fieldHandlerFactories,
 			@Named("child_annotations") Collection<Class<? extends Annotation>> childAnnotations,
 			@Assisted Object preferences, @Assisted String panelName) {
+		this.log = loggerFactory.create();
 		this.annotationDiscoveryFactory = annotationDiscoveryFactory;
 		this.annotationFilterFactory = annotationFilterFactory;
 		this.fieldFactoryWorker = fieldFactories;
@@ -86,10 +84,10 @@ class ChildFieldHandlerWorker {
 		@Override
 		public void fieldAnnotationDiscovered(Field field, Object value,
 				Annotation a) {
-			l.debug("Discrovered child annotation for field value {}.", value);
 			if (field.getName().equals(panelName)
 					|| value.toString().equals(panelName)) {
 				childFieldHandler = createChildFieldHandler(field, value);
+				log.discoveredChildAnnotationForPanel(panelName, value);
 			}
 		}
 	}
@@ -113,7 +111,7 @@ class ChildFieldHandlerWorker {
 	}
 
 	private FieldHandler<?> createChildFieldHandler(Field field, Object value) {
-		l.debug("Create a new child field handler for field {}.", value);
+		log.creatingNewChild(field, value);
 		FieldHandlerFactoriesMap factoriesMap = factoriesMapFactory
 				.create(fieldHandlerFactories);
 		ChildFieldHandlerFactory factory = (ChildFieldHandlerFactory) factoriesMap
@@ -138,8 +136,8 @@ class ChildFieldHandlerWorker {
 		if (a.getClass() == Group.class) {
 			return;
 		}
-		l.debug("Create a new group field handler for child field {}.", child);
 		Object value = handler.getComponentValue();
+		log.setupNewGroup(handler);
 		Iterable<FieldHandlerEntry> handlers = fieldFactoryWorker
 				.createFieldsHandlers(factoriesMap, value);
 		for (FieldHandlerEntry entry : handlers) {

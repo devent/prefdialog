@@ -19,6 +19,10 @@ public class PrefdialogPanelModule extends AbstractModule {
 		install(new FactoryModuleBuilder().implement(
 				ChildFieldHandlerWorker.class, ChildFieldHandlerWorker.class)
 				.build(ChildFieldHandlerWorkerFactory.class));
+		install(new FactoryModuleBuilder().implement(
+				WorkerLoggerFactory.Logger.class,
+				WorkerLoggerFactory.Logger.class).build(
+				WorkerLoggerFactory.class));
 	}
 
 }
