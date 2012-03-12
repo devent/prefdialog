@@ -1,3 +1,21 @@
+/*
+ * Copyright 2012 Erwin Müller <erwin.mueller@deventm.org>
+ * 
+ * This file is part of prefdialog-panel.
+ * 
+ * prefdialog-panel is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
+ * 
+ * prefdialog-panel is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with prefdialog-panel. If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.anrisoftware.prefdialog.panel;
 
 import static java.lang.String.format;
@@ -16,6 +34,7 @@ import com.anrisoftware.prefdialog.panel.api.FieldHandlerEntry;
 import com.anrisoftware.prefdialog.panel.api.FieldHandlerFactoriesMap;
 import com.anrisoftware.prefdialog.panel.api.FieldsHandlerFactoryWorker;
 import com.anrisoftware.prefdialog.panel.inputfields.api.ChildFieldHandlerFactory;
+import com.anrisoftware.prefdialog.panel.inputfields.api.GroupFieldHandlerFactory;
 import com.anrisoftware.prefdialog.reflection.api.AnnotationDiscoveryCallback;
 import com.anrisoftware.prefdialog.reflection.api.AnnotationDiscoveryWorkerFactory;
 import com.anrisoftware.prefdialog.reflection.api.AnnotationFilter;
@@ -26,7 +45,12 @@ import com.google.inject.name.Named;
 
 /**
  * Search the preferences object for the {@link Child} annotation and create a
- * new {@link ChildFieldHandler} with all fields.
+ * new {@link ChildFieldHandler} with all fields. Search also for the
+ * {@link Group} annotation to create a new group field handler with the help of
+ * the {@link GroupFieldHandlerFactory}.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.1
  */
 class ChildFieldHandlerWorker {
 
