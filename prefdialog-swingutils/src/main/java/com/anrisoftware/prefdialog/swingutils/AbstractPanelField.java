@@ -28,7 +28,7 @@ public abstract class AbstractPanelField<FieldType extends JComponent> extends
 	 * @param field
 	 *            the {@link JComponent}.
 	 */
-	public AbstractPanelField(FieldType field) {
+	protected AbstractPanelField(FieldType field) {
 		super(new JPanel());
 		this.field = field;
 		this.layout = createLayout();
@@ -50,7 +50,7 @@ public abstract class AbstractPanelField<FieldType extends JComponent> extends
 	/**
 	 * Sets the new {@link TableLayout} for the container to use.
 	 */
-	public void setLayout(TableLayout layout) {
+	protected void setLayout(TableLayout layout) {
 		this.layout = layout;
 		JPanel panel = getPanel();
 		panel.setLayout(layout);
@@ -59,21 +59,21 @@ public abstract class AbstractPanelField<FieldType extends JComponent> extends
 	/**
 	 * Returns the {@link TableLayout} the the container is using.
 	 */
-	public TableLayout getLayout() {
+	protected TableLayout getLayout() {
 		return layout;
 	}
 
 	/**
 	 * Returns the {@link FieldType} that the container is enclosing.
 	 */
-	public FieldType getPanelField() {
+	protected FieldType getPanelField() {
 		return field;
 	}
 
 	/**
 	 * Returns the {@link JPanel} container that we are using.
 	 */
-	public JPanel getPanel() {
+	protected JPanel getPanel() {
 		return (JPanel) getAWTComponent();
 	}
 

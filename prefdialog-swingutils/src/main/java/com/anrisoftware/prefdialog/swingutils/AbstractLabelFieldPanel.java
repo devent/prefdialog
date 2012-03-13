@@ -42,7 +42,7 @@ public abstract class AbstractLabelFieldPanel<FieldType extends JComponent>
 	 * @param field
 	 *            the {@link JComponent}.
 	 */
-	public AbstractLabelFieldPanel(FieldType field) {
+	protected AbstractLabelFieldPanel(FieldType field) {
 		super(field);
 		this.label = new JLabel();
 		setLayout(createLayout());
