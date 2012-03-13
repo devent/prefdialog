@@ -19,17 +19,22 @@
 package com.anrisoftware.prefdialog.panel.inputfields.group;
 
 import static java.lang.String.format;
+import static javax.swing.BorderFactory.createTitledBorder;
+import static javax.swing.border.TitledBorder.DEFAULT_POSITION;
+import static javax.swing.border.TitledBorder.LEADING;
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Font;
 
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 
 import com.anrisoftware.prefdialog.FieldHandler;
 import com.anrisoftware.prefdialog.panel.inputfields.child.ChildComponent;
-import com.anrisoftware.prefdialog.swingutils.AbstractFieldComponent;
+import com.google.inject.Inject;
 
 /**
  * Sets a {@link UiGroupPanel} that will contain the fields that are in the
@@ -38,28 +43,58 @@ import com.anrisoftware.prefdialog.swingutils.AbstractFieldComponent;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 2.1
  */
-class GroupPanel extends AbstractFieldComponent<UiGroupPanel> implements
-		ChildComponent {
-
-	private final UiGroupPanel panel;
+class GroupPanel extends ChildComponent {
 
 	private Object value;
+
+	private final JPanel fieldsPanel;
 
 	/**
 	 * Set the {@link UiGroupPanel}.
 	 */
-	GroupPanel() {
-		super(new UiGroupPanel());
-		panel = getField();
+	@Inject
+	GroupPanel(JPanel panel) {
+		super(panel);
+		this.fieldsPanel = new JPanel();
+		setLayout(createLayout());
+		setup();
+	}
+
+	private TableLayout createLayout() {
+		double[] col = { TableLayout.FILL };
+		double[] row = { TableLayout.PREFERRED, TableLayout.FILL };
+		TableLayout layout = new TableLayout(col, row);
+		layout.setHGap(5);
+		layout.setVGap(5);
+		return layout;
+	}
+
+	private void setup() {
 		setupPanel();
+		setupTitleText();
+		setupFieldsPanel();
 	}
 
 	private void setupPanel() {
-		setBoldFontForGroupLabel();
+		JPanel panel = (JPanel) getAWTComponent();
+		panel.removeAll();
+		panel.setBorder(createTitledBorder(null, "Group", LEADING,
+				DEFAULT_POSITION));
+		panel.add(fieldsPanel, "0, 0");
 	}
 
-	private void setBoldFontForGroupLabel() {
-		TitledBorder border = (TitledBorder) panel.getBorder();
+	private void setupFieldsPanel() {
+		double[] col = { TableLayout.FILL };
+		double[] row = { TableLayout.FILL };
+		TableLayout layout = new TableLayout(col, row);
+		layout.setHGap(5);
+		layout.setVGap(5);
+		fieldsPanel.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));
+		fieldsPanel.setLayout(layout);
+	}
+
+	private void setupTitleText() {
+		TitledBorder border = (TitledBorder) getPanel().getBorder();
 		Font font = defaultFontFor(border);
 		border.setTitleFont(new Font(font.getFamily(), font.getStyle()
 				| Font.BOLD, font.getSize()));
@@ -74,7 +109,7 @@ class GroupPanel extends AbstractFieldComponent<UiGroupPanel> implements
 
 	@Override
 	public void setTitle(String title) {
-		TitledBorder border = (TitledBorder) panel.getBorder();
+		TitledBorder border = (TitledBorder) getPanel().getBorder();
 		border.setTitle(title);
 	}
 
@@ -91,17 +126,16 @@ class GroupPanel extends AbstractFieldComponent<UiGroupPanel> implements
 	@Override
 	public void addField(FieldHandler<?> inputField) {
 		int row = addRowToFieldsLayout();
-		panel.getFieldsPanel().add(inputField.getAWTComponent(),
-				format("0, %d", row));
+		fieldsPanel.add(inputField.getAWTComponent(), format("0, %d", row));
 	}
 
 	private int addRowToFieldsLayout() {
-		TableLayout layout = (TableLayout) panel.getFieldsPanel().getLayout();
+		TableLayout layout = (TableLayout) fieldsPanel.getLayout();
 		int rows = layout.getNumRow();
 		int row = rows - 1;
 		layout.insertRow(row, TableLayout.PREFERRED);
-		layout.layoutContainer(panel);
-		panel.repaint();
+		layout.layoutContainer(getPanel());
+		getPanel().repaint();
 		return row;
 	}
 

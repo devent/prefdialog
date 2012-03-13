@@ -35,6 +35,8 @@ public @interface Group {
 
 	double width() default -1.0;
 
+	boolean showTitle() default true;
+
 	/**
 	 * If this input field should be read-only. Read-only fields are to show
 	 * information for the user without that the user can modify the value.
