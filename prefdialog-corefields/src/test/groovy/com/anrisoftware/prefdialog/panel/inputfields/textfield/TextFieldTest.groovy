@@ -58,6 +58,6 @@ class TextFieldTest extends AbstractFieldFixture {
 
 	@Test
 	void testManually() {
-		Thread.sleep 0
+		Thread.sleep 60000
 	}
 }

@@ -1,11 +1,21 @@
 package com.anrisoftware.prefdialog.swingutils;
 
+import static org.apache.commons.lang.StringUtils.isEmpty;
+
+import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.net.URL;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 import com.anrisoftware.prefdialog.FieldComponent;
 import com.anrisoftware.prefdialog.FieldHandler;
+import com.anrisoftware.prefdialog.annotations.IconSize;
+import com.anrisoftware.prefdialog.annotations.TextPosition;
 import com.anrisoftware.prefdialog.swingutils.LoggerFactory.Logger;
+import com.google.common.io.Resources;
 import com.google.inject.Inject;
 
 /**
@@ -56,9 +66,56 @@ public class AbstractLabelFieldHandler<FieldComponentType extends AbstractLabelF
 	 */
 	@Override
 	public FieldHandler<FieldComponentType> setup() {
-		setupTitle();
 		setupShowTitle();
+		setupIcon();
+		setupTitle();
 		return super.setup();
+	}
+
+	private void setupTitle() {
+		TextPosition position = valueFromA("textPosition", TextPosition.class);
+		String title = valueFromA("title", String.class);
+		title = defaultTitle(title);
+		switch (position) {
+		case ICON_ONLY:
+			getComponent().setTitle(null);
+			break;
+		case TEXT_ONLY:
+			getComponent().setTitle(title);
+			getComponent().setIcon(null);
+			break;
+		case TEXT_ALONGSIDE_ICON:
+			getComponent().setTextUnderIcon(false);
+			getComponent().setTitle(title);
+			break;
+		case TEXT_UNDER_ICON:
+			getComponent().setTextUnderIcon(true);
+			getComponent().setTitle(title);
+			break;
+		}
+		log.setupText(position, title);
+	}
+
+	private void setupIcon() {
+		String resourceName = valueFromA("icon", String.class);
+		int iconSize = valueFromA("iconSize", IconSize.class).getWidth();
+		resourceName = String.format(resourceName, iconSize);
+		URL iconUrl = Resources.getResource(resourceName);
+		if (isEmpty(resourceName) || iconUrl == null) {
+			return;
+		}
+		ImageIcon icon = loadIcon(iconUrl);
+		getComponent().setIcon(icon);
+		log.setupButtonIcon(iconUrl);
+	}
+
+	private ImageIcon loadIcon(URL iconUrl) {
+		try {
+			return new ImageIcon(ImageIO.read(iconUrl));
+		} catch (IOException e) {
+			log.errorLoadIcon(e);
+			return null;
+		}
 	}
 
 	private void setupShowTitle() {
@@ -70,11 +127,19 @@ public class AbstractLabelFieldHandler<FieldComponentType extends AbstractLabelF
 		getComponent().setShowTitle(show);
 	}
 
-	private void setupTitle() {
-		String title = getReflectionToolbox().valueFromA(getField(), "title",
-				String.class, getAnnotationClass());
-		title = defaultTitle(title);
-		setComponentTitle(title);
+	/**
+	 * Returns the value from a {@link Annotation} element. Uses the current
+	 * field and the current annotation class.
+	 * 
+	 * @param name
+	 *            the name of the element.
+	 * 
+	 * @param classType
+	 *            the {@link Class} of the element.
+	 */
+	protected <T> T valueFromA(String name, Class<T> classType) {
+		return getReflectionToolbox().valueFromA(getField(), name, classType,
+				getAnnotationClass());
 	}
 
 	/**

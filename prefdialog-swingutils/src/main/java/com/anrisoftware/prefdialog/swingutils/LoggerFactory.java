@@ -1,5 +1,9 @@
 package com.anrisoftware.prefdialog.swingutils;
 
+import java.io.IOException;
+import java.net.URL;
+
+import com.anrisoftware.prefdialog.annotations.TextPosition;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
@@ -78,5 +82,18 @@ interface LoggerFactory {
 					handler);
 		}
 
+		void errorLoadIcon(IOException e) {
+			log.error("Error load the icon for the title.", e);
+		}
+
+		void setupButtonIcon(URL iconUrl) {
+			log.debug("Setup the icon {} for the title.", iconUrl);
+		}
+
+		void setupText(TextPosition position, String text) {
+			log.debug(
+					"Setup the text ``{}'' with the text position {} for the title.",
+					text, position);
+		}
 	}
 }

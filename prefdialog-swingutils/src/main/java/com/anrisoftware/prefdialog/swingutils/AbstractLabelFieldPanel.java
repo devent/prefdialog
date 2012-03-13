@@ -20,9 +20,11 @@ package com.anrisoftware.prefdialog.swingutils;
 
 import info.clearthought.layout.TableLayout;
 
+import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 /**
  * Adds on top of the {@link FieldType} a {@link JLabel} that displays the titel
@@ -67,7 +69,7 @@ public abstract class AbstractLabelFieldPanel<FieldType extends JComponent>
 
 	@Override
 	public void setTitle(String title) {
-		label.setText(title);
+		setLabelText(title);
 	}
 
 	/**
@@ -80,7 +82,7 @@ public abstract class AbstractLabelFieldPanel<FieldType extends JComponent>
 	@Override
 	public void setName(String name) {
 		super.setName(name);
-		name = "label-" + name;
+		name = "title_label-" + name;
 		label.setName(name);
 	}
 
@@ -89,6 +91,30 @@ public abstract class AbstractLabelFieldPanel<FieldType extends JComponent>
 	 */
 	public void setShowTitle(boolean show) {
 		label.setVisible(show);
+	}
+
+	/**
+	 * Sets the {@link Icon} for the title label.
+	 */
+	public void setIcon(Icon icon) {
+		label.setIcon(icon);
+	}
+
+	/**
+	 * Set the text of the title label under the icon.
+	 * 
+	 * @param underIcon
+	 *            if <code>true</code> then set the text under the icon or left
+	 *            from the icon otherwise.
+	 */
+	public void setTextUnderIcon(boolean underIcon) {
+		if (underIcon) {
+			label.setVerticalTextPosition(SwingConstants.BOTTOM);
+			label.setHorizontalTextPosition(SwingConstants.CENTER);
+		} else {
+			label.setVerticalTextPosition(SwingConstants.CENTER);
+			label.setHorizontalTextPosition(SwingConstants.TRAILING);
+		}
 	}
 
 	protected JLabel getLabel() {

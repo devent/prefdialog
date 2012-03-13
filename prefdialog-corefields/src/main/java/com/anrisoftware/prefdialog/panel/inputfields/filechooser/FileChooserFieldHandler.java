@@ -24,7 +24,6 @@ import static java.lang.String.format;
 import java.awt.Component;
 import java.io.File;
 import java.io.IOException;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.net.URL;
 
@@ -124,12 +123,6 @@ class FileChooserFieldHandler extends
 			log.errorLoadIcon(this, e);
 			return null;
 		}
-	}
-
-	private <T> T valueFromA(String name, Class<T> classType) {
-		Annotation a = getField().getAnnotation(FileChooser.class);
-		return getReflectionToolbox().invokeMethodWithReturnType(name,
-				classType, a);
 	}
 
 	private void setupOpenFileAction() {
