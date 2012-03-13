@@ -91,4 +91,7 @@ public abstract class AbstractLabelFieldPanel<FieldType extends JComponent>
 		label.setVisible(show);
 	}
 
+	protected JLabel getLabel() {
+		return label;
+	}
 }
