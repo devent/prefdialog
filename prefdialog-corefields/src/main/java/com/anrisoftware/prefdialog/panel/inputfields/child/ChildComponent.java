@@ -18,8 +18,11 @@
  */
 package com.anrisoftware.prefdialog.panel.inputfields.child;
 
+import javax.swing.JPanel;
+
 import com.anrisoftware.prefdialog.FieldComponent;
 import com.anrisoftware.prefdialog.FieldHandler;
+import com.anrisoftware.prefdialog.swingutils.AbstractLabelFieldPanel;
 
 /**
  * A child component is a {@link FieldComponent} that contains other fields.
@@ -27,11 +30,21 @@ import com.anrisoftware.prefdialog.FieldHandler;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 2.1
  */
-public interface ChildComponent extends FieldComponent {
+public abstract class ChildComponent extends AbstractLabelFieldPanel<JPanel> {
 
 	/**
-	 * Adds a new field {@link FieldHandler}.
+	 * Set the field as the panel.
+	 * 
+	 * @param panel
+	 *            the {@link JPanel} that contains the child fields.
 	 */
-	void addField(FieldHandler<?> inputField);
+	protected ChildComponent(JPanel panel) {
+		super(panel);
+	}
+
+	/**
+	 * Adds a new field {@link FieldHandler} to the child panel.
+	 */
+	public abstract void addField(FieldHandler<?> inputField);
 
 }

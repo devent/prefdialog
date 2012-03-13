@@ -48,6 +48,8 @@ public @interface Child {
 	 */
 	String title() default "";
 
+	boolean showTitle() default true;
+
 	/**
 	 * The width of the child inside the container. Default value is -1.0. Valid
 	 * width can be a double value or the special values of:

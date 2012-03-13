@@ -23,60 +23,108 @@ import info.clearthought.layout.TableLayout;
 
 import java.awt.Font;
 
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 
 import com.anrisoftware.prefdialog.FieldHandler;
-import com.anrisoftware.prefdialog.swingutils.AbstractFieldComponent;
 import com.google.inject.Inject;
 
 /**
- * A {@link JPanel} that contains all fields in rows.
+ * Setup a panel that have a title and separator to divide the title from the
+ * child fields.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 2.1
  */
-class ChildPanel extends AbstractFieldComponent<UiChildPanel> implements
-		ChildComponent {
-
-	private final UiChildPanel panel;
+class ChildPanel extends ChildComponent {
 
 	private Object value;
 
+	private final JSeparator separator;
+
+	private final JScrollPane scrollPane;
+
+	private final JPanel fieldsPanel;
+
 	/**
-	 * Setups the {@link UiChildPanel}.
+	 * Setups the panel.
 	 */
 	@Inject
-	ChildPanel(UiChildPanel panel) {
+	ChildPanel(JPanel panel) {
 		super(panel);
-		this.panel = getField();
+		this.separator = new JSeparator(JSeparator.HORIZONTAL);
+		this.scrollPane = new JScrollPane();
+		this.fieldsPanel = new JPanel();
+		setLayout(createLayout());
 		setup();
 	}
 
-	/**
-	 * Sets the font for the child label.
-	 */
-	private void setup() {
-		setBoldFontForChildLabel();
+	private TableLayout createLayout() {
+		double[] col = { TableLayout.FILL };
+		double[] row = { TableLayout.PREFERRED, TableLayout.PREFERRED,
+				TableLayout.FILL };
+		TableLayout layout = new TableLayout(col, row);
+		layout.setHGap(5);
+		layout.setVGap(5);
+		return layout;
 	}
 
-	private void setBoldFontForChildLabel() {
-		Font font = panel.getChildLabel().getFont();
-		panel.getChildLabel().setFont(
+	private void setup() {
+		setupPanel();
+		setupScrollPane();
+		setupChildLabel();
+		setupChildPanel();
+		setupFieldsPanel();
+	}
+
+	private void setupFieldsPanel() {
+		double[] col = { TableLayout.FILL };
+		double[] row = { TableLayout.FILL };
+		TableLayout layout = new TableLayout(col, row);
+		layout.setHGap(5);
+		layout.setVGap(5);
+		fieldsPanel.setLayout(layout);
+	}
+
+	private void setupChildPanel() {
+		double[] col = { TableLayout.FILL };
+		double[] row = { TableLayout.PREFERRED, TableLayout.FILL };
+		TableLayout layout = new TableLayout(col, row);
+		layout.setHGap(5);
+		layout.setVGap(5);
+		getPanelField().setLayout(layout);
+		getPanelField().setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 6));
+		getPanelField().add(fieldsPanel, "0, 0");
+	}
+
+	private void setupScrollPane() {
+		scrollPane.setViewportView(getPanelField());
+		scrollPane.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+	}
+
+	private void setupPanel() {
+		JPanel panel = (JPanel) getAWTComponent();
+		panel.removeAll();
+		panel.add(getLabel(), "0, 0");
+		panel.add(separator, "0, 1");
+		panel.add(scrollPane, "0, 2");
+		panel.setBorder(BorderFactory.createEmptyBorder(6, 6, 0, 6));
+	}
+
+	private void setupChildLabel() {
+		Font font = getLabel().getFont();
+		getLabel().setFont(
 				new Font(font.getFamily(), font.getStyle() | Font.BOLD, font
 						.getSize()));
 	}
 
 	@Override
 	public void setName(String name) {
-		panel.getChildLabel().setName(format("label-%s", name));
-		panel.getScrollPanel().setName(format("scroll-%s", name));
-		panel.getFieldsPanel().setName(format("fields-%s", name));
+		scrollPane.setName(format("scroll-%s", name));
+		fieldsPanel.setName(format("fields-%s", name));
 		super.setName(name);
-	}
-
-	@Override
-	public void setTitle(String title) {
-		panel.getChildLabel().setText(title);
 	}
 
 	@Override
@@ -92,17 +140,16 @@ class ChildPanel extends AbstractFieldComponent<UiChildPanel> implements
 	@Override
 	public void addField(FieldHandler<?> inputField) {
 		int row = addRowToFieldsLayout();
-		panel.getScrollPanel().add(inputField.getAWTComponent(),
-				format("0, %d", row));
+		getPanelField().add(inputField.getAWTComponent(), format("0, %d", row));
 	}
 
 	private int addRowToFieldsLayout() {
-		TableLayout layout = (TableLayout) panel.getScrollPanel().getLayout();
+		TableLayout layout = (TableLayout) getPanelField().getLayout();
 		int rows = layout.getNumRow();
 		int row = rows - 1;
 		layout.insertRow(row, TableLayout.PREFERRED);
-		layout.layoutContainer(panel);
-		panel.repaint();
+		layout.layoutContainer(getPanel());
+		getPanel().repaint();
 		return row;
 	}
 

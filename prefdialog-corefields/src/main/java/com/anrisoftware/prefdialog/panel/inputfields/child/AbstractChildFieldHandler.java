@@ -31,6 +31,7 @@ import com.anrisoftware.prefdialog.FieldHandler;
 import com.anrisoftware.prefdialog.annotations.Child;
 import com.anrisoftware.prefdialog.annotations.Group;
 import com.anrisoftware.prefdialog.swingutils.AbstractDefaultFieldHandler;
+import com.anrisoftware.prefdialog.swingutils.AbstractLabelFieldHandler;
 import com.google.inject.Inject;
 
 /**
@@ -46,7 +47,7 @@ import com.google.inject.Inject;
  * @see ChildComponent
  */
 public abstract class AbstractChildFieldHandler<ComponentType extends ChildComponent>
-		extends AbstractDefaultFieldHandler<ComponentType> {
+		extends AbstractLabelFieldHandler<ComponentType> {
 
 	private LoggerFactory.Logger log;
 
