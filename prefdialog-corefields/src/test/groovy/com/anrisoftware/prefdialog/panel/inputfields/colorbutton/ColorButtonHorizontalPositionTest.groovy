@@ -18,6 +18,8 @@
  */
 package com.anrisoftware.prefdialog.panel.inputfields.colorbutton
 
+import static com.anrisoftware.prefdialog.swingutils.AbstractLabelFieldPanel.TITLE_LABEL
+
 import java.awt.Color
 
 import org.junit.Test
@@ -37,6 +39,14 @@ class ColorButtonHorizontalPositionTest extends FieldFixtureHandler {
 
 	static factory = injector.getInstance(ColorButtonFieldHandlerFactory)
 
+	static final String COLOR_DEFAULT = "colorDefault"
+
+	static final String COLOR_LEFT = "colorLeft"
+
+	static final String COLOR_RIGHT = "colorRight"
+
+	static final String COLOR_MIDDLE = "colorMiddle"
+
 	static class General {
 
 		@ColorButton
@@ -54,39 +64,39 @@ class ColorButtonHorizontalPositionTest extends FieldFixtureHandler {
 
 	@Test
 	void "default horizontal position"() {
-		createFieldFixture(new General(), 'colorDefault', factory)
+		createFieldFixture(new General(), COLOR_DEFAULT, factory)
 		beginFixture()
-		assert fixture.label('label-colorDefault').text() == 'colorDefault'
+		assert fixture.label("$TITLE_LABEL-$COLOR_DEFAULT").text() == COLOR_DEFAULT
 		endFixture()
 	}
 
 	@Test
 	void "left horizontal position"() {
-		createFieldFixture(new General(), 'colorLeft', factory)
+		createFieldFixture(new General(), COLOR_LEFT, factory)
 		beginFixture()
-		assert fixture.label('label-colorLeft').text() == 'colorLeft'
+		assert fixture.label("$TITLE_LABEL-$COLOR_LEFT").text() == COLOR_LEFT
 		endFixture()
 	}
 
 	@Test
 	void "right horizontal position"() {
-		createFieldFixture(new General(), 'colorRight', factory)
+		createFieldFixture(new General(), COLOR_RIGHT, factory)
 		beginFixture()
-		assert fixture.label('label-colorRight').text() == 'colorRight'
+		assert fixture.label("$TITLE_LABEL-$COLOR_RIGHT").text() == COLOR_RIGHT
 		endFixture()
 	}
 
 	@Test
 	void "middle horizontal position"() {
-		createFieldFixture(new General(), 'colorMiddle', factory)
+		createFieldFixture(new General(), COLOR_MIDDLE, factory)
 		beginFixture()
-		assert fixture.label('label-colorMiddle').text() == 'colorMiddle'
+		assert fixture.label("$TITLE_LABEL-$COLOR_MIDDLE").text() == COLOR_MIDDLE
 		endFixture()
 	}
 
 	@Test
 	void testManual() {
-		createFieldFixture(new General(), 'colorMiddle', factory)
+		createFieldFixture(new General(), COLOR_MIDDLE, factory)
 		beginFixture()
 		//Thread.sleep(30000)
 		endFixture()

@@ -26,6 +26,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JColorChooser;
 
 import com.anrisoftware.prefdialog.annotations.HorizontalPositions;
 import com.anrisoftware.prefdialog.swingutils.AbstractLabelFieldPanel;
@@ -39,6 +40,11 @@ import com.google.inject.Inject;
  * @since 2.1
  */
 class ColorButtonPanel extends AbstractLabelFieldPanel<UiColorButtonPanel> {
+
+	/**
+	 * The name prefix for the color button that open the {@link JColorChooser}.
+	 */
+	public static final String COLOR_BUTTON = "colorbutton";
 
 	private Color color;
 
@@ -113,8 +119,8 @@ class ColorButtonPanel extends AbstractLabelFieldPanel<UiColorButtonPanel> {
 	@Override
 	public void setName(String name) {
 		super.setName(name);
-		getPanelField().getColorButton()
-				.setName(format("colorbutton-%s", name));
+		getPanelField().getColorButton().setName(
+				format("%s-%s", COLOR_BUTTON, name));
 	}
 
 	@Override

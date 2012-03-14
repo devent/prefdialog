@@ -18,6 +18,8 @@
  */
 package com.anrisoftware.prefdialog.panel.inputfields.colorbutton
 
+import static com.anrisoftware.prefdialog.swingutils.AbstractLabelFieldPanel.TITLE_LABEL
+
 import java.awt.Color
 
 import org.junit.Test
@@ -36,12 +38,18 @@ class ColorButtonTitleTest extends FieldFixtureHandler {
 
 	static factory = injector.getInstance(ColorButtonFieldHandlerFactory)
 
+	static final String DEFAULT_TITLE = "color1"
+
+	static final String CUSTOM_TITLE = "color2"
+
+	static final String HIDE_TITLE = "color3"
+
 	static class General {
 
 		@ColorButton
 		Color color1 = Color.WHITE
 
-		@ColorButton(title='Color:')
+		@ColorButton(title="color2")
 		Color color2 = Color.WHITE
 
 		@ColorButton(showTitle=false)
@@ -50,25 +58,25 @@ class ColorButtonTitleTest extends FieldFixtureHandler {
 
 	@Test
 	void "default title"() {
-		createFieldFixture(new General(), 'color1', factory)
+		createFieldFixture(new General(), DEFAULT_TITLE, factory)
 		beginFixture()
-		assert fixture.label('label-color1').text() == 'color1'
+		assert fixture.label("$TITLE_LABEL-$DEFAULT_TITLE").text() == DEFAULT_TITLE
 		endFixture()
 	}
 
 	@Test
 	void "custom title"() {
-		createFieldFixture(new General(), 'color2', factory)
+		createFieldFixture(new General(), CUSTOM_TITLE, factory)
 		beginFixture()
-		assert fixture.label('label-color2').text() == 'Color:'
+		assert fixture.label("$TITLE_LABEL-$CUSTOM_TITLE").text() == CUSTOM_TITLE
 		endFixture()
 	}
 
 	@Test
 	void "no title"() {
-		createFieldFixture(new General(), 'color3', factory)
+		createFieldFixture(new General(), HIDE_TITLE, factory)
 		beginFixture()
-		//assert fixture.label('label-file3').text() == 'file3'
+		//assert fixture.label("$TITLE_LABEL-file3").text() == "file3"
 		endFixture()
 	}
 

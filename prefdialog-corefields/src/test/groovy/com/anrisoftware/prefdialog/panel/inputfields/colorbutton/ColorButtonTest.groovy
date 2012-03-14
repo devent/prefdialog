@@ -18,6 +18,9 @@
  */
 package com.anrisoftware.prefdialog.panel.inputfields.colorbutton
 
+import static com.anrisoftware.prefdialog.panel.inputfields.colorbutton.ColorButtonPanel.COLOR_BUTTON
+import static com.anrisoftware.prefdialog.swingutils.AbstractLabelFieldPanel.TITLE_LABEL
+
 import java.awt.Color
 
 import org.junit.Test
@@ -36,6 +39,8 @@ class ColorButtonTest extends AbstractFieldFixture {
 
 	static factory = injector.getInstance(ColorButtonFieldHandlerFactory)
 
+	static final String COLOR = "color"
+
 	static class General {
 
 		@ColorButton
@@ -43,15 +48,15 @@ class ColorButtonTest extends AbstractFieldFixture {
 	}
 
 	ColorButtonTest() {
-		super(new General(), "color", factory)
+		super(new General(), COLOR, factory)
 	}
 
 	@Test
 	void "names and titles"() {
-		fixture.label("title_label-color").requireVisible()
-		assert fixture.label("title_label-color").text() == "color"
-		fixture.button("colorbutton-color").requireVisible()
-		assert fixture.button("colorbutton-color").text() == "#ffffff"
+		fixture.label("$TITLE_LABEL-$COLOR").requireVisible()
+		assert fixture.label("$TITLE_LABEL-$COLOR").text() == COLOR
+		fixture.button("$COLOR_BUTTON-$COLOR").requireVisible()
+		assert fixture.button("$COLOR_BUTTON-$COLOR").text() == "#ffffff"
 	}
 
 	@Test
