@@ -18,6 +18,8 @@
  */
 package com.anrisoftware.prefdialog.panel.inputfields.button
 
+import static com.anrisoftware.prefdialog.swingutils.AbstractLabelFieldPanel.TITLE_LABEL
+
 import org.junit.Test
 
 import com.anrisoftware.prefdialog.annotations.ButtonGroup
@@ -25,6 +27,8 @@ import com.anrisoftware.prefdialog.annotations.IconSize
 import com.anrisoftware.prefdialog.annotations.TextPosition
 import com.anrisoftware.prefdialog.panel.inputfields.FieldFixtureHandler
 import com.anrisoftware.prefdialog.panel.inputfields.api.ButtonGroupFieldHandlerFactory
+import com.anrisoftware.prefdialog.swingutils.AbstractLabelFieldPanel
+
 
 class ButtonGroupIconSizesTest extends FieldFixtureHandler {
 
@@ -79,8 +83,8 @@ class ButtonGroupIconSizesTest extends FieldFixtureHandler {
 		beginFixture()
 		fixture.button("button-0-$ALONGSIDE_ICON_DEFAULT_SIZE").click()
 		fixture.button("button-1-$ALONGSIDE_ICON_DEFAULT_SIZE").click()
-		assert fixture.label("title_label-$ALONGSIDE_ICON_DEFAULT_SIZE").component().icon.iconWidth == 16
-		assert fixture.label("title_label-$ALONGSIDE_ICON_DEFAULT_SIZE").component().text == ALONGSIDE_ICON_DEFAULT_SIZE
+		assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON_DEFAULT_SIZE").component().icon.iconWidth == 16
+		assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON_DEFAULT_SIZE").component().text == ALONGSIDE_ICON_DEFAULT_SIZE
 		endFixture()
 	}
 
@@ -90,8 +94,8 @@ class ButtonGroupIconSizesTest extends FieldFixtureHandler {
 		beginFixture()
 		fixture.button("button-0-$ALONGSIDE_ICON_SMALL_SIZE").click()
 		fixture.button("button-1-$ALONGSIDE_ICON_SMALL_SIZE").click()
-		assert fixture.label("title_label-$ALONGSIDE_ICON_SMALL_SIZE").component().icon.iconWidth == 16
-		assert fixture.label("title_label-$ALONGSIDE_ICON_SMALL_SIZE").component().text == ALONGSIDE_ICON_SMALL_SIZE
+		assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON_SMALL_SIZE").component().icon.iconWidth == 16
+		assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON_SMALL_SIZE").component().text == ALONGSIDE_ICON_SMALL_SIZE
 		endFixture()
 	}
 
@@ -101,8 +105,8 @@ class ButtonGroupIconSizesTest extends FieldFixtureHandler {
 		beginFixture()
 		fixture.button("button-0-$ALONGSIDE_ICON_MEDIUM_SIZE").click()
 		fixture.button("button-1-$ALONGSIDE_ICON_MEDIUM_SIZE").click()
-		assert fixture.label("title_label-$ALONGSIDE_ICON_MEDIUM_SIZE").component().icon.iconWidth == 22
-		assert fixture.label("title_label-$ALONGSIDE_ICON_MEDIUM_SIZE").component().text == ALONGSIDE_ICON_MEDIUM_SIZE
+		assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON_MEDIUM_SIZE").component().icon.iconWidth == 22
+		assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON_MEDIUM_SIZE").component().text == ALONGSIDE_ICON_MEDIUM_SIZE
 		endFixture()
 	}
 
@@ -112,8 +116,8 @@ class ButtonGroupIconSizesTest extends FieldFixtureHandler {
 		beginFixture()
 		fixture.button("button-0-$ALONGSIDE_ICON_LARGE_SIZE").click()
 		fixture.button("button-1-$ALONGSIDE_ICON_LARGE_SIZE").click()
-		assert fixture.label("title_label-$ALONGSIDE_ICON_LARGE_SIZE").component().icon.iconWidth == 32
-		assert fixture.label("title_label-$ALONGSIDE_ICON_LARGE_SIZE").component().text == ALONGSIDE_ICON_LARGE_SIZE
+		assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON_LARGE_SIZE").component().icon.iconWidth == 32
+		assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON_LARGE_SIZE").component().text == ALONGSIDE_ICON_LARGE_SIZE
 		endFixture()
 	}
 
@@ -123,8 +127,8 @@ class ButtonGroupIconSizesTest extends FieldFixtureHandler {
 		beginFixture()
 		fixture.button("button-0-$ALONGSIDE_ICON_HUGE_SIZE").click()
 		fixture.button("button-1-$ALONGSIDE_ICON_HUGE_SIZE").click()
-		assert fixture.label("title_label-$ALONGSIDE_ICON_HUGE_SIZE").component().icon.iconWidth == 48
-		assert fixture.label("title_label-$ALONGSIDE_ICON_HUGE_SIZE").component().text == ALONGSIDE_ICON_HUGE_SIZE
+		assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON_HUGE_SIZE").component().icon.iconWidth == 48
+		assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON_HUGE_SIZE").component().text == ALONGSIDE_ICON_HUGE_SIZE
 		endFixture()
 	}
 

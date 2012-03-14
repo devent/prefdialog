@@ -1,5 +1,6 @@
 package com.anrisoftware.prefdialog.swingutils;
 
+import static java.lang.String.format;
 import info.clearthought.layout.TableLayout;
 
 import java.awt.event.MouseEvent;
@@ -17,6 +18,11 @@ import javax.swing.ToolTipManager;
  */
 public abstract class AbstractPanelField<FieldType extends JComponent> extends
 		AbstractFieldComponent<JPanel> {
+
+	/**
+	 * The prefix of the field panel name.
+	 */
+	public static final String PANEL = "panel";
 
 	private final FieldType field;
 
@@ -87,7 +93,7 @@ public abstract class AbstractPanelField<FieldType extends JComponent> extends
 
 	@Override
 	public void setName(String name) {
-		super.setName("panel-" + name);
+		super.setName(format("%s-%s", PANEL, name));
 		field.setName(name);
 	}
 

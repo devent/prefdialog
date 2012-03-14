@@ -18,6 +18,7 @@
  */
 package com.anrisoftware.prefdialog.swingutils;
 
+import static java.lang.String.format;
 import info.clearthought.layout.TableLayout;
 
 import javax.swing.Icon;
@@ -35,6 +36,11 @@ import javax.swing.SwingConstants;
  */
 public abstract class AbstractLabelFieldPanel<FieldType extends JComponent>
 		extends AbstractPanelField<FieldType> {
+
+	/**
+	 * The prefix of the title label name.
+	 */
+	public static final String TITLE_LABEL = "titlelabel";
 
 	private final JLabel label;
 
@@ -82,8 +88,7 @@ public abstract class AbstractLabelFieldPanel<FieldType extends JComponent>
 	@Override
 	public void setName(String name) {
 		super.setName(name);
-		name = "title_label-" + name;
-		label.setName(name);
+		label.setName(format("%s-%s", TITLE_LABEL, name));
 	}
 
 	/**
@@ -117,6 +122,9 @@ public abstract class AbstractLabelFieldPanel<FieldType extends JComponent>
 		}
 	}
 
+	/**
+	 * Returns the title {@link JLabel}.
+	 */
 	protected JLabel getLabel() {
 		return label;
 	}
