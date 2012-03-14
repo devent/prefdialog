@@ -22,11 +22,13 @@ import org.junit.Test
 
 import com.anrisoftware.prefdialog.annotations.Checkbox
 import com.anrisoftware.prefdialog.panel.inputfields.AbstractFieldFixture
-import com.anrisoftware.prefdialog.panel.inputfields.api.CheckBoxFieldHandlerFactory;
+import com.anrisoftware.prefdialog.panel.inputfields.api.CheckBoxFieldHandlerFactory
 
 class CheckboxWidthTest extends AbstractFieldFixture {
 
 	static factory = injector.getInstance(CheckBoxFieldHandlerFactory)
+
+	static final String AUTOMATIC_SAVE = "automaticSave"
 
 	static class General {
 
@@ -35,11 +37,11 @@ class CheckboxWidthTest extends AbstractFieldFixture {
 	}
 
 	CheckboxWidthTest() {
-		super(new General(), 'automaticSave', factory)
+		super(new General(), AUTOMATIC_SAVE, factory)
 	}
 
 	@Test
 	void "checkbox preferred width"() {
-		fixture.checkBox("automaticSave").click()
+		fixture.checkBox(AUTOMATIC_SAVE).click()
 	}
 }

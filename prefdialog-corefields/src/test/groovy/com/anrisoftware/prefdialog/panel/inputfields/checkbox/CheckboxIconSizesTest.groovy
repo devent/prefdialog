@@ -18,6 +18,8 @@
  */
 package com.anrisoftware.prefdialog.panel.inputfields.checkbox
 
+import static com.anrisoftware.prefdialog.swingutils.AbstractLabelFieldPanel.TITLE_LABEL
+
 import org.junit.Test
 
 import com.anrisoftware.prefdialog.annotations.Checkbox
@@ -63,8 +65,8 @@ class CheckboxIconSizesTest extends FieldFixtureHandler {
 		createFieldFixture(new General(), ALONGSIDE_ICON_DEFAULT_SIZE, factory)
 		beginFixture()
 		fixture.checkBox("$ALONGSIDE_ICON_DEFAULT_SIZE").click()
-		assert fixture.label("title_label-$ALONGSIDE_ICON_DEFAULT_SIZE").component().icon.iconWidth == 16
-		assert fixture.label("title_label-$ALONGSIDE_ICON_DEFAULT_SIZE").component().text == ALONGSIDE_ICON_DEFAULT_SIZE
+		assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON_DEFAULT_SIZE").component().icon.iconWidth == 16
+		assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON_DEFAULT_SIZE").component().text == ALONGSIDE_ICON_DEFAULT_SIZE
 		endFixture()
 	}
 
@@ -73,8 +75,8 @@ class CheckboxIconSizesTest extends FieldFixtureHandler {
 		createFieldFixture(new General(), ALONGSIDE_ICON_SMALL_SIZE, factory)
 		beginFixture()
 		fixture.checkBox("$ALONGSIDE_ICON_SMALL_SIZE").click()
-		assert fixture.label("title_label-$ALONGSIDE_ICON_SMALL_SIZE").component().icon.iconWidth == 16
-		assert fixture.label("title_label-$ALONGSIDE_ICON_SMALL_SIZE").component().text == ALONGSIDE_ICON_SMALL_SIZE
+		assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON_SMALL_SIZE").component().icon.iconWidth == 16
+		assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON_SMALL_SIZE").component().text == ALONGSIDE_ICON_SMALL_SIZE
 		endFixture()
 	}
 
@@ -83,8 +85,8 @@ class CheckboxIconSizesTest extends FieldFixtureHandler {
 		createFieldFixture(new General(), ALONGSIDE_ICON_MEDIUM_SIZE, factory)
 		beginFixture()
 		fixture.checkBox("$ALONGSIDE_ICON_MEDIUM_SIZE").click()
-		assert fixture.label("title_label-$ALONGSIDE_ICON_MEDIUM_SIZE").component().icon.iconWidth == 22
-		assert fixture.label("title_label-$ALONGSIDE_ICON_MEDIUM_SIZE").component().text == ALONGSIDE_ICON_MEDIUM_SIZE
+		assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON_MEDIUM_SIZE").component().icon.iconWidth == 22
+		assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON_MEDIUM_SIZE").component().text == ALONGSIDE_ICON_MEDIUM_SIZE
 		endFixture()
 	}
 
@@ -93,8 +95,8 @@ class CheckboxIconSizesTest extends FieldFixtureHandler {
 		createFieldFixture(new General(), ALONGSIDE_ICON_LARGE_SIZE, factory)
 		beginFixture()
 		fixture.checkBox("$ALONGSIDE_ICON_LARGE_SIZE").click()
-		assert fixture.label("title_label-$ALONGSIDE_ICON_LARGE_SIZE").component().icon.iconWidth == 32
-		assert fixture.label("title_label-$ALONGSIDE_ICON_LARGE_SIZE").component().text == ALONGSIDE_ICON_LARGE_SIZE
+		assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON_LARGE_SIZE").component().icon.iconWidth == 32
+		assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON_LARGE_SIZE").component().text == ALONGSIDE_ICON_LARGE_SIZE
 		endFixture()
 	}
 
@@ -103,8 +105,8 @@ class CheckboxIconSizesTest extends FieldFixtureHandler {
 		createFieldFixture(new General(), ALONGSIDE_ICON_HUGE_SIZE, factory)
 		beginFixture()
 		fixture.checkBox("$ALONGSIDE_ICON_HUGE_SIZE").click()
-		assert fixture.label("title_label-$ALONGSIDE_ICON_HUGE_SIZE").component().icon.iconWidth == 48
-		assert fixture.label("title_label-$ALONGSIDE_ICON_HUGE_SIZE").component().text == ALONGSIDE_ICON_HUGE_SIZE
+		assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON_HUGE_SIZE").component().icon.iconWidth == 48
+		assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON_HUGE_SIZE").component().text == ALONGSIDE_ICON_HUGE_SIZE
 		endFixture()
 	}
 

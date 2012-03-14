@@ -18,30 +18,34 @@
  */
 package com.anrisoftware.prefdialog.panel.inputfields.checkbox
 
+import static com.anrisoftware.prefdialog.swingutils.AbstractLabelFieldPanel.TITLE_LABEL
+
 import org.junit.Test
 
 import com.anrisoftware.prefdialog.annotations.Checkbox
 import com.anrisoftware.prefdialog.panel.inputfields.AbstractFieldFixture
-import com.anrisoftware.prefdialog.panel.inputfields.api.CheckBoxFieldHandlerFactory;
+import com.anrisoftware.prefdialog.panel.inputfields.api.CheckBoxFieldHandlerFactory
 
 class CheckboxTitleTest extends AbstractFieldFixture {
 
 	static factory = injector.getInstance(CheckBoxFieldHandlerFactory)
 
+	static final String AUTOMATIC_SAVE = "automaticSave"
+
 	static class General {
 
-		@Checkbox(title='Should be save automatically?', text='yes/no')
+		@Checkbox(title="Should be save automatically?", text="on/off")
 		def automaticSave = false
 	}
 
 	CheckboxTitleTest() {
-		super(new General(), 'automaticSave', factory)
+		super(new General(), AUTOMATIC_SAVE, factory)
 	}
 
 	@Test
 	void "checkbox set title and text"() {
-		fixture.checkBox('automaticSave').click()
-		assert fixture.label('label-automaticSave').text() == 'Should be save automatically?'
-		assert fixture.checkBox('automaticSave').text() == 'yes/no'
+		fixture.checkBox(AUTOMATIC_SAVE).click()
+		assert fixture.label("$TITLE_LABEL-$AUTOMATIC_SAVE").text() == "Should be save automatically?"
+		assert fixture.checkBox(AUTOMATIC_SAVE).text() == "on/off"
 	}
 }

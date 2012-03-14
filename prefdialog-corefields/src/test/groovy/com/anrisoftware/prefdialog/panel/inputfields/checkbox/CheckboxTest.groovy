@@ -28,6 +28,8 @@ class CheckboxTest extends AbstractFieldFixture {
 
 	static factory = injector.getInstance(CheckBoxFieldHandlerFactory)
 
+	static final String AUTOMATIC_SAVE = "automaticSave"
+
 	static class General {
 
 		@Checkbox
@@ -35,20 +37,20 @@ class CheckboxTest extends AbstractFieldFixture {
 	}
 
 	CheckboxTest() {
-		super(new General(), 'automaticSave', factory)
+		super(new General(), AUTOMATIC_SAVE, factory)
 	}
 
 	@Test
 	void "click and apply input"() {
-		fixture.checkBox("automaticSave").click()
+		fixture.checkBox(AUTOMATIC_SAVE).click()
 		inputField.applyInput parentObject
-		assert parentObject.automaticSave == true
+		assert parentObject.AUTOMATIC_SAVE == true
 	}
 
 	@Test
 	void "click and restore input"() {
-		fixture.checkBox("automaticSave").click()
+		fixture.checkBox(AUTOMATIC_SAVE).click()
 		inputField.restoreInput parentObject
-		assert parentObject.automaticSave == false
+		assert parentObject.AUTOMATIC_SAVE == false
 	}
 }
