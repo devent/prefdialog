@@ -43,15 +43,15 @@ class ColorButtonTest extends AbstractFieldFixture {
 	}
 
 	ColorButtonTest() {
-		super(new General(), 'color', factory)
+		super(new General(), "color", factory)
 	}
 
 	@Test
 	void "names and titles"() {
-		fixture.label('label-color').requireVisible()
-		assert fixture.label('label-color').text() == 'color'
-		fixture.button('colorbutton-color').requireVisible()
-		assert fixture.button('colorbutton-color').text() == '#ffffff'
+		fixture.label("title_label-color").requireVisible()
+		assert fixture.label("title_label-color").text() == "color"
+		fixture.button("colorbutton-color").requireVisible()
+		assert fixture.button("colorbutton-color").text() == "#ffffff"
 	}
 
 	@Test

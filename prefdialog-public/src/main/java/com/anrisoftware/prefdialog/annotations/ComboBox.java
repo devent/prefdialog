@@ -90,6 +90,26 @@ public @interface ComboBox {
 	boolean showTitle() default true;
 
 	/**
+	 * The {@link TextPosition} of the title of the combo box. Default is
+	 * {@link TextPosition#TEXT_ONLY}.
+	 */
+	TextPosition textPosition() default TextPosition.TEXT_ONLY;
+
+	/**
+	 * The {@link IconSize} of the combo box icon. Default is
+	 * {@link IconSize.SMALL}.
+	 */
+	IconSize iconSize() default IconSize.SMALL;
+
+	/**
+	 * The icon for the combo box, should be a resource name. The resource name
+	 * needs to have the place holder %d for the icon size. There must be one
+	 * file for each of the used icon sizes. The icon sizes are 16, 22, 32 and
+	 * 48. Default is empty.
+	 */
+	String icon() default "";
+
+	/**
 	 * Optional the name of the field to use for the elements of the combo box.
 	 * Needs to be the same as of {@link ComboBoxElements#value()}.
 	 */

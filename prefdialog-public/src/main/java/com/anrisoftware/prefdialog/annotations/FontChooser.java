@@ -63,4 +63,24 @@ public @interface FontChooser {
 	 */
 	boolean showTitle() default true;
 
+	/**
+	 * The {@link TextPosition} of the title of the font chooser. Default is
+	 * {@link TextPosition#TEXT_ONLY}.
+	 */
+	TextPosition textPosition() default TextPosition.TEXT_ONLY;
+
+	/**
+	 * The {@link IconSize} of the font chooser icon. Default is
+	 * {@link IconSize.SMALL}.
+	 */
+	IconSize iconSize() default IconSize.SMALL;
+
+	/**
+	 * The icon for the font chooser, should be a resource name. The resource
+	 * name needs to have the place holder %d for the icon size. There must be
+	 * one file for each of the used icon sizes. The icon sizes are 16, 22, 32
+	 * and 48. Default is empty.
+	 */
+	String icon() default "";
+
 }
