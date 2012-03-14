@@ -1,20 +1,20 @@
 /*
- * Copyright 2010 Erwin Müller <erwin.mueller@deventm.org>
+ * Copyright 2012 Erwin Müller <erwin.mueller@deventm.org>
  * 
- * This file is part of prefdialog-swing.
+ * This file is part of prefdialog-corefields.
  * 
- * prefdialog-swing is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
+ * prefdialog-corefields is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
  * 
- * prefdialog-swing is distributed in the hope that it will be useful, but
+ * prefdialog-corefields is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
+ * along with prefdialog-corefields. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.anrisoftware.prefdialog.panel.inputfields.button;
 
@@ -38,6 +38,11 @@ import com.anrisoftware.prefdialog.swingutils.AbstractLabelFieldPanel;
  * @since 2.0
  */
 class ButtonGroupPanel extends AbstractLabelFieldPanel<JPanel> {
+
+	/**
+	 * The name prefix for the button.
+	 */
+	public static final String BUTTON = "button";
 
 	private TableLayout layout;
 
@@ -82,7 +87,7 @@ class ButtonGroupPanel extends AbstractLabelFieldPanel<JPanel> {
 	private void addButton(int i, Action action) {
 		layout.insertColumn(i, TableLayout.PREFERRED);
 		JButton button = new JButton(action);
-		button.setName(format("button-%d-%s", i, name));
+		button.setName(format("%s-%d-%s", BUTTON, i, name));
 		buttons.add(button);
 		getPanelField().add(button, format("%d, 0", i));
 	}
@@ -97,7 +102,7 @@ class ButtonGroupPanel extends AbstractLabelFieldPanel<JPanel> {
 		super.setName(name);
 		this.name = name;
 		for (int i = 0; i < buttons.size(); i++) {
-			buttons.get(i).setName(format("button-%d-%s", i, name));
+			buttons.get(i).setName(format("%s-%d-%s", BUTTON, i, name));
 		}
 	}
 

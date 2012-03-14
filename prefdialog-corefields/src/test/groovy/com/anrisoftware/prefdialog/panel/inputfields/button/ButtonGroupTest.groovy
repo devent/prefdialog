@@ -19,6 +19,8 @@
 package com.anrisoftware.prefdialog.panel.inputfields.button
 
 
+import static com.anrisoftware.prefdialog.panel.inputfields.button.ButtonGroupPanel.BUTTON
+
 import org.junit.Test
 
 import com.anrisoftware.prefdialog.annotations.ButtonGroup
@@ -28,6 +30,8 @@ import com.anrisoftware.prefdialog.panel.inputfields.api.ButtonGroupFieldHandler
 class ButtonGroupTest extends AbstractFieldFixture {
 
 	static factory = injector.getInstance(ButtonGroupFieldHandlerFactory)
+
+	static final String BUTTONS = "buttons"
 
 	static class General {
 
@@ -39,13 +43,13 @@ class ButtonGroupTest extends AbstractFieldFixture {
 	}
 
 	ButtonGroupTest() {
-		super(new General(), 'buttons', factory)
+		super(new General(), BUTTONS, factory)
 	}
 
 	@Test
 	void "click on buttons"() {
-		fixture.button("button-0-buttons").click()
-		fixture.button("button-1-buttons").click()
+		fixture.button("$BUTTON-0-$BUTTONS").click()
+		fixture.button("$BUTTON-1-$BUTTONS").click()
 	}
 
 	@Test

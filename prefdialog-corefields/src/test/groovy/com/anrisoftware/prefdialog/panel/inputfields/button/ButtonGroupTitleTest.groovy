@@ -30,6 +30,8 @@ class ButtonGroupTitleTest extends AbstractFieldFixture {
 
 	static factory = injector.getInstance(ButtonGroupFieldHandlerFactory)
 
+	static final String BUTTONS = "buttons"
+
 	static class General {
 
 		@ButtonGroup(title="The title", showTitle=true)
@@ -45,8 +47,8 @@ class ButtonGroupTitleTest extends AbstractFieldFixture {
 
 	@Test
 	void "title set and visible"() {
-		fixture.label("$TITLE_LABEL-buttons").requireVisible()
-		fixture.label("$TITLE_LABEL-buttons").text() == "The title"
+		fixture.label("$TITLE_LABEL-$BUTTONS").requireVisible()
+		fixture.label("$TITLE_LABEL-$BUTTONS").text() == "The title"
 	}
 
 	@Test
