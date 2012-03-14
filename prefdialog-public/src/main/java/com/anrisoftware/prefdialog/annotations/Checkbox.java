@@ -86,6 +86,6 @@ public @interface Checkbox {
 	 * The text of the check box. The text is usually shown right next of the
 	 * check box.
 	 */
-	String text() default "";
+	String text() default "yes/no";
 
 }
