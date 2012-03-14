@@ -47,6 +47,26 @@ public @interface ButtonGroup {
 	boolean showTitle() default false;
 
 	/**
+	 * The {@link TextPosition} of the title of the button group. Default is
+	 * {@link TextPosition#TEXT_ONLY}.
+	 */
+	TextPosition textPosition() default TextPosition.TEXT_ONLY;
+
+	/**
+	 * The {@link IconSize} of the button group icon. Default is
+	 * {@link IconSize.SMALL}.
+	 */
+	IconSize iconSize() default IconSize.SMALL;
+
+	/**
+	 * The icon for the button group, should be a resource name. The resource
+	 * name needs to have the place holder %d for the icon size. There must be
+	 * one file for each of the used icon sizes. The icon sizes are 16, 22, 32
+	 * and 48. Default is empty.
+	 */
+	String icon() default "";
+
+	/**
 	 * The {@link HorizontalPositions} of the buttons in the group.
 	 */
 	HorizontalPositions horizontalPosition() default HorizontalPositions.RIGHT;

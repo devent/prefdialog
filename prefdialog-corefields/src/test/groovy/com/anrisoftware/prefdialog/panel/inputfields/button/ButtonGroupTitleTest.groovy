@@ -30,7 +30,7 @@ class ButtonGroupTitleTest extends AbstractFieldFixture {
 
 	static class General {
 
-		@ButtonGroup(title='The title', showTitle=true)
+		@ButtonGroup(title="The title", showTitle=true)
 		def buttons = [
 			new Button1Action(),
 			new Button2Action()
@@ -38,17 +38,17 @@ class ButtonGroupTitleTest extends AbstractFieldFixture {
 	}
 
 	ButtonGroupTitleTest() {
-		super(new General(), 'buttons', factory)
+		super(new General(), "buttons", factory)
 	}
 
 	@Test
 	void "title set and visible"() {
 		fixture.label("label-buttons").requireVisible()
-		fixture.label("label-buttons").text() == 'The title'
+		fixture.label("label-buttons").text() == "The title"
 	}
 
 	@Test
 	void testManually() {
-		Thread.sleep 0
+		//Thread.sleep 60000
 	}
 }
