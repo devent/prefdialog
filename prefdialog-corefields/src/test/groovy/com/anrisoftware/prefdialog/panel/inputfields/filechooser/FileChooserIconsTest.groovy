@@ -43,25 +43,22 @@ class FileChooserIconsTest extends FieldFixtureHandler {
 
 	@Test
 	void "default icon size"() {
-		createFieldFixture(new General(), FILE_ICON_DEFAULT, factory)
-		beginFixture()
-		assert fixture.button("openfilebutton-$FILE_ICON_DEFAULT").component().icon.iconWidth == 16
-		endFixture()
+		runFieldFixture new General(), FILE_ICON_DEFAULT, factory, {
+			assert fixture.button("openfilebutton-$FILE_ICON_DEFAULT").component().icon.iconWidth == 16
+		}
 	}
 
 	@Test
 	void "custom icon"() {
-		createFieldFixture(new General(), FILE_ICON_CUSOM, factory)
-		beginFixture()
-		assert fixture.button("openfilebutton-$FILE_ICON_CUSOM").component().icon.iconWidth == 16
-		endFixture()
+		runFieldFixture new General(), FILE_ICON_CUSOM, factory, {
+			assert fixture.button("openfilebutton-$FILE_ICON_CUSOM").component().icon.iconWidth == 16
+		}
 	}
 
 	@Test
 	void testManual() {
-		createFieldFixture(new General(), FILE_ICON_CUSOM, factory)
-		beginFixture()
-		Thread.sleep 5000
-		endFixture()
+		runFieldFixture new General(), FILE_ICON_CUSOM, factory, {
+			//Thread.sleep 60000
+		}
 	}
 }

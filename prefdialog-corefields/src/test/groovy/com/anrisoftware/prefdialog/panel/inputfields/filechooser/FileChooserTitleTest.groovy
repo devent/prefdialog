@@ -31,41 +31,40 @@ class FileChooserTitleTest extends FieldFixtureHandler {
 	static class General {
 
 		@FileChooser
-		File file1 = new File('')
+		File file1 = new File("")
 
-		@FileChooser(title='Save to file:')
-		File file2 = new File('')
+		@FileChooser(title="Save to file:")
+		File file2 = new File("")
 
 		@FileChooser(showTitle=false)
-		File file3 = new File('')
+		File file3 = new File("")
 	}
 
 	@Test
 	void "default title"() {
-		createFieldFixture(new General(), 'file1', factory)
-		beginFixture()
-		assert fixture.label('label-file1').text() == 'file1'
-		endFixture()
+		runFieldFixture new General(), "file1", factory, {
+			assert fixture.label("label-file1").text() == "file1"
+		}
 	}
 
 	@Test
 	void "custom title"() {
-		createFieldFixture(new General(), 'file2', factory)
-		beginFixture()
-		assert fixture.label('label-file2').text() == 'Save to file:'
-		endFixture()
+		runFieldFixture new General(), "file2", factory, {
+			assert fixture.label("label-file2").text() == "Save to file:"
+		}
 	}
 
 	@Test
 	void "no title"() {
-		createFieldFixture(new General(), 'file3', factory)
-		beginFixture()
-		//assert fixture.label('label-file3').text() == 'file3'
-		endFixture()
+		runFieldFixture new General(), "file3", factory, {
+			//assert fixture.label("label-file3").text() == "file3"
+		}
 	}
 
 	@Test
 	void testManual() {
-		//Thread.sleep(30000)
+		runFieldFixture new General(), "file3", factory, {
+			//Thread.sleep(30000)
+		}
 	}
 }

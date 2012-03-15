@@ -59,54 +59,48 @@ class FileChooserTextPositionsTest extends FieldFixtureHandler {
 
 	@Test
 	void "default text position size"() {
-		createFieldFixture(new General(), FILE_DEFAULT, factory)
-		beginFixture()
-		assert fixture.button("openfilebutton-$FILE_DEFAULT").component().icon != null
-		fixture.button("openfilebutton-$FILE_DEFAULT").requireText("...")
-		endFixture()
+		runFieldFixture new General(), FILE_DEFAULT, factory, {
+			assert fixture.button("openfilebutton-$FILE_DEFAULT").component().icon != null
+			fixture.button("openfilebutton-$FILE_DEFAULT").requireText("Open…")
+		}
 	}
 
 	@Test
 	void "icon only"() {
-		createFieldFixture(new General(), FILE_ICON_ONLY, factory)
-		beginFixture()
-		assert fixture.button("openfilebutton-$FILE_ICON_ONLY").component().icon != null
-		fixture.button("openfilebutton-$FILE_ICON_ONLY").requireText(null)
-		endFixture()
+		runFieldFixture new General(), FILE_ICON_ONLY, factory, {
+			assert fixture.button("openfilebutton-$FILE_ICON_ONLY").component().icon != null
+			fixture.button("openfilebutton-$FILE_ICON_ONLY").requireText(null)
+		}
 	}
 
 	@Test
 	void "text only"() {
-		createFieldFixture(new General(), FILE_TEXT_ONLY, factory)
-		beginFixture()
-		assert fixture.button("openfilebutton-$FILE_TEXT_ONLY").component().icon == null
-		fixture.button("openfilebutton-$FILE_TEXT_ONLY").requireText("...")
-		endFixture()
+		runFieldFixture new General(), FILE_TEXT_ONLY, factory, {
+			assert fixture.button("openfilebutton-$FILE_TEXT_ONLY").component().icon == null
+			fixture.button("openfilebutton-$FILE_TEXT_ONLY").requireText("Open…")
+		}
 	}
 
 	@Test
 	void "text alongside icon"() {
-		createFieldFixture(new General(), FILE_TEXT_ALONGSIDE_ICON, factory)
-		beginFixture()
-		assert fixture.button("openfilebutton-$FILE_TEXT_ALONGSIDE_ICON").component().icon != null
-		fixture.button("openfilebutton-$FILE_TEXT_ALONGSIDE_ICON").requireText("...")
-		endFixture()
+		runFieldFixture new General(), FILE_TEXT_ALONGSIDE_ICON, factory, {
+			assert fixture.button("openfilebutton-$FILE_TEXT_ALONGSIDE_ICON").component().icon != null
+			fixture.button("openfilebutton-$FILE_TEXT_ALONGSIDE_ICON").requireText("Open…")
+		}
 	}
 
 	@Test
 	void "text under icon"() {
-		createFieldFixture(new General(), FILE_TEXT_UNDER_ICON, factory)
-		beginFixture()
-		assert fixture.button("openfilebutton-$FILE_TEXT_UNDER_ICON").component().icon != null
-		fixture.button("openfilebutton-$FILE_TEXT_UNDER_ICON").requireText("...")
-		endFixture()
+		runFieldFixture new General(), FILE_TEXT_UNDER_ICON, factory, {
+			assert fixture.button("openfilebutton-$FILE_TEXT_UNDER_ICON").component().icon != null
+			fixture.button("openfilebutton-$FILE_TEXT_UNDER_ICON").requireText("Open…")
+		}
 	}
 
 	@Test
 	void testManual() {
-		createFieldFixture(new General(), FILE_TEXT_ALONGSIDE_ICON, factory)
-		beginFixture()
-		Thread.sleep 5000
-		endFixture()
+		runFieldFixture new General(), FILE_TEXT_ALONGSIDE_ICON, factory, {
+			//Thread.sleep 60000
+		}
 	}
 }

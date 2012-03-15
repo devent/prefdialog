@@ -32,66 +32,60 @@ class FileChooserIconSizesTest extends FieldFixtureHandler {
 	static class General {
 
 		@FileChooser
-		File fileIconDefault = new File('')
+		File fileIconDefault = new File("")
 
 		@FileChooser(iconSize=IconSize.SMALL)
-		File fileIconSmall = new File('')
+		File fileIconSmall = new File("")
 
 		@FileChooser(iconSize=IconSize.MEDIUM)
-		File fileIconMedium = new File('')
+		File fileIconMedium = new File("")
 
 		@FileChooser(iconSize=IconSize.LARGE)
-		File fileIconLarge = new File('')
+		File fileIconLarge = new File("")
 
 		@FileChooser(iconSize=IconSize.HUGE)
-		File fileIconHuge = new File('')
+		File fileIconHuge = new File("")
 	}
 
 	@Test
 	void "default icon size"() {
-		createFieldFixture(new General(), 'fileIconDefault', factory)
-		beginFixture()
-		assert fixture.button("openfilebutton-fileIconDefault").component().icon.iconWidth == 16
-		endFixture()
+		runFieldFixture new General(), "fileIconDefault", factory, {
+			assert fixture.button("openfilebutton-fileIconDefault").component().icon.iconWidth == 16
+		}
 	}
 
 	@Test
 	void "small icon size"() {
-		createFieldFixture(new General(), 'fileIconSmall', factory)
-		beginFixture()
-		assert fixture.button("openfilebutton-fileIconSmall").component().icon.iconWidth == 16
-		endFixture()
+		runFieldFixture new General(), "fileIconSmall", factory, {
+			assert fixture.button("openfilebutton-fileIconSmall").component().icon.iconWidth == 16
+		}
 	}
 
 	@Test
 	void "medium icon size"() {
-		createFieldFixture(new General(), 'fileIconMedium', factory)
-		beginFixture()
-		assert fixture.button("openfilebutton-fileIconMedium").component().icon.iconWidth == 22
-		endFixture()
+		runFieldFixture new General(), "fileIconMedium", factory, {
+			assert fixture.button("openfilebutton-fileIconMedium").component().icon.iconWidth == 22
+		}
 	}
 
 	@Test
 	void "large icon size"() {
-		createFieldFixture(new General(), 'fileIconLarge', factory)
-		beginFixture()
-		assert fixture.button("openfilebutton-fileIconLarge").component().icon.iconWidth == 32
-		endFixture()
+		runFieldFixture new General(), "fileIconLarge", factory, {
+			assert fixture.button("openfilebutton-fileIconLarge").component().icon.iconWidth == 32
+		}
 	}
 
 	@Test
 	void "huge icon size"() {
-		createFieldFixture(new General(), 'fileIconHuge', factory)
-		beginFixture()
-		assert fixture.button("openfilebutton-fileIconHuge").component().icon.iconWidth == 48
-		endFixture()
+		runFieldFixture new General(), "fileIconHuge", factory, {
+			assert fixture.button("openfilebutton-fileIconHuge").component().icon.iconWidth == 48
+		}
 	}
 
 	@Test
 	void testManual() {
-		createFieldFixture(new General(), 'fileIconHuge', factory)
-		beginFixture()
-		Thread.sleep 5000
-		endFixture()
+		runFieldFixture new General(), "fileIconHuge", factory, {
+			//Thread.sleep 60000
+		}
 	}
 }

@@ -47,25 +47,22 @@ class FileChooserTextTest extends FieldFixtureHandler {
 
 	@Test
 	void "default text"() {
-		createFieldFixture(new General(), FILE_DEFAULT, factory)
-		beginFixture()
-		fixture.button("openfilebutton-$FILE_DEFAULT").requireText(DEFAULT_TEXT)
-		endFixture()
+		runFieldFixture new General(), FILE_DEFAULT, factory, {
+			fixture.button("openfilebutton-$FILE_DEFAULT").requireText(DEFAULT_TEXT)
+		}
 	}
 
 	@Test
 	void "custom text"() {
-		createFieldFixture(new General(), FILE_CUSTOM_TEXT, factory)
-		beginFixture()
-		fixture.button("openfilebutton-$FILE_CUSTOM_TEXT").requireText(CUSTOM_TEXT)
-		endFixture()
+		runFieldFixture new General(), FILE_CUSTOM_TEXT, factory, {
+			fixture.button("openfilebutton-$FILE_CUSTOM_TEXT").requireText(CUSTOM_TEXT)
+		}
 	}
 
 	@Test
 	void testManual() {
-		createFieldFixture(new General(), FILE_DEFAULT, factory)
-		beginFixture()
-		Thread.sleep 5000
-		endFixture()
+		runFieldFixture new General(), FILE_DEFAULT, factory, {
+			//Thread.sleep 60000
+		}
 	}
 }
