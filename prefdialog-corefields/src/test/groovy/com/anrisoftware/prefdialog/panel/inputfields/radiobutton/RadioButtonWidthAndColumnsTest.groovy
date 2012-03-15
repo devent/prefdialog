@@ -29,6 +29,8 @@ class RadioButtonWidthAndColumnsTest extends AbstractFieldFixture {
 
 	static factory = injector.getInstance(RadioButtonFieldHandlerFactory)
 
+	static final String COLORS = "colors"
+
 	static class General {
 
 		@RadioButton(columns=2, width=-2.0d)
@@ -36,12 +38,12 @@ class RadioButtonWidthAndColumnsTest extends AbstractFieldFixture {
 	}
 
 	RadioButtonWidthAndColumnsTest() {
-		super(new General(), 'colors', factory)
+		super(new General(), COLORS, factory)
 	}
 
 	@Test
 	void "choose blue and apply input"() {
-		fixture.radioButton('colors-BLUE').click()
+		fixture.radioButton("$COLORS-BLUE").click()
 		inputField.applyInput parentObject
 		assert parentObject.colors == Colors.BLUE
 	}

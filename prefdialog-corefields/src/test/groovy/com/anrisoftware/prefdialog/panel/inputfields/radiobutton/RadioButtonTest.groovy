@@ -29,6 +29,8 @@ class RadioButtonTest extends AbstractFieldFixture {
 
 	static factory = injector.getInstance(RadioButtonFieldHandlerFactory)
 
+	static final String COLORS = "colors"
+
 	static class General {
 
 		@RadioButton
@@ -36,29 +38,29 @@ class RadioButtonTest extends AbstractFieldFixture {
 	}
 
 	RadioButtonTest() {
-		super(new General(), 'colors', factory)
+		super(new General(), COLORS, factory)
 	}
 
 	@Test
 	void "choose blue and apply input"() {
-		fixture.radioButton('colors-BLUE').click()
+		fixture.radioButton("$COLORS-BLUE").click()
 		inputField.applyInput parentObject
 
-		fixture.radioButton('colors-BLUE').requireSelected()
+		fixture.radioButton("$COLORS-BLUE").requireSelected()
 		assert parentObject.colors == Colors.BLUE
 	}
 
 	@Test
 	void "choose blue and restore input"() {
-		fixture.radioButton('colors-BLUE').click()
+		fixture.radioButton("$COLORS-BLUE").click()
 		inputField.restoreInput parentObject
 
-		fixture.radioButton('colors-BLACK').requireSelected()
+		fixture.radioButton("$COLORS-BLACK").requireSelected()
 		assert parentObject.colors == Colors.BLACK
 	}
 
 	@Test
 	void testManually() {
-		Thread.sleep 0
+		//Thread.sleep 60000
 	}
 }

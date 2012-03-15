@@ -29,6 +29,8 @@ class RadioButtonReadOnlyTest extends AbstractFieldFixture {
 
 	static factory = injector.getInstance(RadioButtonFieldHandlerFactory)
 
+	static final String COLORS = "colors"
+
 	static class General {
 
 		@RadioButton(readonly=true)
@@ -36,12 +38,12 @@ class RadioButtonReadOnlyTest extends AbstractFieldFixture {
 	}
 
 	RadioButtonReadOnlyTest() {
-		super(new General(), 'colors', factory)
+		super(new General(), COLORS, factory)
 	}
 
 	@Test
 	void "read only"() {
-		fixture.radioButton('colors-BLACK').requireDisabled()
-		fixture.radioButton('colors-BLACK').requireSelected()
+		fixture.radioButton("$COLORS-BLACK").requireDisabled()
+		fixture.radioButton("$COLORS-BLACK").requireSelected()
 	}
 }

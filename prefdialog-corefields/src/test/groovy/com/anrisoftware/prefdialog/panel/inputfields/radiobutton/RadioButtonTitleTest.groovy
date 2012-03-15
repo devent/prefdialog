@@ -18,6 +18,8 @@
  */
 package com.anrisoftware.prefdialog.panel.inputfields.radiobutton
 
+import static com.anrisoftware.prefdialog.swingutils.AbstractLabelFieldPanel.TITLE_LABEL
+
 import org.junit.Test
 
 import com.anrisoftware.prefdialog.annotations.RadioButton
@@ -29,39 +31,45 @@ class RadioButtonTitleTest extends FieldFixtureHandler {
 
 	static factory = injector.getInstance(RadioButtonFieldHandlerFactory)
 
+	static final String DEFAULT_TITLE = "defaultTitle"
+
+	static final String CUSTOM_TITLE = "customTitle"
+
+	static final String HIDE_TITLE = "hideTitle"
+
 	static class General {
 
 		@RadioButton
-		Colors colors1 = Colors.BLACK
+		Colors defaultTitle = Colors.BLACK
 
-		@RadioButton(title='Some colors')
-		Colors colors2 = Colors.BLACK
+		@RadioButton(title="Some colors")
+		Colors customTitle = Colors.BLACK
 
 		@RadioButton(showTitle=false)
-		Colors colors3 = Colors.BLACK
+		Colors hideTitle = Colors.BLACK
 	}
 
 	@Test
 	void "default title"() {
-		createFieldFixture(new General(), 'colors1', factory)
+		createFieldFixture(new General(), DEFAULT_TITLE, factory)
 		beginFixture()
-		assert fixture.label('label-colors1').text() == 'colors1'
+		assert fixture.label("$TITLE_LABEL-$DEFAULT_TITLE").text() == DEFAULT_TITLE
 		endFixture()
 	}
 
 	@Test
 	void "custom title"() {
-		createFieldFixture(new General(), 'colors2', factory)
+		createFieldFixture(new General(), CUSTOM_TITLE, factory)
 		beginFixture()
-		assert fixture.label('label-colors2').text() == 'Some colors'
+		assert fixture.label("$TITLE_LABEL-$CUSTOM_TITLE").text() == "Some colors"
 		endFixture()
 	}
 
 	@Test
 	void "no title"() {
-		createFieldFixture(new General(), 'colors3', factory)
+		createFieldFixture(new General(), HIDE_TITLE, factory)
 		beginFixture()
-		//assert fixture.label('label-colors2').text() == 'colors3'
+		//assert fixture.label("$TITLE_LABEL-$HIDE_TITLE").text() == "colors3"
 		endFixture()
 	}
 }
