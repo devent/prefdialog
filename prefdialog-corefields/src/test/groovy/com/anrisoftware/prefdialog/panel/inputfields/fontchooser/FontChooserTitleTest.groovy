@@ -18,6 +18,8 @@
  */
 package com.anrisoftware.prefdialog.panel.inputfields.fontchooser
 
+import static com.anrisoftware.prefdialog.swingutils.AbstractLabelFieldPanel.TITLE_LABEL
+
 import java.awt.Font
 
 import org.junit.Test
@@ -36,45 +38,51 @@ class FontChooserTitleTest extends FieldFixtureHandler {
 
 	static factory = injector.getInstance(FontChooserFieldHandlerFactory)
 
+	static final String DEFAULT_TITLE = "defaultTitle"
+
+	static final String CUSTOM_TITLE = "customTitle"
+
+	static final String HIDE_TITLE = "hideTitle"
+
 	static class General {
 
 		@FontChooser
-		Font font1 = Font.decode(null)
+		Font defaultTitle = Font.decode(null)
 
-		@FontChooser(title='Text font:')
-		Font font2 = Font.decode(null)
+		@FontChooser(title="customTitle")
+		Font customTitle = Font.decode(null)
 
 		@FontChooser(showTitle=false)
-		Font font3 = Font.decode(null)
+		Font hideTitle = Font.decode(null)
 	}
 
 	@Test
 	void "default title"() {
-		createFieldFixture(new General(), 'font1', factory)
+		createFieldFixture(new General(), DEFAULT_TITLE, factory)
 		beginFixture()
-		assert fixture.label('label-font1').text() == 'font1'
+		assert fixture.label("$TITLE_LABEL-$DEFAULT_TITLE").text() == DEFAULT_TITLE
 		endFixture()
 	}
 
 	@Test
 	void "custom title"() {
-		createFieldFixture(new General(), 'font2', factory)
+		createFieldFixture(new General(), CUSTOM_TITLE, factory)
 		beginFixture()
-		assert fixture.label('label-font2').text() == 'Text font:'
+		assert fixture.label("$TITLE_LABEL-$CUSTOM_TITLE").text() == CUSTOM_TITLE
 		endFixture()
 	}
 
 	@Test
 	void "no title"() {
-		createFieldFixture(new General(), 'font3', factory)
+		createFieldFixture(new General(), HIDE_TITLE, factory)
 		beginFixture()
-		//assert fixture.label('label-font3').text() == 'font3'
+		//assert fixture.label("$TITLE_LABEL-$HIDE_TITLE").text() == HIDE_TITLE
 		endFixture()
 	}
 
 	@Test
 	void testManual() {
-		createFieldFixture(new General(), 'font2', factory)
+		createFieldFixture(new General(), CUSTOM_TITLE, factory)
 		beginFixture()
 		//Thread.sleep(30000)
 		endFixture()

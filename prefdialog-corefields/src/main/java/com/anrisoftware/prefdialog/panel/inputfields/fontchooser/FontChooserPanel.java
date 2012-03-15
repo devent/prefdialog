@@ -42,6 +42,16 @@ import com.google.inject.Inject;
  */
 class FontChooserPanel extends AbstractLabelFieldPanel<UiFontChooserPanel> {
 
+	/**
+	 * Name prefix for the open font button.
+	 */
+	public static final String OPEN_FONT_BUTTON = "openfontbutton";
+
+	/**
+	 * Name prefix for the font combo box.
+	 */
+	public static final String FONTBOX = "fontbox";
+
 	private final FontComboBox fontComboBox;
 
 	private Font font;
@@ -106,9 +116,9 @@ class FontChooserPanel extends AbstractLabelFieldPanel<UiFontChooserPanel> {
 	@Override
 	public void setName(String name) {
 		super.setName(name);
-		fontComboBox.setName(format("fontbox-%s", name));
+		fontComboBox.setName(format("%s-%s", FONTBOX, name));
 		getPanelField().getOpenFontChooserButton().setName(
-				format("openfontbutton-%s", name));
+				format("%s-%s", OPEN_FONT_BUTTON, name));
 	}
 
 	@Override
