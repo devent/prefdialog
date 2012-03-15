@@ -34,16 +34,16 @@ class FileChooserIconSizesTest extends FieldFixtureHandler {
 		@FileChooser
 		File fileIconDefault = new File("")
 
-		@FileChooser(iconSize=IconSize.SMALL)
+		@FileChooser(buttonIconSize=IconSize.SMALL)
 		File fileIconSmall = new File("")
 
-		@FileChooser(iconSize=IconSize.MEDIUM)
+		@FileChooser(buttonIconSize=IconSize.MEDIUM)
 		File fileIconMedium = new File("")
 
-		@FileChooser(iconSize=IconSize.LARGE)
+		@FileChooser(buttonIconSize=IconSize.LARGE)
 		File fileIconLarge = new File("")
 
-		@FileChooser(iconSize=IconSize.HUGE)
+		@FileChooser(buttonIconSize=IconSize.HUGE)
 		File fileIconHuge = new File("")
 	}
 

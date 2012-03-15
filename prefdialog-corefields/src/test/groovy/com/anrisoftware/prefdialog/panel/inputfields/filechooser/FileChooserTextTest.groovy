@@ -41,7 +41,7 @@ class FileChooserTextTest extends FieldFixtureHandler {
 		@FileChooser
 		File fileDefault = new File("")
 
-		@FileChooser(text="custom")
+		@FileChooser(buttonText="custom")
 		File fileCustomText = new File("")
 	}
 

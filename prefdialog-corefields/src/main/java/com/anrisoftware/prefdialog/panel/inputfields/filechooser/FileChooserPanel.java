@@ -125,14 +125,14 @@ class FileChooserPanel extends AbstractLabelFieldPanel<UiFileChooserPanel> {
 	/**
 	 * Sets a new text for the open file chooser button.
 	 */
-	public void setText(String text) {
+	public void setButtonText(String text) {
 		getPanelField().getOpenFileButton().setText(text);
 	}
 
 	/**
 	 * Sets a new {@link Icon} for the open file chooser button.
 	 */
-	public void setIcon(Icon icon) {
+	public void setButtonIcon(Icon icon) {
 		getPanelField().getOpenFileButton().setIcon(icon);
 	}
 
@@ -143,7 +143,7 @@ class FileChooserPanel extends AbstractLabelFieldPanel<UiFileChooserPanel> {
 	 *            if <code>true</code> then set the text under the icon or left
 	 *            from the icon otherwise.
 	 */
-	public void setTextUnderIcon(boolean underIcon) {
+	public void setButtonTextUnderIcon(boolean underIcon) {
 		JButton button = getPanelField().getOpenFileButton();
 		if (underIcon) {
 			button.setVerticalTextPosition(SwingConstants.BOTTOM);

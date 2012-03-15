@@ -84,16 +84,41 @@ public @interface FileChooser {
 	boolean showTitle() default true;
 
 	/**
+	 * The {@link TextPosition} of the file chooser field title. Default is
+	 * {@link TextPosition#TEXT_ONLY}.
+	 */
+	TextPosition textPosition() default TextPosition.TEXT_ONLY;
+
+	/**
+	 * The {@link IconSize} of the file chooser field title icon. Default is
+	 * {@link IconSize.SMALL}.
+	 */
+	IconSize iconSize() default IconSize.SMALL;
+
+	/**
+	 * The icon for the field title, should be a resource name. The resource
+	 * name needs to have the place holder %d for the icon size. There must be
+	 * one file for each of the used icon sizes. The icon sizes are 16, 22, 32
+	 * and 48. Default is empty.
+	 */
+	String icon() default "";
+
+	/**
+	 * The file chooser button text, default is the unicode text "Open…".
+	 */
+	String buttonText() default "Open…";
+
+	/**
 	 * The {@link TextPosition} of the file chooser button. Default is
 	 * {@link TextPosition#TEXT_ALONGSIDE_ICON}.
 	 */
-	TextPosition textPosition() default TextPosition.TEXT_ALONGSIDE_ICON;
+	TextPosition buttonTextPosition() default TextPosition.TEXT_ALONGSIDE_ICON;
 
 	/**
 	 * The {@link IconSize} of the file chooser button icon. Default is
 	 * {@link IconSize.SMALL}.
 	 */
-	IconSize iconSize() default IconSize.SMALL;
+	IconSize buttonIconSize() default IconSize.SMALL;
 
 	/**
 	 * The icon for the button, should be a resource name. The resource name
@@ -103,10 +128,6 @@ public @interface FileChooser {
 	 * "com/anrisoftware/prefdialog/panel/inputfields/filechooser/oxygen/document-open-folder-%d.png"
 	 * .
 	 */
-	String icon() default "com/anrisoftware/prefdialog/panel/inputfields/filechooser/oxygen/document-open-folder-%d.png";
+	String buttonIcon() default "com/anrisoftware/prefdialog/panel/inputfields/filechooser/oxygen/document-open-folder-%d.png";
 
-	/**
-	 * The file chooser button text, default is the unicode text "Open…".
-	 */
-	String text() default "Open…";
 }

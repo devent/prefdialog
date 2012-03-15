@@ -85,34 +85,35 @@ class FileChooserFieldHandler extends
 	}
 
 	private void setupText() {
-		TextPosition position = valueFromA("textPosition", TextPosition.class);
-		String text = valueFromA("text", String.class);
+		TextPosition position = valueFromA("buttonTextPosition",
+				TextPosition.class);
+		String text = valueFromA("buttonText", String.class);
 		switch (position) {
 		case ICON_ONLY:
-			getComponent().setText(null);
+			getComponent().setButtonText(null);
 			break;
 		case TEXT_ONLY:
-			getComponent().setIcon(null);
+			getComponent().setButtonIcon(null);
 			break;
 		case TEXT_ALONGSIDE_ICON:
-			getComponent().setTextUnderIcon(false);
-			getComponent().setText(text);
+			getComponent().setButtonTextUnderIcon(false);
+			getComponent().setButtonText(text);
 			break;
 		case TEXT_UNDER_ICON:
-			getComponent().setTextUnderIcon(true);
-			getComponent().setText(text);
+			getComponent().setButtonTextUnderIcon(true);
+			getComponent().setButtonText(text);
 			break;
 		}
 		log.setupText(this, position, text);
 	}
 
 	private void setupIcon() {
-		String resourceName = valueFromA("icon", String.class);
-		int iconSize = valueFromA("iconSize", IconSize.class).getWidth();
+		String resourceName = valueFromA("buttonIcon", String.class);
+		int iconSize = valueFromA("buttonIconSize", IconSize.class).getWidth();
 		resourceName = String.format(resourceName, iconSize);
 		URL iconUrl = Resources.getResource(resourceName);
 		ImageIcon icon = loadIcon(iconUrl);
-		getComponent().setIcon(icon);
+		getComponent().setButtonIcon(icon);
 		log.setupButtonIcon(this, iconUrl);
 	}
 
