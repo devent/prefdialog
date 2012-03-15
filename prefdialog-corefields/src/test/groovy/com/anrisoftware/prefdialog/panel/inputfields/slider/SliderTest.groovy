@@ -28,29 +28,31 @@ class SliderTest extends AbstractFieldFixture {
 
 	static factory = injector.getInstance(SliderFieldHandlerFactory)
 
+	static final String SIMPLE = "simple"
+
 	static class General {
 
 		@Slider
-		int slider = 0
+		int simple = 0
 	}
 
 	SliderTest() {
-		super(new General(), 'slider', factory)
+		super(new General(), SIMPLE, factory)
 	}
 
 	@Test
 	void "select and apply input"() {
-		fixture.slider('slider').slideTo 55
+		fixture.slider(SIMPLE).slideTo 55
 		inputField.applyInput parentObject
 
-		assert parentObject.slider == 55
+		assert parentObject.simple == 55
 	}
 
 	@Test
 	void "select and restore input"() {
-		fixture.slider('slider').slideTo 55
+		fixture.slider(SIMPLE).slideTo 55
 		inputField.restoreInput parentObject
 
-		assert parentObject.slider == 0
+		assert parentObject.simple == 0
 	}
 }

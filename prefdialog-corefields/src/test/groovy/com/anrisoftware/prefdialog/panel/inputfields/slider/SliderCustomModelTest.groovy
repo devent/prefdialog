@@ -31,6 +31,8 @@ class SliderCustomModelTest extends AbstractFieldFixture {
 
 	static factory = injector.getInstance(SliderFieldHandlerFactory)
 
+	static final String CUSTOM_MODEL = "customModel"
+
 	static class CustomModel extends DefaultBoundedRangeModel {
 
 		CustomModel() {
@@ -55,39 +57,39 @@ class SliderCustomModelTest extends AbstractFieldFixture {
 	static class General {
 
 		@Slider(model=CustomModel)
-		int slider = 2
+		int customModel = 2
 	}
 
 	SliderCustomModelTest() {
-		super(new General(), 'slider', factory)
+		super(new General(), CUSTOM_MODEL, factory)
 	}
 
 	@Test
 	void "choose minimum and apply input"() {
-		fixture.slider('slider').slideToMinimum()
+		fixture.slider(CUSTOM_MODEL).slideToMinimum()
 		inputField.applyInput parentObject
 
-		assert parentObject.slider == 2
+		assert parentObject.customModel == 2
 	}
 
 	@Test
 	void "choose maximum and apply input"() {
-		fixture.slider('slider').slideToMaximum()
+		fixture.slider(CUSTOM_MODEL).slideToMaximum()
 		inputField.applyInput parentObject
 
-		assert parentObject.slider == 1024
+		assert parentObject.customModel == 1024
 	}
 
 	@Test
 	void "choose close and apply input"() {
-		fixture.slider('slider').slideTo 62
+		fixture.slider(CUSTOM_MODEL).slideTo 62
 		inputField.applyInput parentObject
 
-		assert parentObject.slider == 64
+		assert parentObject.customModel == 64
 	}
 
 	@Test
 	void testManually() {
-		Thread.sleep 0
+		Thread.sleep 60000
 	}
 }
