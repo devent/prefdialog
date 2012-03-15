@@ -62,59 +62,53 @@ class CheckboxIconSizesTest extends FieldFixtureHandler {
 
 	@Test
 	void "alongside icon default size"() {
-		createFieldFixture(new General(), ALONGSIDE_ICON_DEFAULT_SIZE, factory)
-		beginFixture()
-		fixture.checkBox("$ALONGSIDE_ICON_DEFAULT_SIZE").click()
-		assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON_DEFAULT_SIZE").component().icon.iconWidth == 16
-		assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON_DEFAULT_SIZE").component().text == ALONGSIDE_ICON_DEFAULT_SIZE
-		endFixture()
+		runFieldFixture new General(), ALONGSIDE_ICON_DEFAULT_SIZE, factory, {
+			fixture.checkBox("$ALONGSIDE_ICON_DEFAULT_SIZE").click()
+			assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON_DEFAULT_SIZE").component().icon.iconWidth == 16
+			assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON_DEFAULT_SIZE").component().text == ALONGSIDE_ICON_DEFAULT_SIZE
+		}
 	}
 
 	@Test
 	void "alongside icon small size"() {
-		createFieldFixture(new General(), ALONGSIDE_ICON_SMALL_SIZE, factory)
-		beginFixture()
-		fixture.checkBox("$ALONGSIDE_ICON_SMALL_SIZE").click()
-		assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON_SMALL_SIZE").component().icon.iconWidth == 16
-		assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON_SMALL_SIZE").component().text == ALONGSIDE_ICON_SMALL_SIZE
-		endFixture()
+		runFieldFixture new General(), ALONGSIDE_ICON_SMALL_SIZE, factory, {
+			fixture.checkBox("$ALONGSIDE_ICON_SMALL_SIZE").click()
+			assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON_SMALL_SIZE").component().icon.iconWidth == 16
+			assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON_SMALL_SIZE").component().text == ALONGSIDE_ICON_SMALL_SIZE
+		}
 	}
 
 	@Test
 	void "alongside icon medium size"() {
-		createFieldFixture(new General(), ALONGSIDE_ICON_MEDIUM_SIZE, factory)
-		beginFixture()
-		fixture.checkBox("$ALONGSIDE_ICON_MEDIUM_SIZE").click()
-		assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON_MEDIUM_SIZE").component().icon.iconWidth == 22
-		assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON_MEDIUM_SIZE").component().text == ALONGSIDE_ICON_MEDIUM_SIZE
-		endFixture()
+		runFieldFixture new General(), ALONGSIDE_ICON_MEDIUM_SIZE, factory, {
+			fixture.checkBox("$ALONGSIDE_ICON_MEDIUM_SIZE").click()
+			assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON_MEDIUM_SIZE").component().icon.iconWidth == 22
+			assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON_MEDIUM_SIZE").component().text == ALONGSIDE_ICON_MEDIUM_SIZE
+		}
 	}
 
 	@Test
 	void "alongside icon LARGE size"() {
-		createFieldFixture(new General(), ALONGSIDE_ICON_LARGE_SIZE, factory)
-		beginFixture()
-		fixture.checkBox("$ALONGSIDE_ICON_LARGE_SIZE").click()
-		assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON_LARGE_SIZE").component().icon.iconWidth == 32
-		assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON_LARGE_SIZE").component().text == ALONGSIDE_ICON_LARGE_SIZE
-		endFixture()
+		runFieldFixture new General(), ALONGSIDE_ICON_LARGE_SIZE, factory, {
+			fixture.checkBox("$ALONGSIDE_ICON_LARGE_SIZE").click()
+			assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON_LARGE_SIZE").component().icon.iconWidth == 32
+			assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON_LARGE_SIZE").component().text == ALONGSIDE_ICON_LARGE_SIZE
+		}
 	}
 
 	@Test
 	void "alongside icon huge size"() {
-		createFieldFixture(new General(), ALONGSIDE_ICON_HUGE_SIZE, factory)
-		beginFixture()
-		fixture.checkBox("$ALONGSIDE_ICON_HUGE_SIZE").click()
-		assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON_HUGE_SIZE").component().icon.iconWidth == 48
-		assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON_HUGE_SIZE").component().text == ALONGSIDE_ICON_HUGE_SIZE
-		endFixture()
+		runFieldFixture new General(), ALONGSIDE_ICON_HUGE_SIZE, factory, {
+			fixture.checkBox("$ALONGSIDE_ICON_HUGE_SIZE").click()
+			assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON_HUGE_SIZE").component().icon.iconWidth == 48
+			assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON_HUGE_SIZE").component().text == ALONGSIDE_ICON_HUGE_SIZE
+		}
 	}
 
 	@Test
 	void testManual() {
-		createFieldFixture(new General(), ALONGSIDE_ICON_HUGE_SIZE, factory)
-		beginFixture()
-		//Thread.sleep 60000
-		endFixture()
+		runFieldFixture new General(), ALONGSIDE_ICON_HUGE_SIZE, factory, {
+			//Thread.sleep 60000
+		}
 	}
 }

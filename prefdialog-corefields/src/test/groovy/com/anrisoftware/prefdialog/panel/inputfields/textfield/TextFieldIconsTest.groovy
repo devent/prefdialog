@@ -56,45 +56,40 @@ class TextFieldIconsTest extends FieldFixtureHandler {
 
 	@Test
 	void "default no icon"() {
-		createFieldFixture(new General(), DEFAULT_NO_ICON, factory)
-		beginFixture()
-		assert fixture.label("$TITLE_LABEL-$DEFAULT_NO_ICON").component().icon == null
-		assert fixture.label("$TITLE_LABEL-$DEFAULT_NO_ICON").component().text == DEFAULT_NO_ICON
-		endFixture()
+		runFieldFixture new General(), DEFAULT_NO_ICON, factory, {
+			assert fixture.label("$TITLE_LABEL-$DEFAULT_NO_ICON").component().icon == null
+			assert fixture.label("$TITLE_LABEL-$DEFAULT_NO_ICON").component().text == DEFAULT_NO_ICON
+		}
 	}
 
 	@Test
 	void "icon only"() {
-		createFieldFixture(new General(), ICON_ONLY, factory)
-		beginFixture()
-		assert fixture.label("$TITLE_LABEL-$ICON_ONLY").component().icon.iconWidth == 16
-		assert fixture.label("$TITLE_LABEL-$ICON_ONLY").component().text == null
-		endFixture()
+		runFieldFixture new General(), ICON_ONLY, factory, {
+			assert fixture.label("$TITLE_LABEL-$ICON_ONLY").component().icon.iconWidth == 16
+			assert fixture.label("$TITLE_LABEL-$ICON_ONLY").component().text == null
+		}
 	}
 
 	@Test
 	void "alongside icon"() {
-		createFieldFixture(new General(), ALONGSIDE_ICON, factory)
-		beginFixture()
-		assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON").component().icon.iconWidth == 16
-		assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON").component().text == ALONGSIDE_ICON
-		endFixture()
+		runFieldFixture new General(), ALONGSIDE_ICON, factory, {
+			assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON").component().icon.iconWidth == 16
+			assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON").component().text == ALONGSIDE_ICON
+		}
 	}
 
 	@Test
 	void "under icon"() {
-		createFieldFixture(new General(), UNDER_ICON, factory)
-		beginFixture()
-		assert fixture.label("$TITLE_LABEL-$UNDER_ICON").component().icon.iconWidth == 16
-		assert fixture.label("$TITLE_LABEL-$UNDER_ICON").component().text == UNDER_ICON
-		endFixture()
+		runFieldFixture new General(), UNDER_ICON, factory, {
+			assert fixture.label("$TITLE_LABEL-$UNDER_ICON").component().icon.iconWidth == 16
+			assert fixture.label("$TITLE_LABEL-$UNDER_ICON").component().text == UNDER_ICON
+		}
 	}
 
 	@Test
 	void testManual() {
-		createFieldFixture(new General(), UNDER_ICON, factory)
-		beginFixture()
-		//Thread.sleep 60000
-		endFixture()
+		runFieldFixture new General(), UNDER_ICON, factory, {
+			//Thread.sleep 60000
+		}
 	}
 }

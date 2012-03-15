@@ -91,106 +91,95 @@ class SliderPropertiesTest extends FieldFixtureHandler {
 
 	@Test
 	void "default slider set and apply input"() {
-		createFieldFixture(new General(), DEFAULT_SLIDER, factory)
-		beginFixture()
-		fixture.slider(DEFAULT_SLIDER).slideTo 55
-		inputField.applyInput parentObject
-		assert parentObject.defaultSlider == 55
-		endFixture()
+		runFieldFixture new General(), DEFAULT_SLIDER, factory, {
+			fixture.slider(DEFAULT_SLIDER).slideTo 55
+			inputField.applyInput parentObject
+			assert parentObject.defaultSlider == 55
+		}
 	}
 
 	@Test
 	void "max slider set and apply input"() {
-		createFieldFixture(new General(), MAX, factory)
-		beginFixture()
-		fixture.slider(MAX).slideToMaximum()
-		inputField.applyInput parentObject
-		assert parentObject.max == 200
-		endFixture()
+		runFieldFixture new General(), MAX, factory, {
+			fixture.slider(MAX).slideToMaximum()
+			inputField.applyInput parentObject
+			assert parentObject.max == 200
+		}
 	}
 
 	@Test
 	void "choose minimum and apply input"() {
-		createFieldFixture(new General(), MIN, factory)
-		beginFixture()
-		fixture.slider(MIN).slideToMinimum()
-		inputField.applyInput parentObject
-		assert parentObject.min == -50
-		endFixture()
+		runFieldFixture new General(), MIN, factory, {
+			fixture.slider(MIN).slideToMinimum()
+			inputField.applyInput parentObject
+			assert parentObject.min == -50
+		}
 	}
 
 	@Test
 	void "paint track"() {
-		createFieldFixture(new General(), NO_PAINT_TRACK, factory)
-		beginFixture()
-		fixture.slider(NO_PAINT_TRACK).slideToMaximum()
-		assert fixture.slider(NO_PAINT_TRACK).component().paintTrack == false
-		endFixture()
+		runFieldFixture new General(), NO_PAINT_TRACK, factory, {
+			fixture.slider(NO_PAINT_TRACK).slideToMaximum()
+			assert fixture.slider(NO_PAINT_TRACK).component().paintTrack == false
+		}
 	}
 
 	@Test
 	void "paint labels and major tick spacing"() {
-		createFieldFixture(new General(), PAINT_LABELS, factory)
-		beginFixture()
-		fixture.slider(PAINT_LABELS).slideToMaximum()
-		assert fixture.slider(PAINT_LABELS).component().paintLabels == true
-		assert fixture.slider(PAINT_LABELS).component().majorTickSpacing == 10
-		endFixture()
+		runFieldFixture new General(), PAINT_LABELS, factory, {
+			fixture.slider(PAINT_LABELS).slideToMaximum()
+			assert fixture.slider(PAINT_LABELS).component().paintLabels == true
+			assert fixture.slider(PAINT_LABELS).component().majorTickSpacing == 10
+		}
 	}
 
 	@Test
 	void "paint ticks with major and minor ticks"() {
-		createFieldFixture(new General(), PAINT_TICKS, factory)
-		beginFixture()
-		assert fixture.slider(PAINT_TICKS).component().paintTicks == true
-		assert fixture.slider(PAINT_TICKS).component().majorTickSpacing == 20
-		assert fixture.slider(PAINT_TICKS).component().minorTickSpacing == 5
-		endFixture()
+		runFieldFixture new General(), PAINT_TICKS, factory, {
+			assert fixture.slider(PAINT_TICKS).component().paintTicks == true
+			assert fixture.slider(PAINT_TICKS).component().majorTickSpacing == 20
+			assert fixture.slider(PAINT_TICKS).component().minorTickSpacing == 5
+		}
 	}
 
 	@Test
 	void "read only"() {
-		createFieldFixture(new General(), READ_ONLY, factory)
-		beginFixture()
-		fixture.slider(READ_ONLY).requireDisabled()
-		endFixture()
+		runFieldFixture new General(), READ_ONLY, factory, {
+			fixture.slider(READ_ONLY).requireDisabled()
+		}
 	}
 
 	@Test
 	void "snap to tick and apply input"() {
-		createFieldFixture(new General(), SNAP_TO_TICKS, factory)
-		beginFixture()
-		assert fixture.slider(SNAP_TO_TICKS).component().snapToTicks == true
-		fixture.slider(SNAP_TO_TICKS).slideTo 55
-		inputField.applyInput parentObject
-		assert parentObject.snapToTicks == 55
-		endFixture()
+		runFieldFixture new General(), SNAP_TO_TICKS, factory, {
+			assert fixture.slider(SNAP_TO_TICKS).component().snapToTicks == true
+			fixture.slider(SNAP_TO_TICKS).slideTo 55
+			inputField.applyInput parentObject
+			assert parentObject.snapToTicks == 55
+		}
 	}
 
 	@Test
 	void "default title"() {
-		createFieldFixture(new General(), DEFAULT_TITLE, factory)
-		beginFixture()
-		fixture.slider(DEFAULT_TITLE).slideTo 55
-		assert fixture.label("$TITLE_LABEL-$DEFAULT_TITLE").text() == DEFAULT_TITLE
-		endFixture()
+		runFieldFixture new General(), DEFAULT_TITLE, factory, {
+			fixture.slider(DEFAULT_TITLE).slideTo 55
+			assert fixture.label("$TITLE_LABEL-$DEFAULT_TITLE").text() == DEFAULT_TITLE
+		}
 	}
 
 	@Test
 	void "custom title"() {
-		createFieldFixture(new General(), CUSTOM_TITLE, factory)
-		beginFixture()
-		fixture.slider(CUSTOM_TITLE).slideTo 55
-		assert fixture.label("$TITLE_LABEL-$CUSTOM_TITLE").text() == "Some slider"
-		endFixture()
+		runFieldFixture new General(), CUSTOM_TITLE, factory, {
+			fixture.slider(CUSTOM_TITLE).slideTo 55
+			assert fixture.label("$TITLE_LABEL-$CUSTOM_TITLE").text() == "Some slider"
+		}
 	}
 
 	@Test
 	void "hide title"() {
-		createFieldFixture(new General(), HIDE_TITLE, factory)
-		beginFixture()
-		fixture.slider(HIDE_TITLE).slideTo 55
-		//assert fixture.label("$TITLE_LABEL-$HIDE_TITLE").requireNotVisible()
-		endFixture()
+		runFieldFixture new General(), HIDE_TITLE, factory, {
+			fixture.slider(HIDE_TITLE).slideTo 55
+			//assert fixture.label("$TITLE_LABEL-$HIDE_TITLE").requireNotVisible()
+		}
 	}
 }

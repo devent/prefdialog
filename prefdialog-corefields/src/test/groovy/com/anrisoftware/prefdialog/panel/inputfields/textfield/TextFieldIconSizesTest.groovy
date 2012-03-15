@@ -62,54 +62,48 @@ class TextFieldIconSizesTest extends FieldFixtureHandler {
 
 	@Test
 	void "icon only default size"() {
-		createFieldFixture(new General(), ICON_ONLY_DEFAULT_SIZE, factory)
-		beginFixture()
-		assert fixture.label("$TITLE_LABEL-$ICON_ONLY_DEFAULT_SIZE").component().icon.iconWidth == 16
-		assert fixture.label("$TITLE_LABEL-$ICON_ONLY_DEFAULT_SIZE").component().text == null
-		endFixture()
+		runFieldFixture new General(), ICON_ONLY_DEFAULT_SIZE, factory, {
+			assert fixture.label("$TITLE_LABEL-$ICON_ONLY_DEFAULT_SIZE").component().icon.iconWidth == 16
+			assert fixture.label("$TITLE_LABEL-$ICON_ONLY_DEFAULT_SIZE").component().text == null
+		}
 	}
 
 	@Test
 	void "icon only small size"() {
-		createFieldFixture(new General(), ICON_ONLY_SMALL_SIZE, factory)
-		beginFixture()
-		assert fixture.label("$TITLE_LABEL-$ICON_ONLY_SMALL_SIZE").component().icon.iconWidth == 16
-		assert fixture.label("$TITLE_LABEL-$ICON_ONLY_SMALL_SIZE").component().text == null
-		endFixture()
+		runFieldFixture new General(), ICON_ONLY_SMALL_SIZE, factory, {
+			assert fixture.label("$TITLE_LABEL-$ICON_ONLY_SMALL_SIZE").component().icon.iconWidth == 16
+			assert fixture.label("$TITLE_LABEL-$ICON_ONLY_SMALL_SIZE").component().text == null
+		}
 	}
 
 	@Test
 	void "icon only medium size"() {
-		createFieldFixture(new General(), ICON_ONLY_MEDIUM_SIZE, factory)
-		beginFixture()
-		assert fixture.label("$TITLE_LABEL-$ICON_ONLY_MEDIUM_SIZE").component().icon.iconWidth == 22
-		assert fixture.label("$TITLE_LABEL-$ICON_ONLY_MEDIUM_SIZE").component().text == null
-		endFixture()
+		runFieldFixture new General(), ICON_ONLY_MEDIUM_SIZE, factory, {
+			assert fixture.label("$TITLE_LABEL-$ICON_ONLY_MEDIUM_SIZE").component().icon.iconWidth == 22
+			assert fixture.label("$TITLE_LABEL-$ICON_ONLY_MEDIUM_SIZE").component().text == null
+		}
 	}
 
 	@Test
 	void "icon only LARGE size"() {
-		createFieldFixture(new General(), ICON_ONLY_LARGE_SIZE, factory)
-		beginFixture()
-		assert fixture.label("$TITLE_LABEL-$ICON_ONLY_LARGE_SIZE").component().icon.iconWidth == 32
-		assert fixture.label("$TITLE_LABEL-$ICON_ONLY_LARGE_SIZE").component().text == null
-		endFixture()
+		runFieldFixture new General(), ICON_ONLY_LARGE_SIZE, factory, {
+			assert fixture.label("$TITLE_LABEL-$ICON_ONLY_LARGE_SIZE").component().icon.iconWidth == 32
+			assert fixture.label("$TITLE_LABEL-$ICON_ONLY_LARGE_SIZE").component().text == null
+		}
 	}
 
 	@Test
 	void "icon only huge size"() {
-		createFieldFixture(new General(), ICON_ONLY_HUGE_SIZE, factory)
-		beginFixture()
-		assert fixture.label("$TITLE_LABEL-$ICON_ONLY_HUGE_SIZE").component().icon.iconWidth == 48
-		assert fixture.label("$TITLE_LABEL-$ICON_ONLY_HUGE_SIZE").component().text == null
-		endFixture()
+		runFieldFixture new General(), ICON_ONLY_HUGE_SIZE, factory, {
+			assert fixture.label("$TITLE_LABEL-$ICON_ONLY_HUGE_SIZE").component().icon.iconWidth == 48
+			assert fixture.label("$TITLE_LABEL-$ICON_ONLY_HUGE_SIZE").component().text == null
+		}
 	}
 
 	@Test
 	void testManual() {
-		createFieldFixture(new General(), ICON_ONLY_HUGE_SIZE, factory)
-		beginFixture()
-		//Thread.sleep 60000
-		endFixture()
+		runFieldFixture new General(), ICON_ONLY_HUGE_SIZE, factory, {
+			//Thread.sleep 60000
+		}
 	}
 }

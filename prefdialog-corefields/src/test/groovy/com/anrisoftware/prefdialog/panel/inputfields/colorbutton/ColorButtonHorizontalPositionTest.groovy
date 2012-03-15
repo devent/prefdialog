@@ -64,41 +64,36 @@ class ColorButtonHorizontalPositionTest extends FieldFixtureHandler {
 
 	@Test
 	void "default horizontal position"() {
-		createFieldFixture(new General(), COLOR_DEFAULT, factory)
-		beginFixture()
-		assert fixture.label("$TITLE_LABEL-$COLOR_DEFAULT").text() == COLOR_DEFAULT
-		endFixture()
+		runFieldFixture new General(), COLOR_DEFAULT, factory, {
+			assert fixture.label("$TITLE_LABEL-$COLOR_DEFAULT").text() == COLOR_DEFAULT
+		}
 	}
 
 	@Test
 	void "left horizontal position"() {
-		createFieldFixture(new General(), COLOR_LEFT, factory)
-		beginFixture()
-		assert fixture.label("$TITLE_LABEL-$COLOR_LEFT").text() == COLOR_LEFT
-		endFixture()
+		runFieldFixture new General(), COLOR_LEFT, factory, {
+			assert fixture.label("$TITLE_LABEL-$COLOR_LEFT").text() == COLOR_LEFT
+		}
 	}
 
 	@Test
 	void "right horizontal position"() {
-		createFieldFixture(new General(), COLOR_RIGHT, factory)
-		beginFixture()
-		assert fixture.label("$TITLE_LABEL-$COLOR_RIGHT").text() == COLOR_RIGHT
-		endFixture()
+		runFieldFixture new General(), COLOR_RIGHT, factory, {
+			assert fixture.label("$TITLE_LABEL-$COLOR_RIGHT").text() == COLOR_RIGHT
+		}
 	}
 
 	@Test
 	void "middle horizontal position"() {
-		createFieldFixture(new General(), COLOR_MIDDLE, factory)
-		beginFixture()
-		assert fixture.label("$TITLE_LABEL-$COLOR_MIDDLE").text() == COLOR_MIDDLE
-		endFixture()
+		runFieldFixture new General(), COLOR_MIDDLE, factory, {
+			assert fixture.label("$TITLE_LABEL-$COLOR_MIDDLE").text() == COLOR_MIDDLE
+		}
 	}
 
 	@Test
 	void testManual() {
-		createFieldFixture(new General(), COLOR_MIDDLE, factory)
-		beginFixture()
-		//Thread.sleep(30000)
-		endFixture()
+		runFieldFixture new General(), COLOR_MIDDLE, factory, {
+			//Thread.sleep(30000)
+		}
 	}
 }

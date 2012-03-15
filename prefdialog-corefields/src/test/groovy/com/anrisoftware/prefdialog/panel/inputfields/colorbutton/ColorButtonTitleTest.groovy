@@ -58,26 +58,23 @@ class ColorButtonTitleTest extends FieldFixtureHandler {
 
 	@Test
 	void "default title"() {
-		createFieldFixture(new General(), DEFAULT_TITLE, factory)
-		beginFixture()
-		assert fixture.label("$TITLE_LABEL-$DEFAULT_TITLE").text() == DEFAULT_TITLE
-		endFixture()
+		runFieldFixture new General(), DEFAULT_TITLE, factory, {
+			assert fixture.label("$TITLE_LABEL-$DEFAULT_TITLE").text() == DEFAULT_TITLE
+		}
 	}
 
 	@Test
 	void "custom title"() {
-		createFieldFixture(new General(), CUSTOM_TITLE, factory)
-		beginFixture()
-		assert fixture.label("$TITLE_LABEL-$CUSTOM_TITLE").text() == CUSTOM_TITLE
-		endFixture()
+		runFieldFixture new General(), CUSTOM_TITLE, factory, {
+			assert fixture.label("$TITLE_LABEL-$CUSTOM_TITLE").text() == CUSTOM_TITLE
+		}
 	}
 
 	@Test
 	void "no title"() {
-		createFieldFixture(new General(), HIDE_TITLE, factory)
-		beginFixture()
-		//assert fixture.label("$TITLE_LABEL-file3").text() == "file3"
-		endFixture()
+		runFieldFixture new General(), HIDE_TITLE, factory, {
+			//assert fixture.label("$TITLE_LABEL-file3").text() == "file3"
+		}
 	}
 
 	@Test

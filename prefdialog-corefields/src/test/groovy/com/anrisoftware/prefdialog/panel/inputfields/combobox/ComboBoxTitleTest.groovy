@@ -60,30 +60,27 @@ class ComboBoxTitleTest extends FieldFixtureHandler {
 
 	@Test
 	void "set default tile"() {
-		createFieldFixture(new General(), DEFAULT_TITLE, factory)
-		beginFixture()
-		fixture.comboBox(DEFAULT_TITLE).selectItem 2
-		assert fixture.label("$TITLE_LABEL-$DEFAULT_TITLE").text() == DEFAULT_TITLE
-		endFixture()
+		runFieldFixture new General(), DEFAULT_TITLE, factory, {
+			fixture.comboBox(DEFAULT_TITLE).selectItem 2
+			assert fixture.label("$TITLE_LABEL-$DEFAULT_TITLE").text() == DEFAULT_TITLE
+		}
 	}
 
 	@Test
 	void "set custom tile"() {
-		createFieldFixture(new General(), CUSTOM_TITLE, factory)
-		beginFixture()
-		fixture.comboBox(CUSTOM_TITLE).selectItem 2
-		assert fixture.label("$TITLE_LABEL-$CUSTOM_TITLE").text() == "Second combo box:"
-		endFixture()
+		runFieldFixture new General(), CUSTOM_TITLE, factory, {
+			fixture.comboBox(CUSTOM_TITLE).selectItem 2
+			assert fixture.label("$TITLE_LABEL-$CUSTOM_TITLE").text() == "Second combo box:"
+		}
 	}
 
 	@Test
 	void "set no tile"() {
-		createFieldFixture(new General(), HIDE_TITLE, factory)
-		beginFixture()
-		fixture.comboBox(HIDE_TITLE).selectItem 2
-		// Why it can't find an invisible label?
-		// fixture.label("$TITLE_LABEL-$HIDE_TITLE").requireNotVisible()
-		endFixture()
+		runFieldFixture new General(), HIDE_TITLE, factory, {
+			fixture.comboBox(HIDE_TITLE).selectItem 2
+			// Why it can't find an invisible label?
+			// fixture.label("$TITLE_LABEL-$HIDE_TITLE").requireNotVisible()
+		}
 	}
 }
 

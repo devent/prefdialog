@@ -50,28 +50,25 @@ class TextFieldTitleTest extends FieldFixtureHandler {
 
 	@Test
 	void "default title"() {
-		createFieldFixture(new General(), DEFAULT_TITLE, factory)
-		beginFixture()
-		fixture.textBox(DEFAULT_TITLE).requireVisible()
-		assert fixture.label("$TITLE_LABEL-$DEFAULT_TITLE").text() == DEFAULT_TITLE
-		endFixture()
+		runFieldFixture new General(), DEFAULT_TITLE, factory, {
+			fixture.textBox(DEFAULT_TITLE).requireVisible()
+			assert fixture.label("$TITLE_LABEL-$DEFAULT_TITLE").text() == DEFAULT_TITLE
+		}
 	}
 
 	@Test
 	void "custom title"() {
-		createFieldFixture(new General(), CUSTOM_TITLE, factory)
-		beginFixture()
-		fixture.textBox(CUSTOM_TITLE).requireVisible()
-		assert fixture.label("$TITLE_LABEL-$CUSTOM_TITLE").text() == "Project name"
-		endFixture()
+		runFieldFixture new General(), CUSTOM_TITLE, factory, {
+			fixture.textBox(CUSTOM_TITLE).requireVisible()
+			assert fixture.label("$TITLE_LABEL-$CUSTOM_TITLE").text() == "Project name"
+		}
 	}
 
 	@Test
 	void "hide title"() {
-		createFieldFixture(new General(), HIDE_TITLE, factory)
-		beginFixture()
-		fixture.textBox(HIDE_TITLE).requireVisible()
-		//assert fixture.label("$TITLE_LABEL-$CUSTOM_TITLE").text() == HIDE_TITLE
-		endFixture()
+		runFieldFixture new General(), HIDE_TITLE, factory, {
+			fixture.textBox(HIDE_TITLE).requireVisible()
+			//assert fixture.label("$TITLE_LABEL-$CUSTOM_TITLE").text() == HIDE_TITLE
+		}
 	}
 }
