@@ -28,19 +28,21 @@ class FormattedTextFieldWidthTest extends AbstractFieldFixture {
 
 	static factory = injector.getInstance(FormattedTextFieldHandlerFactory)
 
+	static final String PREFERRED_WIDTH = "preferredWidth"
+
 	static class General {
 
 		@FormattedTextField(width=-2.0d)
-		int fields = 4
+		int preferredWidth = 4
 	}
 
 	FormattedTextFieldWidthTest() {
-		super(new General(), 'fields', factory)
+		super(new General(), PREFERRED_WIDTH, factory)
 	}
 
 	@Test
 	void "set preferred width"() {
-		fixture.textBox('fields').deleteText()
-		fixture.textBox('fields').enterText '10'
+		fixture.textBox(PREFERRED_WIDTH).deleteText()
+		fixture.textBox(PREFERRED_WIDTH).enterText "10"
 	}
 }

@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Erwin Müller <erwin.mueller@deventm.org>
  * 
- * This file is part of prefdialog-swing.
+ * This simple is part of prefdialog-swing.
  * 
  * prefdialog-swing is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -28,18 +28,20 @@ class FileFormattedTextFieldTest extends AbstractFieldFixture {
 
 	static factory = injector.getInstance(FormattedTextFieldHandlerFactory)
 
+	static final String SIMPLE = "simple"
+
 	static class General {
 
 		@FormattedTextField
-		File file = new File(".")
+		File simple = new File(".")
 	}
 
 	FileFormattedTextFieldTest() {
-		super(new General(), 'file', factory)
+		super(new General(), SIMPLE, factory)
 	}
 
 	@Test
 	void testManually() {
-		Thread.sleep 0
+		//Thread.sleep 60000
 	}
 }

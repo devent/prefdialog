@@ -18,6 +18,8 @@
  */
 package com.anrisoftware.prefdialog.panel.inputfields.textfield.formattedtextfield
 
+import static com.anrisoftware.prefdialog.swingutils.AbstractLabelFieldPanel.TITLE_LABEL
+
 import org.junit.Test
 
 import com.anrisoftware.prefdialog.annotations.FormattedTextField
@@ -28,33 +30,48 @@ class FormattedTextFieldTitleTest extends FieldFixtureHandler {
 
 	static factory = injector.getInstance(FormattedTextFieldHandlerFactory)
 
+	static final String DEFAULT_TITLE = "defaultTitle"
+
+	static final String CUSTOM_TITLE = "customTitle"
+
+	static final String HIDE_TITLE = "hideTitle"
+
 	static class General {
 
 		@FormattedTextField
-		double fields1 = 4
+		double defaultTitle = 4
 
-		@FormattedTextField(title='Number of fields')
-		double fields2 = 4
+		@FormattedTextField(title="Number of fields")
+		double customTitle = 4
 
 		@FormattedTextField(showTitle=false)
-		double fields3 = 4
+		double hideTitle = 4
 	}
 
 	@Test
 	void "default title"() {
-		createFieldFixture(new General(), 'fields1', factory)
+		createFieldFixture(new General(), DEFAULT_TITLE, factory)
 		beginFixture()
-		assert fixture.textBox('fields1').text() == '4'
-		assert fixture.label('label-fields1').text() == 'fields1'
+		assert fixture.textBox(DEFAULT_TITLE).text() == "4"
+		assert fixture.label("$TITLE_LABEL-$DEFAULT_TITLE").text() == DEFAULT_TITLE
 		endFixture()
 	}
 
 	@Test
 	void "custom title"() {
-		createFieldFixture(new General(), 'fields2', factory)
+		createFieldFixture(new General(), CUSTOM_TITLE, factory)
 		beginFixture()
-		assert fixture.textBox('fields2').text() == '4'
-		assert fixture.label('label-fields2').text() == 'Number of fields'
+		assert fixture.textBox(CUSTOM_TITLE).text() == "4"
+		assert fixture.label("$TITLE_LABEL-$CUSTOM_TITLE").text() == "Number of fields"
+		endFixture()
+	}
+
+	@Test
+	void "hide title"() {
+		createFieldFixture(new General(), HIDE_TITLE, factory)
+		beginFixture()
+		assert fixture.textBox(HIDE_TITLE).text() == "4"
+		//assert fixture.label("$TITLE_LABEL-$HIDE_TITLE").text() == HIDE_TITLE
 		endFixture()
 	}
 }

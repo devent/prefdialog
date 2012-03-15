@@ -28,6 +28,8 @@ class FormattedTextFieldDoubleTest extends AbstractFieldFixture {
 
 	static factory = injector.getInstance(FormattedTextFieldHandlerFactory)
 
+	static final String DECIMAL = "decimal"
+
 	static class General {
 
 		@FormattedTextField
@@ -35,21 +37,21 @@ class FormattedTextFieldDoubleTest extends AbstractFieldFixture {
 	}
 
 	FormattedTextFieldDoubleTest() {
-		super(new General(), 'decimal', factory)
+		super(new General(), DECIMAL, factory)
 	}
 
 	@Test
 	void "enter valid input and apply"() {
-		fixture.textBox('decimal').deleteText()
-		fixture.textBox('decimal').enterText '0.001'
+		fixture.textBox(DECIMAL).deleteText()
+		fixture.textBox(DECIMAL).enterText "0.001"
 		inputField.applyInput parentObject
 
-		assert fixture.textBox('decimal').text() == '0.001'
+		assert fixture.textBox(DECIMAL).text() == "0.001"
 		assert parentObject.decimal == 0.001
 	}
 
 	@Test
 	void "manually"() {
-		Thread.sleep 0
+		//Thread.sleep 60000
 	}
 }

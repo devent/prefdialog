@@ -29,6 +29,8 @@ class FormattedTextFieldValidatorTest extends AbstractFieldFixture {
 
 	static factory = injector.getInstance(FormattedTextFieldHandlerFactory)
 
+	static final String NUMBER = "number"
+
 	static class FieldsValidator implements Validator<Integer> {
 		public boolean isValid(Integer value) {
 			value >= 2 && value <= 100
@@ -37,28 +39,28 @@ class FormattedTextFieldValidatorTest extends AbstractFieldFixture {
 
 	static class General {
 
-		@FormattedTextField(validator=FieldsValidator, validatorText='Must be a number and between 2 and 100')
-		int fields = 4
+		@FormattedTextField(validator=FieldsValidator, validatorText="Must be a number and between 2 and 100")
+		int number = 4
 	}
 
 	FormattedTextFieldValidatorTest() {
-		super(new General(), 'fields', factory)
+		super(new General(), NUMBER, factory)
 	}
 
 	@Test
 	void "enter invalid text"() {
-		fixture.textBox('fields').deleteText()
-		fixture.textBox('fields').enterText '1'
-		fixture.textBox('fields').requireToolTip '<html><strong>fields</strong> - Must be a number and between 2 and 100</html>'
+		fixture.textBox(NUMBER).deleteText()
+		fixture.textBox(NUMBER).enterText "1"
+		fixture.textBox(NUMBER).requireToolTip "<html><strong>$NUMBER</strong> - Must be a number and between 2 and 100</html>"
 	}
 
 	@Test
 	void "enter valid text and apply input"() {
-		fixture.textBox('fields').deleteText()
-		fixture.textBox('fields').enterText '10'
+		fixture.textBox(NUMBER).deleteText()
+		fixture.textBox(NUMBER).enterText "10"
 		inputField.applyInput parentObject
 
-		assert fixture.textBox('fields').text() == '10'
-		assert parentObject.fields == 10
+		assert fixture.textBox(NUMBER).text() == "10"
+		assert parentObject.number == 10
 	}
 }

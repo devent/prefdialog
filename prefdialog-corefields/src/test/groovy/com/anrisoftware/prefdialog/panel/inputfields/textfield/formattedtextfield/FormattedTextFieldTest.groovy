@@ -28,38 +28,40 @@ class FormattedTextFieldTest extends AbstractFieldFixture {
 
 	static factory = injector.getInstance(FormattedTextFieldHandlerFactory)
 
+	static final String DECIMAL = "decimal"
+
 	static class General {
 
 		@FormattedTextField
-		double fields = 4
+		double decimal = 4
 	}
 
 	FormattedTextFieldTest() {
-		super(new General(), 'fields', factory)
+		super(new General(), DECIMAL, factory)
 	}
 
 	@Test
 	void "enter number and apply input"() {
-		fixture.textBox('fields').deleteText()
-		fixture.textBox('fields').enterText '10'
+		fixture.textBox(DECIMAL).deleteText()
+		fixture.textBox(DECIMAL).enterText "10"
 		inputField.applyInput parentObject
 
-		assert fixture.textBox('fields').text() == '10'
-		assert parentObject.fields == 10
+		assert fixture.textBox(DECIMAL).text() == "10"
+		assert parentObject.decimal == 10
 	}
 
 	@Test
 	void "enter number and restore input"() {
-		fixture.textBox('fields').deleteText()
-		fixture.textBox('fields').enterText '10'
+		fixture.textBox(DECIMAL).deleteText()
+		fixture.textBox(DECIMAL).enterText "10"
 		inputField.restoreInput parentObject
 
-		assert fixture.textBox('fields').text() == '4'
-		assert parentObject.fields == 4
+		assert fixture.textBox(DECIMAL).text() == "4"
+		assert parentObject.decimal == 4
 	}
 
 	@Test
 	void testManually() {
-		Thread.sleep 0
+		//Thread.sleep 60000
 	}
 }

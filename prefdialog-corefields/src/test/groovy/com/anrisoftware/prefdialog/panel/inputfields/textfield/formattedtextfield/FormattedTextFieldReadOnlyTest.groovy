@@ -28,19 +28,21 @@ class FormattedTextFieldReadOnlyTest extends AbstractFieldFixture {
 
 	static factory = injector.getInstance(FormattedTextFieldHandlerFactory)
 
+	static final String READ_ONLY = "readOnly"
+
 	static class General {
 
 		@FormattedTextField(readonly=true)
-		double fields = 4
+		double readOnly = 4
 	}
 
 	FormattedTextFieldReadOnlyTest() {
-		super(new General(), 'fields', factory)
+		super(new General(), READ_ONLY, factory)
 	}
 
 	@Test
 	void "read only"() {
-		fixture.textBox('fields').requireDisabled()
-		fixture.textBox('fields').requireText '4'
+		fixture.textBox(READ_ONLY).requireDisabled()
+		fixture.textBox(READ_ONLY).requireText "4"
 	}
 }
