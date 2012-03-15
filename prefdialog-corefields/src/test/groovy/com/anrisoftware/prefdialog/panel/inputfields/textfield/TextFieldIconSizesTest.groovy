@@ -18,6 +18,8 @@
  */
 package com.anrisoftware.prefdialog.panel.inputfields.textfield
 
+import static com.anrisoftware.prefdialog.swingutils.AbstractLabelFieldPanel.TITLE_LABEL
+
 import org.junit.Test
 
 import com.anrisoftware.prefdialog.annotations.IconSize
@@ -42,19 +44,19 @@ class TextFieldIconSizesTest extends FieldFixtureHandler {
 
 	static class General {
 
-		@TextField(icon="com/anrisoftware/prefdialog/panel/inputfields/textfield/textfield-%d.png", textPosition=TextPosition.ICON_ONLY)
+		@TextField(icon="com/anrisoftware/prefdialog/panel/inputfields/info-%d.png", textPosition=TextPosition.ICON_ONLY)
 		String iconOnlyDefaultSize = ""
 
-		@TextField(icon="com/anrisoftware/prefdialog/panel/inputfields/textfield/textfield-%d.png", textPosition=TextPosition.ICON_ONLY, iconSize=IconSize.SMALL)
+		@TextField(icon="com/anrisoftware/prefdialog/panel/inputfields/info-%d.png", textPosition=TextPosition.ICON_ONLY, iconSize=IconSize.SMALL)
 		String iconOnlySmallSize = ""
 
-		@TextField(icon="com/anrisoftware/prefdialog/panel/inputfields/textfield/textfield-%d.png", textPosition=TextPosition.ICON_ONLY, iconSize=IconSize.MEDIUM)
+		@TextField(icon="com/anrisoftware/prefdialog/panel/inputfields/info-%d.png", textPosition=TextPosition.ICON_ONLY, iconSize=IconSize.MEDIUM)
 		String iconOnlyMediumSize = ""
 
-		@TextField(icon="com/anrisoftware/prefdialog/panel/inputfields/textfield/textfield-%d.png", textPosition=TextPosition.ICON_ONLY, iconSize=IconSize.LARGE)
+		@TextField(icon="com/anrisoftware/prefdialog/panel/inputfields/info-%d.png", textPosition=TextPosition.ICON_ONLY, iconSize=IconSize.LARGE)
 		String iconOnlyLargeSize = ""
 
-		@TextField(icon="com/anrisoftware/prefdialog/panel/inputfields/textfield/textfield-%d.png", textPosition=TextPosition.ICON_ONLY, iconSize=IconSize.HUGE)
+		@TextField(icon="com/anrisoftware/prefdialog/panel/inputfields/info-%d.png", textPosition=TextPosition.ICON_ONLY, iconSize=IconSize.HUGE)
 		String iconOnlyHugeSize = ""
 	}
 
@@ -62,8 +64,8 @@ class TextFieldIconSizesTest extends FieldFixtureHandler {
 	void "icon only default size"() {
 		createFieldFixture(new General(), ICON_ONLY_DEFAULT_SIZE, factory)
 		beginFixture()
-		assert fixture.label("title_label-$ICON_ONLY_DEFAULT_SIZE").component().icon.iconWidth == 16
-		assert fixture.label("title_label-$ICON_ONLY_DEFAULT_SIZE").component().text == null
+		assert fixture.label("$TITLE_LABEL-$ICON_ONLY_DEFAULT_SIZE").component().icon.iconWidth == 16
+		assert fixture.label("$TITLE_LABEL-$ICON_ONLY_DEFAULT_SIZE").component().text == null
 		endFixture()
 	}
 
@@ -71,8 +73,8 @@ class TextFieldIconSizesTest extends FieldFixtureHandler {
 	void "icon only small size"() {
 		createFieldFixture(new General(), ICON_ONLY_SMALL_SIZE, factory)
 		beginFixture()
-		assert fixture.label("title_label-$ICON_ONLY_SMALL_SIZE").component().icon.iconWidth == 16
-		assert fixture.label("title_label-$ICON_ONLY_SMALL_SIZE").component().text == null
+		assert fixture.label("$TITLE_LABEL-$ICON_ONLY_SMALL_SIZE").component().icon.iconWidth == 16
+		assert fixture.label("$TITLE_LABEL-$ICON_ONLY_SMALL_SIZE").component().text == null
 		endFixture()
 	}
 
@@ -80,8 +82,8 @@ class TextFieldIconSizesTest extends FieldFixtureHandler {
 	void "icon only medium size"() {
 		createFieldFixture(new General(), ICON_ONLY_MEDIUM_SIZE, factory)
 		beginFixture()
-		assert fixture.label("title_label-$ICON_ONLY_MEDIUM_SIZE").component().icon.iconWidth == 22
-		assert fixture.label("title_label-$ICON_ONLY_MEDIUM_SIZE").component().text == null
+		assert fixture.label("$TITLE_LABEL-$ICON_ONLY_MEDIUM_SIZE").component().icon.iconWidth == 22
+		assert fixture.label("$TITLE_LABEL-$ICON_ONLY_MEDIUM_SIZE").component().text == null
 		endFixture()
 	}
 
@@ -89,8 +91,8 @@ class TextFieldIconSizesTest extends FieldFixtureHandler {
 	void "icon only LARGE size"() {
 		createFieldFixture(new General(), ICON_ONLY_LARGE_SIZE, factory)
 		beginFixture()
-		assert fixture.label("title_label-$ICON_ONLY_LARGE_SIZE").component().icon.iconWidth == 32
-		assert fixture.label("title_label-$ICON_ONLY_LARGE_SIZE").component().text == null
+		assert fixture.label("$TITLE_LABEL-$ICON_ONLY_LARGE_SIZE").component().icon.iconWidth == 32
+		assert fixture.label("$TITLE_LABEL-$ICON_ONLY_LARGE_SIZE").component().text == null
 		endFixture()
 	}
 
@@ -98,8 +100,8 @@ class TextFieldIconSizesTest extends FieldFixtureHandler {
 	void "icon only huge size"() {
 		createFieldFixture(new General(), ICON_ONLY_HUGE_SIZE, factory)
 		beginFixture()
-		assert fixture.label("title_label-$ICON_ONLY_HUGE_SIZE").component().icon.iconWidth == 48
-		assert fixture.label("title_label-$ICON_ONLY_HUGE_SIZE").component().text == null
+		assert fixture.label("$TITLE_LABEL-$ICON_ONLY_HUGE_SIZE").component().icon.iconWidth == 48
+		assert fixture.label("$TITLE_LABEL-$ICON_ONLY_HUGE_SIZE").component().text == null
 		endFixture()
 	}
 
@@ -107,7 +109,7 @@ class TextFieldIconSizesTest extends FieldFixtureHandler {
 	void testManual() {
 		createFieldFixture(new General(), ICON_ONLY_HUGE_SIZE, factory)
 		beginFixture()
-		Thread.sleep 5000
+		//Thread.sleep 60000
 		endFixture()
 	}
 }

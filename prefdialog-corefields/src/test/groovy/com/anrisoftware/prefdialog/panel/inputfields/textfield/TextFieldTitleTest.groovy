@@ -18,6 +18,8 @@
  */
 package com.anrisoftware.prefdialog.panel.inputfields.textfield
 
+import static com.anrisoftware.prefdialog.swingutils.AbstractLabelFieldPanel.TITLE_LABEL
+
 import org.junit.Test
 
 import com.anrisoftware.prefdialog.annotations.TextField
@@ -28,33 +30,48 @@ class TextFieldTitleTest extends FieldFixtureHandler {
 
 	static factory = injector.getInstance(TextFieldHandlerFactory)
 
+	static final String DEFAULT_TITLE = "defaultTitle"
+
+	static final String CUSTOM_TITLE = "customTitle"
+
+	static final String HIDE_TITLE = "hideTitle"
+
 	static class General {
 
 		@TextField
-		String name1 = ''
+		String defaultTitle = ""
 
-		@TextField(title='Project name')
-		String name2 = ''
+		@TextField(title="Project name")
+		String customTitle = ""
 
 		@TextField(showTitle=false)
-		String name3 = ''
+		String hideTitle = ""
 	}
 
 	@Test
 	void "default title"() {
-		createFieldFixture(new General(), 'name1', factory)
+		createFieldFixture(new General(), DEFAULT_TITLE, factory)
 		beginFixture()
-		fixture.textBox('name1').requireVisible()
-		assert fixture.label('label-name1').text() == 'name1'
+		fixture.textBox(DEFAULT_TITLE).requireVisible()
+		assert fixture.label("$TITLE_LABEL-$DEFAULT_TITLE").text() == DEFAULT_TITLE
 		endFixture()
 	}
 
 	@Test
 	void "custom title"() {
-		createFieldFixture(new General(), 'name2', factory)
+		createFieldFixture(new General(), CUSTOM_TITLE, factory)
 		beginFixture()
-		fixture.textBox('name2').requireVisible()
-		assert fixture.label('label-name2').text() == 'Project name'
+		fixture.textBox(CUSTOM_TITLE).requireVisible()
+		assert fixture.label("$TITLE_LABEL-$CUSTOM_TITLE").text() == "Project name"
+		endFixture()
+	}
+
+	@Test
+	void "hide title"() {
+		createFieldFixture(new General(), HIDE_TITLE, factory)
+		beginFixture()
+		fixture.textBox(HIDE_TITLE).requireVisible()
+		//assert fixture.label("$TITLE_LABEL-$CUSTOM_TITLE").text() == HIDE_TITLE
 		endFixture()
 	}
 }

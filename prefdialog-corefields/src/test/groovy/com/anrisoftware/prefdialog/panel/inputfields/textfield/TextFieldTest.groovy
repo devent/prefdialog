@@ -28,36 +28,38 @@ class TextFieldTest extends AbstractFieldFixture {
 
 	static factory = injector.getInstance(TextFieldHandlerFactory)
 
+	static final String SIMPLE = "simple"
+
 	static class General {
 
 		@TextField
-		String name = ''
+		String simple = ""
 	}
 
 	TextFieldTest() {
-		super(new General(), 'name', factory)
+		super(new General(), SIMPLE, factory)
 	}
 
 	@Test
 	void "enter text and apply input"() {
-		fixture.textBox('name').enterText 'test'
+		fixture.textBox(SIMPLE).enterText "test"
 		inputField.applyInput parentObject
 
-		assert fixture.textBox('name').text() == 'test'
-		assert parentObject.name == 'test'
+		assert fixture.textBox(SIMPLE).text() == "test"
+		assert parentObject.simple == "test"
 	}
 
 	@Test
 	void "enter text and restore input"() {
-		fixture.textBox('name').enterText 'test'
+		fixture.textBox(SIMPLE).enterText "test"
 		inputField.restoreInput parentObject
 
-		assert fixture.textBox('name').text() == ''
-		assert parentObject.name == ''
+		assert fixture.textBox(SIMPLE).text() == ""
+		assert parentObject.simple == ""
 	}
 
 	@Test
 	void testManually() {
-		Thread.sleep 60000
+		//Thread.sleep 60000
 	}
 }

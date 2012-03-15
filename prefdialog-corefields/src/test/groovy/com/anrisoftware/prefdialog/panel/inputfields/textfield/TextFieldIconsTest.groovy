@@ -18,6 +18,8 @@
  */
 package com.anrisoftware.prefdialog.panel.inputfields.textfield
 
+import static com.anrisoftware.prefdialog.swingutils.AbstractLabelFieldPanel.TITLE_LABEL
+
 import org.junit.Test
 
 import com.anrisoftware.prefdialog.annotations.TextField
@@ -42,13 +44,13 @@ class TextFieldIconsTest extends FieldFixtureHandler {
 		@TextField
 		String defaultNoIcon = ""
 
-		@TextField(icon="com/anrisoftware/prefdialog/panel/inputfields/textfield/textfield-%d.png", textPosition=TextPosition.ICON_ONLY)
+		@TextField(icon="com/anrisoftware/prefdialog/panel/inputfields/info-%d.png", textPosition=TextPosition.ICON_ONLY)
 		String iconOnly = ""
 
-		@TextField(icon="com/anrisoftware/prefdialog/panel/inputfields/textfield/textfield-%d.png", textPosition=TextPosition.TEXT_ALONGSIDE_ICON)
+		@TextField(icon="com/anrisoftware/prefdialog/panel/inputfields/info-%d.png", textPosition=TextPosition.TEXT_ALONGSIDE_ICON)
 		String alongsideIcon = ""
 
-		@TextField(icon="com/anrisoftware/prefdialog/panel/inputfields/textfield/textfield-%d.png", textPosition=TextPosition.TEXT_UNDER_ICON)
+		@TextField(icon="com/anrisoftware/prefdialog/panel/inputfields/info-%d.png", textPosition=TextPosition.TEXT_UNDER_ICON)
 		String underIcon = ""
 	}
 
@@ -56,8 +58,8 @@ class TextFieldIconsTest extends FieldFixtureHandler {
 	void "default no icon"() {
 		createFieldFixture(new General(), DEFAULT_NO_ICON, factory)
 		beginFixture()
-		assert fixture.label("title_label-$DEFAULT_NO_ICON").component().icon == null
-		assert fixture.label("title_label-$DEFAULT_NO_ICON").component().text == DEFAULT_NO_ICON
+		assert fixture.label("$TITLE_LABEL-$DEFAULT_NO_ICON").component().icon == null
+		assert fixture.label("$TITLE_LABEL-$DEFAULT_NO_ICON").component().text == DEFAULT_NO_ICON
 		endFixture()
 	}
 
@@ -65,8 +67,8 @@ class TextFieldIconsTest extends FieldFixtureHandler {
 	void "icon only"() {
 		createFieldFixture(new General(), ICON_ONLY, factory)
 		beginFixture()
-		assert fixture.label("title_label-$ICON_ONLY").component().icon.iconWidth == 16
-		assert fixture.label("title_label-$ICON_ONLY").component().text == null
+		assert fixture.label("$TITLE_LABEL-$ICON_ONLY").component().icon.iconWidth == 16
+		assert fixture.label("$TITLE_LABEL-$ICON_ONLY").component().text == null
 		endFixture()
 	}
 
@@ -74,8 +76,8 @@ class TextFieldIconsTest extends FieldFixtureHandler {
 	void "alongside icon"() {
 		createFieldFixture(new General(), ALONGSIDE_ICON, factory)
 		beginFixture()
-		assert fixture.label("title_label-$ALONGSIDE_ICON").component().icon.iconWidth == 16
-		assert fixture.label("title_label-$ALONGSIDE_ICON").component().text == ALONGSIDE_ICON
+		assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON").component().icon.iconWidth == 16
+		assert fixture.label("$TITLE_LABEL-$ALONGSIDE_ICON").component().text == ALONGSIDE_ICON
 		endFixture()
 	}
 
@@ -83,8 +85,8 @@ class TextFieldIconsTest extends FieldFixtureHandler {
 	void "under icon"() {
 		createFieldFixture(new General(), UNDER_ICON, factory)
 		beginFixture()
-		assert fixture.label("title_label-$UNDER_ICON").component().icon.iconWidth == 16
-		assert fixture.label("title_label-$UNDER_ICON").component().text == UNDER_ICON
+		assert fixture.label("$TITLE_LABEL-$UNDER_ICON").component().icon.iconWidth == 16
+		assert fixture.label("$TITLE_LABEL-$UNDER_ICON").component().text == UNDER_ICON
 		endFixture()
 	}
 
@@ -92,7 +94,7 @@ class TextFieldIconsTest extends FieldFixtureHandler {
 	void testManual() {
 		createFieldFixture(new General(), UNDER_ICON, factory)
 		beginFixture()
-		Thread.sleep 5000
+		//Thread.sleep 60000
 		endFixture()
 	}
 }

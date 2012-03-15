@@ -28,18 +28,20 @@ class TextFieldWidthTest extends AbstractFieldFixture {
 
 	static factory = injector.getInstance(TextFieldHandlerFactory)
 
+	static final String PREFERRED_SIZE = "preferredSize"
+
 	static class General {
 
 		@TextField(width=-2.0d)
-		String name = ''
+		String preferredSize = ""
 	}
 
 	TextFieldWidthTest() {
-		super(new General(), 'name', factory)
+		super(new General(), PREFERRED_SIZE, factory)
 	}
 
 	@Test
 	void "test preferred width"() {
-		fixture.textBox('name').enterText 'test'
+		fixture.textBox(PREFERRED_SIZE).enterText "test"
 	}
 }

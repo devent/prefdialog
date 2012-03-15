@@ -28,14 +28,16 @@ class TextFieldGtkTest extends AbstractFieldFixture {
 
 	static factory = injector.getInstance(TextFieldHandlerFactory)
 
+	static final String NAME = "name"
+
 	static class General {
 
 		@TextField
-		String name = ''
+		String name = ""
 	}
 
 	TextFieldGtkTest() {
-		super(new General(), 'name', factory, "com.sun.java.swing.plaf.gtk.GTKLookAndFeel")
+		super(new General(), NAME, factory, "com.sun.java.swing.plaf.gtk.GTKLookAndFeel")
 	}
 
 	@Test

@@ -29,6 +29,8 @@ class TextFieldValidatorTest extends AbstractFieldFixture {
 
 	static factory = injector.getInstance(TextFieldHandlerFactory)
 
+	static final String CUSTOM_VALIDATOR = "customValidator"
+
 	static class StringValidator implements Validator<String> {
 
 		public boolean isValid(String value) {
@@ -38,27 +40,27 @@ class TextFieldValidatorTest extends AbstractFieldFixture {
 
 	static class General {
 
-		@TextField(validator=StringValidator, validatorText='Can not be empty')
-		String name = ''
+		@TextField(validator=StringValidator, validatorText="Can not be empty")
+		String customValidator = ""
 	}
 
 	TextFieldValidatorTest() {
-		super(new General(), 'name', factory)
+		super(new General(), CUSTOM_VALIDATOR, factory)
 	}
 
 	@Test
 	void "enter invalid text"() {
-		fixture.textBox('name').selectAll()
-		fixture.textBox('name').enterText ' '
-		fixture.textBox('name').requireToolTip '<html><strong>name</strong> - Can not be empty</html>'
+		fixture.textBox(CUSTOM_VALIDATOR).selectAll()
+		fixture.textBox(CUSTOM_VALIDATOR).enterText " "
+		fixture.textBox(CUSTOM_VALIDATOR).requireToolTip "<html><strong>customValidator</strong> - Can not be empty</html>"
 	}
 
 	@Test
 	void "enter ivalid text and apply input"() {
-		fixture.textBox('name').enterText 'test'
+		fixture.textBox(CUSTOM_VALIDATOR).enterText "test"
 		inputField.applyInput parentObject
 
-		assert fixture.textBox('name').text() == 'test'
-		assert parentObject.name == 'test'
+		assert fixture.textBox(CUSTOM_VALIDATOR).text() == "test"
+		assert parentObject.customValidator == "test"
 	}
 }

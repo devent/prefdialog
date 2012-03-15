@@ -28,19 +28,21 @@ class TextFieldReadOnlyTest extends AbstractFieldFixture {
 
 	static factory = injector.getInstance(TextFieldHandlerFactory)
 
+	static final String READ_ONLY = "readOnly"
+
 	static class General {
 
 		@TextField(readonly=true)
-		String name = 'Erwin Mueller'
+		String readOnly = "Erwin Mueller"
 	}
 
 	TextFieldReadOnlyTest() {
-		super(new General(), 'name', factory)
+		super(new General(), READ_ONLY, factory)
 	}
 
 	@Test
 	void "read only"() {
-		fixture.textBox('name').requireDisabled()
-		fixture.textBox('name').requireText('Erwin Mueller')
+		fixture.textBox(READ_ONLY).requireDisabled()
+		fixture.textBox(READ_ONLY).requireText("Erwin Mueller")
 	}
 }
