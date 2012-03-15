@@ -18,6 +18,8 @@
  */
 package com.anrisoftware.prefdialog.panel.inputfields.filechooser
 
+import static com.anrisoftware.prefdialog.swingutils.AbstractLabelFieldPanel.TITLE_LABEL
+
 import java.awt.event.KeyEvent
 
 import org.fest.swing.core.KeyPressInfo
@@ -31,6 +33,8 @@ class FileChooserTest extends AbstractFieldFixture {
 
 	static factory = injector.getInstance(FileChooserFieldHandlerFactory)
 
+	static final String FILE = "file"
+
 	static class General {
 
 		@FileChooser
@@ -38,27 +42,27 @@ class FileChooserTest extends AbstractFieldFixture {
 	}
 
 	FileChooserTest() {
-		super(new General(), 'file', factory)
+		super(new General(), FILE, factory)
 	}
 
 	@Test
 	void "titels"() {
-		fixture.label('label-file').requireVisible()
-		assert fixture.label('label-file').text() == 'file'
-		fixture.textBox('filetextfield-file').requireVisible()
-		assert fixture.textBox('filetextfield-file').text() == new File("").absolutePath
-		fixture.button('openfilebutton-file').requireVisible()
+		fixture.label("$TITLE_LABEL-$FILE").requireVisible()
+		assert fixture.label("$TITLE_LABEL-$FILE").text() == FILE
+		fixture.textBox("filetextfield-$FILE").requireVisible()
+		assert fixture.textBox("filetextfield-$FILE").text() == new File("").absolutePath
+		fixture.button("openfilebutton-$FILE").requireVisible()
 	}
 
 	@Test
 	void "select a file from the dialog and apply input"() {
-		File tmpfile = File.createTempFile('fileChooserTest', null)
+		File tmpfile = File.createTempFile("fileChooserTest", null)
 		tmpfile.deleteOnExit();
 
-		fixture.button('openfilebutton-file').click()
-		fixture.fileChooser('filechooser-file').setCurrentDirectory(tmpfile.getParentFile())
-		fixture.fileChooser('filechooser-file').selectFile tmpfile
-		fixture.fileChooser('filechooser-file').approve()
+		fixture.button("openfilebutton-$FILE").click()
+		fixture.fileChooser("filechooser-$FILE").setCurrentDirectory(tmpfile.getParentFile())
+		fixture.fileChooser("filechooser-$FILE").selectFile tmpfile
+		fixture.fileChooser("filechooser-$FILE").approve()
 		inputField.applyInput parentObject
 
 		assert parentObject.file == tmpfile
@@ -66,26 +70,26 @@ class FileChooserTest extends AbstractFieldFixture {
 
 	@Test
 	void "select a file from the dialog and restore input"() {
-		File tmpfile = File.createTempFile('fileChooserTest', null)
+		File tmpfile = File.createTempFile("fileChooserTest", null)
 		tmpfile.deleteOnExit();
 
-		fixture.button('openfilebutton-file').click()
-		fixture.fileChooser('filechooser-file').setCurrentDirectory(tmpfile.getParentFile())
-		fixture.fileChooser('filechooser-file').selectFile tmpfile
-		fixture.fileChooser('filechooser-file').approve()
+		fixture.button("openfilebutton-$FILE").click()
+		fixture.fileChooser("filechooser-$FILE").setCurrentDirectory(tmpfile.getParentFile())
+		fixture.fileChooser("filechooser-$FILE").selectFile tmpfile
+		fixture.fileChooser("filechooser-$FILE").approve()
 		inputField.restoreInput parentObject
 
-		assert parentObject.file == new File('')
+		assert parentObject.file == new File("")
 	}
 
 	@Test
 	void "enter file name and apply input"() {
-		File tmpfile = File.createTempFile('fileChooserTest', null)
+		File tmpfile = File.createTempFile("fileChooserTest", null)
 		tmpfile.deleteOnExit();
 
-		fixture.textBox('filetextfield-file').deleteText()
-		fixture.textBox('filetextfield-file').enterText tmpfile.absolutePath
-		fixture.textBox('filetextfield-file').pressAndReleaseKey KeyPressInfo.keyCode(KeyEvent.VK_ENTER)
+		fixture.textBox("filetextfield-$FILE").deleteText()
+		fixture.textBox("filetextfield-$FILE").enterText tmpfile.absolutePath
+		fixture.textBox("filetextfield-$FILE").pressAndReleaseKey KeyPressInfo.keyCode(KeyEvent.VK_ENTER)
 		inputField.applyInput parentObject
 
 		assert parentObject.file == tmpfile
@@ -93,19 +97,19 @@ class FileChooserTest extends AbstractFieldFixture {
 
 	@Test
 	void "enter file name and restore input"() {
-		File tmpfile = File.createTempFile('fileChooserTest', null)
+		File tmpfile = File.createTempFile("fileChooserTest", null)
 		tmpfile.deleteOnExit();
 
-		fixture.textBox('filetextfield-file').deleteText()
-		fixture.textBox('filetextfield-file').enterText tmpfile.absolutePath
-		fixture.textBox('filetextfield-file').pressAndReleaseKey KeyPressInfo.keyCode(KeyEvent.VK_ENTER)
+		fixture.textBox("filetextfield-$FILE").deleteText()
+		fixture.textBox("filetextfield-$FILE").enterText tmpfile.absolutePath
+		fixture.textBox("filetextfield-$FILE").pressAndReleaseKey KeyPressInfo.keyCode(KeyEvent.VK_ENTER)
 		inputField.restoreInput parentObject
 
-		assert parentObject.file == new File('')
+		assert parentObject.file == new File("")
 	}
 
 	@Test
 	void "manually"() {
-		Thread.sleep 60000
+		//Thread.sleep 60000
 	}
 }

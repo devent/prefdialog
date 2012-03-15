@@ -94,6 +94,7 @@ class FileChooserFieldHandler extends
 			break;
 		case TEXT_ONLY:
 			getComponent().setButtonIcon(null);
+			getComponent().setButtonText(text);
 			break;
 		case TEXT_ALONGSIDE_ICON:
 			getComponent().setButtonTextUnderIcon(false);

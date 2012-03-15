@@ -44,16 +44,16 @@ class FileChooserTextPositionsTest extends FieldFixtureHandler {
 		@FileChooser
 		File fileDefault = new File("")
 
-		@FileChooser(textPosition=TextPosition.ICON_ONLY)
+		@FileChooser(buttonTextPosition=TextPosition.ICON_ONLY)
 		File fileIconOnly = new File("")
 
-		@FileChooser(textPosition=TextPosition.TEXT_ONLY)
+		@FileChooser(buttonTextPosition=TextPosition.TEXT_ONLY)
 		File fileTextOnly = new File("")
 
-		@FileChooser(textPosition=TextPosition.TEXT_ALONGSIDE_ICON)
+		@FileChooser(buttonTextPosition=TextPosition.TEXT_ALONGSIDE_ICON)
 		File fileTextAlongsideIcon = new File("")
 
-		@FileChooser(textPosition=TextPosition.TEXT_UNDER_ICON)
+		@FileChooser(buttonTextPosition=TextPosition.TEXT_UNDER_ICON)
 		File fileTextUnderIcon = new File("")
 	}
 
