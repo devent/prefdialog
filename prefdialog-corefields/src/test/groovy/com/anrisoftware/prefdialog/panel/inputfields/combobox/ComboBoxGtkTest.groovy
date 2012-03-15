@@ -31,21 +31,23 @@ class ComboBoxGtkTest extends AbstractFieldFixture {
 
 	static factory = injector.getInstance(ComboBoxFieldHandlerFactory)
 
+	static final String COMBO_BOX = "comboBox"
+
 	static class General {
 
-		@ComboBoxElements('Some combo box')
+		@ComboBoxElements("Some combo box")
 		List<String> comboBoxElements = [
-			'first element',
-			'second element',
-			'third element'
+			"first element",
+			"second element",
+			"third element"
 		]
 
-		@ComboBox(elements='Some combo box')
-		String comboBox = 'first element'
+		@ComboBox(elements="Some combo box")
+		String comboBox = "first element"
 	}
 
 	ComboBoxGtkTest() {
-		super(new General(), 'comboBox', factory, "com.sun.java.swing.plaf.gtk.GTKLookAndFeel")
+		super(new General(), COMBO_BOX, factory, "com.sun.java.swing.plaf.gtk.GTKLookAndFeel")
 	}
 
 	@Test

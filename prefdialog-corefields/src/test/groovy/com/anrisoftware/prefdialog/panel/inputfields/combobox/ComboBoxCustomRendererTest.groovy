@@ -34,6 +34,8 @@ class ComboBoxCustomRendererTest extends AbstractFieldFixture {
 
 	static factory = injector.getInstance(ComboBoxFieldHandlerFactory)
 
+	static final String CUSTOM_RENDERER = "customRenderer"
+
 	static class CustomComboBoxRenderer extends DefaultListCellRenderer {
 		Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 			super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus)
@@ -44,37 +46,37 @@ class ComboBoxCustomRendererTest extends AbstractFieldFixture {
 
 	static class General {
 
-		@ComboBoxElements('Some combo box')
+		@ComboBoxElements("Some combo box")
 		List<String> comboBoxElements = [
-			'first element',
-			'second element',
-			'third element'
+			"first element",
+			"second element",
+			"third element"
 		]
 
-		@ComboBox(renderer=CustomComboBoxRenderer, elements='Some combo box')
-		String comboBox = 'first element'
+		@ComboBox(renderer=CustomComboBoxRenderer, elements="Some combo box")
+		String customRenderer = "first element"
 	}
 
 	ComboBoxCustomRendererTest() {
-		super(new General(), 'comboBox', factory)
+		super(new General(), CUSTOM_RENDERER, factory)
 	}
 
 	@Test
 	void "choose second element and apply input"() {
-		fixture.comboBox('comboBox').selectItem 1
+		fixture.comboBox(CUSTOM_RENDERER).selectItem 1
 		inputField.applyInput parentObject
 
-		fixture.comboBox('comboBox').requireSelection 1
-		assert parentObject.comboBox == 'second element'
+		fixture.comboBox(CUSTOM_RENDERER).requireSelection 1
+		assert parentObject.customRenderer == "second element"
 	}
 
 	@Test
 	void "choose second element and restore input"() {
-		fixture.comboBox('comboBox').selectItem 1
+		fixture.comboBox(CUSTOM_RENDERER).selectItem 1
 		inputField.restoreInput parentObject
 
-		fixture.comboBox('comboBox').requireSelection 0
-		assert parentObject.comboBox == 'first element'
+		fixture.comboBox(CUSTOM_RENDERER).requireSelection 0
+		assert parentObject.customRenderer == "first element"
 	}
 }
 

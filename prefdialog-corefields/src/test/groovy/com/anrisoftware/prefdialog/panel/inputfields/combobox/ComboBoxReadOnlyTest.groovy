@@ -31,26 +31,28 @@ class ComboBoxReadOnlyTest extends AbstractFieldFixture {
 
 	static factory = injector.getInstance(ComboBoxFieldHandlerFactory)
 
+	static final String READ_ONLY = "readOnly"
+
 	static class General {
 
-		@ComboBoxElements('Some combo box')
+		@ComboBoxElements("Some combo box")
 		List<String> comboBoxElements = [
-			'first element',
-			'second element',
-			'third element'
+			"first element",
+			"second element",
+			"third element"
 		]
 
-		@ComboBox(elements='Some combo box', readonly=true)
-		String comboBox = 'first element'
+		@ComboBox(elements="Some combo box", readonly=true)
+		String readOnly = "first element"
 	}
 
 	ComboBoxReadOnlyTest() {
-		super(new General(), 'comboBox', factory)
+		super(new General(), READ_ONLY, factory)
 	}
 
 	@Test
 	void "read only checkbox"() {
-		fixture.comboBox('comboBox').requireDisabled()
-		fixture.comboBox('comboBox').requireSelection 0
+		fixture.comboBox(READ_ONLY).requireDisabled()
+		fixture.comboBox(READ_ONLY).requireSelection 0
 	}
 }

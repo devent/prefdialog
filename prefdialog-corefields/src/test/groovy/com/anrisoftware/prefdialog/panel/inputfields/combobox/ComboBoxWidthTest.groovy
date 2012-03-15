@@ -31,25 +31,27 @@ class ComboBoxWidthTest extends AbstractFieldFixture {
 
 	static factory = injector.getInstance(ComboBoxFieldHandlerFactory)
 
+	static final String COMBO_BOX = "comboBox"
+
 	static class General {
 
-		@ComboBoxElements('combobox1')
+		@ComboBoxElements("combobox1")
 		List<String> comboBoxElements = [
-			'first element',
-			'second element',
-			'third element'
+			"first element",
+			"second element",
+			"third element"
 		]
 
-		@ComboBox(elements = 'combobox1', width = -2.0d)
-		String comboBox = ''
+		@ComboBox(elements = "combobox1", width = -2.0d)
+		String comboBox = ""
 	}
 
 	ComboBoxWidthTest() {
-		super(new General(), 'comboBox', factory)
+		super(new General(), COMBO_BOX, factory)
 	}
 
 	@Test
 	void "set preferred width"() {
-		fixture.comboBox('comboBox').selectItem 1
+		fixture.comboBox(COMBO_BOX).selectItem 1
 	}
 }

@@ -34,6 +34,8 @@ class ComboBoxCustomRendererGtkTest extends AbstractFieldFixture {
 
 	static factory = injector.getInstance(ComboBoxFieldHandlerFactory)
 
+	static final String COMBO_BOX = "comboBox"
+
 	static class CustomComboBoxRenderer extends DefaultListCellRenderer {
 		Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 			super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus)
@@ -44,19 +46,19 @@ class ComboBoxCustomRendererGtkTest extends AbstractFieldFixture {
 
 	static class General {
 
-		@ComboBoxElements('Some combo box')
+		@ComboBoxElements("Some combo box")
 		List<String> comboBoxElements = [
-			'first element',
-			'second element',
-			'third element'
+			"first element",
+			"second element",
+			"third element"
 		]
 
-		@ComboBox(renderer=CustomComboBoxRenderer, elements='Some combo box')
-		String comboBox = 'first element'
+		@ComboBox(renderer=CustomComboBoxRenderer, elements="Some combo box")
+		String comboBox = "first element"
 	}
 
 	ComboBoxCustomRendererGtkTest() {
-		super(new General(), 'comboBox', factory, "com.sun.java.swing.plaf.gtk.GTKLookAndFeel")
+		super(new General(), COMBO_BOX, factory, "com.sun.java.swing.plaf.gtk.GTKLookAndFeel")
 	}
 
 	@Test

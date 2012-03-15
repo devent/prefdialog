@@ -30,13 +30,15 @@ class ComboBoxCustomModelTest extends AbstractFieldFixture {
 
 	static factory = injector.getInstance(ComboBoxFieldHandlerFactory)
 
+	static final String COMBO_BOX = "comboBox"
+
 	static class CustomComboBoxModel extends DefaultComboBoxModel {
 
 		CustomComboBoxModel() {
 			super([
-				'first element',
-				'second element',
-				'third element'
+				"first element",
+				"second element",
+				"third element"
 			].toArray())
 		}
 	}
@@ -44,29 +46,29 @@ class ComboBoxCustomModelTest extends AbstractFieldFixture {
 	static class General {
 
 		@ComboBox(model=CustomComboBoxModel)
-		String comboBox = 'second element'
+		String comboBox = "second element"
 	}
 
 	ComboBoxCustomModelTest() {
-		super(new General(), 'comboBox', factory)
+		super(new General(), COMBO_BOX, factory)
 	}
 
 	@Test
 	void "choose third element and apply input"() {
-		fixture.comboBox('comboBox').selectItem 2
+		fixture.comboBox(COMBO_BOX).selectItem 2
 		inputField.applyInput parentObject
 
-		fixture.comboBox('comboBox').requireSelection 2
-		assert parentObject.comboBox == 'third element'
+		fixture.comboBox(COMBO_BOX).requireSelection 2
+		assert parentObject.comboBox == "third element"
 	}
 
 	@Test
 	void "choose third element and restore input"() {
-		fixture.comboBox('comboBox').selectItem 2
+		fixture.comboBox(COMBO_BOX).selectItem 2
 		inputField.restoreInput parentObject
 
-		fixture.comboBox('comboBox').requireSelection 1
-		assert parentObject.comboBox == 'second element'
+		fixture.comboBox(COMBO_BOX).requireSelection 1
+		assert parentObject.comboBox == "second element"
 	}
 }
 

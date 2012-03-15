@@ -18,6 +18,8 @@
  */
 package com.anrisoftware.prefdialog.panel.inputfields.combobox
 
+import static com.anrisoftware.prefdialog.swingutils.AbstractLabelFieldPanel.TITLE_LABEL
+
 import java.util.List
 
 import org.junit.Test
@@ -31,47 +33,56 @@ class ComboBoxTitleTest extends FieldFixtureHandler {
 
 	static factory = injector.getInstance(ComboBoxFieldHandlerFactory)
 
+	static final String DEFAULT_TITLE = "defaultTitle"
+
+	static final String CUSTOM_TITLE = "customTitle"
+
+	static final String HIDE_TITLE = "hideTitle"
+
 	static class General {
 
-		@ComboBoxElements('Some combo box')
+		@ComboBoxElements("Some combo box")
 		List<String> comboBoxElements = [
-			'first element',
-			'second element',
-			'third element'
+			"first element",
+			"second element",
+			"third element"
 		]
 
-		@ComboBox(elements='Some combo box')
-		String comboBox1 = 'first element'
+		@ComboBox(elements="Some combo box")
+		String defaultTitle = "first element"
 
-		@ComboBox(title='Second combo box:', elements='Some combo box')
-		String comboBox2 = 'first element'
+		@ComboBox(title="Second combo box:", elements="Some combo box")
+		String customTitle = "first element"
 
-		@ComboBox(showTitle=false, elements='Some combo box')
-		String comboBox3= 'first element'
+		@ComboBox(showTitle=false, elements="Some combo box")
+		String hideTitle= "first element"
 	}
 
 	@Test
 	void "set default tile"() {
-		createFieldFixture(new General(), 'comboBox1', factory)
+		createFieldFixture(new General(), DEFAULT_TITLE, factory)
 		beginFixture()
-		assert fixture.label('label-comboBox1').text() == 'comboBox1'
+		fixture.comboBox(DEFAULT_TITLE).selectItem 2
+		assert fixture.label("$TITLE_LABEL-$DEFAULT_TITLE").text() == DEFAULT_TITLE
 		endFixture()
 	}
 
 	@Test
 	void "set custom tile"() {
-		createFieldFixture(new General(), 'comboBox2', factory)
+		createFieldFixture(new General(), CUSTOM_TITLE, factory)
 		beginFixture()
-		assert fixture.label('label-comboBox2').text() == 'Second combo box:'
+		fixture.comboBox(CUSTOM_TITLE).selectItem 2
+		assert fixture.label("$TITLE_LABEL-$CUSTOM_TITLE").text() == "Second combo box:"
 		endFixture()
 	}
 
 	@Test
 	void "set no tile"() {
-		createFieldFixture(new General(), 'comboBox3', factory)
+		createFieldFixture(new General(), HIDE_TITLE, factory)
 		beginFixture()
+		fixture.comboBox(HIDE_TITLE).selectItem 2
 		// Why it can't find an invisible label?
-		// fixture.label('label-comboBox3').requireNotVisible()
+		// fixture.label("$TITLE_LABEL-$HIDE_TITLE").requireNotVisible()
 		endFixture()
 	}
 }
