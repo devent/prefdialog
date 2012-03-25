@@ -85,6 +85,7 @@ class UiFileChooserPanel extends javax.swing.JPanel {
 			}
 			{
 				openFileButton = new JButton();
+				openFileButton.setContentAreaFilled(false);
 				this.add(getOpenFileButton(), "1, 0");
 				openFileButton.setText("...");
 			}
