@@ -18,6 +18,8 @@
  */
 package com.anrisoftware.prefdialog.panel
 
+import static com.anrisoftware.prefdialog.swingutils.AbstractLabelFieldPanel.TITLE_LABEL
+
 import org.junit.Test
 
 import com.anrisoftware.prefdialog.annotations.Child
@@ -28,6 +30,8 @@ class ChildTitleTest extends PanelFixtureHandler {
 	static final String DEFAULT_TITLE = "defaultTitle"
 
 	static final String CUSTOM_TITLE = "customTitle"
+
+	static final String HIDE_TITLE = "hideTitle"
 
 	static class DefaultTitle {
 
@@ -51,6 +55,17 @@ class ChildTitleTest extends PanelFixtureHandler {
 		}
 	}
 
+	static class HideTitle {
+
+		@TextField
+		String text = ""
+
+		@Override
+		public String toString() {
+			HIDE_TITLE
+		}
+	}
+
 	static class Preferences {
 
 		@Child
@@ -58,13 +73,16 @@ class ChildTitleTest extends PanelFixtureHandler {
 
 		@Child(title="custom")
 		CustomTitle customTitle = new CustomTitle()
+
+		@Child(showTitle=false)
+		HideTitle hideTitle = new HideTitle()
 	}
 
 	@Test
 	void "default child title"() {
 		createFieldFixture(new Preferences(), DEFAULT_TITLE)
 		beginFixture()
-		assert fixture.label("label-$DEFAULT_TITLE").text() == DEFAULT_TITLE
+		assert fixture.label("$TITLE_LABEL-$DEFAULT_TITLE").text() == DEFAULT_TITLE
 		endFixture()
 	}
 
@@ -72,13 +90,21 @@ class ChildTitleTest extends PanelFixtureHandler {
 	void "custom child title"() {
 		createFieldFixture(new Preferences(), CUSTOM_TITLE)
 		beginFixture()
-		assert fixture.label("label-$CUSTOM_TITLE").text() == "custom"
+		assert fixture.label("$TITLE_LABEL-$CUSTOM_TITLE").text() == "custom"
+		endFixture()
+	}
+
+	@Test
+	void "hide child title"() {
+		createFieldFixture(new Preferences(), HIDE_TITLE)
+		beginFixture()
+		fixture.label("$TITLE_LABEL-$HIDE_TITLE").requireNotVisible()
 		endFixture()
 	}
 
 	@Test
 	void "manually"() {
-		createFieldFixture(new Preferences(), CUSTOM_TITLE)
+		createFieldFixture(new Preferences(), HIDE_TITLE)
 		beginFixture()
 		Thread.sleep 60000
 		endFixture()

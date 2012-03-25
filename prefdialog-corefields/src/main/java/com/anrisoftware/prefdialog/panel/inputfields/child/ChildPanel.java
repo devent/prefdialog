@@ -40,6 +40,21 @@ import com.google.inject.Inject;
  */
 class ChildPanel extends ChildComponent {
 
+	/**
+	 * Name prefix for the title separator.
+	 */
+	public static final String TITLE_SEPARATOR = "titleseparator";
+
+	/**
+	 * Name prefix for the child fields panel.
+	 */
+	public static final String CHILD_FIELDS = "childfields";
+
+	/**
+	 * Name prefix for the child scroll pane.
+	 */
+	public static final String CHILD_SCROLL = "childscroll";
+
 	private Object value;
 
 	private final JSeparator separator;
@@ -122,8 +137,9 @@ class ChildPanel extends ChildComponent {
 
 	@Override
 	public void setName(String name) {
-		scrollPane.setName(format("scroll-%s", name));
-		fieldsPanel.setName(format("fields-%s", name));
+		scrollPane.setName(format("%s-%s", CHILD_SCROLL, name));
+		fieldsPanel.setName(format("%s-%s", CHILD_FIELDS, name));
+		separator.setName(format("%s-%s", TITLE_SEPARATOR, name));
 		super.setName(name);
 	}
 
