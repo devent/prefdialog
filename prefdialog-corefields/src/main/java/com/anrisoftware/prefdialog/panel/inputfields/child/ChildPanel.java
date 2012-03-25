@@ -63,6 +63,8 @@ class ChildPanel extends ChildComponent {
 
 	private final JPanel fieldsPanel;
 
+	private final TableLayout layout;
+
 	/**
 	 * Setups the panel.
 	 */
@@ -72,7 +74,8 @@ class ChildPanel extends ChildComponent {
 		this.separator = new JSeparator(JSeparator.HORIZONTAL);
 		this.scrollPane = new JScrollPane();
 		this.fieldsPanel = new JPanel();
-		setLayout(createLayout());
+		this.layout = createLayout();
+		setLayout(layout);
 		setup();
 	}
 
@@ -151,6 +154,16 @@ class ChildPanel extends ChildComponent {
 	@Override
 	public Object getValue() {
 		return value;
+	}
+
+	@Override
+	public void setShowTitle(boolean show) {
+		if (!show) {
+			JPanel panel = (JPanel) getAWTComponent();
+			panel.remove(separator);
+			layout.deleteRow(0);
+		}
+		super.setShowTitle(show);
 	}
 
 	@Override

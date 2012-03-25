@@ -44,6 +44,8 @@ public abstract class AbstractLabelFieldPanel<FieldType extends JComponent>
 
 	private final JLabel label;
 
+	private final TableLayout layout;
+
 	/**
 	 * Create and add the {@link JLabel} for the title of the component.
 	 * 
@@ -53,7 +55,8 @@ public abstract class AbstractLabelFieldPanel<FieldType extends JComponent>
 	protected AbstractLabelFieldPanel(FieldType field) {
 		super(field);
 		this.label = new JLabel();
-		setLayout(createLayout());
+		this.layout = createLayout();
+		setLayout(layout);
 		setupPanel();
 	}
 
@@ -95,7 +98,11 @@ public abstract class AbstractLabelFieldPanel<FieldType extends JComponent>
 	 * Shows or hides the title of the field.
 	 */
 	public void setShowTitle(boolean show) {
-		label.setVisible(show);
+		if (!show) {
+			JPanel panel = (JPanel) getAWTComponent();
+			panel.remove(label);
+			layout.deleteRow(0);
+		}
 	}
 
 	/**
