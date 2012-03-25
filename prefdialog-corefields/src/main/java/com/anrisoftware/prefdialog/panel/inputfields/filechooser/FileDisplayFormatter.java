@@ -66,7 +66,7 @@ class FileDisplayFormatter extends DefaultFormatter {
 		}
 		absolutePath = asAbsolutePath((File) value);
 		splitAbsolutePath = StringUtils.split(absolutePath, separatorChar);
-		updatePathMaxWidth(getFormattedTextField().getWidth());
+		text = createShortPath(getFormattedTextField().getWidth());
 		return text;
 	}
 
@@ -75,21 +75,22 @@ class FileDisplayFormatter extends DefaultFormatter {
 	}
 
 	/**
-	 * Set the new maximum width of the {@link JFormattedTextField}. It will
+	 * Updates the new maximum width of the {@link JFormattedTextField}. It will
 	 * trim the path with the help of the previously set {@link FontMetrics}.
 	 */
 	public void updatePathMaxWidth(int newMaxWidth) {
-		if (fontMetrics == null || splitAbsolutePath == null) {
-			return;
-		}
+		text = createShortPath(newMaxWidth);
+		getFormattedTextField().setValue(getFormattedTextField().getValue());
+	}
+
+	private String createShortPath(int newMaxWidth) {
 		newMaxWidth = newMaxWidth - 100;
 		if (maxWidth == newMaxWidth && oldAbsolutePath == absolutePath) {
-			return;
+			return text;
 		}
 		oldAbsolutePath = absolutePath;
 		maxWidth = newMaxWidth;
-		text = createShortPath();
-		getFormattedTextField().setValue(getFormattedTextField().getValue());
+		return createShortPath();
 	}
 
 	private String createShortPath() {
@@ -110,7 +111,11 @@ class FileDisplayFormatter extends DefaultFormatter {
 	}
 
 	private int pixelsWidth(String string) {
-		return fontMetrics.stringWidth(string);
+		if (fontMetrics == null) {
+			return string.length() * 6;
+		} else {
+			return fontMetrics.stringWidth(string);
+		}
 	}
 
 	/**
@@ -120,8 +125,8 @@ class FileDisplayFormatter extends DefaultFormatter {
 	 * 
 	 * @param fm
 	 *            the {@link FontMetrics}.
-	 * @param maxWidth
 	 * 
+	 * @param maxWidth
 	 *            the current width of the {@link JFormattedTextField}.
 	 */
 	public void setFontMetrics(FontMetrics fm, int maxWidth) {

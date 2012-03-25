@@ -29,36 +29,84 @@ import org.fest.swing.edt.GuiQuery
 import org.fest.swing.fixture.FrameFixture
 
 /**
- * Create a frame fixture for a {@link Component} field.
+ * Create a {@link FrameFixture} for a {@link Component} field.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 2.1
+ * @since 1.0
  */
 class AbstractFixtureHandler {
 
-	FrameFixture fixture
+	private FrameFixture fixture
 
-	JFrame frame
+	private JFrame frame
 
-	def createPanelFrame(def component, def closure) {
-		return new SwingBuilder().frame(title: 'Core Field Test', pack: true, preferredSize: [480, 360]) {
+	/**
+	 * Creates a new {@link FrameFixture} with a {@link JFrame}, runs the test
+	 * and end the fixture after the test.
+	 * 
+	 * @param title
+	 * 		the title of the {@link JFrame}.
+	 * 
+	 * @param component
+	 * 		the {@link Component} we test.
+	 * 
+	 * @param runTest
+	 * 		the tests to run.
+	 * 
+	 * @param frameSize
+	 * 		optional the {@link JFrame} size, default is 480x360.
+	 */
+	void beginPanelFrame(def title, def component, def runTest, def frameSize=[480, 360]) {
+		createFrame(title, component, frameSize)
+		beginFixture()
+		runTest()
+		endFixture()
+	}
+
+	/**
+	 * Creates the {@link JFrame} for the fixture.
+	 * 
+	 * @param title
+	 * 		the title of the {@link JFrame}.
+	 * 
+	 * @param component
+	 * 		the {@link Component} we test.
+	 * 
+	 * @param frameSize
+	 * 		optional the {@link JFrame} size, default is 480x360.
+	 */
+	void createFrame(def title, def component, def frameSize=[480, 360]) {
+		frame = new SwingBuilder().frame(title: title, pack: true, preferredSize: frameSize) {
 			borderLayout()
 			widget(component, constraints: BorderLayout.CENTER)
 		}
 	}
 
+	/**
+	 * Creates and show the {@link FrameFixture}. 
+	 */
 	void beginFixture() {
 		fixture = createFrameFixture()
 		fixture.show();
 	}
 
+	private createFrameFixture() {
+		def result = GuiActionRunner.execute([executeInEDT: { frame } ] as GuiQuery);
+		new FrameFixture(result);
+	}
+
+	/**
+	 * End the {@link FrameFixture}.
+	 */
 	void endFixture() {
 		fixture.cleanUp()
 		fixture = null
 	}
 
-	def createFrameFixture() {
-		def result = GuiActionRunner.execute([executeInEDT: { frame } ] as GuiQuery);
-		return new FrameFixture(result);
+	/**
+	 * Returns the current {@link FrameFixture}.
+	 */
+	FrameFixture getFixture() {
+		fixture
 	}
 }

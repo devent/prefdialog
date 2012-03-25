@@ -46,7 +46,7 @@ class FileTextField extends JFormattedTextField {
 	private final FileDisplayFormatter displayFormatter;
 
 	@Inject
-	FileTextField(final FileDisplayFormatter displayFormatter,
+	FileTextField(FileDisplayFormatter displayFormatter,
 			FileEditFormatter editFormatter,
 			FileTextTransferHandler fileTextTransferHandler) {
 		this.displayFormatter = displayFormatter;
