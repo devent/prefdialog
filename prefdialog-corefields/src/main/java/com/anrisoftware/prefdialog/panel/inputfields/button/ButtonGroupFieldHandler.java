@@ -73,8 +73,9 @@ class ButtonGroupFieldHandler extends
 	 */
 	@Override
 	public FieldHandler<ButtonGroupPanel> setup() {
+		FieldHandler<ButtonGroupPanel> handler = super.setup();
 		setupHorizontalPosition();
-		return super.setup();
+		return handler;
 	}
 
 	private void setupHorizontalPosition() {

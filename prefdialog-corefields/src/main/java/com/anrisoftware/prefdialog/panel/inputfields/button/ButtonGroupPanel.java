@@ -118,10 +118,17 @@ class ButtonGroupPanel extends AbstractLabelFieldPanel<JPanel> {
 
 	public void setHorizontalPosition(HorizontalPositions position) {
 		switch (position) {
+		case LEFT:
+			break;
 		case RIGHT:
 			layout.insertColumn(0, TableLayout.FILL);
-			updateLayout();
+			break;
+		case MIDDLE:
+			layout.insertColumn(0, TableLayout.FILL);
+			layout.insertColumn(layout.getNumColumn(), TableLayout.FILL);
+			break;
 		}
+		updateLayout();
 	}
 
 }
