@@ -22,6 +22,9 @@ import java.awt.Component;
 
 /**
  * Setups and handles outside messages to the underlying {@link FieldComponent}.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.0
  */
 public interface FieldHandler<FieldComponentType extends FieldComponent> {
 
@@ -53,6 +56,11 @@ public interface FieldHandler<FieldComponentType extends FieldComponent> {
 	 *         <code>false</code> if it is not valid.
 	 */
 	boolean isInputValid();
+
+	/**
+	 * Returns the name of the field.
+	 */
+	String getName();
 
 	/**
 	 * Sets the width of the component, as specified by the <code>width</code>
@@ -102,5 +110,20 @@ public interface FieldHandler<FieldComponentType extends FieldComponent> {
 	 * Add a new child {@link FieldHandler}.
 	 */
 	void addFieldHandler(FieldHandler<?> fieldHandler);
+
+	/**
+	 * Returns the {@link FieldHandler} that is in this panel with the given
+	 * name.
+	 * 
+	 * @param name
+	 *            the name of the field.
+	 * 
+	 * @param <T>
+	 *            the type of the {@link FieldHandler}.
+	 * 
+	 * @throws NullPointerException
+	 *             if no field was found.
+	 */
+	<T extends FieldHandler<FieldComponentType>> T getField(String name);
 
 }

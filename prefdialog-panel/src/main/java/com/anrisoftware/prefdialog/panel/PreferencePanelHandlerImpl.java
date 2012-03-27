@@ -64,6 +64,11 @@ class PreferencePanelHandlerImpl implements PreferencePanelHandler {
 	}
 
 	@Override
+	public FieldHandler<?> getField(String name) {
+		return childFieldHandler.getField(name);
+	}
+
+	@Override
 	public void updateUI() {
 		SwingUtilities.updateComponentTreeUI(getAWTComponent());
 	}

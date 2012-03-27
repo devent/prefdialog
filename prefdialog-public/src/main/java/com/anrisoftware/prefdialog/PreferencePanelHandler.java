@@ -8,6 +8,8 @@ import java.awt.Component;
  * handler and add it to your component (for example a JPanel or JDialog).
  * 
  * @see PreferencePanelHandlerFactory
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.0
  */
 public interface PreferencePanelHandler {
 
@@ -50,4 +52,13 @@ public interface PreferencePanelHandler {
 	 * Is useful to set a new Swing Look&Feel.
 	 */
 	void updateUI();
+
+	/**
+	 * Returns the {@link FieldHandler} that is in this panel with the given
+	 * name.
+	 * 
+	 * @param name
+	 *            the name of the field.
+	 */
+	FieldHandler<?> getField(String name);
 }

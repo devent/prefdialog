@@ -1,7 +1,5 @@
 package com.anrisoftware.prefdialog;
 
-import com.google.inject.assistedinject.Assisted;
-
 /**
  * A factory to create new {@link PreferencePanelHandler}.
  * 
@@ -18,6 +16,8 @@ import com.google.inject.assistedinject.Assisted;
  * </pre>
  * 
  * @see PreferencePanelHandler
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.0
  */
 public interface PreferencePanelHandlerFactory {
 
@@ -26,12 +26,13 @@ public interface PreferencePanelHandlerFactory {
 	 * 
 	 * @param preferences
 	 *            the preferences from which the panel will be created.
+	 * 
 	 * @param panelName
 	 *            the name of the field in the preferences from which the panel
 	 *            will be created.
+	 * 
 	 * @return the new created {@link PreferencePanelHandler preference panel
 	 *         handler}.
 	 */
-	PreferencePanelHandler create(@Assisted Object preferences,
-			@Assisted String panelName);
+	PreferencePanelHandler create(Object preferences, String panelName);
 }

@@ -1,5 +1,7 @@
 package com.anrisoftware.prefdialog.swingutils;
 
+import static java.lang.String.format;
+
 import java.io.IOException;
 import java.net.URL;
 
@@ -94,6 +96,13 @@ interface LoggerFactory {
 			log.debug(
 					"Setup the text ``{}'' with the text position {} for the title.",
 					text, position);
+		}
+
+		NullPointerException noFieldWithName(String name) {
+			NullPointerException e = new NullPointerException(format(
+					"No such field ``%s'' found.", name));
+			log.error("", e);
+			return e;
 		}
 	}
 }

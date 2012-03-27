@@ -18,6 +18,8 @@
  */
 package com.anrisoftware.prefdialog.panel.inputfields.child;
 
+import static java.lang.String.format;
+
 import com.anrisoftware.prefdialog.swingutils.AbstractSwingLogger;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -51,6 +53,13 @@ interface LoggerFactory {
 		void fieldHandlerAdded(Object fieldHandler, Object handler) {
 			log.debug("Add new field handler {} to the handler {}.",
 					fieldHandler, handler);
+		}
+
+		NullPointerException noFieldWithName(String name) {
+			NullPointerException e = new NullPointerException(format(
+					"No such field ``%s'' found.", name));
+			log.error("", e);
+			return e;
 		}
 
 	}

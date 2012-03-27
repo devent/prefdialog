@@ -26,6 +26,8 @@ import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.anrisoftware.prefdialog.FieldComponent;
 import com.anrisoftware.prefdialog.FieldHandler;
 import com.anrisoftware.prefdialog.annotations.Child;
@@ -132,6 +134,22 @@ public abstract class AbstractChildFieldHandler<ComponentType extends ChildCompo
 		getComponent().addField(fieldHandler);
 		fieldHandlers.add(fieldHandler);
 		log.fieldHandlerAdded(fieldHandler, this);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T extends FieldHandler<ComponentType>> T getField(String name) {
+		FieldHandler<ComponentType> field = super.getField(name);
+		return (T) (field != null ? field : searchField(name));
+	}
+
+	private FieldHandler<?> searchField(String name) {
+		for (FieldHandler<?> field : fieldHandlers) {
+			if (StringUtils.equals(field.getName(), name)) {
+				return field;
+			}
+		}
+		throw log.noFieldWithName(name);
 	}
 
 	@Override

@@ -22,6 +22,7 @@ import java.awt.Component;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import com.anrisoftware.prefdialog.FieldComponent;
@@ -52,6 +53,8 @@ public abstract class AbstractFieldHandler<FieldComponentType extends FieldCompo
 	private final FieldComponentType component;
 
 	private LoggerFactory.Logger log;
+
+	private String name;
 
 	/**
 	 * Sets the parameter of the {@link FieldHandler}.
@@ -139,6 +142,11 @@ public abstract class AbstractFieldHandler<FieldComponentType extends FieldCompo
 	}
 
 	@Override
+	public String getName() {
+		return name;
+	}
+
+	@Override
 	public void setComponentWidth(double width) {
 		log.setWidth(width, this);
 		component.setWidth(width);
@@ -146,6 +154,7 @@ public abstract class AbstractFieldHandler<FieldComponentType extends FieldCompo
 
 	@Override
 	public void setComponentName(String name) {
+		this.name = name;
 		log.setName(name, this);
 		component.setName(name);
 	}
@@ -180,6 +189,23 @@ public abstract class AbstractFieldHandler<FieldComponentType extends FieldCompo
 
 	@Override
 	public void addFieldHandler(FieldHandler<?> fieldHandler) {
+	}
+
+	/**
+	 * Will return itself if the name matches the field name, otherwise it will
+	 * return <code>null</code>.
+	 */
+	@Override
+	public <T extends FieldHandler<FieldComponentType>> T getField(String name) {
+		if (StringUtils.equals(this.name, name)) {
+			return castThis();
+		}
+		return null;
+	}
+
+	@SuppressWarnings("unchecked")
+	private <T> T castThis() {
+		return (T) this;
 	}
 
 	@Override

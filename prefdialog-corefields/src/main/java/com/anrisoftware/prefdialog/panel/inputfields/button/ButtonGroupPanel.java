@@ -18,6 +18,7 @@
  */
 package com.anrisoftware.prefdialog.panel.inputfields.button;
 
+import static com.anrisoftware.prefdialog.panel.inputfields.button.ButtonGroupFieldHandler.BUTTON;
 import static java.lang.String.format;
 import info.clearthought.layout.TableLayout;
 
@@ -38,11 +39,6 @@ import com.anrisoftware.prefdialog.swingutils.AbstractLabelFieldPanel;
  * @since 2.0
  */
 class ButtonGroupPanel extends AbstractLabelFieldPanel<JPanel> {
-
-	/**
-	 * The name prefix for the button.
-	 */
-	public static final String BUTTON = "button";
 
 	private TableLayout layout;
 
@@ -129,6 +125,17 @@ class ButtonGroupPanel extends AbstractLabelFieldPanel<JPanel> {
 			break;
 		}
 		updateLayout();
+	}
+
+	/**
+	 * Returns the {@link JButton} with a given index.
+	 * 
+	 * @throws IndexOutOfBoundsException
+	 *             if the index is out of range (
+	 *             <tt>index &lt; 0 || index &gt;= count of buttons</tt>)
+	 */
+	public JButton getButton(int index) {
+		return buttons.get(index);
 	}
 
 }

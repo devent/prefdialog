@@ -35,7 +35,7 @@ import com.google.inject.assistedinject.Assisted;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 2.1
  */
-class TextFieldHandler extends AbstractTextFieldHandler {
+public class TextFieldHandler extends AbstractTextFieldHandler {
 
 	/**
 	 * Sets the parameter of the {@link TextFieldPanel}.

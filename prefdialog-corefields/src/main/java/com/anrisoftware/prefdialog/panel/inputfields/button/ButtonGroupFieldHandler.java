@@ -21,6 +21,8 @@ package com.anrisoftware.prefdialog.panel.inputfields.button;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
+import javax.swing.JButton;
+
 import com.anrisoftware.prefdialog.FieldHandler;
 import com.anrisoftware.prefdialog.annotations.ButtonGroup;
 import com.anrisoftware.prefdialog.annotations.HorizontalPositions;
@@ -40,9 +42,17 @@ import com.google.inject.assistedinject.Assisted;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 2.1
  */
-class ButtonGroupFieldHandler extends
+public class ButtonGroupFieldHandler extends
 		AbstractLabelFieldHandler<ButtonGroupPanel> {
 
+	/**
+	 * The name prefix for the button.
+	 */
+	public static final String BUTTON = "button";
+
+	/**
+	 * The {@link Logger} for the button field.
+	 */
 	private Logger log;
 
 	/**
@@ -83,8 +93,23 @@ class ButtonGroupFieldHandler extends
 		HorizontalPositions position = getReflectionToolbox()
 				.invokeMethodWithReturnType("horizontalPosition",
 						HorizontalPositions.class, a);
+		setHorizontalPosition(position);
+	}
+
+	public void setHorizontalPosition(HorizontalPositions position) {
 		getComponent().setHorizontalPosition(position);
 		log.setHorizontalPosition(position, this);
+	}
+
+	/**
+	 * Returns the {@link JButton} with a given index.
+	 * 
+	 * @throws IndexOutOfBoundsException
+	 *             if the index is out of range (
+	 *             <tt>index &lt; 0 || index &gt;= count of buttons</tt>)
+	 */
+	public JButton getButton(int index) {
+		return getComponent().getButton(index);
 	}
 
 	/**
