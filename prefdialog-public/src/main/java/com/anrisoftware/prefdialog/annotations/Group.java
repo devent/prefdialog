@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Erwin Müller <erwin.mueller@deventm.org>
+ * Copyright 2010-2012 Erwin Müller <erwin.mueller@deventm.org>
  * 
  * This file is part of prefdialog-public.
  * 
@@ -29,13 +29,51 @@ import java.lang.annotation.Target;
 public @interface Group {
 
 	/**
-	 * The title of the fields group.
+	 * The title of the group. If left empty the title will be the field name.
+	 * Default is the empty string "".
 	 */
 	String title() default "";
 
+	/**
+	 * If the title of the should be visible or not. Default value is
+	 * <code>true</code>.
+	 */
+	boolean showTitle() default true;
+
+	/**
+	 * The width of the group inside the container. Default value is -1.0. Valid
+	 * width can be a double value or the special values of:
+	 * <dl>
+	 * <dt>-1.0</dt>
+	 * <dd>fill the available space;</dd>
+	 * <dt>-2.0</dt>
+	 * <dd>enough space to accommodate the preferred size of the field;</dd>
+	 * <dt>-3.0</dt>
+	 * <dd>allocated just enough space to accommodate the minimum size of the
+	 * field.</dd>
+	 * </dl>
+	 */
 	double width() default -1.0;
 
-	boolean showTitle() default true;
+	/**
+	 * The {@link TextPosition} of the group. Default is
+	 * {@link TextPosition#TEXT_ONLY}.
+	 */
+	TextPosition textPosition() default TextPosition.TEXT_ONLY;
+
+	/**
+	 * The {@link IconSize} of the group icon. Default is {@link IconSize.SMALL}
+	 * .
+	 */
+	IconSize iconSize() default IconSize.SMALL;
+
+	/**
+	 * The icon for the group, should be a resource name. The resource name
+	 * needs to have the place holder %d for the icon size. There must be one
+	 * file for each of the used icon sizes. The icon sizes are 16, 22, 32 and
+	 * 48. Default is empty.
+	 */
+	String icon() default "";
 
 	/**
 	 * If this input field should be read-only. Read-only fields are to show
