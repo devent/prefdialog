@@ -74,6 +74,7 @@ public class ReflectionToolbox {
 
 	private Object getValueFromField(Field field, Object object) {
 		try {
+			field.setAccessible(true);
 			return field.get(object);
 		} catch (IllegalAccessException e) {
 			throw new ReflectionError(format(
