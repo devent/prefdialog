@@ -20,50 +20,27 @@
 package com.anrisoftware.prefdialog.panel;
 
 import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
+import com.anrisoftware.prefdialog.panel.api.Appearance;
+import com.anrisoftware.prefdialog.panel.api.LookAndFeelFont;
+import com.google.inject.AbstractModule;
 
 /**
- * Asserts that two {@link LookAndFeelInfo}s with the same name are treated
- * equals.
+ * Binds the appearance classes.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
  */
-class LookAndFeelInfoListItem {
-
-	private final LookAndFeelInfo lookAndFeelInfo;
-
-	/**
-	 * Sets the {@link LookAndFeelInfo} for this item.
-	 */
-	public LookAndFeelInfoListItem(LookAndFeelInfo lookAndFeelInfo) {
-		this.lookAndFeelInfo = lookAndFeelInfo;
-	}
-
-	/**
-	 * Returns the {@link LookAndFeelInfo} of this item.
-	 */
-	public LookAndFeelInfo getLookAndFeelInfo() {
-		return lookAndFeelInfo;
-	}
+public class AppearanceModule extends AbstractModule {
 
 	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof LookAndFeelInfoListItem) {
-			return equals((LookAndFeelInfoListItem) obj);
-
-		}
-		return false;
+	protected void configure() {
+		bind(LookAndFeelInfoListItem.class).toInstance(
+				new LookAndFeelInfoListItem(new LookAndFeelInfo("Metal",
+						MetalLookAndFeel.class.getName())));
+		bind(LookAndFeelFont.class).to(LookAndFeelFontImpl.class);
+		bind(Appearance.class).to(AppearanceImpl.class);
 	}
 
-	private boolean equals(LookAndFeelInfoListItem that) {
-		return new EqualsBuilder().append(lookAndFeelInfo.getName(),
-				that.lookAndFeelInfo.getName()).isEquals();
-	}
-
-	@Override
-	public int hashCode() {
-		return lookAndFeelInfo.getName().hashCode();
-	}
 }
