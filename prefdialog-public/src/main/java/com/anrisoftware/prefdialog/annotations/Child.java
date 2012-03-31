@@ -43,7 +43,7 @@ import java.lang.annotation.Target;
 public @interface Child {
 
 	/**
-	 * The title of the child. If left empty the title will be field name.
+	 * The title of the child. If left empty the title will be the field name.
 	 * Default is the empty string "".
 	 */
 	String title() default "";
