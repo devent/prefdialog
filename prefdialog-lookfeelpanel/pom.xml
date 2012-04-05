@@ -21,7 +21,6 @@
 		<dependency>
 			<groupId>com.anrisoftware.globalpom</groupId>
 			<artifactId>globalpom-groovytestutils</artifactId>
-			<version>1.6-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 

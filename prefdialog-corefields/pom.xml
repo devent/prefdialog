@@ -22,13 +22,21 @@
 			<groupId>com.anrisoftware.prefdialog</groupId>
 			<artifactId>prefdialog-swingutils</artifactId>
 		</dependency>
-		
+		<dependency>
+			<groupId>aurelienribon.tweenengine</groupId>
+			<artifactId>tween-engine-api</artifactId>
+		</dependency>
+
 		<!-- test dependencies -->
-        <dependency>
-            <groupId>org.easytesting</groupId>
-            <artifactId>fest-swing-junit-4.5</artifactId>
-            <scope>test</scope>
-        </dependency>
+		<dependency>
+			<groupId>org.easytesting</groupId>
+			<artifactId>fest-swing-junit-4.5</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.anrisoftware.globalpom</groupId>
+			<artifactId>globalpom-groovytestutils</artifactId>
+		</dependency>
 	</dependencies>
 
 </project>
