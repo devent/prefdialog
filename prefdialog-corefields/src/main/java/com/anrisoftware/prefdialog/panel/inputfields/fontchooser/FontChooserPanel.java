@@ -85,12 +85,4 @@ class FontChooserPanel extends AbstractLabelFieldPanel<JPanel> {
 		return true;
 	}
 
-	/**
-	 * Set a {@link Runnable} that is called if the user clicks on the open file
-	 * button.
-	 */
-	public void setOpenFileAction(Runnable runnable) {
-		slidingPanel.setOpenFileAction(runnable);
-	}
-
 }

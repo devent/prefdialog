@@ -67,18 +67,7 @@ class FontChooserFieldHandler extends
 	 */
 	@Override
 	public FieldHandler<FontChooserPanel> setup() {
-		setupOpenFontChooser();
 		return super.setup();
-	}
-
-	private void setupOpenFontChooser() {
-		getComponent().setOpenFileAction(new Runnable() {
-
-			@Override
-			public void run() {
-				openFontChooserDialog();
-			}
-		});
 	}
 
 	private void openFontChooserDialog() {
