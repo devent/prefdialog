@@ -18,23 +18,11 @@
  */
 package com.anrisoftware.prefdialog.panel.inputfields.fontchooser;
 
-import static com.anrisoftware.prefdialog.panel.inputfields.fontchooser.fontcombobox.FontComboBox.getAvailableFontNames;
-import static info.clearthought.layout.TableLayoutConstants.FILL;
-import static info.clearthought.layout.TableLayoutConstants.PREFERRED;
-import static java.lang.String.format;
-import info.clearthought.layout.TableLayout;
-
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import com.anrisoftware.prefdialog.panel.inputfields.fontchooser.fontcombobox.FontComboBox;
-import com.anrisoftware.prefdialog.panel.inputfields.fontchooser.fontcombobox.FontComboBoxFactory;
 import com.anrisoftware.prefdialog.swingutils.AbstractLabelFieldPanel;
 import com.google.inject.Inject;
 
@@ -57,81 +45,39 @@ class FontChooserPanel extends AbstractLabelFieldPanel<JPanel> {
 	 */
 	public static final String FONTBOX = "fontbox";
 
-	private final FontComboBox fontComboBox;
-
-	private final JButton openFontChooserButton;
-
-	private Font font;
+	private final FontChooserSlidingPanel slidingPanel;
 
 	/**
 	 * Set the {@link UiFontChooserPanel}.
 	 */
 	@Inject
-	FontChooserPanel(FontComboBoxFactory fontComboBoxFactory) {
-		super(new JPanel());
-		this.fontComboBox = fontComboBoxFactory.create(getAvailableFontNames());
-		this.openFontChooserButton = new JButton();
-		createPanel();
-		setup();
-	}
-
-	private void createPanel() {
-		JPanel panel = getPanelField();
-		double[] col = { FILL, PREFERRED };
-		double[] row = { PREFERRED };
-		TableLayout layout = new TableLayout(col, row);
-		panel.setLayout(layout);
-		panel.add(fontComboBox, "0, 0");
-		panel.add(openFontChooserButton, "1, 0");
-	}
-
-	private void setup() {
-		setupOpenFontChooserButton();
-		setupFontComboBox();
-	}
-
-	private void setupOpenFontChooserButton() {
-		openFontChooserButton.setText("…");
-	}
-
-	private void setupFontComboBox() {
-		fontComboBox.addItemListener(new ItemListener() {
-
-			@Override
-			public void itemStateChanged(ItemEvent e) {
-				Object object = fontComboBox.getSelectedItem();
-				if (object instanceof String) {
-					String name = (String) object;
-					font = new Font(name, font.getStyle(), font.getSize());
-				}
-			}
-		});
+	FontChooserPanel(FontChooserSlidingPanel slidingPanel) {
+		super(slidingPanel.getPanel());
+		this.slidingPanel = slidingPanel;
 	}
 
 	@Override
 	public Object getValue() {
-		return font;
+		return slidingPanel.getFont();
 	}
 
 	@Override
 	public void setValue(Object value) {
 		if (value instanceof Font) {
-			font = (Font) value;
-			fontComboBox.setSelectedItem(font.getName());
+			slidingPanel.setFont((Font) value);
 		}
 	}
 
 	@Override
 	public void setName(String name) {
 		super.setName(name);
-		fontComboBox.setName(format("%s-%s", FONTBOX, name));
-		openFontChooserButton.setName(format("%s-%s", OPEN_FONT_BUTTON, name));
+		slidingPanel.setName(name);
 	}
 
 	@Override
 	public void setEnabled(boolean enabled) {
-		fontComboBox.setEnabled(enabled);
-		openFontChooserButton.setEnabled(enabled);
+		super.setEnabled(enabled);
+		slidingPanel.setEnabled(enabled);
 	}
 
 	@Override
@@ -143,14 +89,8 @@ class FontChooserPanel extends AbstractLabelFieldPanel<JPanel> {
 	 * Set a {@link Runnable} that is called if the user clicks on the open file
 	 * button.
 	 */
-	public void setOpenFileAction(final Runnable runnable) {
-		openFontChooserButton.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				runnable.run();
-			}
-		});
+	public void setOpenFileAction(Runnable runnable) {
+		slidingPanel.setOpenFileAction(runnable);
 	}
 
 }
