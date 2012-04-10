@@ -21,6 +21,7 @@ package com.anrisoftware.prefdialog.panel.inputfields.child;
 import static java.lang.String.format;
 import info.clearthought.layout.TableLayout;
 
+import java.awt.Color;
 import java.awt.Font;
 
 import javax.swing.BorderFactory;
@@ -61,8 +62,6 @@ class ChildPanel extends ChildComponent {
 
 	private final JScrollPane scrollPane;
 
-	private final JPanel fieldsPanel;
-
 	private final TableLayout layout;
 
 	/**
@@ -73,7 +72,6 @@ class ChildPanel extends ChildComponent {
 		super(panel);
 		this.separator = new JSeparator(JSeparator.HORIZONTAL);
 		this.scrollPane = new JScrollPane();
-		this.fieldsPanel = new JPanel();
 		this.layout = createLayout();
 		setLayout(layout);
 		setup();
@@ -94,27 +92,18 @@ class ChildPanel extends ChildComponent {
 		setupScrollPane();
 		setupChildLabel();
 		setupChildPanel();
-		setupFieldsPanel();
-	}
-
-	private void setupFieldsPanel() {
-		double[] col = { TableLayout.FILL };
-		double[] row = { TableLayout.FILL };
-		TableLayout layout = new TableLayout(col, row);
-		layout.setHGap(5);
-		layout.setVGap(5);
-		fieldsPanel.setLayout(layout);
 	}
 
 	private void setupChildPanel() {
 		double[] col = { TableLayout.FILL };
-		double[] row = { TableLayout.PREFERRED, TableLayout.FILL };
+		double[] row = {};
 		TableLayout layout = new TableLayout(col, row);
 		layout.setHGap(5);
 		layout.setVGap(5);
 		getPanelField().setLayout(layout);
-		getPanelField().setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 6));
-		getPanelField().add(fieldsPanel, "0, 0");
+		// getPanelField().setBorder(BorderFactory.createEmptyBorder(0, 6, 0,
+		// 6));
+		getPanelField().setBorder(BorderFactory.createLineBorder(Color.RED));
 	}
 
 	private void setupScrollPane() {
@@ -141,7 +130,7 @@ class ChildPanel extends ChildComponent {
 	@Override
 	public void setName(String name) {
 		scrollPane.setName(format("%s-%s", CHILD_SCROLL, name));
-		fieldsPanel.setName(format("%s-%s", CHILD_FIELDS, name));
+		getPanelField().setName(format("%s-%s", CHILD_FIELDS, name));
 		separator.setName(format("%s-%s", TITLE_SEPARATOR, name));
 		super.setName(name);
 	}
@@ -175,11 +164,10 @@ class ChildPanel extends ChildComponent {
 	private int addRowToFieldsLayout() {
 		TableLayout layout = (TableLayout) getPanelField().getLayout();
 		int rows = layout.getNumRow();
-		int row = rows - 1;
-		layout.insertRow(row, TableLayout.PREFERRED);
-		layout.layoutContainer(getPanel());
-		getPanel().repaint();
-		return row;
+		layout.insertRow(rows, TableLayout.PREFERRED);
+		// layout.layoutContainer(getPanel());
+		// getPanel().repaint();
+		return rows;
 	}
 
 	@Override
