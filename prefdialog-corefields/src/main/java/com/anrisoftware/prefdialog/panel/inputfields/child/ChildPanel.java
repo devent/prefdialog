@@ -21,7 +21,6 @@ package com.anrisoftware.prefdialog.panel.inputfields.child;
 import static java.lang.String.format;
 import info.clearthought.layout.TableLayout;
 
-import java.awt.Color;
 import java.awt.Font;
 
 import javax.swing.BorderFactory;
@@ -101,9 +100,7 @@ class ChildPanel extends ChildComponent {
 		layout.setHGap(5);
 		layout.setVGap(5);
 		getPanelField().setLayout(layout);
-		// getPanelField().setBorder(BorderFactory.createEmptyBorder(0, 6, 0,
-		// 6));
-		getPanelField().setBorder(BorderFactory.createLineBorder(Color.RED));
+		getPanelField().setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 6));
 	}
 
 	private void setupScrollPane() {
