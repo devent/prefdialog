@@ -36,7 +36,6 @@ class FontChooserFieldHandler extends
 		AbstractLabelFieldHandler<FontChooserPanel> {
 
 	private LoggerFactory.Logger log;
-	private final JFontChooser fontChooser;
 
 	/**
 	 * Sets the parameter of the {@link FontChooserPanel}.
@@ -58,7 +57,6 @@ class FontChooserFieldHandler extends
 			@Assisted("parentObject") Object parentObject,
 			@Assisted("value") Object value, @Assisted Field field) {
 		super(parentObject, value, field, FontChooser.class, panel);
-		this.fontChooser = new JFontChooser();
 	}
 
 	/**

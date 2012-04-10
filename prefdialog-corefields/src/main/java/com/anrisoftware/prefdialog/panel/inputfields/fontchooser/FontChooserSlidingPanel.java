@@ -2,7 +2,6 @@ package com.anrisoftware.prefdialog.panel.inputfields.fontchooser;
 
 import static com.anrisoftware.prefdialog.panel.inputfields.fontchooser.FontChooserPanel.FONTBOX;
 import static com.anrisoftware.prefdialog.panel.inputfields.fontchooser.FontChooserPanel.OPEN_FONT_BUTTON;
-import static com.anrisoftware.prefdialog.panel.inputfields.fontchooser.fontcombobox.FontComboBox.getAvailableFontNames;
 import static info.clearthought.layout.TableLayoutConstants.FILL;
 import static info.clearthought.layout.TableLayoutConstants.PREFERRED;
 import static java.lang.String.format;
@@ -18,11 +17,12 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
 import javax.inject.Inject;
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 
-import com.anrisoftware.prefdialog.panel.inputfields.fontchooser.fontcombobox.FontComboBox;
-import com.anrisoftware.prefdialog.panel.inputfields.fontchooser.fontcombobox.FontComboBoxFactory;
+import com.anrisoftware.sscontrol.swingcomponents.fontcombobox.api.FontComboBoxFactory;
+import com.anrisoftware.sscontrol.swingcomponents.fontcombobox.api.FontComboBoxModelFactory;
 import com.anrisoftware.swingcomponents.fontchooser.api.FontChooserFactory;
 import com.anrisoftware.swingcomponents.fontchooser.api.FontChooserHandler;
 import com.anrisoftware.swingcomponents.fontchooser.api.FontModel;
@@ -36,7 +36,7 @@ class FontChooserSlidingPanel {
 
 	private final SlidingPanelFactory panelFactory;
 
-	private final FontComboBox fontComboBox;
+	private final JComboBox fontComboBox;
 
 	private final JToggleButton openFontChooserButton;
 
@@ -54,11 +54,11 @@ class FontChooserSlidingPanel {
 
 	@Inject
 	FontChooserSlidingPanel(SlidingPanelFactory panelFactory,
+			FontComboBoxModelFactory fontComboBoxModelFactory,
 			FontComboBoxFactory fontComboBoxFactory,
 			FontChooserPanelVertical fontChooserPanel,
 			FontChooserFactory fontChooserFactory, FontModel model) {
 		this.panelFactory = panelFactory;
-		this.fontComboBox = fontComboBoxFactory.create(getAvailableFontNames());
 		this.openFontChooserButton = new JToggleButton();
 		this.fontChooserPanel = fontChooserPanel;
 		model.pushFont(Font.decode(null));
@@ -66,6 +66,8 @@ class FontChooserSlidingPanel {
 		this.fontModel = model;
 		this.minimumFontChooserHeight = 0;
 		this.updatingFont = false;
+		this.fontComboBox = fontComboBoxFactory
+				.create(fontComboBoxModelFactory);
 		setup();
 	}
 

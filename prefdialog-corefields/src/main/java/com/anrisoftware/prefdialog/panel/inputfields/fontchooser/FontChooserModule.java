@@ -2,7 +2,9 @@ package com.anrisoftware.prefdialog.panel.inputfields.fontchooser;
 
 import com.anrisoftware.prefdialog.FieldHandler;
 import com.anrisoftware.prefdialog.panel.inputfields.api.FontChooserFieldHandlerFactory;
-import com.anrisoftware.prefdialog.panel.inputfields.fontchooser.fontcombobox.FontComboBoxModule;
+import com.anrisoftware.sscontrol.swingcomponents.fontcombobox.FontComboBoxModule;
+import com.anrisoftware.sscontrol.swingcomponents.fontcombobox.FontsFromCurrentEnvironmentModule;
+import com.anrisoftware.sscontrol.swingcomponents.fontcombobox.FontsModelItemModule;
 import com.anrisoftware.swingcomponents.fontchooser.defaults.FontChooserDefaultsModule;
 import com.anrisoftware.swingcomponents.fontchooser.preview.FontChooserPreviewModule;
 import com.anrisoftware.swingcomponents.slidingpanel.SlidingPanelModule;
@@ -27,11 +29,13 @@ public class FontChooserModule extends AbstractModule {
 		install(new FactoryModuleBuilder().implement(
 				LoggerFactory.Logger.class, LoggerFactory.Logger.class).build(
 				LoggerFactory.class));
-		install(new FontComboBoxModule());
 		install(new SlidingPanelModule());
 		install(new com.anrisoftware.swingcomponents.fontchooser.FontChooserModule());
 		install(new FontChooserDefaultsModule());
 		install(new FontChooserPreviewModule());
+		install(new FontComboBoxModule());
+		install(new FontsModelItemModule());
+		install(new FontsFromCurrentEnvironmentModule());
 	}
 
 }
