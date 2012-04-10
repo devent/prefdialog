@@ -83,4 +83,9 @@ public @interface FontChooser {
 	 */
 	String icon() default "";
 
+	/**
+	 * The minimum font chooser panel height. Default is 480.
+	 */
+	int minimumHeight() default 480;
+
 }

@@ -18,7 +18,6 @@
  */
 package com.anrisoftware.prefdialog.panel.inputfields.fontchooser;
 
-import java.awt.Font;
 import java.lang.reflect.Field;
 
 import com.anrisoftware.prefdialog.FieldHandler;
@@ -63,25 +62,17 @@ class FontChooserFieldHandler extends
 	}
 
 	/**
-	 * Set the open font chooser action.
+	 * Sets the minimum font chooser panel height.
 	 */
 	@Override
 	public FieldHandler<FontChooserPanel> setup() {
+		setupMinimumHeight();
 		return super.setup();
 	}
 
-	private void openFontChooserDialog() {
-		log.openFileChooserDialog(this);
-		fontChooser.setSelectedFont(getValueAsFont());
-		int result = fontChooser.showDialog(getAWTComponent());
-		if (result == JFontChooser.OK_OPTION) {
-			Font font = fontChooser.getSelectedFont();
-			getComponent().setValue(font);
-		}
-	}
-
-	private Font getValueAsFont() {
-		return (Font) getComponent().getValue();
+	private void setupMinimumHeight() {
+		int height = valueFromA("minimumHeight", Integer.class);
+		getComponent().setMinimumFontChooserHeight(height);
 	}
 
 	/**

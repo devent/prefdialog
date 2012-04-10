@@ -8,9 +8,12 @@ import static info.clearthought.layout.TableLayoutConstants.PREFERRED;
 import static java.lang.String.format;
 import info.clearthought.layout.TableLayout;
 
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
@@ -45,6 +48,8 @@ class FontChooserSlidingPanel {
 
 	private final FontModel fontModel;
 
+	private int minimumFontChooserHeight;
+
 	@Inject
 	FontChooserSlidingPanel(SlidingPanelFactory panelFactory,
 			FontComboBoxFactory fontComboBoxFactory,
@@ -58,6 +63,7 @@ class FontChooserSlidingPanel {
 		model.pushFont(font);
 		this.fontChooser = fontChooserFactory.create(fontChooserPanel, model);
 		this.fontModel = model;
+		this.minimumFontChooserHeight = 0;
 		setup();
 	}
 
@@ -69,8 +75,10 @@ class FontChooserSlidingPanel {
 	}
 
 	private void setupPanel() {
+		fontChooserPanel.setPreferredSize(new Dimension(128, 512));
+
 		double[] col = { FILL, PREFERRED };
-		double[] row = { PREFERRED, PREFERRED };
+		double[] row = { PREFERRED, FILL };
 		TableLayout layout = new TableLayout(col, row);
 		panel = panelFactory.create(layout);
 		panel.add(fontComboBox, "0, 0");
@@ -80,10 +88,26 @@ class FontChooserSlidingPanel {
 
 	private void setupSlidingPanel() {
 		panel.setContainerRow(1);
-		panel.doLayout();
+		panel.addComponentListener(new ComponentAdapter() {
+
+			private boolean containerSizeSet = false;
+
+			@Override
+			public void componentResized(ComponentEvent e) {
+				int height;
+				height = fontChooserPanel.getHeight();
+				height = Math.max(height, minimumFontChooserHeight);
+				System.out.println(height);
+				panel.setContainerSize(height);
+				if (!containerSizeSet) {
+					containerSizeSet = true;
+					panel.setContainerShow(false);
+				}
+			}
+
+		});
 		panel.setContainerSize(fontChooserPanel.getHeight());
-		panel.setContainerFinalSize(PREFERRED);
-		panel.setShow(false);
+		panel.setContainerFinalSize(FILL);
 	}
 
 	private void setupOpenFontChooserButton() {
@@ -92,14 +116,18 @@ class FontChooserSlidingPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				SlidingPanel slidingPanel = panel;
+				if (panel.isContainerShow()) {
+					panel.setContainerSize(fontChooserPanel.getHeight());
+				}
 				boolean show = openFontChooserButton.isSelected();
-				slidingPanel.setAnimateShow(show);
+				panel.setAnimateShow(show);
 			}
 		});
 	}
 
 	private void setupFontComboBox() {
+		Dimension size = fontComboBox.getPreferredSize();
+		fontComboBox.setPreferredSize(new Dimension(128, size.height));
 		fontComboBox.addItemListener(new ItemListener() {
 
 			@Override
@@ -140,6 +168,10 @@ class FontChooserSlidingPanel {
 	public void setEnabled(boolean enabled) {
 		fontComboBox.setEnabled(enabled);
 		openFontChooserButton.setEnabled(enabled);
+	}
+
+	public void setMinimumFontChooserHeight(int height) {
+		this.minimumFontChooserHeight = height;
 	}
 
 }

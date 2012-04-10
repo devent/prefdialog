@@ -85,4 +85,7 @@ class FontChooserPanel extends AbstractLabelFieldPanel<JPanel> {
 		return true;
 	}
 
+	public void setMinimumFontChooserHeight(int height) {
+		slidingPanel.setMinimumFontChooserHeight(height);
+	}
 }
