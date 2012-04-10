@@ -62,7 +62,7 @@ public abstract class AbstractLabelFieldPanel<FieldType extends JComponent>
 
 	private TableLayout createLayout() {
 		double[] col = { TableLayout.FILL };
-		double[] row = { TableLayout.PREFERRED, TableLayout.PREFERRED };
+		double[] row = { TableLayout.PREFERRED, TableLayout.FILL };
 		return new TableLayout(col, row);
 	}
 
