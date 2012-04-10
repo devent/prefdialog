@@ -26,6 +26,8 @@ import com.anrisoftware.prefdialog.panel.inputfields.fontchooser.fontcombobox.Fo
 import com.anrisoftware.swingcomponents.fontchooser.api.FontChooserFactory;
 import com.anrisoftware.swingcomponents.fontchooser.api.FontChooserHandler;
 import com.anrisoftware.swingcomponents.fontchooser.api.FontModel;
+import com.anrisoftware.swingcomponents.fontchooser.api.FontModelEvent;
+import com.anrisoftware.swingcomponents.fontchooser.api.FontModelListener;
 import com.anrisoftware.swingcomponents.fontchooser.panels.FontChooserPanelVertical;
 import com.anrisoftware.swingcomponents.slidingpanel.api.SlidingPanel;
 import com.anrisoftware.swingcomponents.slidingpanel.api.SlidingPanelFactory;
@@ -44,39 +46,38 @@ class FontChooserSlidingPanel {
 
 	private SlidingPanel panel;
 
-	private Font font;
-
 	private final FontModel fontModel;
 
 	private int minimumFontChooserHeight;
+
+	private boolean updatingFont;
 
 	@Inject
 	FontChooserSlidingPanel(SlidingPanelFactory panelFactory,
 			FontComboBoxFactory fontComboBoxFactory,
 			FontChooserPanelVertical fontChooserPanel,
 			FontChooserFactory fontChooserFactory, FontModel model) {
-		this.font = new Font("Serif", Font.PLAIN, 12);
 		this.panelFactory = panelFactory;
 		this.fontComboBox = fontComboBoxFactory.create(getAvailableFontNames());
 		this.openFontChooserButton = new JToggleButton();
 		this.fontChooserPanel = fontChooserPanel;
-		model.pushFont(font);
+		model.pushFont(Font.decode(null));
 		this.fontChooser = fontChooserFactory.create(fontChooserPanel, model);
 		this.fontModel = model;
 		this.minimumFontChooserHeight = 0;
+		this.updatingFont = false;
 		setup();
 	}
 
 	private void setup() {
 		setupPanel();
+		setupFontChooserPanel();
 		setupSlidingPanel();
 		setupOpenFontChooserButton();
 		setupFontComboBox();
 	}
 
 	private void setupPanel() {
-		fontChooserPanel.setPreferredSize(new Dimension(128, 512));
-
 		double[] col = { FILL, PREFERRED };
 		double[] row = { PREFERRED, FILL };
 		TableLayout layout = new TableLayout(col, row);
@@ -84,6 +85,28 @@ class FontChooserSlidingPanel {
 		panel.add(fontComboBox, "0, 0");
 		panel.add(openFontChooserButton, "1, 0");
 		panel.add(fontChooserPanel, "0, 1, 1, 1");
+	}
+
+	private void setupFontChooserPanel() {
+		fontChooserPanel.setPreferredSize(new Dimension(128, 512));
+		fontModel.addModelListener(new FontModelListener() {
+
+			@Override
+			public void fontSet(FontModelEvent e) {
+			}
+
+			@Override
+			public void fontAdded(FontModelEvent e) {
+				updatingFont = true;
+				fontComboBox.setSelectedItem(e.getFont().getName());
+				updatingFont = false;
+			}
+
+			@Override
+			public void fontRemoved(FontModelEvent e) {
+				fontComboBox.setSelectedItem(e.getFont().getName());
+			}
+		});
 	}
 
 	private void setupSlidingPanel() {
@@ -97,7 +120,6 @@ class FontChooserSlidingPanel {
 				int height;
 				height = fontChooserPanel.getHeight();
 				height = Math.max(height, minimumFontChooserHeight);
-				System.out.println(height);
 				panel.setContainerSize(height);
 				if (!containerSizeSet) {
 					containerSizeSet = true;
@@ -142,9 +164,16 @@ class FontChooserSlidingPanel {
 	}
 
 	private void updateFontFamily(String family) {
+		if (updatingFont) {
+			return;
+		}
+		updatingFont = true;
+		Font font = fontModel.getFont();
 		int style = font.getStyle();
 		int size = font.getSize();
 		font = new Font(family, style, size);
+		fontModel.pushFont(font);
+		updatingFont = false;
 	}
 
 	public JPanel getPanel() {
@@ -152,11 +181,11 @@ class FontChooserSlidingPanel {
 	}
 
 	public Font getFont() {
-		return font;
+		return fontModel.getFont();
 	}
 
 	public void setFont(Font font) {
-		this.font = font;
+		fontModel.setFont(font);
 		fontComboBox.setSelectedItem(font.getName());
 	}
 
