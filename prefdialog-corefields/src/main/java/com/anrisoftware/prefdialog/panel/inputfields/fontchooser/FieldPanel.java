@@ -33,7 +33,7 @@ import com.google.inject.Inject;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 2.1
  */
-class FontChooserPanel extends AbstractLabelFieldPanel<JPanel> {
+class FieldPanel extends AbstractLabelFieldPanel<JPanel> {
 
 	/**
 	 * Name prefix for the open font button.
@@ -45,15 +45,15 @@ class FontChooserPanel extends AbstractLabelFieldPanel<JPanel> {
 	 */
 	public static final String FONTBOX = "fontbox";
 
-	private PanelLogger log;
+	private FieldPanelLogger log;
 
-	private final FontChooserSlidingPanel slidingPanel;
+	private final Panel slidingPanel;
 
 	/**
 	 * Set the {@link UiFontChooserPanel}.
 	 */
 	@Inject
-	FontChooserPanel(FontChooserSlidingPanel slidingPanel) {
+	FieldPanel(Panel slidingPanel) {
 		super(slidingPanel.getPanel());
 		this.slidingPanel = slidingPanel;
 	}
@@ -93,7 +93,7 @@ class FontChooserPanel extends AbstractLabelFieldPanel<JPanel> {
 	}
 
 	@Inject
-	public void setLog(PanelLogger log) {
+	public void setLog(FieldPanelLogger log) {
 		this.log = log;
 	}
 }

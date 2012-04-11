@@ -27,19 +27,19 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 /**
- * Sets the {@link FontChooserPanel} as the managed component.
+ * Sets the {@link FieldPanel} as the managed component.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 2.1
  */
 class FontChooserFieldHandler extends
-		AbstractLabelFieldHandler<FontChooserPanel> {
+		AbstractLabelFieldHandler<FieldPanel> {
 
 	/**
-	 * Sets the parameter of the {@link FontChooserPanel}.
+	 * Sets the parameter of the {@link FieldPanel}.
 	 * 
 	 * @param panel
-	 *            the {@link FontChooserPanel}.
+	 *            the {@link FieldPanel}.
 	 * 
 	 * @param parentObject
 	 *            the {@link Object} where the field is defined.
@@ -51,7 +51,7 @@ class FontChooserFieldHandler extends
 	 *            the {@link Field}.
 	 */
 	@Inject
-	FontChooserFieldHandler(FontChooserPanel panel,
+	FontChooserFieldHandler(FieldPanel panel,
 			@Assisted("parentObject") Object parentObject,
 			@Assisted("value") Object value, @Assisted Field field) {
 		super(parentObject, value, field, FontChooser.class, panel);
@@ -61,7 +61,7 @@ class FontChooserFieldHandler extends
 	 * Sets the minimum font chooser panel height.
 	 */
 	@Override
-	public FieldHandler<FontChooserPanel> setup() {
+	public FieldHandler<FieldPanel> setup() {
 		setupMinimumHeight();
 		return super.setup();
 	}

@@ -3,15 +3,15 @@ package com.anrisoftware.prefdialog.panel.inputfields.fontchooser;
 import com.anrisoftware.prefdialog.swingutils.AbstractSwingLogger;
 
 /**
- * Logger for the {@link FontChooserPanel}.
+ * Logger for the {@link FieldPanel}.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 2.1
  */
-class PanelLogger extends AbstractSwingLogger {
+class FieldPanelLogger extends AbstractSwingLogger {
 
-	PanelLogger() {
-		super(FontChooserPanel.class);
+	FieldPanelLogger() {
+		super(FieldPanel.class);
 	}
 
 	void setMinimumFontChooserHeight(int height) {

@@ -1,7 +1,7 @@
 package com.anrisoftware.prefdialog.panel.inputfields.fontchooser;
 
-import static com.anrisoftware.prefdialog.panel.inputfields.fontchooser.FontChooserPanel.FONTBOX;
-import static com.anrisoftware.prefdialog.panel.inputfields.fontchooser.FontChooserPanel.OPEN_FONT_BUTTON;
+import static com.anrisoftware.prefdialog.panel.inputfields.fontchooser.FieldPanel.FONTBOX;
+import static com.anrisoftware.prefdialog.panel.inputfields.fontchooser.FieldPanel.OPEN_FONT_BUTTON;
 import static info.clearthought.layout.TableLayoutConstants.FILL;
 import static info.clearthought.layout.TableLayoutConstants.PREFERRED;
 import static java.lang.String.format;
@@ -32,7 +32,7 @@ import com.anrisoftware.swingcomponents.fontchooser.panels.FontChooserPanelVerti
 import com.anrisoftware.swingcomponents.slidingpanel.api.SlidingPanel;
 import com.anrisoftware.swingcomponents.slidingpanel.api.SlidingPanelFactory;
 
-class FontChooserSlidingPanel {
+class Panel {
 
 	private final SlidingPanelFactory panelFactory;
 
@@ -53,7 +53,7 @@ class FontChooserSlidingPanel {
 	private final FontNameItemFactory fontNameItemFactory;
 
 	@Inject
-	FontChooserSlidingPanel(SlidingPanelFactory panelFactory,
+	Panel(SlidingPanelFactory panelFactory,
 			FontComboBoxFactory fontComboBoxFactory,
 			FontChooserPanelVertical fontChooserPanel,
 			FontChooserFactory fontChooserFactory, FontModel model,
