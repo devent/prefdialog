@@ -8,9 +8,9 @@ import com.anrisoftware.prefdialog.swingutils.AbstractSwingLogger;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 2.1
  */
-class Logger extends AbstractSwingLogger {
+class PanelLogger extends AbstractSwingLogger {
 
-	Logger() {
+	PanelLogger() {
 		super(FontChooserPanel.class);
 	}
 
