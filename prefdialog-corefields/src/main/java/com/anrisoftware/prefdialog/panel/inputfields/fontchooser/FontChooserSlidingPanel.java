@@ -21,13 +21,13 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 
-import com.anrisoftware.sscontrol.swingcomponents.fontcombobox.api.FontComboBoxFactory;
-import com.anrisoftware.sscontrol.swingcomponents.fontcombobox.api.FontComboBoxModelFactory;
 import com.anrisoftware.swingcomponents.fontchooser.api.FontChooserFactory;
-import com.anrisoftware.swingcomponents.fontchooser.api.FontChooserHandler;
+import com.anrisoftware.swingcomponents.fontchooser.api.FontComboBoxFactory;
 import com.anrisoftware.swingcomponents.fontchooser.api.FontModel;
 import com.anrisoftware.swingcomponents.fontchooser.api.FontModelEvent;
 import com.anrisoftware.swingcomponents.fontchooser.api.FontModelListener;
+import com.anrisoftware.swingcomponents.fontchooser.api.FontNameItem;
+import com.anrisoftware.swingcomponents.fontchooser.api.FontNameItemFactory;
 import com.anrisoftware.swingcomponents.fontchooser.panels.FontChooserPanelVertical;
 import com.anrisoftware.swingcomponents.slidingpanel.api.SlidingPanel;
 import com.anrisoftware.swingcomponents.slidingpanel.api.SlidingPanelFactory;
@@ -36,13 +36,9 @@ class FontChooserSlidingPanel {
 
 	private final SlidingPanelFactory panelFactory;
 
-	private final JComboBox fontComboBox;
-
 	private final JToggleButton openFontChooserButton;
 
 	private final FontChooserPanelVertical fontChooserPanel;
-
-	private final FontChooserHandler fontChooser;
 
 	private SlidingPanel panel;
 
@@ -52,22 +48,26 @@ class FontChooserSlidingPanel {
 
 	private boolean updatingFont;
 
+	private final JComboBox fontComboBox;
+
+	private final FontNameItemFactory fontNameItemFactory;
+
 	@Inject
 	FontChooserSlidingPanel(SlidingPanelFactory panelFactory,
-			FontComboBoxModelFactory fontComboBoxModelFactory,
 			FontComboBoxFactory fontComboBoxFactory,
 			FontChooserPanelVertical fontChooserPanel,
-			FontChooserFactory fontChooserFactory, FontModel model) {
+			FontChooserFactory fontChooserFactory, FontModel model,
+			FontNameItemFactory fontNameItemFactory) {
 		this.panelFactory = panelFactory;
 		this.openFontChooserButton = new JToggleButton();
 		this.fontChooserPanel = fontChooserPanel;
-		model.pushFont(Font.decode(null));
-		this.fontChooser = fontChooserFactory.create(fontChooserPanel, model);
+		fontChooserFactory.create(fontChooserPanel, model);
 		this.fontModel = model;
 		this.minimumFontChooserHeight = 0;
 		this.updatingFont = false;
-		this.fontComboBox = fontComboBoxFactory
-				.create(fontComboBoxModelFactory);
+		this.fontComboBox = new JComboBox();
+		fontComboBoxFactory.create(fontComboBox, fontModel);
+		this.fontNameItemFactory = fontNameItemFactory;
 		setup();
 	}
 
@@ -100,13 +100,15 @@ class FontChooserSlidingPanel {
 			@Override
 			public void fontAdded(FontModelEvent e) {
 				updatingFont = true;
-				fontComboBox.setSelectedItem(e.getFont().getName());
+				Object item = fontNameItemFactory.create(e.getFont());
+				fontComboBox.setSelectedItem(item);
 				updatingFont = false;
 			}
 
 			@Override
 			public void fontRemoved(FontModelEvent e) {
-				fontComboBox.setSelectedItem(e.getFont().getName());
+				Object item = fontNameItemFactory.create(fontModel.getFont());
+				fontComboBox.setSelectedItem(item);
 			}
 		});
 	}
@@ -150,27 +152,25 @@ class FontChooserSlidingPanel {
 	}
 
 	private void setupFontComboBox() {
-		Dimension size = fontComboBox.getPreferredSize();
-		fontComboBox.setPreferredSize(new Dimension(128, size.height));
 		fontComboBox.addItemListener(new ItemListener() {
 
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				Object object = fontComboBox.getSelectedItem();
-				if (object instanceof String) {
-					updateFontFamily((String) object);
-				}
+				FontNameItem item = (FontNameItem) fontComboBox
+						.getSelectedItem();
+				updateFontFamily(item);
 			}
 
 		});
 	}
 
-	private void updateFontFamily(String family) {
+	private void updateFontFamily(FontNameItem item) {
 		if (updatingFont) {
 			return;
 		}
 		updatingFont = true;
 		Font font = fontModel.getFont();
+		String family = item.getName();
 		int style = font.getStyle();
 		int size = font.getSize();
 		font = new Font(family, style, size);
@@ -188,7 +188,6 @@ class FontChooserSlidingPanel {
 
 	public void setFont(Font font) {
 		fontModel.setFont(font);
-		fontComboBox.setSelectedItem(font.getName());
 	}
 
 	public void setName(String name) {

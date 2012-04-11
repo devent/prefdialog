@@ -2,10 +2,11 @@ package com.anrisoftware.prefdialog.panel.inputfields.fontchooser;
 
 import com.anrisoftware.prefdialog.FieldHandler;
 import com.anrisoftware.prefdialog.panel.inputfields.api.FontChooserFieldHandlerFactory;
-import com.anrisoftware.sscontrol.swingcomponents.fontcombobox.FontComboBoxModule;
-import com.anrisoftware.sscontrol.swingcomponents.fontcombobox.FontsFromCurrentEnvironmentModule;
-import com.anrisoftware.sscontrol.swingcomponents.fontcombobox.FontsModelItemModule;
+import com.anrisoftware.swingcomponents.fontchooser.autocompletion.FontChooserAutoCompletionModule;
+import com.anrisoftware.swingcomponents.fontchooser.autocompletion.FontComboBoxAutoCompletionModule;
+import com.anrisoftware.swingcomponents.fontchooser.combobox.FontComboBoxModule;
 import com.anrisoftware.swingcomponents.fontchooser.defaults.FontChooserDefaultsModule;
+import com.anrisoftware.swingcomponents.fontchooser.defaults.FontComboBoxDefaultsModule;
 import com.anrisoftware.swingcomponents.fontchooser.preview.FontChooserPreviewModule;
 import com.anrisoftware.swingcomponents.slidingpanel.SlidingPanelModule;
 import com.google.inject.AbstractModule;
@@ -26,16 +27,14 @@ public class FontChooserModule extends AbstractModule {
 				new TypeLiteral<FieldHandler<?>>() {
 				}, FontChooserFieldHandler.class).build(
 				FontChooserFieldHandlerFactory.class));
-		install(new FactoryModuleBuilder().implement(
-				LoggerFactory.Logger.class, LoggerFactory.Logger.class).build(
-				LoggerFactory.class));
 		install(new SlidingPanelModule());
 		install(new com.anrisoftware.swingcomponents.fontchooser.FontChooserModule());
 		install(new FontChooserDefaultsModule());
 		install(new FontChooserPreviewModule());
+		install(new FontChooserAutoCompletionModule());
 		install(new FontComboBoxModule());
-		install(new FontsModelItemModule());
-		install(new FontsFromCurrentEnvironmentModule());
+		install(new FontComboBoxDefaultsModule());
+		install(new FontComboBoxAutoCompletionModule());
 	}
 
 }

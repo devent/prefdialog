@@ -45,6 +45,8 @@ class FontChooserPanel extends AbstractLabelFieldPanel<JPanel> {
 	 */
 	public static final String FONTBOX = "fontbox";
 
+	private Logger log;
+
 	private final FontChooserSlidingPanel slidingPanel;
 
 	/**
@@ -87,5 +89,11 @@ class FontChooserPanel extends AbstractLabelFieldPanel<JPanel> {
 
 	public void setMinimumFontChooserHeight(int height) {
 		slidingPanel.setMinimumFontChooserHeight(height);
+		log.setMinimumFontChooserHeight(height);
+	}
+
+	@Inject
+	public void setLog(Logger log) {
+		this.log = log;
 	}
 }

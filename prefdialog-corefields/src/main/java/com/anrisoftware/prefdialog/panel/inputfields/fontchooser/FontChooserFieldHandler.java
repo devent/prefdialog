@@ -35,8 +35,6 @@ import com.google.inject.assistedinject.Assisted;
 class FontChooserFieldHandler extends
 		AbstractLabelFieldHandler<FontChooserPanel> {
 
-	private LoggerFactory.Logger log;
-
 	/**
 	 * Sets the parameter of the {@link FontChooserPanel}.
 	 * 
@@ -73,11 +71,4 @@ class FontChooserFieldHandler extends
 		getComponent().setMinimumFontChooserHeight(height);
 	}
 
-	/**
-	 * Injects the file chooser field {@link LoggerFactory}.
-	 */
-	@Inject
-	public void setFileChooserFieldLoggerFactory(LoggerFactory loggerFactory) {
-		log = loggerFactory.create(FontChooserFieldHandler.class);
-	}
 }
