@@ -18,7 +18,8 @@
  */
 package com.anrisoftware.prefdialog.dialog
 
-
+import static com.anrisoftware.swingcomponents.fontchooser.api.FontChooserHandler.*
+import static com.anrisoftware.prefdialog.panel.inputfields.fontchooser.FieldPanel.*
 import java.awt.Dimension
 import java.awt.Font
 
@@ -67,10 +68,25 @@ class DialogFontChooserTest extends AbstractPreferenceDialogFixture {
 	}
 
 	@Test
+	void "enter font and apply"() {
+		doDialogTest TITLE, preferences, {
+			fixture.toggleButton("$OPEN_FONT_BUTTON-font").click()
+			fixture.textBox(NAME_FIELD_NAME).deleteText()
+			fixture.textBox(NAME_FIELD_NAME).enterText("Serif")
+			fixture.textBox(STYLE_FIELD_NAME).deleteText()
+			fixture.textBox(STYLE_FIELD_NAME).enterText("Bold")
+			fixture.textBox(SIZE_FIELD_NAME).deleteText()
+			fixture.textBox(SIZE_FIELD_NAME).enterText("14")
+			fixture.button("ok").click()
+			assert preferences.general.font == new Font("Serif", Font.BOLD, 14)
+		}
+	}
+
+	@Test
 	void "manually"() {
 		doDialogTest TITLE, preferences, {
 			//
-			Thread.sleep 60000 //
+			Thread.sleep 0 // 60000 //
 		}
 	}
 }
