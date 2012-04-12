@@ -18,8 +18,8 @@
  */
 package com.anrisoftware.prefdialog.panel.inputfields.fontchooser
 
-import static com.anrisoftware.prefdialog.panel.inputfields.fontchooser.FontChooserPanel.FONTBOX
-import static com.anrisoftware.prefdialog.panel.inputfields.fontchooser.FontChooserPanel.OPEN_FONT_BUTTON
+import static com.anrisoftware.prefdialog.panel.inputfields.fontchooser.FieldPanel.FONTBOX
+import static com.anrisoftware.prefdialog.panel.inputfields.fontchooser.FieldPanel.OPEN_FONT_BUTTON
 import static com.anrisoftware.prefdialog.swingutils.AbstractLabelFieldPanel.TITLE_LABEL
 
 import java.awt.Font
@@ -62,6 +62,6 @@ class FontChooserTest extends AbstractFieldFixture {
 
 	@Test
 	void "manually"() {
-		Thread.sleep 60000
+		Thread.sleep 0 // 60000
 	}
 }
