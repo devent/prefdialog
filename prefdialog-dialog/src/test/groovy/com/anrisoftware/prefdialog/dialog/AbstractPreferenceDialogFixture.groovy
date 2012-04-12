@@ -19,49 +19,37 @@
 package com.anrisoftware.prefdialog.dialog
 
 
+import javax.swing.JPanel
 
-import org.fest.swing.edt.GuiActionRunner
-import org.fest.swing.edt.GuiQuery
-import org.fest.swing.fixture.DialogFixture
-import org.junit.After
-import org.junit.Before
-
+import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.prefdialog.PreferenceDialogHandlerFactory
 import com.anrisoftware.prefdialog.panel.inputfields.PrefdialogCoreFieldsModule
 import com.google.inject.Guice
 
-abstract class AbstractPreferenceDialogFixture {
+abstract class AbstractPreferenceDialogFixture extends TestFrameUtil {
 
-	def preferences
+	static injector = Guice.createInjector(
+	new PrefdialogModule(),
+	new PrefdialogCoreFieldsModule())
 
-	DialogFixture fixture
+	static factory = injector.getInstance PreferenceDialogHandlerFactory
 
 	def dialogHandler
 
-	@Before
-	void beforeTest() {
-		setupPreferences()
-		fixture = createFrameFixture(preferences)
-		fixture.show();
+	def dialog
+
+	def doDialogTest(def title, def preferences, def test) {
+		beginPanelFrame title, new JPanel(), {
+			dialogHandler = createDialogHandler preferences
+			dialog = dialogHandler.getAWTComponent()
+			dialog.modal = false
+			dialog.size = frameSize
+			dialog.visible = true
+			test()
+		}
 	}
 
-	abstract setupPreferences()
-
-	def createFrameFixture(def preferences) {
-		def injector = Guice.createInjector(new PrefdialogModule(), new PrefdialogCoreFieldsModule())
-		def factory = injector.getInstance(PreferenceDialogHandlerFactory)
-		dialogHandler = createDialogHandler(factory)
-
-		def dialog = GuiActionRunner.execute([executeInEDT: { return dialogHandler.AWTComponent } ] as GuiQuery);
-		return new DialogFixture(dialog);
-	}
-
-	def createDialogHandler(def factory) {
-		return factory.create(null, preferences).createDialog()
-	}
-
-	@After
-	void afterTest() {
-		fixture.cleanUp()
+	def createDialogHandler(def preferences) {
+		factory.create(frame, preferences).createDialog()
 	}
 }

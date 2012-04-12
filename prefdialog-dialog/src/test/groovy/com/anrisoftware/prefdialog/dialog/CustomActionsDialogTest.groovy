@@ -19,16 +19,20 @@
 package com.anrisoftware.prefdialog.dialog
 
 
+import java.awt.Dimension
 import java.awt.event.ActionEvent
 
 import javax.swing.AbstractAction
 
+import org.junit.Before;
 import org.junit.Test
 
 import com.anrisoftware.prefdialog.annotations.Child
 import com.anrisoftware.prefdialog.annotations.TextField
 
 class CustomActionsDialogTest extends AbstractPreferenceDialogFixture {
+
+	static final String TITLE = "Custom Actions Preferences Dialog Test"
 
 	static class Preferences {
 
@@ -37,25 +41,25 @@ class CustomActionsDialogTest extends AbstractPreferenceDialogFixture {
 
 		@Override
 		String toString() {
-			'Preferences'
+			"Preferences"
 		}
 	}
 
 	static class General {
 
 		@TextField
-		String name = ''
+		String name = ""
 
 		@Override
 		public String toString() {
-			'General'
+			"General"
 		}
 	}
 
 	static class OkAction extends AbstractAction {
 
 		OkAction() {
-			super('Custom Ok')
+			super("Custom Ok")
 		}
 
 		void actionPerformed(ActionEvent e) {
@@ -65,7 +69,7 @@ class CustomActionsDialogTest extends AbstractPreferenceDialogFixture {
 	static class CancelAction extends AbstractAction {
 
 		CancelAction() {
-			super('Custom Cancel')
+			super("Custom Cancel")
 		}
 
 		void actionPerformed(ActionEvent e) {
@@ -75,19 +79,23 @@ class CustomActionsDialogTest extends AbstractPreferenceDialogFixture {
 	static class ApplyAction extends AbstractAction {
 
 		ApplyAction() {
-			super('Custom Apply')
+			super("Custom Apply")
 		}
 
 		void actionPerformed(ActionEvent e) {
 		}
 	}
 
-	def setupPreferences() {
+	def preferences
+
+	@Before
+	void beforeTest() {
+		frameSize = new Dimension(640, 480)
 		preferences = new Preferences()
 	}
 
-	def createDialogHandler(def factory) {
-		def handler = super.createDialogHandler(factory)
+	def createDialogHandler(def preferences) {
+		def handler = super.createDialogHandler(preferences)
 		handler.okAction = new OkAction()
 		handler.cancelAction = new CancelAction()
 		handler.applyAction = new ApplyAction()
@@ -95,44 +103,39 @@ class CustomActionsDialogTest extends AbstractPreferenceDialogFixture {
 	}
 
 	@Test
-	void testComponents() {
-		assert fixture.target.title == 'Preferences'
-
-		fixture.textBox('name').requireVisible()
-		assert fixture.textBox('name').text() == ''
-		assert fixture.button('ok').text() == 'Custom Ok'
-		assert fixture.button('cancel').text() == 'Custom Cancel'
-		assert fixture.button('apply').text() == 'Custom Apply'
-	}
-
-	@Test
 	void testClickEnterTextOk() {
-		fixture.textBox('name').deleteText()
-		fixture.textBox('name').enterText 'name'
-		fixture.button('ok').click()
-
-		assert preferences.general.name == 'name'
+		doDialogTest TITLE, preferences, {
+			fixture.textBox("name").deleteText()
+			fixture.textBox("name").enterText "name"
+			fixture.button("ok").click()
+			assert preferences.general.name == "name"
+		}
 	}
 
 	@Test
 	void testClickEnterTextCancel() {
-		fixture.textBox('name').enterText 'name'
-		fixture.button('cancel').click()
-
-		assert preferences.general.name == ''
+		doDialogTest TITLE, preferences, {
+			fixture.textBox("name").enterText "name"
+			fixture.button("cancel").click()
+			assert preferences.general.name == ""
+		}
 	}
 
 	@Test
 	void testClickEnterTextApply() {
-		fixture.textBox('name').enterText 'name'
-		fixture.button('apply').click()
-
-		assert fixture.textBox('name').text() == 'name'
-		assert preferences.general.name == 'name'
+		doDialogTest TITLE, preferences, {
+			fixture.textBox("name").enterText "name"
+			fixture.button("apply").click()
+			assert fixture.textBox("name").text() == "name"
+			assert preferences.general.name == "name"
+		}
 	}
 
 	@Test
 	void testManual() {
-		//Thread.sleep(60000)
+		doDialogTest TITLE, preferences, {
+			//
+			Thread.sleep 0 // 60000 //
+		}
 	}
 }

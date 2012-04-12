@@ -18,13 +18,17 @@
  */
 package com.anrisoftware.prefdialog.dialog
 
+import java.awt.Dimension
 
+import org.junit.Before
 import org.junit.Test
 
 import com.anrisoftware.prefdialog.annotations.Child
 import com.anrisoftware.prefdialog.annotations.TextField
 
 class DialogTest extends AbstractPreferenceDialogFixture {
+
+	static final String TITLE = "Preferences Dialog Test"
 
 	static class Preferences {
 
@@ -33,64 +37,73 @@ class DialogTest extends AbstractPreferenceDialogFixture {
 
 		@Override
 		String toString() {
-			'Preferences'
+			"Preferences"
 		}
 	}
 
 	static class General {
 
 		@TextField
-		String name = ''
+		String name = ""
 
 		@Override
 		public String toString() {
-			'General'
+			"General"
 		}
 	}
 
-	def setupPreferences() {
+	def preferences
+
+	@Before
+	void beforeTest() {
+		frameSize = new Dimension(640, 480)
 		preferences = new Preferences()
 	}
 
 	@Test
-	void testComponents() {
-		assert fixture.target.title == 'Preferences'
-
-		fixture.textBox('name').requireVisible()
-		assert fixture.textBox('name').text() == ''
-		assert fixture.button('ok').text() == 'Ok'
-		assert fixture.button('cancel').text() == 'Cancel'
-		assert fixture.button('apply').text() == 'Apply'
+	void "components titles"() {
+		doDialogTest TITLE, preferences, {
+			assert fixture.target.title == TITLE
+			assert fixture.textBox("name").text() == ""
+			assert fixture.button("ok").text() == "Ok"
+			assert fixture.button("cancel").text() == "Cancel"
+			assert fixture.button("apply").text() == "Apply"
+		}
 	}
 
 	@Test
 	void testClickEnterTextOk() {
-		fixture.textBox('name').deleteText()
-		fixture.textBox('name').enterText 'name'
-		fixture.button('ok').click()
-
-		assert preferences.general.name == 'name'
+		doDialogTest TITLE, preferences, {
+			fixture.textBox("name").deleteText()
+			fixture.textBox("name").enterText "name"
+			fixture.button("ok").click()
+			assert preferences.general.name == "name"
+		}
 	}
 
 	@Test
 	void testClickEnterTextCancel() {
-		fixture.textBox('name').enterText 'name'
-		fixture.button('cancel').click()
-
-		assert preferences.general.name == ''
+		doDialogTest TITLE, preferences, {
+			fixture.textBox("name").enterText "name"
+			fixture.button("cancel").click()
+			assert preferences.general.name == ""
+		}
 	}
 
 	@Test
 	void testClickEnterTextApply() {
-		fixture.textBox('name').enterText 'name'
-		fixture.button('apply').click()
-
-		assert fixture.textBox('name').text() == 'name'
-		assert preferences.general.name == 'name'
+		doDialogTest TITLE, preferences, {
+			fixture.textBox("name").enterText "name"
+			fixture.button("apply").click()
+			assert fixture.textBox("name").text() == "name"
+			assert preferences.general.name == "name"
+		}
 	}
 
 	@Test
 	void testManual() {
-		//Thread.sleep(60000)
+		doDialogTest TITLE, preferences, { //
+			Thread.sleep 0 // 60000 //
+		}
 	}
 }

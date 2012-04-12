@@ -18,6 +18,9 @@
  */
 package com.anrisoftware.prefdialog.dialog
 
+import java.awt.Dimension
+
+import org.junit.Before;
 import org.junit.Test
 
 import com.anrisoftware.prefdialog.annotations.Child
@@ -25,6 +28,8 @@ import com.anrisoftware.prefdialog.annotations.FormattedTextField
 import com.anrisoftware.prefdialog.annotations.TextField
 
 class DialogChildrenTest extends AbstractPreferenceDialogFixture {
+
+	static final String TITLE = "Children Preferences Dialog Test"
 
 	static class Preferences {
 
@@ -63,22 +68,28 @@ class DialogChildrenTest extends AbstractPreferenceDialogFixture {
 		}
 	}
 
-	def setupPreferences() {
+	def preferences
+
+	@Before
+	void beforeTest() {
+		frameSize = new Dimension(640, 480)
 		preferences = new Preferences()
 	}
 
 	@Test
 	void testClickOkAndClose() {
-		fixture.textBox('name').enterText 'name'
-		fixture.textBox('fields').enterText '10'
-		fixture.tree('child_tree').clickPath 'Child2'
-		fixture.textBox('something').enterText 'text'
-		fixture.textBox('moreFields').enterText '20'
-		fixture.button('ok').click()
+		doDialogTest TITLE, preferences, {
+			fixture.textBox('name').enterText 'name'
+			fixture.textBox('fields').enterText '10'
+			fixture.tree('child_tree').clickPath 'Child2'
+			fixture.textBox('something').enterText 'text'
+			fixture.textBox('moreFields').enterText '20'
+			fixture.button('ok').click()
 
-		assert preferences.general.name == 'name'
-		assert preferences.general.fields == 104
-		assert preferences.child2.something == 'text'
-		assert preferences.child2.moreFields == 204
+			assert preferences.general.name == 'name'
+			assert preferences.general.fields == 104
+			assert preferences.child2.something == 'text'
+			assert preferences.child2.moreFields == 204
+		}
 	}
 }

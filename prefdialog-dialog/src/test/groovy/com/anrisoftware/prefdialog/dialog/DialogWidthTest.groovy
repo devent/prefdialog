@@ -18,8 +18,10 @@
  */
 package com.anrisoftware.prefdialog.dialog
 
+import java.awt.Dimension
 import java.util.List
 
+import org.junit.Before;
 import org.junit.Test
 
 import com.anrisoftware.prefdialog.annotations.Checkbox
@@ -41,10 +43,10 @@ class DialogWidthTest extends AbstractPreferenceDialogFixture {
 
 	static class General {
 
-		@TextField(width=-2.0d, validator=NotEmptyString, validatorText='Must not be empty')
-		String name = ''
+		@TextField(width=-2.0d, validator=NotEmptyString, validatorText="Must not be empty")
+		String name = ""
 
-		@FormattedTextField(width=-2.0d, validator=FieldsValidator, validatorText='Must be a number and between 2 and 100')
+		@FormattedTextField(width=-2.0d, validator=FieldsValidator, validatorText="Must be a number and between 2 and 100")
 		int fields = 4
 
 		@Checkbox(width=-2.0d)
@@ -53,39 +55,45 @@ class DialogWidthTest extends AbstractPreferenceDialogFixture {
 		@RadioButton(width=-2.0d, columns=2)
 		Colors colors = Colors.BLACK
 
-		@ComboBoxElements('combobox1')
+		@ComboBoxElements("combobox1")
 		List<String> comboBoxElements = [
-			'first element',
-			'second element',
-			'third element'
+			"first element",
+			"second element",
+			"third element"
 		]
 
-		@ComboBox(title='combobox1', elements='combobox1', width=-2.0d)
-		String comboBox = 'first element'
+		@ComboBox(title="combobox1", elements="combobox1", width=-2.0d)
+		String comboBox = "first element"
 
 		@Override
 		public String toString() {
-			'General'
+			"General"
 		}
 	}
 
-	def setupPreferences() {
+	def preferences
+
+	@Before
+	void beforeTest() {
+		frameSize = new Dimension(640, 480)
 		preferences = new Preferences()
 	}
 
 	@Test
 	void testClickOkAndClose() {
-		fixture.textBox('name').enterText 'name'
-		fixture.textBox('fields').enterText '10'
-		fixture.checkBox('automaticSave').click()
-		fixture.radioButton('colors-BLUE').click()
-		fixture.comboBox('comboBox').selectItem 1
-		fixture.button('ok').click()
+		doDialogTest "Width Preferences Dialog Test", preferences, {
+			fixture.textBox("name").enterText "name"
+			fixture.textBox("fields").enterText "10"
+			fixture.checkBox("automaticSave").click()
+			fixture.radioButton("colors-BLUE").click()
+			fixture.comboBox("comboBox").selectItem 1
+			fixture.button("ok").click()
 
-		assert preferences.general.name == 'name'
-		assert preferences.general.fields == 104
-		assert preferences.general.automaticSave == true
-		assert preferences.general.colors == Colors.BLUE
-		assert preferences.general.comboBox == 'second element'
+			assert preferences.general.name == "name"
+			assert preferences.general.fields == 104
+			assert preferences.general.automaticSave == true
+			assert preferences.general.colors == Colors.BLUE
+			assert preferences.general.comboBox == "second element"
+		}
 	}
 }

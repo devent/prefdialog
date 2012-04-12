@@ -19,8 +19,10 @@
 package com.anrisoftware.prefdialog.dialog
 
 
+import java.awt.Dimension
 import java.awt.Font
 
+import org.junit.Before;
 import org.junit.Test
 
 import com.anrisoftware.prefdialog.annotations.Child
@@ -28,6 +30,8 @@ import com.anrisoftware.prefdialog.annotations.FontChooser
 import com.anrisoftware.prefdialog.annotations.TextField
 
 class DialogFontChooserTest extends AbstractPreferenceDialogFixture {
+
+	static final String TITLE = "Font Chooser Preferences Dialog Test"
 
 	static class Preferences {
 
@@ -54,12 +58,19 @@ class DialogFontChooserTest extends AbstractPreferenceDialogFixture {
 		}
 	}
 
-	def setupPreferences() {
+	def preferences
+
+	@Before
+	void beforeTest() {
+		frameSize = new Dimension(640, 480)
 		preferences = new Preferences()
 	}
 
 	@Test
 	void "manually"() {
-		Thread.sleep(60000)
+		doDialogTest TITLE, preferences, {
+			//
+			Thread.sleep 60000 //
+		}
 	}
 }
