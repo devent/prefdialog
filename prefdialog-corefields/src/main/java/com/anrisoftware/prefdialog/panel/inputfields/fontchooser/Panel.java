@@ -15,11 +15,14 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.inject.Inject;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
+import javax.swing.SwingUtilities;
 
 import com.anrisoftware.swingcomponents.fontchooser.api.FontChooserFactory;
 import com.anrisoftware.swingcomponents.fontchooser.api.FontComboBoxFactory;
@@ -133,6 +136,14 @@ class Panel {
 			}
 
 		});
+		panel.addPropertyChangeListener(SlidingPanel.ANIMATING_PROPERTY,
+				new PropertyChangeListener() {
+
+					@Override
+					public void propertyChange(PropertyChangeEvent evt) {
+						setOpenFontChooserButtonEnabled(panel.isAnimating());
+					}
+				});
 		panel.doLayout();
 		panel.setContainerSize(fontChooserPanel.getHeight());
 		panel.setContainerFinalSize(FILL);
@@ -140,6 +151,16 @@ class Panel {
 			fontChooserContainerSizeSet = true;
 			panel.setContainerShow(false);
 		}
+	}
+
+	protected void setOpenFontChooserButtonEnabled(final boolean animating) {
+		SwingUtilities.invokeLater(new Runnable() {
+
+			@Override
+			public void run() {
+				openFontChooserButton.setEnabled(animating);
+			}
+		});
 	}
 
 	private void setupOpenFontChooserButton() {
@@ -152,6 +173,17 @@ class Panel {
 					panel.setContainerSize(fontChooserPanel.getHeight());
 				}
 				boolean show = openFontChooserButton.isSelected();
+				setFontChooserPanelVisible(show);
+			}
+
+		});
+	}
+
+	private void setFontChooserPanelVisible(final boolean show) {
+		SwingUtilities.invokeLater(new Runnable() {
+
+			@Override
+			public void run() {
 				panel.setAnimateShow(show);
 			}
 		});
