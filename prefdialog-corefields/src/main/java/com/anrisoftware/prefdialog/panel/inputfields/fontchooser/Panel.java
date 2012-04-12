@@ -40,17 +40,19 @@ class Panel {
 
 	private final FontChooserPanelVertical fontChooserPanel;
 
-	private SlidingPanel panel;
-
 	private final FontModel fontModel;
+
+	private final JComboBox fontComboBox;
+
+	private final FontNameItemFactory fontNameItemFactory;
+
+	private SlidingPanel panel;
 
 	private int minimumFontChooserHeight;
 
 	private boolean updatingFont;
 
-	private final JComboBox fontComboBox;
-
-	private final FontNameItemFactory fontNameItemFactory;
+	private boolean fontChooserContainerSizeSet = false;
 
 	@Inject
 	Panel(SlidingPanelFactory panelFactory,
@@ -90,6 +92,7 @@ class Panel {
 	}
 
 	private void setupFontChooserPanel() {
+		fontChooserPanel.setApplyButtonVisible(false);
 		fontChooserPanel.setPreferredSize(new Dimension(128, 512));
 		fontModel.addModelListener(new FontModelListener() {
 
@@ -117,23 +120,26 @@ class Panel {
 		panel.setContainerRow(1);
 		panel.addComponentListener(new ComponentAdapter() {
 
-			private boolean containerSizeSet = false;
-
 			@Override
 			public void componentResized(ComponentEvent e) {
 				int height;
 				height = fontChooserPanel.getHeight();
 				height = Math.max(height, minimumFontChooserHeight);
 				panel.setContainerSize(height);
-				if (!containerSizeSet) {
-					containerSizeSet = true;
+				if (!fontChooserContainerSizeSet) {
+					fontChooserContainerSizeSet = true;
 					panel.setContainerShow(false);
 				}
 			}
 
 		});
+		panel.doLayout();
 		panel.setContainerSize(fontChooserPanel.getHeight());
 		panel.setContainerFinalSize(FILL);
+		if (minimumFontChooserHeight > 0) {
+			fontChooserContainerSizeSet = true;
+			panel.setContainerShow(false);
+		}
 	}
 
 	private void setupOpenFontChooserButton() {
