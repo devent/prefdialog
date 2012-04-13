@@ -33,8 +33,8 @@ import com.anrisoftware.prefdialog.panel.api.LookAndFeelFont;
  */
 class LookAndFeelFontImpl implements LookAndFeelFont {
 
-	@FontChooser
-	private final Font font = new Font("serif", 0, 12);
+	@FontChooser(showTitle = false)
+	private final Font font = Font.decode(null);
 
 	@Checkbox(title = "Change the font:", text = "yes/no")
 	private final boolean changeFont = false;
