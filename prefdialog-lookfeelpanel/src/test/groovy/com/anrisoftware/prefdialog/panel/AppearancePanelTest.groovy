@@ -19,7 +19,7 @@ import com.google.inject.Injector
 class AppearancePanelTest extends TestFrameUtil {
 
 	static Injector injector = createInjector(
-	new AppearanceModule(),
+	new PrefdialogAppearanceModule(),
 	new PrefdialogPanelModule(),
 	new PrefdialogCoreFieldsModule())
 

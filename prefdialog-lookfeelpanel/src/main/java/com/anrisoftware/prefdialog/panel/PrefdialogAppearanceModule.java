@@ -32,7 +32,7 @@ import com.google.inject.AbstractModule;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
  */
-public class AppearanceModule extends AbstractModule {
+public class PrefdialogAppearanceModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
