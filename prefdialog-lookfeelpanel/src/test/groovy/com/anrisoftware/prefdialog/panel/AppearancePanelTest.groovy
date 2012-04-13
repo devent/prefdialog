@@ -3,6 +3,9 @@ package com.anrisoftware.prefdialog.panel
 import static com.anrisoftware.prefdialog.panel.inputfields.button.ButtonGroupFieldHandler.BUTTON
 import static com.google.inject.Guice.createInjector
 
+import java.awt.Dimension;
+
+import org.junit.Before
 import org.junit.Test
 
 import com.anrisoftware.globalpom.utils.TestFrameUtil
@@ -29,11 +32,16 @@ class AppearancePanelTest extends TestFrameUtil {
 		Appearance appearance
 	}
 
+	@Before
+	void beforeTest() {
+		frameSize = new Dimension(480, 640)
+	}
+
 	@Test
 	void "manually"() {
 		Panel appearancePanel = injector.getInstance Panel
 		def panel = factory.create(appearancePanel, "appearance").createPanel()
-		beginPanelFrame "CSV Date Import Test", panel.getAWTComponent(), {
+		beginPanelFrame "Appearance Panel Test", panel.getAWTComponent(), {
 			//
 			Thread.sleep 60000 //
 		}
