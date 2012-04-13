@@ -52,7 +52,7 @@ public abstract class AbstractFieldHandler<FieldComponentType extends FieldCompo
 
 	private final FieldComponentType component;
 
-	private LoggerFactory.Logger log;
+	private AbstractFieldHandlerLogger log;
 
 	private String name;
 
@@ -94,11 +94,11 @@ public abstract class AbstractFieldHandler<FieldComponentType extends FieldCompo
 	}
 
 	/**
-	 * Injects the {@link LoggerFactory}.
+	 * Injects the {@link AbstractFieldHandlerLogger}.
 	 */
 	@Inject
-	public void setLoggerFactory(LoggerFactory loggerFactory) {
-		log = loggerFactory.create(AbstractFieldHandler.class);
+	void setAbstractFieldHandlerLogger(AbstractFieldHandlerLogger logger) {
+		log = logger;
 	}
 
 	/**
@@ -148,33 +148,33 @@ public abstract class AbstractFieldHandler<FieldComponentType extends FieldCompo
 
 	@Override
 	public void setComponentWidth(double width) {
-		log.setWidth(width, this);
 		component.setWidth(width);
+		log.setWidth(width, this);
 	}
 
 	@Override
 	public void setComponentName(String name) {
 		this.name = name;
-		log.setName(name, this);
 		component.setName(name);
+		log.setName(name, this);
 	}
 
 	@Override
 	public void setComponentTitle(String title) {
-		log.setTitle(title, this);
 		component.setTitle(title);
+		log.setTitle(title, this);
 	}
 
 	@Override
 	public void setComponentEnabled(boolean enabled) {
-		log.setEnabled(enabled, this);
 		component.setEnabled(enabled);
+		log.setEnabled(enabled, this);
 	}
 
 	@Override
 	public void setComponentValue(Object value) {
-		log.setValue(value, this);
 		component.setValue(value);
+		log.setValue(value, this);
 	}
 
 	@Override

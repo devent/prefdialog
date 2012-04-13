@@ -14,7 +14,6 @@ import com.anrisoftware.prefdialog.FieldComponent;
 import com.anrisoftware.prefdialog.FieldHandler;
 import com.anrisoftware.prefdialog.annotations.IconSize;
 import com.anrisoftware.prefdialog.annotations.TextPosition;
-import com.anrisoftware.prefdialog.swingutils.LoggerFactory.Logger;
 import com.google.common.io.Resources;
 import com.google.inject.Inject;
 
@@ -35,7 +34,7 @@ import com.google.inject.Inject;
 public class AbstractLabelFieldHandler<FieldComponentType extends AbstractLabelFieldPanel<?>>
 		extends AbstractDefaultFieldHandler<FieldComponentType> {
 
-	private Logger log;
+	private AbstractLabelFieldHandlerLogger log;
 
 	/**
 	 * Sets the parameter of the {@link FieldHandler}.
@@ -106,7 +105,7 @@ public class AbstractLabelFieldHandler<FieldComponentType extends AbstractLabelF
 		}
 		ImageIcon icon = loadIcon(iconUrl);
 		getComponent().setIcon(icon);
-		log.setupButtonIcon(iconUrl);
+		log.setupButtonIcon(iconUrl, this);
 	}
 
 	private ImageIcon loadIcon(URL iconUrl) {
@@ -123,8 +122,8 @@ public class AbstractLabelFieldHandler<FieldComponentType extends AbstractLabelF
 		Annotation a = getField().getAnnotation(annotationClass);
 		boolean show = getReflectionToolbox().invokeMethodWithReturnType(
 				"showTitle", Boolean.class, a);
-		log.setShowTitle(show, this);
 		getComponent().setShowTitle(show);
+		log.setShowTitle(show, this);
 	}
 
 	/**
@@ -143,13 +142,11 @@ public class AbstractLabelFieldHandler<FieldComponentType extends AbstractLabelF
 	}
 
 	/**
-	 * Injects the {@link LoggerFactory}.
+	 * Injects the {@link AbstractLabelFieldHandlerLogger}.
 	 */
-	@Override
 	@Inject
-	public void setLoggerFactory(LoggerFactory loggerFactory) {
-		log = loggerFactory.create(AbstractLabelFieldHandler.class);
-		super.setLoggerFactory(loggerFactory);
+	void setAbstractLabelFieldLogger(AbstractLabelFieldHandlerLogger logger) {
+		this.log = logger;
 	}
 
 }

@@ -28,7 +28,6 @@ import org.fest.reflect.exception.ReflectionError;
 import com.anrisoftware.prefdialog.FieldComponent;
 import com.anrisoftware.prefdialog.FieldHandler;
 import com.anrisoftware.prefdialog.reflection.ReflectionToolbox;
-import com.anrisoftware.prefdialog.swingutils.LoggerFactory.Logger;
 import com.google.inject.Inject;
 
 /**
@@ -51,7 +50,7 @@ import com.google.inject.Inject;
 public abstract class AbstractDefaultFieldHandler<FieldComponentType extends FieldComponent>
 		extends AbstractFieldHandler<FieldComponentType> {
 
-	private Logger log;
+	private AbstractDefaultFieldHandlerLogger log;
 
 	private ReflectionToolbox reflectionToolbox;
 
@@ -129,13 +128,12 @@ public abstract class AbstractDefaultFieldHandler<FieldComponentType extends Fie
 	}
 
 	/**
-	 * Injects the {@link LoggerFactory}.
+	 * Injects the {@link AbstractDefaultFieldHandlerLogger}.
 	 */
-	@Override
 	@Inject
-	public void setLoggerFactory(LoggerFactory loggerFactory) {
-		log = loggerFactory.create(AbstractDefaultFieldHandler.class);
-		super.setLoggerFactory(loggerFactory);
+	void setAbstractDefaultFieldHandlerLogger(
+			AbstractDefaultFieldHandlerLogger logger) {
+		this.log = logger;
 	}
 
 	/**
@@ -155,14 +153,14 @@ public abstract class AbstractDefaultFieldHandler<FieldComponentType extends Fie
 	public void applyInput(Object parent) {
 		Object value = getComponentValue();
 		Field field = getField();
-		log.applyInput(value, this);
 		reflectionToolbox.setValueTo(field, parent, value);
+		log.applyInput(value, this);
 	}
 
 	@Override
 	public void restoreInput(Object parent) {
 		Object value = getValue();
-		log.restoreInput(value, this);
 		setComponentValue(value);
+		log.restoreInput(value, this);
 	}
 }
