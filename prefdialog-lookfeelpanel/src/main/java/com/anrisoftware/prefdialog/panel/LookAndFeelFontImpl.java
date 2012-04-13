@@ -37,11 +37,15 @@ class LookAndFeelFontImpl implements LookAndFeelFont {
 	private final Font font = Font.decode(null);
 
 	@Checkbox(title = "Change the font:", text = "yes/no")
-	private final boolean changeFont = false;
+	private boolean changeFont = false;
 
 	@Override
 	public boolean getChangeFont() {
 		return changeFont;
+	}
+
+	public void setChangeFont(boolean changeFont) {
+		this.changeFont = changeFont;
 	}
 
 	@Override

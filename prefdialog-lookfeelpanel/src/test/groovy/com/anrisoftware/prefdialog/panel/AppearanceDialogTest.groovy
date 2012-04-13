@@ -40,22 +40,19 @@ class AppearanceDialogTest extends TestFrameUtil {
 		Appearance appearance
 	}
 
+	def panel
+
 	@Before
 	void beforeTest() {
 		frameSize = new Dimension(480, 640)
+		panel = injector.getInstance(Panel)
 	}
 
 	@Test
 	void "select font and apply dialog"() {
-		def panel = injector.getInstance(Panel)
 		beginPanelFrame TITLE, new JPanel(), {
-			def dialogHandler = factory.create(frame, panel).createDialog()
-			def dialog = dialogHandler.getAWTComponent()
-			dialog.modal = false
-			dialog.size = frameSize
-			dialog.visible = true
-
-			fixture.checkBox()
+			createDialog()
+			fixture.checkBox("changeFont").click()
 			fixture.toggleButton("$OPEN_FONT_BUTTON-font").click()
 			fixture.textBox(NAME_FIELD_NAME).deleteText()
 			fixture.textBox(NAME_FIELD_NAME).enterText("Serif")
@@ -63,9 +60,25 @@ class AppearanceDialogTest extends TestFrameUtil {
 			fixture.textBox(STYLE_FIELD_NAME).enterText("Bold")
 			fixture.textBox(SIZE_FIELD_NAME).deleteText()
 			fixture.textBox(SIZE_FIELD_NAME).enterText("12")
-
 			fixture.button("apply").click()
 		}
+		assert panel.appearance.lookAndFeelFont.changeFont == true
 		assert panel.appearance.lookAndFeelFont.font == new Font("Serif", Font.BOLD, 12)
+	}
+
+	@Test
+	void "manually"() {
+		beginPanelFrame TITLE, new JPanel(), {
+			createDialog()
+			Thread.sleep 60000
+		}
+	}
+
+	private createDialog() {
+		def dialogHandler = factory.create(frame, panel).createDialog()
+		def dialog = dialogHandler.getAWTComponent()
+		dialog.modal = false
+		dialog.size = frameSize
+		dialog.visible = true
 	}
 }
