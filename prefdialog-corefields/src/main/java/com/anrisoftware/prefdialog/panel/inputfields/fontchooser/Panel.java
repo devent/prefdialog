@@ -1,7 +1,8 @@
 package com.anrisoftware.prefdialog.panel.inputfields.fontchooser;
 
-import static com.anrisoftware.prefdialog.panel.inputfields.fontchooser.FieldPanel.FONTBOX;
-import static com.anrisoftware.prefdialog.panel.inputfields.fontchooser.FieldPanel.OPEN_FONT_BUTTON;
+import static com.anrisoftware.prefdialog.panel.inputfields.fontchooser.FontChooserFieldHandler.FONTBOX;
+import static com.anrisoftware.prefdialog.panel.inputfields.fontchooser.FontChooserFieldHandler.OPEN_FONT_BUTTON;
+import static com.anrisoftware.swingcomponents.slidingpanel.api.SlidingPanel.ANIMATING_PROPERTY;
 import static info.clearthought.layout.TableLayoutConstants.FILL;
 import static info.clearthought.layout.TableLayoutConstants.PREFERRED;
 import static java.lang.String.format;
@@ -136,7 +137,7 @@ class Panel {
 			}
 
 		});
-		panel.addPropertyChangeListener(SlidingPanel.ANIMATING_PROPERTY,
+		panel.addPropertyChangeListener(ANIMATING_PROPERTY,
 				new PropertyChangeListener() {
 
 					@Override

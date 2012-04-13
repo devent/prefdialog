@@ -35,16 +35,6 @@ import com.google.inject.Inject;
  */
 class FieldPanel extends AbstractLabelFieldPanel<JPanel> {
 
-	/**
-	 * Name prefix for the open font button.
-	 */
-	public static final String OPEN_FONT_BUTTON = "openfontbutton";
-
-	/**
-	 * Name prefix for the font combo box.
-	 */
-	public static final String FONTBOX = "fontbox";
-
 	private FieldPanelLogger log;
 
 	private final Panel slidingPanel;

@@ -18,8 +18,8 @@
  */
 package com.anrisoftware.prefdialog.panel.inputfields.fontchooser
 
-import static com.anrisoftware.prefdialog.panel.inputfields.fontchooser.FieldPanel.FONTBOX
-import static com.anrisoftware.prefdialog.panel.inputfields.fontchooser.FieldPanel.OPEN_FONT_BUTTON
+import static com.anrisoftware.prefdialog.panel.inputfields.fontchooser.FontChooserFieldHandler.FONTBOX
+import static com.anrisoftware.prefdialog.panel.inputfields.fontchooser.FontChooserFieldHandler.OPEN_FONT_BUTTON
 import static com.anrisoftware.prefdialog.swingutils.AbstractLabelFieldPanel.TITLE_LABEL
 
 import java.awt.Font
@@ -57,7 +57,7 @@ class FontChooserTest extends AbstractFieldFixture {
 		fixture.label("$TITLE_LABEL-$FONT").requireVisible()
 		assert fixture.label("$TITLE_LABEL-$FONT").text() == FONT
 		fixture.comboBox("$FONTBOX-$FONT").requireVisible()
-		fixture.button("$OPEN_FONT_BUTTON-$FONT").requireVisible()
+		fixture.toggleButton("$OPEN_FONT_BUTTON-$FONT").requireVisible()
 	}
 
 	@Test

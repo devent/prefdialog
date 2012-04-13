@@ -32,8 +32,17 @@ import com.google.inject.assistedinject.Assisted;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 2.1
  */
-class FontChooserFieldHandler extends
+public class FontChooserFieldHandler extends
 		AbstractLabelFieldHandler<FieldPanel> {
+
+	/**
+	 * Name prefix for the open font button.
+	 */
+	public static final String OPEN_FONT_BUTTON = "openfontbutton";
+	/**
+	 * Name prefix for the font combo box.
+	 */
+	public static final String FONTBOX = "fontbox";
 
 	/**
 	 * Sets the parameter of the {@link FieldPanel}.
