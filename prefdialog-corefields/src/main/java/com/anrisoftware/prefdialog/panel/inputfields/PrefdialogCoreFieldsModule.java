@@ -44,7 +44,6 @@ import com.anrisoftware.prefdialog.panel.inputfields.slider.SliderModule;
 import com.anrisoftware.prefdialog.panel.inputfields.textfield.TextFieldModule;
 import com.anrisoftware.prefdialog.panel.inputfields.textfield.formattedtextfield.FormattedTextFieldModule;
 import com.anrisoftware.prefdialog.reflection.ReflectionModule;
-import com.anrisoftware.prefdialog.swingutils.SwingUtilsModule;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -61,7 +60,6 @@ public class PrefdialogCoreFieldsModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
-		install(new SwingUtilsModule());
 		install(new ButtonModule());
 		install(new CheckboxModule());
 		install(new ComboBoxModule());
