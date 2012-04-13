@@ -68,4 +68,8 @@ class AppearanceImpl implements Appearance {
 		return lookAndFeelFont;
 	}
 
+	@Override
+	public String toString() {
+		return "Appearance";
+	}
 }

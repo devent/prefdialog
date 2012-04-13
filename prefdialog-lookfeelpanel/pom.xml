@@ -21,6 +21,12 @@
 		<dependency>
 			<groupId>com.anrisoftware.globalpom</groupId>
 			<artifactId>globalpom-groovytestutils</artifactId>
+            <scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.anrisoftware.prefdialog</groupId>
+			<artifactId>prefdialog-dialog</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
