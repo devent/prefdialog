@@ -20,9 +20,6 @@ public class CheckboxModule extends AbstractModule {
 				new TypeLiteral<FieldHandler<?>>() {
 				}, CheckBoxFieldHandler.class).build(
 				CheckBoxFieldHandlerFactory.class));
-		install(new FactoryModuleBuilder().implement(
-				LoggerFactory.Logger.class, LoggerFactory.Logger.class).build(
-				LoggerFactory.class));
 	}
 
 }

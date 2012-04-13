@@ -38,9 +38,8 @@ import com.google.inject.assistedinject.Assisted;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 2.1
  */
-class CheckBoxFieldHandler extends AbstractLabelFieldHandler<CheckBoxPanel> {
-
-	private LoggerFactory.Logger log;
+public class CheckBoxFieldHandler extends
+		AbstractLabelFieldHandler<CheckBoxPanel> {
 
 	/**
 	 * Sets the parameter of the {@link CheckBoxPanel}.
@@ -80,14 +79,6 @@ class CheckBoxFieldHandler extends AbstractLabelFieldHandler<CheckBoxPanel> {
 		String text = getReflectionToolbox().invokeMethodWithReturnType("text",
 				String.class, a);
 		getComponent().setText(text);
-		log.setText(text, this);
 	}
 
-	/**
-	 * Injects the checkbox field {@link LoggerFactory}.
-	 */
-	@Inject
-	public void setCheckBoxFieldLoggerFactory(LoggerFactory loggerFactory) {
-		log = loggerFactory.create(CheckBoxFieldHandler.class);
-	}
 }

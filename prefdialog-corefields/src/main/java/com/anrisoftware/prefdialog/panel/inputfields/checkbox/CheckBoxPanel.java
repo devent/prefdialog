@@ -18,6 +18,7 @@
  */
 package com.anrisoftware.prefdialog.panel.inputfields.checkbox;
 
+import javax.inject.Inject;
 import javax.swing.JCheckBox;
 
 import com.anrisoftware.prefdialog.swingutils.AbstractLabelFieldPanel;
@@ -30,15 +31,15 @@ import com.anrisoftware.prefdialog.swingutils.AbstractLabelFieldPanel;
  */
 class CheckBoxPanel extends AbstractLabelFieldPanel<JCheckBox> {
 
+	private final Logger log;
+
 	/**
 	 * Create and setup the {@link JCheckBox}.
 	 */
-	CheckBoxPanel() {
+	@Inject
+	CheckBoxPanel(Logger log) {
 		super(new JCheckBox());
-		setup();
-	}
-
-	private void setup() {
+		this.log = log;
 	}
 
 	/**
@@ -46,6 +47,7 @@ class CheckBoxPanel extends AbstractLabelFieldPanel<JCheckBox> {
 	 */
 	public void setText(String text) {
 		getPanelField().setText(text);
+		log.setText(text);
 	}
 
 	@Override
