@@ -1,9 +1,12 @@
 package com.anrisoftware.prefdialog.panel
 
+import static com.anrisoftware.swingcomponents.fontchooser.api.FontChooserHandler.*
 import static com.anrisoftware.prefdialog.panel.inputfields.button.ButtonGroupFieldHandler.BUTTON
 import static com.google.inject.Guice.createInjector
+import static com.anrisoftware.prefdialog.panel.inputfields.fontchooser.FontChooserFieldHandler.OPEN_FONT_BUTTON;
 
 import java.awt.Dimension;
+import java.awt.Font
 
 import javax.swing.JPanel
 
@@ -43,7 +46,7 @@ class AppearanceDialogTest extends TestFrameUtil {
 	}
 
 	@Test
-	void "manually"() {
+	void "select font and apply dialog"() {
 		def panel = injector.getInstance(Panel)
 		beginPanelFrame TITLE, new JPanel(), {
 			def dialogHandler = factory.create(frame, panel).createDialog()
@@ -51,7 +54,18 @@ class AppearanceDialogTest extends TestFrameUtil {
 			dialog.modal = false
 			dialog.size = frameSize
 			dialog.visible = true
-			Thread.sleep 60000
+
+			fixture.checkBox()
+			fixture.toggleButton("$OPEN_FONT_BUTTON-font").click()
+			fixture.textBox(NAME_FIELD_NAME).deleteText()
+			fixture.textBox(NAME_FIELD_NAME).enterText("Serif")
+			fixture.textBox(STYLE_FIELD_NAME).deleteText()
+			fixture.textBox(STYLE_FIELD_NAME).enterText("Bold")
+			fixture.textBox(SIZE_FIELD_NAME).deleteText()
+			fixture.textBox(SIZE_FIELD_NAME).enterText("12")
+
+			fixture.button("apply").click()
 		}
+		assert panel.appearance.lookAndFeelFont.font == new Font("Serif", Font.BOLD, 12)
 	}
 }
