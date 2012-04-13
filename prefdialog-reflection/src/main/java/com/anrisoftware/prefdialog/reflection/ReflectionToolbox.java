@@ -103,7 +103,26 @@ public class ReflectionToolbox {
 	 */
 	public void setValueTo(Field field, Object object, Object value) {
 		String name = getSetterName(field);
-		invokeMethodWithParameters(name, field.getType(), object, value);
+		try {
+			invokeMethodWithParameters(name, field.getType(), object, value);
+		} catch (ReflectionError e) {
+			setValueToField(field, object, value);
+		}
+	}
+
+	private void setValueToField(Field field, Object object, Object value) {
+		field.setAccessible(true);
+		try {
+			field.set(object, value);
+		} catch (IllegalArgumentException e) {
+			throw new ReflectionError(format(
+					"Illegal argument to field '%s' in object '%s'.", field,
+					object), e);
+		} catch (IllegalAccessException e) {
+			throw new ReflectionError(format(
+					"Illegal access to field '%s' in object '%s'.", field,
+					object), e);
+		}
 	}
 
 	private String getSetterName(Field field) {
