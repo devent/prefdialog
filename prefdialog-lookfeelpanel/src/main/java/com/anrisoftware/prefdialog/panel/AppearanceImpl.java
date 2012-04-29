@@ -36,7 +36,7 @@ import com.google.inject.Inject;
  */
 class AppearanceImpl implements Appearance {
 
-	@ComboBox(title = "Look and feel:", model = LookAndFeelsModel.class, renderer = LookAndFeelsRenderer.class)
+	@ComboBox(title = "Look and feel:", modelClass = LookAndFeelsModel.class, rendererClass = LookAndFeelsRenderer.class)
 	private final LookAndFeelInfoListItem lookAndFeel;
 
 	@Group(title = "Font:")
