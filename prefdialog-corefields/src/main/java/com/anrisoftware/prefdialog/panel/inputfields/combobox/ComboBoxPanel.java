@@ -20,6 +20,7 @@ package com.anrisoftware.prefdialog.panel.inputfields.combobox;
 
 import java.util.Collection;
 
+import javax.inject.Inject;
 import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.ListCellRenderer;
@@ -35,11 +36,15 @@ import com.anrisoftware.prefdialog.swingutils.AbstractLabelFieldPanel;
  */
 class ComboBoxPanel extends AbstractLabelFieldPanel<JComboBox> {
 
+	private final ComboBoxPanelLogger log;
+
 	/**
 	 * Create and setup the {@link JComboBox}.
 	 */
-	ComboBoxPanel() {
+	@Inject
+	ComboBoxPanel(ComboBoxPanelLogger logger) {
 		super(new JComboBox());
+		this.log = logger;
 	}
 
 	@Override
@@ -65,6 +70,7 @@ class ComboBoxPanel extends AbstractLabelFieldPanel<JComboBox> {
 		for (Object object : values) {
 			model.addElement(object);
 		}
+		log.valuesSet(this, values);
 	}
 
 	private MutableComboBoxModel getMutableModel() {
@@ -76,6 +82,7 @@ class ComboBoxPanel extends AbstractLabelFieldPanel<JComboBox> {
 	 */
 	public void setRenderer(ListCellRenderer renderer) {
 		getPanelField().setRenderer(renderer);
+		log.rendererSet(this, renderer);
 	}
 
 	/**
@@ -83,6 +90,7 @@ class ComboBoxPanel extends AbstractLabelFieldPanel<JComboBox> {
 	 */
 	public void setModel(ComboBoxModel model) {
 		getPanelField().setModel(model);
+		log.modelSet(this, model);
 	}
 
 }
