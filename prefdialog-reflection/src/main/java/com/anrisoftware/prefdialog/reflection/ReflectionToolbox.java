@@ -21,6 +21,7 @@ package com.anrisoftware.prefdialog.reflection;
 import static java.lang.String.format;
 import static org.fest.reflect.core.Reflection.constructor;
 import static org.fest.reflect.core.Reflection.method;
+import static org.fest.reflect.core.Reflection.property;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -29,6 +30,12 @@ import org.fest.reflect.exception.ReflectionError;
 
 import com.google.inject.Singleton;
 
+/**
+ * Various tools to access fields, find annotations, etc. via reflection.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.0
+ */
 @Singleton
 public class ReflectionToolbox {
 
@@ -263,4 +270,21 @@ public class ReflectionToolbox {
 				.newInstance(parameters);
 	}
 
+	/**
+	 * Returns a value from a property name.
+	 * 
+	 * @param target
+	 *            the target object where the property is defined.
+	 * 
+	 * @param name
+	 *            the name of the property.
+	 * 
+	 * @param type
+	 *            the {@link Class} type of the property.
+	 * 
+	 * @since 2.1
+	 */
+	public <T> T valueFromField(Object target, String name, Class<T> type) {
+		return property(name).ofType(type).in(target).get();
+	}
 }
