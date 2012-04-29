@@ -18,7 +18,6 @@
  */
 package com.anrisoftware.prefdialog.panel.inputfields.combobox
 
-import javax.swing.ComboBoxModel
 import javax.swing.DefaultComboBoxModel
 
 import org.junit.Test
@@ -33,7 +32,7 @@ import com.anrisoftware.prefdialog.panel.inputfields.api.ComboBoxFieldHandlerFac
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 2.0
  */
-class ComboBoxCustomModelTest extends AbstractFieldFixture {
+class ComboBoxCustomModelClassTest extends AbstractFieldFixture {
 
 	static factory = injector.getInstance(ComboBoxFieldHandlerFactory)
 
@@ -52,13 +51,11 @@ class ComboBoxCustomModelTest extends AbstractFieldFixture {
 
 	static class General {
 
-		@ComboBox(model = "comboBoxModel")
+		@ComboBox(modelClass = CustomComboBoxModel)
 		String comboBox = "second element"
-
-		ComboBoxModel comboBoxModel = new CustomComboBoxModel()
 	}
 
-	ComboBoxCustomModelTest() {
+	ComboBoxCustomModelClassTest() {
 		super(new General(), COMBO_BOX, factory)
 	}
 

@@ -18,12 +18,14 @@
  */
 package com.anrisoftware.prefdialog.panel.inputfields.combobox;
 
-import java.lang.annotation.Annotation;
+import static org.apache.commons.lang.StringUtils.isEmpty;
+
 import java.lang.reflect.Field;
 import java.util.Collection;
 
 import javax.annotation.Nullable;
 import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.ListCellRenderer;
 
@@ -75,41 +77,60 @@ class ComboBoxFieldHandler extends AbstractLabelFieldHandler<ComboBoxPanel> {
 	 */
 	@Override
 	public FieldHandler<ComboBoxPanel> setup() {
+		setupCustomModel();
 		setupCustomModelClass();
 		setupCustomRendererClass();
 		setupElements();
 		return super.setup();
 	}
 
-	private void setupCustomRendererClass() {
-		Field field = getField();
-		Annotation a = field.getAnnotation(ComboBox.class);
-		Class<? extends ListCellRenderer> rendererClass = getRenderer(a);
-		if (rendererClass == DefaultListCellRenderer.class) {
-			return;
+	private void setupCustomModel() {
+		ComboBoxModel model = getModel();
+		if (model != null) {
+			getComponent().setModel(model);
 		}
-		ListCellRenderer renderer = createInstance(rendererClass);
-		getComponent().setRenderer(renderer);
+	}
+
+	private ComboBoxModel getModel() {
+		String fieldName = getModelFromA();
+		if (isEmpty(fieldName)) {
+			return null;
+		}
+		return getReflectionToolbox().valueFromField(getParentObject(),
+				fieldName, ComboBoxModel.class);
+	}
+
+	private String getModelFromA() {
+		return getReflectionToolbox().valueFromA(getField(), "model",
+				String.class, getAnnotationClass());
+	}
+
+	private void setupCustomRendererClass() {
+		Class<? extends ListCellRenderer> rendererClass = getRendererClass();
+		if (rendererClass != DefaultListCellRenderer.class) {
+			ListCellRenderer renderer = createInstance(rendererClass);
+			getComponent().setRenderer(renderer);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
-	private Class<? extends ListCellRenderer> getRenderer(Annotation a) {
-		return getReflectionToolbox().invokeMethodWithReturnType(
-				"rendererClass", Class.class, a);
+	private Class<? extends ListCellRenderer> getRendererClass() {
+		return getReflectionToolbox().valueFromA(getField(), "rendererClass",
+				Class.class, getAnnotationClass());
 	}
 
 	private void setupCustomModelClass() {
-		Field field = getField();
-		Annotation a = field.getAnnotation(ComboBox.class);
-		Class<? extends ComboBoxModel> modelClass = getModel(a);
-		ComboBoxModel model = createInstance(modelClass);
-		getComponent().setModel(model);
+		Class<? extends ComboBoxModel> modelClass = getModelClass();
+		if (modelClass != DefaultComboBoxModel.class) {
+			ComboBoxModel model = createInstance(modelClass);
+			getComponent().setModel(model);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
-	private Class<? extends ComboBoxModel> getModel(Annotation a) {
-		return getReflectionToolbox().invokeMethodWithReturnType("modelClass",
-				Class.class, a);
+	private Class<? extends ComboBoxModel> getModelClass() {
+		return getReflectionToolbox().valueFromA(getField(), "modelClass",
+				Class.class, getAnnotationClass());
 	}
 
 	private <T> T createInstance(Class<? extends T> clazz) {
@@ -130,8 +151,12 @@ class ComboBoxFieldHandler extends AbstractLabelFieldHandler<ComboBoxPanel> {
 	}
 
 	private Collection<?> getElements() {
+		String fieldName = getElementsFromA();
+		if (isEmpty(fieldName)) {
+			return null;
+		}
 		return getReflectionToolbox().valueFromField(getParentObject(),
-				getElementsFromA(), Collection.class);
+				fieldName, Collection.class);
 	}
 
 	private String getElementsFromA() {
