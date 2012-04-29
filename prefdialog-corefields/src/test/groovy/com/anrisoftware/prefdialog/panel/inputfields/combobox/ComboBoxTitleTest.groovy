@@ -25,7 +25,6 @@ import java.util.List
 import org.junit.Test
 
 import com.anrisoftware.prefdialog.annotations.ComboBox
-import com.anrisoftware.prefdialog.annotations.ComboBoxElements
 import com.anrisoftware.prefdialog.panel.inputfields.FieldFixtureHandler
 import com.anrisoftware.prefdialog.panel.inputfields.api.ComboBoxFieldHandlerFactory
 
@@ -41,21 +40,20 @@ class ComboBoxTitleTest extends FieldFixtureHandler {
 
 	static class General {
 
-		@ComboBoxElements("Some combo box")
-		List<String> comboBoxElements = [
+		@ComboBox(elements="comboBoxElements")
+		String defaultTitle = "first element"
+
+		@ComboBox(title="Second combo box:", elements="comboBoxElements")
+		String customTitle = "first element"
+
+		@ComboBox(showTitle=false, elements="comboBoxElements")
+		String hideTitle= "first element"
+
+		List comboBoxElements = [
 			"first element",
 			"second element",
 			"third element"
 		]
-
-		@ComboBox(elements="Some combo box")
-		String defaultTitle = "first element"
-
-		@ComboBox(title="Second combo box:", elements="Some combo box")
-		String customTitle = "first element"
-
-		@ComboBox(showTitle=false, elements="Some combo box")
-		String hideTitle= "first element"
 	}
 
 	@Test

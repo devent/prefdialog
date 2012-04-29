@@ -23,7 +23,6 @@ import java.util.List
 import org.junit.Test
 
 import com.anrisoftware.prefdialog.annotations.ComboBox
-import com.anrisoftware.prefdialog.annotations.ComboBoxElements
 import com.anrisoftware.prefdialog.panel.inputfields.AbstractFieldFixture
 import com.anrisoftware.prefdialog.panel.inputfields.api.ComboBoxFieldHandlerFactory
 
@@ -35,15 +34,14 @@ class ComboBoxTest extends AbstractFieldFixture {
 
 	static class General {
 
-		@ComboBoxElements("Some combo box")
-		List<String> comboBoxElements = [
+		@ComboBox(elements="comboBoxElements")
+		String comboBox = "first element"
+
+		List comboBoxElements = [
 			"first element",
 			"second element",
 			"third element"
 		]
-
-		@ComboBox(elements="Some combo box")
-		String comboBox = "first element"
 	}
 
 	ComboBoxTest() {

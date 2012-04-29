@@ -29,7 +29,6 @@ import javax.swing.ListCellRenderer;
 
 import com.anrisoftware.prefdialog.FieldHandler;
 import com.anrisoftware.prefdialog.annotations.ComboBox;
-import com.anrisoftware.prefdialog.annotations.ComboBoxElements;
 import com.anrisoftware.prefdialog.swingutils.AbstractLabelFieldHandler;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -124,29 +123,19 @@ class ComboBoxFieldHandler extends AbstractLabelFieldHandler<ComboBoxPanel> {
 	}
 
 	private void setupElements() {
-		Collection<?> values = getValuesFromAnnotationIn();
-		if (values != null) {
-			getComponent().setValues(values);
+		Collection<?> elements = getElements();
+		if (elements != null) {
+			getComponent().setValues(elements);
 		}
 	}
 
-	private Collection<?> getValuesFromAnnotationIn() {
-		Object parentObject = getParentObject();
-		Field field = getField();
-		Annotation a = field.getAnnotation(ComboBox.class);
-		String elements = getElements(a);
-		return getElementsCollection(parentObject, elements);
+	private Collection<?> getElements() {
+		return getReflectionToolbox().valueFromField(getParentObject(),
+				getElementsFromA(), Collection.class);
 	}
 
-	private Collection<?> getElementsCollection(Object parentObject,
-			String elements) {
-		return ((Collection<?>) getReflectionToolbox()
-				.searchObjectWithAnnotationValueIn(parentObject,
-						ComboBoxElements.class, elements, Collection.class));
-	}
-
-	private String getElements(Annotation a) {
-		return getReflectionToolbox().invokeMethodWithReturnType("elements",
-				String.class, a);
+	private String getElementsFromA() {
+		return getReflectionToolbox().valueFromA(getField(), "elements",
+				String.class, getAnnotationClass());
 	}
 }

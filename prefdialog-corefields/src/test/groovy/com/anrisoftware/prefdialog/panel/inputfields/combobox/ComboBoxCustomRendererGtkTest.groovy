@@ -26,7 +26,6 @@ import javax.swing.JList
 import org.junit.Test
 
 import com.anrisoftware.prefdialog.annotations.ComboBox
-import com.anrisoftware.prefdialog.annotations.ComboBoxElements
 import com.anrisoftware.prefdialog.panel.inputfields.AbstractFieldFixture
 import com.anrisoftware.prefdialog.panel.inputfields.api.ComboBoxFieldHandlerFactory
 
@@ -46,15 +45,14 @@ class ComboBoxCustomRendererGtkTest extends AbstractFieldFixture {
 
 	static class General {
 
-		@ComboBoxElements("Some combo box")
+		@ComboBox(rendererClass=CustomComboBoxRenderer, elements="comboBoxElements")
+		String comboBox = "first element"
+
 		List<String> comboBoxElements = [
 			"first element",
 			"second element",
 			"third element"
 		]
-
-		@ComboBox(rendererClass=CustomComboBoxRenderer, elements="Some combo box")
-		String comboBox = "first element"
 	}
 
 	ComboBoxCustomRendererGtkTest() {

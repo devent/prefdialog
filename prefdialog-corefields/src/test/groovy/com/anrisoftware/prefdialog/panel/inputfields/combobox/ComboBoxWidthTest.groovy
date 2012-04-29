@@ -23,7 +23,6 @@ import java.util.List
 import org.junit.Test
 
 import com.anrisoftware.prefdialog.annotations.ComboBox
-import com.anrisoftware.prefdialog.annotations.ComboBoxElements
 import com.anrisoftware.prefdialog.panel.inputfields.AbstractFieldFixture
 import com.anrisoftware.prefdialog.panel.inputfields.api.ComboBoxFieldHandlerFactory
 
@@ -35,15 +34,14 @@ class ComboBoxWidthTest extends AbstractFieldFixture {
 
 	static class General {
 
-		@ComboBoxElements("combobox1")
-		List<String> comboBoxElements = [
+		@ComboBox(elements = "comboBoxElements", width = -2.0d)
+		String comboBox = ""
+
+		List comboBoxElements = [
 			"first element",
 			"second element",
 			"third element"
 		]
-
-		@ComboBox(elements = "combobox1", width = -2.0d)
-		String comboBox = ""
 	}
 
 	ComboBoxWidthTest() {
