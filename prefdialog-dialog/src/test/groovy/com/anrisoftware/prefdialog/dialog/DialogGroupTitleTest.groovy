@@ -27,7 +27,6 @@ import org.junit.Test
 import com.anrisoftware.prefdialog.annotations.Checkbox
 import com.anrisoftware.prefdialog.annotations.Child
 import com.anrisoftware.prefdialog.annotations.ComboBox
-import com.anrisoftware.prefdialog.annotations.ComboBoxElements
 import com.anrisoftware.prefdialog.annotations.FormattedTextField
 import com.anrisoftware.prefdialog.annotations.Group
 import com.anrisoftware.prefdialog.annotations.RadioButton
@@ -64,8 +63,7 @@ class DialogGroupTitleTest extends AbstractPreferenceDialogFixture {
 		@RadioButton(columns=2)
 		Colors colors = Colors.BLACK
 
-		@ComboBoxElements("combobox1")
-		List<String> comboBoxElements = [
+		List combobox1 = [
 			"first element",
 			"second element",
 			"third element"
