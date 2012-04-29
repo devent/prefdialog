@@ -26,6 +26,12 @@ import com.anrisoftware.prefdialog.annotations.ComboBox
 import com.anrisoftware.prefdialog.panel.inputfields.AbstractFieldFixture
 import com.anrisoftware.prefdialog.panel.inputfields.api.ComboBoxFieldHandlerFactory
 
+/**
+ * Test the {@link ComboBox} field with a custom model class.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.0
+ */
 class ComboBoxCustomModelTest extends AbstractFieldFixture {
 
 	static factory = injector.getInstance(ComboBoxFieldHandlerFactory)
@@ -45,7 +51,7 @@ class ComboBoxCustomModelTest extends AbstractFieldFixture {
 
 	static class General {
 
-		@ComboBox(model=CustomComboBoxModel)
+		@ComboBox(modelClass = CustomComboBoxModel)
 		String comboBox = "second element"
 	}
 

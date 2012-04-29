@@ -98,8 +98,8 @@ class ComboBoxFieldHandler extends AbstractLabelFieldHandler<ComboBoxPanel> {
 
 	@SuppressWarnings("unchecked")
 	private Class<? extends ListCellRenderer> getRenderer(Annotation a) {
-		return getReflectionToolbox().invokeMethodWithReturnType("renderer",
-				Class.class, a);
+		return getReflectionToolbox().invokeMethodWithReturnType(
+				"rendererClass", Class.class, a);
 	}
 
 	private void setupCustomModel() {
@@ -113,7 +113,7 @@ class ComboBoxFieldHandler extends AbstractLabelFieldHandler<ComboBoxPanel> {
 
 	@SuppressWarnings("unchecked")
 	private Class<? extends ComboBoxModel> getModel(Annotation a) {
-		return getReflectionToolbox().invokeMethodWithReturnType("model",
+		return getReflectionToolbox().invokeMethodWithReturnType("modelClass",
 				Class.class, a);
 	}
 

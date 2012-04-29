@@ -53,7 +53,7 @@ class ComboBoxCustomRendererGtkTest extends AbstractFieldFixture {
 			"third element"
 		]
 
-		@ComboBox(renderer=CustomComboBoxRenderer, elements="Some combo box")
+		@ComboBox(rendererClass=CustomComboBoxRenderer, elements="Some combo box")
 		String comboBox = "first element"
 	}
 
