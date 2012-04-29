@@ -48,11 +48,10 @@ import javax.swing.ListCellRenderer;
  * </p>
  * 
  * <pre>
- * &#064;ComboBox(elements = &quot;Some Field&quot;)
+ * &#064;ComboBox(elements = &quot;someFieldElements&quot;)
  * private String someField;
  * 
- * &#064;ComboBoxElements(&quot;Some Field&quot;)
- * private String[] someField = { &quot;first&quot;, &quot;second&quot;, &quot;third&quot; };
+ * private String[] someFieldElements = { &quot;first&quot;, &quot;second&quot;, &quot;third&quot; };
  * </pre>
  * <p>
  * Example B:
@@ -113,8 +112,25 @@ public @interface ComboBox {
 	String icon() default "";
 
 	/**
+	 * <p>
 	 * Optional the name of the field to use for the elements of the combo box.
-	 * Needs to be the same as of {@link ComboBoxElements#value()}.
+	 * Not needed if the model or model class is set.
+	 * </p>
+	 * <p>
+	 * We first access the field through a getter method if such getter method
+	 * exists. If no getter method exists, we access the field via reflection.
+	 * </p>
+	 * <p>
+	 * For example:
+	 * </p>
+	 * 
+	 * <pre>
+	 * &#064;ComboBox(elements = &quot;someFieldElements&quot;)
+	 * private String someField;
+	 * 
+	 * private String[] someFieldElements = { &quot;first&quot;, &quot;second&quot;, &quot;third&quot; };
+	 * </pre>
+	 * 
 	 */
 	String elements() default "";
 
