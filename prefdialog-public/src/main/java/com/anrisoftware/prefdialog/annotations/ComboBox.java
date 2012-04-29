@@ -62,6 +62,9 @@ import javax.swing.ListCellRenderer;
  * &#064;ComboBox(model = CustomComboBoxModel.class)
  * private String someField;
  * </pre>
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.0
  */
 @Target(FIELD)
 @Retention(RUNTIME)
@@ -116,12 +119,36 @@ public @interface ComboBox {
 	String elements() default "";
 
 	/**
-	 * Optional a custom {@link ComboBoxModel} to use with this combo box.
+	 * <p>
+	 * Optional the name of the field to use for the custom
+	 * {@link ComboBoxModel}.
+	 * </p>
+	 * <p>
+	 * For example:
+	 * </p>
+	 * 
+	 * <pre>
+	 * &#064;ComboBox(model = &quot;customModel&quot;)
+	 * private String someField;
+	 * 
+	 * private ComboBoxModel customModel = new MyComboBoxModel();
+	 * </pre>
+	 * 
+	 * @since 2.1
 	 */
-	Class<? extends ComboBoxModel> model() default DefaultComboBoxModel.class;
+	String model() default "";
+
+	/**
+	 * Optional a custom {@link ComboBoxModel} to use with this combo box.
+	 * 
+	 * @since 2.1
+	 */
+	Class<? extends ComboBoxModel> modelClass() default DefaultComboBoxModel.class;
 
 	/**
 	 * Optional a custom {@link ListCellRenderer} to use with this combo box.
+	 * 
+	 * @since 2.1
 	 */
-	Class<? extends ListCellRenderer> renderer() default DefaultListCellRenderer.class;
+	Class<? extends ListCellRenderer> rendererClass() default DefaultListCellRenderer.class;
 }
