@@ -44,7 +44,7 @@ import javax.swing.ListCellRenderer;
  * {@link ComboBox#model()}.
  * </p>
  * <p>
- * Example A:
+ * Example with predefined combo-box elements.
  * </p>
  * 
  * <pre>
