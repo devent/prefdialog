@@ -53,12 +53,27 @@ import javax.swing.ListCellRenderer;
  * 
  * private String[] someFieldElements = { &quot;first&quot;, &quot;second&quot;, &quot;third&quot; };
  * </pre>
+ * 
  * <p>
- * Example B:
+ * Example with a custom {@link ComboBoxModel}. The instance in the field
+ * "model" is set as the new model.
  * </p>
  * 
  * <pre>
- * &#064;ComboBox(model = CustomComboBoxModel.class)
+ * &#064;ComboBox(model = &quot;model&quot;)
+ * private String someField;
+ * 
+ * private ComboBoxModel model = new CustomComboBoxModel();
+ * </pre>
+ * 
+ * <p>
+ * <p>
+ * Example with a custom {@link ComboBoxModel} class. A new instance of the
+ * custom model is created.
+ * </p>
+ * 
+ * <pre>
+ * &#064;ComboBox(modelClass = CustomComboBoxModel.class)
  * private String someField;
  * </pre>
  * 
