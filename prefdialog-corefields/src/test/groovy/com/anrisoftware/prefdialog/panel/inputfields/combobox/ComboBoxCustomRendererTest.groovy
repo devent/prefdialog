@@ -22,6 +22,7 @@ import java.awt.Component
 
 import javax.swing.DefaultListCellRenderer
 import javax.swing.JList
+import javax.swing.ListCellRenderer;
 
 import org.junit.Test
 
@@ -45,10 +46,12 @@ class ComboBoxCustomRendererTest extends AbstractFieldFixture {
 
 	static class General {
 
-		@ComboBox(rendererClass=CustomComboBoxRenderer, elements="comboBoxElements")
+		@ComboBox(renderer="renderer", elements="comboBoxElements")
 		String customRenderer = "first element"
 
-		List<String> comboBoxElements = [
+		ListCellRenderer renderer = new CustomComboBoxRenderer()
+
+		List comboBoxElements = [
 			"first element",
 			"second element",
 			"third element"

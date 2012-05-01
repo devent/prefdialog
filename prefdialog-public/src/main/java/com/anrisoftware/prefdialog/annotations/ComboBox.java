@@ -67,6 +67,17 @@ import javax.swing.ListCellRenderer;
  * </pre>
  * 
  * <p>
+ * Example with a custom {@link ListCellRenderer}. The instance in the field
+ * "renderer" is set as the new renderer.
+ * </p>
+ * 
+ * <pre>
+ * &#064;ComboBox(renderer = &quot;renderer&quot;)
+ * private String someField;
+ * 
+ * private ListCellRenderer renderer = new CustomListCellRenderer();
+ * </pre>
+ * 
  * <p>
  * Example with a custom {@link ComboBoxModel} class. A new instance of the
  * custom model is created.
@@ -168,6 +179,26 @@ public @interface ComboBox {
 	 * @since 2.1
 	 */
 	String model() default "";
+
+	/**
+	 * <p>
+	 * Optional the name of the field to use for the custom
+	 * {@link ListCellRenderer}.
+	 * </p>
+	 * <p>
+	 * For example:
+	 * </p>
+	 * 
+	 * <pre>
+	 * &#064;ComboBox(renderer = &quot;customRenderer&quot;)
+	 * private String someField;
+	 * 
+	 * private ListCellRenderer customRenderer = new MyListCellRenderer();
+	 * </pre>
+	 * 
+	 * @since 2.1
+	 */
+	String renderer() default "";
 
 	/**
 	 * Optional a custom {@link ComboBoxModel} to use with this combo box.

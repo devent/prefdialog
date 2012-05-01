@@ -48,7 +48,8 @@ import com.google.inject.assistedinject.Assisted;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 2.1
  */
-class ComboBoxFieldHandler extends AbstractLabelFieldHandler<ComboBoxPanel> {
+public class ComboBoxFieldHandler extends
+		AbstractLabelFieldHandler<ComboBoxPanel> {
 
 	/**
 	 * Sets the parameter of the {@link ComboBoxPanel}.
@@ -78,6 +79,7 @@ class ComboBoxFieldHandler extends AbstractLabelFieldHandler<ComboBoxPanel> {
 	@Override
 	public FieldHandler<ComboBoxPanel> setup() {
 		setupCustomModel();
+		setupCustomRenderer();
 		setupCustomModelClass();
 		setupCustomRendererClass();
 		setupElements();
@@ -102,6 +104,27 @@ class ComboBoxFieldHandler extends AbstractLabelFieldHandler<ComboBoxPanel> {
 
 	private String getModelFromA() {
 		return getReflectionToolbox().valueFromA(getField(), "model",
+				String.class, getAnnotationClass());
+	}
+
+	private void setupCustomRenderer() {
+		ListCellRenderer renderer = getRenderer();
+		if (renderer != null) {
+			getComponent().setRenderer(renderer);
+		}
+	}
+
+	private ListCellRenderer getRenderer() {
+		String fieldName = getRendererFromA();
+		if (isEmpty(fieldName)) {
+			return null;
+		}
+		return getReflectionToolbox().valueFromField(getParentObject(),
+				fieldName, ListCellRenderer.class);
+	}
+
+	private String getRendererFromA() {
+		return getReflectionToolbox().valueFromA(getField(), "renderer",
 				String.class, getAnnotationClass());
 	}
 
