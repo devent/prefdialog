@@ -29,11 +29,11 @@ import com.anrisoftware.prefdialog.annotations.ComboBox
 import com.anrisoftware.prefdialog.panel.inputfields.AbstractFieldFixture
 import com.anrisoftware.prefdialog.panel.inputfields.api.ComboBoxFieldHandlerFactory
 
-class ComboBoxCustomRendererGtkTest extends AbstractFieldFixture {
+class ComboBoxCustomRendererClassTest extends AbstractFieldFixture {
 
 	static factory = injector.getInstance(ComboBoxFieldHandlerFactory)
 
-	static final String COMBO_BOX = "comboBox"
+	static final String CUSTOM_RENDERER = "customRenderer"
 
 	static class CustomComboBoxRenderer extends DefaultListCellRenderer {
 		Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
@@ -46,7 +46,7 @@ class ComboBoxCustomRendererGtkTest extends AbstractFieldFixture {
 	static class General {
 
 		@ComboBox(rendererClass=CustomComboBoxRenderer, elements="comboBoxElements")
-		String comboBox = "first element"
+		String customRenderer = "first element"
 
 		List<String> comboBoxElements = [
 			"first element",
@@ -55,13 +55,26 @@ class ComboBoxCustomRendererGtkTest extends AbstractFieldFixture {
 		]
 	}
 
-	ComboBoxCustomRendererGtkTest() {
-		super(new General(), COMBO_BOX, factory, "com.sun.java.swing.plaf.gtk.GTKLookAndFeel")
+	ComboBoxCustomRendererClassTest() {
+		super(new General(), CUSTOM_RENDERER, factory)
 	}
 
 	@Test
-	void "manually"() {
-		//Thread.sleep 60000
+	void "choose second element and apply input"() {
+		fixture.comboBox(CUSTOM_RENDERER).selectItem 1
+		inputField.applyInput parentObject
+
+		fixture.comboBox(CUSTOM_RENDERER).requireSelection 1
+		assert parentObject.customRenderer == "second element"
+	}
+
+	@Test
+	void "choose second element and restore input"() {
+		fixture.comboBox(CUSTOM_RENDERER).selectItem 1
+		inputField.restoreInput parentObject
+
+		fixture.comboBox(CUSTOM_RENDERER).requireSelection 0
+		assert parentObject.customRenderer == "first element"
 	}
 }
 
