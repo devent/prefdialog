@@ -48,8 +48,8 @@ class ButtonGroupTest extends AbstractFieldFixture {
 
 	@Test
 	void "click on buttons"() {
-		fixture.button("$BUTTON-0-$BUTTONS").click()
-		fixture.button("$BUTTON-1-$BUTTONS").click()
+		fixture.button("button-0-$BUTTONS").click()
+		fixture.button("button-1-$BUTTONS").click()
 	}
 
 	@Test
