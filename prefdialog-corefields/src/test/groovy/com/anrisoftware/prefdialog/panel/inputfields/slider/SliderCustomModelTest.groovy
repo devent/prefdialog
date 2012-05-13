@@ -90,6 +90,6 @@ class SliderCustomModelTest extends AbstractFieldFixture {
 
 	@Test
 	void testManually() {
-		Thread.sleep 60000
+		Thread.sleep 0 // 60000
 	}
 }
