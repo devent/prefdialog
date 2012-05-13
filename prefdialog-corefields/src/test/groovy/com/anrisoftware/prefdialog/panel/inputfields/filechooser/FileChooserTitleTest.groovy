@@ -43,14 +43,14 @@ class FileChooserTitleTest extends FieldFixtureHandler {
 	@Test
 	void "default title"() {
 		runFieldFixture new General(), "file1", factory, {
-			assert fixture.label("label-file1").text() == "file1"
+			assert fixture.label("titlelabel-file1").text() == "file1"
 		}
 	}
 
 	@Test
 	void "custom title"() {
 		runFieldFixture new General(), "file2", factory, {
-			assert fixture.label("label-file2").text() == "Save to file:"
+			assert fixture.label("titlelabel-file2").text() == "Save to file:"
 		}
 	}
 
