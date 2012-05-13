@@ -14,16 +14,6 @@
 	<version>2.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-	<modules>
-		<module>../prefdialog-public</module>
-		<module>../prefdialog-reflection</module>
-		<module>../prefdialog-swingutils</module>
-		<module>../prefdialog-corefields</module>
-		<module>../prefdialog-panel</module>
-		<module>../prefdialog-dialog</module>
-		<module>../prefdialog-lookfeelpanel</module>
-	</modules>
-
 	<licenses>
 		<license>
 			<name>LGPLv3</name>

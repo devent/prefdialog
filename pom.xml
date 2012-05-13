@@ -1,0 +1,27 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    
+    <modelVersion>4.0.0</modelVersion>
+    
+    <parent>
+        <groupId>com.anrisoftware.prefdialog</groupId>
+        <artifactId>prefdialog-parent</artifactId>
+        <version>2.1-SNAPSHOT</version>
+        <relativePath>./prefdialog-parent</relativePath>
+    </parent>
+  
+    <artifactId>prefdialog-bundle</artifactId>
+    <packaging>pom</packaging>
+    
+    <modules>
+        <module>../prefdialog-public</module>
+        <module>../prefdialog-reflection</module>
+        <module>../prefdialog-swingutils</module>
+        <module>../prefdialog-corefields</module>
+        <module>../prefdialog-panel</module>
+        <module>../prefdialog-dialog</module>
+        <module>../prefdialog-lookfeelpanel</module>
+    </modules>
+    
+</project>
+ 
