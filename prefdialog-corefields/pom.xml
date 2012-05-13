@@ -12,6 +12,7 @@
 
 	<artifactId>prefdialog-corefields</artifactId>
 	<name>Preferences Dialog Core Fields</name>
+    <version>2.1-SNAPSHOT</version>
 
 	<dependencies>
 		<dependency>
