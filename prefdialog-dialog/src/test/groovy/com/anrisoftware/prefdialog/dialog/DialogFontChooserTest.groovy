@@ -19,7 +19,7 @@
 package com.anrisoftware.prefdialog.dialog
 
 import static com.anrisoftware.swingcomponents.fontchooser.api.FontChooserHandler.*
-import static com.anrisoftware.prefdialog.panel.inputfields.fontchooser.FieldPanel.*
+import static com.anrisoftware.prefdialog.panel.inputfields.fontchooser.FontChooserFieldHandler.*
 import java.awt.Dimension
 import java.awt.Font
 
