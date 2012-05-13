@@ -43,7 +43,7 @@ class AppearancePanelTest extends TestFrameUtil {
 		def panel = factory.create(appearancePanel, "appearance").createPanel()
 		beginPanelFrame "Appearance Panel Test", panel.getAWTComponent(), {
 			//
-			Thread.sleep 60000 //
+			Thread.sleep 0 // 60000
 		}
 	}
 }
