@@ -14,6 +14,7 @@
     <packaging>pom</packaging>
     
     <modules>
+        <module>../prefdialog-parent</module>
         <module>../prefdialog-public</module>
         <module>../prefdialog-reflection</module>
         <module>../prefdialog-swingutils</module>
