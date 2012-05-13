@@ -44,13 +44,13 @@ class CheckboxTest extends AbstractFieldFixture {
 	void "click and apply input"() {
 		fixture.checkBox(AUTOMATIC_SAVE).click()
 		inputField.applyInput parentObject
-		assert parentObject.AUTOMATIC_SAVE == true
+		assert parentObject.automaticSave == true
 	}
 
 	@Test
 	void "click and restore input"() {
 		fixture.checkBox(AUTOMATIC_SAVE).click()
 		inputField.restoreInput parentObject
-		assert parentObject.AUTOMATIC_SAVE == false
+		assert parentObject.automaticSave == false
 	}
 }
