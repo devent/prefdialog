@@ -50,7 +50,7 @@ class ComboBoxGtkTest extends AbstractFieldFixture {
 
 	@Test
 	void "manually"() {
-		Thread.sleep 60000
+		Thread.sleep 0 // 60000
 	}
 }
 
