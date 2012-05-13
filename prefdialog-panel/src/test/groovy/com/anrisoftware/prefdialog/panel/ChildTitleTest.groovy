@@ -98,7 +98,7 @@ class ChildTitleTest extends PanelFixtureHandler {
 	void "hide child title"() {
 		createFieldFixture(new Preferences(), HIDE_TITLE)
 		beginFixture()
-		Thread.sleep 1000
+		// Thread.sleep 1000
 		endFixture()
 	}
 

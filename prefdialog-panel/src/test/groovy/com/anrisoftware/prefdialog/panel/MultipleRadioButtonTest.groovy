@@ -57,10 +57,10 @@ class MultipleRadioButtonTest extends AbstractPanelFixture {
 
 	@Test
 	void testPanelClickApplyAndClose() {
-		fixture.label('label-colors1').requireText 'colors1'
-		fixture.label('label-colors2').requireText 'colors2'
-		fixture.label('label-colors3').requireText 'colors3'
-		fixture.label('label-colors4').requireText 'colors4'
+		fixture.label('titlelabel-colors1').requireText 'colors1'
+		fixture.label('titlelabel-colors2').requireText 'colors2'
+		fixture.label('titlelabel-colors3').requireText 'colors3'
+		fixture.label('titlelabel-colors4').requireText 'colors4'
 		fixture.radioButton('colors1-BLUE').click()
 		fixture.radioButton('colors2-BLUE').click()
 		fixture.radioButton('colors3-BLUE').click()
@@ -75,6 +75,6 @@ class MultipleRadioButtonTest extends AbstractPanelFixture {
 
 	@Test
 	void "manually"() {
-		Thread.sleep 60000
+		Thread.sleep 0 // 60000
 	}
 }
