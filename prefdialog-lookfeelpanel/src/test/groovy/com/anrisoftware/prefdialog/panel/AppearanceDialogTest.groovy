@@ -70,7 +70,7 @@ class AppearanceDialogTest extends TestFrameUtil {
 	void "manually"() {
 		beginPanelFrame TITLE, new JPanel(), {
 			createDialog()
-			Thread.sleep 60000
+			Thread.sleep 0 // 60000
 		}
 	}
 
