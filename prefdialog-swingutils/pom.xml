@@ -11,16 +11,19 @@
 	</parent>
 
 	<artifactId>prefdialog-swingutils</artifactId>
+    <version>2.1-SNAPSHOT</version>
 
 	<dependencies>
-        <dependency>
-            <groupId>com.anrisoftware.prefdialog</groupId>
-            <artifactId>prefdialog-public</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.anrisoftware.prefdialog</groupId>
-            <artifactId>prefdialog-reflection</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>com.anrisoftware.prefdialog</groupId>
+			<artifactId>prefdialog-public</artifactId>
+			<version>2.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.anrisoftware.prefdialog</groupId>
+			<artifactId>prefdialog-reflection</artifactId>
+			<version>2.1-SNAPSHOT</version>
+		</dependency>
 		<dependency>
 			<groupId>tablelayout</groupId>
 			<artifactId>TableLayout</artifactId>
