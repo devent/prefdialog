@@ -28,8 +28,9 @@ import com.google.inject.assistedinject.Assisted;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 2.2
  */
-@SuppressWarnings("serial")
-class ChildrenListPanelImpl extends JPanel implements ChildrenListPanel {
+class ChildrenListPanelImpl implements ChildrenListPanel {
+
+	private final JPanel panel;
 
 	private final JTree childrenTree;
 
@@ -43,6 +44,7 @@ class ChildrenListPanelImpl extends JPanel implements ChildrenListPanel {
 
 	@Inject
 	ChildrenListPanelImpl(@Assisted JPanel panel) {
+		this.panel = panel;
 		this.support = new SwingPropertyChangeSupport(this);
 		this.childrenTree = new JTree();
 		this.childrenTreeScroll = new JScrollPane(childrenTree);
@@ -53,8 +55,8 @@ class ChildrenListPanelImpl extends JPanel implements ChildrenListPanel {
 	}
 
 	private void setupPanel() {
-		setLayout(new BorderLayout());
-		add(childrenTreeScroll, BorderLayout.CENTER);
+		panel.setLayout(new BorderLayout());
+		panel.add(childrenTreeScroll, BorderLayout.CENTER);
 	}
 
 	private void setupChildTree() {
@@ -86,12 +88,12 @@ class ChildrenListPanelImpl extends JPanel implements ChildrenListPanel {
 
 	@Override
 	public JPanel getPanel() {
-		return this;
+		return panel;
 	}
 
 	@Override
 	public void setName(String name) {
-		setName(format("%s-%s", name, PANEL));
+		panel.setName(format("%s-%s", name, PANEL));
 		childrenTreeScroll.setName(format("%s-%s", name,
 				CHILDREN_TREE_SCROLL_PANEL));
 		childrenTree.setName(format("%s-%s", name, CHILDREN_TREE));
@@ -107,6 +109,8 @@ class ChildrenListPanelImpl extends JPanel implements ChildrenListPanel {
 	@Override
 	public void addChildNode(DefaultMutableTreeNode node) {
 		rootNode.add(node);
+		DefaultTreeModel model = (DefaultTreeModel) childrenTree.getModel();
+		model.reload(rootNode);
 	}
 
 	@Override

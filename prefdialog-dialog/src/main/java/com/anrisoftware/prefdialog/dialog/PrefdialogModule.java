@@ -22,6 +22,8 @@ import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.anrisoftware.prefdialog.ChildrenListPanel;
+import com.anrisoftware.prefdialog.ChildrenListPanelFactory;
 import com.anrisoftware.prefdialog.PreferenceDialogHandler;
 import com.anrisoftware.prefdialog.PreferenceDialogHandlerFactory;
 import com.anrisoftware.prefdialog.annotations.Child;
@@ -58,6 +60,9 @@ public class PrefdialogModule extends PrefdialogPanelModule {
 	@Override
 	protected void configure() {
 		super.configure();
+		install(new FactoryModuleBuilder().implement(ChildrenListPanel.class,
+				ChildrenListPanelImpl.class).build(
+				ChildrenListPanelFactory.class));
 		install(new FactoryModuleBuilder().implement(
 				new TypeLiteral<PreferenceDialogHandler>() {
 				}, PreferenceDialogHandlerImpl.class).build(
