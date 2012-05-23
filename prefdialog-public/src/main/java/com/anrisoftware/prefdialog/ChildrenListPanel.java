@@ -65,6 +65,14 @@ public interface ChildrenListPanel {
 	void setSelectedChild(TreeNode[] path);
 
 	/**
+	 * Sets the selected child node in the tree.
+	 * 
+	 * @param child
+	 *            the child {@link Object} in the tree that we need to select.
+	 */
+	void setSelectedChild(Object child);
+
+	/**
 	 * Adds a new child node to the tree.
 	 * 
 	 * @param node

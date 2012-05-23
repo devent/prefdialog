@@ -6,6 +6,7 @@ import static javax.swing.tree.TreeSelectionModel.SINGLE_TREE_SELECTION;
 import java.awt.BorderLayout;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.swing.JPanel;
@@ -20,6 +21,7 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 import com.anrisoftware.prefdialog.ChildrenListPanel;
+import com.google.common.collect.Maps;
 import com.google.inject.assistedinject.Assisted;
 
 /**
@@ -40,6 +42,8 @@ class ChildrenListPanelImpl implements ChildrenListPanel {
 
 	private final PropertyChangeSupport support;
 
+	private final Map<Object, TreeNode[]> childrenNodes;
+
 	private Object selectedChild;
 
 	@Inject
@@ -50,6 +54,7 @@ class ChildrenListPanelImpl implements ChildrenListPanel {
 		this.childrenTreeScroll = new JScrollPane(childrenTree);
 		this.rootNode = new DefaultMutableTreeNode();
 		this.selectedChild = null;
+		this.childrenNodes = Maps.newHashMap();
 		setupPanel();
 		setupChildTree();
 	}
@@ -107,8 +112,18 @@ class ChildrenListPanelImpl implements ChildrenListPanel {
 	}
 
 	@Override
+	public void setSelectedChild(Object child) {
+		TreeNode[] path = childrenNodes.get(child);
+		TreePath selectedPath = new TreePath(path);
+		childrenTree.setSelectionPath(selectedPath);
+		childrenTree.scrollPathToVisible(selectedPath);
+	}
+
+	@Override
 	public void addChildNode(DefaultMutableTreeNode node) {
 		rootNode.add(node);
+		TreeNode[] path = node.getPath();
+		childrenNodes.put(node.getUserObject(), path);
 		DefaultTreeModel model = (DefaultTreeModel) childrenTree.getModel();
 		model.reload(rootNode);
 	}

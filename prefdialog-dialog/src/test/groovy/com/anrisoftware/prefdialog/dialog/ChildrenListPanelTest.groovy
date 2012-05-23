@@ -55,4 +55,27 @@ class ChildrenListPanelTest extends TestFrameUtil {
 			Thread.sleep 20000
 		}
 	}
+
+	@Test
+	void "select child nodes"() {
+		def panel = new JPanel()
+		def name = "test"
+		def childs = ["Aaa", "Bbb", "Ccc"]
+
+		ChildrenListPanel childrenPanel = factory.create panel
+		childrenPanel.addChildNode(new DefaultMutableTreeNode(childs[0]))
+		childrenPanel.addChildNode(new DefaultMutableTreeNode(childs[1]))
+		childrenPanel.addChildNode(new DefaultMutableTreeNode(childs[2]))
+
+		beginPanelFrame TITLE, panel, {
+			childrenPanel.name = name
+			Thread.sleep 2000
+			childrenPanel.setSelectedChild childs[0]
+			Thread.sleep 500
+			childrenPanel.setSelectedChild childs[1]
+			Thread.sleep 500
+			childrenPanel.setSelectedChild childs[2]
+			Thread.sleep 20000
+		}
+	}
 }
