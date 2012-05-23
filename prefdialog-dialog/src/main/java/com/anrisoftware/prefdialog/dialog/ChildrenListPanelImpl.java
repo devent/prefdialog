@@ -17,6 +17,7 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
@@ -131,6 +132,16 @@ class ChildrenListPanelImpl implements ChildrenListPanel {
 		childrenNodes.put(node.getUserObject(), path);
 		DefaultTreeModel model = (DefaultTreeModel) childrenTree.getModel();
 		model.reload(rootNode);
+	}
+
+	@Override
+	public void setChildRenderer(TreeCellRenderer renderer) {
+		childrenTree.setCellRenderer(renderer);
+	}
+
+	@Override
+	public TreeCellRenderer getChildRenderer() {
+		return childrenTree.getCellRenderer();
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.JPanel;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreeNode;
 
 /**
@@ -77,6 +78,24 @@ public interface ChildrenListPanel {
 	 * <code>null</code> if no child object is selected.
 	 */
 	Object getSelectedChild();
+
+	/**
+	 * Sets a new renderer that displays the children notes in the tree.
+	 * 
+	 * @param renderer
+	 *            the {@link TreeCellRenderer} to set.
+	 */
+	void setChildRenderer(TreeCellRenderer renderer);
+
+	/**
+	 * Returns the currently set renderer that displays the children notes in
+	 * the tree.
+	 * 
+	 * @return the set {@link TreeCellRenderer}.
+	 * 
+	 * @see #setChildRenderer(TreeCellRenderer)
+	 */
+	TreeCellRenderer getChildRenderer();
 
 	/**
 	 * Adds a new child node to the tree.
