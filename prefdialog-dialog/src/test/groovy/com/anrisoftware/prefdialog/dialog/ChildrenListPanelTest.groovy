@@ -69,13 +69,17 @@ class ChildrenListPanelTest extends TestFrameUtil {
 
 		beginPanelFrame TITLE, panel, {
 			childrenPanel.name = name
+			assert childrenPanel.selectedChild == null
 			Thread.sleep 2000
 			childrenPanel.setSelectedChild childs[0]
+			assert childrenPanel.selectedChild == childs[0]
 			Thread.sleep 500
 			childrenPanel.setSelectedChild childs[1]
+			assert childrenPanel.selectedChild == childs[1]
 			Thread.sleep 500
 			childrenPanel.setSelectedChild childs[2]
-			Thread.sleep 20000
+			assert childrenPanel.selectedChild == childs[2]
+			Thread.sleep 1000
 		}
 	}
 }

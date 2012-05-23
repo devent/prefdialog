@@ -73,6 +73,12 @@ public interface ChildrenListPanel {
 	void setSelectedChild(Object child);
 
 	/**
+	 * Returns the child {@link Object} that is currently selected, or
+	 * <code>null</code> if no child object is selected.
+	 */
+	Object getSelectedChild();
+
+	/**
 	 * Adds a new child node to the tree.
 	 * 
 	 * @param node

@@ -120,6 +120,11 @@ class ChildrenListPanelImpl implements ChildrenListPanel {
 	}
 
 	@Override
+	public Object getSelectedChild() {
+		return selectedChild;
+	}
+
+	@Override
 	public void addChildNode(DefaultMutableTreeNode node) {
 		rootNode.add(node);
 		TreeNode[] path = node.getPath();
