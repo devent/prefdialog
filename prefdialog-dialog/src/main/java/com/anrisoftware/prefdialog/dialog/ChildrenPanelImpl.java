@@ -2,8 +2,8 @@ package com.anrisoftware.prefdialog.dialog;
 
 import static java.awt.BorderLayout.CENTER;
 import static java.lang.String.format;
+import static javax.swing.JSplitPane.HORIZONTAL_SPLIT;
 import static javax.swing.JSplitPane.LEFT;
-import static javax.swing.JSplitPane.VERTICAL_SPLIT;
 
 import java.awt.BorderLayout;
 
@@ -35,7 +35,7 @@ class ChildrenPanelImpl implements ChildrenPanel {
 			@Assisted ChildrenListPanel childrenListPanel) {
 		this.panel = panel;
 		this.childrenListPanel = childrenListPanel;
-		this.panelSplit = new JSplitPane(VERTICAL_SPLIT);
+		this.panelSplit = new JSplitPane(HORIZONTAL_SPLIT);
 		setupPanel();
 		setupPanelSplit();
 	}
