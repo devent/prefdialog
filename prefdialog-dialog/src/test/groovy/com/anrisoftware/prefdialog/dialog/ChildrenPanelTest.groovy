@@ -2,13 +2,10 @@ package com.anrisoftware.prefdialog.dialog
 
 import static com.anrisoftware.prefdialog.ChildrenPanel.PANEL
 
-import java.awt.Component;
 
 import javax.swing.JLabel
 import javax.swing.JPanel
-import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode
-import javax.swing.tree.DefaultTreeCellRenderer
 
 import org.junit.Test
 
@@ -103,37 +100,6 @@ class ChildrenPanelTest extends TestFrameUtil {
 			childrenListPanel.setSelectedChild childs[2]
 			childrenPanel.childPanel = panels[2]
 			Thread.sleep 1000
-		}
-	}
-
-	@Test
-	void "custom child nodes renderer"() {
-		def panel = new JPanel()
-		def name = "test"
-		def childs = ["Aaa", "Bbb", "Ccc"]
-		def renderer = new DefaultTreeCellRenderer() {
-					@Override
-					Component getTreeCellRendererComponent(JTree tree,
-					Object value, boolean sel, boolean expanded, boolean leaf,
-					int row, boolean hasFocus) {
-						def component = super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
-						if (value != null) {
-							text = "Custom Renderer $value"
-						}
-						component
-					}
-				}
-
-		ChildrenListPanel childrenPanel = factory.create panel
-		childrenPanel.childRenderer = renderer
-		childrenPanel.addChildNode(new DefaultMutableTreeNode(childs[0]))
-		childrenPanel.addChildNode(new DefaultMutableTreeNode(childs[1]))
-		childrenPanel.addChildNode(new DefaultMutableTreeNode(childs[2]))
-
-		beginPanelFrame TITLE, panel, {
-			childrenPanel.name = name
-			assert childrenPanel.childRenderer == renderer
-			Thread.sleep 2000
 		}
 	}
 }
