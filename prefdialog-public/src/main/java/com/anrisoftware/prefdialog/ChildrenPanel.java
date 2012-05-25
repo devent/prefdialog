@@ -36,4 +36,12 @@ public interface ChildrenPanel {
 	 */
 	void setName(String name);
 
+	/**
+	 * Sets the visible child panel.
+	 * 
+	 * @param panel
+	 *            the {@link JPanel}.
+	 */
+	void setChildPanel(JPanel panel);
+
 }

@@ -3,7 +3,6 @@ package com.anrisoftware.prefdialog.dialog;
 import static java.awt.BorderLayout.CENTER;
 import static java.lang.String.format;
 import static javax.swing.JSplitPane.HORIZONTAL_SPLIT;
-import static javax.swing.JSplitPane.LEFT;
 
 import java.awt.BorderLayout;
 
@@ -40,13 +39,13 @@ class ChildrenPanelImpl implements ChildrenPanel {
 		setupPanelSplit();
 	}
 
-	private void setupPanelSplit() {
-		panelSplit.add(childrenListPanel.getPanel(), LEFT);
-	}
-
 	private void setupPanel() {
 		panel.setLayout(new BorderLayout());
 		panel.add(panelSplit, CENTER);
+	}
+
+	private void setupPanelSplit() {
+		panelSplit.setLeftComponent(childrenListPanel.getPanel());
 	}
 
 	@Override
@@ -58,5 +57,10 @@ class ChildrenPanelImpl implements ChildrenPanel {
 	public void setName(String name) {
 		childrenListPanel.setName(name);
 		panel.setName(format("%s-%s", name, PANEL));
+	}
+
+	@Override
+	public void setChildPanel(JPanel panel) {
+		panelSplit.setRightComponent(panel);
 	}
 }

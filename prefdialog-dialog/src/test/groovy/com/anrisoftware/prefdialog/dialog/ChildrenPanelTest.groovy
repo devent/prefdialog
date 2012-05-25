@@ -4,6 +4,7 @@ import static com.anrisoftware.prefdialog.ChildrenPanel.PANEL
 
 import java.awt.Component;
 
+import javax.swing.JLabel
 import javax.swing.JPanel
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode
@@ -51,44 +52,56 @@ class ChildrenPanelTest extends TestFrameUtil {
 		def panel = new JPanel()
 		def name = "test"
 
-		ChildrenListPanel childrenPanel = factory.create panel
-		childrenPanel.addChildNode(new DefaultMutableTreeNode("Aaa"))
-		childrenPanel.addChildNode(new DefaultMutableTreeNode("Bbb"))
-		childrenPanel.addChildNode(new DefaultMutableTreeNode("Ccc"))
+		ChildrenListPanel childrenListPanel = childrenListPanelFactory.create new JPanel()
+		childrenListPanel.addChildNode(new DefaultMutableTreeNode("Aaa"))
+		childrenListPanel.addChildNode(new DefaultMutableTreeNode("Bbb"))
+		childrenListPanel.addChildNode(new DefaultMutableTreeNode("Ccc"))
+
+		ChildrenPanel childrenPanel = factory.create panel, childrenListPanel
 
 		beginPanelFrame TITLE, panel, {
 			childrenPanel.name = name
 			Thread.sleep 2000
-			childrenPanel.addChildNode(new DefaultMutableTreeNode("Ddd"))
-			childrenPanel.addChildNode(new DefaultMutableTreeNode("Eee"))
-			childrenPanel.addChildNode(new DefaultMutableTreeNode("Fff"))
-			Thread.sleep 20000
+			childrenListPanel.addChildNode(new DefaultMutableTreeNode("Ddd"))
+			childrenListPanel.addChildNode(new DefaultMutableTreeNode("Eee"))
+			childrenListPanel.addChildNode(new DefaultMutableTreeNode("Fff"))
+			Thread.sleep 60000
 		}
 	}
 
 	@Test
-	void "select child nodes"() {
+	void "set different child panels"() {
 		def panel = new JPanel()
 		def name = "test"
 		def childs = ["Aaa", "Bbb", "Ccc"]
+		def panels = [
+			new JPanel(),
+			new JPanel(),
+			new JPanel()
+		]
+		panels[0].add new JLabel("Aaa")
+		panels[1].add new JLabel("Bbb")
+		panels[2].add new JLabel("Ccc")
 
-		ChildrenListPanel childrenPanel = factory.create panel
-		childrenPanel.addChildNode(new DefaultMutableTreeNode(childs[0]))
-		childrenPanel.addChildNode(new DefaultMutableTreeNode(childs[1]))
-		childrenPanel.addChildNode(new DefaultMutableTreeNode(childs[2]))
+		ChildrenListPanel childrenListPanel = childrenListPanelFactory.create new JPanel()
+		childrenListPanel.addChildNode(new DefaultMutableTreeNode(childs[0]))
+		childrenListPanel.addChildNode(new DefaultMutableTreeNode(childs[1]))
+		childrenListPanel.addChildNode(new DefaultMutableTreeNode(childs[2]))
+
+		ChildrenPanel childrenPanel = factory.create panel, childrenListPanel
 
 		beginPanelFrame TITLE, panel, {
 			childrenPanel.name = name
-			assert childrenPanel.selectedChild == null
+			assert childrenListPanel.selectedChild == null
 			Thread.sleep 2000
-			childrenPanel.setSelectedChild childs[0]
-			assert childrenPanel.selectedChild == childs[0]
+			childrenListPanel.setSelectedChild childs[0]
+			childrenPanel.childPanel = panels[0]
 			Thread.sleep 500
-			childrenPanel.setSelectedChild childs[1]
-			assert childrenPanel.selectedChild == childs[1]
+			childrenListPanel.setSelectedChild childs[1]
+			childrenPanel.childPanel = panels[1]
 			Thread.sleep 500
-			childrenPanel.setSelectedChild childs[2]
-			assert childrenPanel.selectedChild == childs[2]
+			childrenListPanel.setSelectedChild childs[2]
+			childrenPanel.childPanel = panels[2]
 			Thread.sleep 1000
 		}
 	}
