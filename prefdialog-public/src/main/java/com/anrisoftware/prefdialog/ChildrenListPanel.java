@@ -22,17 +22,7 @@ public interface ChildrenListPanel {
 	static final String PROPERTY_SELECTED_CHILD = "selected_child";
 
 	/**
-	 * The postfix used for the children tree component name.
-	 */
-	static final String CHILDREN_TREE = "children-tree";
-
-	/**
-	 * The postfix used for the children tree scroll panel component name.
-	 */
-	static final String CHILDREN_TREE_SCROLL_PANEL = "children-tree-scroll";
-
-	/**
-	 * The postfix used for the children panel name.
+	 * The name postfix used for the children list panel.
 	 */
 	static final String PANEL = "children-list-panel";
 

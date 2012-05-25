@@ -1,6 +1,6 @@
 package com.anrisoftware.prefdialog.dialog
 
-import static com.anrisoftware.prefdialog.ChildrenListPanel.PANEL
+import static com.anrisoftware.prefdialog.ChildrenListPanel.*
 
 import java.awt.Component;
 
@@ -17,7 +17,7 @@ import com.anrisoftware.prefdialog.ChildrenListPanelFactory
 import com.anrisoftware.prefdialog.panel.inputfields.PrefdialogCoreFieldsModule
 import com.google.inject.Guice
 
-class ChildrenListPanelTest extends TestFrameUtil {
+class ChildrenPanelTest extends TestFrameUtil {
 
 	static injector = Guice.createInjector(
 	new PrefdialogModule(), new PrefdialogCoreFieldsModule())
@@ -27,17 +27,16 @@ class ChildrenListPanelTest extends TestFrameUtil {
 	static final String TITLE = "Children List Panel Test"
 
 	@Test
-	void "test set name to the panel"() {
+	void "test names"() {
 		def panel = new JPanel()
 		def name = "test"
 
 		ChildrenListPanel childrenPanel = factory.create panel
 		beginPanelFrame TITLE, panel, {
 			childrenPanel.name = name
-			def fixturePanel = fixture.panel("$name-$PANEL")
-			fixturePanel.requireVisible()
-			fixturePanel.tree().requireVisible()
-			fixturePanel.scrollPane().requireVisible()
+			fixture.panel("$name-$PANEL").requireVisible()
+			fixture.tree("$name-$CHILDREN_TREE").requireVisible()
+			fixture.scrollPane("$name-$CHILDREN_TREE_SCROLL_PANEL").requireVisible()
 		}
 	}
 
@@ -57,7 +56,7 @@ class ChildrenListPanelTest extends TestFrameUtil {
 			childrenPanel.addChildNode(new DefaultMutableTreeNode("Ddd"))
 			childrenPanel.addChildNode(new DefaultMutableTreeNode("Eee"))
 			childrenPanel.addChildNode(new DefaultMutableTreeNode("Fff"))
-			Thread.sleep 2000
+			Thread.sleep 20000
 		}
 	}
 

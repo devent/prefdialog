@@ -1,6 +1,8 @@
 package com.anrisoftware.prefdialog.dialog;
 
 import static java.awt.BorderLayout.CENTER;
+import static java.lang.String.format;
+import static javax.swing.JSplitPane.LEFT;
 import static javax.swing.JSplitPane.VERTICAL_SPLIT;
 
 import java.awt.BorderLayout;
@@ -9,6 +11,7 @@ import javax.inject.Inject;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
+import com.anrisoftware.prefdialog.ChildrenListPanel;
 import com.anrisoftware.prefdialog.ChildrenPanel;
 import com.google.inject.assistedinject.Assisted;
 
@@ -23,13 +26,22 @@ class ChildrenPanelImpl implements ChildrenPanel {
 
 	private final JPanel panel;
 
+	private final ChildrenListPanel childrenListPanel;
+
 	private final JSplitPane panelSplit;
 
 	@Inject
-	ChildrenPanelImpl(@Assisted JPanel panel) {
+	ChildrenPanelImpl(@Assisted JPanel panel,
+			@Assisted ChildrenListPanel childrenListPanel) {
 		this.panel = panel;
+		this.childrenListPanel = childrenListPanel;
 		this.panelSplit = new JSplitPane(VERTICAL_SPLIT);
 		setupPanel();
+		setupPanelSplit();
+	}
+
+	private void setupPanelSplit() {
+		panelSplit.add(childrenListPanel.getPanel(), LEFT);
 	}
 
 	private void setupPanel() {
@@ -40,5 +52,11 @@ class ChildrenPanelImpl implements ChildrenPanel {
 	@Override
 	public JPanel getPanel() {
 		return panel;
+	}
+
+	@Override
+	public void setName(String name) {
+		childrenListPanel.setName(name);
+		panel.setName(format("%s-%s", name, PANEL));
 	}
 }
