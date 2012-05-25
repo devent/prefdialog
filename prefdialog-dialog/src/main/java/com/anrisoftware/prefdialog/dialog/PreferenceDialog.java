@@ -28,6 +28,7 @@ import info.clearthought.layout.TableLayout;
 import java.awt.BorderLayout;
 
 import javax.swing.Action;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -77,7 +78,13 @@ class PreferenceDialog {
 	private void setupButtonsPanel() {
 		double[] col = { FILL, PREFERRED, PREFERRED, PREFERRED };
 		double[] row = { PREFERRED };
-		buttonsPanel.setLayout(new TableLayout(col, row));
+		TableLayout layout = new TableLayout(col, row);
+		layout.setHGap(2);
+		layout.setVGap(2);
+
+		buttonsPanel.setLayout(layout);
+
+		buttonsPanel.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 		buttonsPanel.add(okButton, "1, 0");
 		buttonsPanel.add(applyButton, "2, 0");
 		buttonsPanel.add(cancelButton, "3, 0");
