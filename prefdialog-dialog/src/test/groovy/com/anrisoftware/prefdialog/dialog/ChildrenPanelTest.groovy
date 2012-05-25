@@ -1,6 +1,6 @@
 package com.anrisoftware.prefdialog.dialog
 
-import static com.anrisoftware.prefdialog.ChildrenListPanel.*
+import static com.anrisoftware.prefdialog.ChildrenPanel.PANEL
 
 import java.awt.Component;
 
@@ -14,6 +14,8 @@ import org.junit.Test
 import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.prefdialog.ChildrenListPanel
 import com.anrisoftware.prefdialog.ChildrenListPanelFactory
+import com.anrisoftware.prefdialog.ChildrenPanel
+import com.anrisoftware.prefdialog.ChildrenPanelFactory
 import com.anrisoftware.prefdialog.panel.inputfields.PrefdialogCoreFieldsModule
 import com.google.inject.Guice
 
@@ -22,21 +24,25 @@ class ChildrenPanelTest extends TestFrameUtil {
 	static injector = Guice.createInjector(
 	new PrefdialogModule(), new PrefdialogCoreFieldsModule())
 
-	static ChildrenListPanelFactory factory = injector.getInstance ChildrenListPanelFactory
+	static ChildrenPanelFactory factory = injector.getInstance ChildrenPanelFactory
 
-	static final String TITLE = "Children List Panel Test"
+	static ChildrenListPanelFactory childrenListPanelFactory = injector.getInstance ChildrenListPanelFactory
+
+	static final String TITLE = "Children Panel Test"
 
 	@Test
-	void "test names"() {
+	void "test panel name"() {
 		def panel = new JPanel()
 		def name = "test"
 
-		ChildrenListPanel childrenPanel = factory.create panel
+		def childrenListPanel = childrenListPanelFactory.create(new JPanel())
+		ChildrenPanel childrenPanel = factory.create panel, childrenListPanel
 		beginPanelFrame TITLE, panel, {
 			childrenPanel.name = name
-			fixture.panel("$name-$PANEL").requireVisible()
-			fixture.tree("$name-$CHILDREN_TREE").requireVisible()
-			fixture.scrollPane("$name-$CHILDREN_TREE_SCROLL_PANEL").requireVisible()
+			def fixturePanel = fixture.panel("$name-$PANEL")
+			fixturePanel.requireVisible()
+			fixturePanel.splitPane().requireVisible()
+			fixturePanel.panel("$name-${ChildrenListPanel.PANEL}").requireVisible()
 		}
 	}
 

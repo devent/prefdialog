@@ -16,6 +16,9 @@ public interface ChildrenPanelFactory {
 	 * @param panel
 	 *            the {@link JPanel} that will contains the components of the
 	 *            children panel.
+	 * 
+	 * @param childrenListPanel
+	 *            the {@link ChildrenListPanel} that will list the children.
 	 */
-	ChildrenPanel create(JPanel panel);
+	ChildrenPanel create(JPanel panel, ChildrenListPanel childrenListPanel);
 }

@@ -12,9 +12,28 @@ import javax.swing.JPanel;
 public interface ChildrenPanel {
 
 	/**
+	 * The name postfix used for the children panel.
+	 */
+	static final String PANEL = "children-panel";
+
+	/**
 	 * Returns the {@link JPanel} that contains to the list of the children and
 	 * the current selected child panel.
 	 */
 	JPanel getPanel();
+
+	/**
+	 * <p>
+	 * Sets the name of this panel.
+	 * </p>
+	 * <p>
+	 * Sets the name of each of the components in this panel prefixed with the
+	 * given name.
+	 * </p>
+	 * 
+	 * @param name
+	 *            the given name.
+	 */
+	void setName(String name);
 
 }

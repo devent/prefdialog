@@ -100,9 +100,6 @@ class ChildrenListPanelImpl implements ChildrenListPanel {
 	@Override
 	public void setName(String name) {
 		panel.setName(format("%s-%s", name, PANEL));
-		childrenTreeScroll.setName(format("%s-%s", name,
-				CHILDREN_TREE_SCROLL_PANEL));
-		childrenTree.setName(format("%s-%s", name, CHILDREN_TREE));
 	}
 
 	@Override
