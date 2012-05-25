@@ -46,6 +46,7 @@ class ChildrenPanelImpl implements ChildrenPanel {
 
 	private void setupPanelSplit() {
 		panelSplit.setLeftComponent(childrenListPanel.getPanel());
+		panelSplit.setRightComponent(new JPanel());
 	}
 
 	@Override
