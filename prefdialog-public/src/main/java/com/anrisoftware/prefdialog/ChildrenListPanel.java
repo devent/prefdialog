@@ -34,7 +34,7 @@ public interface ChildrenListPanel {
 	/**
 	 * The postfix used for the children panel name.
 	 */
-	static final String PANEL = "panel";
+	static final String PANEL = "children-list-panel";
 
 	/**
 	 * Returns the {@link JPanel} that contains a list of all preferences
