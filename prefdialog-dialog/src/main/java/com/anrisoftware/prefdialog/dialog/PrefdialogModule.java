@@ -30,7 +30,6 @@ import com.anrisoftware.prefdialog.PreferenceDialogHandler;
 import com.anrisoftware.prefdialog.PreferenceDialogHandlerFactory;
 import com.anrisoftware.prefdialog.annotations.Child;
 import com.anrisoftware.prefdialog.dialog.CreatePreferencePanelHandlersWorker.CreatePreferencePanelHandlersWorkerFactory;
-import com.anrisoftware.prefdialog.dialog.PreferenceDialog.PreferenceDialogFactory;
 import com.anrisoftware.prefdialog.dialog.PreferencePanelsCollection.PreferencePanelsCollectionFactory;
 import com.anrisoftware.prefdialog.dialog.PreferencePanelsHandler.PreferencePanelsHandlerFactory;
 import com.anrisoftware.prefdialog.panel.PrefdialogPanelModule;

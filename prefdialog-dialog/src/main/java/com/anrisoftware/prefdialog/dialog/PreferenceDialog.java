@@ -18,216 +18,92 @@
  */
 package com.anrisoftware.prefdialog.dialog;
 
-import java.awt.Component;
-import java.awt.Frame;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import static info.clearthought.layout.TableLayoutConstants.FILL;
+import static info.clearthought.layout.TableLayoutConstants.PREFERRED;
+import static java.awt.BorderLayout.CENTER;
+import static java.awt.BorderLayout.SOUTH;
+import static java.lang.String.format;
+import info.clearthought.layout.TableLayout;
 
-import javax.annotation.Nullable;
+import java.awt.BorderLayout;
+
 import javax.swing.Action;
-import javax.swing.JTree;
-import javax.swing.SwingUtilities;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeNode;
-import javax.swing.tree.TreePath;
-import javax.swing.tree.TreeSelectionModel;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JPanel;
 
+import com.anrisoftware.prefdialog.ChildrenPanel;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 /**
- * Creates and manages the UI of the preference dialog. Use
- * {@link PreferenceDialogFactory} to create a new {@link PreferenceDialog}.
- * 
- * @see PreferenceDialogFactory
+ * The preferences dialog, contains the children panel and additional buttons to
+ * apply, ok and cancel the dialog.
  */
 class PreferenceDialog {
 
-	/**
-	 * Use this factory to create a new {@link PreferenceDialog}.
-	 */
-	interface PreferenceDialogFactory {
+	private final JDialog dialog;
 
-		/**
-		 * Creates a new {@link PreferenceDialog}.
-		 * 
-		 * @param owner
-		 *            the {@link Frame owner} of the preference dialog, can be
-		 *            <code>null</code>.
-		 * @param rootNode
-		 *            the {@link DefaultMutableTreeNode root tree node} that
-		 *            contains all panels.
-		 * @return the new created {@link PreferenceDialog}.
-		 */
-		PreferenceDialog create(@Assisted @Nullable Frame owner,
-				@Assisted DefaultMutableTreeNode rootNode);
-	}
+	private final ChildrenPanel childrenPanel;
 
-	private static final Runnable EMPTY_CALLBACK = new Runnable() {
+	private final JPanel buttonsPanel;
 
-		@Override
-		public void run() {
-		}
-	};
+	private final JButton okButton;
 
-	private final UiPreferencesDialog uiPreferencesDialog;
+	private final JButton cancelButton;
 
-	private final Frame owner;
-
-	private final DefaultMutableTreeNode rootNode;
-
-	private Component childPanel;
-
-	private ChildSelectedCallback childSelectedCallback;
-
-	private Runnable okCallback;
-
-	private Runnable cancelCallback;
-
-	private Runnable applyCallback;
+	private final JButton applyButton;
 
 	@Inject
-	PreferenceDialog(@Assisted @Nullable Frame owner,
-			@Assisted DefaultMutableTreeNode rootNode) {
-		this.uiPreferencesDialog = new UiPreferencesDialog(owner);
-		this.owner = owner;
-		this.rootNode = rootNode;
-		this.okCallback = EMPTY_CALLBACK;
-		this.cancelCallback = EMPTY_CALLBACK;
-		this.applyCallback = EMPTY_CALLBACK;
-	}
-
-	/**
-	 * Creates the UI of the dialog.
-	 * 
-	 * @return this {@link PreferenceDialog dialog} with created UI.
-	 */
-	public PreferenceDialog createDialog() {
-		setupChildTree();
-		setChildPanel(childPanel);
-		setupButtons();
+	PreferenceDialog(@Assisted JDialog dialog,
+			@Assisted ChildrenPanel childrenPanel) {
+		this.dialog = dialog;
+		this.childrenPanel = childrenPanel;
+		this.buttonsPanel = new JPanel();
+		this.okButton = new JButton();
+		this.cancelButton = new JButton();
+		this.applyButton = new JButton();
 		setupDialog();
-		return this;
-	}
-
-	private void setupButtons() {
-		uiPreferencesDialog.getOkButton().addActionListener(
-				new ActionListener() {
-
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						okCallback.run();
-					}
-				});
-		uiPreferencesDialog.getCancelButton().addActionListener(
-				new ActionListener() {
-
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						cancelCallback.run();
-					}
-				});
-		uiPreferencesDialog.getApplyButton().addActionListener(
-				new ActionListener() {
-
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						applyCallback.run();
-					}
-				});
+		setupButtonsPanel();
+		setupButtons();
 	}
 
 	private void setupDialog() {
-		uiPreferencesDialog.setLocationRelativeTo(owner);
-		uiPreferencesDialog.setModal(true);
+		dialog.setLayout(new BorderLayout());
+		dialog.add(childrenPanel.getPanel(), CENTER);
+		dialog.add(buttonsPanel, SOUTH);
 	}
 
-	private void setupChildTree() {
-		JTree childTree = uiPreferencesDialog.getChildTree();
-		childTree.setName("child_tree");
-		childTree.setModel(new DefaultTreeModel(rootNode));
-		childTree.setRootVisible(false);
-		childTree.getSelectionModel().setSelectionMode(
-				TreeSelectionModel.SINGLE_TREE_SELECTION);
-		childTree.addTreeSelectionListener(new TreeSelectionListener() {
-
-			@Override
-			public void valueChanged(TreeSelectionEvent e) {
-				JTree tree = (JTree) e.getSource();
-				Object pathComponent = tree.getLastSelectedPathComponent();
-				if (pathComponent == null) {
-					return;
-				}
-
-				DefaultMutableTreeNode node = (DefaultMutableTreeNode) pathComponent;
-				Object nodeInfo = node.getUserObject();
-				childSelectedCallback.call(nodeInfo);
-			}
-		});
+	private void setupButtonsPanel() {
+		double[] col = { FILL, PREFERRED, PREFERRED, PREFERRED };
+		double[] row = { PREFERRED };
+		buttonsPanel.setLayout(new TableLayout(col, row));
+		buttonsPanel.add(okButton, "1, 0");
+		buttonsPanel.add(applyButton, "2, 0");
+		buttonsPanel.add(cancelButton, "3, 0");
 	}
 
-	public void open() {
-		uiPreferencesDialog.pack();
-		uiPreferencesDialog.setVisible(true);
+	private void setupButtons() {
+		okButton.setText("Ok");
+		cancelButton.setText("Cancel");
+		applyButton.setText("Apply");
 	}
 
-	public void close() {
-		uiPreferencesDialog.setVisible(false);
-	}
-
-	public void setChildSelected(ChildSelectedCallback callback) {
-		this.childSelectedCallback = callback;
-	}
-
-	public void setChildPanel(Component comp) {
-		this.childPanel = comp;
-		uiPreferencesDialog.getSplitPane().setRightComponent(childPanel);
-	}
-
-	public void setSelectedChild(TreeNode[] path) {
-		TreePath selectedPath = new TreePath(path);
-		JTree childTree = uiPreferencesDialog.getChildTree();
-		childTree.setSelectionPath(selectedPath);
-		childTree.scrollPathToVisible(selectedPath);
+	public void setName(String name) {
+		childrenPanel.setName(name);
+		dialog.setName(format("%s-%s", name, "preferences-dialog"));
 	}
 
 	public void setOkAction(Action action) {
-		uiPreferencesDialog.getOkButton().setAction(action);
+		okButton.setAction(action);
 	}
 
 	public void setCancelAction(Action action) {
-		uiPreferencesDialog.getCancelButton().setAction(action);
+		cancelButton.setAction(action);
 	}
 
 	public void setApplyAction(Action action) {
-		uiPreferencesDialog.getApplyButton().setAction(action);
-	}
-
-	public void setOkCallback(Runnable callback) {
-		okCallback = callback;
-	}
-
-	public void setCancelCallback(Runnable callback) {
-		cancelCallback = callback;
-	}
-
-	public void setApplyCallback(Runnable callback) {
-		applyCallback = callback;
-	}
-
-	public Component getAWTComponent() {
-		return uiPreferencesDialog;
-	}
-
-	public void setTitle(String title) {
-		uiPreferencesDialog.setTitle(title);
-	}
-
-	public void updateUI() {
-		SwingUtilities.updateComponentTreeUI(uiPreferencesDialog);
+		applyButton.setAction(action);
 	}
 
 }
