@@ -35,7 +35,7 @@ import org.apache.commons.collections.MapIterator;
 import com.anrisoftware.prefdialog.Options;
 import com.anrisoftware.prefdialog.PreferenceDialogHandler;
 import com.anrisoftware.prefdialog.PreferencePanelHandler;
-import com.anrisoftware.prefdialog.dialog.PreferenceDialog.PreferenceDialogFactory;
+import com.anrisoftware.prefdialog.dialog.PreferenceDialogImpl.PreferenceDialogFactory;
 import com.anrisoftware.prefdialog.dialog.PreferencePanelsHandler.PreferencePanelsHandlerFactory;
 import com.anrisoftware.prefdialog.dialog.actions.ActionsHandler;
 import com.google.inject.Inject;
@@ -51,7 +51,7 @@ class PreferenceDialogHandlerImpl implements PreferenceDialogHandler {
 
 	private final Frame owner;
 
-	private PreferenceDialog preferenceDialog;
+	private PreferenceDialogImpl preferenceDialog;
 
 	private Options option;
 

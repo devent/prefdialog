@@ -1,4 +1,4 @@
-package com.anrisoftware.prefdialog.dialog;
+package com.anrisoftware.prefdialog.dialog.children;
 
 import static java.lang.String.format;
 import static javax.swing.tree.TreeSelectionModel.SINGLE_TREE_SELECTION;
@@ -31,7 +31,7 @@ import com.google.inject.assistedinject.Assisted;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 2.2
  */
-class ChildrenListPanelImpl implements ChildrenListPanel {
+class ChildrenTreeListPanelImpl implements ChildrenListPanel {
 
 	private final JPanel panel;
 
@@ -48,7 +48,7 @@ class ChildrenListPanelImpl implements ChildrenListPanel {
 	private Object selectedChild;
 
 	@Inject
-	ChildrenListPanelImpl(@Assisted JPanel panel) {
+	ChildrenTreeListPanelImpl(@Assisted JPanel panel) {
 		this.panel = panel;
 		this.support = new SwingPropertyChangeSupport(this);
 		this.childrenTree = new JTree();

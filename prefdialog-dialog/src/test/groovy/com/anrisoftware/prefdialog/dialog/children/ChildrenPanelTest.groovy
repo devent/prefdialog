@@ -1,4 +1,4 @@
-package com.anrisoftware.prefdialog.dialog
+package com.anrisoftware.prefdialog.dialog.children
 
 import static com.anrisoftware.prefdialog.ChildrenPanel.PANEL_NAME_POSTFIX
 
@@ -10,20 +10,16 @@ import org.junit.Test
 
 import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.prefdialog.ChildrenListPanel
-import com.anrisoftware.prefdialog.ChildrenListPanelFactory
 import com.anrisoftware.prefdialog.ChildrenPanel
 import com.anrisoftware.prefdialog.ChildrenPanelFactory
-import com.anrisoftware.prefdialog.panel.inputfields.PrefdialogCoreFieldsModule
 import com.google.inject.Guice
 
 class ChildrenPanelTest extends TestFrameUtil {
 
 	static injector = Guice.createInjector(
-	new PrefdialogModule(), new PrefdialogCoreFieldsModule())
+	new PrefdialogChildrenModule())
 
 	static ChildrenPanelFactory factory = injector.getInstance ChildrenPanelFactory
-
-	static ChildrenListPanelFactory childrenListPanelFactory = injector.getInstance ChildrenListPanelFactory
 
 	static final String TITLE = "Children Panel Test"
 
@@ -32,14 +28,13 @@ class ChildrenPanelTest extends TestFrameUtil {
 		def panel = new JPanel()
 		def name = "test"
 
-		def childrenListPanel = childrenListPanelFactory.create(new JPanel())
-		ChildrenPanel childrenPanel = factory.create panel, childrenListPanel
+		ChildrenPanel childrenPanel = factory.create panel
 		beginPanelFrame TITLE, panel, {
 			childrenPanel.name = name
 			def fixturePanel = fixture.panel("$name-$PANEL_NAME_POSTFIX")
 			fixturePanel.requireVisible()
 			fixturePanel.splitPane().requireVisible()
-			fixturePanel.panel("$name-${ChildrenListPanel.PANEL_NAME_POSTFIX}").requireVisible()
+			Thread.sleep 2000
 		}
 	}
 
