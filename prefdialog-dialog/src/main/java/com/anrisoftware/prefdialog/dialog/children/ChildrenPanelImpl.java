@@ -57,7 +57,7 @@ class ChildrenPanelImpl implements ChildrenPanel {
 
 	@Inject
 	ChildrenPanelImpl(ChildrenPanelModelListener modelListener,
-			@Assisted JPanel panel) {
+			EmptyChildrenPanels emptyChildrenPanels, @Assisted JPanel panel) {
 		this.support = new SwingPropertyChangeSupport(this);
 		this.panel = panel;
 		this.panelSplit = new JSplitPane(HORIZONTAL_SPLIT);
@@ -65,7 +65,10 @@ class ChildrenPanelImpl implements ChildrenPanel {
 		this.childrenTreeScroll = new JScrollPane(childrenTree);
 		this.modelListener = modelListener;
 		this.selectedChild = null;
+		this.panels = emptyChildrenPanels;
 		setupModelChangeListener();
+		setupPanelsChangeListener();
+		setupSelectedChildChangeListener();
 		setupPanel();
 		setupPanelSplit();
 		setupChildTree();
@@ -91,6 +94,35 @@ class ChildrenPanelImpl implements ChildrenPanel {
 		}
 		newValue.addListDataListener(modelListener);
 		modelListener.updateChildren(newValue);
+	}
+
+	private void setupPanelsChangeListener() {
+		support.addPropertyChangeListener(PROPERTY_CHILDREN_PANELS,
+				new PropertyChangeListener() {
+
+					@Override
+					public void propertyChange(PropertyChangeEvent evt) {
+						updateChildPanel();
+					}
+
+				});
+	}
+
+	private void updateChildPanel() {
+		JPanel panel = panels.getChildPanel(this, selectedChild);
+		panelSplit.setRightComponent(panel);
+	}
+
+	private void setupSelectedChildChangeListener() {
+		support.addPropertyChangeListener(PROPERTY_SELECTED_CHILD,
+				new PropertyChangeListener() {
+
+					@Override
+					public void propertyChange(PropertyChangeEvent evt) {
+						updateChildPanel();
+					}
+
+				});
 	}
 
 	private void setupPanel() {
