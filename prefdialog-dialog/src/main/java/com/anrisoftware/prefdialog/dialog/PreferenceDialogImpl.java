@@ -18,6 +18,7 @@
  */
 package com.anrisoftware.prefdialog.dialog;
 
+import static com.anrisoftware.prefdialog.PreferenceDialogStatus.OK;
 import static info.clearthought.layout.TableLayoutConstants.FILL;
 import static info.clearthought.layout.TableLayoutConstants.PREFERRED;
 import static java.awt.BorderLayout.CENTER;
@@ -26,22 +27,31 @@ import static java.lang.String.format;
 import info.clearthought.layout.TableLayout;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
+import javax.swing.event.SwingPropertyChangeSupport;
 
 import com.anrisoftware.prefdialog.ChildrenPanel;
+import com.anrisoftware.prefdialog.PreferenceDialog;
+import com.anrisoftware.prefdialog.PreferenceDialogStatus;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 /**
  * The preferences dialog, contains the children panel and additional buttons to
  * apply, ok and cancel the dialog.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.2
  */
-class PreferenceDialog {
+class PreferenceDialogImpl implements PreferenceDialog {
 
 	private final JDialog dialog;
 
@@ -55,8 +65,12 @@ class PreferenceDialog {
 
 	private final JButton applyButton;
 
+	private final SwingPropertyChangeSupport support;
+
+	private PreferenceDialogStatus status;
+
 	@Inject
-	PreferenceDialog(@Assisted JDialog dialog,
+	PreferenceDialogImpl(@Assisted JDialog dialog,
 			@Assisted ChildrenPanel childrenPanel) {
 		this.dialog = dialog;
 		this.childrenPanel = childrenPanel;
@@ -64,6 +78,8 @@ class PreferenceDialog {
 		this.okButton = new JButton();
 		this.cancelButton = new JButton();
 		this.applyButton = new JButton();
+		this.support = new SwingPropertyChangeSupport(this);
+		this.status = null;
 		setupDialog();
 		setupButtonsPanel();
 		setupButtons();
@@ -73,6 +89,7 @@ class PreferenceDialog {
 		dialog.setLayout(new BorderLayout());
 		dialog.add(childrenPanel.getPanel(), CENTER);
 		dialog.add(buttonsPanel, SOUTH);
+		dialog.getRootPane().setDefaultButton(okButton);
 	}
 
 	private void setupButtonsPanel() {
@@ -88,6 +105,17 @@ class PreferenceDialog {
 		buttonsPanel.add(okButton, "1, 0");
 		buttonsPanel.add(applyButton, "2, 0");
 		buttonsPanel.add(cancelButton, "3, 0");
+
+		okButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dialog.setVisible(false);
+				PreferenceDialogStatus oldValue = status;
+				status = OK;
+				support.firePropertyChange(PROPERTY_STATUS, oldValue, status);
+			}
+		});
 	}
 
 	private void setupButtons() {
@@ -96,21 +124,47 @@ class PreferenceDialog {
 		applyButton.setText("Apply");
 	}
 
+	@Override
 	public void setName(String name) {
 		childrenPanel.setName(name);
-		dialog.setName(format("%s-%s", name, "preferences-dialog"));
+		dialog.setName(format("%s-%s", name, DIALOG_NAME_POSTFIX));
 	}
 
+	@Override
 	public void setOkAction(Action action) {
 		okButton.setAction(action);
 	}
 
+	@Override
 	public void setCancelAction(Action action) {
 		cancelButton.setAction(action);
 	}
 
+	@Override
 	public void setApplyAction(Action action) {
 		applyButton.setAction(action);
+	}
+
+	@Override
+	public void addPropertyChangeListener(PropertyChangeListener listener) {
+		support.addPropertyChangeListener(listener);
+	}
+
+	@Override
+	public void removePropertyChangeListener(PropertyChangeListener listener) {
+		support.removePropertyChangeListener(listener);
+	}
+
+	@Override
+	public void addPropertyChangeListener(String propertyName,
+			PropertyChangeListener listener) {
+		support.addPropertyChangeListener(propertyName, listener);
+	}
+
+	@Override
+	public void removePropertyChangeListener(String propertyName,
+			PropertyChangeListener listener) {
+		support.removePropertyChangeListener(propertyName, listener);
 	}
 
 }

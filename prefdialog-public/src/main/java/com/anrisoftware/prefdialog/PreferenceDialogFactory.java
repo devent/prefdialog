@@ -1,8 +1,6 @@
-package com.anrisoftware.prefdialog.dialog;
+package com.anrisoftware.prefdialog;
 
 import javax.swing.JDialog;
-
-import com.anrisoftware.prefdialog.ChildrenPanel;
 
 /**
  * Factory to create a new {@link PreferenceDialog}.
@@ -10,7 +8,7 @@ import com.anrisoftware.prefdialog.ChildrenPanel;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 2.2
  */
-interface PreferenceDialogFactory {
+public interface PreferenceDialogFactory {
 
 	/**
 	 * Creates a new {@link PreferenceDialog}.

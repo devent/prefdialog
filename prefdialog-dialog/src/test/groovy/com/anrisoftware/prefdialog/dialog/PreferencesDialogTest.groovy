@@ -1,8 +1,6 @@
 package com.anrisoftware.prefdialog.dialog
 
-import static com.anrisoftware.prefdialog.ChildrenPanel.PANEL
-
-
+import static com.anrisoftware.prefdialog.PreferenceDialog.DIALOG_NAME_POSTFIX
 
 import javax.swing.JDialog
 import javax.swing.JFrame
@@ -18,6 +16,7 @@ import com.anrisoftware.prefdialog.ChildrenListPanel
 import com.anrisoftware.prefdialog.ChildrenListPanelFactory
 import com.anrisoftware.prefdialog.ChildrenPanel
 import com.anrisoftware.prefdialog.ChildrenPanelFactory
+import com.anrisoftware.prefdialog.PreferenceDialogFactory;
 import com.anrisoftware.prefdialog.panel.inputfields.PrefdialogCoreFieldsModule
 import com.google.inject.Guice
 
@@ -43,7 +42,7 @@ class PreferencesDialogTest extends TestFrameUtil {
 		frame = new JFrame()
 		dialog = new JDialog(frame)
 		dialog.size = frameSize
-		dialog.modal = true
+		dialog.modal = false
 		dialog.pack()
 	}
 
@@ -62,31 +61,32 @@ class PreferencesDialogTest extends TestFrameUtil {
 		def preferencesDialog = factory.create dialog, childrenPanel
 
 		beginPanelFrame TITLE, null, {
-			frame.visible = false
+			frame.visible = true
 			preferencesDialog.name = name
 			dialog.visible = true
-			Thread.sleep 60000
+			fixture.dialog("$name-$DIALOG_NAME_POSTFIX").requireVisible()
+
+			Thread.sleep 5000
 		}
 	}
 
 	@Test
 	void "add child nodes"() {
-		def panel = new JPanel()
 		def name = "test"
 
-		ChildrenListPanel childrenListPanel = childrenListPanelFactory.create new JPanel()
+		def childrenListPanel = childrenListPanelFactory.create new JPanel()
 		childrenListPanel.addChildNode(new DefaultMutableTreeNode("Aaa"))
 		childrenListPanel.addChildNode(new DefaultMutableTreeNode("Bbb"))
 		childrenListPanel.addChildNode(new DefaultMutableTreeNode("Ccc"))
 
-		ChildrenPanel childrenPanel = childrenPanelFactory.create panel, childrenListPanel
+		def childrenPanel = childrenPanelFactory.create new JPanel(), childrenListPanel
+		def preferencesDialog = factory.create dialog, childrenPanel
 
-		beginPanelFrame TITLE, panel, {
-			childrenPanel.name = name
-			Thread.sleep 2000
-			childrenListPanel.addChildNode(new DefaultMutableTreeNode("Ddd"))
-			childrenListPanel.addChildNode(new DefaultMutableTreeNode("Eee"))
-			childrenListPanel.addChildNode(new DefaultMutableTreeNode("Fff"))
+		beginPanelFrame TITLE, null, {
+			frame.visible = false
+			preferencesDialog.name = name
+			dialog.visible = true
+			dialog.name = name
 			Thread.sleep 60000
 		}
 	}

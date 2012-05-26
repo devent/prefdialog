@@ -26,16 +26,13 @@ import com.anrisoftware.prefdialog.ChildrenListPanel;
 import com.anrisoftware.prefdialog.ChildrenListPanelFactory;
 import com.anrisoftware.prefdialog.ChildrenPanel;
 import com.anrisoftware.prefdialog.ChildrenPanelFactory;
+import com.anrisoftware.prefdialog.PreferenceDialog;
+import com.anrisoftware.prefdialog.PreferenceDialogFactory;
 import com.anrisoftware.prefdialog.PreferenceDialogHandler;
-import com.anrisoftware.prefdialog.PreferenceDialogHandlerFactory;
 import com.anrisoftware.prefdialog.annotations.Child;
-import com.anrisoftware.prefdialog.dialog.CreatePreferencePanelHandlersWorker.CreatePreferencePanelHandlersWorkerFactory;
-import com.anrisoftware.prefdialog.dialog.PreferencePanelsCollection.PreferencePanelsCollectionFactory;
-import com.anrisoftware.prefdialog.dialog.PreferencePanelsHandler.PreferencePanelsHandlerFactory;
 import com.anrisoftware.prefdialog.panel.PrefdialogPanelModule;
 import com.google.inject.Injector;
 import com.google.inject.Provides;
-import com.google.inject.TypeLiteral;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.google.inject.name.Named;
 
@@ -66,24 +63,9 @@ public class PrefdialogModule extends PrefdialogPanelModule {
 				ChildrenListPanelFactory.class));
 		install(new FactoryModuleBuilder().implement(ChildrenPanel.class,
 				ChildrenPanelImpl.class).build(ChildrenPanelFactory.class));
-		install(new FactoryModuleBuilder().implement(
-				new TypeLiteral<PreferenceDialogHandler>() {
-				}, PreferenceDialogHandlerImpl.class).build(
-				PreferenceDialogHandlerFactory.class));
 		install(new FactoryModuleBuilder().implement(PreferenceDialog.class,
-				PreferenceDialog.class).build(PreferenceDialogFactory.class));
-		install(new FactoryModuleBuilder().implement(
-				PreferencePanelsCollection.class,
-				PreferencePanelsCollection.class).build(
-				PreferencePanelsCollectionFactory.class));
-		install(new FactoryModuleBuilder().implement(
-				CreatePreferencePanelHandlersWorker.class,
-				CreatePreferencePanelHandlersWorker.class).build(
-				CreatePreferencePanelHandlersWorkerFactory.class));
-		install(new FactoryModuleBuilder().implement(
-				PreferencePanelsHandler.class, PreferencePanelsHandler.class)
-				.build(PreferencePanelsHandlerFactory.class));
-
+				PreferenceDialogImpl.class)
+				.build(PreferenceDialogFactory.class));
 	}
 
 	@Provides
