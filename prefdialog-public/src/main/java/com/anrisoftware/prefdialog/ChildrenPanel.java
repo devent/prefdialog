@@ -14,7 +14,7 @@ public interface ChildrenPanel {
 	/**
 	 * The name postfix used for the children panel.
 	 */
-	static final String PANEL = "children-panel";
+	static final String PANEL_NAME_POSTFIX = "children-panel";
 
 	/**
 	 * Returns the {@link JPanel} that contains to the list of the children and
@@ -43,5 +43,4 @@ public interface ChildrenPanel {
 	 *            the {@link JPanel}.
 	 */
 	void setChildPanel(JPanel panel);
-
 }

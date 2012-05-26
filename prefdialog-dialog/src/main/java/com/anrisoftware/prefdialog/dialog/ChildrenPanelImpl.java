@@ -57,11 +57,12 @@ class ChildrenPanelImpl implements ChildrenPanel {
 	@Override
 	public void setName(String name) {
 		childrenListPanel.setName(name);
-		panel.setName(format("%s-%s", name, PANEL));
+		panel.setName(format("%s-%s", name, PANEL_NAME_POSTFIX));
 	}
 
 	@Override
 	public void setChildPanel(JPanel panel) {
 		panelSplit.setRightComponent(panel);
 	}
+
 }

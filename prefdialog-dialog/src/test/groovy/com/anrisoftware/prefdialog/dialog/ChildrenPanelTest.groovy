@@ -1,7 +1,6 @@
 package com.anrisoftware.prefdialog.dialog
 
-import static com.anrisoftware.prefdialog.ChildrenPanel.PANEL
-
+import static com.anrisoftware.prefdialog.ChildrenPanel.PANEL_NAME_POSTFIX
 
 import javax.swing.JLabel
 import javax.swing.JPanel
@@ -37,7 +36,7 @@ class ChildrenPanelTest extends TestFrameUtil {
 		ChildrenPanel childrenPanel = factory.create panel, childrenListPanel
 		beginPanelFrame TITLE, panel, {
 			childrenPanel.name = name
-			def fixturePanel = fixture.panel("$name-$PANEL")
+			def fixturePanel = fixture.panel("$name-$PANEL_NAME_POSTFIX")
 			fixturePanel.requireVisible()
 			fixturePanel.splitPane().requireVisible()
 			fixturePanel.panel("$name-${ChildrenListPanel.PANEL}").requireVisible()
@@ -62,7 +61,7 @@ class ChildrenPanelTest extends TestFrameUtil {
 			childrenListPanel.addChildNode(new DefaultMutableTreeNode("Ddd"))
 			childrenListPanel.addChildNode(new DefaultMutableTreeNode("Eee"))
 			childrenListPanel.addChildNode(new DefaultMutableTreeNode("Fff"))
-			Thread.sleep 60000
+			Thread.sleep 1000
 		}
 	}
 
