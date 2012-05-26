@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-dialog. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.dialog.children;
+package com.anrisoftware.prefdialog.dialog.childrentree;
 
 import com.anrisoftware.prefdialog.ChildrenPanel;
 import com.anrisoftware.prefdialog.ChildrenPanelFactory;
@@ -24,9 +24,9 @@ import com.google.inject.AbstractModule;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 
 /**
- * Binds the preferences dialog children panel classes.
+ * Binds the preferences dialog children tree panel classes.
  */
-public class PrefdialogChildrenModule extends AbstractModule {
+public class PrefdialogChildrenTreeModule extends AbstractModule {
 
 	@Override
 	protected void configure() {

@@ -1,4 +1,4 @@
-package com.anrisoftware.prefdialog.dialog.children;
+package com.anrisoftware.prefdialog.dialog.childrentree;
 
 import java.util.Map;
 
