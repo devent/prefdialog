@@ -12,7 +12,6 @@ import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 
 import com.google.common.collect.Maps;
-import com.google.inject.assistedinject.Assisted;
 
 /**
  * Updates the tree model according to the children model.
@@ -22,22 +21,18 @@ import com.google.inject.assistedinject.Assisted;
  */
 class ChildrenPanelModelListener implements ListDataListener {
 
-	private final DefaultTreeModel treeModel;
-
 	private final MutableTreeNode rootNode;
 
 	private final Map<Object, TreeNode[]> childrenNodes;
 
+	private DefaultTreeModel treeModel;
+
 	/**
 	 * Sets the tree model that is updated if the children model was changed.
 	 * 
-	 * @param treeModel
-	 *            the {@link DefaultTreeModel} that is updated. We use the
-	 *            {@link DefaultTreeModel#reload(TreeNode)} to update the tree.
 	 */
 	@Inject
-	ChildrenPanelModelListener(@Assisted DefaultTreeModel treeModel) {
-		this.treeModel = treeModel;
+	ChildrenPanelModelListener() {
 		this.rootNode = new DefaultMutableTreeNode();
 		this.childrenNodes = Maps.newHashMap();
 	}
@@ -46,33 +41,35 @@ class ChildrenPanelModelListener implements ListDataListener {
 	public void intervalAdded(ListDataEvent e) {
 		int begin = e.getIndex0();
 		int end = e.getIndex1();
-		remove(begin, end);
-		treeModel.reload(rootNode);
-	}
-
-	private void remove(int begin, int end) {
-		for (int i = begin; i < end; i++) {
-			rootNode.remove(i);
-		}
-	}
-
-	@Override
-	public void intervalRemoved(ListDataEvent e) {
-		int begin = e.getIndex0();
-		int end = e.getIndex1();
 		ListModel model = (ListModel) e.getSource();
 		insert(begin, end, model);
 		treeModel.reload(rootNode);
 	}
 
 	private void insert(int begin, int end, ListModel model) {
-		for (int i = begin; i < end; i++) {
+		int i = begin;
+		do {
 			Object child = model.getElementAt(i);
 			DefaultMutableTreeNode node = new DefaultMutableTreeNode(child);
 			rootNode.insert(node, i);
 			TreeNode[] path = node.getPath();
 			childrenNodes.put(node.getUserObject(), path);
-		}
+		} while (++i < end);
+	}
+
+	@Override
+	public void intervalRemoved(ListDataEvent e) {
+		int begin = e.getIndex0();
+		int end = e.getIndex1();
+		remove(begin, end);
+		treeModel.reload(rootNode);
+	}
+
+	private void remove(int begin, int end) {
+		int i = begin;
+		do {
+			rootNode.remove(i);
+		} while (++i < end);
 	}
 
 	@Override
@@ -105,5 +102,28 @@ class ChildrenPanelModelListener implements ListDataListener {
 	 */
 	public TreeNode[] getChildPath(Object child) {
 		return childrenNodes.get(child);
+	}
+
+	/**
+	 * Sets a new tree model.
+	 * 
+	 * @param model
+	 *            the new {@link DefaultTreeModel}.
+	 */
+	public void setModel(DefaultTreeModel model) {
+		this.treeModel = model;
+	}
+
+	/**
+	 * Remove old children from the tree model and adds new children.
+	 * 
+	 * @param model
+	 *            the {@link ListModel} that contains the children.
+	 */
+	public void updateChildren(ListModel model) {
+		int begin = 0;
+		int end = model.getSize();
+		insert(begin, end, model);
+		treeModel.reload(rootNode);
 	}
 }

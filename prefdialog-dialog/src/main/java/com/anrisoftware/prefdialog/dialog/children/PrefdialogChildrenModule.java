@@ -32,9 +32,5 @@ public class PrefdialogChildrenModule extends AbstractModule {
 	protected void configure() {
 		install(new FactoryModuleBuilder().implement(ChildrenPanel.class,
 				ChildrenPanelImpl.class).build(ChildrenPanelFactory.class));
-		install(new FactoryModuleBuilder().implement(
-				ChildrenPanelModelListener.class,
-				ChildrenPanelModelListener.class).build(
-				ChildrenPanelModelListenerFactory.class));
 	}
 }

@@ -56,15 +56,14 @@ class ChildrenPanelImpl implements ChildrenPanel {
 	private ChildrenPanels panels;
 
 	@Inject
-	ChildrenPanelImpl(ChildrenPanelModelListenerFactory modelListenerFactory,
+	ChildrenPanelImpl(ChildrenPanelModelListener modelListener,
 			@Assisted JPanel panel) {
 		this.support = new SwingPropertyChangeSupport(this);
 		this.panel = panel;
 		this.panelSplit = new JSplitPane(HORIZONTAL_SPLIT);
 		this.childrenTree = new JTree();
 		this.childrenTreeScroll = new JScrollPane(childrenTree);
-		this.modelListener = modelListenerFactory
-				.create((DefaultTreeModel) childrenTree.getModel());
+		this.modelListener = modelListener;
 		this.selectedChild = null;
 		setupModelChangeListener();
 		setupPanel();
@@ -91,6 +90,7 @@ class ChildrenPanelImpl implements ChildrenPanel {
 			oldValue.removeListDataListener(modelListener);
 		}
 		newValue.addListDataListener(modelListener);
+		modelListener.updateChildren(newValue);
 	}
 
 	private void setupPanel() {
@@ -105,7 +105,9 @@ class ChildrenPanelImpl implements ChildrenPanel {
 
 	private void setupChildTree() {
 		TreeNode rootNode = modelListener.getRootNode();
-		childrenTree.setModel(new DefaultTreeModel(rootNode));
+		DefaultTreeModel model = new DefaultTreeModel(rootNode);
+		modelListener.setModel(model);
+		childrenTree.setModel(model);
 		childrenTree.setRootVisible(false);
 		childrenTree.getSelectionModel()
 				.setSelectionMode(SINGLE_TREE_SELECTION);

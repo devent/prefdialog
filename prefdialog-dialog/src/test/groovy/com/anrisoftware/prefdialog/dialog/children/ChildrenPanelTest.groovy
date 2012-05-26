@@ -2,6 +2,7 @@ package com.anrisoftware.prefdialog.dialog.children
 
 import static com.anrisoftware.prefdialog.ChildrenPanel.PANEL_NAME_POSTFIX
 
+import javax.swing.DefaultListModel
 import javax.swing.JLabel
 import javax.swing.JPanel
 import javax.swing.tree.DefaultMutableTreeNode
@@ -34,29 +35,30 @@ class ChildrenPanelTest extends TestFrameUtil {
 			def fixturePanel = fixture.panel("$name-$PANEL_NAME_POSTFIX")
 			fixturePanel.requireVisible()
 			fixturePanel.splitPane().requireVisible()
-			Thread.sleep 2000
+			sequencedActions([{ }])
 		}
 	}
 
 	@Test
-	void "add child nodes"() {
+	void "set child nodes"() {
 		def panel = new JPanel()
 		def name = "test"
 
-		ChildrenListPanel childrenListPanel = childrenListPanelFactory.create new JPanel()
-		childrenListPanel.addChildNode(new DefaultMutableTreeNode("Aaa"))
-		childrenListPanel.addChildNode(new DefaultMutableTreeNode("Bbb"))
-		childrenListPanel.addChildNode(new DefaultMutableTreeNode("Ccc"))
+		def model = new DefaultListModel()
+		model.addElement "Aaa"
+		model.addElement "Bbb"
+		model.addElement "Ccc"
 
-		ChildrenPanel childrenPanel = factory.create panel, childrenListPanel
+		ChildrenPanel childrenPanel = factory.create panel
+		childrenPanel.childrenModel = model
 
 		beginPanelFrame TITLE, panel, {
-			childrenPanel.name = name
-			Thread.sleep 2000
-			childrenListPanel.addChildNode(new DefaultMutableTreeNode("Ddd"))
-			childrenListPanel.addChildNode(new DefaultMutableTreeNode("Eee"))
-			childrenListPanel.addChildNode(new DefaultMutableTreeNode("Fff"))
-			Thread.sleep 1000
+			sequencedActions([
+				{ childrenPanel.name = name },
+				{ model.addElement "Ddd" },
+				{ model.addElement "Eee" },
+				{ model.addElement "Fff" }
+			])
 		}
 	}
 
