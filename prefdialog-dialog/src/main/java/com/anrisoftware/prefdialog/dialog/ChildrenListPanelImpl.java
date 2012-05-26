@@ -99,7 +99,7 @@ class ChildrenListPanelImpl implements ChildrenListPanel {
 
 	@Override
 	public void setName(String name) {
-		panel.setName(format("%s-%s", name, PANEL));
+		panel.setName(format("%s-%s", name, PANEL_NAME_POSTFIX));
 	}
 
 	@Override

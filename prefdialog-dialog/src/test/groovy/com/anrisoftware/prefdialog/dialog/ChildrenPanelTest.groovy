@@ -39,7 +39,7 @@ class ChildrenPanelTest extends TestFrameUtil {
 			def fixturePanel = fixture.panel("$name-$PANEL_NAME_POSTFIX")
 			fixturePanel.requireVisible()
 			fixturePanel.splitPane().requireVisible()
-			fixturePanel.panel("$name-${ChildrenListPanel.PANEL}").requireVisible()
+			fixturePanel.panel("$name-${ChildrenListPanel.PANEL_NAME_POSTFIX}").requireVisible()
 		}
 	}
 

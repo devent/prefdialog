@@ -1,6 +1,6 @@
 package com.anrisoftware.prefdialog.dialog
 
-import static com.anrisoftware.prefdialog.ChildrenListPanel.PANEL
+import static com.anrisoftware.prefdialog.ChildrenListPanel.PANEL_NAME_POSTFIX
 
 import java.awt.Component;
 
@@ -34,7 +34,7 @@ class ChildrenListPanelTest extends TestFrameUtil {
 		ChildrenListPanel childrenPanel = factory.create panel
 		beginPanelFrame TITLE, panel, {
 			childrenPanel.name = name
-			def fixturePanel = fixture.panel("$name-$PANEL")
+			def fixturePanel = fixture.panel("$name-$PANEL_NAME_POSTFIX")
 			fixturePanel.requireVisible()
 			fixturePanel.tree().requireVisible()
 			fixturePanel.scrollPane().requireVisible()
