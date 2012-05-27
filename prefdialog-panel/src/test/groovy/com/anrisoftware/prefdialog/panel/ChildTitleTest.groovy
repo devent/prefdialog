@@ -19,13 +19,14 @@
 package com.anrisoftware.prefdialog.panel
 
 import static com.anrisoftware.prefdialog.swingutils.AbstractLabelFieldPanel.TITLE_LABEL
+import static org.fest.swing.core.matcher.JLabelMatcher.*
 
 import org.junit.Test
 
 import com.anrisoftware.prefdialog.annotations.Child
 import com.anrisoftware.prefdialog.annotations.TextField
 
-class ChildTitleTest extends PanelFixtureHandler {
+class ChildTitleTest extends TestPreferencePanelUtil {
 
 	static final String DEFAULT_TITLE = "defaultTitle"
 
@@ -80,33 +81,25 @@ class ChildTitleTest extends PanelFixtureHandler {
 
 	@Test
 	void "default child title"() {
-		createFieldFixture(new Preferences(), DEFAULT_TITLE)
-		beginFixture()
-		assert fixture.label("$TITLE_LABEL-$DEFAULT_TITLE").text() == DEFAULT_TITLE
-		endFixture()
+		beginPanelFrame new Preferences(), DEFAULT_TITLE, {
+			sequencedActions {
+				fixture.label("$TITLE_LABEL-$DEFAULT_TITLE").requireText DEFAULT_TITLE
+			}
+		}
 	}
 
 	@Test
 	void "custom child title"() {
-		createFieldFixture(new Preferences(), CUSTOM_TITLE)
-		beginFixture()
-		assert fixture.label("$TITLE_LABEL-$CUSTOM_TITLE").text() == "custom"
-		endFixture()
+		beginPanelFrame new Preferences(), CUSTOM_TITLE, {
+			sequencedActions {
+				fixture.label("$TITLE_LABEL-$CUSTOM_TITLE").requireText "custom"
+			}
+		}
 	}
 
 	@Test
 	void "hide child title"() {
-		createFieldFixture(new Preferences(), HIDE_TITLE)
-		beginFixture()
-		// Thread.sleep 1000
-		endFixture()
-	}
-
-	@Test
-	void "manually"() {
-		createFieldFixture(new Preferences(), HIDE_TITLE)
-		beginFixture()
-		// Thread.sleep 60000
-		endFixture()
+		beginPanelFrame new Preferences(), HIDE_TITLE, { sequencedActions {
+			} }
 	}
 }
