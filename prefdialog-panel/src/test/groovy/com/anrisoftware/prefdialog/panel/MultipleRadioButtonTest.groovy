@@ -1,20 +1,20 @@
 /*
- * Copyright 2010 Erwin Müller <erwin.mueller@deventm.org>
+ * Copyright 2010-2012 Erwin Müller <erwin.mueller@deventm.org>
  * 
- * This file is part of prefdialog-swing.
+ * This file is part of prefdialog-panel.
  * 
- * prefdialog-swing is free software: you can redistribute it and/or modify it
+ * prefdialog-panel is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
  * Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
  * 
- * prefdialog-swing is distributed in the hope that it will be useful, but
+ * prefdialog-panel is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
+ * along with prefdialog-panel. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.anrisoftware.prefdialog.panel
 
@@ -23,7 +23,9 @@ import org.junit.Test
 import com.anrisoftware.prefdialog.annotations.Child
 import com.anrisoftware.prefdialog.annotations.RadioButton
 
-class MultipleRadioButtonTest extends AbstractPanelFixture {
+
+
+class MultipleRadioButtonTest extends TestPreferencePanelUtil {
 
 	static class General {
 
@@ -51,30 +53,31 @@ class MultipleRadioButtonTest extends AbstractPanelFixture {
 		General general = new General()
 	}
 
-	MultipleRadioButtonTest() {
-		super(new Preferences(), "General")
-	}
-
 	@Test
 	void testPanelClickApplyAndClose() {
-		fixture.label('titlelabel-colors1').requireText 'colors1'
-		fixture.label('titlelabel-colors2').requireText 'colors2'
-		fixture.label('titlelabel-colors3').requireText 'colors3'
-		fixture.label('titlelabel-colors4').requireText 'colors4'
-		fixture.radioButton('colors1-BLUE').click()
-		fixture.radioButton('colors2-BLUE').click()
-		fixture.radioButton('colors3-BLUE').click()
-		fixture.radioButton('colors4-BLUE').click()
-		panel.applyInput()
-
-		assert preferences.general.colors1 == Colors.BLUE
-		assert preferences.general.colors2 == Colors.BLUE
-		assert preferences.general.colors3 == Colors.BLUE
-		assert preferences.general.colors4 == Colors.BLUE
-	}
-
-	@Test
-	void "manually"() {
-		Thread.sleep 0 // 60000
+		def preferences = new Preferences()
+		beginPanelFrame preferences, "general", {
+			sequencedActions([
+				{
+					fixture.label('titlelabel-colors1').requireText 'colors1'
+					fixture.label('titlelabel-colors2').requireText 'colors2'
+					fixture.label('titlelabel-colors3').requireText 'colors3'
+					fixture.label('titlelabel-colors4').requireText 'colors4'
+				},
+				{
+					fixture.radioButton('colors1-BLUE').click()
+					fixture.radioButton('colors2-BLUE').click()
+					fixture.radioButton('colors3-BLUE').click()
+					fixture.radioButton('colors4-BLUE').click()
+					preferencePanel.applyInput()
+				},
+				{
+					assert preferences.general.colors1 == Colors.BLUE
+					assert preferences.general.colors2 == Colors.BLUE
+					assert preferences.general.colors3 == Colors.BLUE
+					assert preferences.general.colors4 == Colors.BLUE
+				}
+			])
+		}
 	}
 }
