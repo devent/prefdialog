@@ -19,22 +19,25 @@
 package com.anrisoftware.prefdialog.panel
 
 import static com.anrisoftware.prefdialog.swingutils.AbstractLabelFieldPanel.TITLE_LABEL
+import static com.anrisoftware.prefdialog.panel.inputfields.fontchooser.FontChooserFieldHandler.*
 
-import java.awt.Font;
+import java.awt.Font
 
 import org.junit.Test
 
 import com.anrisoftware.prefdialog.annotations.Child
-import com.anrisoftware.prefdialog.annotations.FontChooser;
+import com.anrisoftware.prefdialog.annotations.FontChooser
 import com.anrisoftware.prefdialog.annotations.TextField
 
-class ChildFontChooserTest extends PanelFixtureHandler {
+class ChildFontChooserTest extends TestPreferencePanelUtil {
 
 	static final String DEFAULT_TITLE = "defaultTitle"
 
 	static final String CUSTOM_TITLE = "customTitle"
 
 	static final String HIDE_TITLE = "hideTitle"
+
+	static final String FONT = "font"
 
 	static class DefaultTitle {
 
@@ -58,17 +61,18 @@ class ChildFontChooserTest extends PanelFixtureHandler {
 
 	@Test
 	void "default child title"() {
-		createFieldFixture(new Preferences(), DEFAULT_TITLE)
-		beginFixture()
-		assert fixture.label("$TITLE_LABEL-$DEFAULT_TITLE").text() == DEFAULT_TITLE
-		endFixture()
-	}
-
-	@Test
-	void "manually"() {
-		createFieldFixture(new Preferences(), DEFAULT_TITLE)
-		beginFixture()
-		Thread.sleep 0 // 60000
-		endFixture()
+		beginPanelFrame new Preferences(), DEFAULT_TITLE, {
+			sequencedActions([
+				{
+					fixture.label("$TITLE_LABEL-$DEFAULT_TITLE").requireText DEFAULT_TITLE
+				},
+				{
+					fixture.toggleButton("$OPEN_FONT_BUTTON-$FONT").click()
+				},
+				{
+					fixture.toggleButton("$OPEN_FONT_BUTTON-$FONT").click()
+				}
+			])
+		}
 	}
 }
