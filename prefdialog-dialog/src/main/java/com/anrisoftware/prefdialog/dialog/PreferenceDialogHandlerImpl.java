@@ -18,201 +18,61 @@
  */
 package com.anrisoftware.prefdialog.dialog;
 
-import static com.anrisoftware.prefdialog.dialog.actions.ActionsHandler.APPLY_ACTION_ID;
-import static com.anrisoftware.prefdialog.dialog.actions.ActionsHandler.CANCEL_ACTION_ID;
-import static com.anrisoftware.prefdialog.dialog.actions.ActionsHandler.OK_ACTION_ID;
+import javax.swing.ListModel;
 
-import java.awt.Component;
-import java.awt.Frame;
-
-import javax.annotation.Nullable;
-import javax.swing.Action;
-import javax.swing.JPanel;
-import javax.swing.tree.DefaultMutableTreeNode;
-
-import org.apache.commons.collections.MapIterator;
-
-import com.anrisoftware.prefdialog.Options;
+import com.anrisoftware.prefdialog.ChildrenPanel;
+import com.anrisoftware.prefdialog.ChildrenPanels;
+import com.anrisoftware.prefdialog.PreferenceDialog;
 import com.anrisoftware.prefdialog.PreferenceDialogHandler;
-import com.anrisoftware.prefdialog.PreferencePanelHandler;
-import com.anrisoftware.prefdialog.dialog.PreferenceDialogImpl.PreferenceDialogFactory;
-import com.anrisoftware.prefdialog.dialog.PreferencePanelsHandler.PreferencePanelsHandlerFactory;
-import com.anrisoftware.prefdialog.dialog.actions.ActionsHandler;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 class PreferenceDialogHandlerImpl implements PreferenceDialogHandler {
 
-	private final PreferencePanelsHandlerFactory preferencePanelsHandlerFactory;
+	private final PreferenceDialog dialog;
 
-	private final PreferenceDialogFactory preferenceDialogFactory;
+	private final ChildrenPanel panel;
 
-	private final Object preferences;
+	private final ListModel childrenModel;
 
-	private final Frame owner;
-
-	private PreferenceDialogImpl preferenceDialog;
-
-	private Options option;
-
-	private PreferencePanelsHandler preferencePanelsHandler;
-
-	private final ActionsHandler actionsHandler;
+	private final ChildrenPanels childrenPanels;
 
 	@Inject
-	PreferenceDialogHandlerImpl(
-			PreferencePanelsHandlerFactory preferencePanelsHandlerFactory,
-			PreferenceDialogFactory preferenceDialogFactory,
-			ActionsHandler actionsHandler, @Assisted @Nullable Frame owner,
-			@Assisted Object preferences) {
-		this.preferenceDialogFactory = preferenceDialogFactory;
-		this.preferencePanelsHandlerFactory = preferencePanelsHandlerFactory;
-		this.actionsHandler = actionsHandler;
-		this.owner = owner;
-		this.preferences = preferences;
-	}
-
-	@Override
-	public PreferenceDialogHandler createDialog() {
+	PreferenceDialogHandlerImpl(@Assisted PreferenceDialog dialog,
+			@Assisted ChildrenPanel panel, @Assisted ListModel childrenModel,
+			@Assisted ChildrenPanels childrenPanels) {
+		this.dialog = dialog;
+		this.panel = panel;
+		this.childrenModel = childrenModel;
+		this.childrenPanels = childrenPanels;
 		setupDialog();
-		setupChildSelectedAction();
-		setupFirstPreferencesPanelHandler();
-		setupActions();
-		return this;
 	}
 
 	private void setupDialog() {
-		preferencePanelsHandler = preferencePanelsHandlerFactory.create(
-				preferences).createPanels();
-		DefaultMutableTreeNode rootNode = preferencePanelsHandler.getRootNode();
-		preferenceDialog = preferenceDialogFactory.create(owner, rootNode)
-				.createDialog();
-		preferenceDialog.setTitle(preferences.toString());
-	}
-
-	private void setupActions() {
-		preferenceDialog.setOkAction(actionsHandler.getAction(OK_ACTION_ID));
-		preferenceDialog.setCancelAction(actionsHandler
-				.getAction(CANCEL_ACTION_ID));
-		preferenceDialog.setApplyAction(actionsHandler
-				.getAction(APPLY_ACTION_ID));
-
-		actionsHandler.setCallback(OK_ACTION_ID, new Runnable() {
-
-			@Override
-			public void run() {
-				applyAllInput();
-				closeDialog(Options.OK);
-			}
-		});
-		actionsHandler.setCallback(CANCEL_ACTION_ID, new Runnable() {
-
-			@Override
-			public void run() {
-				restoreAllInput();
-				closeDialog(Options.CANCEL);
-			}
-		});
-		actionsHandler.setCallback(APPLY_ACTION_ID, new Runnable() {
-
-			@Override
-			public void run() {
-				applyAllInput();
-			}
-		});
-	}
-
-	private void restoreAllInput() {
-		MapIterator panels = preferencePanelsHandler.getPreferencePanels();
-		while (panels.hasNext()) {
-			panels.next();
-			PreferencePanelHandler handler = (PreferencePanelHandler) panels
-					.getValue();
-			handler.restoreInput();
-		}
-	}
-
-	private void applyAllInput() {
-		MapIterator panels = preferencePanelsHandler.getPreferencePanels();
-		while (panels.hasNext()) {
-			panels.next();
-			PreferencePanelHandler handler = (PreferencePanelHandler) panels
-					.getValue();
-			handler.applyInput();
-		}
-	}
-
-	private void closeDialog(Options option) {
-		this.option = option;
-		preferenceDialog.close();
-	}
-
-	private void setupChildSelectedAction() {
-		preferenceDialog.setChildSelected(new ChildSelectedCallback() {
-
-			@Override
-			public void call(Object value) {
-				PreferencePanelHandler handler = preferencePanelsHandler
-						.getPreferencePanelHandler(value);
-				JPanel panel = (JPanel) handler.getAWTComponent();
-				preferenceDialog.setChildPanel(panel);
-			}
-		});
-	}
-
-	private void setupFirstPreferencesPanelHandler() {
-		PreferencePanelHandler firstHandler = preferencePanelsHandler
-				.getFirstPreferencePanelHandler();
-		JPanel panel = (JPanel) firstHandler.getAWTComponent();
-		preferenceDialog.setChildPanel(panel);
-		Object value = firstHandler.getPreferences();
-		preferenceDialog.setSelectedChild(preferencePanelsHandler
-				.getPath(value));
 	}
 
 	@Override
-	public void openDialog() {
-		this.option = Options.CANCEL;
-		preferenceDialog.open();
+	public PreferenceDialog getDialog() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
-	public Options getOption() {
-		return option;
+	public ChildrenPanel getPanel() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
-	public void setOkAction(Action action) {
-		actionsHandler.setDelegate(OK_ACTION_ID, action);
-		preferenceDialog.setOkAction(actionsHandler.getAction(OK_ACTION_ID));
-		preferenceDialog.setOkAction(actionsHandler.getAction(OK_ACTION_ID));
+	public ListModel getChildrenModel() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
-	public void setCancelAction(Action action) {
-		actionsHandler.setDelegate(CANCEL_ACTION_ID, action);
-		preferenceDialog.setCancelAction(actionsHandler
-				.getAction(CANCEL_ACTION_ID));
-		preferenceDialog.setCancelAction(actionsHandler
-				.getAction(CANCEL_ACTION_ID));
+	public ChildrenPanels getChildrenPanels() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
-	@Override
-	public void setApplyAction(Action action) {
-		actionsHandler.setDelegate(APPLY_ACTION_ID, action);
-		preferenceDialog.setApplyAction(actionsHandler
-				.getAction(APPLY_ACTION_ID));
-		preferenceDialog.setApplyAction(actionsHandler
-				.getAction(APPLY_ACTION_ID));
-	}
-
-	public Component getAWTComponent() {
-		return preferenceDialog.getAWTComponent();
-	}
-
-	@Override
-	public void updateUI() {
-		preferenceDialog.updateUI();
-		preferencePanelsHandler.updateUI();
-	}
 }
