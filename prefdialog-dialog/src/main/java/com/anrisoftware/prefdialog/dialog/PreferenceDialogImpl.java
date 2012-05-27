@@ -70,10 +70,9 @@ class PreferenceDialogImpl implements PreferenceDialog {
 	private PreferenceDialogStatus status;
 
 	@Inject
-	PreferenceDialogImpl(@Assisted JDialog dialog,
-			@Assisted ChildrenPanel childrenPanel) {
+	PreferenceDialogImpl(@Assisted JDialog dialog, @Assisted ChildrenPanel panel) {
 		this.dialog = dialog;
-		this.childrenPanel = childrenPanel;
+		this.childrenPanel = panel;
 		this.buttonsPanel = new JPanel();
 		this.okButton = new JButton();
 		this.cancelButton = new JButton();

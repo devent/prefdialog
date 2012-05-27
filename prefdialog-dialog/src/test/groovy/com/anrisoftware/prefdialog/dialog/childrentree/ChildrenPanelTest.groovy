@@ -10,7 +10,7 @@ import org.junit.Test
 import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.prefdialog.ChildrenPanel
 import com.anrisoftware.prefdialog.ChildrenPanelFactory
-import com.anrisoftware.prefdialog.dialog.childrentree.PrefdialogChildrenTreeModule;
+import com.anrisoftware.prefdialog.dialog.childrentree.PrefdialogChildrenTreeModule
 import com.google.inject.Guice
 
 class ChildrenPanelTest extends TestFrameUtil {

@@ -24,31 +24,18 @@ import java.util.Collection;
 
 import com.anrisoftware.prefdialog.PreferenceDialog;
 import com.anrisoftware.prefdialog.PreferenceDialogFactory;
-import com.anrisoftware.prefdialog.PreferenceDialogHandler;
 import com.anrisoftware.prefdialog.annotations.Child;
 import com.anrisoftware.prefdialog.dialog.childrentree.PrefdialogChildrenTreeModule;
 import com.anrisoftware.prefdialog.panel.PrefdialogPanelModule;
-import com.google.inject.Injector;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.google.inject.name.Named;
 
 /**
- * Binds the default dependencies for the preference dialog.
+ * Binds the preference dialog classes.
  * 
- * We can use the module to create a new instance of
- * {@link PreferenceDialogHandler} with the help of an {@link Injector}. As in
- * the example:
- * 
- * <pre>
- * injector = Guice.createInjector(new PreferenceDialogModule());
- * factory = injector.getInstance(PreferenceDialogFactory.class);
- * controller = factory.create(owner, preferences);
- * controller.openDialog();
- * if (controller.getOption() == OK) {
- *     compute preferences
- * }
- * </pre>
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.0
  */
 public class PrefdialogModule extends PrefdialogPanelModule {
 

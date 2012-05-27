@@ -32,5 +32,8 @@ public class PrefdialogChildrenTreeModule extends AbstractModule {
 	protected void configure() {
 		install(new FactoryModuleBuilder().implement(ChildrenPanel.class,
 				ChildrenPanelImpl.class).build(ChildrenPanelFactory.class));
+		install(new FactoryModuleBuilder().implement(
+				DefaultChildrenPanels.class, DefaultChildrenPanels.class)
+				.build(DefaultChildrenPanelsFactory.class));
 	}
 }
