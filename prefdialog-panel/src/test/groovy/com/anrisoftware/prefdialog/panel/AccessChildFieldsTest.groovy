@@ -1,20 +1,20 @@
 /*
- * Copyright 2010 Erwin Müller <erwin.mueller@deventm.org>
+ * Copyright 2010-2012 Erwin Müller <erwin.mueller@deventm.org>
  * 
- * This file is part of prefdialog-swing.
+ * This file is part of prefdialog-panel.
  * 
- * prefdialog-swing is free software: you can redistribute it and/or modify it
+ * prefdialog-panel is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
  * Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
  * 
- * prefdialog-swing is distributed in the hope that it will be useful, but
+ * prefdialog-panel is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
+ * along with prefdialog-panel. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.anrisoftware.prefdialog.panel
 
@@ -30,7 +30,7 @@ import com.anrisoftware.prefdialog.annotations.HorizontalPositions
 import com.anrisoftware.prefdialog.annotations.RadioButton
 import com.anrisoftware.prefdialog.annotations.TextField
 
-class AccessChildFieldsTest extends AbstractPanelFixture {
+class AccessChildFieldsTest extends TestPreferencePanelUtil {
 
 	static class Button1Action extends AbstractAction {
 
@@ -73,21 +73,24 @@ class AccessChildFieldsTest extends AbstractPanelFixture {
 		General general = new General()
 	}
 
-	AccessChildFieldsTest() {
-		super(new Preferences(), "general")
-	}
-
 	@Test
 	void "find fields"() {
-		panel.getField("general").setComponentTitle "New Title"
-		panel.getField("text").setComponentTitle "Text Field:"
-		panel.getField("buttons").setHorizontalPosition HorizontalPositions.MIDDLE
-		Thread.sleep 10000
+		beginPanelFrame new Preferences(), "general", {
+			sequencedActions {
+				preferencePanel.getField("general").setComponentTitle "New Title"
+				preferencePanel.getField("text").setComponentTitle "Text Field:"
+				preferencePanel.getField("buttons").setHorizontalPosition HorizontalPositions.MIDDLE
+			}
+		}
 	}
 
 	@Test
 	void "find button in buttons group"() {
-		assert panel.getField("buttons").getButton(0).text == "Button 1"
-		assert panel.getField("buttons").getButton(1).text == "Button 2"
+		beginPanelFrame new Preferences(), "general", {
+			sequencedActions {
+				assert preferencePanel.getField("buttons").getButton(0).text == "Button 1"
+				assert preferencePanel.getField("buttons").getButton(1).text == "Button 2"
+			}
+		}
 	}
 }

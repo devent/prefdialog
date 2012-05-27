@@ -40,6 +40,17 @@ public interface PreferencePanel {
 	String getChildName();
 
 	/**
+	 * Returns the field handler that is in this panel with the given name.
+	 * 
+	 * @param name
+	 *            the name of the field.
+	 * 
+	 * @return the {@link FieldHandler} with the name or <code>null</code> if
+	 *         there is no such field handler.
+	 */
+	FieldHandler<?> getField(String name);
+
+	/**
 	 * Checks if the input from the user is valid.
 	 * 
 	 * @return <code>true</code> if the input is valid or <code>false</code> if
