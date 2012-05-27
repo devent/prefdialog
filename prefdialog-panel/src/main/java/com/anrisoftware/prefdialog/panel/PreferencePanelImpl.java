@@ -1,5 +1,9 @@
 package com.anrisoftware.prefdialog.panel;
 
+import static java.awt.BorderLayout.CENTER;
+
+import java.awt.BorderLayout;
+
 import javax.swing.JPanel;
 
 import com.anrisoftware.prefdialog.FieldHandler;
@@ -30,6 +34,12 @@ class PreferencePanelImpl implements PreferencePanel {
 		this.panel = panel;
 		this.worker = workerFactory.create(preferences, childName);
 		this.childFieldHandler = worker.getChildFieldHandler();
+		setupPanel();
+	}
+
+	private void setupPanel() {
+		panel.setLayout(new BorderLayout());
+		panel.add(childFieldHandler.getAWTComponent(), CENTER);
 	}
 
 	@Override
