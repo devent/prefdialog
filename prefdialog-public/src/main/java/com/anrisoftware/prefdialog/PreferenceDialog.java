@@ -63,6 +63,13 @@ public interface PreferenceDialog {
 	void setApplyAction(Action action);
 
 	/**
+	 * Returns the status of the preference dialog after closing the dialog.
+	 * 
+	 * @return the {@link PreferenceDialogStatus}.
+	 */
+	PreferenceDialogStatus getStatus();
+
+	/**
 	 * <p>
 	 * Add a PropertyChangeListener to the listener list.
 	 * </p>

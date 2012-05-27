@@ -146,6 +146,11 @@ class PreferenceDialogImpl implements PreferenceDialog {
 	}
 
 	@Override
+	public PreferenceDialogStatus getStatus() {
+		return status;
+	}
+
+	@Override
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
 		support.addPropertyChangeListener(listener);
 	}
