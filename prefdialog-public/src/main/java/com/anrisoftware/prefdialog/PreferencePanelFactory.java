@@ -19,11 +19,13 @@ public interface PreferencePanelFactory {
 	 * @param panel
 	 *            the {@link JPanel} to which the input fields are added.
 	 * 
-	 * @param preference
-	 *            the preference {@link Object} for which the input fields are
-	 *            created.
+	 * @param preferences
+	 *            the preferences {@link Object}.
+	 * 
+	 * @param childName
+	 *            the {@link String} name of the child preference.
 	 * 
 	 * @since 2.2
 	 */
-	PreferencePanel create(JPanel panel, Object preference);
+	PreferencePanel create(JPanel panel, Object preferences, String childName);
 }

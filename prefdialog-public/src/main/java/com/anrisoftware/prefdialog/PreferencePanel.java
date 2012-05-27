@@ -3,7 +3,7 @@ package com.anrisoftware.prefdialog;
 import javax.swing.JPanel;
 
 /**
- * Creates the input fields for the preferences object.
+ * Sets the input fields for the preferences panel.
  * 
  * @see PreferencePanelFactory
  * @author Erwin Mueller, erwin.mueller@deventm.org
@@ -21,24 +21,23 @@ public interface PreferencePanel {
 	JPanel getPanel();
 
 	/**
-	 * Returns the preference object for this panel.
+	 * Returns the preferences object.
 	 * 
-	 * @return the preference {@link Object}.
+	 * @return the preferences {@link Object}.
 	 * 
 	 * @since 2.2
 	 */
-	Object getPreference();
+	Object getPreferences();
 
 	/**
-	 * Returns the field handler that is in this panel with the given name.
+	 * Returns the name of the child preference this panel will create the input
+	 * fields for.
 	 * 
-	 * @param name
-	 *            the name of the field.
+	 * @return the {@link String} name of the child preference.
 	 * 
-	 * @return the {@link FieldHandler} with the name or <code>null</code> if
-	 *         there is no such field handler.
+	 * @since 2.2
 	 */
-	FieldHandler<?> getField(String name);
+	String getChildName();
 
 	/**
 	 * Checks if the input from the user is valid.
