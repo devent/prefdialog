@@ -58,6 +58,11 @@ class PreferencePanelImpl implements PreferencePanel {
 	}
 
 	@Override
+	public FieldHandler<?> getChildFieldHandler() {
+		return childFieldHandler;
+	}
+
+	@Override
 	public FieldHandler<?> getField(String name) {
 		return childFieldHandler.getField(name);
 	}

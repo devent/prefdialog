@@ -40,6 +40,15 @@ public interface PreferencePanel {
 	String getChildName();
 
 	/**
+	 * Returns the child field handler of this preference panel.
+	 * 
+	 * @return the {@link FieldHandler} that is the child field handler.
+	 * 
+	 * @since 2.2
+	 */
+	FieldHandler<?> getChildFieldHandler();
+
+	/**
 	 * Returns the field handler that is in this panel with the given name.
 	 * 
 	 * @param name
