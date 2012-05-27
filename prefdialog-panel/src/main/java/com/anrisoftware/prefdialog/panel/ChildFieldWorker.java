@@ -45,14 +45,14 @@ import com.google.inject.name.Named;
 
 /**
  * Search the preferences object for the {@link Child} annotation and create a
- * new {@link ChildFieldHandler} with all fields. Search also for the
- * {@link Group} annotation to create a new group field handler with the help of
- * the {@link GroupFieldHandlerFactory}.
+ * new child field handler with all fields. Search also for the {@link Group}
+ * annotation to create a new group field handler with the help of the
+ * {@link GroupFieldHandlerFactory}.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 2.1
  */
-class ChildFieldHandlerWorker {
+class ChildFieldWorker {
 
 	private final AnnotationDiscoveryWorkerFactory annotationDiscoveryFactory;
 
@@ -66,35 +66,61 @@ class ChildFieldHandlerWorker {
 
 	private final Object preferences;
 
-	private final String panelName;
+	private final String childName;
 
 	private final Collection<Class<? extends Annotation>> childAnnotations;
 
-	private final WorkerLoggerFactory.Logger log;
+	private final ChildFieldWorkerLogger log;
 
 	@Inject
-	ChildFieldHandlerWorker(
-			WorkerLoggerFactory loggerFactory,
+	ChildFieldWorker(
+			ChildFieldWorkerLogger logger,
 			AnnotationDiscoveryWorkerFactory annotationDiscoveryFactory,
 			PredefinedAnnotationFilterFactory annotationFilterFactory,
 			FactoriesMapFactory factoriesMapFactory,
 			FieldsHandlerFactoryWorker fieldFactories,
 			@Named("field_handler_factories_map") Map<Class<? extends Annotation>, FieldHandlerFactory> fieldHandlerFactories,
 			@Named("child_annotations") Collection<Class<? extends Annotation>> childAnnotations,
-			@Assisted Object preferences, @Assisted String panelName) {
-		this.log = loggerFactory.create();
+			@Assisted Object preferences, @Assisted String childName) {
+		this.log = logger;
 		this.annotationDiscoveryFactory = annotationDiscoveryFactory;
 		this.annotationFilterFactory = annotationFilterFactory;
 		this.fieldFactoryWorker = fieldFactories;
 		this.fieldHandlerFactories = fieldHandlerFactories;
 		this.factoriesMapFactory = factoriesMapFactory;
 		this.preferences = preferences;
-		this.panelName = panelName;
+		this.childName = childName;
 		this.childAnnotations = childAnnotations;
 	}
 
 	/**
-	 * Returns a {@link ChildFieldHandler} created from the preferences object.
+	 * Returns the name of the child preference this panel will create the child
+	 * field handler.
+	 * 
+	 * @return the {@link String} name.
+	 * 
+	 * @since 2.2
+	 */
+	public String getChildName() {
+		return childName;
+	}
+
+	/**
+	 * Returns the preferences object, need to have one field annotated with the
+	 * {@link Child} annotation.
+	 * 
+	 * @return the preferences {@link Object}.
+	 * 
+	 * @since 2.2
+	 */
+	public Object getPreferences() {
+		return preferences;
+	}
+
+	/**
+	 * Returns a child field handler created from the preferences object.
+	 * 
+	 * @return the {@link FieldHandler} which is the child field handler.
 	 */
 	public FieldHandler<?> getChildFieldHandler() {
 		return createChildFieldHandler(preferences);
@@ -108,10 +134,10 @@ class ChildFieldHandlerWorker {
 		@Override
 		public void fieldAnnotationDiscovered(Field field, Object value,
 				Annotation a) {
-			if (field.getName().equals(panelName)
-					|| value.toString().equals(panelName)) {
+			if (field.getName().equals(childName)
+					|| value.toString().equals(childName)) {
 				childFieldHandler = createChildFieldHandler(field, value);
-				log.discoveredChildAnnotationForPanel(panelName, value);
+				log.discoveredChildAnnotationForPanel(childName, value);
 			}
 		}
 	}
@@ -130,7 +156,7 @@ class ChildFieldHandlerWorker {
 		if (childFieldHandler == null) {
 			throw new NullPointerException(format(
 					"Could not find a preference field with the name %s.",
-					panelName));
+					childName));
 		}
 	}
 

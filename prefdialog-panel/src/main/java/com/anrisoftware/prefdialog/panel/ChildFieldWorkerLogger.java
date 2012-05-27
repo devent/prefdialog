@@ -23,51 +23,38 @@ import java.lang.reflect.Field;
 import com.anrisoftware.prefdialog.swingutils.AbstractSwingLogger;
 
 /**
- * Factory to create a new {@link Logger} for the
- * {@link ChildFieldHandlerWorker} class.
+ * Logging messages for {@link ChildFieldWorker}.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 2.1
  */
-interface WorkerLoggerFactory {
+class ChildFieldWorkerLogger extends AbstractSwingLogger {
 
 	/**
-	 * Creates a new {@link Logger} for the {@link ChildFieldHandlerWorker}
-	 * class.
+	 * Creates a new logger for {@link ChildFieldWorker}.
 	 */
-	Logger create();
-
-	/**
-	 * Log messages for the {@link ChildFieldHandlerWorker} class.
-	 * 
-	 * @author Erwin Mueller, erwin.mueller@deventm.org
-	 * @since 2.1
-	 */
-	class Logger extends AbstractSwingLogger {
-
-		Logger() {
-			super(ChildFieldHandlerWorker.class);
-		}
-
-		void fieldHandlerAdded(Object fieldHandler) {
-			log.debug("Add new field handler {}.", fieldHandler);
-		}
-
-		void discoveredChildAnnotationForPanel(String panelName, Object value) {
-			log.debug(
-					"Discovered child annotation for the panel ``{}'' in ``{}''.",
-					panelName, value);
-		}
-
-		void creatingNewChild(Field field, Object value) {
-			log.debug(
-					"Creating a new child field handler for the field {} with the value ``{}''.",
-					field, value);
-		}
-
-		void setupNewGroup(Object handler) {
-			log.debug("Setup new group field handler {}.", handler);
-		}
-
+	ChildFieldWorkerLogger() {
+		super(ChildFieldWorker.class);
 	}
+
+	void fieldHandlerAdded(Object fieldHandler) {
+		log.debug("Add new field handler {}.", fieldHandler);
+	}
+
+	void discoveredChildAnnotationForPanel(String panelName, Object value) {
+		log.debug(
+				"Discovered child annotation for the panel ``{}'' in ``{}''.",
+				panelName, value);
+	}
+
+	void creatingNewChild(Field field, Object value) {
+		log.debug(
+				"Creating a new child field handler for the field {} with the value ``{}''.",
+				field, value);
+	}
+
+	void setupNewGroup(Object handler) {
+		log.debug("Setup new group field handler {}.", handler);
+	}
+
 }
