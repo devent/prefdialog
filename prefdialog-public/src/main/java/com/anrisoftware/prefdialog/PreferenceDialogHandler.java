@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Erwin Müller <erwin.mueller@deventm.org>
+ * Copyright 2010-2012 Erwin Müller <erwin.mueller@deventm.org>
  * 
  * This file is part of prefdialog-public.
  * 
@@ -18,78 +18,54 @@
  */
 package com.anrisoftware.prefdialog;
 
-import javax.swing.Action;
+import javax.swing.JPanel;
+import javax.swing.ListModel;
 
 /**
  * <p>
- * The controller for the preference dialog. It is the public API for the
- * preference dialog.
+ * Sets the children model and panels, reacts to selection and sets the current
+ * selected child panel.
  * </p>
  * 
- * First, the preferences and preferences start objects need to be set. Then,
- * the dialog owner (can be <code>null</code>) need to be set. After that, the
- * dialog can be open and after the dialog is closed the option the user choose
- * (o.k. or cancel) can be returned.
- * 
- * Example code:
- * 
- * <pre>
- * handler.createDialog();
- * handler.openDialog();
- * if (handler.getOption() == OK) {
- *     compute preferences
- * }
- * 
- * </pre>
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.0
  */
 public interface PreferenceDialogHandler {
 
 	/**
-	 * Creates the {@link PreferenceDialogHandler preference dialog handler}.
-	 */
-	PreferenceDialogHandler createDialog();
-
-	/**
-	 * Opens the dialog.
-	 */
-	void openDialog();
-
-	/**
-	 * Returns the {@link Options option} which the user choose to close the
-	 * dialog.
-	 */
-	Options getOption();
-
-	/**
-	 * Sets the {@link Action} for the "Ok" button of the dialog.
+	 * Returns the used preference dialog.
 	 * 
-	 * It is expected that if the user clicks on the "Ok" button the handler
-	 * will first apply all user input, close the dialog and then call the new
-	 * set action.
+	 * @return the {@link PreferenceDialog}.
+	 * 
+	 * @since 2.2
 	 */
-	void setOkAction(Action a);
+	PreferenceDialog getDialog();
 
 	/**
-	 * Sets the {@link Action} for the "Cancel" button of the dialog.
+	 * Returns the used children panel.
 	 * 
-	 * It is expected that if the user clicks on the "Cancel" button the handler
-	 * will first restore all user input, close the dialog and then call the new
-	 * set action.
+	 * @return the {@link ChildrenPanel}.
+	 * 
+	 * @since 2.2
 	 */
-	void setCancelAction(Action a);
+	ChildrenPanel getPanel();
 
 	/**
-	 * Sets the {@link Action} for the "Apply" button of the dialog.
+	 * Returns the used children model.
 	 * 
-	 * It is expected that if the user clicks on the "Apply" button the handler
-	 * will first apply all user input and then call the new set action.
+	 * @return the used {@link ListModel} that contains the children objects.
+	 * 
+	 * @since 2.2
 	 */
-	void setApplyAction(Action a);
+	ListModel getChildrenModel();
 
 	/**
-	 * Updates the UI of the dialog.
+	 * Returns the used panels that will return a panel for the selected child.
 	 * 
-	 * Is useful to set a new Look&Feel for the dialog.
+	 * @return the used {@link ChildrenPanel}, that returns the {@link JPanel}
+	 *         for the currently selected child panel.
+	 * 
+	 * @since 2.2
 	 */
-	void updateUI();
+	ChildrenPanels getChildrenPanels();
 }
