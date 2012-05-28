@@ -94,6 +94,8 @@ class ChildrenPanelImpl implements ChildrenPanel {
 		}
 		newValue.addListDataListener(modelListener);
 		modelListener.updateChildren(newValue);
+		Object firstChild = newValue.getElementAt(0);
+		setSelectedChild(firstChild);
 	}
 
 	private void setupPanelsChangeListener() {
@@ -109,6 +111,9 @@ class ChildrenPanelImpl implements ChildrenPanel {
 	}
 
 	private void updateChildPanel() {
+		if (selectedChild == null || panels == null) {
+			return;
+		}
 		JPanel panel = panels.getChildPanel(this, selectedChild);
 		panelSplit.setRightComponent(panel);
 	}
