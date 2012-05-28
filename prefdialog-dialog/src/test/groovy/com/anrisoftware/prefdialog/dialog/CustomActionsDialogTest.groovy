@@ -18,13 +18,13 @@
  */
 package com.anrisoftware.prefdialog.dialog
 
+import static com.anrisoftware.prefdialog.PreferenceDialog.*
 
-import java.awt.Dimension
 import java.awt.event.ActionEvent
 
 import javax.swing.AbstractAction
 
-import org.junit.Before;
+import org.junit.Before
 import org.junit.Test
 
 import com.anrisoftware.prefdialog.annotations.Child
@@ -33,6 +33,12 @@ import com.anrisoftware.prefdialog.annotations.TextField
 class CustomActionsDialogTest extends TestPreferenceDialogUtil {
 
 	static final String TITLE = "Custom Actions Preferences Dialog Test"
+
+	static final String CUSTOM_OK = "Custom Ok"
+
+	static final String CUSTOM_CANCEL = "Custom Cancel"
+
+	static final String CUSTOM_APPLY = "Custom Apply"
 
 	static class Preferences {
 
@@ -59,7 +65,7 @@ class CustomActionsDialogTest extends TestPreferenceDialogUtil {
 	static class OkAction extends AbstractAction {
 
 		OkAction() {
-			super("Custom Ok")
+			super(CUSTOM_OK)
 		}
 
 		void actionPerformed(ActionEvent e) {
@@ -69,7 +75,7 @@ class CustomActionsDialogTest extends TestPreferenceDialogUtil {
 	static class CancelAction extends AbstractAction {
 
 		CancelAction() {
-			super("Custom Cancel")
+			super(CUSTOM_CANCEL)
 		}
 
 		void actionPerformed(ActionEvent e) {
@@ -79,63 +85,72 @@ class CustomActionsDialogTest extends TestPreferenceDialogUtil {
 	static class ApplyAction extends AbstractAction {
 
 		ApplyAction() {
-			super("Custom Apply")
+			super(CUSTOM_APPLY)
 		}
 
 		void actionPerformed(ActionEvent e) {
 		}
 	}
 
-	def preferences
+	String name = "test"
+
+	Preferences preferences
 
 	@Before
 	void beforeTest() {
-		frameSize = new Dimension(640, 480)
+		endDelay = 0
 		preferences = new Preferences()
 	}
 
-	def createDialogHandler(def preferences) {
-		def handler = super.createDialogHandler(preferences)
-		handler.okAction = new OkAction()
-		handler.cancelAction = new CancelAction()
-		handler.applyAction = new ApplyAction()
-		return handler
+	@Override
+	def createFrame(def title, def component) {
+		def frame = super.createFrame(title, component)
+		preferenceDialog.okAction = new OkAction()
+		preferenceDialog.cancelAction = new CancelAction()
+		preferenceDialog.applyAction = new ApplyAction()
+		return frame
 	}
 
 	@Test
 	void testClickEnterTextOk() {
-		doDialogTest TITLE, preferences, {
+		beginPanelFrame TITLE, preferences, {
+			dialog.title = TITLE
+			preferenceDialog.name = name
+			fixture.button("$name-$OK_BUTTON_NAME_POSTFIX").requireText CUSTOM_OK
+			fixture.button("$name-$CANCEL_BUTTON_NAME_POSTFIX").requireText CUSTOM_CANCEL
+			fixture.button("$name-$APPLY_BUTTON_NAME_POSTFIX").requireText CUSTOM_APPLY
 			fixture.textBox("name").deleteText()
 			fixture.textBox("name").enterText "name"
-			fixture.button("ok").click()
+		},{
+			fixture.button("$name-$OK_BUTTON_NAME_POSTFIX").click()
+			frame.visible = false
 			assert preferences.general.name == "name"
 		}
 	}
 
 	@Test
 	void testClickEnterTextCancel() {
-		doDialogTest TITLE, preferences, {
+		beginPanelFrame TITLE, preferences, {
+			dialog.title = TITLE
+			preferenceDialog.name = name
 			fixture.textBox("name").enterText "name"
-			fixture.button("cancel").click()
+		},{
+			fixture.button("$name-$CANCEL_BUTTON_NAME_POSTFIX").click()
+			frame.visible = false
 			assert preferences.general.name == ""
 		}
 	}
 
 	@Test
 	void testClickEnterTextApply() {
-		doDialogTest TITLE, preferences, {
+		beginPanelFrame TITLE, preferences, {
+			dialog.title = TITLE
+			preferenceDialog.name = name
 			fixture.textBox("name").enterText "name"
-			fixture.button("apply").click()
-			assert fixture.textBox("name").text() == "name"
+		},{
+			fixture.button("$name-$APPLY_BUTTON_NAME_POSTFIX").click()
+			frame.visible = false
 			assert preferences.general.name == "name"
-		}
-	}
-
-	@Test
-	void testManual() {
-		doDialogTest TITLE, preferences, {
-			//
-			Thread.sleep 0 // 60000 //
 		}
 	}
 }

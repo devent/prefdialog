@@ -20,7 +20,6 @@ package com.anrisoftware.prefdialog.dialog
 
 import static com.anrisoftware.prefdialog.PreferenceDialog.*
 
-
 import org.junit.Before
 import org.junit.Test
 
