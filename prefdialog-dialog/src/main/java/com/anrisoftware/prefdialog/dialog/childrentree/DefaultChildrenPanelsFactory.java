@@ -16,10 +16,6 @@ public interface DefaultChildrenPanelsFactory {
 	 * @param panel
 	 *            the {@link JPanel} that is the container of the preference
 	 *            panel.
-	 * 
-	 * @param preferences
-	 *            the preferences {@link Object} from which the handler will
-	 *            create all preference panels.
 	 */
-	DefaultChildrenPanels create(JPanel panel, Object preferences);
+	DefaultChildrenPanels create(Object preferences);
 }

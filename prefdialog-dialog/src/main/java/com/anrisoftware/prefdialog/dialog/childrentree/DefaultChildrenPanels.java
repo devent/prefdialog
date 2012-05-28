@@ -42,8 +42,6 @@ public class DefaultChildrenPanels implements ChildrenPanels, ListModel {
 
 	private final PreferencePanelFactory panelFactory;
 
-	private final JPanel panel;
-
 	private final Map<Object, PreferencePanel> panels;
 
 	private final DefaultListModel model;
@@ -86,13 +84,12 @@ public class DefaultChildrenPanels implements ChildrenPanels, ListModel {
 			AnnotationDiscoveryWorkerFactory discoveryFactory,
 			PreferencePanelFactory panelFactory,
 			@Named("childAnnotations") Collection<Class<? extends Annotation>> childAnnotations,
-			@Assisted JPanel panel, @Assisted Object preferences) {
+			@Assisted Object preferences) {
 		this.log = logger;
 		this.filterFactory = filterFactory;
 		this.discoveryFactory = discoveryFactory;
 		this.panelFactory = panelFactory;
 		this.childAnnotations = childAnnotations;
-		this.panel = panel;
 		this.preferences = preferences;
 		this.panels = Maps.newHashMap();
 		this.model = new DefaultListModel();
@@ -116,7 +113,7 @@ public class DefaultChildrenPanels implements ChildrenPanels, ListModel {
 	}
 
 	private void createPreferencePanel(Object preferences, String childName) {
-		PreferencePanel preferencePanel = panelFactory.create(panel,
+		PreferencePanel preferencePanel = panelFactory.create(new JPanel(),
 				preferences, childName);
 		log.preferencePanelCreated(childName);
 		Object child = preferencePanel.getChildFieldHandler()
