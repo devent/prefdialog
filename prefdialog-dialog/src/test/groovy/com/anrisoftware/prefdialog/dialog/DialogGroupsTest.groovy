@@ -18,9 +18,10 @@
  */
 package com.anrisoftware.prefdialog.dialog
 
-import java.awt.Dimension
+import static com.anrisoftware.prefdialog.PreferenceDialog.*
 
-import org.junit.Before;
+
+import org.junit.Before
 import org.junit.Test
 
 import com.anrisoftware.prefdialog.annotations.Checkbox
@@ -32,7 +33,7 @@ import com.anrisoftware.prefdialog.annotations.RadioButton
 import com.anrisoftware.prefdialog.annotations.TextField
 import com.anrisoftware.prefdialog.validators.NotEmptyString
 
-class DialogGroupsTest extends AbstractPreferenceDialogFixture {
+class DialogGroupsTest extends TestPreferenceDialogUtil {
 
 	static final String TITLE = "Group Preferences Dialog Test"
 
@@ -95,23 +96,28 @@ class DialogGroupsTest extends AbstractPreferenceDialogFixture {
 		String textField4 = ""
 	}
 
-	def preferences
+	String name = "test"
+
+	Preferences preferences
 
 	@Before
 	void beforeTest() {
-		frameSize = new Dimension(640, 480)
+		endDelay = 0
 		preferences = new Preferences()
 	}
 
 	@Test
 	void testClickOk() {
-		doDialogTest TITLE, preferences, {
+		beginPanelFrame TITLE, preferences, {
+			dialog.title = TITLE
+			preferenceDialog.name = name
 			fixture.textBox("name").enterText "name"
 			fixture.textBox("fields").enterText "10"
 			fixture.checkBox("automaticSave").click()
 			fixture.radioButton("colors-BLUE").click()
 			fixture.comboBox("comboBox").selectItem 1
-			fixture.button("ok").click()
+			fixture.button("$name-$OK_BUTTON_NAME_POSTFIX").click()
+			frame.visible = false
 
 			assert preferences.general.name == "name"
 			assert preferences.general.fields == 104
@@ -123,13 +129,16 @@ class DialogGroupsTest extends AbstractPreferenceDialogFixture {
 
 	@Test
 	void testClickCancel() {
-		doDialogTest TITLE, preferences, {
+		beginPanelFrame TITLE, preferences, {
+			dialog.title = TITLE
+			preferenceDialog.name = name
 			fixture.textBox("name").enterText "name"
 			fixture.textBox("fields").enterText "10"
 			fixture.checkBox("automaticSave").click()
 			fixture.radioButton("colors-BLUE").click()
 			fixture.comboBox("comboBox").selectItem 1
-			fixture.button("cancel").click()
+			fixture.button("$name-$CANCEL_BUTTON_NAME_POSTFIX").click()
+			frame.visible = false
 
 			assert preferences.general.name == ""
 			assert preferences.general.fields == 4
@@ -141,13 +150,16 @@ class DialogGroupsTest extends AbstractPreferenceDialogFixture {
 
 	@Test
 	void testClickApply() {
-		doDialogTest TITLE, preferences, {
+		beginPanelFrame TITLE, preferences, {
+			dialog.title = TITLE
+			preferenceDialog.name = name
 			fixture.textBox("name").enterText "name"
 			fixture.textBox("fields").enterText "10"
 			fixture.checkBox("automaticSave").click()
 			fixture.radioButton("colors-BLUE").click()
 			fixture.comboBox("comboBox").selectItem 1
-			fixture.button("apply").click()
+			fixture.button("$name-$APPLY_BUTTON_NAME_POSTFIX").click()
+			frame.visible = false
 
 			assert preferences.general.name == "name"
 			assert preferences.general.fields == 104

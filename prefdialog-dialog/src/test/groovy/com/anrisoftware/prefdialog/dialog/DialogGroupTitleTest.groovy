@@ -18,10 +18,11 @@
  */
 package com.anrisoftware.prefdialog.dialog
 
-import java.awt.Dimension
+import static com.anrisoftware.prefdialog.PreferenceDialog.*
+
 import java.util.List
 
-import org.junit.Before;
+import org.junit.Before
 import org.junit.Test
 
 import com.anrisoftware.prefdialog.annotations.Checkbox
@@ -33,7 +34,7 @@ import com.anrisoftware.prefdialog.annotations.RadioButton
 import com.anrisoftware.prefdialog.annotations.TextField
 import com.anrisoftware.prefdialog.validators.NotEmptyString
 
-class DialogGroupTitleTest extends AbstractPreferenceDialogFixture {
+class DialogGroupTitleTest extends TestPreferenceDialogUtil {
 
 	static final String TITLE = "Group Titles Preferences Dialog Test"
 
@@ -96,17 +97,21 @@ class DialogGroupTitleTest extends AbstractPreferenceDialogFixture {
 		String textField4 = ""
 	}
 
-	def preferences
+	String name = "test"
+
+	Preferences preferences
 
 	@Before
 	void beforeTest() {
-		frameSize = new Dimension(640, 480)
+		endDelay = 0
 		preferences = new Preferences()
 	}
 
 	@Test
 	void testClickOkAndClose() {
-		doDialogTest TITLE, preferences, {
+		beginPanelFrame TITLE, preferences, {
+			dialog.title = TITLE
+			preferenceDialog.name = name
 			fixture.textBox("name").enterText "name"
 			fixture.textBox("fields").enterText "10"
 			fixture.textBox("textField1").enterText "field1"
@@ -116,7 +121,9 @@ class DialogGroupTitleTest extends AbstractPreferenceDialogFixture {
 			fixture.checkBox("automaticSave").click()
 			fixture.radioButton("colors-BLUE").click()
 			fixture.comboBox("comboBox").selectItem 1
-			fixture.button("ok").click()
+		}, {
+			fixture.button("$name-$OK_BUTTON_NAME_POSTFIX").click()
+			frame.visible = false
 
 			assert preferences.general.name == "name"
 			assert preferences.general.fields == 104

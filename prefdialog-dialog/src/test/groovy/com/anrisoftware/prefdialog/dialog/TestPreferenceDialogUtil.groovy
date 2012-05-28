@@ -26,6 +26,8 @@ import javax.swing.JDialog
 import javax.swing.JFrame
 import javax.swing.JPanel
 
+import org.apache.commons.lang.ArrayUtils
+
 import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.prefdialog.ChildrenPanel
 import com.anrisoftware.prefdialog.ChildrenPanelFactory
@@ -58,6 +60,7 @@ abstract class TestPreferenceDialogUtil extends TestFrameUtil {
 
 	@Override
 	public Object createFrame(Object title, Object component) {
+		startDelay = 0
 		frameSize = new Dimension(640, 480)
 		frame = new JFrame()
 		frame.size = frameSize
@@ -70,13 +73,13 @@ abstract class TestPreferenceDialogUtil extends TestFrameUtil {
 	}
 
 	@Override
-	void beginPanelFrame(def title, def preferences, def runTest) {
-		childrenPanels = childrenPanelsFactory.create new JPanel(), preferences
-		super.beginPanelFrame title, null, {
+	void beginPanelFrame(def title, def preferences, Object... tests) {
+		childrenPanels = childrenPanelsFactory.create preferences
+		tests = ArrayUtils.add tests, 0, {
 			childrenPanel.childrenModel = childrenPanels
 			childrenPanel.childrenPanels = childrenPanels
 			dialog.visible = true
-			runTest()
 		}
+		super.beginPanelFrame title, null, tests
 	}
 }

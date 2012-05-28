@@ -18,19 +18,20 @@
  */
 package com.anrisoftware.prefdialog.dialog
 
+import static com.anrisoftware.prefdialog.PreferenceDialog.*
 import static com.anrisoftware.swingcomponents.fontchooser.api.FontChooserHandler.*
 import static com.anrisoftware.prefdialog.panel.inputfields.fontchooser.FontChooserFieldHandler.*
-import java.awt.Dimension
+
 import java.awt.Font
 
-import org.junit.Before;
+import org.junit.Before
 import org.junit.Test
 
 import com.anrisoftware.prefdialog.annotations.Child
 import com.anrisoftware.prefdialog.annotations.FontChooser
 import com.anrisoftware.prefdialog.annotations.TextField
 
-class DialogFontChooserTest extends AbstractPreferenceDialogFixture {
+class DialogFontChooserTest extends TestPreferenceDialogUtil {
 
 	static final String TITLE = "Font Chooser Preferences Dialog Test"
 
@@ -59,17 +60,21 @@ class DialogFontChooserTest extends AbstractPreferenceDialogFixture {
 		}
 	}
 
-	def preferences
+	String name = "test"
+
+	Preferences preferences
 
 	@Before
 	void beforeTest() {
-		frameSize = new Dimension(640, 480)
+		endDelay = 0
 		preferences = new Preferences()
 	}
 
 	@Test
 	void "enter font and apply"() {
-		doDialogTest TITLE, preferences, {
+		beginPanelFrame TITLE, preferences, {
+			dialog.title = TITLE
+			preferenceDialog.name = name
 			fixture.toggleButton("$OPEN_FONT_BUTTON-font").click()
 			fixture.textBox(NAME_FIELD_NAME).deleteText()
 			fixture.textBox(NAME_FIELD_NAME).enterText("Serif")
@@ -77,16 +82,10 @@ class DialogFontChooserTest extends AbstractPreferenceDialogFixture {
 			fixture.textBox(STYLE_FIELD_NAME).enterText("Bold")
 			fixture.textBox(SIZE_FIELD_NAME).deleteText()
 			fixture.textBox(SIZE_FIELD_NAME).enterText("14")
-			fixture.button("ok").click()
+		}, {
+			fixture.button("$name-$OK_BUTTON_NAME_POSTFIX").click()
+			frame.visible = false
 			assert preferences.general.font == new Font("Serif", Font.BOLD, 14)
-		}
-	}
-
-	@Test
-	void "manually"() {
-		doDialogTest TITLE, preferences, {
-			//
-			Thread.sleep 0 // 60000 //
 		}
 	}
 }

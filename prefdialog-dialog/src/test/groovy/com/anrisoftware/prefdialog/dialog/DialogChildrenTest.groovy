@@ -18,16 +18,18 @@
  */
 package com.anrisoftware.prefdialog.dialog
 
-import java.awt.Dimension
+import static com.anrisoftware.prefdialog.PreferenceDialog.*
 
-import org.junit.Before;
+
+import org.junit.Before
 import org.junit.Test
 
+import com.anrisoftware.prefdialog.ChildrenPanel
 import com.anrisoftware.prefdialog.annotations.Child
 import com.anrisoftware.prefdialog.annotations.FormattedTextField
 import com.anrisoftware.prefdialog.annotations.TextField
 
-class DialogChildrenTest extends AbstractPreferenceDialogFixture {
+class DialogChildrenTest extends TestPreferenceDialogUtil {
 
 	static final String TITLE = "Children Preferences Dialog Test"
 
@@ -43,52 +45,61 @@ class DialogChildrenTest extends AbstractPreferenceDialogFixture {
 	static class Child1 {
 
 		@TextField
-		String name = ''
+		String name = ""
 
 		@FormattedTextField
 		int fields = 4
 
 		@Override
 		public String toString() {
-			'Child1'
+			"Child1"
 		}
 	}
 
 	static class Child2 {
 
 		@TextField
-		String something = ''
+		String something = ""
 
 		@FormattedTextField
 		int moreFields = 4
 
 		@Override
 		public String toString() {
-			'Child2'
+			"Child2"
 		}
 	}
 
-	def preferences
+	String name = "test"
+
+	Preferences preferences
 
 	@Before
 	void beforeTest() {
-		frameSize = new Dimension(640, 480)
+		endDelay = 0
 		preferences = new Preferences()
 	}
 
 	@Test
 	void testClickOkAndClose() {
-		doDialogTest TITLE, preferences, {
-			fixture.textBox('name').enterText 'name'
-			fixture.textBox('fields').enterText '10'
-			fixture.tree('child_tree').clickPath 'Child2'
-			fixture.textBox('something').enterText 'text'
-			fixture.textBox('moreFields').enterText '20'
-			fixture.button('ok').click()
+		beginPanelFrame TITLE, preferences, {
+			dialog.title = TITLE
+			preferenceDialog.name = name
+			fixture.textBox("name").enterText "name"
+			fixture.textBox("fields").enterText "10"
+		},{
+			def childrenPanel = fixture.panel("$name-${ChildrenPanel.PANEL_NAME_POSTFIX}")
+			childrenPanel.tree().clickPath "Child2"
+		}, {
+			fixture.textBox("something").enterText "text"
+			fixture.textBox("moreFields").enterText "20"
+		}, {
+			fixture.button("$name-$OK_BUTTON_NAME_POSTFIX").click()
+			frame.visible = false
 
-			assert preferences.general.name == 'name'
+			assert preferences.general.name == "name"
 			assert preferences.general.fields == 104
-			assert preferences.child2.something == 'text'
+			assert preferences.child2.something == "text"
 			assert preferences.child2.moreFields == 204
 		}
 	}

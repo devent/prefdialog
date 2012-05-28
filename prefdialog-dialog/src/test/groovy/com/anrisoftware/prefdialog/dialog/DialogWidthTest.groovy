@@ -78,28 +78,27 @@ class DialogWidthTest extends TestPreferenceDialogUtil {
 
 	@Before
 	void beforeTest() {
+		endDelay = 0
 		preferences = new Preferences()
 	}
 
 	@Test
 	void testClickOkAndClose() {
 		beginPanelFrame TITLE, preferences, {
-			sequencedActions {
-				dialog.title = TITLE
-				preferenceDialog.name = name
-				fixture.textBox("name").enterText "name"
-				fixture.textBox("fields").enterText "10"
-				fixture.checkBox("automaticSave").click()
-				fixture.radioButton("colors-BLUE").click()
-				fixture.comboBox("comboBox").selectItem 1
-				fixture.button("$name-$OK_BUTTON_NAME_POSTFIX").click()
-				frame.visible = false
-				assert preferences.general.name == "name"
-				assert preferences.general.fields == 104
-				assert preferences.general.automaticSave == true
-				assert preferences.general.colors == Colors.BLUE
-				assert preferences.general.comboBox == "second element"
-			}
+			dialog.title = TITLE
+			preferenceDialog.name = name
+			fixture.textBox("name").enterText "name"
+			fixture.textBox("fields").enterText "10"
+			fixture.checkBox("automaticSave").click()
+			fixture.radioButton("colors-BLUE").click()
+			fixture.comboBox("comboBox").selectItem 1
+			fixture.button("$name-$OK_BUTTON_NAME_POSTFIX").click()
+			frame.visible = false
+			assert preferences.general.name == "name"
+			assert preferences.general.fields == 104
+			assert preferences.general.automaticSave == true
+			assert preferences.general.colors == Colors.BLUE
+			assert preferences.general.comboBox == "second element"
 		}
 	}
 }

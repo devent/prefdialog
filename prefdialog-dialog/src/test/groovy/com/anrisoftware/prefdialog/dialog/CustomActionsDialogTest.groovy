@@ -30,7 +30,7 @@ import org.junit.Test
 import com.anrisoftware.prefdialog.annotations.Child
 import com.anrisoftware.prefdialog.annotations.TextField
 
-class CustomActionsDialogTest extends AbstractPreferenceDialogFixture {
+class CustomActionsDialogTest extends TestPreferenceDialogUtil {
 
 	static final String TITLE = "Custom Actions Preferences Dialog Test"
 
