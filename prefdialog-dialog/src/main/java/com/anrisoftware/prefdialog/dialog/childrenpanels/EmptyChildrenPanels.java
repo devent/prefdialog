@@ -1,4 +1,4 @@
-package com.anrisoftware.prefdialog.dialog.childrentree;
+package com.anrisoftware.prefdialog.dialog.childrenpanels;
 
 import static java.awt.BorderLayout.CENTER;
 
@@ -17,7 +17,7 @@ import com.anrisoftware.prefdialog.ChildrenPanels;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 2.2
  */
-class EmptyChildrenPanels implements ChildrenPanels {
+public class EmptyChildrenPanels implements ChildrenPanels {
 
 	@Override
 	public JPanel getChildPanel(ChildrenPanel panel, Object child) {

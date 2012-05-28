@@ -26,6 +26,7 @@ import javax.swing.tree.TreePath;
 
 import com.anrisoftware.prefdialog.ChildrenPanel;
 import com.anrisoftware.prefdialog.ChildrenPanels;
+import com.anrisoftware.prefdialog.dialog.childrenpanels.EmptyChildrenPanels;
 import com.google.inject.assistedinject.Assisted;
 
 /**
