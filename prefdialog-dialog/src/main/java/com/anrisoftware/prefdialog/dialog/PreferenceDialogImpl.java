@@ -127,6 +127,9 @@ class PreferenceDialogImpl implements PreferenceDialog {
 	public void setName(String name) {
 		childrenPanel.setName(name);
 		dialog.setName(format("%s-%s", name, DIALOG_NAME_POSTFIX));
+		okButton.setName(format("%s-%s", name, OK_BUTTON_NAME_POSTFIX));
+		cancelButton.setName(format("%s-%s", name, CANCEL_BUTTON_NAME_POSTFIX));
+		applyButton.setName(format("%s-%s", name, APPLY_BUTTON_NAME_POSTFIX));
 	}
 
 	@Override

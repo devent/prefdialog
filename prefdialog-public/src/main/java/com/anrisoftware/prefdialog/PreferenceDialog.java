@@ -25,6 +25,21 @@ public interface PreferenceDialog {
 	static final String DIALOG_NAME_POSTFIX = "preferences-dialog";
 
 	/**
+	 * The name postfix used for the preferences dialog "O.k." button.
+	 */
+	static final String OK_BUTTON_NAME_POSTFIX = "preferences-dialog-ok-button";
+
+	/**
+	 * The name postfix used for the preferences dialog "Cancel" button.
+	 */
+	static final String CANCEL_BUTTON_NAME_POSTFIX = "preferences-dialog-cancel-button";
+
+	/**
+	 * The name postfix used for the preferences dialog "Apply" button.
+	 */
+	static final String APPLY_BUTTON_NAME_POSTFIX = "preferences-dialog-apply-button";
+
+	/**
 	 * <p>
 	 * Sets the name of this dialog.
 	 * </p>
