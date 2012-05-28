@@ -17,6 +17,12 @@ public enum PreferenceDialogStatus {
 	/**
 	 * The user canceled the dialog, changes should be discarded.
 	 */
-	CANCELED
+	CANCELED,
+
+	/**
+	 * The user applied the changes in the dialog but not closed it; changes
+	 * should be applied.
+	 */
+	APPLIED,
 
 }
