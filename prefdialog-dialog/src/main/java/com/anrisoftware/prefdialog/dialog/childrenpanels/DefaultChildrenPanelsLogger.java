@@ -1,4 +1,4 @@
-package com.anrisoftware.prefdialog.dialog.childrentree;
+package com.anrisoftware.prefdialog.dialog.childrenpanels;
 
 import com.anrisoftware.globalpom.log.AbstractLogger;
 

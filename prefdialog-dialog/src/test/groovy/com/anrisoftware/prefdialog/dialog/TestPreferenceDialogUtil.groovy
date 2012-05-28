@@ -18,8 +18,6 @@
  */
 package com.anrisoftware.prefdialog.dialog
 
-
-
 import java.awt.Dimension
 
 import javax.swing.JDialog
@@ -34,7 +32,8 @@ import com.anrisoftware.prefdialog.ChildrenPanelFactory
 import com.anrisoftware.prefdialog.ChildrenPanels
 import com.anrisoftware.prefdialog.PreferenceDialog
 import com.anrisoftware.prefdialog.PreferenceDialogFactory
-import com.anrisoftware.prefdialog.dialog.childrentree.DefaultChildrenPanelsFactory
+import com.anrisoftware.prefdialog.dialog.childrenpanels.DefaultChildrenPanelsFactory
+import com.anrisoftware.prefdialog.dialog.childrenpanels.PrefdialogChildrenPanelsModule
 import com.anrisoftware.prefdialog.panel.inputfields.PrefdialogCoreFieldsModule
 import com.google.inject.Guice
 
@@ -42,7 +41,8 @@ abstract class TestPreferenceDialogUtil extends TestFrameUtil {
 
 	static injector = Guice.createInjector(
 	new PrefdialogModule(),
-	new PrefdialogCoreFieldsModule())
+	new PrefdialogCoreFieldsModule(),
+	new PrefdialogChildrenPanelsModule())
 
 	static ChildrenPanelFactory childrenPanelfactory = injector.getInstance ChildrenPanelFactory
 

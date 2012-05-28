@@ -16,10 +16,8 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.dialog.childrentree
+package com.anrisoftware.prefdialog.dialog.childrenpanels
 
-
-import javax.swing.JPanel
 
 import org.junit.Before
 import org.junit.Test
@@ -28,14 +26,17 @@ import com.anrisoftware.globalpom.utils.TestUtils
 import com.anrisoftware.prefdialog.annotations.Child
 import com.anrisoftware.prefdialog.annotations.TextField
 import com.anrisoftware.prefdialog.dialog.PrefdialogModule
+import com.anrisoftware.prefdialog.dialog.childrenpanels.DefaultChildrenPanels
+import com.anrisoftware.prefdialog.dialog.childrenpanels.DefaultChildrenPanelsFactory
 import com.anrisoftware.prefdialog.panel.inputfields.PrefdialogCoreFieldsModule
 import com.google.inject.Guice
 
 class DefaultChildrenPanelsTest extends TestUtils {
 
 	static injector = Guice.createInjector(
-	new PrefdialogModule(),
-	new PrefdialogCoreFieldsModule())
+	new PrefdialogCoreFieldsModule(),
+	new PrefdialogChildrenPanelsModule(),
+	new PrefdialogModule())
 
 	static DefaultChildrenPanelsFactory factory = injector.getInstance DefaultChildrenPanelsFactory
 
@@ -70,7 +71,7 @@ class DefaultChildrenPanelsTest extends TestUtils {
 
 	@Test
 	void "discover child panels"() {
-		DefaultChildrenPanels panels = factory.create new JPanel(), preferences
+		DefaultChildrenPanels panels = factory.create preferences
 		assert panels.getSize() == 1
 		assert panels.getElementAt(0) == preferences.general
 	}
