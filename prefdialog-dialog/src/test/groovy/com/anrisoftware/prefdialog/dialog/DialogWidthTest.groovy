@@ -1,27 +1,28 @@
 /*
- * Copyright 2010 Erwin Müller <erwin.mueller@deventm.org>
+ * Copyright 2010-2012 Erwin Müller <erwin.mueller@deventm.org>
  * 
- * This file is part of prefdialog-swing.
+ * This file is part of prefdialog-dialog.
  * 
- * prefdialog-swing is free software: you can redistribute it and/or modify it
+ * prefdialog-dialog is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
  * Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
  * 
- * prefdialog-swing is distributed in the hope that it will be useful, but
+ * prefdialog-dialog is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
+ * along with prefdialog-dialog. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.anrisoftware.prefdialog.dialog
 
-import java.awt.Dimension
+import static com.anrisoftware.prefdialog.PreferenceDialog.*
+
 import java.util.List
 
-import org.junit.Before;
+import org.junit.Before
 import org.junit.Test
 
 import com.anrisoftware.prefdialog.annotations.Checkbox
@@ -33,6 +34,8 @@ import com.anrisoftware.prefdialog.annotations.TextField
 import com.anrisoftware.prefdialog.validators.NotEmptyString
 
 class DialogWidthTest extends TestPreferenceDialogUtil {
+
+	static final String TITLE = "Preferences Dialog Widths Test"
 
 	static class Preferences {
 
@@ -69,29 +72,34 @@ class DialogWidthTest extends TestPreferenceDialogUtil {
 		}
 	}
 
-	def preferences
+	String name = "test"
+
+	Preferences preferences
 
 	@Before
 	void beforeTest() {
-		frameSize = new Dimension(640, 480)
 		preferences = new Preferences()
 	}
 
 	@Test
 	void testClickOkAndClose() {
-		doDialogTest "Width Preferences Dialog Test", preferences, {
-			fixture.textBox("name").enterText "name"
-			fixture.textBox("fields").enterText "10"
-			fixture.checkBox("automaticSave").click()
-			fixture.radioButton("colors-BLUE").click()
-			fixture.comboBox("comboBox").selectItem 1
-			fixture.button("ok").click()
-
-			assert preferences.general.name == "name"
-			assert preferences.general.fields == 104
-			assert preferences.general.automaticSave == true
-			assert preferences.general.colors == Colors.BLUE
-			assert preferences.general.comboBox == "second element"
+		beginPanelFrame TITLE, preferences, {
+			sequencedActions {
+				dialog.title = TITLE
+				preferenceDialog.name = name
+				fixture.textBox("name").enterText "name"
+				fixture.textBox("fields").enterText "10"
+				fixture.checkBox("automaticSave").click()
+				fixture.radioButton("colors-BLUE").click()
+				fixture.comboBox("comboBox").selectItem 1
+				fixture.button("$name-$OK_BUTTON_NAME_POSTFIX").click()
+				frame.visible = false
+				assert preferences.general.name == "name"
+				assert preferences.general.fields == 104
+				assert preferences.general.automaticSave == true
+				assert preferences.general.colors == Colors.BLUE
+				assert preferences.general.comboBox == "second element"
+			}
 		}
 	}
 }

@@ -58,76 +58,64 @@ class DialogTest extends TestPreferenceDialogUtil {
 
 	@Before
 	void beforeTest() {
+		endDelay = 0
 		preferences = new Preferences()
 	}
 
 	@Test
 	void "components titles"() {
 		beginPanelFrame TITLE, preferences, {
-			sequencedActions([
-				{
-					dialog.title = TITLE
-					preferenceDialog.name = name
-				},
-				{
-					assert fixture.textBox("name").text() == ""
-					assert fixture.button("$name-$OK_BUTTON_NAME_POSTFIX").text() == "Ok"
-					assert fixture.button("$name-$CANCEL_BUTTON_NAME_POSTFIX").text() == "Cancel"
-					assert fixture.button("$name-$APPLY_BUTTON_NAME_POSTFIX").text() == "Apply"
-				}
-			])
+			sequencedActions {
+				dialog.title = TITLE
+				preferenceDialog.name = name
+				assert fixture.textBox("name").text() == ""
+				assert fixture.button("$name-$OK_BUTTON_NAME_POSTFIX").text() == "Ok"
+				assert fixture.button("$name-$CANCEL_BUTTON_NAME_POSTFIX").text() == "Cancel"
+				assert fixture.button("$name-$APPLY_BUTTON_NAME_POSTFIX").text() == "Apply"
+			}
 		}
 	}
 
 	@Test
 	void testClickEnterTextOk() {
 		beginPanelFrame TITLE, preferences, {
-			sequencedActions([
-				{
-					dialog.title = TITLE
-					preferenceDialog.name = name
-				},
-				{
-					fixture.textBox("name").deleteText()
-					fixture.textBox("name").enterText "name"
-					fixture.button("$name-$OK_BUTTON_NAME_POSTFIX").click()
-				},
-				{ assert preferences.general.name == "name" }
-			])
+			sequencedActions {
+				dialog.title = TITLE
+				preferenceDialog.name = name
+				fixture.textBox("name").deleteText()
+				fixture.textBox("name").enterText "name"
+				fixture.button("$name-$OK_BUTTON_NAME_POSTFIX").click()
+				frame.visible = false
+				assert preferences.general.name == "name"
+			}
 		}
 	}
 
 	@Test
 	void testClickEnterTextCancel() {
 		beginPanelFrame TITLE, preferences, {
-			sequencedActions([
-				{
-					dialog.title = TITLE
-					preferenceDialog.name = name
-				},
-				{
-					fixture.textBox("name").enterText "name"
-					fixture.button("$name-$CANCEL_BUTTON_NAME_POSTFIX").click()
-				},
-				{ assert preferences.general.name == "" }
-			])
+			sequencedActions {
+				dialog.title = TITLE
+				preferenceDialog.name = name
+				fixture.textBox("name").enterText "name"
+				fixture.button("$name-$CANCEL_BUTTON_NAME_POSTFIX").click()
+				frame.visible = false
+				assert preferences.general.name == ""
+			}
 		}
 	}
 
 	@Test
 	void testClickEnterTextApply() {
 		beginPanelFrame TITLE, preferences, {
-			sequencedActions([
-				{
-					dialog.title = TITLE
-					preferenceDialog.name = name
-				},
-				{
-					fixture.textBox("name").enterText "name"
-					fixture.button("$name-$APPLY_BUTTON_NAME_POSTFIX").click()
-				},
-				{ assert preferences.general.name == "name" }
-			])
+			sequencedActions {
+				dialog.title = TITLE
+				preferenceDialog.name = name
+				fixture.textBox("name").enterText "name"
+				fixture.button("$name-$APPLY_BUTTON_NAME_POSTFIX").click()
+				frame.visible = false
+				assert preferences.general.name == "name"
+			}
 		}
 	}
 }
