@@ -1,24 +1,24 @@
 /*
- * Copyright 2010 Erwin Müller <erwin.mueller@deventm.org>
+ * Copyright 2010-2012 Erwin Müller <erwin.mueller@deventm.org>
  * 
- * This file is part of prefdialog-swing.
+ * This file is part of prefdialog-dialog.
  * 
- * prefdialog-swing is free software: you can redistribute it and/or modify it
+ * prefdialog-dialog is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
  * Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
  * 
- * prefdialog-swing is distributed in the hope that it will be useful, but
+ * prefdialog-dialog is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
+ * along with prefdialog-dialog. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.anrisoftware.prefdialog.dialog
 
-import java.awt.Dimension
+import static com.anrisoftware.prefdialog.PreferenceDialog.*
 
 import org.junit.Before
 import org.junit.Test
@@ -26,7 +26,7 @@ import org.junit.Test
 import com.anrisoftware.prefdialog.annotations.Child
 import com.anrisoftware.prefdialog.annotations.TextField
 
-class DialogTest extends AbstractPreferenceDialogFixture {
+class DialogTest extends TestPreferenceDialogUtil {
 
 	static final String TITLE = "Preferences Dialog Test"
 
@@ -52,58 +52,82 @@ class DialogTest extends AbstractPreferenceDialogFixture {
 		}
 	}
 
-	def preferences
+	String name = "test"
+
+	Preferences preferences
 
 	@Before
 	void beforeTest() {
-		frameSize = new Dimension(640, 480)
 		preferences = new Preferences()
 	}
 
 	@Test
 	void "components titles"() {
-		doDialogTest TITLE, preferences, {
-			assert fixture.target.title == TITLE
-			assert fixture.textBox("name").text() == ""
-			assert fixture.button("ok").text() == "Ok"
-			assert fixture.button("cancel").text() == "Cancel"
-			assert fixture.button("apply").text() == "Apply"
+		beginPanelFrame TITLE, preferences, {
+			sequencedActions([
+				{
+					dialog.title = TITLE
+					preferenceDialog.name = name
+				},
+				{
+					assert fixture.textBox("name").text() == ""
+					assert fixture.button("$name-$OK_BUTTON_NAME_POSTFIX").text() == "Ok"
+					assert fixture.button("$name-$CANCEL_BUTTON_NAME_POSTFIX").text() == "Cancel"
+					assert fixture.button("$name-$APPLY_BUTTON_NAME_POSTFIX").text() == "Apply"
+				}
+			])
 		}
 	}
 
 	@Test
 	void testClickEnterTextOk() {
-		doDialogTest TITLE, preferences, {
-			fixture.textBox("name").deleteText()
-			fixture.textBox("name").enterText "name"
-			fixture.button("ok").click()
-			assert preferences.general.name == "name"
+		beginPanelFrame TITLE, preferences, {
+			sequencedActions([
+				{
+					dialog.title = TITLE
+					preferenceDialog.name = name
+				},
+				{
+					fixture.textBox("name").deleteText()
+					fixture.textBox("name").enterText "name"
+					fixture.button("$name-$OK_BUTTON_NAME_POSTFIX").click()
+				},
+				{ assert preferences.general.name == "name" }
+			])
 		}
 	}
 
 	@Test
 	void testClickEnterTextCancel() {
-		doDialogTest TITLE, preferences, {
-			fixture.textBox("name").enterText "name"
-			fixture.button("cancel").click()
-			assert preferences.general.name == ""
+		beginPanelFrame TITLE, preferences, {
+			sequencedActions([
+				{
+					dialog.title = TITLE
+					preferenceDialog.name = name
+				},
+				{
+					fixture.textBox("name").enterText "name"
+					fixture.button("$name-$CANCEL_BUTTON_NAME_POSTFIX").click()
+				},
+				{ assert preferences.general.name == "" }
+			])
 		}
 	}
 
 	@Test
 	void testClickEnterTextApply() {
-		doDialogTest TITLE, preferences, {
-			fixture.textBox("name").enterText "name"
-			fixture.button("apply").click()
-			assert fixture.textBox("name").text() == "name"
-			assert preferences.general.name == "name"
-		}
-	}
-
-	@Test
-	void testManual() {
-		doDialogTest TITLE, preferences, { //
-			Thread.sleep 0 // 60000 //
+		beginPanelFrame TITLE, preferences, {
+			sequencedActions([
+				{
+					dialog.title = TITLE
+					preferenceDialog.name = name
+				},
+				{
+					fixture.textBox("name").enterText "name"
+					fixture.button("$name-$APPLY_BUTTON_NAME_POSTFIX").click()
+				},
+				{ assert preferences.general.name == "name" }
+			])
 		}
 	}
 }

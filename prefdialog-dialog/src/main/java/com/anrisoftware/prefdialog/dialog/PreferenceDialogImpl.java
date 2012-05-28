@@ -18,6 +18,8 @@
  */
 package com.anrisoftware.prefdialog.dialog;
 
+import static com.anrisoftware.prefdialog.PreferenceDialogStatus.APPLIED;
+import static com.anrisoftware.prefdialog.PreferenceDialogStatus.CANCELED;
 import static com.anrisoftware.prefdialog.PreferenceDialogStatus.OK;
 import static info.clearthought.layout.TableLayoutConstants.FILL;
 import static info.clearthought.layout.TableLayoutConstants.PREFERRED;
@@ -29,6 +31,7 @@ import info.clearthought.layout.TableLayout;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.Action;
@@ -82,6 +85,7 @@ class PreferenceDialogImpl implements PreferenceDialog {
 		setupDialog();
 		setupButtonsPanel();
 		setupButtons();
+		setupApplyAndRestoreInputListener();
 	}
 
 	private void setupDialog() {
@@ -104,6 +108,12 @@ class PreferenceDialogImpl implements PreferenceDialog {
 		buttonsPanel.add(okButton, "1, 0");
 		buttonsPanel.add(applyButton, "2, 0");
 		buttonsPanel.add(cancelButton, "3, 0");
+	}
+
+	private void setupButtons() {
+		okButton.setText("Ok");
+		cancelButton.setText("Cancel");
+		applyButton.setText("Apply");
 
 		okButton.addActionListener(new ActionListener() {
 
@@ -115,12 +125,46 @@ class PreferenceDialogImpl implements PreferenceDialog {
 				support.firePropertyChange(PROPERTY_STATUS, oldValue, status);
 			}
 		});
+		cancelButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dialog.setVisible(false);
+				PreferenceDialogStatus oldValue = status;
+				status = CANCELED;
+				support.firePropertyChange(PROPERTY_STATUS, oldValue, status);
+			}
+		});
+		applyButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				PreferenceDialogStatus oldValue = status;
+				status = APPLIED;
+				support.firePropertyChange(PROPERTY_STATUS, oldValue, status);
+			}
+		});
 	}
 
-	private void setupButtons() {
-		okButton.setText("Ok");
-		cancelButton.setText("Cancel");
-		applyButton.setText("Apply");
+	private void setupApplyAndRestoreInputListener() {
+		addPropertyChangeListener(PROPERTY_STATUS,
+				new PropertyChangeListener() {
+
+					@Override
+					public void propertyChange(PropertyChangeEvent evt) {
+						switch (getStatus()) {
+						case OK:
+							childrenPanel.getChildrenPanels().applyAllInput();
+							break;
+						case APPLIED:
+							childrenPanel.getChildrenPanels().applyAllInput();
+							break;
+						case CANCELED:
+							childrenPanel.getChildrenPanels().restoreAllInput();
+							break;
+						}
+					}
+				});
 	}
 
 	@Override

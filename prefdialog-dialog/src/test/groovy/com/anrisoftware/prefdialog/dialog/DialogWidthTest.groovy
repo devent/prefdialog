@@ -32,7 +32,7 @@ import com.anrisoftware.prefdialog.annotations.RadioButton
 import com.anrisoftware.prefdialog.annotations.TextField
 import com.anrisoftware.prefdialog.validators.NotEmptyString
 
-class DialogWidthTest extends AbstractPreferenceDialogFixture {
+class DialogWidthTest extends TestPreferenceDialogUtil {
 
 	static class Preferences {
 
