@@ -22,4 +22,23 @@ public interface ChildrenPanels {
 	 * @return the {@link JPanel} of the child.
 	 */
 	JPanel getChildPanel(ChildrenPanel panel, Object child);
+
+	/**
+	 * Checks if the input from the user is valid.
+	 * 
+	 * @return <code>true</code> if the input is valid or <code>false</code> if
+	 *         the input is not valid.
+	 */
+	boolean isInputValid();
+
+	/**
+	 * Restore all preference panel fields to the original values.
+	 */
+	void restoreAllInput();
+
+	/**
+	 * Apply values of all preference panel fields entered data.
+	 */
+	void applyAllInput();
+
 }

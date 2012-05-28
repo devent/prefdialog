@@ -141,6 +141,31 @@ public class DefaultChildrenPanels implements ChildrenPanels, ListModel {
 	}
 
 	@Override
+	public boolean isInputValid() {
+		boolean valid = true;
+		for (PreferencePanel panel : panels.values()) {
+			if (!panel.isInputValid()) {
+				valid = false;
+			}
+		}
+		return valid;
+	}
+
+	@Override
+	public void applyAllInput() {
+		for (PreferencePanel panel : panels.values()) {
+			panel.applyInput();
+		}
+	}
+
+	@Override
+	public void restoreAllInput() {
+		for (PreferencePanel panel : panels.values()) {
+			panel.restoreInput();
+		}
+	}
+
+	@Override
 	public void addListDataListener(ListDataListener l) {
 		model.addListDataListener(l);
 	}

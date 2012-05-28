@@ -27,4 +27,17 @@ class EmptyChildrenPanels implements ChildrenPanels {
 		return childPanel;
 	}
 
+	@Override
+	public boolean isInputValid() {
+		return true;
+	}
+
+	@Override
+	public void restoreAllInput() {
+	}
+
+	@Override
+	public void applyAllInput() {
+	}
+
 }
