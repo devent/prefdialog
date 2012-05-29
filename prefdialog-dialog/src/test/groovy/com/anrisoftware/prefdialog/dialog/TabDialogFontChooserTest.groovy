@@ -19,42 +19,16 @@
 package com.anrisoftware.prefdialog.dialog
 
 import static com.anrisoftware.prefdialog.PreferenceDialog.*
+import static com.anrisoftware.swingcomponents.fontchooser.api.FontChooserHandler.*
+import static com.anrisoftware.prefdialog.panel.inputfields.fontchooser.FontChooserFieldHandler.*
 
 import javax.swing.JPanel
 
-import org.junit.Test
 
-
-import com.anrisoftware.prefdialog.ChildrenPanel
-
-class TreeDialogChildrenTest extends AbstractChildrenTest {
+class TabDialogFontChooserTest extends AbstractFontChooserTest {
 
 	@Override
 	def createChildrenPanel() {
-		childrenPanel = childrenTreePanelfactory.create new JPanel()
-	}
-
-	@Test
-	void testClickOkAndClose() {
-		beginPanelFrame TITLE, preferences, {
-			dialog.title = TITLE
-			preferenceDialog.name = name
-			fixture.textBox("name").enterText "name"
-			fixture.textBox("fields").enterText "10"
-		},{
-			def childrenPanel = fixture.panel("$name-${ChildrenPanel.PANEL_NAME_POSTFIX}")
-			childrenPanel.tree().clickPath "Child2"
-		}, {
-			fixture.textBox("something").enterText "text"
-			fixture.textBox("moreFields").enterText "20"
-		}, {
-			fixture.button("$name-$OK_BUTTON_NAME_POSTFIX").click()
-			frame.visible = false
-
-			assert preferences.general.name == "name"
-			assert preferences.general.fields == 104
-			assert preferences.child2.something == "text"
-			assert preferences.child2.moreFields == 204
-		}
+		childrenPanel = childrenTabPanelfactory.create new JPanel()
 	}
 }

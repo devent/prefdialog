@@ -42,21 +42,21 @@ abstract class AbstractFontChooserTest extends TestPreferenceDialogUtil {
 
 		@Override
 		String toString() {
-			'Preferences'
+			"Preferences"
 		}
 	}
 
 	static class General {
 
 		@TextField
-		String name = ''
+		String name = ""
 
 		@FontChooser
 		Font font = Font.decode(null)
 
 		@Override
 		public String toString() {
-			'General'
+			"General"
 		}
 	}
 

@@ -24,14 +24,13 @@ import javax.swing.JPanel
 
 import org.junit.Test
 
-
 import com.anrisoftware.prefdialog.ChildrenPanel
 
-class TreeDialogChildrenTest extends AbstractChildrenTest {
+class TabsDialogChildrenTest extends AbstractChildrenTest {
 
 	@Override
 	def createChildrenPanel() {
-		childrenPanel = childrenTreePanelfactory.create new JPanel()
+		childrenPanel = childrenTabPanelfactory.create new JPanel()
 	}
 
 	@Test
@@ -43,7 +42,7 @@ class TreeDialogChildrenTest extends AbstractChildrenTest {
 			fixture.textBox("fields").enterText "10"
 		},{
 			def childrenPanel = fixture.panel("$name-${ChildrenPanel.PANEL_NAME_POSTFIX}")
-			childrenPanel.tree().clickPath "Child2"
+			childrenPanel.tabbedPane().selectTab "Child2"
 		}, {
 			fixture.textBox("something").enterText "text"
 			fixture.textBox("moreFields").enterText "20"

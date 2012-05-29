@@ -23,11 +23,10 @@ import static com.anrisoftware.prefdialog.PreferenceDialog.*
 import javax.swing.JPanel
 
 
-
-class DialogTabTest extends AbstractDialogTest {
+class TabsDialogWidthTest extends AbstractWidthTest {
 
 	@Override
-	Object createChildrenPanel() {
+	def createChildrenPanel() {
 		childrenPanel = childrenTabPanelfactory.create new JPanel()
 	}
 }
