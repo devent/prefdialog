@@ -25,7 +25,6 @@ import java.util.Collection;
 import com.anrisoftware.prefdialog.PreferenceDialog;
 import com.anrisoftware.prefdialog.PreferenceDialogFactory;
 import com.anrisoftware.prefdialog.annotations.Child;
-import com.anrisoftware.prefdialog.dialog.childrentree.PrefdialogChildrenTreeModule;
 import com.anrisoftware.prefdialog.panel.PrefdialogPanelModule;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
@@ -42,7 +41,6 @@ public class PrefdialogModule extends PrefdialogPanelModule {
 	@Override
 	protected void configure() {
 		super.configure();
-		install(new PrefdialogChildrenTreeModule());
 		install(new FactoryModuleBuilder().implement(PreferenceDialog.class,
 				PreferenceDialogImpl.class)
 				.build(PreferenceDialogFactory.class));

@@ -19,7 +19,6 @@
 package com.anrisoftware.prefdialog.dialog.childrentree;
 
 import com.anrisoftware.prefdialog.ChildrenPanel;
-import com.anrisoftware.prefdialog.ChildrenPanelFactory;
 import com.google.inject.AbstractModule;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 
@@ -34,6 +33,6 @@ public class PrefdialogChildrenTreeModule extends AbstractModule {
 	@Override
 	protected void configure() {
 		install(new FactoryModuleBuilder().implement(ChildrenPanel.class,
-				ChildrenPanelImpl.class).build(ChildrenPanelFactory.class));
+				ChildrenPanelImpl.class).build(ChildrenTreePanelFactory.class));
 	}
 }
