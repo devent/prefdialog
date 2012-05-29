@@ -76,6 +76,7 @@ abstract class AbstractFontChooserTest extends TestPreferenceDialogUtil {
 			dialog.title = TITLE
 			preferenceDialog.name = name
 			fixture.toggleButton("$OPEN_FONT_BUTTON-font").click()
+		},{
 			fixture.textBox(NAME_FIELD_NAME).deleteText()
 			fixture.textBox(NAME_FIELD_NAME).enterText("Serif")
 			fixture.textBox(STYLE_FIELD_NAME).deleteText()
