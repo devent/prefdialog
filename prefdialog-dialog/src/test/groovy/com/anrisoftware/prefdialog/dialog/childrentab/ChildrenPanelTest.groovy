@@ -17,7 +17,7 @@ class ChildrenPanelTest extends TestFrameUtil {
 	static injector = Guice.createInjector(
 	new PrefdialogChildrenTabModule())
 
-	static ChildrenPanelFactory factory = injector.getInstance ChildrenPanelFactory
+	static ChildrenPanelFactory factory = injector.getInstance ChildrenTabPanelFactory
 
 	static final String TITLE = "Children Panel Test"
 
