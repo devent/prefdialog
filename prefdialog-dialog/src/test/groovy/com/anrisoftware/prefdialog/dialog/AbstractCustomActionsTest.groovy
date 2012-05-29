@@ -19,10 +19,9 @@
 package com.anrisoftware.prefdialog.dialog
 
 import static com.anrisoftware.prefdialog.PreferenceDialog.*
-
-import java.awt.event.ActionEvent
-
-import javax.swing.AbstractAction
+import static com.anrisoftware.prefdialog.dialog.ApplyAction.*
+import static com.anrisoftware.prefdialog.dialog.CancelAction.*
+import static com.anrisoftware.prefdialog.dialog.OkAction.*
 
 import org.junit.Before
 import org.junit.Test
@@ -33,12 +32,6 @@ import com.anrisoftware.prefdialog.annotations.TextField
 abstract class AbstractCustomActionsTest extends TestPreferenceDialogUtil {
 
 	static final String TITLE = "Custom Actions Preferences Dialog Test"
-
-	static final String CUSTOM_OK = "Custom Ok"
-
-	static final String CUSTOM_CANCEL = "Custom Cancel"
-
-	static final String CUSTOM_APPLY = "Custom Apply"
 
 	static class Preferences {
 
@@ -59,36 +52,6 @@ abstract class AbstractCustomActionsTest extends TestPreferenceDialogUtil {
 		@Override
 		public String toString() {
 			"General"
-		}
-	}
-
-	static class OkAction extends AbstractAction {
-
-		OkAction() {
-			super(CUSTOM_OK)
-		}
-
-		void actionPerformed(ActionEvent e) {
-		}
-	}
-
-	static class CancelAction extends AbstractAction {
-
-		CancelAction() {
-			super(CUSTOM_CANCEL)
-		}
-
-		void actionPerformed(ActionEvent e) {
-		}
-	}
-
-	static class ApplyAction extends AbstractAction {
-
-		ApplyAction() {
-			super(CUSTOM_APPLY)
-		}
-
-		void actionPerformed(ActionEvent e) {
 		}
 	}
 
