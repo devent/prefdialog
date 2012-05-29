@@ -40,7 +40,7 @@ abstract class TestPreferencePanelUtil extends TestFrameUtil {
 	JPanel panel
 
 	@Override
-	void beginPanelFrame(def preferences, def childName, def runTest) {
+	void beginPanelFrame(def preferences, def childName, Object... runTest) {
 		panel = new JPanel()
 		preferencePanel = factory.create(panel, preferences, childName)
 		super.beginPanelFrame("$childName Test", panel, runTest)
