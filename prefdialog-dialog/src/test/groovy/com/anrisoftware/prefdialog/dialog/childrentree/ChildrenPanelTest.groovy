@@ -18,7 +18,7 @@ class ChildrenPanelTest extends TestFrameUtil {
 	static injector = Guice.createInjector(
 	new PrefdialogChildrenTreeModule())
 
-	static ChildrenPanelFactory factory = injector.getInstance ChildrenPanelFactory
+	static ChildrenPanelFactory factory = injector.getInstance ChildrenTreePanelFactory
 
 	static final String TITLE = "Children Panel Test"
 
@@ -33,7 +33,6 @@ class ChildrenPanelTest extends TestFrameUtil {
 			def fixturePanel = fixture.panel("$name-$PANEL_NAME_POSTFIX")
 			fixturePanel.requireVisible()
 			fixturePanel.splitPane().requireVisible()
-			sequencedActions([{ }])
 		}
 	}
 
@@ -51,13 +50,11 @@ class ChildrenPanelTest extends TestFrameUtil {
 		childrenPanel.childrenModel = model
 
 		beginPanelFrame TITLE, panel, {
-			sequencedActions([
-				{ childrenPanel.name = name },
-				{ model.addElement "Ddd" },
-				{ model.addElement "Eee" },
-				{ model.addElement "Fff" }
-			])
-		}
+			//
+			childrenPanel.name = name //
+		}, {  model.addElement "Ddd" //
+		}, { model.addElement "Eee" //
+		}, { model.addElement "Fff" }
 	}
 
 	@Test
@@ -74,13 +71,10 @@ class ChildrenPanelTest extends TestFrameUtil {
 
 		beginPanelFrame TITLE, panel, {
 			childrenPanel.name = name
-			assert childrenPanel.selectedChild == null
-			sequencedActions([
-				{ childrenPanel.name = name },
-				{ childrenPanel.selectedChild = childs[0] },
-				{ childrenPanel.selectedChild = childs[1] },
-				{ childrenPanel.selectedChild = childs[2] }
-			])
-		}
+			assert childrenPanel.selectedChild == childs[0] },
+		{ childrenPanel.name = name },
+		{ childrenPanel.selectedChild = childs[0] },
+		{ childrenPanel.selectedChild = childs[1] },
+		{ childrenPanel.selectedChild = childs[2] }
 	}
 }
