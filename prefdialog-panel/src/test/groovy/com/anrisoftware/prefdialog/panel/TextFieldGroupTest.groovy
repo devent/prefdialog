@@ -66,29 +66,23 @@ class TextFieldGroupTest extends TestPreferencePanelUtil {
 	void "enter text in all text boxes and apply input"() {
 		def preferences = new Preferences()
 		beginPanelFrame preferences, "general", {
-			sequencedActions([
-				{
-					fixture.textBox("textField1").deleteText()
-					fixture.textBox("textField1").enterText "test1"
-					fixture.textBox("textField2").deleteText()
-					fixture.textBox("textField2").enterText "test2"
-					fixture.textBox("textField3").deleteText()
-					fixture.textBox("textField3").enterText "test3"
-					fixture.textBox("textField4").deleteText()
-					fixture.textBox("textField4").enterText "test4"
-				},
-				{ preferencePanel.applyInput() },
-				{
-					assert fixture.textBox("textField1").text() == "test1"
-					assert preferences.general.group1.textField1 == "test1"
-					assert fixture.textBox("textField2").text() == "test2"
-					assert preferences.general.group1.textField2 == "test2"
-					assert fixture.textBox("textField3").text() == "test3"
-					assert preferences.general.group2.textField3 == "test3"
-					assert fixture.textBox("textField4").text() == "test4"
-					assert preferences.general.group2.textField4 == "test4"
-				}
-			])
+			fixture.textBox("textField1").deleteText()
+			fixture.textBox("textField1").enterText "test1"
+			fixture.textBox("textField2").deleteText()
+			fixture.textBox("textField2").enterText "test2"
+			fixture.textBox("textField3").deleteText()
+			fixture.textBox("textField3").enterText "test3"
+			fixture.textBox("textField4").deleteText()
+			fixture.textBox("textField4").enterText "test4"
+		}, { preferencePanel.applyInput() }, {
+			assert fixture.textBox("textField1").text() == "test1"
+			assert preferences.general.group1.textField1 == "test1"
+			assert fixture.textBox("textField2").text() == "test2"
+			assert preferences.general.group1.textField2 == "test2"
+			assert fixture.textBox("textField3").text() == "test3"
+			assert preferences.general.group2.textField3 == "test3"
+			assert fixture.textBox("textField4").text() == "test4"
+			assert preferences.general.group2.textField4 == "test4"
 		}
 	}
 }

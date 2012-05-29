@@ -82,24 +82,19 @@ class ChildTitleTest extends TestPreferencePanelUtil {
 	@Test
 	void "default child title"() {
 		beginPanelFrame new Preferences(), DEFAULT_TITLE, {
-			sequencedActions {
-				fixture.label("$TITLE_LABEL-$DEFAULT_TITLE").requireText DEFAULT_TITLE
-			}
+			fixture.label("$TITLE_LABEL-$DEFAULT_TITLE").requireText DEFAULT_TITLE
 		}
 	}
 
 	@Test
 	void "custom child title"() {
 		beginPanelFrame new Preferences(), CUSTOM_TITLE, {
-			sequencedActions {
-				fixture.label("$TITLE_LABEL-$CUSTOM_TITLE").requireText "custom"
-			}
+			fixture.label("$TITLE_LABEL-$CUSTOM_TITLE").requireText "custom"
 		}
 	}
 
 	@Test
 	void "hide child title"() {
-		beginPanelFrame new Preferences(), HIDE_TITLE, { sequencedActions {
-			} }
+		beginPanelFrame new Preferences(), HIDE_TITLE, { }
 	}
 }

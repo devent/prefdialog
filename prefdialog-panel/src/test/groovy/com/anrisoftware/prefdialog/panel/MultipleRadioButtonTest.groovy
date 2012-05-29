@@ -23,8 +23,6 @@ import org.junit.Test
 import com.anrisoftware.prefdialog.annotations.Child
 import com.anrisoftware.prefdialog.annotations.RadioButton
 
-
-
 class MultipleRadioButtonTest extends TestPreferencePanelUtil {
 
 	static class General {
@@ -57,27 +55,21 @@ class MultipleRadioButtonTest extends TestPreferencePanelUtil {
 	void testPanelClickApplyAndClose() {
 		def preferences = new Preferences()
 		beginPanelFrame preferences, "general", {
-			sequencedActions([
-				{
-					fixture.label('titlelabel-colors1').requireText 'colors1'
-					fixture.label('titlelabel-colors2').requireText 'colors2'
-					fixture.label('titlelabel-colors3').requireText 'colors3'
-					fixture.label('titlelabel-colors4').requireText 'colors4'
-				},
-				{
-					fixture.radioButton('colors1-BLUE').click()
-					fixture.radioButton('colors2-BLUE').click()
-					fixture.radioButton('colors3-BLUE').click()
-					fixture.radioButton('colors4-BLUE').click()
-					preferencePanel.applyInput()
-				},
-				{
-					assert preferences.general.colors1 == Colors.BLUE
-					assert preferences.general.colors2 == Colors.BLUE
-					assert preferences.general.colors3 == Colors.BLUE
-					assert preferences.general.colors4 == Colors.BLUE
-				}
-			])
+			fixture.label('titlelabel-colors1').requireText 'colors1'
+			fixture.label('titlelabel-colors2').requireText 'colors2'
+			fixture.label('titlelabel-colors3').requireText 'colors3'
+			fixture.label('titlelabel-colors4').requireText 'colors4'
+		}, {
+			fixture.radioButton('colors1-BLUE').click()
+			fixture.radioButton('colors2-BLUE').click()
+			fixture.radioButton('colors3-BLUE').click()
+			fixture.radioButton('colors4-BLUE').click()
+			preferencePanel.applyInput()
+		}, {
+			assert preferences.general.colors1 == Colors.BLUE
+			assert preferences.general.colors2 == Colors.BLUE
+			assert preferences.general.colors3 == Colors.BLUE
+			assert preferences.general.colors4 == Colors.BLUE
 		}
 	}
 }
