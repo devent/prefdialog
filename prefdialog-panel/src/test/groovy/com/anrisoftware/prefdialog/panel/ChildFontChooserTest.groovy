@@ -62,17 +62,11 @@ class ChildFontChooserTest extends TestPreferencePanelUtil {
 	@Test
 	void "default child title"() {
 		beginPanelFrame new Preferences(), DEFAULT_TITLE, {
-			sequencedActions([
-				{
-					fixture.label("$TITLE_LABEL-$DEFAULT_TITLE").requireText DEFAULT_TITLE
-				},
-				{
-					fixture.toggleButton("$OPEN_FONT_BUTTON-$FONT").click()
-				},
-				{
-					fixture.toggleButton("$OPEN_FONT_BUTTON-$FONT").click()
-				}
-			])
+			fixture.label("$TITLE_LABEL-$DEFAULT_TITLE").requireText DEFAULT_TITLE
+		}, {
+			fixture.toggleButton("$OPEN_FONT_BUTTON-$FONT").click()
+		}, {
+			fixture.toggleButton("$OPEN_FONT_BUTTON-$FONT").click()
 		}
 	}
 }
