@@ -58,7 +58,6 @@ class PreferencesDialogTest extends TestFrameUtil {
 			preferencesDialog.name = name
 			dialog.visible = true
 			fixture.dialog("$name-$DIALOG_NAME_POSTFIX").requireVisible()
-			sequencedActions([{ }])
 		}
 	}
 
@@ -79,12 +78,11 @@ class PreferencesDialogTest extends TestFrameUtil {
 			dialog.visible = true
 			fixture.dialog("$name-$DIALOG_NAME_POSTFIX").requireVisible()
 			assert childrenPanel.selectedChild == null
-			sequencedActions([
-				{ preferencesDialog.name = name },
-				{ childrenPanel.selectedChild = childs[0] },
-				{ childrenPanel.selectedChild = childs[1] },
-				{ childrenPanel.selectedChild = childs[2] }
-			])
-		}
+		}, { preferencesDialog.name = name //
+		}, {
+			childrenPanel.selectedChild = childs[0] //
+		}, {
+			childrenPanel.selectedChild = childs[1] //
+		}, { childrenPanel.selectedChild = childs[2] }
 	}
 }
