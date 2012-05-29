@@ -13,17 +13,21 @@ import org.junit.Test
 import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.prefdialog.ChildrenPanelFactory
 import com.anrisoftware.prefdialog.PreferenceDialogFactory
+import com.anrisoftware.prefdialog.dialog.childrentree.ChildrenTreePanelFactory
+import com.anrisoftware.prefdialog.dialog.childrentree.PrefdialogChildrenTreeModule
 import com.anrisoftware.prefdialog.panel.inputfields.PrefdialogCoreFieldsModule
 import com.google.inject.Guice
 
 class PreferencesDialogTest extends TestFrameUtil {
 
 	static injector = Guice.createInjector(
-	new PrefdialogModule(), new PrefdialogCoreFieldsModule())
+	new PrefdialogModule(),
+	new PrefdialogCoreFieldsModule(),
+	new PrefdialogChildrenTreeModule())
 
 	static PreferenceDialogFactory factory = injector.getInstance PreferenceDialogFactory
 
-	static ChildrenPanelFactory childrenPanelFactory = injector.getInstance ChildrenPanelFactory
+	static ChildrenPanelFactory childrenPanelFactory = injector.getInstance ChildrenTreePanelFactory
 
 	static final String TITLE = "Children Panel Test"
 
@@ -77,7 +81,7 @@ class PreferencesDialogTest extends TestFrameUtil {
 			preferencesDialog.name = name
 			dialog.visible = true
 			fixture.dialog("$name-$DIALOG_NAME_POSTFIX").requireVisible()
-			assert childrenPanel.selectedChild == null
+			assert childrenPanel.selectedChild == childs[0]
 		}, { preferencesDialog.name = name //
 		}, {
 			childrenPanel.selectedChild = childs[0] //
