@@ -20,51 +20,32 @@ package com.anrisoftware.prefdialog.dialog
 
 import static com.anrisoftware.prefdialog.PreferenceDialog.*
 
-import java.util.List
 
 import org.junit.Before
 import org.junit.Test
 
-import com.anrisoftware.prefdialog.annotations.Checkbox
 import com.anrisoftware.prefdialog.annotations.Child
-import com.anrisoftware.prefdialog.annotations.ComboBox
-import com.anrisoftware.prefdialog.annotations.FormattedTextField
-import com.anrisoftware.prefdialog.annotations.RadioButton
 import com.anrisoftware.prefdialog.annotations.TextField
-import com.anrisoftware.prefdialog.validators.NotEmptyString
 
-class DialogWidthTest extends TestPreferenceDialogUtil {
+abstract class AbstractDialogTest extends TestPreferenceDialogUtil {
 
-	static final String TITLE = "Preferences Dialog Widths Test"
+	static final String TITLE = "Preferences Dialog Test"
 
 	static class Preferences {
 
 		@Child
 		General general = new General()
+
+		@Override
+		String toString() {
+			"Preferences"
+		}
 	}
 
 	static class General {
 
-		@TextField(width=-2.0d, validator=NotEmptyString, validatorText="Must not be empty")
+		@TextField
 		String name = ""
-
-		@FormattedTextField(width=-2.0d, validator=FieldsValidator, validatorText="Must be a number and between 2 and 100")
-		int fields = 4
-
-		@Checkbox(width=-2.0d)
-		boolean automaticSave = false
-
-		@RadioButton(width=-2.0d, columns=2)
-		Colors colors = Colors.BLACK
-
-		List combobox1 = [
-			"first element",
-			"second element",
-			"third element"
-		]
-
-		@ComboBox(title="combobox1", elements="combobox1", width=-2.0d)
-		String comboBox = "first element"
 
 		@Override
 		public String toString() {
@@ -83,22 +64,51 @@ class DialogWidthTest extends TestPreferenceDialogUtil {
 	}
 
 	@Test
-	void testClickOkAndClose() {
+	void "components titles"() {
+		beginPanelFrame TITLE, preferences, {
+			dialog.title = TITLE
+			preferenceDialog.name = name
+			assert fixture.textBox("name").text() == ""
+			assert fixture.button("$name-$OK_BUTTON_NAME_POSTFIX").text() == "Ok"
+			assert fixture.button("$name-$CANCEL_BUTTON_NAME_POSTFIX").text() == "Cancel"
+			assert fixture.button("$name-$APPLY_BUTTON_NAME_POSTFIX").text() == "Apply"
+		}
+	}
+
+	@Test
+	void testClickEnterTextOk() {
+		beginPanelFrame TITLE, preferences, {
+			dialog.title = TITLE
+			preferenceDialog.name = name
+			fixture.textBox("name").deleteText()
+			fixture.textBox("name").enterText "name"
+			fixture.button("$name-$OK_BUTTON_NAME_POSTFIX").click()
+			frame.visible = false
+			assert preferences.general.name == "name"
+		}
+	}
+
+	@Test
+	void testClickEnterTextCancel() {
 		beginPanelFrame TITLE, preferences, {
 			dialog.title = TITLE
 			preferenceDialog.name = name
 			fixture.textBox("name").enterText "name"
-			fixture.textBox("fields").enterText "10"
-			fixture.checkBox("automaticSave").click()
-			fixture.radioButton("colors-BLUE").click()
-			fixture.comboBox("comboBox").selectItem 1
-			fixture.button("$name-$OK_BUTTON_NAME_POSTFIX").click()
+			fixture.button("$name-$CANCEL_BUTTON_NAME_POSTFIX").click()
+			frame.visible = false
+			assert preferences.general.name == ""
+		}
+	}
+
+	@Test
+	void testClickEnterTextApply() {
+		beginPanelFrame TITLE, preferences, {
+			dialog.title = TITLE
+			preferenceDialog.name = name
+			fixture.textBox("name").enterText "name"
+			fixture.button("$name-$APPLY_BUTTON_NAME_POSTFIX").click()
 			frame.visible = false
 			assert preferences.general.name == "name"
-			assert preferences.general.fields == 104
-			assert preferences.general.automaticSave == true
-			assert preferences.general.colors == Colors.BLUE
-			assert preferences.general.comboBox == "second element"
 		}
 	}
 }

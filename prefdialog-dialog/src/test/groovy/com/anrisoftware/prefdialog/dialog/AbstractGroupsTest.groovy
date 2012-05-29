@@ -20,7 +20,6 @@ package com.anrisoftware.prefdialog.dialog
 
 import static com.anrisoftware.prefdialog.PreferenceDialog.*
 
-import java.util.List
 
 import org.junit.Before
 import org.junit.Test
@@ -34,13 +33,13 @@ import com.anrisoftware.prefdialog.annotations.RadioButton
 import com.anrisoftware.prefdialog.annotations.TextField
 import com.anrisoftware.prefdialog.validators.NotEmptyString
 
-class DialogGroupTitleTest extends TestPreferenceDialogUtil {
+abstract class AbstractGroupsTest extends TestPreferenceDialogUtil {
 
-	static final String TITLE = "Group Titles Preferences Dialog Test"
+	static final String TITLE = "Group Preferences Dialog Test"
 
 	static class Preferences {
 
-		@Child(title="General")
+		@Child
 		General general = new General()
 	}
 
@@ -49,13 +48,13 @@ class DialogGroupTitleTest extends TestPreferenceDialogUtil {
 		@TextField(validator=NotEmptyString, validatorText="Must not be empty")
 		String name = ""
 
-		@FormattedTextField(validator=FieldsValidator, validatorText="Must be a number and between 2 and 100")
+		@FormattedTextField(validator=FieldsValidator, validatorText="Must be a number and between 2 and 900")
 		int fields = 4
 
-		@Group(title="Group One")
+		@Group
 		Group1 group1 = new Group1()
 
-		@Group(title="Group Two")
+		@Group
 		Group2 group2 = new Group2()
 
 		@Checkbox
@@ -108,20 +107,15 @@ class DialogGroupTitleTest extends TestPreferenceDialogUtil {
 	}
 
 	@Test
-	void testClickOkAndClose() {
+	void testClickOk() {
 		beginPanelFrame TITLE, preferences, {
 			dialog.title = TITLE
 			preferenceDialog.name = name
 			fixture.textBox("name").enterText "name"
 			fixture.textBox("fields").enterText "10"
-			fixture.textBox("textField1").enterText "field1"
-			fixture.textBox("textField2").enterText "field2"
-			fixture.textBox("textField3").enterText "field3"
-			fixture.textBox("textField4").enterText "field4"
 			fixture.checkBox("automaticSave").click()
 			fixture.radioButton("colors-BLUE").click()
 			fixture.comboBox("comboBox").selectItem 1
-		}, {
 			fixture.button("$name-$OK_BUTTON_NAME_POSTFIX").click()
 			frame.visible = false
 
@@ -130,10 +124,48 @@ class DialogGroupTitleTest extends TestPreferenceDialogUtil {
 			assert preferences.general.automaticSave == true
 			assert preferences.general.colors == Colors.BLUE
 			assert preferences.general.comboBox == "second element"
-			assert preferences.general.group1.textField1 == "field1"
-			assert preferences.general.group1.textField2 == "field2"
-			assert preferences.general.group2.textField3 == "field3"
-			assert preferences.general.group2.textField4 == "field4"
+		}
+	}
+
+	@Test
+	void testClickCancel() {
+		beginPanelFrame TITLE, preferences, {
+			dialog.title = TITLE
+			preferenceDialog.name = name
+			fixture.textBox("name").enterText "name"
+			fixture.textBox("fields").enterText "10"
+			fixture.checkBox("automaticSave").click()
+			fixture.radioButton("colors-BLUE").click()
+			fixture.comboBox("comboBox").selectItem 1
+			fixture.button("$name-$CANCEL_BUTTON_NAME_POSTFIX").click()
+			frame.visible = false
+
+			assert preferences.general.name == ""
+			assert preferences.general.fields == 4
+			assert preferences.general.automaticSave == false
+			assert preferences.general.colors == Colors.BLACK
+			assert preferences.general.comboBox == "first element"
+		}
+	}
+
+	@Test
+	void testClickApply() {
+		beginPanelFrame TITLE, preferences, {
+			dialog.title = TITLE
+			preferenceDialog.name = name
+			fixture.textBox("name").enterText "name"
+			fixture.textBox("fields").enterText "10"
+			fixture.checkBox("automaticSave").click()
+			fixture.radioButton("colors-BLUE").click()
+			fixture.comboBox("comboBox").selectItem 1
+			fixture.button("$name-$APPLY_BUTTON_NAME_POSTFIX").click()
+			frame.visible = false
+
+			assert preferences.general.name == "name"
+			assert preferences.general.fields == 104
+			assert preferences.general.automaticSave == true
+			assert preferences.general.colors == Colors.BLUE
+			assert preferences.general.comboBox == "second element"
 		}
 	}
 }

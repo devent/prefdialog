@@ -19,53 +19,44 @@
 package com.anrisoftware.prefdialog.dialog
 
 import static com.anrisoftware.prefdialog.PreferenceDialog.*
+import static com.anrisoftware.swingcomponents.fontchooser.api.FontChooserHandler.*
+import static com.anrisoftware.prefdialog.panel.inputfields.fontchooser.FontChooserFieldHandler.*
+
+import java.awt.Font
 
 import org.junit.Before
 import org.junit.Test
 
-import com.anrisoftware.prefdialog.ChildrenPanel
 import com.anrisoftware.prefdialog.annotations.Child
-import com.anrisoftware.prefdialog.annotations.FormattedTextField
+import com.anrisoftware.prefdialog.annotations.FontChooser
 import com.anrisoftware.prefdialog.annotations.TextField
 
-class DialogChildrenTest extends TestPreferenceDialogUtil {
+abstract class AbstractFontChooserTest extends TestPreferenceDialogUtil {
 
-	static final String TITLE = "Children Preferences Dialog Test"
+	static final String TITLE = "Font Chooser Preferences Dialog Test"
 
 	static class Preferences {
 
 		@Child
-		Child1 general = new Child1()
-
-		@Child
-		Child2 child2 = new Child2()
-	}
-
-	static class Child1 {
-
-		@TextField
-		String name = ""
-
-		@FormattedTextField
-		int fields = 4
+		General general = new General()
 
 		@Override
-		public String toString() {
-			"Child1"
+		String toString() {
+			'Preferences'
 		}
 	}
 
-	static class Child2 {
+	static class General {
 
 		@TextField
-		String something = ""
+		String name = ''
 
-		@FormattedTextField
-		int moreFields = 4
+		@FontChooser
+		Font font = Font.decode(null)
 
 		@Override
 		public String toString() {
-			"Child2"
+			'General'
 		}
 	}
 
@@ -80,26 +71,21 @@ class DialogChildrenTest extends TestPreferenceDialogUtil {
 	}
 
 	@Test
-	void testClickOkAndClose() {
+	void "enter font and apply"() {
 		beginPanelFrame TITLE, preferences, {
 			dialog.title = TITLE
 			preferenceDialog.name = name
-			fixture.textBox("name").enterText "name"
-			fixture.textBox("fields").enterText "10"
-		},{
-			def childrenPanel = fixture.panel("$name-${ChildrenPanel.PANEL_NAME_POSTFIX}")
-			childrenPanel.tree().clickPath "Child2"
-		}, {
-			fixture.textBox("something").enterText "text"
-			fixture.textBox("moreFields").enterText "20"
+			fixture.toggleButton("$OPEN_FONT_BUTTON-font").click()
+			fixture.textBox(NAME_FIELD_NAME).deleteText()
+			fixture.textBox(NAME_FIELD_NAME).enterText("Serif")
+			fixture.textBox(STYLE_FIELD_NAME).deleteText()
+			fixture.textBox(STYLE_FIELD_NAME).enterText("Bold")
+			fixture.textBox(SIZE_FIELD_NAME).deleteText()
+			fixture.textBox(SIZE_FIELD_NAME).enterText("14")
 		}, {
 			fixture.button("$name-$OK_BUTTON_NAME_POSTFIX").click()
 			frame.visible = false
-
-			assert preferences.general.name == "name"
-			assert preferences.general.fields == 104
-			assert preferences.child2.something == "text"
-			assert preferences.child2.moreFields == 204
+			assert preferences.general.font == new Font("Serif", Font.BOLD, 14)
 		}
 	}
 }

@@ -22,7 +22,6 @@ import java.awt.Dimension
 
 import javax.swing.JDialog
 import javax.swing.JFrame
-import javax.swing.JPanel
 
 import org.apache.commons.lang.ArrayUtils
 
@@ -34,6 +33,10 @@ import com.anrisoftware.prefdialog.PreferenceDialog
 import com.anrisoftware.prefdialog.PreferenceDialogFactory
 import com.anrisoftware.prefdialog.dialog.childrenpanels.DefaultChildrenPanelsFactory
 import com.anrisoftware.prefdialog.dialog.childrenpanels.PrefdialogChildrenPanelsModule
+import com.anrisoftware.prefdialog.dialog.childrentab.ChildrenTabPanelFactory
+import com.anrisoftware.prefdialog.dialog.childrentab.PrefdialogChildrenTabModule
+import com.anrisoftware.prefdialog.dialog.childrentree.ChildrenTreePanelFactory
+import com.anrisoftware.prefdialog.dialog.childrentree.PrefdialogChildrenTreeModule
 import com.anrisoftware.prefdialog.panel.inputfields.PrefdialogCoreFieldsModule
 import com.google.inject.Guice
 
@@ -42,9 +45,13 @@ abstract class TestPreferenceDialogUtil extends TestFrameUtil {
 	static injector = Guice.createInjector(
 	new PrefdialogModule(),
 	new PrefdialogCoreFieldsModule(),
-	new PrefdialogChildrenPanelsModule())
+	new PrefdialogChildrenPanelsModule(),
+	new PrefdialogChildrenTreeModule(),
+	new PrefdialogChildrenTabModule())
 
-	static ChildrenPanelFactory childrenPanelfactory = injector.getInstance ChildrenPanelFactory
+	static ChildrenPanelFactory childrenTreePanelfactory = injector.getInstance ChildrenTreePanelFactory
+
+	static ChildrenPanelFactory childrenTabPanelfactory = injector.getInstance ChildrenTabPanelFactory
 
 	static PreferenceDialogFactory factory = injector.getInstance PreferenceDialogFactory
 
@@ -64,13 +71,18 @@ abstract class TestPreferenceDialogUtil extends TestFrameUtil {
 		frameSize = new Dimension(640, 480)
 		frame = new JFrame()
 		frame.size = frameSize
-		childrenPanel = childrenPanelfactory.create new JPanel()
 		dialog = new JDialog(frame)
 		dialog.size = frameSize
 		dialog.modal = false
+		createChildrenPanel()
 		preferenceDialog = factory.create dialog, childrenPanel
 		return frame
 	}
+
+	/**
+	 * Creates the ChildrenPanel for the PreferenceDialog.
+	 */
+	abstract createChildrenPanel()
 
 	@Override
 	void beginPanelFrame(def title, def preferences, Object... tests) {
