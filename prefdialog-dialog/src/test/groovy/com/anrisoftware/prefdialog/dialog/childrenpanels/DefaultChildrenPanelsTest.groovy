@@ -18,7 +18,6 @@
  */
 package com.anrisoftware.prefdialog.dialog.childrenpanels
 
-
 import org.junit.Before
 import org.junit.Test
 
