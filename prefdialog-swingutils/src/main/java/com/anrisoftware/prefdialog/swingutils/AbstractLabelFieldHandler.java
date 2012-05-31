@@ -96,16 +96,24 @@ public class AbstractLabelFieldHandler<FieldComponentType extends AbstractLabelF
 	}
 
 	private void setupIcon() {
-		String resourceName = valueFromA("icon", String.class);
-		int iconSize = valueFromA("iconSize", IconSize.class).getWidth();
-		resourceName = String.format(resourceName, iconSize);
-		URL iconUrl = Resources.getResource(resourceName);
-		if (isEmpty(resourceName) || iconUrl == null) {
+		URL iconUrl = loadIconResource();
+		if (iconUrl == null) {
 			return;
 		}
 		ImageIcon icon = loadIcon(iconUrl);
 		getComponent().setIcon(icon);
 		log.setupButtonIcon(iconUrl, this);
+	}
+
+	private URL loadIconResource() {
+		URL url = null;
+		String resourceName = valueFromA("icon", String.class);
+		int iconSize = valueFromA("iconSize", IconSize.class).getWidth();
+		resourceName = String.format(resourceName, iconSize);
+		if (!isEmpty(resourceName)) {
+			url = Resources.getResource(resourceName);
+		}
+		return url;
 	}
 
 	private ImageIcon loadIcon(URL iconUrl) {
