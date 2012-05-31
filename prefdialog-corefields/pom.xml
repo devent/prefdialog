@@ -12,7 +12,7 @@
 
 	<artifactId>prefdialog-corefields</artifactId>
 	<name>Preferences Dialog Core Fields</name>
-    <version>2.1</version>
+    <version>2.1.1-SNAPSHOT</version>
 
 	<dependencies>
 		<dependency>
@@ -22,7 +22,7 @@
 		<dependency>
 			<groupId>com.anrisoftware.prefdialog</groupId>
 			<artifactId>prefdialog-swingutils</artifactId>
-			<version>2.1</version>
+			<version>2.1.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>aurelienribon.tweenengine</groupId>
