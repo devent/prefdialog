@@ -14,24 +14,39 @@
     <version>2.1.1-SNAPSHOT</version>
 
 	<dependencies>
+
+        <!-- test dependencies -->
+        <dependency>
+            <groupId>com.anrisoftware.prefdialog</groupId>
+            <artifactId>prefdialog-corefields</artifactId>
+            <version>2.1.1-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.anrisoftware.globalpom</groupId>
+            <artifactId>globalpom-groovytestutils</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- compile dependencies -->
 		<dependency>
 			<groupId>com.anrisoftware.prefdialog</groupId>
 			<artifactId>prefdialog-panel</artifactId>
 			<version>2.1.1-SNAPSHOT</version>
 		</dependency>
-
-		<!-- test dependencies -->
-		<dependency>
-			<groupId>com.anrisoftware.prefdialog</groupId>
-			<artifactId>prefdialog-corefields</artifactId>
-			<version>2.1.1-SNAPSHOT</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.anrisoftware.globalpom</groupId>
-			<artifactId>globalpom-groovytestutils</artifactId>
-			<scope>test</scope>
-		</dependency>
+        <dependency>
+            <groupId>com.anrisoftware.prefdialog</groupId>
+            <artifactId>prefdialog-reflection</artifactId>
+            <version>2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>tablelayout</groupId>
+            <artifactId>TableLayout</artifactId>
+        </dependency>
 	</dependencies>
 
 </project>
