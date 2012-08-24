@@ -6,12 +6,12 @@
 	<parent>
 		<groupId>com.anrisoftware.globalpom</groupId>
 		<artifactId>globalpom-groovy</artifactId>
-		<version>1.8</version>
+		<version>1.11</version>
 	</parent>
 
 	<groupId>com.anrisoftware.prefdialog</groupId>
 	<artifactId>prefdialog-parent</artifactId>
-	<version>2.1</version>
+	<version>2.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<licenses>
@@ -26,8 +26,8 @@
 		<developer>
 			<id>devent</id>
 			<name>Erwin Mueller</name>
-			<email>erwin.mueller at deventm.org</email>
-			<url>http://globalscaling-software.com</url>
+			<email>erwin.mueller@deventm.org</email>
+			<url>http://anr-institute.com</url>
 			<roles>
 				<role>Owner</role>
 				<role>Developer</role>
