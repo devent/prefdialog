@@ -91,16 +91,17 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 		this.parentObject = parentObject;
 		this.field = field;
 		this.childFields = new ArrayList<FieldComponent<?>>();
-		setup();
 	}
 
-	private void setup() {
+	@Override
+	public AbstractFieldComponent<ComponentType> createField() {
 		setupName();
 		setupTitle();
 		setupValue();
 		setupWidth();
 		setupReadOnly();
 		setupToolTip();
+		return this;
 	}
 
 	private void setupName() {

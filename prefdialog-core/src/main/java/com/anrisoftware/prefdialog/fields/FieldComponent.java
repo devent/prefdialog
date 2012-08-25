@@ -32,6 +32,13 @@ import java.awt.Component;
 public interface FieldComponent<ComponentType extends Component> {
 
 	/**
+	 * Sets the properties of the field from the annotation element values.
+	 * 
+	 * @return this {@link FieldComponent}.
+	 */
+	FieldComponent<ComponentType> createField();
+
+	/**
 	 * Sets the name the field. The name should be a unique ID of the field
 	 * inside the container.
 	 * 
