@@ -16,34 +16,31 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-reflection. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.reflection.beans
+package com.anrisoftware.prefdialog.reflection.beans;
 
-import org.junit.Before
-
-import com.anrisoftware.globalpom.utils.TestUtils
-import com.anrisoftware.prefdialog.reflection.utils.ParentBean
-import com.google.inject.Guice
-import com.google.inject.Injector
+import com.anrisoftware.prefdialog.reflection.exceptions.ReflectionError;
 
 /**
- * Create the injector to test annotation access.
+ * Creates bean objects.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 2.2
  */
-class BeanUtils extends TestUtils {
+public interface BeanFactory {
 
-	Injector injector
-
-	ParentBean bean
-
-	@Before
-	void beforeTest() {
-		injector = createInjector()
-		bean = new ParentBean()
-	}
-
-	Injector createInjector() {
-		Guice.createInjector new BeansModule()
-	}
+	/**
+	 * Creates the bean with the standard constructor.
+	 * 
+	 * @param type
+	 *            the {@link Class} type of the bean. The bean must have the
+	 *            standard constructor available for initialization.
+	 * 
+	 * @return the bean.
+	 * 
+	 * @throws ReflectionError
+	 *             if the standard constructor can not be found or can not be
+	 *             accessed, if the constructor throws an exception or if the
+	 *             type can not be instantiated.
+	 */
+	<T> T createBean(Class<T> type);
 }

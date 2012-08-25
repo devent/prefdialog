@@ -97,5 +97,4 @@ class BeanAccessImpl implements BeanAccess {
 			throw log.illegalAccessError(e, field, parentObject);
 		}
 	}
-
 }

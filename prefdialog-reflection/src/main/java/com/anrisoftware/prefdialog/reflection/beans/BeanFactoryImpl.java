@@ -18,20 +18,45 @@
  */
 package com.anrisoftware.prefdialog.reflection.beans;
 
-import com.google.inject.AbstractModule;
+import java.lang.reflect.InvocationTargetException;
+
+import javax.inject.Inject;
+
+import org.apache.commons.lang3.reflect.ConstructorUtils;
 
 /**
- * Binds the bean access and bean factory.
+ * Creates bean objects.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 2.2
  */
-public class BeansModule extends AbstractModule {
+public class BeanFactoryImpl implements BeanFactory {
 
-	@Override
-	protected void configure() {
-		bind(BeanAccess.class).to(BeanAccessImpl.class);
-		bind(BeanFactory.class).to(BeanFactoryImpl.class);
+	private final BeanFactoryImplLogger log;
+
+	/**
+	 * Sets the logger
+	 * 
+	 * @param logger
+	 *            the {@link BeanFactoryImplLogger}.
+	 */
+	@Inject
+	BeanFactoryImpl(BeanFactoryImplLogger logger) {
+		this.log = logger;
 	}
 
+	@Override
+	public <T> T createBean(Class<T> type) {
+		try {
+			return ConstructorUtils.invokeConstructor(type);
+		} catch (NoSuchMethodException e) {
+			throw log.noSuchCtorError(e, type);
+		} catch (IllegalAccessException e) {
+			throw log.illegalAccessError(e, type);
+		} catch (InvocationTargetException e) {
+			throw log.invocationTargetError(e, type);
+		} catch (InstantiationException e) {
+			throw log.instantiationError(e, type);
+		}
+	}
 }

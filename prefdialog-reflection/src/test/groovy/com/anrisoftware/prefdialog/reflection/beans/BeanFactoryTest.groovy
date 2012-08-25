@@ -18,32 +18,22 @@
  */
 package com.anrisoftware.prefdialog.reflection.beans
 
-import org.junit.Before
+import org.junit.Test
 
-import com.anrisoftware.globalpom.utils.TestUtils
 import com.anrisoftware.prefdialog.reflection.utils.ParentBean
-import com.google.inject.Guice
-import com.google.inject.Injector
 
 /**
- * Create the injector to test annotation access.
+ * Tests for {@link BeanFactoryImpl}.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 2.2
  */
-class BeanUtils extends TestUtils {
+class BeanFactoryTest extends BeanUtils {
 
-	Injector injector
-
-	ParentBean bean
-
-	@Before
-	void beforeTest() {
-		injector = createInjector()
-		bean = new ParentBean()
-	}
-
-	Injector createInjector() {
-		Guice.createInjector new BeansModule()
+	@Test
+	void "create bean"() {
+		BeanFactory a = injector.getInstance BeanFactory
+		def value = a.createBean(ParentBean)
+		assert value != null
 	}
 }
