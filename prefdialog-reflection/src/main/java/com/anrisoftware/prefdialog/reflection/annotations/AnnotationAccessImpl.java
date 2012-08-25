@@ -31,23 +31,22 @@ class AnnotationAccessImpl implements AnnotationAccess {
 
 	@Override
 	public <T> T getElementValue(Class<? extends Annotation> annotationClass,
-			Field field, Class<T> type) {
-		return getElementValue(annotationClass, field, type, "value");
+			Field field) {
+		return getElementValue(annotationClass, field, "value");
 	}
 
 	@Override
 	public <T> T getElementValue(Class<? extends Annotation> annotationClass,
-			Field field, Class<T> type, String name) {
+			Field field, String name) {
 		Annotation a = field.getAnnotation(annotationClass);
 		try {
 			return asType(name, a);
 		} catch (NoSuchMethodException e) {
-			throw log.noSuchMethodError(e, annotationClass, field, type, name);
+			throw log.noSuchMethodError(e, annotationClass, field, name);
 		} catch (IllegalAccessException e) {
-			throw log.illegalAccessError(e, annotationClass, field, type, name);
+			throw log.illegalAccessError(e, annotationClass, field, name);
 		} catch (InvocationTargetException e) {
-			throw log.invocationTargetError(e, annotationClass, field, type,
-					name);
+			throw log.invocationTargetError(e, annotationClass, field, name);
 		}
 	}
 

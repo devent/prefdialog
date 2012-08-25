@@ -20,13 +20,10 @@ public interface AnnotationAccess {
 	 * @param field
 	 *            the {@link Field} where the annotation is set.
 	 * 
-	 * @param type
-	 *            the {@link Class} type of the annotation element.
-	 * 
 	 * @return the value of the annotation field.
 	 */
 	<T> T getElementValue(Class<? extends Annotation> annotationClass,
-			Field field, Class<T> type);
+			Field field);
 
 	/**
 	 * Returns the value of an annotation element.
@@ -37,14 +34,11 @@ public interface AnnotationAccess {
 	 * @param field
 	 *            the {@link Field} where the annotation is set.
 	 * 
-	 * @param type
-	 *            the {@link Class} type of the annotation element.
-	 * 
 	 * @param name
 	 *            the name of the annotation element.
 	 * 
 	 * @return the value of the annotation field.
 	 */
 	<T> T getElementValue(Class<? extends Annotation> annotationClass,
-			Field field, Class<T> type, String name);
+			Field field, String name);
 }

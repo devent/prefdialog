@@ -83,33 +83,31 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	}
 
 	private void setupName() {
-		// TODO Auto-generated method stub
-
+		String name = field.getName();
+		setName(name);
 	}
 
 	private void setupTitle() {
-		String title = annotationAccess.getElementValue(
-				FIELD_COMPONENT_ANNOTATION_CLASS, field,
-				TITLE_ELEMENT.getValue(), TITLE_ELEMENT.getKey());
+		String title = annotationAccess
+				.getElementValue(FIELD_COMPONENT_ANNOTATION_CLASS, field,
+						TITLE_ELEMENT.getKey());
 		setTitle(title);
 	}
 
 	private void setupValue() {
-		// TODO Auto-generated method stub
-
 	}
 
 	private void setupWidth() {
-		double width = annotationAccess.getElementValue(
-				FIELD_COMPONENT_ANNOTATION_CLASS, field,
-				WIDTH_ELEMENT.getValue(), WIDTH_ELEMENT.getKey());
+		double width = annotationAccess
+				.getElementValue(FIELD_COMPONENT_ANNOTATION_CLASS, field,
+						WIDTH_ELEMENT.getKey());
 		setWidth(width);
 	}
 
 	private void setupReadOnly() {
 		boolean readOnly = annotationAccess.getElementValue(
 				FIELD_COMPONENT_ANNOTATION_CLASS, field,
-				READ_ONLY_ELEMENT.getValue(), READ_ONLY_ELEMENT.getKey());
+				READ_ONLY_ELEMENT.getKey());
 		setEnabled(readOnly);
 	}
 

@@ -24,39 +24,36 @@ class AnnotationAccessImplLogger extends AbstractLogger {
 
 	ReflectionError noSuchMethodError(NoSuchMethodException e,
 			Class<? extends Annotation> annotationClass, Field field,
-			Class<?> type, String name) {
+			String name) {
 		ReflectionError ex = new ReflectionError(
 				"No such element found in the annotation", e)
 				.addContextValue("name", name)
 				.addContextValue("annotation", annotationClass)
-				.addContextValue("field", field)
-				.addContextValue("return type", type);
+				.addContextValue("field", field);
 		log.error(ex.getLocalizedMessage());
 		return ex;
 	}
 
 	ReflectionError illegalAccessError(IllegalAccessException e,
 			Class<? extends Annotation> annotationClass, Field field,
-			Class<?> type, String name) {
+			String name) {
 		ReflectionError ex = new ReflectionError(
 				"Illegal access to the element in the annotation", e)
 				.addContextValue("name", name)
 				.addContextValue("annotation", annotationClass)
-				.addContextValue("field", field)
-				.addContextValue("return type", type);
+				.addContextValue("field", field);
 		log.error(ex.getLocalizedMessage());
 		return ex;
 	}
 
 	ReflectionError invocationTargetError(InvocationTargetException e,
 			Class<? extends Annotation> annotationClass, Field field,
-			Class<?> type, String name) {
+			String name) {
 		ReflectionError ex = new ReflectionError(
 				"Exception thrown in the element of the annotation", e)
 				.addContextValue("name", name)
 				.addContextValue("annotation", annotationClass)
-				.addContextValue("field", field)
-				.addContextValue("return type", type);
+				.addContextValue("field", field);
 		log.error(ex.getLocalizedMessage());
 		return ex;
 	}
