@@ -3,6 +3,8 @@ package com.anrisoftware.prefdialog.reflection.annotations;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
+import com.anrisoftware.prefdialog.reflection.exceptions.ReflectionError;
+
 /**
  * Read access to the elements of an annotation.
  * 
@@ -21,6 +23,10 @@ public interface AnnotationAccess {
 	 *            the {@link Field} where the annotation is set.
 	 * 
 	 * @return the value of the annotation field.
+	 * 
+	 * @throws ReflectionError
+	 *             if the element was not found in the annotation, the element
+	 *             can not be accessed or the element throws an exception.
 	 */
 	<T> T getElementValue(Class<? extends Annotation> annotationClass,
 			Field field);
@@ -38,6 +44,10 @@ public interface AnnotationAccess {
 	 *            the name of the annotation element.
 	 * 
 	 * @return the value of the annotation field.
+	 * 
+	 * @throws ReflectionError
+	 *             if the element was not found in the annotation, the element
+	 *             can not be accessed or the element throws an exception.
 	 */
 	<T> T getElementValue(Class<? extends Annotation> annotationClass,
 			Field field, String name);
