@@ -38,6 +38,7 @@ import javax.swing.JSlider;
  * Sets the field with default slider.
  * 
  * <pre>
+ * &#064;FieldComponent
  * &#064;Slider
  * private int value;
  * </pre>
@@ -46,6 +47,7 @@ import javax.swing.JSlider;
  * standard constructor available for instantiation.
  * 
  * <pre>
+ * &#064;FieldComponent
  * &#064;Slider(modelClass = CustomBoundedRangeModel.class)
  * private int value;
  * </pre>
@@ -56,44 +58,6 @@ import javax.swing.JSlider;
 @Target(FIELD)
 @Retention(RUNTIME)
 public @interface Slider {
-
-	/**
-	 * The title of the slider field. The title is shown above of the field and
-	 * should contain a description.
-	 */
-	String title() default "";
-
-	/**
-	 * If the title of the slider field should be visible or not. Defaults to
-	 * {@code true}.
-	 */
-	boolean showTitle() default true;
-
-	/**
-	 * If this slider field should be read-only. If read-only is set then the
-	 * user can not modify the value of the slider field. Defaults to
-	 * {@code false}.
-	 */
-	boolean readonly() default false;
-
-	/**
-	 * The width of the slider field inside the container.
-	 */
-	double width() default -1.0;
-
-	/**
-	 * The position of the title of the slider field. Default is
-	 * {@link TextPosition#TEXT_ONLY}.
-	 * 
-	 * @see TextPosition
-	 */
-	TextPosition textPosition() default TextPosition.TEXT_ONLY;
-
-	/**
-	 * The resource name of icon or empty if no icon should be set. Defaults to
-	 * the empty resource name.
-	 */
-	String icon() default "";
 
 	/**
 	 * The minimum value of the slider. Default to zero.

@@ -31,6 +31,7 @@ import java.lang.annotation.Target;
  * Example:
  * 
  * <pre>
+ * &#064;FieldComponent
  * &#064;ColorButton
  * private Color color = Color.BLACK;
  * </pre>
@@ -38,52 +39,4 @@ import java.lang.annotation.Target;
 @Target(FIELD)
 @Retention(RUNTIME)
 public @interface ColorButton {
-
-	/**
-	 * The title of the color field. The title is shown above of the field and
-	 * should contain a description.
-	 */
-	String title() default "";
-
-	/**
-	 * If the title of the color field should be visible or not. Defaults to
-	 * {@code true}.
-	 */
-	boolean showTitle() default true;
-
-	/**
-	 * If this color field should be read-only. If read-only is set then the
-	 * user can not modify the value of the color field. Defaults to
-	 * {@code false}.
-	 */
-	boolean readonly() default false;
-
-	/**
-	 * The width of the color field inside the container.
-	 */
-	double width() default -1.0;
-
-	/**
-	 * The position of the title of the color field. Default is
-	 * {@link TextPosition#TEXT_ONLY}.
-	 * 
-	 * @see TextPosition
-	 */
-	TextPosition textPosition() default TextPosition.TEXT_ONLY;
-
-	/**
-	 * The resource name of icon or empty if no icon should be set. Defaults to
-	 * the empty resource name.
-	 */
-	String icon() default "";
-
-	/**
-	 * The horizontal position of the color button to select the color. The
-	 * default is {@link HorizontalAlignment#RIGHT}, meaning it will be aligned
-	 * to the right side.
-	 * 
-	 * @see HorizontalAlignment
-	 */
-	HorizontalAlignment horizontalPosition() default HorizontalAlignment.RIGHT;
-
 }

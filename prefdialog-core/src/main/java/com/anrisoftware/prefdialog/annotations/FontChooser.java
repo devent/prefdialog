@@ -31,6 +31,7 @@ import java.lang.annotation.Target;
  * Example:
  * 
  * <pre>
+ * &#064;FieldComponent
  * &#064;FontChooser
  * private Font font;
  * </pre>
@@ -43,45 +44,7 @@ import java.lang.annotation.Target;
 public @interface FontChooser {
 
 	/**
-	 * The title of the font field. The title is shown above of the field and
-	 * should contain a description.
-	 */
-	String title() default "";
-
-	/**
-	 * If the title of the font field should be visible or not. Defaults to
-	 * {@code true}.
-	 */
-	boolean showTitle() default true;
-
-	/**
-	 * If this font field should be read-only. If read-only is set then the user
-	 * can not modify the value of the font field. Defaults to {@code false}.
-	 */
-	boolean readonly() default false;
-
-	/**
-	 * The width of the font field inside the container.
-	 */
-	double width() default -1.0;
-
-	/**
-	 * The position of the title of the font field. Default is
-	 * {@link TextPosition#TEXT_ONLY}.
-	 * 
-	 * @see TextPosition
-	 */
-	TextPosition textPosition() default TextPosition.TEXT_ONLY;
-
-	/**
-	 * The resource name of icon or empty if no icon should be set. Defaults to
-	 * the empty resource name.
-	 */
-	String icon() default "";
-
-	/**
 	 * The minimum font chooser panel height. Default is 480 pixels.
 	 */
 	int minimumHeight() default 480;
-
 }

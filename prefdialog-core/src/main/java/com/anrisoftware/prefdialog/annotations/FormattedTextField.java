@@ -31,9 +31,11 @@ import java.lang.annotation.Target;
  * Examples:
  * 
  * <pre>
+ * &#064;FieldComponent
  * &#064;FormattedTextField
  * private String textField;
  * 
+ * &#064;FieldComponent
  * &#064;FormattedTextField
  * private int intField;
  * </pre>
@@ -44,42 +46,4 @@ import java.lang.annotation.Target;
 @Target(FIELD)
 @Retention(RUNTIME)
 public @interface FormattedTextField {
-
-	/**
-	 * The title of the formatted text field. The title is shown above of the
-	 * field and should contain a description.
-	 */
-	String title() default "";
-
-	/**
-	 * If the title of the formatted text field should be visible or not.
-	 * Defaults to {@code true}.
-	 */
-	boolean showTitle() default true;
-
-	/**
-	 * If this formatted text field should be read-only. If read-only is set
-	 * then the user can not modify the value of the formatted text field.
-	 * Defaults to {@code false}.
-	 */
-	boolean readonly() default false;
-
-	/**
-	 * The width of the formatted text field inside the container.
-	 */
-	double width() default -1.0;
-
-	/**
-	 * The position of the title of the formatted text field. Default is
-	 * {@link TextPosition#TEXT_ONLY}.
-	 * 
-	 * @see TextPosition
-	 */
-	TextPosition textPosition() default TextPosition.TEXT_ONLY;
-
-	/**
-	 * The resource name of icon or empty if no icon should be set. Defaults to
-	 * the empty resource name.
-	 */
-	String icon() default "";
 }

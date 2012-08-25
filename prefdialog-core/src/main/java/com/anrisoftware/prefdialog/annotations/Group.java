@@ -27,8 +27,29 @@ import java.lang.annotation.Target;
 /**
  * Groups fields together logically. The group field contains child fields and
  * are added to this group. If the value is not set then the group field is
- * instantiated; in that case the group needs to have the standard contructor
+ * instantiated; in that case the group needs to have the standard constructor
  * available.
+ * <p>
+ * Example:
+ * 
+ * <pre>
+ * class GroupFoo
+ * 	&#064;FieldComponent
+ * 	&#064;TextField
+ * 	private String textFoo;
+ * 
+ * 	&#064;FieldComponent
+ * 	&#064;TextField
+ * 	private String textBar;
+ * }
+ * 
+ * class Preferences {
+ * 
+ * 	&#064;FieldComponent
+ * 	&#064;Group
+ * 	private GroupFoo groupFoo
+ * }
+ * </pre>
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
@@ -36,41 +57,4 @@ import java.lang.annotation.Target;
 @Target(FIELD)
 @Retention(RUNTIME)
 public @interface Group {
-
-	/**
-	 * The title of the group field. The title is shown above of the field and
-	 * should contain a description.
-	 */
-	String title() default "";
-
-	/**
-	 * If the title of the group field should be visible or not. Defaults to
-	 * {@code true}.
-	 */
-	boolean showTitle() default true;
-
-	/**
-	 * If this group field should be read-only. If read-only is set then all the
-	 * child fields are read-only as well. Defaults to {@code false}.
-	 */
-	boolean readonly() default false;
-
-	/**
-	 * The width of the group field inside the container.
-	 */
-	double width() default -1.0;
-
-	/**
-	 * The position of the title of the group field. Default is
-	 * {@link TextPosition#TEXT_ONLY}.
-	 * 
-	 * @see TextPosition
-	 */
-	TextPosition textPosition() default TextPosition.TEXT_ONLY;
-
-	/**
-	 * The resource name of icon or empty if no icon should be set. Defaults to
-	 * the empty resource name.
-	 */
-	String icon() default "";
 }

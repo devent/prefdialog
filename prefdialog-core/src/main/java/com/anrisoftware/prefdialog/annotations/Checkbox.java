@@ -30,6 +30,7 @@ import java.lang.annotation.Target;
  * Example:
  * 
  * <pre>
+ * &#064;FieldComponent
  * &#064;Checkbox(text = &quot;Is Important&quot;)
  * private boolean isImportant;
  * </pre>
@@ -37,41 +38,4 @@ import java.lang.annotation.Target;
 @Target(FIELD)
 @Retention(RUNTIME)
 public @interface Checkbox {
-
-	/**
-	 * The title of the check box. The title is shown above of the field and
-	 * should contain a description.
-	 */
-	String title() default "";
-
-	/**
-	 * If the title of the check box should be visible or not. Defaults to
-	 * {@code true}.
-	 */
-	boolean showTitle() default true;
-
-	/**
-	 * If this check box should be read-only. If read-only is set then the user
-	 * can not modify the value of the check box. Defaults to {@code false}.
-	 */
-	boolean readonly() default false;
-
-	/**
-	 * The width of the check box inside the container.
-	 */
-	double width() default -1.0;
-
-	/**
-	 * The position of the title of the check box. Default is
-	 * {@link TextPosition#TEXT_ONLY}.
-	 * 
-	 * @see TextPosition
-	 */
-	TextPosition textPosition() default TextPosition.TEXT_ONLY;
-
-	/**
-	 * The resource name of icon or empty if no icon should be set. Defaults to
-	 * the empty resource name.
-	 */
-	String icon() default "";
 }

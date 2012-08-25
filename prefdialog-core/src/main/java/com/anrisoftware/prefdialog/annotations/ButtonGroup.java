@@ -34,9 +34,11 @@ import javax.swing.Action;
  * Example:
  * 
  * <pre>
+ * &#064;FieldComponent
  * &#064;ButtonGroup
  * private Action[] buttons = { ... };
  * 
+ * &#064;FieldComponent
  * &#064;ButtonGroup
  * private Iterable&lt;Action&gt; buttons = ...;
  * </pre>
@@ -47,49 +49,4 @@ import javax.swing.Action;
 @Target(FIELD)
 @Retention(RUNTIME)
 public @interface ButtonGroup {
-
-	/**
-	 * The title of the button group. The title is shown above of the group and
-	 * should contain a description.
-	 */
-	String title() default "";
-
-	/**
-	 * If the title of the button group should be visible or not. Defaults to
-	 * {@code false}.
-	 */
-	boolean showTitle() default false;
-
-	/**
-	 * If this button group should be read-only. If read-only is set then the
-	 * user can not use buttons in the group. Defaults to {@code false}.
-	 */
-	boolean readonly() default false;
-
-	/**
-	 * The width of the button group inside the container.
-	 */
-	double width() default -1.0;
-
-	/**
-	 * The position of the title of the button group. Default is
-	 * {@link TextPosition#TEXT_ONLY}.
-	 * 
-	 * @see TextPosition
-	 */
-	TextPosition textPosition() default TextPosition.TEXT_ONLY;
-
-	/**
-	 * The resource name of icon or empty if no icon should be set. Defaults to
-	 * the empty resource name.
-	 */
-	String icon() default "";
-
-	/**
-	 * The horizontal alignment of the buttons in the group. Defaults to
-	 * {@link HorizontalAlignment#RIGHT}.
-	 * 
-	 * @see HorizontalAlignment
-	 */
-	HorizontalAlignment horizontalAlignment() default HorizontalAlignment.RIGHT;
 }

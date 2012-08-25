@@ -35,6 +35,7 @@ import java.lang.annotation.Target;
  * 	BLACK, BLUE, RED
  * }
  * 
+ * &#064;FieldComponent
  * &#064;RadioButton
  * private Colors colors;
  * </pre>
@@ -45,44 +46,6 @@ import java.lang.annotation.Target;
 @Target(FIELD)
 @Retention(RUNTIME)
 public @interface RadioButton {
-
-	/**
-	 * The title of the radio buttons field. The title is shown above of the
-	 * field and should contain a description.
-	 */
-	String title() default "";
-
-	/**
-	 * If the title of the radio buttons field should be visible or not.
-	 * Defaults to {@code true}.
-	 */
-	boolean showTitle() default true;
-
-	/**
-	 * If this radio buttons field should be read-only. If read-only is set then
-	 * the user can not modify the value of the radio buttons field. Defaults to
-	 * {@code false}.
-	 */
-	boolean readonly() default false;
-
-	/**
-	 * The width of the radio buttons field inside the container.
-	 */
-	double width() default -1.0;
-
-	/**
-	 * The position of the title of the radio buttons field. Default is
-	 * {@link TextPosition#TEXT_ONLY}.
-	 * 
-	 * @see TextPosition
-	 */
-	TextPosition textPosition() default TextPosition.TEXT_ONLY;
-
-	/**
-	 * The resource name of icon or empty if no icon should be set. Defaults to
-	 * the empty resource name.
-	 */
-	String icon() default "";
 
 	/**
 	 * How many columns should the group have. The radio buttons are distributed

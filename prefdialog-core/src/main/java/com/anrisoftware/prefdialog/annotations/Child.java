@@ -32,10 +32,12 @@ import java.lang.annotation.Target;
  * 
  * <pre>
  * // is instantiated by the default constructor
+ * &#064;FieldComponent
  * &#064;Child
  * private ChildPreferences childPreferences;
  * 
  * // is manually instantiated
+ * &#064;FieldComponent
  * &#064;Child
  * private ChildPreferences childPreferences = new ...;
  * </pre>
@@ -43,42 +45,4 @@ import java.lang.annotation.Target;
 @Target(FIELD)
 @Retention(RUNTIME)
 public @interface Child {
-
-	/**
-	 * The title of the child field. The title is shown above of the field and
-	 * should contain a description.
-	 */
-	String title() default "";
-
-	/**
-	 * If the title of the child field should be visible or not. Defaults to
-	 * {@code true}.
-	 */
-	boolean showTitle() default true;
-
-	/**
-	 * If this child field should be read-only. If read-only is set then the
-	 * user can not modify the value of the child field. Defaults to
-	 * {@code false}.
-	 */
-	boolean readonly() default false;
-
-	/**
-	 * The width of the child field inside the container.
-	 */
-	double width() default -1.0;
-
-	/**
-	 * The position of the title of the child field. Default is
-	 * {@link TextPosition#TEXT_ONLY}.
-	 * 
-	 * @see TextPosition
-	 */
-	TextPosition textPosition() default TextPosition.TEXT_ONLY;
-
-	/**
-	 * The resource name of icon or empty if no icon should be set. Defaults to
-	 * the empty resource name.
-	 */
-	String icon() default "";
 }

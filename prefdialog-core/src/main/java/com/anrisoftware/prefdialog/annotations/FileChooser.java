@@ -31,6 +31,7 @@ import java.lang.annotation.Target;
  * Example:
  * 
  * <pre>
+ * &#064;FieldComponent
  * &#064;FileChooser
  * private File file = new File(&quot;.&quot;);
  * </pre>
@@ -41,43 +42,6 @@ import java.lang.annotation.Target;
 @Target(FIELD)
 @Retention(RUNTIME)
 public @interface FileChooser {
-
-	/**
-	 * The title of the file field. The title is shown above of the field and
-	 * should contain a description.
-	 */
-	String title() default "";
-
-	/**
-	 * If the title of the file field should be visible or not. Defaults to
-	 * {@code true}.
-	 */
-	boolean showTitle() default true;
-
-	/**
-	 * If this file field should be read-only. If read-only is set then the user
-	 * can not modify the value of the file field. Defaults to {@code false}.
-	 */
-	boolean readonly() default false;
-
-	/**
-	 * The width of the file field inside the container.
-	 */
-	double width() default -1.0;
-
-	/**
-	 * The position of the title of the file field. Default is
-	 * {@link TextPosition#TEXT_ONLY}.
-	 * 
-	 * @see TextPosition
-	 */
-	TextPosition textPosition() default TextPosition.TEXT_ONLY;
-
-	/**
-	 * The resource name of icon or empty if no icon should be set. Defaults to
-	 * the empty resource name.
-	 */
-	String icon() default "";
 
 	/**
 	 * The text of the button that opens the file chooser dialog. Default is the
@@ -99,5 +63,4 @@ public @interface FileChooser {
 	 * "file_chooser_open_folder" resource.
 	 */
 	String buttonIcon() default "file_chooser_open_folder";
-
 }

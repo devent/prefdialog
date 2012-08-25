@@ -42,6 +42,7 @@ import javax.swing.ListCellRenderer;
  * Sets the field with a list of the values:
  * 
  * <pre>
+ * &#064;FieldComponent
  * &#064;ComboBox(elements = &quot;someFieldElements&quot;)
  * private String someField;
  * private String[] someFieldElements = { ... };
@@ -51,6 +52,7 @@ import javax.swing.ListCellRenderer;
  * Sets the field with an instance of the custom model:
  * 
  * <pre>
+ * &#064;FieldComponent
  * &#064;ComboBox(model = &quot;customModel&quot;)
  * private String someField;
  * private ComboBoxModel customModel = new CustomComboBoxModel();
@@ -60,6 +62,7 @@ import javax.swing.ListCellRenderer;
  * constructor available for instantiation.
  * 
  * <pre>
+ * &#064;FieldComponent
  * &#064;ComboBox(modelClass = CustomComboBoxModel.class)
  * private String someField;
  * </pre>
@@ -67,6 +70,7 @@ import javax.swing.ListCellRenderer;
  * Sets the field with an instance of the custom renderer:
  * 
  * <pre>
+ * &#064;FieldComponent
  * &#064;ComboBox(renderer = &quot;customRenderer&quot;)
  * private String someField;
  * private ListCellRenderer customRenderer = new CustomListCellRenderer();
@@ -76,7 +80,9 @@ import javax.swing.ListCellRenderer;
  * standard constructor available for instantiation.
  * 
  * <pre>
+ * &#064;FieldComponent
  * &#064;ComboBox(rendererClass = CustomListCellRenderer.class)
+ * private String someField;
  * </pre>
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
@@ -85,44 +91,6 @@ import javax.swing.ListCellRenderer;
 @Target(FIELD)
 @Retention(RUNTIME)
 public @interface ComboBox {
-
-	/**
-	 * The title of the combo-box field. The title is shown above of the field
-	 * and should contain a description.
-	 */
-	String title() default "";
-
-	/**
-	 * If the title of the combo-box field should be visible or not. Defaults to
-	 * {@code true}.
-	 */
-	boolean showTitle() default true;
-
-	/**
-	 * If this combo-box field should be read-only. If read-only is set then the
-	 * user can not modify the value of the combo-box field. Defaults to
-	 * {@code false}.
-	 */
-	boolean readonly() default false;
-
-	/**
-	 * The width of the combo-box field inside the container.
-	 */
-	double width() default -1.0;
-
-	/**
-	 * The position of the title of the combo-box field. Default is
-	 * {@link TextPosition#TEXT_ONLY}.
-	 * 
-	 * @see TextPosition
-	 */
-	TextPosition textPosition() default TextPosition.TEXT_ONLY;
-
-	/**
-	 * The resource name of icon or empty if no icon should be set. Defaults to
-	 * the empty resource name.
-	 */
-	String icon() default "";
 
 	/**
 	 * The name of the field name to use for the elements of the combo box. Not

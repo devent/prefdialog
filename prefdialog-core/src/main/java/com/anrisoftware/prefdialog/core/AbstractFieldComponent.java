@@ -1,4 +1,4 @@
-package com.anrisoftware.prefdialog;
+package com.anrisoftware.prefdialog.core;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -10,8 +10,11 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import com.anrisoftware.prefdialog.fields.FieldComponent;
+import com.anrisoftware.prefdialog.reflection.annotations.AnnotationAccess;
 
 /**
  * Sets the component and sets the component name, width, and if the component
@@ -19,7 +22,9 @@ import com.anrisoftware.prefdialog.fields.FieldComponent;
  * 
  * <ul>
  * <li>name,</li>
+ * <li>title,</li>
  * <li>width,</li>
+ * <li>value,</li>
  * <li>read-only flag.</li>
  * </ul>
  * 
@@ -28,6 +33,17 @@ import com.anrisoftware.prefdialog.fields.FieldComponent;
  */
 public abstract class AbstractFieldComponent<ComponentType extends Component>
 		implements FieldComponent<ComponentType> {
+
+	private static final Class<com.anrisoftware.prefdialog.annotations.FieldComponent> FIELD_COMPONENT_ANNOTATION_CLASS = com.anrisoftware.prefdialog.annotations.FieldComponent.class;
+
+	private static final Pair<String, Class<String>> TITLE_ELEMENT = new ImmutablePair<String, Class<String>>(
+			"title", String.class);
+
+	private static final Pair<String, Class<Double>> WIDTH_ELEMENT = new ImmutablePair<String, Class<Double>>(
+			"width", Double.class);
+
+	private static final Pair<String, Class<Boolean>> READ_ONLY_ELEMENT = new ImmutablePair<String, Class<Boolean>>(
+			"readOnly", Boolean.class);
 
 	private final ComponentType component;
 
@@ -45,6 +61,8 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
 	private Object value;
 
+	private AnnotationAccess annotationAccess;
+
 	protected AbstractFieldComponent(ComponentType component,
 			Object parentObject, Field field,
 			Class<? extends Annotation> annotationClass) {
@@ -53,6 +71,46 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 		this.field = field;
 		this.annotationClass = annotationClass;
 		this.childFields = new ArrayList<FieldComponent<?>>();
+		setup();
+	}
+
+	private void setup() {
+		setupName();
+		setupTitle();
+		setupValue();
+		setupWidth();
+		setupReadOnly();
+	}
+
+	private void setupName() {
+		// TODO Auto-generated method stub
+
+	}
+
+	private void setupTitle() {
+		String title = annotationAccess.getElementValue(
+				FIELD_COMPONENT_ANNOTATION_CLASS, field,
+				TITLE_ELEMENT.getValue(), TITLE_ELEMENT.getKey());
+		setTitle(title);
+	}
+
+	private void setupValue() {
+		// TODO Auto-generated method stub
+
+	}
+
+	private void setupWidth() {
+		double width = annotationAccess.getElementValue(
+				FIELD_COMPONENT_ANNOTATION_CLASS, field,
+				WIDTH_ELEMENT.getValue(), WIDTH_ELEMENT.getKey());
+		setWidth(width);
+	}
+
+	private void setupReadOnly() {
+		boolean readOnly = annotationAccess.getElementValue(
+				FIELD_COMPONENT_ANNOTATION_CLASS, field,
+				READ_ONLY_ELEMENT.getValue(), READ_ONLY_ELEMENT.getKey());
+		setEnabled(readOnly);
 	}
 
 	/**
@@ -64,6 +122,17 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	@Inject
 	void setAbstractFieldComponentLogger(AbstractFieldComponentLogger logger) {
 		this.log = logger;
+	}
+
+	/**
+	 * Injects the annotation access to access the elements of an annotation.
+	 * 
+	 * @param annotationAccess
+	 *            the {@link AnnotationAccess}.
+	 */
+	@Inject
+	void setAnnotationAccess(AnnotationAccess annotationAccess) {
+		this.annotationAccess = annotationAccess;
 	}
 
 	@Override
@@ -125,7 +194,15 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
 	@Override
 	public boolean isInputValid() {
-		return true;
+		boolean valid = true;
+		for (FieldComponent<?> component : childFields) {
+			if (!component.isInputValid()) {
+				valid = false;
+				break;
+			}
+		}
+		log.inputIsValid(this, valid);
+		return valid;
 	}
 
 	@Override
