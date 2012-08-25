@@ -15,6 +15,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import com.anrisoftware.prefdialog.fields.FieldComponent;
 import com.anrisoftware.prefdialog.reflection.annotations.AnnotationAccess;
+import com.anrisoftware.prefdialog.reflection.beans.BeanAccess;
 
 /**
  * Sets the component and sets the component name, width, and if the component
@@ -63,6 +64,8 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
 	private AnnotationAccess annotationAccess;
 
+	private BeanAccess beanAccess;
+
 	protected AbstractFieldComponent(ComponentType component,
 			Object parentObject, Field field,
 			Class<? extends Annotation> annotationClass) {
@@ -95,6 +98,8 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	}
 
 	private void setupValue() {
+		Object value = beanAccess.getValue(field, parentObject);
+		setValue(value);
 	}
 
 	private void setupWidth() {
@@ -131,6 +136,17 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	@Inject
 	void setAnnotationAccess(AnnotationAccess annotationAccess) {
 		this.annotationAccess = annotationAccess;
+	}
+
+	/**
+	 * Injects the bean access to access the fields of a object.
+	 * 
+	 * @param beanAccess
+	 *            the {@link BeanAccess}.
+	 */
+	@Inject
+	void setBeanAccess(BeanAccess beanAccess) {
+		this.beanAccess = beanAccess;
 	}
 
 	@Override
