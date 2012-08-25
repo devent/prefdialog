@@ -18,5 +18,5 @@ class ParentBean {
 		int intField = 5
 	}
 
-	Bean bean
+	Bean bean = new Bean()
 }
