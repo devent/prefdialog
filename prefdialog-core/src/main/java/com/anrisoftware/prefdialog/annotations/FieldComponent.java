@@ -24,6 +24,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import com.anrisoftware.resources.api.IconSize;
 import com.anrisoftware.resources.api.Images;
 import com.anrisoftware.resources.api.Texts;
 
@@ -96,6 +97,13 @@ public @interface FieldComponent {
 	 * @see Images
 	 */
 	String icon() default "";
+
+	/**
+	 * The size of the icon. Defaults to {@link IconSize#SMALL}.
+	 * 
+	 * @see IconSize
+	 */
+	IconSize iconSize() default IconSize.SMALL;
 
 	/**
 	 * The horizontal alignment of the buttons in the group. Defaults to
