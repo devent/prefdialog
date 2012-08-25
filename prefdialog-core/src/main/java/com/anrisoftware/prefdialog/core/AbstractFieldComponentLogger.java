@@ -79,6 +79,12 @@ class AbstractFieldComponentLogger extends AbstractLogger {
 				title, field);
 	}
 
+	void toolTipResourceMissing(AbstractFieldComponent<?> field, String text) {
+		log.warn(
+				"Could not find the tool-tip resource ``{}'' using it as the literal tool-tip for field {}.",
+				text, field);
+	}
+
 	void checkTextsResource(AbstractFieldComponent<?> field, Texts texts) {
 		notNull(texts, "The texts resource for the field %s cannot be null.",
 				field);

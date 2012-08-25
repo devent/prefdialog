@@ -76,6 +76,8 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
 	private String titleResource;
 
+	private String toolTipResource;
+
 	private Object value;
 
 	private AnnotationAccess annotationAccess;
@@ -85,6 +87,8 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	private BeanFactory beanFactory;
 
 	private Texts texts;
+
+	private String toolTip;
 
 	/**
 	 * Sets the component of this field.
@@ -220,7 +224,24 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	public void setTexts(Texts texts) {
 		log.checkTextsResource(this, texts);
 		this.texts = texts;
+		updateResources();
+	}
+
+	private void updateResources() {
 		updateTitleResource();
+		updateToolTipResource();
+	}
+
+	private void updateToolTipResource() {
+		if (isEmpty(toolTipResource) || texts == null) {
+			return;
+		}
+		try {
+			toolTip = texts.getResource(toolTipResource, getLocale()).getText();
+			setupToolTipText();
+		} catch (MissingResourceException e) {
+			log.toolTipResourceMissing(this, toolTipResource);
+		}
 	}
 
 	private void updateTitleResource() {
@@ -300,7 +321,7 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	public void setLocale(Locale newLocale) {
 		log.checkLocale(this, newLocale);
 		component.setLocale(newLocale);
-		updateTitleResource();
+		updateResources();
 		log.localeSet(this, newLocale);
 	}
 
@@ -311,8 +332,17 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
 	@Override
 	public void setToolTipText(String text) {
-		JComponent jcomponent = (JComponent) component;
-		jcomponent.setToolTipText(text);
+		toolTipResource = text;
+		toolTip = text;
+		updateToolTipResource();
+		setupToolTipText();
+	}
+
+	private void setupToolTipText() {
+		if (component instanceof JComponent) {
+			JComponent jcomponent = (JComponent) component;
+			jcomponent.setToolTipText(toolTip);
+		}
 	}
 
 	@Override

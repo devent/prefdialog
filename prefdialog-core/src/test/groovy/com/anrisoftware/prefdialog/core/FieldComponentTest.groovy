@@ -117,4 +117,34 @@ class FieldComponentTest extends FieldTestUtils {
 			fixture.label(preferenceField.name).requireToolTip("Tool Tip")
 		}, { field.setShowToolTip(true) }, { field.setShowToolTip(false) }
 	}
+
+	@Test
+	void "show text field with tool-tip resource"() {
+		def texts = createTextsResource()
+		def component = new JLabel("Label")
+		def preferenceField = preferencesTextFieldWithToolTipResource
+		def field = fieldComponentFactory.create(
+						component, preferences, preferenceField).createField().
+						withTextsResource(texts)
+		beginPanelFrame title, component, {
+			fixture.label(preferenceField.name).requireToolTip("Tool Tip Eng")
+		}, { field.setShowToolTip(true) }, { field.setShowToolTip(false) }
+	}
+
+	@Test
+	void "show text field with tool-tip resource change locale"() {
+		def texts = createTextsResource()
+		def component = new JLabel("Label")
+		def preferenceField = preferencesTextFieldWithToolTipResource
+		def field = fieldComponentFactory.create(
+						component, preferences, preferenceField).createField().
+						withTextsResource(texts)
+		beginPanelFrame title, component, {
+			fixture.label(preferenceField.name).requireToolTip("Tool Tip Eng")
+		}, { field.setShowToolTip(true) }, { field.setShowToolTip(false) }, {
+			field.locale = Locale.GERMAN
+			fixture.label(preferenceField.name).requireToolTip("Tool Tip Deu")
+			field.setShowToolTip(true)
+		}, { field.setShowToolTip(false) }
+	}
 }

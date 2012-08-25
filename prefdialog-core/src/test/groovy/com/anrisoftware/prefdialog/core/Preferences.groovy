@@ -25,6 +25,8 @@ class Preferences {
 
 	public static final preferencesTextFieldWithToolTip = Preferences.class.getDeclaredField("textFieldWithToolTip")
 
+	public static final preferencesTextFieldWithToolTipResource = Preferences.class.getDeclaredField("textFieldWithToolTipResource")
+
 	@FieldComponent
 	@TextField
 	String textField
@@ -52,4 +54,8 @@ class Preferences {
 	@FieldComponent(toolTip = "Tool Tip")
 	@TextField
 	String textFieldWithToolTip
+
+	@FieldComponent(toolTip = "tool_tip")
+	@TextField
+	String textFieldWithToolTipResource
 }
