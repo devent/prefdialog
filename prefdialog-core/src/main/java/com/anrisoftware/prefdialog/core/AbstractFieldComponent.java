@@ -74,6 +74,8 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
 	private String title;
 
+	private String titleResource;
+
 	private Object value;
 
 	private AnnotationAccess annotationAccess;
@@ -222,13 +224,13 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	}
 
 	private void updateTitleResource() {
-		if (isEmpty(title) || texts == null) {
+		if (isEmpty(titleResource) || texts == null) {
 			return;
 		}
 		try {
-			title = texts.getResource(title, getLocale()).getText();
+			title = texts.getResource(titleResource, getLocale()).getText();
 		} catch (MissingResourceException e) {
-			log.titleResourceMissing(this, title);
+			log.titleResourceMissing(this, titleResource);
 		}
 	}
 
@@ -246,6 +248,7 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
 	@Override
 	public void setTitle(String newTitle) {
+		titleResource = newTitle;
 		title = newTitle;
 		updateTitleResource();
 		log.titleSet(this, newTitle);

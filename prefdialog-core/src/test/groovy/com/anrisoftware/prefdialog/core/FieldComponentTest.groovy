@@ -53,6 +53,23 @@ class FieldComponentTest extends FieldTestUtils {
 	}
 
 	@Test
+	void "show text field with title resource change locale"() {
+		def texts = createTextsResource()
+		def component = new JLabel("Label")
+		def preferenceField = preferencesTextFieldWithTitleResource
+		def field = fieldComponentFactory.create(
+						component, preferences, preferenceField).createField().
+						withTextsResource(texts)
+		assertStringContent field.title, "Test Field Eng"
+		beginPanelFrame title, component, {
+			fixture.label(preferenceField.name).requireEnabled()
+		}, {
+			field.locale = Locale.GERMAN
+			assertStringContent field.title, "Test Field Deu"
+		}
+	}
+
+	@Test
 	void "show text field with title resource de"() {
 		def texts = createTextsResource()
 		def component = new JLabel("Label")

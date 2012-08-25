@@ -7,7 +7,7 @@ import javax.swing.JComponent
 
 import com.google.inject.assistedinject.Assisted
 
-class MockFieldComponent extends AbstractFieldComponent {
+class MockFieldComponent extends AbstractFieldComponent<JComponent> {
 
 	@Inject
 	MockFieldComponent(
