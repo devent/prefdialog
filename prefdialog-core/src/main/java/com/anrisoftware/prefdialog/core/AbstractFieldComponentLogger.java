@@ -1,8 +1,10 @@
 package com.anrisoftware.prefdialog.core;
 
 import static java.lang.String.format;
+import static org.apache.commons.lang3.Validate.notNull;
 
 import com.anrisoftware.globalpom.log.AbstractLogger;
+import com.anrisoftware.prefdialog.fields.FieldComponent;
 
 /**
  * Logging messages for {@link AbstractFieldComponent}.
@@ -49,5 +51,22 @@ class AbstractFieldComponentLogger extends AbstractLogger {
 				"No child field with the name ``%s'' found in the field %s.",
 				name, field));
 		return ex;
+	}
+
+	void checkName(AbstractFieldComponent<?> field, String name) {
+		notNull(name, "The name of the field %s cannot be null.", field);
+	}
+
+	void checkField(AbstractFieldComponent<?> field,
+			FieldComponent<?> childField) {
+		notNull(childField, "The child field %s cannot be null.", field);
+	}
+
+	void checkWidth(AbstractFieldComponent<?> field, Number width) {
+		notNull(width, "The width of the field %s cannot be null.", field);
+	}
+
+	void checkValue(AbstractFieldComponent<?> field, Object value) {
+		notNull(value, "The value of the field %s cannot be null.", field);
 	}
 }

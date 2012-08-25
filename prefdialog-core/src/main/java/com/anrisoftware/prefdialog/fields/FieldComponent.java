@@ -37,6 +37,9 @@ public interface FieldComponent<ComponentType extends Component> {
 	 * 
 	 * @param newName
 	 *            the name.
+	 * 
+	 * @throws NullPointerException
+	 *             if the new name is {@code null}.
 	 */
 	void setName(String newName);
 
@@ -59,7 +62,7 @@ public interface FieldComponent<ComponentType extends Component> {
 	/**
 	 * Returns the title of the field.
 	 * 
-	 * @return the title of the field.
+	 * @return the title of the field or {@code null} for no title.
 	 */
 	String getTitle();
 
@@ -68,6 +71,9 @@ public interface FieldComponent<ComponentType extends Component> {
 	 * 
 	 * @param newValue
 	 *            the value {@link Object}.
+	 * 
+	 * @throws NullPointerException
+	 *             if the new value is {@code null}.
 	 */
 	void setValue(Object newValue);
 
@@ -100,6 +106,9 @@ public interface FieldComponent<ComponentType extends Component> {
 	 * 
 	 * @param newWidth
 	 *            the width {@link Number}.
+	 * 
+	 * @throws NullPointerException
+	 *             if the new width is {@code null}.
 	 */
 	void setWidth(Number newWidth);
 
@@ -110,6 +119,22 @@ public interface FieldComponent<ComponentType extends Component> {
 	 * @return the {@link Number} width.
 	 */
 	Number getWidth();
+
+	/**
+	 * Set the text of the tool-tip for the component.
+	 * 
+	 * @param text
+	 *            the text or {@code null} if the tool-tip should be disabled.
+	 */
+	void setToolTipText(String text);
+
+	/**
+	 * Show or hide the tool-tip for the component.
+	 * 
+	 * @param {@code true} to show the tool-tip, {@code false} to hide the
+	 *        tool-tip.
+	 */
+	void setShowToolTip(boolean show);
 
 	/**
 	 * Tests if the current input for the field is valid.
@@ -132,6 +157,9 @@ public interface FieldComponent<ComponentType extends Component> {
 	 * 
 	 * @param field
 	 *            the {@link FieldComponent} to add.
+	 * 
+	 * @throws NullPointerException
+	 *             if the field is {@code null}.
 	 */
 	void addField(FieldComponent<?> field);
 
@@ -152,4 +180,5 @@ public interface FieldComponent<ComponentType extends Component> {
 	 *             this field.
 	 */
 	<T extends Component> FieldComponent<T> getField(String name);
+
 }

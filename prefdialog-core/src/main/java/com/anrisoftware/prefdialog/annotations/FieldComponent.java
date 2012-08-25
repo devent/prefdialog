@@ -56,6 +56,12 @@ public @interface FieldComponent {
 	boolean showTitle() default false;
 
 	/**
+	 * The tool-tip text for the field. Defaults to the empty text which means
+	 * no tool-tip will be shown.
+	 */
+	String toolTip() default "";
+
+	/**
 	 * If this field should be read-only. If read-only is set then the user can
 	 * not use buttons in the group. Defaults to {@code false}.
 	 */
@@ -76,7 +82,7 @@ public @interface FieldComponent {
 
 	/**
 	 * The resource name of icon or empty if no icon should be set. Defaults to
-	 * the empty resource name.
+	 * the empty resource name which means no icon is set.
 	 */
 	String icon() default "";
 
