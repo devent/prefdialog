@@ -15,6 +15,12 @@ class Preferences {
 
 	public static final preferencesTextFieldWithTitle = Preferences.class.getDeclaredField("textFieldWithTitle")
 
+	public static final preferencesTextFieldWithTitleResource = Preferences.class.getDeclaredField("textFieldWithTitleResource")
+
+	public static final preferencesTextFieldWithTitleResourceDe = Preferences.class.getDeclaredField("textFieldWithTitleResourceDe")
+
+	public static final preferencesTextFieldWithTitleMissingResource = Preferences.class.getDeclaredField("textFieldWithTitleMissingResource")
+
 	public static final preferencesTextFieldReadOnly = Preferences.class.getDeclaredField("textFieldReadOnly")
 
 	public static final preferencesTextFieldWithToolTip = Preferences.class.getDeclaredField("textFieldWithToolTip")
@@ -26,6 +32,18 @@ class Preferences {
 	@FieldComponent(title = "Test Field")
 	@TextField
 	String textFieldWithTitle
+
+	@FieldComponent(title = "test_field")
+	@TextField
+	String textFieldWithTitleResource
+
+	@FieldComponent(title = "test_field", locale = "de")
+	@TextField
+	String textFieldWithTitleResourceDe
+
+	@FieldComponent(title = "missing_test_field")
+	@TextField
+	String textFieldWithTitleMissingResource
 
 	@FieldComponent(readOnly = true)
 	@TextField

@@ -5,6 +5,13 @@ import org.junit.Before
 import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.prefdialog.reflection.annotations.AnnotationsModule
 import com.anrisoftware.prefdialog.reflection.beans.BeansModule
+import com.anrisoftware.resources.api.Texts
+import com.anrisoftware.resources.api.TextsFactory
+import com.anrisoftware.resources.binary.BinariesResourcesModule
+import com.anrisoftware.resources.binary.maps.BinariesDefaultMapsModule
+import com.anrisoftware.resources.texts.ResourcesTextsCharsetModule
+import com.anrisoftware.resources.texts.TextsResourcesModule
+import com.anrisoftware.resources.texts.maps.TextsDefaultMapsModule
 import com.google.inject.Guice
 import com.google.inject.Injector
 
@@ -18,6 +25,7 @@ class FieldTestUtils extends TestFrameUtil {
 
 	@Before
 	void beforeTest() {
+
 		injector = createInjector()
 		fieldComponentFactory = injector.getInstance MockFieldComponentFactory
 		preferences = new Preferences()
@@ -25,5 +33,14 @@ class FieldTestUtils extends TestFrameUtil {
 
 	Injector createInjector() {
 		Guice.createInjector new MockModule(), new AnnotationsModule(), new BeansModule()
+	}
+
+	Texts createTextsResource() {
+		Injector childInjector = injector.createChildInjector new TextsResourcesModule(),
+						new TextsDefaultMapsModule(),
+						new BinariesResourcesModule(), new BinariesDefaultMapsModule(),
+						new ResourcesTextsCharsetModule()
+		TextsFactory factory = childInjector.getInstance TextsFactory
+		factory.create "Texts"
 	}
 }

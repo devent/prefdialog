@@ -3,8 +3,11 @@ package com.anrisoftware.prefdialog.core;
 import static java.lang.String.format;
 import static org.apache.commons.lang3.Validate.notNull;
 
+import java.util.Locale;
+
 import com.anrisoftware.globalpom.log.AbstractLogger;
 import com.anrisoftware.prefdialog.fields.FieldComponent;
+import com.anrisoftware.resources.api.Texts;
 
 /**
  * Logging messages for {@link AbstractFieldComponent}.
@@ -69,4 +72,24 @@ class AbstractFieldComponentLogger extends AbstractLogger {
 	void checkValue(AbstractFieldComponent<?> field, Object value) {
 		notNull(value, "The value of the field %s cannot be null.", field);
 	}
+
+	void titleResourceMissing(AbstractFieldComponent<?> field, String title) {
+		log.warn(
+				"Could not find the title resource ``{}'' using it as the literal title for field {}.",
+				title, field);
+	}
+
+	void checkTextsResource(AbstractFieldComponent<?> field, Texts texts) {
+		notNull(texts, "The texts resource for the field %s cannot be null.",
+				field);
+	}
+
+	void checkLocale(AbstractFieldComponent<?> field, Locale locale) {
+		notNull(locale, "The locale for the field %s cannot be null.", field);
+	}
+
+	void localeSet(AbstractFieldComponent<?> field, Locale locale) {
+		log.trace("Set locale to {} for field {}.", locale, field);
+	}
+
 }

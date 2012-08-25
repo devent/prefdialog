@@ -8,6 +8,8 @@ import java.awt.event.MouseEvent;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.MissingResourceException;
 
 import javax.inject.Inject;
 import javax.swing.JComponent;
@@ -19,6 +21,7 @@ import com.anrisoftware.prefdialog.fields.FieldComponent;
 import com.anrisoftware.prefdialog.reflection.annotations.AnnotationAccess;
 import com.anrisoftware.prefdialog.reflection.beans.BeanAccess;
 import com.anrisoftware.prefdialog.reflection.beans.BeanFactory;
+import com.anrisoftware.resources.api.Texts;
 
 /**
  * Sets the component and sets the component name, width, and if the component
@@ -28,12 +31,13 @@ import com.anrisoftware.prefdialog.reflection.beans.BeanFactory;
  * {@link JComponent}.
  * 
  * <ul>
- * <li>name,</li>
- * <li>title,</li>
- * <li>width,</li>
- * <li>value,</li>
- * <li>read-only flag,</li>
- * <li>tool-tip.</li>
+ * <li>name</li>
+ * <li>title</li>
+ * <li>width</li>
+ * <li>value</li>
+ * <li>read-only flag</li>
+ * <li>tool-tip</li>
+ * <li>locale</li>
  * </ul>
  * 
  * @param <ComponentType>
@@ -56,6 +60,8 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
 	private static final String TOOL_TIP_ELEMENT = "toolTip";
 
+	private static final String LOCALE_ELEMENT = "locale";
+
 	private final ComponentType component;
 
 	private final Object parentObject;
@@ -75,6 +81,8 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	private BeanAccess beanAccess;
 
 	private BeanFactory beanFactory;
+
+	private Texts texts;
 
 	/**
 	 * Sets the component of this field.
@@ -98,6 +106,7 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
 	@Override
 	public AbstractFieldComponent<ComponentType> createField() {
+		setupLocale();
 		setupName();
 		setupTitle();
 		setupValue();
@@ -105,6 +114,14 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 		setupReadOnly();
 		setupToolTip();
 		return this;
+	}
+
+	private void setupLocale() {
+		String localeName = annotationAccess.getValue(
+				FIELD_COMPONENT_ANNOTATION_CLASS, field, LOCALE_ELEMENT);
+		Locale locale = isEmpty(localeName) ? Locale.getDefault() : new Locale(
+				localeName);
+		setLocale(locale);
 	}
 
 	private void setupName() {
@@ -192,6 +209,30 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	}
 
 	@Override
+	public AbstractFieldComponent<ComponentType> withTextsResource(Texts texts) {
+		setTexts(texts);
+		return this;
+	}
+
+	@Override
+	public void setTexts(Texts texts) {
+		log.checkTextsResource(this, texts);
+		this.texts = texts;
+		updateTitleResource();
+	}
+
+	private void updateTitleResource() {
+		if (isEmpty(title) || texts == null) {
+			return;
+		}
+		try {
+			title = texts.getResource(title, getLocale()).getText();
+		} catch (MissingResourceException e) {
+			log.titleResourceMissing(this, title);
+		}
+	}
+
+	@Override
 	public void setName(String newName) {
 		log.checkName(this, newName);
 		component.setName(newName);
@@ -206,6 +247,7 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	@Override
 	public void setTitle(String newTitle) {
 		title = newTitle;
+		updateTitleResource();
 		log.titleSet(this, newTitle);
 	}
 
@@ -252,21 +294,16 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	}
 
 	@Override
-	public boolean isInputValid() {
-		boolean valid = true;
-		for (FieldComponent<?> component : childFields) {
-			if (!component.isInputValid()) {
-				valid = false;
-				break;
-			}
-		}
-		log.inputIsValid(this, valid);
-		return valid;
+	public void setLocale(Locale newLocale) {
+		log.checkLocale(this, newLocale);
+		component.setLocale(newLocale);
+		updateTitleResource();
+		log.localeSet(this, newLocale);
 	}
 
 	@Override
-	public ComponentType getAWTComponent() {
-		return component;
+	public Locale getLocale() {
+		return component.getLocale();
 	}
 
 	@Override
@@ -306,6 +343,24 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 		ToolTipManager.sharedInstance().mouseExited(
 				new MouseEvent(component, id, when, modifiers, x, y,
 						clickCount, false));
+	}
+
+	@Override
+	public boolean isInputValid() {
+		boolean valid = true;
+		for (FieldComponent<?> component : childFields) {
+			if (!component.isInputValid()) {
+				valid = false;
+				break;
+			}
+		}
+		log.inputIsValid(this, valid);
+		return valid;
+	}
+
+	@Override
+	public ComponentType getAWTComponent() {
+		return component;
 	}
 
 	@Override

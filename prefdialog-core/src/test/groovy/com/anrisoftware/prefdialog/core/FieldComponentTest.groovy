@@ -39,6 +39,48 @@ class FieldComponentTest extends FieldTestUtils {
 	}
 
 	@Test
+	void "show text field with title resource"() {
+		def texts = createTextsResource()
+		def component = new JLabel("Label")
+		def preferenceField = preferencesTextFieldWithTitleResource
+		def field = fieldComponentFactory.create(
+						component, preferences, preferenceField).createField().
+						withTextsResource(texts)
+		assertStringContent field.title, "Test Field Eng"
+		beginPanelFrame title, component, {
+			fixture.label(preferenceField.name).requireEnabled()
+		}
+	}
+
+	@Test
+	void "show text field with title resource de"() {
+		def texts = createTextsResource()
+		def component = new JLabel("Label")
+		def preferenceField = preferencesTextFieldWithTitleResourceDe
+		def field = fieldComponentFactory.create(
+						component, preferences, preferenceField).createField().
+						withTextsResource(texts)
+		assertStringContent field.title, "Test Field Deu"
+		beginPanelFrame title, component, {
+			fixture.label(preferenceField.name).requireEnabled()
+		}
+	}
+
+	@Test
+	void "show text field with title missing resource"() {
+		def texts = createTextsResource()
+		def component = new JLabel("Label")
+		def preferenceField = preferencesTextFieldWithTitleMissingResource
+		def field = fieldComponentFactory.create(
+						component, preferences, preferenceField).createField().
+						withTextsResource(texts)
+		assertStringContent field.title, "missing_test_field"
+		beginPanelFrame title, component, {
+			fixture.label(preferenceField.name).requireEnabled()
+		}
+	}
+
+	@Test
 	void "show text field read-only"() {
 		def component = new JLabel("Label")
 		def preferenceField = preferencesTextFieldReadOnly

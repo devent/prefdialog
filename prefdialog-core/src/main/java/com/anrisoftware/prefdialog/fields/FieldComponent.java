@@ -19,6 +19,10 @@
 package com.anrisoftware.prefdialog.fields;
 
 import java.awt.Component;
+import java.util.Locale;
+
+import com.anrisoftware.prefdialog.core.AbstractFieldComponent;
+import com.anrisoftware.resources.api.Texts;
 
 /**
  * The preference panel field.
@@ -37,6 +41,24 @@ public interface FieldComponent<ComponentType extends Component> {
 	 * @return this {@link FieldComponent}.
 	 */
 	FieldComponent<ComponentType> createField();
+
+	/**
+	 * Sets the texts resource.
+	 * 
+	 * @param texts
+	 *            the {@link Texts} resource.
+	 * 
+	 * @return this {@link FieldComponent}.
+	 */
+	AbstractFieldComponent<ComponentType> withTextsResource(Texts texts);
+
+	/**
+	 * Sets the texts resource.
+	 * 
+	 * @param texts
+	 *            the {@link Texts} resource.
+	 */
+	void setTexts(Texts texts);
 
 	/**
 	 * Sets the name the field. The name should be a unique ID of the field
@@ -142,6 +164,24 @@ public interface FieldComponent<ComponentType extends Component> {
 	 *        tool-tip.
 	 */
 	void setShowToolTip(boolean show);
+
+	/**
+	 * Sets the locale of the field.
+	 * <p>
+	 * If a texts resource is set then the title, tool-tip text and icon are
+	 * retrieved with the new locale.
+	 * 
+	 * @param newLocale
+	 *            the {@link Locale}.
+	 */
+	void setLocale(Locale newLocale);
+
+	/**
+	 * Returns the locale of the field.
+	 * 
+	 * @return the {@link Locale}.
+	 */
+	Locale getLocale();
 
 	/**
 	 * Tests if the current input for the field is valid.

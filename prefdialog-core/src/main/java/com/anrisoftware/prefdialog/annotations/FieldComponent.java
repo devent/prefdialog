@@ -24,6 +24,9 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import com.anrisoftware.resources.api.Images;
+import com.anrisoftware.resources.api.Texts;
+
 /**
  * Field component. All fields for which a field component should be created
  * must be annotated with this annotation.
@@ -46,6 +49,11 @@ public @interface FieldComponent {
 	/**
 	 * The title of the field. The title is shown above of the group and should
 	 * contain a description.
+	 * <p>
+	 * The title can also be a resource name that is queried in the supplied
+	 * texts resource.
+	 * 
+	 * @see Texts
 	 */
 	String title() default "";
 
@@ -81,8 +89,11 @@ public @interface FieldComponent {
 	TextPosition textPosition() default TextPosition.TEXT_ONLY;
 
 	/**
-	 * The resource name of icon or empty if no icon should be set. Defaults to
-	 * the empty resource name which means no icon is set.
+	 * The resource name of icon or empty if no icon should be set. The resource
+	 * name is queried in the supplied images resource. Defaults to the empty
+	 * resource name which means no icon is set.
+	 * 
+	 * @see Images
 	 */
 	String icon() default "";
 
@@ -93,4 +104,10 @@ public @interface FieldComponent {
 	 * @see HorizontalAlignment
 	 */
 	HorizontalAlignment horizontalAlignment() default HorizontalAlignment.RIGHT;
+
+	/**
+	 * The locale for the field. Defaults to the empty locale name which means
+	 * the default locale is used.
+	 */
+	String locale() default "";
 }

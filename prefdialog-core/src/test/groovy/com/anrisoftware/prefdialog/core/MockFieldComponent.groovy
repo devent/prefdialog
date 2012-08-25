@@ -10,7 +10,9 @@ import com.google.inject.assistedinject.Assisted
 class MockFieldComponent extends AbstractFieldComponent {
 
 	@Inject
-	MockFieldComponent(@Assisted JComponent component, @Assisted Object parentObject,
+	MockFieldComponent(
+	@Assisted JComponent component,
+	@Assisted Object parentObject,
 	@Assisted Field field) {
 		super(component, parentObject, field)
 	}
