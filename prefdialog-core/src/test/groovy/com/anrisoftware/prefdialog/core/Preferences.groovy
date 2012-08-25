@@ -11,7 +11,27 @@ import com.anrisoftware.prefdialog.annotations.TextField
  */
 class Preferences {
 
+	public static final preferencesTextField = Preferences.class.getDeclaredField("textField")
+
+	public static final preferencesTextFieldWithTitle = Preferences.class.getDeclaredField("textFieldWithTitle")
+
+	public static final preferencesTextFieldReadOnly = Preferences.class.getDeclaredField("textFieldReadOnly")
+
+	public static final preferencesTextFieldWithToolTip = Preferences.class.getDeclaredField("textFieldWithToolTip")
+
 	@FieldComponent
 	@TextField
 	String textField
+
+	@FieldComponent(title = "Test Field")
+	@TextField
+	String textFieldWithTitle
+
+	@FieldComponent(readOnly = true)
+	@TextField
+	String textFieldReadOnly
+
+	@FieldComponent(toolTip = "Tool Tip")
+	@TextField
+	String textFieldWithToolTip
 }

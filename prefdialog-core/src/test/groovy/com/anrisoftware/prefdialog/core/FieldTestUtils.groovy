@@ -1,7 +1,5 @@
 package com.anrisoftware.prefdialog.core
 
-import java.lang.reflect.Field
-
 import org.junit.Before
 
 import com.anrisoftware.globalpom.utils.TestFrameUtil
@@ -18,14 +16,11 @@ class FieldTestUtils extends TestFrameUtil {
 
 	Preferences preferences
 
-	Field preferencesTextField
-
 	@Before
 	void beforeTest() {
 		injector = createInjector()
 		fieldComponentFactory = injector.getInstance MockFieldComponentFactory
 		preferences = new Preferences()
-		preferencesTextField = Preferences.class.getDeclaredField("textField")
 	}
 
 	Injector createInjector() {

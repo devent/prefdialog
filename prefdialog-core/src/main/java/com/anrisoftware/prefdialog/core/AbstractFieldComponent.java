@@ -18,6 +18,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import com.anrisoftware.prefdialog.fields.FieldComponent;
 import com.anrisoftware.prefdialog.reflection.annotations.AnnotationAccess;
 import com.anrisoftware.prefdialog.reflection.beans.BeanAccess;
+import com.anrisoftware.prefdialog.reflection.beans.BeanFactory;
 
 /**
  * Sets the component and sets the component name, width, and if the component
@@ -73,6 +74,8 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
 	private BeanAccess beanAccess;
 
+	private BeanFactory beanFactory;
+
 	/**
 	 * Sets the component of this field.
 	 * 
@@ -112,12 +115,15 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	private void setupTitle() {
 		String title = annotationAccess.getValue(
 				FIELD_COMPONENT_ANNOTATION_CLASS, field, TITLE_ELEMENT);
-		title = isEmpty(title) ? null : title;
+		title = isEmpty(title) ? field.getName() : title;
 		setTitle(title);
 	}
 
 	private void setupValue() {
 		Object value = beanAccess.getValue(field, parentObject);
+		if (value == null) {
+			value = beanFactory.createBean(field.getType());
+		}
 		setValue(value);
 	}
 
@@ -130,7 +136,7 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	private void setupReadOnly() {
 		boolean readOnly = annotationAccess.getValue(
 				FIELD_COMPONENT_ANNOTATION_CLASS, field, READ_ONLY_ELEMENT);
-		setEnabled(readOnly);
+		setEnabled(!readOnly);
 	}
 
 	private void setupToolTip() {
@@ -172,6 +178,17 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	@Inject
 	void setBeanAccess(BeanAccess beanAccess) {
 		this.beanAccess = beanAccess;
+	}
+
+	/**
+	 * Injects the bean factory to create beans.
+	 * 
+	 * @param beanFactory
+	 *            the {@link BeanFactory}.
+	 */
+	@Inject
+	void setBeanFactory(BeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
 	}
 
 	@Override
