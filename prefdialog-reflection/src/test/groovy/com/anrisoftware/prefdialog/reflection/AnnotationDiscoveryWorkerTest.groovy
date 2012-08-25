@@ -6,6 +6,7 @@ import com.anrisoftware.prefdialog.reflection.api.AnnotationDiscoveryCallback
 import com.anrisoftware.prefdialog.reflection.api.AnnotationDiscoveryWorker
 import com.anrisoftware.prefdialog.reflection.api.AnnotationDiscoveryWorkerFactory
 import com.anrisoftware.prefdialog.reflection.api.PredefinedAnnotationFilterFactory
+import com.anrisoftware.prefdialog.reflection.utils.ParentBean;
 import com.google.inject.Guice
 import com.google.inject.Injector
 import com.google.inject.assistedinject.Assisted
@@ -20,7 +21,7 @@ class AnnotationDiscoveryWorkerTest {
 
 	@Test
 	void "find annotation in object"() {
-		Bean bean = new Bean()
+		ParentBean bean = new ParentBean()
 
 		def discovered = []
 		def annotations = [Assisted]
