@@ -7,7 +7,6 @@ import info.clearthought.layout.TableLayoutConstants;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.LayoutManager;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
 /**
@@ -42,10 +41,24 @@ public abstract class AbstractPanelField<ComponentType extends Component, Contai
 
 	private LayoutManager layout;
 
+	/**
+	 * Sets the component and the container of this field.
+	 * 
+	 * @param component
+	 *            the {@link ComponentType} of this field.
+	 * 
+	 * @param container
+	 *            the {@link ContainerType} of this field.
+	 * 
+	 * @param parentObject
+	 *            the parent object of this field.
+	 * 
+	 * @param field
+	 *            the {@link Field}.
+	 */
 	protected AbstractPanelField(ComponentType component,
-			ContainerType container, Object parentObject, Field field,
-			Class<? extends Annotation> annotationClass) {
-		super(container, parentObject, field, annotationClass);
+			ContainerType container, Object parentObject, Field field) {
+		super(container, parentObject, field);
 		this.component = component;
 		this.layout = createLayout();
 		setup();

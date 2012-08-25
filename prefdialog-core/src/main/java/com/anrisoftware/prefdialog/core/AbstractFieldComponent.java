@@ -5,7 +5,6 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,8 +61,6 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
 	private final Field field;
 
-	private final Class<? extends Annotation> annotationClass;
-
 	private final List<FieldComponent<?>> childFields;
 
 	private AbstractFieldComponentLogger log;
@@ -76,13 +73,23 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
 	private BeanAccess beanAccess;
 
+	/**
+	 * Sets the component of this field.
+	 * 
+	 * @param component
+	 *            the {@link ComponentType} of this field.
+	 * 
+	 * @param parentObject
+	 *            the parent object of this field.
+	 * 
+	 * @param field
+	 *            the {@link Field}.
+	 */
 	protected AbstractFieldComponent(ComponentType component,
-			Object parentObject, Field field,
-			Class<? extends Annotation> annotationClass) {
+			Object parentObject, Field field) {
 		this.component = component;
 		this.parentObject = parentObject;
 		this.field = field;
-		this.annotationClass = annotationClass;
 		this.childFields = new ArrayList<FieldComponent<?>>();
 		setup();
 	}
