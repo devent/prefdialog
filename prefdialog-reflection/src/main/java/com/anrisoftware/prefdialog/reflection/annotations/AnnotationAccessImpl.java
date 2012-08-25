@@ -50,11 +50,11 @@ class AnnotationAccessImpl implements AnnotationAccess {
 	@Override
 	public <T> T getElementValue(Class<? extends Annotation> annotationClass,
 			Field field) {
-		return getElementValue(annotationClass, field, "value");
+		return getValue(annotationClass, field, "value");
 	}
 
 	@Override
-	public <T> T getElementValue(Class<? extends Annotation> annotationClass,
+	public <T> T getValue(Class<? extends Annotation> annotationClass,
 			Field field, String name) {
 		Annotation a = field.getAnnotation(annotationClass);
 		try {

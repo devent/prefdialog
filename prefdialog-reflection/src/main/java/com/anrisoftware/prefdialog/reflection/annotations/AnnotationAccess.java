@@ -67,6 +67,6 @@ public interface AnnotationAccess {
 	 *             if the element was not found in the annotation, the element
 	 *             can not be accessed or the element throws an exception.
 	 */
-	<T> T getElementValue(Class<? extends Annotation> annotationClass,
+	<T> T getValue(Class<? extends Annotation> annotationClass,
 			Field field, String name);
 }

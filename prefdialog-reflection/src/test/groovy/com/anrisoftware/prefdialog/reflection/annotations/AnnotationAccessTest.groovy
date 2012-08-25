@@ -46,7 +46,7 @@ class AnnotationAccessTest extends AnnotationUtils {
 		AnnotationAccess a = injector.getInstance AnnotationAccess
 		def field = FieldUtils.getField Bean, "annotatedField", true
 		def name = "title"
-		def value = a.getElementValue BeanAnnotation.class, field, name
+		def value = a.getValue BeanAnnotation.class, field, name
 		assertStringContent value, "Annotation Title"
 	}
 
@@ -56,7 +56,7 @@ class AnnotationAccessTest extends AnnotationUtils {
 		def field = FieldUtils.getField Bean, "annotatedField", true
 		def name = "not defined"
 		shouldFailWith(ReflectionError) {
-			a.getElementValue BeanAnnotation.class, field, name
+			a.getValue BeanAnnotation.class, field, name
 		}
 	}
 }

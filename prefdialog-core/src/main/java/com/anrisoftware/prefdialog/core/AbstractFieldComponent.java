@@ -92,7 +92,7 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
 	private void setupTitle() {
 		String title = annotationAccess
-				.getElementValue(FIELD_COMPONENT_ANNOTATION_CLASS, field,
+				.getValue(FIELD_COMPONENT_ANNOTATION_CLASS, field,
 						TITLE_ELEMENT.getKey());
 		setTitle(title);
 	}
@@ -104,13 +104,13 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
 	private void setupWidth() {
 		double width = annotationAccess
-				.getElementValue(FIELD_COMPONENT_ANNOTATION_CLASS, field,
+				.getValue(FIELD_COMPONENT_ANNOTATION_CLASS, field,
 						WIDTH_ELEMENT.getKey());
 		setWidth(width);
 	}
 
 	private void setupReadOnly() {
-		boolean readOnly = annotationAccess.getElementValue(
+		boolean readOnly = annotationAccess.getValue(
 				FIELD_COMPONENT_ANNOTATION_CLASS, field,
 				READ_ONLY_ELEMENT.getKey());
 		setEnabled(readOnly);
