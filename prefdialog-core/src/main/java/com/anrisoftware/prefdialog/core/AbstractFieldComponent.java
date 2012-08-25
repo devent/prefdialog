@@ -10,8 +10,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 
 import com.anrisoftware.prefdialog.fields.FieldComponent;
 import com.anrisoftware.prefdialog.reflection.annotations.AnnotationAccess;
@@ -37,14 +35,11 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
 	private static final Class<com.anrisoftware.prefdialog.annotations.FieldComponent> FIELD_COMPONENT_ANNOTATION_CLASS = com.anrisoftware.prefdialog.annotations.FieldComponent.class;
 
-	private static final Pair<String, Class<String>> TITLE_ELEMENT = new ImmutablePair<String, Class<String>>(
-			"title", String.class);
+	private static final String TITLE_ELEMENT = "title";
 
-	private static final Pair<String, Class<Double>> WIDTH_ELEMENT = new ImmutablePair<String, Class<Double>>(
-			"width", Double.class);
+	private static final String WIDTH_ELEMENT = "width";
 
-	private static final Pair<String, Class<Boolean>> READ_ONLY_ELEMENT = new ImmutablePair<String, Class<Boolean>>(
-			"readOnly", Boolean.class);
+	private static final String READ_ONLY_ELEMENT = "readOnly";
 
 	private final ComponentType component;
 
@@ -91,9 +86,8 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	}
 
 	private void setupTitle() {
-		String title = annotationAccess
-				.getValue(FIELD_COMPONENT_ANNOTATION_CLASS, field,
-						TITLE_ELEMENT.getKey());
+		String title = annotationAccess.getValue(
+				FIELD_COMPONENT_ANNOTATION_CLASS, field, TITLE_ELEMENT);
 		setTitle(title);
 	}
 
@@ -103,16 +97,14 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	}
 
 	private void setupWidth() {
-		double width = annotationAccess
-				.getValue(FIELD_COMPONENT_ANNOTATION_CLASS, field,
-						WIDTH_ELEMENT.getKey());
+		double width = annotationAccess.getValue(
+				FIELD_COMPONENT_ANNOTATION_CLASS, field, WIDTH_ELEMENT);
 		setWidth(width);
 	}
 
 	private void setupReadOnly() {
 		boolean readOnly = annotationAccess.getValue(
-				FIELD_COMPONENT_ANNOTATION_CLASS, field,
-				READ_ONLY_ELEMENT.getKey());
+				FIELD_COMPONENT_ANNOTATION_CLASS, field, READ_ONLY_ELEMENT);
 		setEnabled(readOnly);
 	}
 
