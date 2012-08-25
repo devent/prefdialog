@@ -14,5 +14,20 @@ class Bean {
 	String stringField = 'Text'
 
 	int intField = 5
+
+	String getterField = 'Getter Text'
+
+	boolean getterOfGetterFieldCalled = false
+
+	String getGetterField() {
+		getterOfGetterFieldCalled = true
+		return getterField
+	}
+
+	String getterFieldThatThrowsException = 'Getter Text'
+
+	String getGetterFieldThatThrowsException() {
+		throw new Exception("Error in getter")
+	}
 }
 

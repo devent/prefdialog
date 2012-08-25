@@ -69,7 +69,7 @@ class BeanAccessImplLogger extends AbstractLogger {
 	ReflectionError invocationTargetError(InvocationTargetException e,
 			Object parentObject, String name) {
 		ReflectionError ex = new ReflectionError(
-				"Exception thrown in the element of the annotation", e)
+				"Exception thrown in getter of the field", e.getCause())
 				.addContextValue("parent object", parentObject)
 				.addContextValue("name", name);
 		log.error(ex.getLocalizedMessage());

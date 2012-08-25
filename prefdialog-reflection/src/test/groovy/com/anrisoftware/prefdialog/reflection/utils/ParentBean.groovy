@@ -8,15 +8,5 @@ package com.anrisoftware.prefdialog.reflection.utils
  */
 class ParentBean {
 
-	static class Bean {
-
-		@BeanAnnotation(value = "Annotation Value")
-		String annotatedField = 'Text'
-
-		String stringField = 'Text'
-
-		int intField = 5
-	}
-
 	Bean bean = new Bean()
 }

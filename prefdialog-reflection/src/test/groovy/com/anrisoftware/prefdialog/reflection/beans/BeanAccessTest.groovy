@@ -21,6 +21,7 @@ package com.anrisoftware.prefdialog.reflection.beans
 import org.apache.commons.lang3.reflect.FieldUtils
 import org.junit.Test
 
+import com.anrisoftware.prefdialog.reflection.exceptions.ReflectionError
 import com.anrisoftware.prefdialog.reflection.utils.Bean
 
 /**
@@ -37,5 +38,23 @@ class BeanAccessTest extends BeanUtils {
 		def field = FieldUtils.getField Bean, "stringField", true
 		def value = a.getValue field, bean.bean
 		assertStringContent value, "Text"
+	}
+
+	@Test
+	void "read field value via getter"() {
+		BeanAccess a = injector.getInstance BeanAccess
+		def field = FieldUtils.getField Bean, "getterField", true
+		def value = a.getValue field, bean.bean
+		assertStringContent value, "Getter Text"
+		assert bean.bean.getterOfGetterFieldCalled
+	}
+
+	@Test
+	void "read field value via getter that throws exception"() {
+		BeanAccess a = injector.getInstance BeanAccess
+		def field = FieldUtils.getField Bean, "getterFieldThatThrowsException", true
+		shouldFailWith(ReflectionError) {
+			a.getValue field, bean.bean
+		}
 	}
 }
