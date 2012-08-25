@@ -28,5 +28,9 @@
 			<artifactId>prefdialog-reflection</artifactId>
 			<version>2.2-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>tablelayout</groupId>
+			<artifactId>TableLayout</artifactId>
+		</dependency>
 	</dependencies>
 </project>

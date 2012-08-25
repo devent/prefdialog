@@ -23,19 +23,27 @@ import com.anrisoftware.prefdialog.reflection.beans.BeanAccess;
 /**
  * Sets the component and sets the component name, width, and if the component
  * is enabled or disabled. Sets the common fields for the field component:
+ * <p>
+ * For the tool-tip to be set the component of this field must be of class
+ * {@link JComponent}.
  * 
  * <ul>
  * <li>name,</li>
  * <li>title,</li>
  * <li>width,</li>
  * <li>value,</li>
- * <li>read-only flag.</li>
+ * <li>read-only flag,</li>
+ * <li>tool-tip.</li>
  * </ul>
+ * 
+ * @param <ComponentType>
+ *            the type of the component of this field. Must be of class
+ *            {@link Component}.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
  */
-public abstract class AbstractFieldComponent<ComponentType extends JComponent>
+public abstract class AbstractFieldComponent<ComponentType extends Component>
 		implements FieldComponent<ComponentType> {
 
 	private static final Class<com.anrisoftware.prefdialog.annotations.FieldComponent> FIELD_COMPONENT_ANNOTATION_CLASS = com.anrisoftware.prefdialog.annotations.FieldComponent.class;
@@ -120,8 +128,9 @@ public abstract class AbstractFieldComponent<ComponentType extends JComponent>
 	private void setupToolTip() {
 		String text = annotationAccess.getValue(
 				FIELD_COMPONENT_ANNOTATION_CLASS, field, TOOL_TIP_ELEMENT);
-		text = isEmpty(text) ? null : text;
-		setToolTipText(text);
+		if (!isEmpty(text)) {
+			setToolTipText(text);
+		}
 	}
 
 	/**
@@ -237,7 +246,8 @@ public abstract class AbstractFieldComponent<ComponentType extends JComponent>
 
 	@Override
 	public void setToolTipText(String text) {
-		component.setToolTipText(text);
+		JComponent jcomponent = (JComponent) component;
+		jcomponent.setToolTipText(text);
 	}
 
 	@Override
