@@ -31,6 +31,8 @@ class Preferences {
 
 	public static final preferencesTextField = Preferences.class.getDeclaredField("textField")
 
+	public static final preferencesTextFieldWithTitleDisabled = Preferences.class.getDeclaredField("textFieldWithTitleDisabled")
+
 	public static final preferencesTextFieldWithTitle = Preferences.class.getDeclaredField("textFieldWithTitle")
 
 	public static final preferencesTextFieldWithTitleResource = Preferences.class.getDeclaredField("textFieldWithTitleResource")
@@ -56,6 +58,10 @@ class Preferences {
 	@FieldComponent
 	@TextField
 	String textField
+
+	@FieldComponent(showTitle = false)
+	@TextField
+	String textFieldWithTitleDisabled
 
 	@FieldComponent(title = "Test Field")
 	@TextField

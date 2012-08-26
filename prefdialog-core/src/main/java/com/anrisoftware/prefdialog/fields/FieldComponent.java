@@ -132,6 +132,23 @@ public interface FieldComponent<ComponentType extends Component> {
 	String getTitle();
 
 	/**
+	 * Sets if the title should be shown.
+	 * 
+	 * @param show
+	 *            {@code true} if the title should be shown or {@code false} if
+	 *            not.
+	 */
+	void setShowTitle(boolean show);
+
+	/**
+	 * Returns if the title should be shown.
+	 * 
+	 * @return {@code true} if the title should be shown or {@code false} if
+	 *         not.
+	 */
+	boolean isShowTitle();
+
+	/**
 	 * Sets the value of the field.
 	 * 
 	 * @param newValue

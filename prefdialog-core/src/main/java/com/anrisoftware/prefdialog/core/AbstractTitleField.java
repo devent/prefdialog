@@ -21,13 +21,17 @@ package com.anrisoftware.prefdialog.core;
 import static info.clearthought.layout.TableLayoutConstants.FILL;
 import static info.clearthought.layout.TableLayoutConstants.PREFERRED;
 import static java.lang.String.format;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Component;
 import java.awt.Container;
 import java.lang.reflect.Field;
+import java.util.Locale;
 
 import javax.swing.JLabel;
+
+import com.anrisoftware.resources.api.Texts;
 
 /**
  * Sets a title label on top of the field.
@@ -94,6 +98,43 @@ public abstract class AbstractTitleField<ComponentType extends Component, Contai
 		return new TableLayout(col, row);
 	}
 
+	@Override
+	public AbstractTitleField<ComponentType, ContainerType> createField() {
+		super.createField();
+		updateTextsResources();
+		return this;
+	}
+
+	@Override
+	public void setTexts(Texts texts) {
+		super.setTexts(texts);
+		updateTextsResources();
+	}
+
+	private void updateTextsResources() {
+		updateTitleResource();
+		updateToolTipResource();
+	}
+
+	private void updateTitleResource() {
+		if (isShowTitle()) {
+			titleLabel.setText(appendColumn(getTitle()));
+		} else {
+			titleLabel.setText(null);
+		}
+	}
+
+	private String appendColumn(String text) {
+		if (!isEmpty(text) && !text.endsWith(":")) {
+			text = text + ":";
+		}
+		return text;
+	}
+
+	private void updateToolTipResource() {
+
+	}
+
 	/**
 	 * Sets the name of the title label to "name-{@value #TITLE_NAME}".
 	 */
@@ -114,15 +155,8 @@ public abstract class AbstractTitleField<ComponentType extends Component, Contai
 	}
 
 	@Override
-	public void setTitle(String newTitle) {
-		super.setTitle(newTitle);
-		titleLabel.setText(appendColumn(newTitle));
-	}
-
-	private String appendColumn(String text) {
-		if (!text.endsWith(":")) {
-			text = text + ":";
-		}
-		return text;
+	public void setLocale(Locale newLocale) {
+		super.setLocale(newLocale);
+		updateTextsResources();
 	}
 }

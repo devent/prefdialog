@@ -80,6 +80,8 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
 	private static final String TITLE_ELEMENT = "title";
 
+	private static final String SHOW_TITLE_ELEMENT = "showTitle";
+
 	private static final String WIDTH_ELEMENT = "width";
 
 	private static final String READ_ONLY_ELEMENT = "readOnly";
@@ -105,6 +107,8 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	private AbstractFieldComponentLogger log;
 
 	private String title;
+
+	private boolean showTitle;
 
 	private String titleResource;
 
@@ -157,6 +161,7 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 		setupLocale();
 		setupName();
 		setupTitle();
+		setupShowTitle();
 		setupValue();
 		setupWidth();
 		setupReadOnly();
@@ -203,6 +208,11 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 				FIELD_COMPONENT_ANNOTATION_CLASS, field, TITLE_ELEMENT);
 		title = isEmpty(title) ? field.getName() : title;
 		setTitle(title);
+	}
+
+	private void setupShowTitle() {
+		showTitle = annotationAccess.getValue(FIELD_COMPONENT_ANNOTATION_CLASS,
+				field, SHOW_TITLE_ELEMENT);
 	}
 
 	private void setupValue() {
@@ -363,6 +373,16 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	@Override
 	public String getTitle() {
 		return title;
+	}
+
+	@Override
+	public void setShowTitle(boolean show) {
+		this.showTitle = show;
+	}
+
+	@Override
+	public boolean isShowTitle() {
+		return showTitle;
 	}
 
 	@Override
