@@ -49,4 +49,13 @@ import javax.swing.Action;
 @Target(FIELD)
 @Retention(RUNTIME)
 public @interface ButtonGroup {
+
+	/**
+	 * The horizontal alignment of the buttons. Defaults to
+	 * {@link HorizontalAlignment#RIGHT}.
+	 * 
+	 * @see HorizontalAlignment
+	 */
+	HorizontalAlignment horizontalAlignment() default HorizontalAlignment.RIGHT;
+
 }

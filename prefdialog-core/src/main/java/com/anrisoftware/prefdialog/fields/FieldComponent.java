@@ -21,7 +21,9 @@ package com.anrisoftware.prefdialog.fields;
 import java.awt.Component;
 import java.util.Locale;
 
+import com.anrisoftware.prefdialog.annotations.TextPosition;
 import com.anrisoftware.prefdialog.core.AbstractFieldComponent;
+import com.anrisoftware.resources.api.IconSize;
 import com.anrisoftware.resources.api.Texts;
 
 /**
@@ -184,6 +186,36 @@ public interface FieldComponent<ComponentType extends Component> {
 	Locale getLocale();
 
 	/**
+	 * Sets the position of the title text and icon.
+	 * 
+	 * @param newPosition
+	 *            the {@link TextPosition}.
+	 */
+	void setTextPosition(TextPosition newPosition);
+
+	/**
+	 * Returns the position of the title text and icon.
+	 * 
+	 * @return the {@link TextPosition}.
+	 */
+	TextPosition getTextPosition();
+
+	/**
+	 * Sets the size of the icon.
+	 * 
+	 * @param newSize
+	 *            the {@link IconSize}.
+	 */
+	void setIconSize(IconSize newSize);
+
+	/**
+	 * Returns the size of the icon.
+	 * 
+	 * @return the {@link IconSize}.
+	 */
+	IconSize getIconSize();
+
+	/**
 	 * Tests if the current input for the field is valid.
 	 * 
 	 * @return {@code true} if the current input is valid or {@code false} if it
@@ -227,5 +259,4 @@ public interface FieldComponent<ComponentType extends Component> {
 	 *             this field.
 	 */
 	<T extends Component> FieldComponent<T> getField(String name);
-
 }

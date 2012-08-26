@@ -6,7 +6,9 @@ import static org.apache.commons.lang3.Validate.notNull;
 import java.util.Locale;
 
 import com.anrisoftware.globalpom.log.AbstractLogger;
+import com.anrisoftware.prefdialog.annotations.TextPosition;
 import com.anrisoftware.prefdialog.fields.FieldComponent;
+import com.anrisoftware.resources.api.IconSize;
 import com.anrisoftware.resources.api.Texts;
 
 /**
@@ -96,6 +98,14 @@ class AbstractFieldComponentLogger extends AbstractLogger {
 
 	void localeSet(AbstractFieldComponent<?> field, Locale locale) {
 		log.trace("Set locale to {} for field {}.", locale, field);
+	}
+
+	void textPositionSet(AbstractFieldComponent<?> field, TextPosition position) {
+		log.trace("Set text position to {} for field {}.", position, field);
+	}
+
+	void iconSizeSet(AbstractFieldComponent<?> field, IconSize size) {
+		log.trace("Set icon size to {} for field {}.", size, field);
 	}
 
 }

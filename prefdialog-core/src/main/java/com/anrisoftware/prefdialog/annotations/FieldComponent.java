@@ -106,14 +106,6 @@ public @interface FieldComponent {
 	IconSize iconSize() default IconSize.SMALL;
 
 	/**
-	 * The horizontal alignment of the buttons in the group. Defaults to
-	 * {@link HorizontalAlignment#RIGHT}.
-	 * 
-	 * @see HorizontalAlignment
-	 */
-	HorizontalAlignment horizontalAlignment() default HorizontalAlignment.RIGHT;
-
-	/**
 	 * The locale for the field. Defaults to the empty locale name which means
 	 * the default locale is used.
 	 */

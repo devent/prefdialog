@@ -17,10 +17,12 @@ import javax.swing.ToolTipManager;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import com.anrisoftware.prefdialog.annotations.TextPosition;
 import com.anrisoftware.prefdialog.fields.FieldComponent;
 import com.anrisoftware.prefdialog.reflection.annotations.AnnotationAccess;
 import com.anrisoftware.prefdialog.reflection.beans.BeanAccess;
 import com.anrisoftware.prefdialog.reflection.beans.BeanFactory;
+import com.anrisoftware.resources.api.IconSize;
 import com.anrisoftware.resources.api.Texts;
 
 /**
@@ -37,6 +39,8 @@ import com.anrisoftware.resources.api.Texts;
  * <li>value</li>
  * <li>read-only flag</li>
  * <li>tool-tip</li>
+ * <li>icon</li>
+ * <li>icon size</li>
  * <li>locale</li>
  * </ul>
  * 
@@ -61,6 +65,10 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	private static final String TOOL_TIP_ELEMENT = "toolTip";
 
 	private static final String LOCALE_ELEMENT = "locale";
+
+	private static final String TEXT_POSITION_ELEMENT = "textPosition";
+
+	private static final String ICON_SIZE_ELEMENT = "iconSize";
 
 	private final ComponentType component;
 
@@ -89,6 +97,10 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	private Texts texts;
 
 	private String toolTip;
+
+	private TextPosition textPosition;
+
+	private IconSize iconSize;
 
 	/**
 	 * Sets the component of this field.
@@ -119,7 +131,21 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 		setupWidth();
 		setupReadOnly();
 		setupToolTip();
+		setupTextPosition();
+		setupIconSize();
 		return this;
+	}
+
+	private void setupIconSize() {
+		IconSize size = annotationAccess.getValue(
+				FIELD_COMPONENT_ANNOTATION_CLASS, field, ICON_SIZE_ELEMENT);
+		setIconSize(size);
+	}
+
+	private void setupTextPosition() {
+		TextPosition position = annotationAccess.getValue(
+				FIELD_COMPONENT_ANNOTATION_CLASS, field, TEXT_POSITION_ELEMENT);
+		setTextPosition(position);
 	}
 
 	private void setupLocale() {
@@ -376,6 +402,28 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 		ToolTipManager.sharedInstance().mouseExited(
 				new MouseEvent(component, id, when, modifiers, x, y,
 						clickCount, false));
+	}
+
+	@Override
+	public void setTextPosition(TextPosition newPosition) {
+		textPosition = newPosition;
+		log.textPositionSet(this, textPosition);
+	}
+
+	@Override
+	public TextPosition getTextPosition() {
+		return textPosition;
+	}
+
+	@Override
+	public void setIconSize(IconSize newSize) {
+		iconSize = newSize;
+		log.iconSizeSet(this, iconSize);
+	}
+
+	@Override
+	public IconSize getIconSize() {
+		return iconSize;
 	}
 
 	@Override
