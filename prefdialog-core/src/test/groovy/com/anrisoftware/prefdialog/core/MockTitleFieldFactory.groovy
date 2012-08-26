@@ -18,21 +18,20 @@
  */
 package com.anrisoftware.prefdialog.core
 
-import com.google.inject.AbstractModule
-import com.google.inject.assistedinject.FactoryModuleBuilder
+import java.lang.reflect.Field
+
+import javax.swing.JComponent
+import javax.swing.JPanel
+
 /**
- * Binds the mock field factories.
+ * Factory to create a new abstract title field. Is used so Guice can 
+ * inject the method-inject dependencies.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
  */
-class MockModule extends AbstractModule {
+interface MockTitleFieldFactory {
 
-	@Override
-	protected void configure() {
-		install new FactoryModuleBuilder().implement(MockFieldComponent, MockFieldComponent).build(MockFieldComponentFactory)
-		install new FactoryModuleBuilder().implement(MockContainerField, MockContainerField).build(MockContainerFieldFactory)
-		install new FactoryModuleBuilder().implement(MockTitleField, MockTitleField).build(MockTitleFieldFactory)
-	}
+	MockTitleField create(JComponent component, JPanel container, Object parentObject, Field field)
 }
 

@@ -18,21 +18,34 @@
  */
 package com.anrisoftware.prefdialog.core
 
-import com.google.inject.AbstractModule
-import com.google.inject.assistedinject.FactoryModuleBuilder
+import static com.anrisoftware.prefdialog.core.AbstractTitleField.*
+import static com.anrisoftware.prefdialog.core.Preferences.*
+
+import javax.swing.JLabel
+import javax.swing.JPanel
+
+import org.junit.Test
+
 /**
- * Binds the mock field factories.
+ * Test the {@link AbstractTitleField}.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
  */
-class MockModule extends AbstractModule {
+class TitleFieldTest extends FieldTestUtils {
 
-	@Override
-	protected void configure() {
-		install new FactoryModuleBuilder().implement(MockFieldComponent, MockFieldComponent).build(MockFieldComponentFactory)
-		install new FactoryModuleBuilder().implement(MockContainerField, MockContainerField).build(MockContainerFieldFactory)
-		install new FactoryModuleBuilder().implement(MockTitleField, MockTitleField).build(MockTitleFieldFactory)
+	def title = "Title Field Test"
+
+	@Test
+	void "show text field"() {
+		def container = new JPanel()
+		def component = new JLabel("Label")
+		def preferenceField = preferencesTextField
+		def field = titleFieldFactory.create(component, container, preferences, preferenceField).createField()
+		beginPanelFrame title, container, {
+			fixture.panel("${preferenceField.name}-$CONTAINER_NAME").requireEnabled()
+			fixture.label(preferenceField.name).requireEnabled()
+			fixture.label("${preferenceField.name}-$TITLE_NAME").requireText("textField:")
+		}
 	}
 }
-

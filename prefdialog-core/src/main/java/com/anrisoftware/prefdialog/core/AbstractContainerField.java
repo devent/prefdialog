@@ -1,3 +1,21 @@
+/*
+ * Copyright 2012 Erwin Müller <erwin.mueller@deventm.org>
+ * 
+ * This file is part of prefdialog-core.
+ * 
+ * prefdialog-core is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
+ * 
+ * prefdialog-core is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with prefdialog-core. If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.anrisoftware.prefdialog.core;
 
 import static java.lang.String.format;
@@ -124,7 +142,7 @@ public abstract class AbstractContainerField<ComponentType extends Component, Co
 	 * @param width
 	 *            if with is at least 0 then the width in pixels is set. In
 	 *            addition the special constants are used by the
-	 *            {@link TableLayout}:
+	 *            {@link TableLayout} layout:
 	 *            <ul>
 	 *            <li>{@link TableLayoutConstants#PREFERRED}</li>
 	 *            <li>{@link TableLayoutConstants#FILL}</li>
@@ -140,7 +158,7 @@ public abstract class AbstractContainerField<ComponentType extends Component, Co
 	}
 
 	/**
-	 * Sets the name of this container to "{@value #CONTAINER_NAME}-name".
+	 * Sets the name of this container to "name-{@value #CONTAINER_NAME}".
 	 */
 	@Override
 	public void setName(String name) {

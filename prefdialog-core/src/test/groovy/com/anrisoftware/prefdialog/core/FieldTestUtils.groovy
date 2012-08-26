@@ -52,6 +52,8 @@ class FieldTestUtils extends TestFrameUtil {
 
 	MockContainerFieldFactory containerFieldFactory
 
+	MockTitleFieldFactory titleFieldFactory
+
 	Preferences preferences
 
 	@Before
@@ -59,6 +61,7 @@ class FieldTestUtils extends TestFrameUtil {
 		injector = createInjector()
 		fieldComponentFactory = injector.getInstance MockFieldComponentFactory
 		containerFieldFactory = injector.getInstance MockContainerFieldFactory
+		titleFieldFactory = injector.getInstance MockTitleFieldFactory
 		preferences = new Preferences()
 	}
 

@@ -18,21 +18,29 @@
  */
 package com.anrisoftware.prefdialog.core
 
-import com.google.inject.AbstractModule
-import com.google.inject.assistedinject.FactoryModuleBuilder
+import java.lang.reflect.Field
+
+import javax.inject.Inject
+import javax.swing.JComponent
+import javax.swing.JPanel
+
+import com.google.inject.assistedinject.Assisted
+
 /**
- * Binds the mock field factories.
+ * Wrapper around the abstract title field for the factory.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
  */
-class MockModule extends AbstractModule {
+class MockTitleField extends AbstractTitleField<JPanel, JComponent> {
 
-	@Override
-	protected void configure() {
-		install new FactoryModuleBuilder().implement(MockFieldComponent, MockFieldComponent).build(MockFieldComponentFactory)
-		install new FactoryModuleBuilder().implement(MockContainerField, MockContainerField).build(MockContainerFieldFactory)
-		install new FactoryModuleBuilder().implement(MockTitleField, MockTitleField).build(MockTitleFieldFactory)
+	@Inject
+	MockTitleField(
+	@Assisted JComponent component,
+	@Assisted JPanel container,
+	@Assisted Object parentObject,
+	@Assisted Field field) {
+		super(component, container, parentObject, field)
 	}
 }
 
