@@ -47,6 +47,12 @@ class Preferences {
 
 	public static final preferencesTextFieldWithIconResource = Preferences.class.getDeclaredField("textFieldWithIconResource")
 
+	public static final preferencesTextFieldFixedWidth = Preferences.class.getDeclaredField("textFieldFixedWidth")
+
+	public static final preferencesTextFieldFillWidth = Preferences.class.getDeclaredField("textFieldFillWidth")
+
+	public static final preferencesTextFieldPreferredWidth = Preferences.class.getDeclaredField("textFieldPreferredWidth")
+
 	@FieldComponent
 	@TextField
 	String textField
@@ -82,4 +88,16 @@ class Preferences {
 	@FieldComponent(icon = "test_field_icon")
 	@TextField
 	String textFieldWithIconResource
+
+	@FieldComponent(width = 200d)
+	@TextField
+	String textFieldFixedWidth
+
+	@FieldComponent(width = -1.0d)
+	@TextField
+	String textFieldFillWidth
+
+	@FieldComponent(width = -2.0d)
+	@TextField
+	String textFieldPreferredWidth
 }

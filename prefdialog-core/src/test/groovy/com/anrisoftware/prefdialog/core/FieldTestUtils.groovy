@@ -50,12 +50,15 @@ class FieldTestUtils extends TestFrameUtil {
 
 	MockFieldComponentFactory fieldComponentFactory
 
+	MockContainerFieldFactory containerFieldFactory
+
 	Preferences preferences
 
 	@Before
 	void beforeTest() {
 		injector = createInjector()
 		fieldComponentFactory = injector.getInstance MockFieldComponentFactory
+		containerFieldFactory = injector.getInstance MockContainerFieldFactory
 		preferences = new Preferences()
 	}
 

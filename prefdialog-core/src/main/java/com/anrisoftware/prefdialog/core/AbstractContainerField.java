@@ -28,7 +28,7 @@ import java.lang.reflect.Field;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
  */
-public abstract class AbstractPanelField<ComponentType extends Component, ContainerType extends Container>
+public abstract class AbstractContainerField<ComponentType extends Component, ContainerType extends Container>
 		extends AbstractFieldComponent<ContainerType> {
 
 	/**
@@ -56,7 +56,7 @@ public abstract class AbstractPanelField<ComponentType extends Component, Contai
 	 * @param field
 	 *            the {@link Field}.
 	 */
-	protected AbstractPanelField(ComponentType component,
+	protected AbstractContainerField(ComponentType component,
 			ContainerType container, Object parentObject, Field field) {
 		super(container, parentObject, field);
 		this.component = component;

@@ -77,7 +77,9 @@ public @interface FieldComponent {
 	boolean readOnly() default false;
 
 	/**
-	 * The width of the field inside the container.
+	 * The width of the field inside the container. The width can be in pixels,
+	 * a percentage or some special constant. Default is set to the TableLayout
+	 * preffered size constant.
 	 */
 	double width() default -1.0;
 
