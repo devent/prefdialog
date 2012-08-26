@@ -5,10 +5,13 @@ import static org.apache.commons.lang3.Validate.notNull;
 
 import java.util.Locale;
 
+import javax.swing.Icon;
+
 import com.anrisoftware.globalpom.log.AbstractLogger;
 import com.anrisoftware.prefdialog.annotations.TextPosition;
 import com.anrisoftware.prefdialog.fields.FieldComponent;
 import com.anrisoftware.resources.api.IconSize;
+import com.anrisoftware.resources.api.Images;
 import com.anrisoftware.resources.api.Texts;
 
 /**
@@ -92,6 +95,11 @@ class AbstractFieldComponentLogger extends AbstractLogger {
 				field);
 	}
 
+	void checkImagesResource(AbstractFieldComponent<?> field, Images images) {
+		notNull(images, "The images resource for the field %s cannot be null.",
+				field);
+	}
+
 	void checkLocale(AbstractFieldComponent<?> field, Locale locale) {
 		notNull(locale, "The locale for the field %s cannot be null.", field);
 	}
@@ -108,4 +116,11 @@ class AbstractFieldComponentLogger extends AbstractLogger {
 		log.trace("Set icon size to {} for field {}.", size, field);
 	}
 
+	void iconResourceSet(AbstractFieldComponent<?> field, String name) {
+		log.trace("Set icon resource to ``{}'' for field {}.", name, field);
+	}
+
+	void iconSet(AbstractFieldComponent<?> field, Icon icon) {
+		log.trace("Set icon {} for field {}.", icon, field);
+	}
 }

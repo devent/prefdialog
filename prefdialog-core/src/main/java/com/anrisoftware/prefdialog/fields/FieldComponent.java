@@ -20,10 +20,14 @@ package com.anrisoftware.prefdialog.fields;
 
 import java.awt.Component;
 import java.util.Locale;
+import java.util.MissingResourceException;
+
+import javax.swing.Icon;
 
 import com.anrisoftware.prefdialog.annotations.TextPosition;
-import com.anrisoftware.prefdialog.core.AbstractFieldComponent;
 import com.anrisoftware.resources.api.IconSize;
+import com.anrisoftware.resources.api.Images;
+import com.anrisoftware.resources.api.ResourcesException;
 import com.anrisoftware.resources.api.Texts;
 
 /**
@@ -52,7 +56,7 @@ public interface FieldComponent<ComponentType extends Component> {
 	 * 
 	 * @return this {@link FieldComponent}.
 	 */
-	AbstractFieldComponent<ComponentType> withTextsResource(Texts texts);
+	FieldComponent<ComponentType> withTextsResource(Texts texts);
 
 	/**
 	 * Sets the texts resource.
@@ -61,6 +65,36 @@ public interface FieldComponent<ComponentType extends Component> {
 	 *            the {@link Texts} resource.
 	 */
 	void setTexts(Texts texts);
+
+	/**
+	 * Sets the images resource.
+	 * 
+	 * @param images
+	 *            the {@link Images} resources.
+	 * 
+	 * @return this {@link FieldComponent}.
+	 * 
+	 * @throws ResourcesException
+	 *             if the icon resource is not available.
+	 * 
+	 * @throws MissingResourceException
+	 *             if the icon resource could not be found.
+	 */
+	FieldComponent<ComponentType> withImagesResource(Images images);
+
+	/**
+	 * Sets the images resource.
+	 * 
+	 * @param images
+	 *            the {@link Images} resources.
+	 * 
+	 * @throws ResourcesException
+	 *             if the icon resource is not available.
+	 * 
+	 * @throws MissingResourceException
+	 *             if the icon resource could not be found.
+	 */
+	void setImages(Images images);
 
 	/**
 	 * Sets the name the field. The name should be a unique ID of the field
@@ -205,6 +239,12 @@ public interface FieldComponent<ComponentType extends Component> {
 	 * 
 	 * @param newSize
 	 *            the {@link IconSize}.
+	 * 
+	 * @throws ResourcesException
+	 *             if the icon resource is not available.
+	 * 
+	 * @throws MissingResourceException
+	 *             if the icon resource could not be found.
 	 */
 	void setIconSize(IconSize newSize);
 
@@ -214,6 +254,39 @@ public interface FieldComponent<ComponentType extends Component> {
 	 * @return the {@link IconSize}.
 	 */
 	IconSize getIconSize();
+
+	/**
+	 * Sets the resource for the icon. The resource is loaded from the specified
+	 * images resources.
+	 * 
+	 * @param newIconResource
+	 *            the icon resource name or {@code null} or empty if the old
+	 *            icon should be deleted.
+	 * 
+	 * @throws ResourcesException
+	 *             if the icon resource is not available.
+	 * 
+	 * @throws MissingResourceException
+	 *             if the icon resource could not be found.
+	 */
+	void setIcon(String newIconResource);
+
+	/**
+	 * Sets the new icon for the field. No icon resource name is set that means
+	 * that we can not change the locale or the size of the icon.
+	 * 
+	 * @param newIcon
+	 *            the {@link Icon} for the field or {@code null} if the old icon
+	 *            should be deleted.
+	 */
+	void setIcon(Icon newIcon);
+
+	/**
+	 * Returns the icon for this field.
+	 * 
+	 * @return the {@link Icon}
+	 */
+	Icon getIcon();
 
 	/**
 	 * Tests if the current input for the field is valid.
@@ -259,4 +332,5 @@ public interface FieldComponent<ComponentType extends Component> {
 	 *             this field.
 	 */
 	<T extends Component> FieldComponent<T> getField(String name);
+
 }

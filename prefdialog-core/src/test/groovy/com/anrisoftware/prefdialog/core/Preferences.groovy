@@ -27,6 +27,8 @@ class Preferences {
 
 	public static final preferencesTextFieldWithToolTipResource = Preferences.class.getDeclaredField("textFieldWithToolTipResource")
 
+	public static final preferencesTextFieldWithIconResource = Preferences.class.getDeclaredField("textFieldWithIconResource")
+
 	@FieldComponent
 	@TextField
 	String textField
@@ -58,4 +60,8 @@ class Preferences {
 	@FieldComponent(toolTip = "tool_tip")
 	@TextField
 	String textFieldWithToolTipResource
+
+	@FieldComponent(icon = "test_field_icon")
+	@TextField
+	String textFieldWithIconResource
 }

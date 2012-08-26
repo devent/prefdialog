@@ -6,6 +6,8 @@ import javax.swing.JLabel
 
 import org.junit.Test
 
+import com.anrisoftware.resources.api.IconSize
+
 /**
  * Test the {@link AbstractFieldComponent}.
  * 
@@ -146,5 +148,65 @@ class FieldComponentTest extends FieldTestUtils {
 			fixture.label(preferenceField.name).requireToolTip("Tool Tip Deu")
 			field.setShowToolTip(true)
 		}, { field.setShowToolTip(false) }
+	}
+
+	@Test
+	void "show text field with icon resource"() {
+		def images = createImagesResource()
+		def component = new JLabel("Label")
+		def preferenceField = preferencesTextFieldWithIconResource
+		def field = fieldComponentFactory.create(
+						component, preferences, preferenceField).createField().
+						withImagesResource(images)
+		assert field.icon != null
+		beginPanelFrame title, component, {
+			fixture.label(preferenceField.name).requireEnabled()
+		}
+	}
+
+	@Test
+	void "show text field with icon resource change icon size"() {
+		def images = createImagesResource()
+		def component = new JLabel("Label")
+		def preferenceField = preferencesTextFieldWithIconResource
+		def field = fieldComponentFactory.create(
+						component, preferences, preferenceField).createField().
+						withImagesResource(images)
+		assert field.icon != null
+		component.icon = field.icon
+		beginPanelFrame title, component, {
+			fixture.label(preferenceField.name).requireEnabled()
+		}, {
+			field.iconSize = IconSize.HUGE
+			component.icon = field.icon
+		}, {
+			field.iconSize = IconSize.LARGE
+			component.icon = field.icon
+		}, {
+			field.iconSize = IconSize.MEDIUM
+			component.icon = field.icon
+		}, {
+			field.iconSize = IconSize.SMALL
+			component.icon = field.icon
+		}
+	}
+
+	@Test
+	void "show text field with icon resource change locale"() {
+		def images = createImagesResource()
+		def component = new JLabel("Label")
+		def preferenceField = preferencesTextFieldWithIconResource
+		def field = fieldComponentFactory.create(
+						component, preferences, preferenceField).createField().
+						withImagesResource(images)
+		assert field.icon != null
+		component.icon = field.icon
+		beginPanelFrame title, component, {
+			fixture.label(preferenceField.name).requireEnabled()
+		}, {
+			field.locale = Locale.GERMAN
+			assert field.icon != null
+			component.icon = field.icon
+		}
 	}
 }

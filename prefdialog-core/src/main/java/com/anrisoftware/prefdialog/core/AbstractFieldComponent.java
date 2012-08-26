@@ -12,6 +12,8 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 
 import javax.inject.Inject;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.ToolTipManager;
 
@@ -23,6 +25,7 @@ import com.anrisoftware.prefdialog.reflection.annotations.AnnotationAccess;
 import com.anrisoftware.prefdialog.reflection.beans.BeanAccess;
 import com.anrisoftware.prefdialog.reflection.beans.BeanFactory;
 import com.anrisoftware.resources.api.IconSize;
+import com.anrisoftware.resources.api.Images;
 import com.anrisoftware.resources.api.Texts;
 
 /**
@@ -70,6 +73,8 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
 	private static final String ICON_SIZE_ELEMENT = "iconSize";
 
+	private static final String ICON_ELEMENT = "icon";
+
 	private final ComponentType component;
 
 	private final Object parentObject;
@@ -102,6 +107,12 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
 	private IconSize iconSize;
 
+	private Images images;
+
+	private Icon icon;
+
+	private String iconResource;
+
 	/**
 	 * Sets the component of this field.
 	 * 
@@ -133,7 +144,14 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 		setupToolTip();
 		setupTextPosition();
 		setupIconSize();
+		setupIcon();
 		return this;
+	}
+
+	private void setupIcon() {
+		String icon = annotationAccess.getValue(
+				FIELD_COMPONENT_ANNOTATION_CLASS, field, ICON_ELEMENT);
+		setIcon(icon);
 	}
 
 	private void setupIconSize() {
@@ -241,6 +259,28 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	}
 
 	@Override
+	public AbstractFieldComponent<ComponentType> withImagesResource(
+			Images images) {
+		setImages(images);
+		return this;
+	}
+
+	@Override
+	public void setImages(Images images) {
+		log.checkImagesResource(this, images);
+		this.images = images;
+		updateIconResources();
+	}
+
+	private void updateIconResources() {
+		if (isEmpty(iconResource) || images == null) {
+			return;
+		}
+		icon = new ImageIcon(images.getResource(iconResource, getLocale(),
+				iconSize).getImage());
+	}
+
+	@Override
 	public AbstractFieldComponent<ComponentType> withTextsResource(Texts texts) {
 		setTexts(texts);
 		return this;
@@ -250,10 +290,10 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	public void setTexts(Texts texts) {
 		log.checkTextsResource(this, texts);
 		this.texts = texts;
-		updateResources();
+		updateTextsResources();
 	}
 
-	private void updateResources() {
+	private void updateTextsResources() {
 		updateTitleResource();
 		updateToolTipResource();
 	}
@@ -347,7 +387,8 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	public void setLocale(Locale newLocale) {
 		log.checkLocale(this, newLocale);
 		component.setLocale(newLocale);
-		updateResources();
+		updateTextsResources();
+		updateIconResources();
 		log.localeSet(this, newLocale);
 	}
 
@@ -418,12 +459,36 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	@Override
 	public void setIconSize(IconSize newSize) {
 		iconSize = newSize;
+		updateIconResources();
 		log.iconSizeSet(this, iconSize);
 	}
 
 	@Override
 	public IconSize getIconSize() {
 		return iconSize;
+	}
+
+	@Override
+	public void setIcon(String newIconResource) {
+		iconResource = newIconResource;
+		if (isEmpty(iconResource)) {
+			icon = null;
+		} else {
+			updateIconResources();
+		}
+		log.iconResourceSet(this, newIconResource);
+	}
+
+	@Override
+	public void setIcon(Icon newIcon) {
+		iconResource = null;
+		icon = newIcon;
+		log.iconSet(this, newIcon);
+	}
+
+	@Override
+	public Icon getIcon() {
+		return icon;
 	}
 
 	@Override
