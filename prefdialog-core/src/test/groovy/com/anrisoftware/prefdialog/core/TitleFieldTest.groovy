@@ -26,6 +26,8 @@ import javax.swing.JTextField
 
 import org.junit.Test
 
+import com.anrisoftware.resources.api.IconSize
+
 /**
  * Test the {@link AbstractTitleField}.
  * 
@@ -129,6 +131,61 @@ class TitleFieldTest extends FieldTestUtils {
 		def field = titleFieldFactory.create(component, container, preferences, preferenceField).createField()
 		beginPanelFrame title, container, {
 			fixture.label(titleLabelName).requireDisabled()
+		}
+	}
+
+	@Test
+	void "show text field with icon resource"() {
+		def images = createImagesResource()
+		def container = new JPanel()
+		def component = new JTextField()
+		def preferenceField = preferencesTextFieldWithIconResource
+		def titleLabelName = "${preferenceField.name}-$TITLE_NAME"
+		def field = titleFieldFactory.create(
+						component, container, preferences, preferenceField).createField().
+						withImagesResource(images)
+		beginPanelFrame title, container, {
+			fixture.label(titleLabelName).requireEnabled()
+		}
+	}
+
+	@Test
+	void "show text field with icon resource change icon size"() {
+		def images = createImagesResource()
+		def container = new JPanel()
+		def component = new JTextField()
+		def preferenceField = preferencesTextFieldWithIconResource
+		def titleLabelName = "${preferenceField.name}-$TITLE_NAME"
+		def field = titleFieldFactory.create(
+						component, container, preferences, preferenceField).createField().
+						withImagesResource(images)
+		beginPanelFrame title, container, {
+			fixture.label(titleLabelName).requireEnabled()
+		}, {
+			field.iconSize = IconSize.HUGE
+		}, {
+			field.iconSize = IconSize.LARGE
+		}, {
+			field.iconSize = IconSize.MEDIUM
+		}, {
+			field.iconSize = IconSize.SMALL
+		}
+	}
+
+	@Test
+	void "show text field with icon resource change locale"() {
+		def images = createImagesResource()
+		def container = new JPanel()
+		def component = new JTextField()
+		def preferenceField = preferencesTextFieldWithIconResource
+		def titleLabelName = "${preferenceField.name}-$TITLE_NAME"
+		def field = titleFieldFactory.create(
+						component, container, preferences, preferenceField).createField().
+						withImagesResource(images)
+		beginPanelFrame title, container, {
+			fixture.label(titleLabelName).requireEnabled()
+		}, {
+			field.locale = Locale.GERMAN
 		}
 	}
 }

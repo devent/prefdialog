@@ -31,6 +31,8 @@ import java.util.Locale;
 
 import javax.swing.JLabel;
 
+import com.anrisoftware.resources.api.IconSize;
+import com.anrisoftware.resources.api.Images;
 import com.anrisoftware.resources.api.Texts;
 
 /**
@@ -113,7 +115,6 @@ public abstract class AbstractTitleField<ComponentType extends Component, Contai
 
 	private void updateTextsResources() {
 		updateTitleResource();
-		updateToolTipResource();
 	}
 
 	private void updateTitleResource() {
@@ -131,8 +132,14 @@ public abstract class AbstractTitleField<ComponentType extends Component, Contai
 		return text;
 	}
 
-	private void updateToolTipResource() {
+	@Override
+	public void setImages(Images images) {
+		super.setImages(images);
+		updateIconResource();
+	}
 
+	private void updateIconResource() {
+		titleLabel.setIcon(getIcon());
 	}
 
 	/**
@@ -158,5 +165,12 @@ public abstract class AbstractTitleField<ComponentType extends Component, Contai
 	public void setLocale(Locale newLocale) {
 		super.setLocale(newLocale);
 		updateTextsResources();
+		updateIconResource();
+	}
+
+	@Override
+	public void setIconSize(IconSize newSize) {
+		super.setIconSize(newSize);
+		updateIconResource();
 	}
 }
