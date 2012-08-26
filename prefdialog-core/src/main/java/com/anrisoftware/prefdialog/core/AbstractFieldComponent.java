@@ -211,8 +211,9 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	}
 
 	private void setupShowTitle() {
-		showTitle = annotationAccess.getValue(FIELD_COMPONENT_ANNOTATION_CLASS,
-				field, SHOW_TITLE_ELEMENT);
+		boolean show = annotationAccess.getValue(
+				FIELD_COMPONENT_ANNOTATION_CLASS, field, SHOW_TITLE_ELEMENT);
+		setShowTitle(show);
 	}
 
 	private void setupValue() {
@@ -346,6 +347,7 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 		try {
 			title = texts.getResource(titleResource, getLocale()).getText();
 		} catch (MissingResourceException e) {
+			title = titleResource;
 			log.titleResourceMissing(this, titleResource);
 		}
 	}
@@ -378,6 +380,7 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	@Override
 	public void setShowTitle(boolean show) {
 		this.showTitle = show;
+		log.showTitleSet(this, show);
 	}
 
 	@Override

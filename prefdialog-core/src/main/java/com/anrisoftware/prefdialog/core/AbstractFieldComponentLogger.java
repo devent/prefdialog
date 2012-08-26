@@ -55,6 +55,10 @@ class AbstractFieldComponentLogger extends AbstractLogger {
 		log.trace("Set title to ``{}'' for field {}.", title, field);
 	}
 
+	void showTitleSet(AbstractFieldComponent<?> field, boolean show) {
+		log.trace("Set show title to {} for field {}.", show, field);
+	}
+
 	void valueSet(AbstractFieldComponent<?> field, Object value) {
 		log.trace("Set value to {} for field {}.", value, field);
 	}

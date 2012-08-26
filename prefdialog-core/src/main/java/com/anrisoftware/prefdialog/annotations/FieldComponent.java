@@ -60,9 +60,9 @@ public @interface FieldComponent {
 
 	/**
 	 * If the title of the field should be visible or not. Defaults to
-	 * {@code false}.
+	 * {@code true}.
 	 */
-	boolean showTitle() default false;
+	boolean showTitle() default true;
 
 	/**
 	 * The tool-tip text for the field. Defaults to the empty text which means
