@@ -19,42 +19,28 @@
 		<dependency>
 			<groupId>com.anrisoftware.globalpom</groupId>
 			<artifactId>globalpom-groovytestutils</artifactId>
-			<version>1.8</version>
-			<scope>test</scope>
 		</dependency>
         <dependency>
             <groupId>com.anrisoftware.resources</groupId>
             <artifactId>resources-images</artifactId>
-            <version>1.2</version>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.anrisoftware.resources</groupId>
             <artifactId>resources-texts</artifactId>
-            <version>1.2</version>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.anrisoftware.resources</groupId>
             <artifactId>resources-binary</artifactId>
-            <version>1.2</version>
-            <scope>test</scope>
         </dependency>
 
 		<!-- compile dependencies -->
 		<dependency>
 			<groupId>com.anrisoftware.globalpom</groupId>
 			<artifactId>globalpom-log</artifactId>
-			<version>1.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.anrisoftware.prefdialog</groupId>
-			<artifactId>prefdialog-reflection</artifactId>
-			<version>2.2-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>tablelayout</groupId>
@@ -67,7 +53,13 @@
 		<dependency>
 			<groupId>com.anrisoftware.resources</groupId>
 			<artifactId>resources-api</artifactId>
-			<version>1.2</version>
 		</dependency>
+
+        <!-- prefdialog modules -->
+        <dependency>
+            <groupId>com.anrisoftware.prefdialog</groupId>
+            <artifactId>prefdialog-reflection</artifactId>
+            <version>2.2-SNAPSHOT</version>
+        </dependency>
 	</dependencies>
 </project>

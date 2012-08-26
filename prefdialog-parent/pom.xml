@@ -42,14 +42,53 @@
 	</scm>
 
 	<distributionManagement>
-        <repository>
-            <id>${custom.repository.anrispublic.id}</id>
-            <url>${custom.repository.root}${custom.repository.anrispublic.path}</url>
-        </repository>
-        <snapshotRepository>
-            <id>${custom.repository.anrispublicsnapshots.id}</id>
-            <url>${custom.repository.root}${custom.repository.anrispublicsnapshots.path}</url>
-        </snapshotRepository>
+		<repository>
+			<id>${custom.repository.anrispublic.id}</id>
+			<url>${custom.repository.root}${custom.repository.anrispublic.path}</url>
+		</repository>
+		<snapshotRepository>
+			<id>${custom.repository.anrispublicsnapshots.id}</id>
+			<url>${custom.repository.root}${custom.repository.anrispublicsnapshots.path}</url>
+		</snapshotRepository>
 	</distributionManagement>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.anrisoftware.globalpom</groupId>
+				<artifactId>globalpom-groovytestutils</artifactId>
+				<version>${project.custom.globalpom.groovytestutils.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.anrisoftware.resources</groupId>
+				<artifactId>resources-images</artifactId>
+				<version>1.2</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.anrisoftware.resources</groupId>
+				<artifactId>resources-texts</artifactId>
+				<version>1.2</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.anrisoftware.resources</groupId>
+				<artifactId>resources-binary</artifactId>
+				<version>1.2</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.anrisoftware.resources</groupId>
+				<artifactId>resources-api</artifactId>
+				<version>1.2</version>
+			</dependency>
+			<dependency>
+				<groupId>com.anrisoftware.globalpom</groupId>
+				<artifactId>globalpom-log</artifactId>
+				<version>${project.custom.globalpom.log.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 </project>
