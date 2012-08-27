@@ -25,6 +25,7 @@ import org.junit.Test
 import com.anrisoftware.prefdialog.annotations.ButtonGroup
 import com.anrisoftware.prefdialog.annotations.IconSize
 import com.anrisoftware.prefdialog.annotations.TextPosition
+import com.anrisoftware.prefdialog.core.buttongroup.ButtonAction;
 import com.anrisoftware.prefdialog.panel.inputfields.FieldFixtureHandler
 import com.anrisoftware.prefdialog.panel.inputfields.api.ButtonGroupFieldHandlerFactory
 import com.anrisoftware.prefdialog.swingutils.AbstractLabelFieldPanel
@@ -48,31 +49,31 @@ class ButtonGroupIconSizesTest extends FieldFixtureHandler {
 
 		@ButtonGroup(icon="com/anrisoftware/prefdialog/panel/inputfields/info-%d.png", textPosition=TextPosition.TEXT_ALONGSIDE_ICON, showTitle=true)
 		def alongsideIconDefaultSize = [
-			new Button1Action(),
+			new ButtonAction(),
 			new Button2Action()
 		]
 
 		@ButtonGroup(icon="com/anrisoftware/prefdialog/panel/inputfields/info-%d.png", textPosition=TextPosition.TEXT_ALONGSIDE_ICON, iconSize=IconSize.SMALL, showTitle=true)
 		def alongsideIconSmallSize = [
-			new Button1Action(),
+			new ButtonAction(),
 			new Button2Action()
 		]
 
 		@ButtonGroup(icon="com/anrisoftware/prefdialog/panel/inputfields/info-%d.png", textPosition=TextPosition.TEXT_ALONGSIDE_ICON, iconSize=IconSize.MEDIUM, showTitle=true)
 		def alongsideIconMediumSize = [
-			new Button1Action(),
+			new ButtonAction(),
 			new Button2Action()
 		]
 
 		@ButtonGroup(icon="com/anrisoftware/prefdialog/panel/inputfields/info-%d.png", textPosition=TextPosition.TEXT_ALONGSIDE_ICON, iconSize=IconSize.LARGE, showTitle=true)
 		def alongsideIconLargeSize = [
-			new Button1Action(),
+			new ButtonAction(),
 			new Button2Action()
 		]
 
 		@ButtonGroup(icon="com/anrisoftware/prefdialog/panel/inputfields/info-%d.png", textPosition=TextPosition.TEXT_ALONGSIDE_ICON, iconSize=IconSize.HUGE, showTitle=true)
 		def alongsideIconHugeSize = [
-			new Button1Action(),
+			new ButtonAction(),
 			new Button2Action()
 		]
 	}

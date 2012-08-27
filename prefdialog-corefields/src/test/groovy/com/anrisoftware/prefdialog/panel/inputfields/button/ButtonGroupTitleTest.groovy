@@ -23,6 +23,7 @@ import static com.anrisoftware.prefdialog.swingutils.AbstractLabelFieldPanel.TIT
 import org.junit.Test
 
 import com.anrisoftware.prefdialog.annotations.ButtonGroup
+import com.anrisoftware.prefdialog.core.buttongroup.ButtonAction;
 import com.anrisoftware.prefdialog.panel.inputfields.AbstractFieldFixture
 import com.anrisoftware.prefdialog.panel.inputfields.api.ButtonGroupFieldHandlerFactory
 
@@ -36,7 +37,7 @@ class ButtonGroupTitleTest extends AbstractFieldFixture {
 
 		@ButtonGroup(title="The title", showTitle=true)
 		def buttons = [
-			new Button1Action(),
+			new ButtonAction(),
 			new Button2Action()
 		]
 	}

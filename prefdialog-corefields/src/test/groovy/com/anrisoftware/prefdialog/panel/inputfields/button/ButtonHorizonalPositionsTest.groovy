@@ -24,6 +24,7 @@ import org.junit.Test
 
 import com.anrisoftware.prefdialog.annotations.ButtonGroup
 import com.anrisoftware.prefdialog.annotations.HorizontalPositions
+import com.anrisoftware.prefdialog.core.buttongroup.ButtonAction;
 import com.anrisoftware.prefdialog.panel.inputfields.FieldFixtureHandler
 import com.anrisoftware.prefdialog.panel.inputfields.api.ButtonGroupFieldHandlerFactory
 
@@ -44,25 +45,25 @@ class ButtonHorizonalPositionsTest extends FieldFixtureHandler {
 
 		@ButtonGroup
 		def defaultPosition = [
-			new Button1Action(),
+			new ButtonAction(),
 			new Button2Action()
 		]
 
 		@ButtonGroup(horizontalPosition=HorizontalPositions.LEFT)
 		def positionLeft = [
-			new Button1Action(),
+			new ButtonAction(),
 			new Button2Action()
 		]
 
 		@ButtonGroup(horizontalPosition=HorizontalPositions.RIGHT)
 		def positionRight = [
-			new Button1Action(),
+			new ButtonAction(),
 			new Button2Action()
 		]
 
 		@ButtonGroup(horizontalPosition=HorizontalPositions.MIDDLE)
 		def positionMiddle = [
-			new Button1Action(),
+			new ButtonAction(),
 			new Button2Action()
 		]
 	}

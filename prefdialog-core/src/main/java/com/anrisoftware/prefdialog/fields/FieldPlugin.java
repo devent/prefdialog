@@ -18,6 +18,7 @@
  */
 package com.anrisoftware.prefdialog.fields;
 
+import java.awt.Component;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
@@ -41,8 +42,12 @@ public interface FieldPlugin {
 	 * Returns the field component for the specified field of the preferences
 	 * bean object.
 	 * 
-	 * @param parentInjector
+	 * @param injector
 	 *            the parent injector containing the bound dependencies.
+	 * 
+	 * @param component
+	 *            the component that the user can enter input data for the
+	 *            field.
 	 * 
 	 * @param bean
 	 *            the preferences bean object.
@@ -50,7 +55,15 @@ public interface FieldPlugin {
 	 * @param field
 	 *            the {@link Field}.
 	 * 
+	 * @param <ComponentType>
+	 *            the type of the component, must be of type {@link Component}.
+	 * 
 	 * @return the {@link FieldComponent}.
+	 * 
+	 * @throws FieldPluginError
+	 *             if an unexpected exception is thrown while returning the
+	 *             field component.
 	 */
-	FieldComponent<?> getField(Object parentInjector, Object bean, Field field);
+	<ComponentType extends Component> FieldComponent<ComponentType> getField(
+			Object injector, ComponentType component, Object bean, Field field);
 }

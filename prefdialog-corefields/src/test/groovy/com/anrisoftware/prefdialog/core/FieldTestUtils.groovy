@@ -21,8 +21,6 @@ package com.anrisoftware.prefdialog.core
 import org.junit.Before
 
 import com.anrisoftware.globalpom.utils.TestFrameUtil
-import com.anrisoftware.prefdialog.reflection.annotations.AnnotationsModule
-import com.anrisoftware.prefdialog.reflection.beans.BeansModule
 import com.anrisoftware.resources.api.Images
 import com.anrisoftware.resources.api.ImagesFactory
 import com.anrisoftware.resources.api.Texts
@@ -43,31 +41,19 @@ import com.google.inject.Injector
  * and images resource.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 1.0
+ * @since 2.2
  */
 class FieldTestUtils extends TestFrameUtil {
 
 	Injector injector
 
-	MockFieldComponentFactory fieldComponentFactory
-
-	MockContainerFieldFactory containerFieldFactory
-
-	MockTitleFieldFactory titleFieldFactory
-
-	Preferences preferences
-
 	@Before
 	void beforeTest() {
 		injector = createInjector()
-		fieldComponentFactory = injector.getInstance MockFieldComponentFactory
-		containerFieldFactory = injector.getInstance MockContainerFieldFactory
-		titleFieldFactory = injector.getInstance MockTitleFieldFactory
-		preferences = new Preferences()
 	}
 
 	Injector createInjector() {
-		Guice.createInjector new MockModule(), new AnnotationsModule(), new BeansModule()
+		Guice.createInjector()
 	}
 
 	Texts createTextsResource() {
