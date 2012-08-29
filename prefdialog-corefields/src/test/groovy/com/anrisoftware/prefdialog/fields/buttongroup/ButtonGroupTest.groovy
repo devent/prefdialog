@@ -39,16 +39,16 @@ class ButtonGroupTest extends FieldTestUtils {
 
 	static class Bean {
 
-		def button1Callback
-		
-		def button2Callback
-		
 		@FieldComponent
 		@ButtonGroup
 		def buttons = [
-			new ButtonAction("Button 1", button1Callback),
-			new ButtonAction("Button 2", button2Callback)
+			new ButtonAction("Button 1"),
+			new ButtonAction("Button 2")
 		]
+		
+		void setButtonCallback(int index, def callback) {
+			buttons[index].callback = callback
+		}
 	}
 	
 	ButtonGroupFieldFactory factory
@@ -66,8 +66,8 @@ class ButtonGroupTest extends FieldTestUtils {
 		bean = new Bean()
 		button1Called = false
 		button2Called = false
-		bean.button1Callback = { button1Called = true }
-		bean.button2Callback = { button2Called = true }
+		bean.setButtonCallback 0, { button1Called = true }
+		bean.setButtonCallback 1, { button2Called = true }
 	}
 	
 	Injector createInjector() {
@@ -78,12 +78,12 @@ class ButtonGroupTest extends FieldTestUtils {
 	@Test
 	void "click on buttons"() {
 		def container = new JPanel()
-		def field = factory.create(container, this, buttonsField)
+		def field = factory.create(container, bean, buttonsField).createField()
 		beginPanelFrame title, container, {
-			fixture.button("button-0-$buttons").click()
+			fixture.button("$buttons-0-button").click()
 			assert button1Called
 		}, {
-			fixture.button("button-1-$buttons").click()
+			fixture.button("$buttons-1-button").click()
 			assert button2Called
 		}
 	}
