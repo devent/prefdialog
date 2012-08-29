@@ -46,8 +46,8 @@ public interface FieldPlugin {
 	 *            the parent injector containing the bound dependencies.
 	 * 
 	 * @param component
-	 *            the component that the user can enter input data for the
-	 *            field.
+	 *            the {@link Component} that the user can enter input data for
+	 *            the field.
 	 * 
 	 * @param bean
 	 *            the preferences bean object.
@@ -55,8 +55,11 @@ public interface FieldPlugin {
 	 * @param field
 	 *            the {@link Field}.
 	 * 
-	 * @param <ComponentType>
+	 * @param <K>
 	 *            the type of the component, must be of type {@link Component}.
+	 * 
+	 * @param <T>
+	 *            the type of the field, must be of type {@link FieldComponent}.
 	 * 
 	 * @return the {@link FieldComponent}.
 	 * 
@@ -64,6 +67,6 @@ public interface FieldPlugin {
 	 *             if an unexpected exception is thrown while returning the
 	 *             field component.
 	 */
-	<ComponentType extends Component> FieldComponent<ComponentType> getField(
-			Object injector, ComponentType component, Object bean, Field field);
+	<K extends Component, T extends FieldComponent<K>> T getField(
+			Object injector, Component component, Object bean, Field field);
 }

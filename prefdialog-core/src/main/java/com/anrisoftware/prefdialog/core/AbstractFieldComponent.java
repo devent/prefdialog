@@ -267,6 +267,15 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	}
 
 	/**
+	 * Returns the annotation access to access the elements of an annotation.
+	 * 
+	 * @return the {@link AnnotationAccess}.
+	 */
+	protected AnnotationAccess getAnnotationAccess() {
+		return annotationAccess;
+	}
+
+	/**
 	 * Injects the bean access to access the fields of a object.
 	 * 
 	 * @param beanAccess
@@ -286,6 +295,15 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	@Inject
 	void setBeanFactory(BeanFactory beanFactory) {
 		this.beanFactory = beanFactory;
+	}
+
+	/**
+	 * Returns the field of this component.
+	 * 
+	 * @return the {@link Field}.
+	 */
+	protected Field getField() {
+		return field;
 	}
 
 	@Override
@@ -558,19 +576,21 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	}
 
 	@Override
-	public <T extends Component> FieldComponent<T> getField(String name) {
+	public <R extends Component, T extends FieldComponent<R>> T getField(
+			String name) {
+		if (getName().equals(name)) {
+			@SuppressWarnings("unchecked")
+			T field = (T) this;
+			return field;
+		}
 		for (FieldComponent<?> component : childFields) {
-			if (getName().equals(component.getName())) {
-				return toComponent(component);
+			if (component.getName().equals(name)) {
+				@SuppressWarnings("unchecked")
+				T field = (T) component;
+				return field;
 			}
 		}
 		throw log.noChildFieldFound(this, name);
-	}
-
-	@SuppressWarnings("unchecked")
-	private <T extends Component> FieldComponent<T> toComponent(
-			FieldComponent<?> component) {
-		return (FieldComponent<T>) component;
 	}
 
 	@Override

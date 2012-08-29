@@ -26,6 +26,12 @@ import org.junit.Test
 import com.anrisoftware.prefdialog.core.FieldTestUtils
 import com.google.inject.Injector
 
+/**
+ * Test the {@link ButtonGroupField}.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 2.2
+ */
 class ButtonGroupTest extends FieldTestUtils {
 
 	static final title = "Button Group Test"

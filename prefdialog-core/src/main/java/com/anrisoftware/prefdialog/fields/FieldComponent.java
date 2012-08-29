@@ -339,8 +339,11 @@ public interface FieldComponent<ComponentType extends Component> {
 	 * @param name
 	 *            the name of the field.
 	 * 
-	 * @param <T>
+	 * @param <K>
 	 *            the type of the {@link Component}.
+	 * 
+	 * @param <T>
+	 *            the type of the {@link FieldComponent}.
 	 * 
 	 * @return the {@link FieldComponent} with the specified name.
 	 * 
@@ -348,6 +351,6 @@ public interface FieldComponent<ComponentType extends Component> {
 	 *             if no field component with the specified name was found in
 	 *             this field.
 	 */
-	<T extends Component> FieldComponent<T> getField(String name);
+	<K extends Component, T extends FieldComponent<K>> T getField(String name);
 
 }

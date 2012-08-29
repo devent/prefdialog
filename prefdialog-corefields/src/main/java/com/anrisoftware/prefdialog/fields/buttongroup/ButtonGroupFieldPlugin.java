@@ -25,9 +25,9 @@ import java.lang.reflect.Field;
 
 import org.apache.commons.lang3.concurrent.ConcurrentException;
 import org.apache.commons.lang3.concurrent.LazyInitializer;
+import org.apache.commons.lang3.exception.ContextedRuntimeException;
 
 import com.anrisoftware.prefdialog.annotations.ButtonGroup;
-import com.anrisoftware.prefdialog.fields.FieldComponent;
 import com.anrisoftware.prefdialog.fields.FieldPlugin;
 import com.anrisoftware.prefdialog.fields.FieldPluginError;
 import com.google.inject.Injector;
@@ -63,24 +63,27 @@ public class ButtonGroupFieldPlugin implements FieldPlugin {
 		return ButtonGroup.class;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public <ComponentType extends Component> FieldComponent<ComponentType> getField(
-			Object injector, ComponentType component, Object bean, Field field) {
+	public ButtonGroupField getField(Object injector, Component component,
+			Object bean, Field field) {
 		parentInjector = (Injector) injector;
 		Container container = (Container) component;
+		return lazyCreateField(bean, field, container);
+	}
+
+	private ButtonGroupField lazyCreateField(Object bean, Field field,
+			Container container) {
 		try {
-			return asType(lazyCreateFactory.get()
-					.create(container, bean, field));
+			return lazyCreateFactory.get().create(container, bean, field);
 		} catch (ConcurrentException e) {
-			throw new FieldPluginError(e.getCause()).addContextValue(
-					"annotation", getFieldAnnotation());
+			throw createError(e);
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	private <ComponentType extends Component> FieldComponent<ComponentType> asType(
-			FieldComponent<Container> fieldComponent) {
-		return (FieldComponent<ComponentType>) fieldComponent;
+	private ContextedRuntimeException createError(ConcurrentException e) {
+		return new FieldPluginError(e.getCause()).//
+				addContextValue("annotation", getFieldAnnotation());
 	}
 
 }
