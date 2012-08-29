@@ -3,6 +3,7 @@ package com.anrisoftware.prefdialog.fields.buttongroup;
 import static java.lang.String.format;
 
 import com.anrisoftware.globalpom.log.AbstractLogger;
+import com.anrisoftware.prefdialog.annotations.HorizontalAlignment;
 
 /**
  * Logging messages for {@link ButtonGroupField}.
@@ -24,5 +25,11 @@ class ButtonGroupFieldLogger extends AbstractLogger {
 				"The value %s is not an array or list of actions.", value));
 		log.error(ex.getLocalizedMessage());
 		return ex;
+	}
+
+	void horizontalAlignmentSet(ButtonGroupField field,
+			HorizontalAlignment alignment) {
+		log.trace("Set the horizontal alignment to {} in the button group {}.",
+				alignment, field);
 	}
 }

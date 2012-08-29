@@ -38,6 +38,7 @@ import com.anrisoftware.prefdialog.annotations.HorizontalAlignment;
 class RowPanel extends JPanel {
 
 	private final TableLayout layout;
+	private ButtonsRowPanel buttonsRowPanel;
 
 	RowPanel() {
 		this.layout = createLayout();
@@ -61,8 +62,8 @@ class RowPanel extends JPanel {
 		super.setName(format("%s-%s", name, ROW_PANEL_NAME));
 	}
 
-	public void setButtonsRowPanel(ButtonsRowPanel buttonsRowPanel) {
-		add(buttonsRowPanel, "0, 0");
+	public void setButtonsRowPanel(ButtonsRowPanel panel) {
+		buttonsRowPanel = panel;
 	}
 
 	public void setHorizontalAlignment(HorizontalAlignment alignment) {
@@ -82,15 +83,16 @@ class RowPanel extends JPanel {
 	}
 
 	private void setColumns(double[] columns) {
+		remove(buttonsRowPanel);
 		double[] layoutColumns = layout.getColumn();
 		for (int i = 0; i < columns.length; i++) {
-			if (layoutColumns[i] == columns[i]) {
-				continue;
-			}
 			if (i > layoutColumns.length - 1) {
 				layout.insertColumn(i, columns[i]);
 			} else {
 				layout.setColumn(i, columns[i]);
+			}
+			if (columns[i] == PREFERRED) {
+				add(buttonsRowPanel, String.format("%d,0", i));
 			}
 		}
 	}

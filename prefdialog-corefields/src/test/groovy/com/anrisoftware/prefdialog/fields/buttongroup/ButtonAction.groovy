@@ -14,8 +14,9 @@ class ButtonAction extends AbstractAction {
 
 	def callback
 
-	ButtonAction(String name) {
+	ButtonAction(String name, def callback) {
 		super(name)
+		this.callback = callback
 	}
 
 	void actionPerformed(ActionEvent action) {

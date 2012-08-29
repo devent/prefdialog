@@ -1,6 +1,7 @@
 package com.anrisoftware.prefdialog.fields.buttongroup;
 
 import java.awt.Container;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
@@ -12,16 +13,24 @@ import javax.swing.JPanel;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import com.anrisoftware.prefdialog.annotations.ButtonGroup;
+import com.anrisoftware.prefdialog.annotations.HorizontalAlignment;
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
 import com.google.inject.assistedinject.Assisted;
 
-class ButtonGroupField extends AbstractTitleField<JPanel, Container> {
+public class ButtonGroupField extends AbstractTitleField<JPanel, Container> {
+
+	private static final String HORIZONTAL_ALIGNMENT_ELEMENT = "horizontalAlignment";
+
+	private static final Class<? extends Annotation> ANNOTATION_CLASS = ButtonGroup.class;
 
 	private final ButtonGroupFieldLogger log;
 
 	private final RowPanel rowPanel;
 
 	private final ButtonsRowPanel buttonsRowPanel;
+
+	private HorizontalAlignment horizontalAlignment;
 
 	@Inject
 	ButtonGroupField(ButtonGroupFieldLogger logger, RowPanel rowPanel,
@@ -36,6 +45,19 @@ class ButtonGroupField extends AbstractTitleField<JPanel, Container> {
 
 	private void setup() {
 		rowPanel.setButtonsRowPanel(buttonsRowPanel);
+	}
+
+	@Override
+	public ButtonGroupField createField() {
+		super.createField();
+		setupHorizontalAlignment();
+		return this;
+	}
+
+	private void setupHorizontalAlignment() {
+		HorizontalAlignment alignment = getAnnotationAccess().getValue(
+				ANNOTATION_CLASS, getField(), HORIZONTAL_ALIGNMENT_ELEMENT);
+		setHorizontalAlignment(alignment);
 	}
 
 	@Override
@@ -74,5 +96,26 @@ class ButtonGroupField extends AbstractTitleField<JPanel, Container> {
 			return list;
 		}
 		throw log.valueNotList(value);
+	}
+
+	/**
+	 * Sets the horizontal alignment of the button group.
+	 * 
+	 * @param alignment
+	 *            the {@link HorizontalAlignment}.
+	 */
+	public void setHorizontalAlignment(HorizontalAlignment alignment) {
+		rowPanel.setHorizontalAlignment(alignment);
+		horizontalAlignment = alignment;
+		log.horizontalAlignmentSet(this, alignment);
+	}
+
+	/**
+	 * Returns the horizontal alignment of the button group.
+	 * 
+	 * @return the {@link HorizontalAlignment}.
+	 */
+	public HorizontalAlignment getHorizontalAlignment() {
+		return horizontalAlignment;
 	}
 }
