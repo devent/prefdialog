@@ -55,4 +55,15 @@ public interface BeanAccess {
 	 *             exception.
 	 */
 	<T> T getValue(Field field, Object parentObject);
+
+	/**
+	 * Sets the value to the field.
+	 * 
+	 * @param value
+	 *            the value to be set.
+	 * 
+	 * @param field
+	 * @param parentObject
+	 */
+	void setValue(Object value, Field field, Object parentObject);
 }

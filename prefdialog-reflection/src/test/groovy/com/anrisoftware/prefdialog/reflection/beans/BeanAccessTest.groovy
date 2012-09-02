@@ -57,4 +57,33 @@ class BeanAccessTest extends BeanUtils {
 			a.getValue field, bean.bean
 		}
 	}
+
+	@Test
+	void "write field value"() {
+		BeanAccess a = injector.getInstance BeanAccess
+		def field = FieldUtils.getField Bean, "stringField", true
+		String value = "value"
+		a.setValue value, field, bean.bean
+		assertStringContent bean.bean.stringField, value
+	}
+
+	@Test
+	void "write field value via setter"() {
+		BeanAccess a = injector.getInstance BeanAccess
+		def field = FieldUtils.getField Bean, "setterField", true
+		String value = "value"
+		a.setValue value, field, bean.bean
+		assertStringContent bean.bean.setterField, value
+		assert bean.bean.setterOfSetterFieldCalled
+	}
+
+	@Test
+	void "write field value via setter that throws exception"() {
+		BeanAccess a = injector.getInstance BeanAccess
+		def field = FieldUtils.getField Bean, "setterFieldThatThrowsException", true
+		String value = "value"
+		shouldFailWith(ReflectionError) {
+			a.setValue value, field, bean.bean
+		}
+	}
 }

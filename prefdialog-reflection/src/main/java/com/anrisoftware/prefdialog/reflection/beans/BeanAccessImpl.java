@@ -97,4 +97,52 @@ class BeanAccessImpl implements BeanAccess {
 			throw log.illegalAccessError(e, field, parentObject);
 		}
 	}
+
+	@Override
+	public void setValue(Object value, Field field, Object parentObject) {
+		boolean set = setValueWithSetter(value, field, parentObject);
+		if (!set) {
+			setValueFromField(value, field, parentObject);
+		}
+	}
+
+	private boolean setValueWithSetter(Object value, Field field,
+			Object parentObject) {
+		String name = getSetterName(field);
+		Class<?> cls = parentObject.getClass();
+		Method method = getAccessibleMethod(cls, name, value.getClass());
+		if (method == null) {
+			return false;
+		}
+		try {
+			method.invoke(parentObject, value);
+			return true;
+		} catch (IllegalAccessException e) {
+			throw log.illegalAccessError(e, parentObject, name);
+		} catch (IllegalArgumentException e) {
+			throw log.illegalArgumentError(e, parentObject, name);
+		} catch (InvocationTargetException e) {
+			throw log.invocationTargetError(e, parentObject, name);
+		}
+	}
+
+	private String getSetterName(Field field) {
+		StringBuilder builder = new StringBuilder();
+		String name = field.getName();
+		char nameChar = Character.toUpperCase(name.charAt(0));
+		builder.append("set");
+		builder.append(nameChar);
+		builder.append(name.substring(1));
+		return builder.toString();
+	}
+
+	private void setValueFromField(Object value, Field field,
+			Object parentObject) {
+		try {
+			FieldUtils.writeField(field, parentObject, value, true);
+		} catch (IllegalAccessException e) {
+			throw log.illegalAccessError(e, field, parentObject);
+		}
+	}
+
 }

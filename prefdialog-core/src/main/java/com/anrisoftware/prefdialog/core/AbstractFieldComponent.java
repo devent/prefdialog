@@ -114,8 +114,6 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
 	private String toolTipResource;
 
-	private Object value;
-
 	private AnnotationAccess annotationAccess;
 
 	private BeanAccess beanAccess;
@@ -409,12 +407,13 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	@Override
 	public void setValue(Object newValue) {
 		log.checkValue(this, newValue);
-		value = newValue;
+		beanAccess.setValue(newValue, field, parentObject);
 		log.valueSet(this, newValue);
 	}
 
 	@Override
 	public Object getValue() {
+		Object value = beanAccess.getValue(field, parentObject);
 		return value;
 	}
 

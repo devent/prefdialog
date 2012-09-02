@@ -19,15 +19,30 @@ class Bean {
 
 	boolean getterOfGetterFieldCalled = false
 
+	String setterField = 'Getter Text'
+
+	boolean setterOfSetterFieldCalled = false
+
+	String getterFieldThatThrowsException = 'Getter Text'
+
+	String setterFieldThatThrowsException = 'Setter Text'
+
 	String getGetterField() {
 		getterOfGetterFieldCalled = true
 		return getterField
 	}
 
-	String getterFieldThatThrowsException = 'Getter Text'
+	void setSetterField(String value) {
+		setterOfSetterFieldCalled = true
+		setterField = value
+	}
 
 	String getGetterFieldThatThrowsException() {
 		throw new Exception("Error in getter")
+	}
+
+	void setSetterFieldThatThrowsException(String value) {
+		throw new Exception("Error in setter")
 	}
 }
 
