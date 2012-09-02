@@ -18,9 +18,6 @@
  */
 package com.anrisoftware.prefdialog.reflection.exceptions;
 
-import static java.lang.String.format;
-import static org.apache.commons.lang3.StringUtils.replace;
-
 import org.apache.commons.lang3.exception.ContextedRuntimeException;
 import org.apache.commons.lang3.exception.ExceptionContext;
 
@@ -95,42 +92,4 @@ public class ReflectionError extends ContextedRuntimeException {
 	public ReflectionError addContextValue(String label, Object value) {
 		return (ReflectionError) super.addContextValue(label, value);
 	}
-
-	@Override
-	public String getMessage() {
-		Throwable cause = getCause();
-		return cause == null ? getMessageNoCause() : getMessageCause();
-	}
-
-	private String getMessageNoCause() {
-		String message = super.getMessage();
-		return message;
-	}
-
-	private String getMessageCause() {
-		String message = super.getMessage();
-		String causeMessage = appendDotAtEnd(getCauseMessage());
-		message = replace(message, "\nException Context:",
-				format(": %s%n%n%s", causeMessage, "Exception Context:"));
-		return message;
-	}
-
-	private String appendDotAtEnd(String message) {
-		if (message == null) {
-			message = "";
-		}
-		if (haveDotAtEnd(message)) {
-			message = format("%s.", message);
-		}
-		return message;
-	}
-
-	private String getCauseMessage() {
-		return getCause().getMessage();
-	}
-
-	private boolean haveDotAtEnd(String message) {
-		return message.lastIndexOf(".") < message.length() - 1;
-	}
-
 }
