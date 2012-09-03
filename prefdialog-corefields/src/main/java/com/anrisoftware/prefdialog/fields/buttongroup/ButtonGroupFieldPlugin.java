@@ -82,8 +82,9 @@ public class ButtonGroupFieldPlugin implements FieldPlugin {
 	}
 
 	private ContextedRuntimeException createError(ConcurrentException e) {
-		return new FieldPluginError(e.getCause()).//
-				addContextValue("annotation", getFieldAnnotation());
+		return new FieldPluginError("Error create buttons group field.",
+				e.getCause()).addContextValue("annotation",
+				getFieldAnnotation());
 	}
 
 }
