@@ -130,8 +130,8 @@ class AbstractFieldComponentLogger extends AbstractLogger {
 		log.trace("Set locale to {} for field {}.", locale, field);
 	}
 
-	void textPositionSet(AbstractFieldComponent<?> field, TextPosition position) {
-		log.trace("Set text position to {} for field {}.", position, field);
+	void titlePositionSet(AbstractFieldComponent<?> field, TextPosition position) {
+		log.trace("Set title position to {} for field {}.", position, field);
 	}
 
 	void iconSizeSet(AbstractFieldComponent<?> field, IconSize size) {

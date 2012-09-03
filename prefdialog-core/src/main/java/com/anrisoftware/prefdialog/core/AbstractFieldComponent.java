@@ -60,7 +60,7 @@ import com.anrisoftware.resources.api.Texts;
  * <li>value</li>
  * <li>read-only flag</li>
  * <li>tool-tip</li>
- * <li>text position</li>
+ * <li>title position</li>
  * <li>icon</li>
  * <li>icon size</li>
  * <li>locale</li>
@@ -90,7 +90,7 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
 	private static final String LOCALE_ELEMENT = "locale";
 
-	private static final String TEXT_POSITION_ELEMENT = "textPosition";
+	private static final String TITLE_POSITION_ELEMENT = "titlePosition";
 
 	private static final String ICON_SIZE_ELEMENT = "iconSize";
 
@@ -124,7 +124,7 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
 	private String toolTip;
 
-	private TextPosition textPosition;
+	private TextPosition titlePosition;
 
 	private IconSize iconSize;
 
@@ -164,7 +164,7 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 		setupWidth();
 		setupReadOnly();
 		setupToolTip();
-		setupTextPosition();
+		setupTitlePosition();
 		setupIconSize();
 		setupIcon();
 		return this;
@@ -182,10 +182,11 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 		setIconSize(size);
 	}
 
-	private void setupTextPosition() {
-		TextPosition position = annotationAccess.getValue(
-				FIELD_COMPONENT_ANNOTATION_CLASS, field, TEXT_POSITION_ELEMENT);
-		setTextPosition(position);
+	private void setupTitlePosition() {
+		TextPosition position = annotationAccess
+				.getValue(FIELD_COMPONENT_ANNOTATION_CLASS, field,
+						TITLE_POSITION_ELEMENT);
+		setTitlePosition(position);
 	}
 
 	private void setupLocale() {
@@ -505,14 +506,14 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	}
 
 	@Override
-	public void setTextPosition(TextPosition newPosition) {
-		textPosition = newPosition;
-		log.textPositionSet(this, textPosition);
+	public void setTitlePosition(TextPosition newPosition) {
+		titlePosition = newPosition;
+		log.titlePositionSet(this, titlePosition);
 	}
 
 	@Override
 	public TextPosition getTextPosition() {
-		return textPosition;
+		return titlePosition;
 	}
 
 	@Override

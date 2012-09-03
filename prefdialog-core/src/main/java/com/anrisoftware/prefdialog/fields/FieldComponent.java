@@ -242,7 +242,7 @@ public interface FieldComponent<ComponentType extends Component> {
 	 * @param newPosition
 	 *            the {@link TextPosition}.
 	 */
-	void setTextPosition(TextPosition newPosition);
+	void setTitlePosition(TextPosition newPosition);
 
 	/**
 	 * Returns the position of the title text and icon.

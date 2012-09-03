@@ -89,7 +89,7 @@ public @interface FieldComponent {
 	 * 
 	 * @see TextPosition
 	 */
-	TextPosition textPosition() default TextPosition.TEXT_ONLY;
+	TextPosition titlePosition() default TextPosition.TEXT_ONLY;
 
 	/**
 	 * The resource name of icon or empty if no icon should be set. The resource
