@@ -24,10 +24,29 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import com.anrisoftware.resources.api.Texts;
+
 /**
- * Check box field. A check box field can only be checked or unchecked.
+ * Check box field. A check box field can only be checked or unchecked. If the
+ * value of field is not set it is assumed to be {@code false}.
  * <p>
- * Example:
+ * Example with text set to the field name.
+ * 
+ * <pre>
+ * &#064;FieldComponent
+ * &#064;Checkbox
+ * private boolean isImportant;
+ * </pre>
+ * 
+ * Example with text set to the field name but is not visible.
+ * 
+ * <pre>
+ * &#064;FieldComponent
+ * &#064;Checkbox(showText = false)
+ * private boolean isImportant;
+ * </pre>
+ * 
+ * Example with text set.
  * 
  * <pre>
  * &#064;FieldComponent
@@ -38,4 +57,21 @@ import java.lang.annotation.Target;
 @Target(FIELD)
 @Retention(RUNTIME)
 public @interface Checkbox {
+
+	/**
+	 * The text of the check-box. Defaults to the empty string which means the
+	 * field name is used as the text.
+	 * <p>
+	 * The text can also be a resource name that is queried in the supplied
+	 * texts resource.
+	 * 
+	 * @see Texts
+	 */
+	String text() default "";
+
+	/**
+	 * Sets if the text of the check-box should be visible or not. Defaults to
+	 * {@code true} which means that the text should be visible.
+	 */
+	boolean showText() default true;
 }

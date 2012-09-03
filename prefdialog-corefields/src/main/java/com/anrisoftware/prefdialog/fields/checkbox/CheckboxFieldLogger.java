@@ -44,4 +44,8 @@ class CheckboxFieldLogger extends AbstractLogger {
 				"The value %s is not a boolean value for the check-box field %s.",
 				value, field);
 	}
+
+	void textSet(CheckboxField field, String text) {
+		log.trace("Set the text ``{}'' to the check box field {}.", text, field);
+	}
 }

@@ -18,7 +18,10 @@
  */
 package com.anrisoftware.prefdialog.fields.checkbox;
 
+import static org.apache.commons.lang3.StringUtils.isEmpty;
+
 import java.awt.Container;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
 import javax.inject.Inject;
@@ -26,6 +29,7 @@ import javax.swing.JCheckBox;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import com.anrisoftware.prefdialog.annotations.Checkbox;
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
 import com.google.inject.assistedinject.Assisted;
 
@@ -36,6 +40,10 @@ import com.google.inject.assistedinject.Assisted;
  * @since 2.2
  */
 public class CheckboxField extends AbstractTitleField<JCheckBox, Container> {
+
+	private static final Class<? extends Annotation> ANNOTATION_CLASS = Checkbox.class;
+
+	private static final String TEXT_ELEMENT = "text";
 
 	private final CheckboxFieldLogger log;
 
@@ -60,6 +68,25 @@ public class CheckboxField extends AbstractTitleField<JCheckBox, Container> {
 				adjusting = false;
 			}
 		});
+	}
+
+	@Override
+	public CheckboxField createField() {
+		super.createField();
+		setupText();
+		return this;
+	}
+
+	private void setupText() {
+		String text = getAnnotationAccess().getValue(ANNOTATION_CLASS,
+				getField(), TEXT_ELEMENT);
+		text = isEmpty(text) ? getField().getName() : text;
+		setText(text);
+	}
+
+	public void setText(String newText) {
+		getComponent().setText(newText);
+		log.textSet(this, newText);
 	}
 
 	/**
