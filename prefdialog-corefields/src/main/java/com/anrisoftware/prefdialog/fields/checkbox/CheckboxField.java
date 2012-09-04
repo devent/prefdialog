@@ -48,11 +48,15 @@ public class CheckboxField extends AbstractTitleField<JCheckBox, Container> {
 
 	private static final String TEXT_ELEMENT = "text";
 
+	private static final String SHOW_TEXT_ELEMENT = "showText";
+
 	private final CheckboxFieldLogger log;
 
 	private boolean adjusting;
 
 	private String textResource;
+
+	private boolean showText;
 
 	@Inject
 	CheckboxField(CheckboxFieldLogger logger, @Assisted Container container,
@@ -79,6 +83,7 @@ public class CheckboxField extends AbstractTitleField<JCheckBox, Container> {
 	public CheckboxField createField() {
 		super.createField();
 		setupText();
+		setupShowText();
 		return this;
 	}
 
@@ -110,6 +115,10 @@ public class CheckboxField extends AbstractTitleField<JCheckBox, Container> {
 		if (isEmpty(textResource) || getTexts() == null) {
 			return;
 		}
+		if (!showText) {
+			getComponent().setText("");
+			return;
+		}
 		String text;
 		try {
 			text = getTexts().getResource(textResource, getLocale()).getText();
@@ -122,6 +131,22 @@ public class CheckboxField extends AbstractTitleField<JCheckBox, Container> {
 
 	public String getText() {
 		return getComponent().getText();
+	}
+
+	private void setupShowText() {
+		boolean show = getAnnotationAccess().getValue(ANNOTATION_CLASS,
+				getField(), SHOW_TEXT_ELEMENT);
+		setShowText(show);
+	}
+
+	public void setShowText(boolean show) {
+		showText = show;
+		updateTextResource();
+		log.showTextSet(this, show);
+	}
+
+	public boolean getShowText() {
+		return showText;
 	}
 
 	/**

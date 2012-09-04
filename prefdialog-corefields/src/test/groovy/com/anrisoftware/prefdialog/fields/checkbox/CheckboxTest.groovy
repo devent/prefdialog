@@ -110,4 +110,20 @@ class CheckboxTest extends FieldTestUtils {
 			fixture.checkBox("$CHECKBOX_WITH_TEXT_RESOURCE").requireText("Checkbox English")
 		}
 	}
+
+	@Test
+	void "checkbox not showing text"() {
+		def field = factory.create(container, bean, CHECKBOX_NOW_SHOW_TEXT_FIELD).
+						withTextsResource(createTextsResource()).
+						createField()
+		beginPanelFrame title, container, {
+			fixture.checkBox("$CHECKBOX_NOW_SHOW_TEXT").requireText("")
+		}, {
+			field.showText = true
+			fixture.checkBox("$CHECKBOX_NOW_SHOW_TEXT").requireText("checkboxNowShowText")
+		}, {
+			field.showText = false
+			fixture.checkBox("$CHECKBOX_NOW_SHOW_TEXT").requireText("")
+		}
+	}
 }

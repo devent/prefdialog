@@ -47,6 +47,10 @@ class CheckboxBean {
 
 	static final CHECKBOX_WITH_TEXT_RESOURCE_FIELD = FieldUtils.getField(CheckboxBean, CHECKBOX_WITH_TEXT_RESOURCE, true)
 
+	static final CHECKBOX_NOW_SHOW_TEXT = "checkboxNowShowText"
+
+	static final CHECKBOX_NOW_SHOW_TEXT_FIELD = FieldUtils.getField(CheckboxBean, CHECKBOX_NOW_SHOW_TEXT, true)
+
 	@FieldComponent
 	@Checkbox
 	Boolean checkboxNullValue
@@ -62,5 +66,9 @@ class CheckboxBean {
 	@FieldComponent
 	@Checkbox(text = "checkbox_with_text_resource")
 	boolean checkboxWithTextResource
+
+	@FieldComponent
+	@Checkbox(showText = false)
+	boolean checkboxNowShowText
 }
 

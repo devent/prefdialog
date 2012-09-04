@@ -54,4 +54,9 @@ class CheckboxFieldLogger extends AbstractLogger {
 				"Could not find the text resource ``{}'' using it as the literal text for check box field {}.",
 				resource, field);
 	}
+
+	void showTextSet(CheckboxField field, boolean show) {
+		log.trace("Set show text to ``{}'' to the check box field {}.", show,
+				field);
+	}
 }
