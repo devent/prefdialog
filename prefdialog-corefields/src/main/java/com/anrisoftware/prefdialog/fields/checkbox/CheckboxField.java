@@ -104,6 +104,16 @@ public class CheckboxField extends AbstractTitleField<JCheckBox, Container> {
 		updateTextResource();
 	}
 
+	/**
+	 * Sets the text of the check-box. Defaults to the empty string which means
+	 * the field name is used as the text.
+	 * <p>
+	 * The text can also be a resource name that is queried in the supplied
+	 * texts resource.
+	 * 
+	 * @param newText
+	 *            the text.
+	 */
 	public void setText(String newText) {
 		textResource = newText;
 		getComponent().setText(newText);
@@ -129,6 +139,11 @@ public class CheckboxField extends AbstractTitleField<JCheckBox, Container> {
 		getComponent().setText(text);
 	}
 
+	/**
+	 * Returns the text of the check-box.
+	 * 
+	 * @return the text.
+	 */
 	public String getText() {
 		return getComponent().getText();
 	}
@@ -139,12 +154,24 @@ public class CheckboxField extends AbstractTitleField<JCheckBox, Container> {
 		setShowText(show);
 	}
 
+	/**
+	 * Sets if the text of the check-box should be visible or not. Defaults to
+	 * {@code true} which means that the text should be visible.
+	 * 
+	 * @param show
+	 *            {@code true} for show the text or {@code false} to not show.
+	 */
 	public void setShowText(boolean show) {
 		showText = show;
 		updateTextResource();
 		log.showTextSet(this, show);
 	}
 
+	/**
+	 * Returns if the text is showing or not.
+	 * 
+	 * @return {@code true} for show the text or {@code false} to not show.
+	 */
 	public boolean getShowText() {
 		return showText;
 	}
