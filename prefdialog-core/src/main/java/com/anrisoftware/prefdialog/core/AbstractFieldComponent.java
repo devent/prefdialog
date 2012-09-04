@@ -134,6 +134,8 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
 	private String iconResource;
 
+	private Object oldValue;
+
 	/**
 	 * Sets the component of this field.
 	 * 
@@ -407,14 +409,19 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
 	@Override
 	public void setValue(Object newValue) {
+		if (oldValue == newValue) {
+			return;
+		}
 		log.checkValue(this, newValue);
 		beanAccess.setValue(newValue, field, parentObject);
+		oldValue = newValue;
 		log.valueSet(this, newValue);
 	}
 
 	@Override
 	public Object getValue() {
 		Object value = beanAccess.getValue(field, parentObject);
+		oldValue = value;
 		return value;
 	}
 
