@@ -122,11 +122,13 @@ public class CheckboxField extends AbstractTitleField<JCheckBox, Container> {
 	}
 
 	private void updateTextResource() {
-		if (isEmpty(textResource) || getTexts() == null) {
-			return;
-		}
 		if (!showText) {
 			getComponent().setText("");
+			return;
+		} else {
+			getComponent().setText(textResource);
+		}
+		if (isEmpty(textResource) || getTexts() == null) {
 			return;
 		}
 		String text;
