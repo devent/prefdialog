@@ -114,7 +114,6 @@ class CheckboxTest extends FieldTestUtils {
 	@Test
 	void "checkbox not showing text"() {
 		def field = factory.create(container, bean, CHECKBOX_NOW_SHOW_TEXT_FIELD).
-						withTextsResource(createTextsResource()).
 						createField()
 		beginPanelFrame title, container, {
 			fixture.checkBox("$CHECKBOX_NOW_SHOW_TEXT").requireText("")
@@ -124,6 +123,15 @@ class CheckboxTest extends FieldTestUtils {
 		}, {
 			field.showText = false
 			fixture.checkBox("$CHECKBOX_NOW_SHOW_TEXT").requireText("")
+		}
+	}
+
+	@Test
+	void "checkbox read only"() {
+		factory.create(container, bean, CHECKBOX_READ_ONLY_FIELD).
+						createField()
+		beginPanelFrame title, container, {
+			fixture.checkBox("$CHECKBOX_READ_ONLY").requireDisabled()
 		}
 	}
 }

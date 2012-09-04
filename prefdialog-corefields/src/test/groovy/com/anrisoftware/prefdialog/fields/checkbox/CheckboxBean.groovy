@@ -51,6 +51,10 @@ class CheckboxBean {
 
 	static final CHECKBOX_NOW_SHOW_TEXT_FIELD = FieldUtils.getField(CheckboxBean, CHECKBOX_NOW_SHOW_TEXT, true)
 
+	static final CHECKBOX_READ_ONLY = "checkboxReadOnly"
+
+	static final CHECKBOX_READ_ONLY_FIELD = FieldUtils.getField(CheckboxBean, CHECKBOX_READ_ONLY, true)
+
 	@FieldComponent
 	@Checkbox
 	Boolean checkboxNullValue
@@ -70,5 +74,9 @@ class CheckboxBean {
 	@FieldComponent
 	@Checkbox(showText = false)
 	boolean checkboxNowShowText
+
+	@FieldComponent(readOnly = true)
+	@Checkbox
+	boolean checkboxReadOnly
 }
 
