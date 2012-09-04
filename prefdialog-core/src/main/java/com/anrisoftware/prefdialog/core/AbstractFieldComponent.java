@@ -342,6 +342,11 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 		updateTextsResources();
 	}
 
+	@Override
+	public Texts getTexts() {
+		return texts;
+	}
+
 	private void updateTextsResources() {
 		updateTitleResource();
 		updateToolTipResource();

@@ -27,8 +27,8 @@ import java.lang.annotation.Target;
 import com.anrisoftware.resources.api.Texts;
 
 /**
- * Check box field. A check box field can only be checked or unchecked. If the
- * value of field is not set it is assumed to be {@code false}.
+ * Check box field. A check box field can only be checked or unchecked. The
+ * value of field must be set.
  * <p>
  * Example with text set to the field name.
  * 

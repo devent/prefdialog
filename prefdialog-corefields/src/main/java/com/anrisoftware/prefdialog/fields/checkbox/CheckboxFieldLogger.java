@@ -48,4 +48,10 @@ class CheckboxFieldLogger extends AbstractLogger {
 	void textSet(CheckboxField field, String text) {
 		log.trace("Set the text ``{}'' to the check box field {}.", text, field);
 	}
+
+	void textResourceMissing(CheckboxField field, String resource) {
+		log.warn(
+				"Could not find the text resource ``{}'' using it as the literal text for check box field {}.",
+				resource, field);
+	}
 }

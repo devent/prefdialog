@@ -23,6 +23,8 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
 import java.awt.Container;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.Locale;
+import java.util.MissingResourceException;
 
 import javax.inject.Inject;
 import javax.swing.JCheckBox;
@@ -31,6 +33,7 @@ import javax.swing.event.ChangeListener;
 
 import com.anrisoftware.prefdialog.annotations.Checkbox;
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
+import com.anrisoftware.resources.api.Texts;
 import com.google.inject.assistedinject.Assisted;
 
 /**
@@ -48,6 +51,8 @@ public class CheckboxField extends AbstractTitleField<JCheckBox, Container> {
 	private final CheckboxFieldLogger log;
 
 	private boolean adjusting;
+
+	private String textResource;
 
 	@Inject
 	CheckboxField(CheckboxFieldLogger logger, @Assisted Container container,
@@ -84,9 +89,39 @@ public class CheckboxField extends AbstractTitleField<JCheckBox, Container> {
 		setText(text);
 	}
 
+	@Override
+	public void setTexts(Texts texts) {
+		super.setTexts(texts);
+		updateTextsResources();
+	}
+
+	private void updateTextsResources() {
+		updateTextResource();
+	}
+
 	public void setText(String newText) {
+		textResource = newText;
 		getComponent().setText(newText);
+		updateTextResource();
 		log.textSet(this, newText);
+	}
+
+	private void updateTextResource() {
+		if (isEmpty(textResource) || getTexts() == null) {
+			return;
+		}
+		String text;
+		try {
+			text = getTexts().getResource(textResource, getLocale()).getText();
+		} catch (MissingResourceException e) {
+			text = textResource;
+			log.textResourceMissing(this, textResource);
+		}
+		getComponent().setText(text);
+	}
+
+	public String getText() {
+		return getComponent().getText();
 	}
 
 	/**
@@ -106,6 +141,12 @@ public class CheckboxField extends AbstractTitleField<JCheckBox, Container> {
 		if (!adjusting) {
 			getComponent().setSelected((Boolean) newValue);
 		}
+	}
+
+	@Override
+	public void setLocale(Locale newLocale) {
+		super.setLocale(newLocale);
+		updateTextsResources();
 	}
 
 }

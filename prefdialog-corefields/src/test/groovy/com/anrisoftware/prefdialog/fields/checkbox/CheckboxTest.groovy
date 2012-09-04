@@ -26,6 +26,7 @@ import org.junit.Before
 import org.junit.Test
 
 import com.anrisoftware.prefdialog.core.FieldTestUtils
+import com.anrisoftware.prefdialog.reflection.exceptions.ReflectionError
 import com.google.inject.Injector
 
 /**
@@ -58,6 +59,13 @@ class CheckboxTest extends FieldTestUtils {
 	}
 
 	@Test
+	void "checkbox null value"() {
+		shouldFailWith(ReflectionError) {
+			factory.create(container, bean, CHECKBOX_NULL_VALUE_FIELD).createField()
+		}
+	}
+
+	@Test
 	void "checkbox no text"() {
 		factory.create(container, bean, CHECKBOX_NO_TEXT_FIELD).createField()
 		beginPanelFrame title, container, {
@@ -69,6 +77,37 @@ class CheckboxTest extends FieldTestUtils {
 		}, {
 			fixture.checkBox("$CHECKBOX_NO_TEXT").click()
 			assert bean.checkboxNoText == false
+		}
+	}
+
+	@Test
+	void "checkbox with text"() {
+		factory.create(container, bean, CHECKBOX_WITH_TEXT_FIELD).createField()
+		beginPanelFrame title, container, {
+			assert bean.checkboxWithText == false
+			fixture.checkBox("$CHECKBOX_WITH_TEXT").requireText("Checkbox Text")
+		}, {
+			fixture.checkBox("$CHECKBOX_WITH_TEXT").click()
+			assert bean.checkboxWithText == true
+		}, {
+			fixture.checkBox("$CHECKBOX_WITH_TEXT").click()
+			assert bean.checkboxWithText == false
+		}
+	}
+
+	@Test
+	void "checkbox with text resource"() {
+		def field = factory.create(container, bean, CHECKBOX_WITH_TEXT_RESOURCE_FIELD).
+						withTextsResource(createTextsResource()).
+						createField()
+		beginPanelFrame title, container, {
+			fixture.checkBox("$CHECKBOX_WITH_TEXT_RESOURCE").requireText("Checkbox English")
+		}, {
+			field.locale = Locale.GERMAN
+			fixture.checkBox("$CHECKBOX_WITH_TEXT_RESOURCE").requireText("Checkbox Deutsch")
+		}, {
+			field.locale = Locale.ENGLISH
+			fixture.checkBox("$CHECKBOX_WITH_TEXT_RESOURCE").requireText("Checkbox English")
 		}
 	}
 }

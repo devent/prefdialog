@@ -67,6 +67,13 @@ public interface FieldComponent<ComponentType extends Component> {
 	void setTexts(Texts texts);
 
 	/**
+	 * Returns the texts resource.
+	 * 
+	 * @return the {@link Texts} resource.
+	 */
+	Texts getTexts();
+
+	/**
 	 * Sets the images resource.
 	 * 
 	 * @param images
