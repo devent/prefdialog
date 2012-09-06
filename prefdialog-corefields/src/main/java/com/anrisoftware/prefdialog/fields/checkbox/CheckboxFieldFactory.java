@@ -35,7 +35,7 @@ interface CheckboxFieldFactory {
 	 * bean object.
 	 * 
 	 * @param container
-	 *            the {@link Container} for the button group field.
+	 *            the {@link Container} for the check box field.
 	 * 
 	 * @param bean
 	 *            the preference bean {@link Object} where the field is defined.

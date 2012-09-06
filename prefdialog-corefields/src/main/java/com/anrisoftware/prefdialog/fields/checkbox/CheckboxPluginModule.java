@@ -25,33 +25,12 @@ import com.google.inject.AbstractModule;
 import com.google.inject.multibindings.Multibinder;
 
 /**
- * Binds the button group field plugin.
+ * Binds the check box field plug-in.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 2.2
  */
 public class CheckboxPluginModule extends AbstractModule {
-
-	/**
-	 * The name postfix of the action button. Each button in the group will have
-	 * the name {@code "name-N-button"}, with {code name} the name of the field
-	 * and {code N} the index of the button.
-	 */
-	public static final String BUTTON_NAME = "button";
-
-	/**
-	 * The name postfix of the buttons row container. Each action button will be
-	 * inside this container. The name will be {@code "name-buttonsRow"}, with
-	 * {code name} the name of the field.
-	 */
-	public static final String BUTTONS_ROW_NAME = "buttonsRow";
-
-	/**
-	 * The name postfix of the buttons row alignment container. The container
-	 * will align the group left, right or middle. The name will be
-	 * {@code "name-rowPanel"}, with {code name} the name of the field.
-	 */
-	public static final String ROW_PANEL_NAME = "rowPanel";
 
 	@Override
 	protected void configure() {
