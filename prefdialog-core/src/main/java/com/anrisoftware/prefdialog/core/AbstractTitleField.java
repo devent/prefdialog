@@ -87,7 +87,7 @@ public abstract class AbstractTitleField<ComponentType extends Component, Contai
 	}
 
 	private void setupContainer() {
-		Container container = getAWTComponent();
+		Container container = getContainer();
 		container.removeAll();
 		container.setLayout(createLayout());
 		container.add(titleLabel, "0, 0");
@@ -172,5 +172,14 @@ public abstract class AbstractTitleField<ComponentType extends Component, Contai
 	public void setIconSize(IconSize newSize) {
 		super.setIconSize(newSize);
 		updateIconResource();
+	}
+
+	/**
+	 * Returns the title label for styling.
+	 * 
+	 * @return the {@link JLabel} title label.
+	 */
+	public JLabel getTitleLabel() {
+		return titleLabel;
 	}
 }

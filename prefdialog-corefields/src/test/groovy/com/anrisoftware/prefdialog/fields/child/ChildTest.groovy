@@ -19,6 +19,7 @@
 package com.anrisoftware.prefdialog.fields.child
 
 import static com.anrisoftware.prefdialog.fields.child.ChildBean.*
+import static com.anrisoftware.prefdialog.fields.child.ChildPluginModule.*
 
 import javax.swing.JPanel
 
@@ -26,6 +27,7 @@ import org.junit.Before
 import org.junit.Test
 
 import com.anrisoftware.prefdialog.core.FieldTestUtils
+import com.anrisoftware.prefdialog.fields.checkbox.CheckboxFieldFactory
 import com.google.inject.Injector
 
 /**
@@ -39,6 +41,8 @@ class ChildTest extends FieldTestUtils {
 	static final title = "Child Panel Test"
 
 	ChildFieldFactory factory
+
+	CheckboxFieldFactory checkboxFactory
 
 	ChildBean bean
 
@@ -62,7 +66,15 @@ class ChildTest extends FieldTestUtils {
 		factory.create(container, bean, CHILD_NULL_VALUE_FIELD).createField()
 		beginPanelFrame title, container, {
 			fixture.panel("$CHILD_NULL_VALUE").requireVisible()
-			fixture.checkBox("$CHECKBOX").requireVisible()
+		}
+	}
+
+	@Test
+	void "child null value with added field"() {
+		factory.create(container, bean, CHILD_NULL_VALUE_FIELD).createField()
+		beginPanelFrame title, container, {
+			fixture.panel("$CHILD_NULL_VALUE").requireVisible()
+			fixture.scrollPane("$CHILD_NULL_VALUE-$CHILDREN_SCROLL_NAME").requireVisible()
 		}
 	}
 }

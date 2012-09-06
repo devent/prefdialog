@@ -93,17 +93,18 @@ public abstract class AbstractContainerField<ComponentType extends Component, Co
 	}
 
 	private void setupContainer() {
-		Container container = getAWTComponent();
+		Container container = getContainer();
 		container.setLayout(layout);
 		container.add(component, "0, 0");
 	}
 
 	/**
 	 * Returns the container to be added in the container of the preferences.
+	 * 
+	 * @return the {@link ContainerType} container.
 	 */
-	@Override
-	public ContainerType getAWTComponent() {
-		return super.getAWTComponent();
+	public ContainerType getContainer() {
+		return getAWTComponent();
 	}
 
 	/**
@@ -123,7 +124,7 @@ public abstract class AbstractContainerField<ComponentType extends Component, Co
 	 */
 	public void setLayout(LayoutManager layout) {
 		this.layout = layout;
-		Container container = getAWTComponent();
+		Container container = getContainer();
 		container.setLayout(layout);
 	}
 
@@ -150,7 +151,7 @@ public abstract class AbstractContainerField<ComponentType extends Component, Co
 	 */
 	@Override
 	public void setWidth(Number width) {
-		Container container = getAWTComponent();
+		Container container = getContainer();
 		TableLayout tableLayout = (TableLayout) layout;
 		tableLayout.setColumn(0, width.doubleValue());
 		tableLayout.layoutContainer(container);

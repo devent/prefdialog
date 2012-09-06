@@ -32,6 +32,19 @@ import com.google.inject.multibindings.Multibinder;
  */
 public class ChildPluginModule extends AbstractModule {
 
+	/**
+	 * The name post-fix of the children scroll pane. The scroll pane will have
+	 * the name {@code "name-childrenScroll"}, with {code name} the name of the
+	 * field.
+	 */
+	public static final String CHILDREN_SCROLL_NAME = "childrenScroll";
+
+	/**
+	 * The name post-fix of the title separator. The separator will have the
+	 * name {@code "name-separator"}, with {code name} the name of the field.
+	 */
+	public static final String TITLE_SEPARATOR_NAME = "separator";
+
 	@Override
 	protected void configure() {
 		Multibinder<FieldPlugin> binder;
