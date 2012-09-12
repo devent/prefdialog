@@ -9,7 +9,6 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.swing.AbstractListModel;
 import javax.swing.Action;
-import javax.swing.JPanel;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -18,7 +17,8 @@ import com.anrisoftware.prefdialog.annotations.HorizontalAlignment;
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
 import com.google.inject.assistedinject.Assisted;
 
-public class ButtonGroupField extends AbstractTitleField<JPanel, Container> {
+public class ButtonGroupField extends
+		AbstractTitleField<ButtonsGroupPanel, Container> {
 
 	private static final String HORIZONTAL_ALIGNMENT_ELEMENT = "horizontalAlignment";
 
@@ -26,25 +26,23 @@ public class ButtonGroupField extends AbstractTitleField<JPanel, Container> {
 
 	private final ButtonGroupFieldLogger log;
 
-	private final RowPanel rowPanel;
-
 	private final ButtonsRowPanel buttonsRowPanel;
 
 	private HorizontalAlignment horizontalAlignment;
 
 	@Inject
-	ButtonGroupField(ButtonGroupFieldLogger logger, RowPanel rowPanel,
-			ButtonsRowPanel buttonsRowPanel, @Assisted Container container,
-			@Assisted Object parentObject, @Assisted Field field) {
-		super(rowPanel, container, parentObject, field);
+	ButtonGroupField(ButtonGroupFieldLogger logger,
+			ButtonsGroupPanel buttonsPanel, ButtonsRowPanel buttonsRowPanel,
+			@Assisted Container container, @Assisted Object parentObject,
+			@Assisted Field field) {
+		super(buttonsPanel, container, parentObject, field);
 		this.log = logger;
-		this.rowPanel = rowPanel;
 		this.buttonsRowPanel = buttonsRowPanel;
 		setup();
 	}
 
 	private void setup() {
-		rowPanel.setButtonsRowPanel(buttonsRowPanel);
+		getComponent().setButtonsRowPanel(buttonsRowPanel);
 	}
 
 	@Override
@@ -63,7 +61,7 @@ public class ButtonGroupField extends AbstractTitleField<JPanel, Container> {
 	@Override
 	public void setName(String name) {
 		super.setName(name);
-		rowPanel.setName(name);
+		getComponent().setName(name);
 		buttonsRowPanel.setName(name);
 	}
 
@@ -105,7 +103,7 @@ public class ButtonGroupField extends AbstractTitleField<JPanel, Container> {
 	 *            the {@link HorizontalAlignment}.
 	 */
 	public void setHorizontalAlignment(HorizontalAlignment alignment) {
-		rowPanel.setHorizontalAlignment(alignment);
+		getComponent().setHorizontalAlignment(alignment);
 		horizontalAlignment = alignment;
 		log.horizontalAlignmentSet(this, alignment);
 	}

@@ -1,28 +1,31 @@
 /*
  * Copyright 2012 Erwin Müller <erwin.mueller@deventm.org>
- * 
+ *
  * This file is part of prefdialog-corefields.
- * 
+ *
  * prefdialog-corefields is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- * 
+ *
  * prefdialog-corefields is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-corefields. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.anrisoftware.prefdialog.fields.buttongroup;
 
-import static com.anrisoftware.prefdialog.fields.buttongroup.ButtonGroupPluginModule.ROW_PANEL_NAME;
+import static com.anrisoftware.prefdialog.fields.buttongroup.ButtonGroupPluginModule.BUTTONS_GROUP_PANEL_NAME;
 import static info.clearthought.layout.TableLayoutConstants.FILL;
 import static info.clearthought.layout.TableLayoutConstants.PREFERRED;
 import static java.lang.String.format;
+import static org.apache.commons.lang3.Validate.notNull;
 import info.clearthought.layout.TableLayout;
+
+import java.awt.Container;
 
 import javax.swing.JPanel;
 
@@ -35,13 +38,17 @@ import com.anrisoftware.prefdialog.annotations.HorizontalAlignment;
  * @since 2.2
  */
 @SuppressWarnings("serial")
-class RowPanel extends JPanel {
+public class ButtonsGroupPanel extends JPanel {
 
 	private final TableLayout layout;
-	private ButtonsRowPanel buttonsRowPanel;
 
-	RowPanel() {
+	private Container buttonsPanel;
+
+	private HorizontalAlignment horizontalAlignment;
+
+	ButtonsGroupPanel() {
 		this.layout = createLayout();
+		this.horizontalAlignment = HorizontalAlignment.RIGHT;
 		setup();
 	}
 
@@ -59,15 +66,49 @@ class RowPanel extends JPanel {
 
 	@Override
 	public void setName(String name) {
-		super.setName(format("%s-%s", name, ROW_PANEL_NAME));
+		super.setName(format("%s-%s", name, BUTTONS_GROUP_PANEL_NAME));
 	}
 
-	public void setButtonsRowPanel(ButtonsRowPanel panel) {
-		buttonsRowPanel = panel;
+	/**
+	 * Sets the container that contains the buttons.
+	 * 
+	 * @param panel
+	 *            the {@link Container}.
+	 */
+	public void setButtonsRowPanel(Container panel) {
+		if (buttonsPanel != null) {
+			remove(buttonsPanel);
+		}
+		buttonsPanel = panel;
+		updateHorizontalAlignment();
 	}
 
+	/**
+	 * Returns the horizontal alignment of the buttons in this group.
+	 * 
+	 * @return the {@link HorizontalAlignment}.
+	 */
+	public HorizontalAlignment getHorizontalAlignment() {
+		return horizontalAlignment;
+	}
+
+	/**
+	 * Sets the horizontal alignment of the buttons in this group.
+	 * 
+	 * @param alignment
+	 *            the {@link HorizontalAlignment}.
+	 */
 	public void setHorizontalAlignment(HorizontalAlignment alignment) {
-		switch (alignment) {
+		notNull(alignment, "The horizontal alignment cannot be null.");
+		if (alignment == horizontalAlignment) {
+			return;
+		}
+		horizontalAlignment = alignment;
+		updateHorizontalAlignment();
+	}
+
+	private void updateHorizontalAlignment() {
+		switch (horizontalAlignment) {
 		case LEFT:
 			setColumns(new double[] { PREFERRED, FILL });
 			updateLayout();
@@ -83,7 +124,7 @@ class RowPanel extends JPanel {
 	}
 
 	private void setColumns(double[] columns) {
-		remove(buttonsRowPanel);
+		remove(buttonsPanel);
 		double[] layoutColumns = layout.getColumn();
 		for (int i = 0; i < columns.length; i++) {
 			if (i > layoutColumns.length - 1) {
@@ -92,7 +133,7 @@ class RowPanel extends JPanel {
 				layout.setColumn(i, columns[i]);
 			}
 			if (columns[i] == PREFERRED) {
-				add(buttonsRowPanel, String.format("%d,0", i));
+				add(buttonsPanel, String.format("%d,0", i));
 			}
 		}
 	}

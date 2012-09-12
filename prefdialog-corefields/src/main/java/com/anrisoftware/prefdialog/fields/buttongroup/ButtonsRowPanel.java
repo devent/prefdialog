@@ -1,18 +1,18 @@
 /*
  * Copyright 2012 Erwin Müller <erwin.mueller@deventm.org>
- * 
+ *
  * This file is part of prefdialog-corefields.
- * 
+ *
  * prefdialog-corefields is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- * 
+ *
  * prefdialog-corefields is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-corefields. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -22,6 +22,7 @@ import static com.anrisoftware.prefdialog.fields.buttongroup.ButtonGroupPluginMo
 import static com.anrisoftware.prefdialog.fields.buttongroup.ButtonGroupPluginModule.BUTTON_NAME;
 import static info.clearthought.layout.TableLayoutConstants.PREFERRED;
 import static java.lang.String.format;
+import static org.apache.commons.lang3.Validate.notNull;
 import info.clearthought.layout.TableLayout;
 
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ import javax.swing.event.ListDataListener;
  * @since 2.2
  */
 @SuppressWarnings("serial")
-class ButtonsRowPanel extends JPanel {
+public class ButtonsRowPanel extends JPanel {
 
 	private TableLayout layout;
 
@@ -131,8 +132,19 @@ class ButtonsRowPanel extends JPanel {
 	 * 
 	 * @param newModel
 	 *            the {@link ListModel}.
+	 * 
+	 * @throws NullPointerException
+	 *             if the specified model is {@code null}.
 	 */
 	public void setModel(ListModel newModel) {
+		notNull(newModel, "The model cannot be null.");
+		if (model == newModel) {
+			return;
+		}
+		replaceModel(newModel);
+	}
+
+	private void replaceModel(ListModel newModel) {
 		if (model != null) {
 			model.removeListDataListener(actionsListener);
 			int oldSize = model.getSize();
@@ -142,6 +154,9 @@ class ButtonsRowPanel extends JPanel {
 		addInterval(0, model.getSize());
 	}
 
+	/**
+	 * Sets the name of this buttons panel and the name of all buttons.
+	 */
 	@Override
 	public void setName(String name) {
 		super.setName(format("%s-%s", name, BUTTONS_ROW_NAME));
@@ -154,4 +169,22 @@ class ButtonsRowPanel extends JPanel {
 			buttons.get(i).setName(format("%s-%d-%s", name, i, BUTTON_NAME));
 		}
 	}
+
+	/**
+	 * Returns the button in this buttons row panel with the specified index.
+	 * There are always was much buttons and in the same order as the with
+	 * {@link #setModel(ListModel)} set model.
+	 * 
+	 * @param index
+	 *            the index.
+	 * 
+	 * @return the {@link JButton} with the index.
+	 * 
+	 * @throws IndexOutOfBoundsException
+	 *             if the index is out of range.
+	 */
+	public JButton getButton(int index) {
+		return buttons.get(index);
+	}
+
 }

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-corefields. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.fields.buttongroup;
+package com.anrisoftware.prefdialog.fields.colorbutton;
 
 import static com.google.inject.multibindings.Multibinder.newSetBinder;
 
@@ -25,39 +25,18 @@ import com.google.inject.AbstractModule;
 import com.google.inject.multibindings.Multibinder;
 
 /**
- * Binds the button group field plugin.
+ * Binds the color button field plug-in.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 2.2
  */
-public class ButtonGroupPluginModule extends AbstractModule {
-
-	/**
-	 * The name postfix of the action button. Each button in the group will have
-	 * the name {@code "name-N-button"}, with {code name} the name of the field
-	 * and {code N} the index of the button.
-	 */
-	public static final String BUTTON_NAME = "button";
-
-	/**
-	 * The name postfix of the buttons row container. Each action button will be
-	 * inside this container. The name will be {@code "name-buttonsRow"}, with
-	 * {code name} the name of the field.
-	 */
-	public static final String BUTTONS_ROW_NAME = "buttonsRow";
-
-	/**
-	 * The name postfix of the buttons row alignment container. The container
-	 * will align the group left, right or middle. The name will be
-	 * {@code "name-buttonsGroupPanel"}, with {code name} the name of the field.
-	 */
-	public static final String BUTTONS_GROUP_PANEL_NAME = "buttonsGroupPanel";
+public class ColorButtonPluginModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
 		Multibinder<FieldPlugin> binder;
 		binder = newSetBinder(binder(), FieldPlugin.class);
-		binder.addBinding().to(ButtonGroupFieldPlugin.class);
+		binder.addBinding().to(ColorButtonFieldPlugin.class);
 	}
 
 }
