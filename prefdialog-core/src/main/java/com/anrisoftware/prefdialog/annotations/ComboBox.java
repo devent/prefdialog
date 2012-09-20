@@ -71,7 +71,9 @@ import javax.swing.ListCellRenderer;
  * private String someField;
  * </pre>
  * 
- * Sets the field with an instance of the custom renderer:
+ * Sets the field with an instance of the custom renderer. If no instance is
+ * set, the renderer must have a public standard constructor available for
+ * instantiation. The new instance is set in the parent object.
  * 
  * <pre>
  * &#064;FieldComponent

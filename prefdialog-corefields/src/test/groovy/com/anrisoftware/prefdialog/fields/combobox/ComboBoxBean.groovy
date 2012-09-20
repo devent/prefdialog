@@ -100,6 +100,6 @@ class ComboBoxBean {
 	@ComboBox(elements = "listElements", renderer = "rendererFieldNull")
 	String customRendererFieldNull
 
-	ListCellRenderer rendererFieldNull
+	CustomComboBoxRenderer rendererFieldNull
 }
 

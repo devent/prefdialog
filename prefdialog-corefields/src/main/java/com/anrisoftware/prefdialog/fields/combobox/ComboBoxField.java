@@ -118,8 +118,18 @@ public class ComboBoxField extends AbstractTitleField<JComboBox, Container> {
 	}
 
 	private ListCellRenderer createRendererFromField(String fieldName) {
-		// TODO Auto-generated method stub
-		return null;
+		Object parent = getParentObject();
+		Field field = getBeanAccess().getField(fieldName, parent);
+		Class<? extends ListCellRenderer> type = getComboBoxRendererType(field);
+		ListCellRenderer renderer = getBeanFactory().createBean(type);
+		getBeanAccess().setValue(renderer, field, parent);
+		return renderer;
+	}
+
+	@SuppressWarnings("unchecked")
+	private Class<? extends ListCellRenderer> getComboBoxRendererType(
+			Field field) {
+		return (Class<? extends ListCellRenderer>) field.getType();
 	}
 
 	private void setupElements() {
