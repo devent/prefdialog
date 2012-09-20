@@ -28,6 +28,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.ListCellRenderer;
 import javax.swing.MutableComboBoxModel;
 
 import com.anrisoftware.prefdialog.annotations.ComboBox;
@@ -42,6 +43,8 @@ import com.google.inject.assistedinject.Assisted;
  */
 @SuppressWarnings("rawtypes")
 public class ComboBoxField extends AbstractTitleField<JComboBox, Container> {
+
+	private static final String RENDERER_ELEMENT = "renderer";
 
 	private static final String MODEL_ELEMENT = "model";
 
@@ -65,6 +68,7 @@ public class ComboBoxField extends AbstractTitleField<JComboBox, Container> {
 	@Override
 	protected void afterName() {
 		setupModel();
+		setupRenderer();
 		setupElements();
 		super.afterName();
 	}
@@ -98,6 +102,26 @@ public class ComboBoxField extends AbstractTitleField<JComboBox, Container> {
 		return (Class<? extends ComboBoxModel>) field.getType();
 	}
 
+	private void setupRenderer() {
+		String fieldName = getAnnotationAccess().getValue(ANNOTATION_CLASS,
+				getField(), RENDERER_ELEMENT);
+		if (!isEmpty(fieldName)) {
+			setRendererFromField(fieldName);
+		}
+	}
+
+	private void setRendererFromField(String fieldName) {
+		Object parent = getParentObject();
+		ListCellRenderer value = getBeanAccess().getValue(fieldName, parent);
+		value = value == null ? createRendererFromField(fieldName) : value;
+		setRenderer(value);
+	}
+
+	private ListCellRenderer createRendererFromField(String fieldName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	private void setupElements() {
 		String elementsFieldName = getAnnotationAccess().getValue(
 				ANNOTATION_CLASS, getField(), ELEMENTS_ELEMENT);
@@ -120,6 +144,9 @@ public class ComboBoxField extends AbstractTitleField<JComboBox, Container> {
 	 * 
 	 * @param model
 	 *            the {@link ComboBoxModel}.
+	 * 
+	 * @throws NullPointerException
+	 *             if the specified model is {@code null}.
 	 */
 	@SuppressWarnings("unchecked")
 	public void setModel(ComboBoxModel model) {
@@ -135,6 +162,31 @@ public class ComboBoxField extends AbstractTitleField<JComboBox, Container> {
 	 */
 	public ComboBoxModel getModel() {
 		return getComponent().getModel();
+	}
+
+	/**
+	 * Sets the specified renderer for the combo box field.
+	 * 
+	 * @param model
+	 *            the {@link ListCellRenderer}.
+	 * 
+	 * @throws NullPointerException
+	 *             if the specified renderer is {@code null}.
+	 */
+	@SuppressWarnings("unchecked")
+	public void setRenderer(ListCellRenderer renderer) {
+		log.checkRenderer(this, renderer);
+		getComponent().setRenderer(renderer);
+		log.rendererSet(this, renderer);
+	}
+
+	/**
+	 * Returns the renderer of the combo box field.
+	 * 
+	 * @return the {@link ListCellRenderer}.
+	 */
+	public ListCellRenderer getRenderer() {
+		return getComponent().getRenderer();
 	}
 
 	/**

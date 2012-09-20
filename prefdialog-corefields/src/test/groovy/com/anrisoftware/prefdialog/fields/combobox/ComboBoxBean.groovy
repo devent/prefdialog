@@ -19,6 +19,7 @@
 package com.anrisoftware.prefdialog.fields.combobox
 
 import javax.swing.ComboBoxModel
+import javax.swing.ListCellRenderer
 
 import org.apache.commons.lang3.reflect.FieldUtils
 
@@ -53,6 +54,14 @@ class ComboBoxBean {
 
 	static final CUSTOM_MODEL_FIELD_NULL_FIELD = FieldUtils.getField(ComboBoxBean, CUSTOM_MODEL_FIELD_NULL, true)
 
+	static final CUSTOM_RENDERER_FIELD = "customRendererField"
+
+	static final CUSTOM_RENDERER_FIELD_FIELD = FieldUtils.getField(ComboBoxBean, CUSTOM_RENDERER_FIELD, true)
+
+	static final CUSTOM_RENDERER_FIELD_NULL = "customRendererFieldNull"
+
+	static final CUSTOM_RENDERER_FIELD_NULL_FIELD = FieldUtils.getField(ComboBoxBean, CUSTOM_RENDERER_FIELD_NULL, true)
+
 	@FieldComponent
 	@ComboBox(elements = "arrayElements")
 	String arrayElementsBoxNullValue
@@ -80,5 +89,17 @@ class ComboBoxBean {
 	String customModelFieldNull
 
 	CustomComboBoxModel modelFieldNull
+
+	@FieldComponent
+	@ComboBox(elements = "listElements", renderer = "rendererField")
+	String customRendererField
+
+	ListCellRenderer rendererField = new CustomComboBoxRenderer()
+
+	@FieldComponent
+	@ComboBox(elements = "listElements", renderer = "rendererFieldNull")
+	String customRendererFieldNull
+
+	ListCellRenderer rendererFieldNull
 }
 

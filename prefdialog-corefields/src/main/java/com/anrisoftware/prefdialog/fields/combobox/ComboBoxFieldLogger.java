@@ -22,6 +22,7 @@ import static java.lang.String.format;
 import static org.apache.commons.lang3.Validate.notNull;
 
 import javax.swing.ComboBoxModel;
+import javax.swing.ListCellRenderer;
 
 import com.anrisoftware.globalpom.log.AbstractLogger;
 
@@ -69,5 +70,17 @@ class ComboBoxFieldLogger extends AbstractLogger {
 	void elementsSet(ComboBoxField field, Object elements) {
 		log.trace("Set elements {} for the combo box field {}.", elements,
 				field);
+	}
+
+	void checkRenderer(ComboBoxField field,
+			@SuppressWarnings("rawtypes") ListCellRenderer renderer) {
+		notNull(renderer,
+				"The renderer cannot be null for the combo box field %s.",
+				field);
+	}
+
+	void rendererSet(ComboBoxField field,
+			@SuppressWarnings("rawtypes") ListCellRenderer renderer) {
+		log.trace("Set renderer {} to the combo box field {}.", renderer, field);
 	}
 }
