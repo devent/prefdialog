@@ -33,21 +33,21 @@ import com.anrisoftware.prefdialog.annotations.FieldComponent
  */
 class ComboBoxBean {
 
-	static final ARRAY_ELEMENTS_BOX_NULL_VALUE = "arrayElementsBoxNullValue"
+	static final ARRAY_ELEMENTS = "arrayElementsBoxNullValue"
 
-	static final ARRAY_ELEMENTS_BOX_NULL_VALUE_FIELD = FieldUtils.getField(ComboBoxBean, ARRAY_ELEMENTS_BOX_NULL_VALUE, true)
+	static final ARRAY_ELEMENTS_FIELD = FieldUtils.getField(ComboBoxBean, ARRAY_ELEMENTS, true)
 
-	static final ARRAY_ELEMENTS_BOX_VALUE_SECOND = "arrayElementsBoxValueSecond"
+	static final ARRAY_ELEMENTS_SECOND = "arrayElementsBoxValueSecond"
 
-	static final ARRAY_ELEMENTS_BOX_VALUE_SECOND_FIELD = FieldUtils.getField(ComboBoxBean, ARRAY_ELEMENTS_BOX_VALUE_SECOND, true)
+	static final ARRAY_ELEMENTS_SECOND_FIELD = FieldUtils.getField(ComboBoxBean, ARRAY_ELEMENTS_SECOND, true)
 
-	static final LIST_ELEMENTS_BOX_NULL_VALUE = "listElementsBoxNullValue"
+	static final LIST_ELEMENTS = "listElementsBoxNullValue"
 
-	static final LIST_ELEMENTS_BOX_NULL_VALUE_FIELD = FieldUtils.getField(ComboBoxBean, LIST_ELEMENTS_BOX_NULL_VALUE, true)
+	static final LIST_ELEMENTS_FIELD = FieldUtils.getField(ComboBoxBean, LIST_ELEMENTS, true)
 
-	static final CUSTOM_MODEL_FIELD_NULL_VALUE = "customModelFieldNullValue"
+	static final CUSTOM_MODEL_FIELD = "customModelFieldNullValue"
 
-	static final CUSTOM_MODEL_FIELD_NULL_VALUE_FIELD = FieldUtils.getField(ComboBoxBean, CUSTOM_MODEL_FIELD_NULL_VALUE, true)
+	static final CUSTOM_MODEL_FIELD_FIELD = FieldUtils.getField(ComboBoxBean, CUSTOM_MODEL_FIELD, true)
 
 	@FieldComponent
 	@ComboBox(elements = "arrayElements")
