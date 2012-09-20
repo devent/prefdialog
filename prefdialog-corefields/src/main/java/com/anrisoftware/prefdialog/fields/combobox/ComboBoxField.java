@@ -18,6 +18,8 @@
  */
 package com.anrisoftware.prefdialog.fields.combobox;
 
+import static org.apache.commons.lang3.StringUtils.isEmpty;
+
 import java.awt.Container;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -27,8 +29,6 @@ import javax.inject.Inject;
 import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.MutableComboBoxModel;
-
-import org.apache.commons.lang3.StringUtils;
 
 import com.anrisoftware.prefdialog.annotations.ComboBox;
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
@@ -72,7 +72,7 @@ public class ComboBoxField extends AbstractTitleField<JComboBox, Container> {
 	private void setupModel() {
 		String modelFieldName = getAnnotationAccess().getValue(
 				ANNOTATION_CLASS, getField(), MODEL_ELEMENT);
-		if (StringUtils.isEmpty(modelFieldName)) {
+		if (isEmpty(modelFieldName)) {
 			return;
 		}
 		Object parent = getParentObject();
@@ -83,6 +83,9 @@ public class ComboBoxField extends AbstractTitleField<JComboBox, Container> {
 	private void setupElements() {
 		String elementsFieldName = getAnnotationAccess().getValue(
 				ANNOTATION_CLASS, getField(), ELEMENTS_ELEMENT);
+		if (isEmpty(elementsFieldName)) {
+			return;
+		}
 		Object parent = getParentObject();
 		Object value = getBeanAccess().getValue(elementsFieldName, parent);
 		setElements(value);
