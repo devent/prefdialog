@@ -31,6 +31,24 @@ import com.anrisoftware.prefdialog.reflection.exceptions.ReflectionError;
 public interface BeanAccess {
 
 	/**
+	 * Returns the field with the specified name in the parent object.
+	 * 
+	 * @param fieldName
+	 *            the field name.
+	 * 
+	 * 
+	 * @param parentObject
+	 *            the parent {@link Object}.
+	 * 
+	 * @return the {@link Field}.
+	 * 
+	 * @throws NullPointerException
+	 *             if the specified field name or parent object is {@code null}.
+	 * 
+	 */
+	Field getField(String fieldName, Object parentObject);
+
+	/**
 	 * Return the value from a field with the specified name.
 	 * <p>
 	 * If a getter for this field is defined it tries to use the getter first. A
@@ -98,4 +116,5 @@ public interface BeanAccess {
 	 * @param parentObject
 	 */
 	void setValue(Object value, Field field, Object parentObject);
+
 }

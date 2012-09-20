@@ -1,22 +1,24 @@
 /*
  * Copyright 2012 Erwin Müller <erwin.mueller@deventm.org>
- * 
+ *
  * This file is part of prefdialog-reflection.
- * 
+ *
  * prefdialog-reflection is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- * 
+ *
  * prefdialog-reflection is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-reflection. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.anrisoftware.prefdialog.reflection.beans;
+
+import static org.apache.commons.lang3.Validate.notNull;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -74,6 +76,14 @@ class BeanAccessImplLogger extends AbstractLogger {
 				.addContextValue("name", name);
 		log.error(ex.getLocalizedMessage());
 		return ex;
+	}
+
+	void checkParentObject(Object parentObject) {
+		notNull(parentObject, "The specified parent object cannot be null.");
+	}
+
+	void checkField(Field field) {
+		notNull(field, "The specified field cannot be null.");
 	}
 
 }

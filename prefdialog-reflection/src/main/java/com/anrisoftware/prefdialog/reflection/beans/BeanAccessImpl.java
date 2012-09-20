@@ -18,8 +18,6 @@
  */
 package com.anrisoftware.prefdialog.reflection.beans;
 
-import static org.apache.commons.lang3.Validate.notNull;
-import static org.apache.commons.lang3.reflect.FieldUtils.getField;
 import static org.apache.commons.lang3.reflect.MethodUtils.getAccessibleMethod;
 
 import java.lang.reflect.Field;
@@ -38,12 +36,6 @@ import org.apache.commons.lang3.reflect.FieldUtils;
  */
 class BeanAccessImpl implements BeanAccess {
 
-	private static final String PARENT_OBJECT_NULL = "The specified parent object cannot be null.";
-
-	private static final String FIELD_NULL = "The specified field cannot be null.";
-
-	private static final String FIELD_NAME_NULL = "The field name cannot be null.";
-
 	private final BeanAccessImplLogger log;
 
 	/**
@@ -58,17 +50,21 @@ class BeanAccessImpl implements BeanAccess {
 	}
 
 	@Override
+	public Field getField(String fieldName, Object parentObject) {
+		log.checkParentObject(parentObject);
+		return FieldUtils.getField(parentObject.getClass(), fieldName, true);
+	}
+
+	@Override
 	public <T> T getValue(String fieldName, Object parentObject) {
-		notNull(fieldName, FIELD_NAME_NULL);
-		notNull(parentObject, PARENT_OBJECT_NULL);
-		Field field = getField(parentObject.getClass(), fieldName, true);
+		Field field = getField(fieldName, parentObject);
 		return getValue(field, parentObject);
 	}
 
 	@Override
 	public <T> T getValue(Field field, Object parentObject) {
-		notNull(field, FIELD_NULL);
-		notNull(parentObject, PARENT_OBJECT_NULL);
+		log.checkField(field);
+		log.checkParentObject(parentObject);
 		T value = getValueFromGetter(field, parentObject);
 		if (value == null) {
 			value = getValueFromField(field, parentObject);
@@ -118,6 +114,8 @@ class BeanAccessImpl implements BeanAccess {
 
 	@Override
 	public void setValue(Object value, Field field, Object parentObject) {
+		log.checkField(field);
+		log.checkParentObject(parentObject);
 		boolean set = setValueWithSetter(value, field, parentObject);
 		if (!set) {
 			setValueFromField(value, field, parentObject);
