@@ -59,27 +59,48 @@ class ComboBoxTest extends FieldTestUtils {
 	@Test
 	void "array elements with null value"() {
 		factory.create(container, bean, ARRAY_ELEMENTS_BOX_NULL_VALUE_FIELD).createField()
+		def field
 		beginPanelFrame title, container, {
+			field = fixture.comboBox(ARRAY_ELEMENTS_BOX_NULL_VALUE)
 		}, {
-			fixture.comboBox(ARRAY_ELEMENTS_BOX_NULL_VALUE).requireSelection("One")
+			field.requireSelection("One")
+			field.selectItem(1)
+			field.requireSelection("Two")
+			field.selectItem(2)
+			field.requireSelection("Three")
 		}
 	}
 
 	@Test
 	void "array elements with second value selected"() {
 		factory.create(container, bean, ARRAY_ELEMENTS_BOX_VALUE_SECOND_FIELD).createField()
+		def field
 		beginPanelFrame title, container, {
+			field = fixture.comboBox(ARRAY_ELEMENTS_BOX_VALUE_SECOND)
 		}, {
-			fixture.comboBox(ARRAY_ELEMENTS_BOX_VALUE_SECOND).requireSelection(1)
+			field.requireSelection("Two")
+			field.selectItem(0)
+			field.requireSelection("One")
+			field.selectItem(2)
+			field.requireSelection("Three")
 		}
 	}
 
 	@Test
 	void "list elements with null value"() {
 		factory.create(container, bean, LIST_ELEMENTS_BOX_NULL_VALUE_FIELD).createField()
+		def field
 		beginPanelFrame title, container, {
+			field = fixture.comboBox(LIST_ELEMENTS_BOX_NULL_VALUE)
 		}, {
-			fixture.comboBox(LIST_ELEMENTS_BOX_NULL_VALUE).requireSelection("One")
+			field.requireSelection("One")
+			field.selectItem(1)
+			field.requireSelection("Two")
+			field.selectItem(2)
+			field.requireSelection("Three")
+		}
+	}
+
 	@Test
 	void "custom model field"() {
 		factory.create(container, bean, CUSTOM_MODEL_FIELD_NULL_VALUE_FIELD).createField()
