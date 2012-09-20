@@ -18,6 +18,8 @@
  */
 package com.anrisoftware.prefdialog.fields.combobox
 
+import javax.swing.ComboBoxModel
+
 import org.apache.commons.lang3.reflect.FieldUtils
 
 import com.anrisoftware.prefdialog.annotations.ComboBox
@@ -43,6 +45,10 @@ class ComboBoxBean {
 
 	static final LIST_ELEMENTS_BOX_NULL_VALUE_FIELD = FieldUtils.getField(ComboBoxBean, LIST_ELEMENTS_BOX_NULL_VALUE, true)
 
+	static final CUSTOM_MODEL_FIELD_NULL_VALUE = "customModelFieldNullValue"
+
+	static final CUSTOM_MODEL_FIELD_NULL_VALUE_FIELD = FieldUtils.getField(ComboBoxBean, CUSTOM_MODEL_FIELD_NULL_VALUE, true)
+
 	@FieldComponent
 	@ComboBox(elements = "arrayElements")
 	String arrayElementsBoxNullValue
@@ -58,5 +64,11 @@ class ComboBoxBean {
 	String listElementsBoxNullValue
 
 	List listElements = ["One", "Two", "Three"]
+
+	@FieldComponent
+	@ComboBox(model = "modelField")
+	String customModelFieldNullValue
+
+	ComboBoxModel modelField = new CustomComboBoxModel()
 }
 
