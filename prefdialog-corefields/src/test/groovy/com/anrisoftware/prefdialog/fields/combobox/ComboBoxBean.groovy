@@ -49,6 +49,10 @@ class ComboBoxBean {
 
 	static final CUSTOM_MODEL_FIELD_FIELD = FieldUtils.getField(ComboBoxBean, CUSTOM_MODEL_FIELD, true)
 
+	static final CUSTOM_MODEL_FIELD_NULL = "customModelFieldNull"
+
+	static final CUSTOM_MODEL_FIELD_NULL_FIELD = FieldUtils.getField(ComboBoxBean, CUSTOM_MODEL_FIELD_NULL, true)
+
 	@FieldComponent
 	@ComboBox(elements = "arrayElements")
 	String arrayElementsBoxNullValue
@@ -70,5 +74,11 @@ class ComboBoxBean {
 	String customModelFieldNullValue
 
 	ComboBoxModel modelField = new CustomComboBoxModel()
+
+	@FieldComponent
+	@ComboBox(model = "modelFieldNull")
+	String customModelFieldNull
+
+	CustomComboBoxModel modelFieldNull
 }
 

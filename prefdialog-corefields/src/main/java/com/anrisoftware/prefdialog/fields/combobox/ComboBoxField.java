@@ -70,14 +70,30 @@ public class ComboBoxField extends AbstractTitleField<JComboBox, Container> {
 	}
 
 	private void setupModel() {
-		String modelFieldName = getAnnotationAccess().getValue(
-				ANNOTATION_CLASS, getField(), MODEL_ELEMENT);
-		if (isEmpty(modelFieldName)) {
-			return;
+		String fieldName = getAnnotationAccess().getValue(ANNOTATION_CLASS,
+				getField(), MODEL_ELEMENT);
+		if (!isEmpty(fieldName)) {
+			setModelFromField(fieldName);
 		}
+	}
+
+	private void setModelFromField(String fieldName) {
 		Object parent = getParentObject();
-		ComboBoxModel value = getBeanAccess().getValue(modelFieldName, parent);
+		ComboBoxModel value = getBeanAccess().getValue(fieldName, parent);
+		value = value == null ? createModelFromField(fieldName) : value;
 		setModel(value);
+	}
+
+	private ComboBoxModel createModelFromField(String fieldName) {
+		Object parent = getParentObject();
+		Field field = getBeanAccess().getField(fieldName, parent);
+		Class<? extends ComboBoxModel> type = getComboBoxModelType(field);
+		return getBeanFactory().createBean(type);
+	}
+
+	@SuppressWarnings("unchecked")
+	private Class<? extends ComboBoxModel> getComboBoxModelType(Field field) {
+		return (Class<? extends ComboBoxModel>) field.getType();
 	}
 
 	private void setupElements() {

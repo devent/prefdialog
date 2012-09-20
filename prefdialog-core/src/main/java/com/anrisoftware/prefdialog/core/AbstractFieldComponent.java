@@ -315,6 +315,15 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	}
 
 	/**
+	 * Returns the bean factory to create beans.
+	 * 
+	 * @return the {@link BeanFactory}.
+	 */
+	protected BeanFactory getBeanFactory() {
+		return beanFactory;
+	}
+
+	/**
 	 * Returns the field of this component.
 	 * 
 	 * @return the {@link Field}.
