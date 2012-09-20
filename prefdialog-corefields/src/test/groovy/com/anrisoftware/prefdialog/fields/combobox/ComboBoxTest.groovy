@@ -122,6 +122,7 @@ class ComboBoxTest extends FieldTestUtils {
 		def field
 		beginPanelFrame title, container, {
 			field = fixture.comboBox(CUSTOM_MODEL_FIELD_NULL)
+			assert bean.modelFieldNull != null
 		}, {
 			field.requireSelection("Eins")
 			field.selectItem(1)

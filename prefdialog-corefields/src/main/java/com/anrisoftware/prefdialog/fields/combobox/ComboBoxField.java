@@ -88,7 +88,9 @@ public class ComboBoxField extends AbstractTitleField<JComboBox, Container> {
 		Object parent = getParentObject();
 		Field field = getBeanAccess().getField(fieldName, parent);
 		Class<? extends ComboBoxModel> type = getComboBoxModelType(field);
-		return getBeanFactory().createBean(type);
+		ComboBoxModel model = getBeanFactory().createBean(type);
+		getBeanAccess().setValue(model, field, parent);
+		return model;
 	}
 
 	@SuppressWarnings("unchecked")

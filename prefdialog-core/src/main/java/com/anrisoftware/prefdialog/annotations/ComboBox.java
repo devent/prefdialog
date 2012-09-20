@@ -53,7 +53,7 @@ import javax.swing.ListCellRenderer;
  * 
  * Sets the field with an instance of the custom model. If no instance is set,
  * the model must have a public standard constructor available for
- * instantiation.
+ * instantiation. The new instance is set in the parent object.
  * 
  * <pre>
  * &#064;FieldComponent
