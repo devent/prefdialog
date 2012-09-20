@@ -1,18 +1,18 @@
 /*
  * Copyright 2012 Erwin Müller <erwin.mueller@deventm.org>
- * 
+ *
  * This file is part of prefdialog-core.
- * 
+ *
  * prefdialog-core is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
  * Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- * 
+ *
  * prefdialog-core is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-core. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -45,7 +45,9 @@ import javax.swing.ListCellRenderer;
  * &#064;FieldComponent
  * &#064;ComboBox(elements = &quot;someFieldElements&quot;)
  * private String someField;
+ * // as array
  * private String[] someFieldElements = { ... };
+ * // or as list
  * private List&lt;Object&gt; someFieldElements = { ... };
  * </pre>
  * 
@@ -117,6 +119,7 @@ public @interface ComboBox {
 	 * must have the default constructor available for instantiation. Defaults
 	 * to the {@link DefaultComboBoxModel}.
 	 */
+	@SuppressWarnings("rawtypes")
 	Class<? extends ComboBoxModel> modelClass() default DefaultComboBoxModel.class;
 
 	/**
@@ -124,5 +127,6 @@ public @interface ComboBox {
 	 * renderer must have the default constructor available for instantiation.
 	 * Defaults to the {@link DefaultListCellRenderer}.
 	 */
+	@SuppressWarnings("rawtypes")
 	Class<? extends ListCellRenderer> rendererClass() default DefaultListCellRenderer.class;
 }

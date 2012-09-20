@@ -1,18 +1,18 @@
 /*
  * Copyright 2012 Erwin Müller <erwin.mueller@deventm.org>
- * 
+ *
  * This file is part of prefdialog-core.
- * 
+ *
  * prefdialog-core is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
  * Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- * 
+ *
  * prefdialog-core is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-core. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -160,6 +160,7 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	public AbstractFieldComponent<ComponentType> createField() {
 		setupLocale();
 		setupName();
+		afterName();
 		setupTitle();
 		setupShowTitle();
 		setupValue();
@@ -170,6 +171,12 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 		setupIconSize();
 		setupIcon();
 		return this;
+	}
+
+	/**
+	 * Create the field after the name was set.
+	 */
+	protected void afterName() {
 	}
 
 	private void setupIcon() {
@@ -288,6 +295,15 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	}
 
 	/**
+	 * Returns the bean access to access the fields of a object.
+	 * 
+	 * @return the {@link BeanAccess}.
+	 */
+	protected BeanAccess getBeanAccess() {
+		return beanAccess;
+	}
+
+	/**
 	 * Injects the bean factory to create beans.
 	 * 
 	 * @param beanFactory
@@ -374,6 +390,15 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 			title = titleResource;
 			log.titleResourceMissing(this, titleResource);
 		}
+	}
+
+	/**
+	 * Returns the parent object of this field.
+	 * 
+	 * @return the parent {@link Object}.
+	 */
+	protected Object getParentObject() {
+		return parentObject;
 	}
 
 	@Override

@@ -1,23 +1,25 @@
 /*
  * Copyright 2012 Erwin Müller <erwin.mueller@deventm.org>
- * 
+ *
  * This file is part of prefdialog-reflection.
- * 
+ *
  * prefdialog-reflection is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- * 
+ *
  * prefdialog-reflection is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-reflection. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.anrisoftware.prefdialog.reflection.beans;
 
+import static org.apache.commons.lang3.Validate.notNull;
+import static org.apache.commons.lang3.reflect.FieldUtils.getField;
 import static org.apache.commons.lang3.reflect.MethodUtils.getAccessibleMethod;
 
 import java.lang.reflect.Field;
@@ -36,6 +38,12 @@ import org.apache.commons.lang3.reflect.FieldUtils;
  */
 class BeanAccessImpl implements BeanAccess {
 
+	private static final String PARENT_OBJECT_NULL = "The specified parent object cannot be null.";
+
+	private static final String FIELD_NULL = "The specified field cannot be null.";
+
+	private static final String FIELD_NAME_NULL = "The field name cannot be null.";
+
 	private final BeanAccessImplLogger log;
 
 	/**
@@ -50,7 +58,17 @@ class BeanAccessImpl implements BeanAccess {
 	}
 
 	@Override
+	public <T> T getValue(String fieldName, Object parentObject) {
+		notNull(fieldName, FIELD_NAME_NULL);
+		notNull(parentObject, PARENT_OBJECT_NULL);
+		Field field = getField(parentObject.getClass(), fieldName, true);
+		return getValue(field, parentObject);
+	}
+
+	@Override
 	public <T> T getValue(Field field, Object parentObject) {
+		notNull(field, FIELD_NULL);
+		notNull(parentObject, PARENT_OBJECT_NULL);
 		T value = getValueFromGetter(field, parentObject);
 		if (value == null) {
 			value = getValueFromField(field, parentObject);
