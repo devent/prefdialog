@@ -51,7 +51,9 @@ import javax.swing.ListCellRenderer;
  * private List&lt;Object&gt; someFieldElements = { ... };
  * </pre>
  * 
- * Sets the field with an instance of the custom model:
+ * Sets the field with an instance of the custom model. If no instance is set,
+ * the model must have a public standard constructor available for
+ * instantiation.
  * 
  * <pre>
  * &#064;FieldComponent
