@@ -28,6 +28,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComboBox;
 import javax.swing.ListCellRenderer;
 import javax.swing.MutableComboBoxModel;
@@ -44,6 +45,8 @@ import com.google.inject.assistedinject.Assisted;
  */
 @SuppressWarnings("rawtypes")
 public class ComboBoxField extends AbstractTitleField<JComboBox, Container> {
+
+	private static final String RENDERER_CLASS_ELEMENT = "rendererClass";
 
 	private static final String MODEL_CLASS_ELEMENT = "modelClass";
 
@@ -73,8 +76,22 @@ public class ComboBoxField extends AbstractTitleField<JComboBox, Container> {
 		setupModel();
 		setupModelClass();
 		setupRenderer();
+		setupRendererClass();
 		setupElements();
 		super.afterName();
+	}
+
+	private void setupRendererClass() {
+		Class<? extends ListCellRenderer> type = getAnnotationAccess()
+				.getValue(ANNOTATION_CLASS, getField(), RENDERER_CLASS_ELEMENT);
+		if (type != DefaultListCellRenderer.class) {
+			setRendererFromClass(type);
+		}
+	}
+
+	private void setRendererFromClass(Class<? extends ListCellRenderer> type) {
+		ListCellRenderer renderer = getBeanFactory().createBean(type);
+		setRenderer(renderer);
 	}
 
 	private void setupModelClass() {

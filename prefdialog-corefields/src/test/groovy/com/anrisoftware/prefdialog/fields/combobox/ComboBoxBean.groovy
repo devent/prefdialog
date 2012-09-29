@@ -66,6 +66,10 @@ class ComboBoxBean {
 
 	static final CUSTOM_MODEL_CLASS_FIELD = FieldUtils.getField(ComboBoxBean, CUSTOM_MODEL_CLASS, true)
 
+	static final CUSTOM_RENDERER_CLASS = "customRendererClass"
+
+	static final CUSTOM_RENDERER_CLASS_FIELD = FieldUtils.getField(ComboBoxBean, CUSTOM_RENDERER_CLASS, true)
+
 	@FieldComponent
 	@ComboBox(elements = "arrayElements")
 	String arrayElementsBoxNullValue
@@ -109,5 +113,9 @@ class ComboBoxBean {
 	@FieldComponent
 	@ComboBox(modelClass = CustomComboBoxModel.class)
 	String customModelClass
+
+	@FieldComponent
+	@ComboBox(elements = "listElements", rendererClass = CustomComboBoxRenderer.class)
+	String customRendererClass
 }
 
