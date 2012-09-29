@@ -70,6 +70,10 @@ class ComboBoxBean {
 
 	static final CUSTOM_RENDERER_CLASS_FIELD = FieldUtils.getField(ComboBoxBean, CUSTOM_RENDERER_CLASS, true)
 
+	static final EDITABLE = "editable"
+
+	static final EDITABLE_FIELD = FieldUtils.getField(ComboBoxBean, EDITABLE, true)
+
 	@FieldComponent
 	@ComboBox(elements = "arrayElements")
 	String arrayElementsBoxNullValue
@@ -117,5 +121,9 @@ class ComboBoxBean {
 	@FieldComponent
 	@ComboBox(elements = "listElements", rendererClass = CustomComboBoxRenderer.class)
 	String customRendererClass
+
+	@FieldComponent
+	@ComboBox(model = "modelField", editable = true)
+	String editable
 }
 

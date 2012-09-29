@@ -192,4 +192,14 @@ class ComboBoxTest extends FieldTestUtils {
 			field.requireSelection("THREE")
 		}
 	}
+
+	@Test
+	void "editable combo box"() {
+		factory.create(container, bean, EDITABLE_FIELD).createField()
+		def field
+		def text = "Text"
+		beginPanelFrame title, container, {
+			field = fixture.comboBox(EDITABLE)
+		}, { field.enterText text }
+	}
 }

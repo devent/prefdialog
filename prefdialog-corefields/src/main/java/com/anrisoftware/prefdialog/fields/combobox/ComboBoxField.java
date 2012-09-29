@@ -46,6 +46,8 @@ import com.google.inject.assistedinject.Assisted;
 @SuppressWarnings("rawtypes")
 public class ComboBoxField extends AbstractTitleField<JComboBox, Container> {
 
+	private static final String EDITABLE_ELEMENT = "editable";
+
 	private static final String RENDERER_CLASS_ELEMENT = "rendererClass";
 
 	private static final String MODEL_CLASS_ELEMENT = "modelClass";
@@ -78,7 +80,14 @@ public class ComboBoxField extends AbstractTitleField<JComboBox, Container> {
 		setupRenderer();
 		setupRendererClass();
 		setupElements();
+		setupEditable();
 		super.afterName();
+	}
+
+	private void setupEditable() {
+		boolean editable = getAnnotationAccess().getValue(ANNOTATION_CLASS,
+				getField(), EDITABLE_ELEMENT);
+		setEditable(editable);
 	}
 
 	private void setupRendererClass() {
@@ -307,4 +316,9 @@ public class ComboBoxField extends AbstractTitleField<JComboBox, Container> {
 		}
 		log.elementsSet(this, newElements);
 	}
+
+	public void setEditable(boolean editable) {
+		getComponent().setEditable(editable);
+	}
+
 }
