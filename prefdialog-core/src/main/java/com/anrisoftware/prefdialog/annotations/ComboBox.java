@@ -91,6 +91,15 @@ import javax.swing.ListCellRenderer;
  * private String someField;
  * </pre>
  * 
+ * Make the combo box editable.
+ * 
+ * <pre>
+ * &#064;FieldComponent
+ * &#064;ComboBox(model = &quot;customModel&quot;, editable = true)
+ * private String someField;
+ * private ComboBoxModel customModel = new CustomComboBoxModel();
+ * </pre>
+ * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
  */
@@ -105,6 +114,12 @@ public @interface ComboBox {
 	 * set.
 	 */
 	String elements() default "";
+
+	/**
+	 * If the field should be editable. Set to {@code true} if the combo box
+	 * should be editable or {@code false} if not. Defaults to {@code false}.
+	 */
+	boolean editable() default false;
 
 	/**
 	 * The name of the field name to use for the custom {@link ComboBoxModel}.
