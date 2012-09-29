@@ -162,4 +162,19 @@ class ComboBoxTest extends FieldTestUtils {
 			field.requireSelection("THREE")
 		}
 	}
+
+	@Test
+	void "custom model class"() {
+		factory.create(container, bean, CUSTOM_MODEL_CLASS_FIELD).createField()
+		def field
+		beginPanelFrame title, container, {
+			field = fixture.comboBox(CUSTOM_MODEL_CLASS)
+		}, {
+			field.requireSelection("Eins")
+			field.selectItem(1)
+			field.requireSelection("Zwei")
+			field.selectItem(2)
+			field.requireSelection("Drei")
+		}
+	}
 }
