@@ -1,18 +1,18 @@
 /*
  * Copyright 2012 Erwin Müller <erwin.mueller@deventm.org>
- * 
+ *
  * This file is part of prefdialog-core.
- * 
+ *
  * prefdialog-core is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
  * Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- * 
+ *
  * prefdialog-core is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-core. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -42,14 +42,23 @@ import com.anrisoftware.resources.api.Texts;
 public interface FieldComponent<ComponentType extends Component> {
 
 	/**
-	 * Sets the properties of the field from the annotation element values.
+	 * Sets the properties of the field from the annotation element values. The
+	 * method will allow fluent-api like syntax:
+	 * 
+	 * <pre>
+	 * fieldComponent = fieldComponent.createField()
+	 * </pre>
 	 * 
 	 * @return this {@link FieldComponent}.
 	 */
 	FieldComponent<ComponentType> createField();
 
 	/**
-	 * Sets the texts resource.
+	 * Sets the texts resource. The method will allow fluent-api like syntax:
+	 * 
+	 * <pre>
+	 * fieldComponent = fieldComponent.withTextsResource(texts).createField()
+	 * </pre>
 	 * 
 	 * @param texts
 	 *            the {@link Texts} resource.
@@ -74,7 +83,11 @@ public interface FieldComponent<ComponentType extends Component> {
 	Texts getTexts();
 
 	/**
-	 * Sets the images resource.
+	 * Sets the images resource. The method will allow fluent-api like syntax:
+	 * 
+	 * <pre>
+	 * fieldComponent = fieldComponent.withImagesResource(images).createField()
+	 * </pre>
 	 * 
 	 * @param images
 	 *            the {@link Images} resources.
