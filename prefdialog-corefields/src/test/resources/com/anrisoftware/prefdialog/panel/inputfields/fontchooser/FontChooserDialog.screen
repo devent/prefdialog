@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore" theme="clean">
+  <widgets xsi:type="model:Window" id="1" x="40" y="24" width="457" height="313" text="Font Chooser" measuredWidth="457" measuredHeight="313"/>
+  <widgets xsi:type="model:Label" id="2" x="51" y="56" text="+N+ ame:" measuredWidth="49" measuredHeight="22">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="3" x="195" y="56" text="+S+ tyle:" measuredWidth="43" measuredHeight="22">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="4" x="340" y="56" text="S +i+ ze:" measuredWidth="41" measuredHeight="22">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:List" id="5" x="50" y="98" width="135" height="127" text="Serif&#xA;Sans Serif&#xA;|Arial&#xA;DejaVu" measuredWidth="135" measuredHeight="127">
+    <font/>
+    <items x="0" y="2" width="135" height="20" text="Serif"/>
+    <items x="0" y="22" width="135" height="20" text="Sans Serif"/>
+    <items x="0" y="42" width="135" height="20" text="|Arial"/>
+    <items x="0" y="62" width="135" height="20" text="DejaVu"/>
+  </widgets>
+  <widgets xsi:type="model:TextField" id="6" x="50" y="77" width="135" text="Text field" measuredWidth="135" measuredHeight="22">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:List" id="8" x="195" y="98" width="134" height="127" text="|Bold&#xA;Italic&#xA;Normal" measuredWidth="134" measuredHeight="127">
+    <font/>
+    <items x="0" y="2" width="134" height="20" text="|Bold"/>
+    <items x="0" y="22" width="134" height="20" text="Italic"/>
+    <items x="0" y="42" width="134" height="20" text="Normal"/>
+  </widgets>
+  <widgets xsi:type="model:TextField" id="9" x="195" y="77" width="134" text="Text field" measuredWidth="134" measuredHeight="22">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:List" id="11" x="340" y="98" width="141" height="127" text="14&#xA;|16&#xA;18&#xA;20" measuredWidth="141" measuredHeight="127">
+    <font/>
+    <items x="0" y="2" width="141" height="20" text="14"/>
+    <items x="0" y="22" width="141" height="20" text="|16"/>
+    <items x="0" y="42" width="141" height="20" text="18"/>
+    <items x="0" y="62" width="141" height="20" text="20"/>
+  </widgets>
+  <widgets xsi:type="model:TextField" id="12" x="340" y="77" width="141" text="Text field" measuredWidth="141" measuredHeight="22">
+    <font/>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>
