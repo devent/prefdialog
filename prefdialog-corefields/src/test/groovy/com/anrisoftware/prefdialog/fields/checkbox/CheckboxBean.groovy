@@ -1,18 +1,18 @@
 /*
  * Copyright 2012 Erwin Müller <erwin.mueller@deventm.org>
- * 
+ *
  * This file is part of prefdialog-corefields.
- * 
+ *
  * prefdialog-corefields is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- * 
+ *
  * prefdialog-corefields is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-corefields. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -25,58 +25,58 @@ import com.anrisoftware.prefdialog.annotations.FieldComponent
 
 /**
  * Bean with check-box fields.
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 2.2
  */
 class CheckboxBean {
 
-	static final CHECKBOX_NULL_VALUE = "checkboxNullValue"
+	static final NULL_VALUE = "nullValue"
 
-	static final CHECKBOX_NULL_VALUE_FIELD = FieldUtils.getField(CheckboxBean, CHECKBOX_NULL_VALUE, true)
+	static final NULL_VALUE_FIELD = FieldUtils.getField(CheckboxBean, NULL_VALUE, true)
 
-	static final CHECKBOX_NO_TEXT = "checkboxNoText"
+	static final NO_TEXT = "noText"
 
-	static final CHECKBOX_NO_TEXT_FIELD = FieldUtils.getField(CheckboxBean, CHECKBOX_NO_TEXT, true)
+	static final NO_TEXT_FIELD = FieldUtils.getField(CheckboxBean, NO_TEXT, true)
 
-	static final CHECKBOX_WITH_TEXT = "checkboxWithText"
+	static final WITH_TEXT = "withText"
 
-	static final CHECKBOX_WITH_TEXT_FIELD = FieldUtils.getField(CheckboxBean, CHECKBOX_WITH_TEXT, true)
+	static final WITH_TEXT_FIELD = FieldUtils.getField(CheckboxBean, WITH_TEXT, true)
 
-	static final CHECKBOX_WITH_TEXT_RESOURCE = "checkboxWithTextResource"
+	static final WITH_TEXT_RESOURCE = "withTextResource"
 
-	static final CHECKBOX_WITH_TEXT_RESOURCE_FIELD = FieldUtils.getField(CheckboxBean, CHECKBOX_WITH_TEXT_RESOURCE, true)
+	static final WITH_TEXT_RESOURCE_FIELD = FieldUtils.getField(CheckboxBean, WITH_TEXT_RESOURCE, true)
 
-	static final CHECKBOX_NOW_SHOW_TEXT = "checkboxNowShowText"
+	static final NOT_SHOW_TEXT = "notShowText"
 
-	static final CHECKBOX_NOW_SHOW_TEXT_FIELD = FieldUtils.getField(CheckboxBean, CHECKBOX_NOW_SHOW_TEXT, true)
+	static final NOT_SHOW_TEXT_FIELD = FieldUtils.getField(CheckboxBean, NOT_SHOW_TEXT, true)
 
-	static final CHECKBOX_READ_ONLY = "checkboxReadOnly"
+	static final READ_ONLY = "readOnly"
 
-	static final CHECKBOX_READ_ONLY_FIELD = FieldUtils.getField(CheckboxBean, CHECKBOX_READ_ONLY, true)
-
-	@FieldComponent
-	@Checkbox
-	Boolean checkboxNullValue
+	static final READ_ONLY_FIELD = FieldUtils.getField(CheckboxBean, READ_ONLY, true)
 
 	@FieldComponent
 	@Checkbox
-	boolean checkboxNoText
+	Boolean nullValue
+
+	@FieldComponent
+	@Checkbox
+	boolean noText
 
 	@FieldComponent
 	@Checkbox(text = "Checkbox Text")
-	boolean checkboxWithText
+	boolean withText
 
 	@FieldComponent
 	@Checkbox(text = "checkbox_with_text_resource")
-	boolean checkboxWithTextResource
+	boolean withTextResource
 
 	@FieldComponent
 	@Checkbox(showText = false)
-	boolean checkboxNowShowText
+	boolean notShowText
 
 	@FieldComponent(readOnly = true)
 	@Checkbox
-	boolean checkboxReadOnly
+	boolean readOnly
 }
 

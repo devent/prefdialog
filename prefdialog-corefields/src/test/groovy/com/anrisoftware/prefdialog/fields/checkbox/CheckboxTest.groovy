@@ -61,117 +61,110 @@ class CheckboxTest extends FieldTestUtils {
 	@Test
 	void "checkbox null value"() {
 		shouldFailWith(ReflectionError) {
-			factory.create(container, bean, CHECKBOX_NULL_VALUE_FIELD).createField()
+			factory.create(container, bean, NULL_VALUE_FIELD).createField()
 		}
 	}
 
 	@Test
 	void "apply user input"() {
-		def field = factory.create(container, bean, CHECKBOX_NO_TEXT_FIELD).
-						createField()
+		def field = factory.create(container, bean, NO_TEXT_FIELD).createField()
 		def checkBox
 		beginPanelFrame title, container, {
-			checkBox = fixture.checkBox(CHECKBOX_NO_TEXT)
-			assert bean.checkboxNoText == false
+			checkBox = fixture.checkBox(NO_TEXT)
+			assert bean.noText == false
 		}, {
 			checkBox.click()
 			field.applyInput()
-			assert bean.checkboxNoText == true
+			assert bean.noText == true
 		}, {
 			checkBox.click()
 			field.applyInput()
-			assert bean.checkboxNoText == false
+			assert bean.noText == false
 		}
 	}
 
 	@Test
 	void "restore user input"() {
-		def field = factory.create(container, bean, CHECKBOX_NO_TEXT_FIELD).
-						createField()
+		def field = factory.create(container, bean, NO_TEXT_FIELD).createField()
 		def checkBox
 		beginPanelFrame title, container, {
-			checkBox = fixture.checkBox(CHECKBOX_NO_TEXT)
-			assert bean.checkboxNoText == false
+			checkBox = fixture.checkBox(NO_TEXT)
+			assert bean.noText == false
 		}, {
 			checkBox.click()
 			field.restoreInput()
 			checkBox.requireNotSelected()
-			assert bean.checkboxNoText == false
+			assert bean.noText == false
 		}, {
 			checkBox.click()
 			field.restoreInput()
 			checkBox.requireNotSelected()
-			assert bean.checkboxNoText == false
+			assert bean.noText == false
 		}
 	}
 
 	@Test
 	void "checkbox no text"() {
-		factory.create(container, bean, CHECKBOX_NO_TEXT_FIELD).createField()
+		factory.create(container, bean, NO_TEXT_FIELD).createField()
+		def checkBox
 		beginPanelFrame title, container, {
-			assert bean.checkboxNoText == false
-			fixture.checkBox("$CHECKBOX_NO_TEXT").requireText(CHECKBOX_NO_TEXT)
-		}, {
-			fixture.checkBox("$CHECKBOX_NO_TEXT").click()
-			assert bean.checkboxNoText == true
-		}, {
-			fixture.checkBox("$CHECKBOX_NO_TEXT").click()
-			assert bean.checkboxNoText == false
-		}
+			checkBox = fixture.checkBox(NO_TEXT)
+			checkBox.requireText(NO_TEXT)
+		}, { checkBox.click() }, { checkBox.click() }
 	}
 
 	@Test
 	void "checkbox with text"() {
-		factory.create(container, bean, CHECKBOX_WITH_TEXT_FIELD).createField()
+		factory.create(container, bean, WITH_TEXT_FIELD).createField()
+		def checkBox
 		beginPanelFrame title, container, {
-			assert bean.checkboxWithText == false
-			fixture.checkBox("$CHECKBOX_WITH_TEXT").requireText("Checkbox Text")
-		}, {
-			fixture.checkBox("$CHECKBOX_WITH_TEXT").click()
-			assert bean.checkboxWithText == true
-		}, {
-			fixture.checkBox("$CHECKBOX_WITH_TEXT").click()
-			assert bean.checkboxWithText == false
-		}
+			checkBox = fixture.checkBox(WITH_TEXT)
+			checkBox.requireText("Checkbox Text")
+		}, { checkBox.click() }, { checkBox.click() }
 	}
 
 	@Test
 	void "checkbox with text resource"() {
-		def field = factory.create(container, bean, CHECKBOX_WITH_TEXT_RESOURCE_FIELD).
+		def field = factory.create(container, bean, WITH_TEXT_RESOURCE_FIELD).
 						withTextsResource(createTextsResource()).
 						createField()
+		def checkBox
 		beginPanelFrame title, container, {
-			fixture.checkBox("$CHECKBOX_WITH_TEXT_RESOURCE").requireText("Checkbox English")
+			checkBox = fixture.checkBox(WITH_TEXT_RESOURCE)
+			checkBox.requireText("Checkbox English")
 		}, {
 			field.locale = Locale.GERMAN
-			fixture.checkBox("$CHECKBOX_WITH_TEXT_RESOURCE").requireText("Checkbox Deutsch")
+			checkBox.requireText("Checkbox Deutsch")
 		}, {
 			field.locale = Locale.ENGLISH
-			fixture.checkBox("$CHECKBOX_WITH_TEXT_RESOURCE").requireText("Checkbox English")
+			checkBox.requireText("Checkbox English")
 		}
 	}
 
 	@Test
 	void "checkbox not showing text"() {
-		def field = factory.create(container, bean, CHECKBOX_NOW_SHOW_TEXT_FIELD).
+		def field = factory.create(container, bean, NOT_SHOW_TEXT_FIELD).
 						createField()
+		def checkBox
 		beginPanelFrame title, container, {
-			fixture.checkBox("$CHECKBOX_NOW_SHOW_TEXT").requireText("")
+			checkBox = fixture.checkBox(NOT_SHOW_TEXT)
+			checkBox.requireText("")
 		}, {
 			field.showText = true
-			fixture.checkBox("$CHECKBOX_NOW_SHOW_TEXT").requireText("checkboxNowShowText")
+			checkBox.requireText(NOT_SHOW_TEXT)
 		}, {
 			field.showText = false
-			fixture.checkBox("$CHECKBOX_NOW_SHOW_TEXT").requireText("")
+			checkBox.requireText("")
 		}
 	}
 
 	@Test
 	void "checkbox read only"() {
-		factory.create(container, bean, CHECKBOX_READ_ONLY_FIELD).
-						createField()
+		factory.create(container, bean, READ_ONLY_FIELD).createField()
+		def checkBox
 		beginPanelFrame title, container, {
-			fixture.checkBox("$CHECKBOX_READ_ONLY").requireDisabled()
+			checkBox = fixture.checkBox(READ_ONLY)
+			checkBox.requireDisabled()
 		}
 	}
 }
