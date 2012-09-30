@@ -25,6 +25,7 @@ import java.awt.Color;
 import java.awt.Container;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyVetoException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
@@ -56,6 +57,7 @@ public class ColorButtonField extends
 
 	private final ButtonsRowPanel buttonsRowPanel;
 
+	@SuppressWarnings("rawtypes")
 	private final DefaultListModel rowModel;
 
 	private final SelectColorAction selectColorAction;
@@ -82,7 +84,7 @@ public class ColorButtonField extends
 					@Override
 					public void propertyChange(PropertyChangeEvent evt) {
 						if (evt.getPropertyName() == COLOR_PROPERTY) {
-							setValue(evt.getNewValue());
+							setupColorValue((Color) evt.getNewValue());
 						}
 					}
 				});
@@ -105,6 +107,18 @@ public class ColorButtonField extends
 		setHorizontalAlignment(alignment);
 	}
 
+	@Override
+	public void applyInput() throws PropertyVetoException {
+		super.applyInput();
+		setValue(selectColorAction.getColor());
+	}
+
+	@Override
+	public void restoreInput() {
+		super.restoreInput();
+		setValue(getValue());
+	}
+
 	/**
 	 * Sets the color value of this color button.
 	 * 
@@ -115,10 +129,21 @@ public class ColorButtonField extends
 	public void setValue(Object newValue) {
 		super.setValue(newValue);
 		log.checkValueIsColor(this, newValue);
-		setValue((Color) newValue);
+		setupColorValue((Color) newValue);
 	}
 
+	/**
+	 * Sets the color value of this color button.
+	 * 
+	 * @param newColor
+	 *            the {@link Color} value.
+	 */
 	public void setValue(Color newColor) {
+		super.setValue(newColor);
+		setupColorValue(newColor);
+	}
+
+	private void setupColorValue(Color newColor) {
 		selectColorAction.setColor(newColor);
 		colorButton.setBackground(newColor);
 		colorButton.setForeground(textColorContrastYIQ(newColor));

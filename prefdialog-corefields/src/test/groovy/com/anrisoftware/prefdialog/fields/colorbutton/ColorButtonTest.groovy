@@ -20,6 +20,9 @@ package com.anrisoftware.prefdialog.fields.colorbutton
 
 import static com.anrisoftware.prefdialog.fields.buttongroup.ButtonGroupPluginModule.*
 import static com.anrisoftware.prefdialog.fields.colorbutton.ColorButtonBean.*
+import groovy.util.logging.Slf4j
+
+import java.awt.Color
 
 import javax.swing.JPanel
 
@@ -36,6 +39,7 @@ import com.google.inject.Injector
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 2.2
  */
+@Slf4j
 class ColorButtonTest extends FieldTestUtils {
 
 	static final title = "Color Button Test"
@@ -45,6 +49,8 @@ class ColorButtonTest extends FieldTestUtils {
 	ColorButtonBean bean
 
 	JPanel container
+
+	static int dialogNumber = 0
 
 	@Before
 	void createFactory() {
@@ -65,14 +71,56 @@ class ColorButtonTest extends FieldTestUtils {
 	}
 
 	@Test
+	void "apply user input"() {
+		def field = factory.create(container, bean, COLOR_BLACK_FIELD).
+						createField()
+		def button
+		def dialog
+		beginPanelFrame title, container, {
+			button = fixture.button("$COLOR_BLACK-0-$BUTTON_NAME")
+		}, {
+			button.click()
+			dialog = fixture.dialog("dialog${dialogNumber++}")
+			log.info "Choose the color ${Color.WHITE} and close the dialog..."
+			Thread.sleep 10 * 1000
+		}, {
+			field.applyInput()
+			assert bean.colorBlack == Color.WHITE
+		}
+	}
+
+	@Test
+	void "restore user input"() {
+		def field = factory.create(container, bean, COLOR_BLACK_FIELD).
+						createField()
+		def button
+		def dialog
+		beginPanelFrame title, container, {
+			button = fixture.button("$COLOR_BLACK-0-$BUTTON_NAME")
+		}, {
+			button.click()
+			dialog = fixture.dialog("dialog${dialogNumber++}")
+			log.info "Choose any color and close the dialog..."
+			Thread.sleep 10 * 1000
+		}, {
+			field.restoreInput()
+			button.requireText("#000000")
+			assert bean.colorBlack == Color.BLACK
+		}
+	}
+
+	@Test
 	void "black color"() {
 		factory.create(container, bean, COLOR_BLACK_FIELD).createField()
+		def button
+		def dialog
 		beginPanelFrame title, container, {
-			fixture.button("$COLOR_BLACK-0-$BUTTON_NAME").requireText("#000000")
+			button = fixture.button("$COLOR_BLACK-0-$BUTTON_NAME")
+			button.requireText("#000000")
 		}, {
-			fixture.button("$COLOR_BLACK-0-$BUTTON_NAME").click()
-			fixture.dialog("dialog0").close()
-		}
+			button.click()
+			dialog = fixture.dialog("dialog${dialogNumber++}")
+		}, { dialog.close() }
 	}
 
 	@Test
