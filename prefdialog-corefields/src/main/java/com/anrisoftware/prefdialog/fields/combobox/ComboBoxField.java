@@ -21,6 +21,7 @@ package com.anrisoftware.prefdialog.fields.combobox;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 import java.awt.Container;
+import java.beans.PropertyVetoException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.List;
@@ -62,15 +63,14 @@ public class ComboBoxField extends AbstractTitleField<JComboBox, Container> {
 
 	private final ComboBoxFieldLogger log;
 
+	private boolean adjusting;
+
 	@Inject
 	ComboBoxField(ComboBoxFieldLogger logger, @Assisted Container container,
 			@Assisted Object parentObject, @Assisted Field field) {
 		super(new JComboBox(), container, parentObject, field);
 		this.log = logger;
-		setup();
-	}
-
-	private void setup() {
+		this.adjusting = false;
 	}
 
 	@Override
@@ -187,9 +187,26 @@ public class ComboBoxField extends AbstractTitleField<JComboBox, Container> {
 	}
 
 	@Override
+	public void applyInput() throws PropertyVetoException {
+		super.applyInput();
+		Object value = getComponent().getModel().getSelectedItem();
+		adjusting = true;
+		setValue(value);
+		adjusting = false;
+	}
+
+	@Override
+	public void restoreInput() {
+		super.restoreInput();
+		getComponent().setSelectedItem(getValue());
+	}
+
+	@Override
 	public void setValue(Object newValue) {
 		super.setValue(newValue);
-		getComponent().setSelectedItem(newValue);
+		if (!adjusting) {
+			getComponent().setSelectedItem(newValue);
+		}
 	}
 
 	/**

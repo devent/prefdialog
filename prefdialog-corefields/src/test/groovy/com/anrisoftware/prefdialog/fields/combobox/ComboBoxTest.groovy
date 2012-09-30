@@ -21,6 +21,8 @@ package com.anrisoftware.prefdialog.fields.combobox
 import static com.anrisoftware.prefdialog.fields.buttongroup.ButtonGroupPluginModule.*
 import static com.anrisoftware.prefdialog.fields.combobox.ComboBoxBean.*
 
+import java.awt.event.KeyEvent
+
 import javax.swing.JPanel
 
 import org.junit.Before
@@ -58,16 +60,61 @@ class ComboBoxTest extends FieldTestUtils {
 
 	@Test
 	void "array elements with null value"() {
-		factory.create(container, bean, ARRAY_ELEMENTS_FIELD).createField()
-		def field
+		def field = factory.create(container, bean, ARRAY_ELEMENTS_FIELD)
+						.createField()
+		def comboBox
 		beginPanelFrame title, container, {
-			field = fixture.comboBox(ARRAY_ELEMENTS)
+			comboBox = fixture.comboBox(ARRAY_ELEMENTS)
 		}, {
-			field.requireSelection("One")
-			field.selectItem(1)
-			field.requireSelection("Two")
-			field.selectItem(2)
-			field.requireSelection("Three")
+			comboBox.requireSelection("One")
+			comboBox.selectItem(1)
+			comboBox.requireSelection("Two")
+			comboBox.selectItem(2)
+			comboBox.requireSelection("Three")
+		}
+	}
+
+	@Test
+	void "array elements with null value apply input"() {
+		def field = factory.create(container, bean, ARRAY_ELEMENTS_FIELD)
+						.createField()
+		def comboBox
+		beginPanelFrame title, container, {
+			comboBox = fixture.comboBox(ARRAY_ELEMENTS)
+		}, {
+			field.applyInput()
+			assert bean."${ComboBoxBean.ARRAY_ELEMENTS}" == "One"
+		}, {
+			comboBox.selectItem(1)
+			field.applyInput()
+			assert bean."${ComboBoxBean.ARRAY_ELEMENTS}" == "Two"
+		}, {
+			comboBox.selectItem(2)
+			field.applyInput()
+			assert bean."${ComboBoxBean.ARRAY_ELEMENTS}" == "Three"
+		}
+	}
+
+	@Test
+	void "array elements with null value restore input"() {
+		def field = factory.create(container, bean, ARRAY_ELEMENTS_FIELD)
+						.createField()
+		def comboBox
+		beginPanelFrame title, container, {
+			comboBox = fixture.comboBox(ARRAY_ELEMENTS)
+		}, {
+			field.applyInput()
+			assert bean."${ComboBoxBean.ARRAY_ELEMENTS}" == "One"
+		}, {
+			comboBox.selectItem(1)
+			field.restoreInput()
+			comboBox.requireSelection("One")
+			assert bean."${ComboBoxBean.ARRAY_ELEMENTS}" == "One"
+		}, {
+			comboBox.selectItem(2)
+			field.restoreInput()
+			comboBox.requireSelection("One")
+			assert bean."${ComboBoxBean.ARRAY_ELEMENTS}" == "One"
 		}
 	}
 
@@ -83,6 +130,29 @@ class ComboBoxTest extends FieldTestUtils {
 			field.requireSelection("One")
 			field.selectItem(2)
 			field.requireSelection("Three")
+		}
+	}
+
+	@Test
+	void "array elements with second value selected restore input"() {
+		def field = factory.create(container, bean, ARRAY_ELEMENTS_SECOND_FIELD).
+						createField()
+		def comboBox
+		beginPanelFrame title, container, {
+			comboBox = fixture.comboBox(ARRAY_ELEMENTS_SECOND)
+		}, {
+			comboBox.requireSelection("Two")
+			assert bean."${ComboBoxBean.ARRAY_ELEMENTS_SECOND}" == "Two"
+		}, {
+			comboBox.selectItem(0)
+			field.restoreInput()
+			comboBox.requireSelection("Two")
+			assert bean."${ComboBoxBean.ARRAY_ELEMENTS_SECOND}" == "Two"
+		}, {
+			comboBox.selectItem(2)
+			field.restoreInput()
+			comboBox.requireSelection("Two")
+			assert bean."${ComboBoxBean.ARRAY_ELEMENTS_SECOND}" == "Two"
 		}
 	}
 
@@ -194,12 +264,18 @@ class ComboBoxTest extends FieldTestUtils {
 	}
 
 	@Test
-	void "editable combo box"() {
-		factory.create(container, bean, EDITABLE_FIELD).createField()
-		def field
-		def text = "Text"
+	void "editable combo box apply input"() {
+		def field = factory.create(container, bean, EDITABLE_FIELD).createField()
+		def comboBox
+		def text = "Zwei"
 		beginPanelFrame title, container, {
-			field = fixture.comboBox(EDITABLE)
-		}, { field.enterText text }
+			comboBox = fixture.comboBox(EDITABLE)
+		}, {
+			comboBox.enterText text
+			comboBox.pressAndReleaseKeys KeyEvent.VK_ENTER
+			field.applyInput()
+			comboBox.requireSelection(text)
+			assert bean."${ComboBoxBean.EDITABLE}" == text
+		}
 	}
 }
