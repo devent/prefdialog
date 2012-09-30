@@ -23,6 +23,7 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyVetoException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -597,6 +598,9 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 		return icon;
 	}
 
+	/**
+	 * Tests for all child fields if their input is valid or not.
+	 */
 	@Override
 	public boolean isInputValid() {
 		boolean valid = true;
@@ -608,6 +612,30 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 		}
 		log.inputIsValid(this, valid);
 		return valid;
+	}
+
+	/**
+	 * Applies user inputs of all fields if the user input is valid for this
+	 * field.
+	 * 
+	 * @see #isInputValid()
+	 */
+	@Override
+	public void applyInput() throws PropertyVetoException {
+		if (!isInputValid()) {
+			return;
+		}
+		for (FieldComponent<?> component : childFields) {
+			component.applyInput();
+		}
+		log.applyInputs(this);
+	}
+
+	@Override
+	public void restoreInput() {
+		for (FieldComponent<?> component : childFields) {
+			component.restoreInput();
+		}
 	}
 
 	@Override

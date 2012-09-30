@@ -1,18 +1,18 @@
 /*
  * Copyright 2012 Erwin Müller <erwin.mueller@deventm.org>
- * 
+ *
  * This file is part of prefdialog-corefields.
- * 
+ *
  * prefdialog-corefields is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- * 
+ *
  * prefdialog-corefields is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-corefields. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -31,7 +31,7 @@ import com.google.inject.Injector
 
 /**
  * Test the {@link CheckboxField}.
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 2.2
  */
@@ -62,6 +62,46 @@ class CheckboxTest extends FieldTestUtils {
 	void "checkbox null value"() {
 		shouldFailWith(ReflectionError) {
 			factory.create(container, bean, CHECKBOX_NULL_VALUE_FIELD).createField()
+		}
+	}
+
+	@Test
+	void "apply user input"() {
+		def field = factory.create(container, bean, CHECKBOX_NO_TEXT_FIELD).
+						createField()
+		def checkBox
+		beginPanelFrame title, container, {
+			checkBox = fixture.checkBox(CHECKBOX_NO_TEXT)
+			assert bean.checkboxNoText == false
+		}, {
+			checkBox.click()
+			field.applyInput()
+			assert bean.checkboxNoText == true
+		}, {
+			checkBox.click()
+			field.applyInput()
+			assert bean.checkboxNoText == false
+		}
+	}
+
+	@Test
+	void "restore user input"() {
+		def field = factory.create(container, bean, CHECKBOX_NO_TEXT_FIELD).
+						createField()
+		def checkBox
+		beginPanelFrame title, container, {
+			checkBox = fixture.checkBox(CHECKBOX_NO_TEXT)
+			assert bean.checkboxNoText == false
+		}, {
+			checkBox.click()
+			field.restoreInput()
+			checkBox.requireNotSelected()
+			assert bean.checkboxNoText == false
+		}, {
+			checkBox.click()
+			field.restoreInput()
+			checkBox.requireNotSelected()
+			assert bean.checkboxNoText == false
 		}
 	}
 

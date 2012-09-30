@@ -19,6 +19,7 @@
 package com.anrisoftware.prefdialog.fields;
 
 import java.awt.Component;
+import java.beans.PropertyVetoException;
 import java.util.Locale;
 import java.util.MissingResourceException;
 
@@ -176,8 +177,11 @@ public interface FieldComponent<ComponentType extends Component> {
 	 * 
 	 * @throws NullPointerException
 	 *             if the new value is {@code null}.
+	 * 
+	 * @throws PropertyVetoException
+	 *             if the user input is not valid.
 	 */
-	void setValue(Object newValue);
+	void setValue(Object newValue) throws PropertyVetoException;
 
 	/**
 	 * Returns the value of the field.
@@ -332,6 +336,19 @@ public interface FieldComponent<ComponentType extends Component> {
 	 *         is not valid.
 	 */
 	boolean isInputValid();
+
+	/**
+	 * Applies the user input of the field.
+	 * 
+	 * @throws PropertyVetoException
+	 *             if the user input is not valid.
+	 */
+	void applyInput() throws PropertyVetoException;
+
+	/**
+	 * Restores the user input of this field.
+	 */
+	void restoreInput();
 
 	/**
 	 * Returns the component to be added in the preferences container for this
