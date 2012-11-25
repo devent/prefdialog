@@ -6,13 +6,15 @@
 	<parent>
 		<groupId>com.anrisoftware.globalpom</groupId>
 		<artifactId>globalpom-groovy</artifactId>
-		<version>1.11</version>
+		<version>1.13</version>
 	</parent>
 
 	<groupId>com.anrisoftware.prefdialog</groupId>
 	<artifactId>prefdialog-parent</artifactId>
 	<version>2.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
+	<name>Prefdialog :: Parent POM</name>
+	<inceptionYear>2010</inceptionYear>
 
 	<licenses>
 		<license>
@@ -57,41 +59,37 @@
 			<dependency>
 				<groupId>com.anrisoftware.globalpom</groupId>
 				<artifactId>globalpom-groovytestutils</artifactId>
-				<version>${project.custom.globalpom.groovytestutils.version}</version>
-				<scope>test</scope>
+				<version>1.10</version>
 			</dependency>
 			<dependency>
 				<groupId>com.anrisoftware.resources</groupId>
 				<artifactId>resources-images</artifactId>
-				<version>1.2</version>
-				<scope>test</scope>
+				<version>1.3</version>
 			</dependency>
 			<dependency>
 				<groupId>com.anrisoftware.resources</groupId>
 				<artifactId>resources-texts</artifactId>
-				<version>1.2</version>
-				<scope>test</scope>
+				<version>1.3-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.anrisoftware.resources</groupId>
 				<artifactId>resources-binary</artifactId>
-				<version>1.2</version>
-				<scope>test</scope>
+				<version>1.3</version>
 			</dependency>
 			<dependency>
 				<groupId>com.anrisoftware.resources</groupId>
 				<artifactId>resources-api</artifactId>
-				<version>1.2</version>
+				<version>1.4</version>
 			</dependency>
 			<dependency>
 				<groupId>com.anrisoftware.globalpom</groupId>
 				<artifactId>globalpom-log</artifactId>
-				<version>${project.custom.globalpom.log.version}</version>
+				<version>1.6</version>
 			</dependency>
 			<dependency>
 				<groupId>com.anrisoftware.propertiesutils</groupId>
 				<artifactId>propertiesutils-swingproperties-groovy</artifactId>
-				<version>1.0</version>
+				<version>1.2</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
