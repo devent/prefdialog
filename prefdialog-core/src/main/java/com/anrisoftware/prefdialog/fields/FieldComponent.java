@@ -26,10 +26,10 @@ import java.util.MissingResourceException;
 import javax.swing.Icon;
 
 import com.anrisoftware.prefdialog.annotations.TextPosition;
-import com.anrisoftware.resources.api.IconSize;
-import com.anrisoftware.resources.api.Images;
 import com.anrisoftware.resources.api.ResourcesException;
-import com.anrisoftware.resources.api.Texts;
+import com.anrisoftware.resources.images.api.IconSize;
+import com.anrisoftware.resources.images.api.Images;
+import com.anrisoftware.resources.texts.api.Texts;
 
 /**
  * The preference panel field.

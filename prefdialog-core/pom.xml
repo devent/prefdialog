@@ -20,18 +20,6 @@
 			<groupId>com.anrisoftware.globalpom</groupId>
 			<artifactId>globalpom-groovytestutils</artifactId>
 		</dependency>
-        <dependency>
-            <groupId>com.anrisoftware.resources</groupId>
-            <artifactId>resources-images</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.anrisoftware.resources</groupId>
-            <artifactId>resources-texts</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.anrisoftware.resources</groupId>
-            <artifactId>resources-binary</artifactId>
-        </dependency>
 
 		<!-- compile dependencies -->
 		<dependency>
@@ -54,6 +42,18 @@
 			<groupId>com.anrisoftware.resources</groupId>
 			<artifactId>resources-api</artifactId>
 		</dependency>
+        <dependency>
+            <groupId>com.anrisoftware.resources</groupId>
+            <artifactId>resources-images</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.anrisoftware.resources</groupId>
+            <artifactId>resources-texts</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.anrisoftware.resources</groupId>
+            <artifactId>resources-binary</artifactId>
+        </dependency>
 
         <!-- prefdialog modules -->
         <dependency>

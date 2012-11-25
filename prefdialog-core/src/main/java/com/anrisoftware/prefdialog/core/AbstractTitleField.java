@@ -1,18 +1,18 @@
 /*
  * Copyright 2012 Erwin Müller <erwin.mueller@deventm.org>
- * 
+ *
  * This file is part of prefdialog-core.
- * 
+ *
  * prefdialog-core is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
  * Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- * 
+ *
  * prefdialog-core is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-core. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -31,9 +31,9 @@ import java.util.Locale;
 
 import javax.swing.JLabel;
 
-import com.anrisoftware.resources.api.IconSize;
-import com.anrisoftware.resources.api.Images;
-import com.anrisoftware.resources.api.Texts;
+import com.anrisoftware.resources.images.api.IconSize;
+import com.anrisoftware.resources.images.api.Images;
+import com.anrisoftware.resources.texts.api.Texts;
 
 /**
  * Sets a title label on top of the field.

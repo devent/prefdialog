@@ -43,9 +43,9 @@ import com.anrisoftware.prefdialog.fields.FieldComponent;
 import com.anrisoftware.prefdialog.reflection.annotations.AnnotationAccess;
 import com.anrisoftware.prefdialog.reflection.beans.BeanAccess;
 import com.anrisoftware.prefdialog.reflection.beans.BeanFactory;
-import com.anrisoftware.resources.api.IconSize;
-import com.anrisoftware.resources.api.Images;
-import com.anrisoftware.resources.api.Texts;
+import com.anrisoftware.resources.images.api.IconSize;
+import com.anrisoftware.resources.images.api.Images;
+import com.anrisoftware.resources.texts.api.Texts;
 
 /**
  * Sets the component and sets the component name, width, and if the component
