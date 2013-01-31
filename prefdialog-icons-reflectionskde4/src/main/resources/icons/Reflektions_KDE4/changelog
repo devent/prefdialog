@@ -1,0 +1,34 @@
+v0.9: added: ktorrent, kopete, draw-freehand, text-x-changelog, show-menu, format-text-*, fill-color, format-fill-color, format-justify-*, unknown
+v0.95: added: wine, applications-games, applications-development, applications-office, applications-science, applications-system, applications-utilities, kontact, gimp, banshee
+			improved: systray:wallet, systray:randr
+v0.97: added: rekonq, korganizer, kpatience, quassel, pidgin, dropbox, ksnapshot, favorites, knotes, deluge, linuxdcpp, nxclient-icon, picard, kupfer, texmacs, kmag, kppp, nvidia-settings, okular, inkscape
+			improved contrast of some 32x32 folder and
+	compressed packages
+v1.0: libreoffice-apps, djview4, korg-journal, view-history, svg, synaptic, chokoq, qbittorent, systray:quassel
+improved 32x32 and 48x48 folders and compressed packages
+
+v1.1: collection-amarok, podcast-amarok, playlist-layouts,
+	systray:klipper, systray:audio, view-services-lastfm-amarok,
+	view-services-magnatune-amarok, view-services-librivox-amarok,
+	view-services-opml-amarok, clementine, gnome-mplayer,
+	dynamic-playlist, amarok_playlist, playlist-generator,
+	improved 16x16, 22x22, 32x32, 64x64 folders and packages,
+	wallet-open, wallet-closed, luna, edit-select
+v1.2: thunderbird, dragonplayer, networkmanager, lancelot, chronometer, qalculate, fork, basket, plasmaapplet-shelf, document-edit
+	systray: akregator
+added "Theme" file to make your KDE like the screenshot
+
+v1.3: iceweasel, blender, application-x-blender, deadbeef, secure-card
+	systray: akonadi, improved systemsettings tooltip icons
+
+v1.4: xorg, application-x-cd-image, muon, view-statistics, designer-qt4, ccsm, few kmail-actions (finally!)
+
+v1.45: added: systray:printer, systray:ktorrent, systray:kget,
+	systray:kopete, input-tablet, media-flash-memory-stick, lyx,
+	dashboard-show, internet-web-browser, application-epub+zip,
+	application-illustrator, script to uninstall dropbox, removed
+	systray installation script, added script to create and install
+	plasma theme using reflektions icons
+v1.46: kalarm, audacity, bluefish, filezilla, linuxdcpp, opera-browser, virtualbox, systray:kalarm, systray:clementine
+v1.47: telepathy-kde + few app icons, smplayer, clementine systray is now black
+v1.48: message-rfc822, select-rectangular, juk, page-zoom
