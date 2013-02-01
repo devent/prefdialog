@@ -1,10 +1,15 @@
 package com.anrisoftware.prefdialog.filechooser.panel.api;
 
 import java.io.File;
+import java.util.List;
 
+import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 
 public interface FileSelectionModel extends ListSelectionModel {
+
+	@SuppressWarnings("rawtypes")
+	void setList(JList list);
 
 	File getCurrentDirectory();
 
@@ -18,7 +23,13 @@ public interface FileSelectionModel extends ListSelectionModel {
 
 	File[] getSelectedFiles();
 
+	List<File> getSelectedFileList();
+
+	void setDirectorySelectionEnabled(boolean enabled);
+
 	boolean isDirectorySelectionEnabled();
+
+	void setFileSelectionEnabled(boolean enabled);
 
 	boolean isFileSelectionEnabled();
 

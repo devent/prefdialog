@@ -7,6 +7,32 @@ import javax.swing.JLabel;
 
 public interface FileChooserPanel {
 
+	static final String FILES_LIST_NAME = "files-list";
+
+	static final String LOCATION_FIELD_NAME = "location-field";
+
+	static final String PREVIEW_BUTTON_NAME = "preview-button";
+
+	static final String REFRESH_BUTTON_NAME = "refresh-button";
+
+	static final String UP_BUTTON_NAME = "up-button";
+
+	static final String FORWARD_BUTTON_NAME = "forward-button";
+
+	static final String BACK_BUTTON_NAME = "back-button";
+
+	static final String CANCEL_BUTTON_NAME = "cancel-button";
+
+	static final String FILTER_FIELD_NAME = "filter-field";
+
+	static final String APPROVE_BUTTON_NAME = "approve-button";
+
+	static final String NAME_FIELD_NAME = "name-field";
+
+	static final String PLACES_LIST_NAME = "places-list";
+
+	static final String PLACES_TOOLBAR_NAME = "places-toolbar";
+
 	void approveAction();
 
 	void cancelAction();

@@ -1,19 +1,41 @@
 package com.anrisoftware.prefdialog.filechooser.panel.defaults;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.DefaultListSelectionModel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+import javax.swing.JList;
+import javax.swing.filechooser.FileSystemView;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileSelectionModel;
 
 @SuppressWarnings("serial")
 public class DefaultFileSelectionModel extends DefaultListSelectionModel
-		implements FileSelectionModel, ListSelectionListener {
+		implements FileSelectionModel {
 
-	DefaultFileSelectionModel() {
-		addListSelectionListener(this);
+	private boolean directorySelection;
+	private boolean fileSelection;
+	private final FileSystemView systemView;
+	@SuppressWarnings("rawtypes")
+	private JList list;
+
+	public DefaultFileSelectionModel() {
+		this(FileSystemView.getFileSystemView());
+	}
+
+	public DefaultFileSelectionModel(FileSystemView systemView) {
+		this.systemView = systemView;
+		setDirectorySelectionEnabled(false);
+		setFileSelectionEnabled(true);
+	}
+
+	@Override
+	@SuppressWarnings("rawtypes")
+	public void setList(JList list) {
+		this.list = list;
 	}
 
 	@Override
@@ -36,8 +58,8 @@ public class DefaultFileSelectionModel extends DefaultListSelectionModel
 
 	@Override
 	public File getSelectedFile() {
-		// TODO Auto-generated method stub
-		return null;
+		List<File> fileList = getSelectedFileList();
+		return fileList.size() > 0 ? fileList.get(0) : null;
 	}
 
 	@Override
@@ -48,20 +70,56 @@ public class DefaultFileSelectionModel extends DefaultListSelectionModel
 
 	@Override
 	public File[] getSelectedFiles() {
-		// TODO Auto-generated method stub
-		return null;
+		List<File> fileList = getSelectedFileList();
+		return fileList.toArray(new File[fileList.size()]);
+	}
+
+	@Override
+	public List<File> getSelectedFileList() {
+		@SuppressWarnings("deprecation")
+		Object[] values = list.getSelectedValues();
+		List<File> fileList = new ArrayList<File>();
+		if (ArrayUtils.isEmpty(values)) {
+			return fileList;
+		}
+		for (Object value : values) {
+			File file = (File) value;
+			boolean fileSystem = systemView.isFileSystem(file);
+			boolean traversable = systemView.isTraversable(file);
+			if (fileSelection && fileSystem && !traversable) {
+				fileList.add(file);
+			}
+			if (directorySelection && fileSystem && traversable) {
+				fileList.add(file);
+			}
+		}
+		return fileList;
+	}
+
+	@Override
+	public void setDirectorySelectionEnabled(boolean enabled) {
+		this.directorySelection = enabled;
+		if (!enabled && !isFileSelectionEnabled()) {
+			setFileSelectionEnabled(true);
+		}
 	}
 
 	@Override
 	public boolean isDirectorySelectionEnabled() {
-		// TODO Auto-generated method stub
-		return false;
+		return directorySelection;
+	}
+
+	@Override
+	public void setFileSelectionEnabled(boolean enabled) {
+		this.fileSelection = enabled;
+		if (!enabled && !isDirectorySelectionEnabled()) {
+			setDirectorySelectionEnabled(true);
+		}
 	}
 
 	@Override
 	public boolean isFileSelectionEnabled() {
-		// TODO Auto-generated method stub
-		return false;
+		return fileSelection;
 	}
 
 	@Override
@@ -76,11 +134,5 @@ public class DefaultFileSelectionModel extends DefaultListSelectionModel
 	@Override
 	public boolean isMultiSelectionEnabled() {
 		return getSelectionMode() == MULTIPLE_INTERVAL_SELECTION;
-	}
-
-	@Override
-	public void valueChanged(ListSelectionEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 }

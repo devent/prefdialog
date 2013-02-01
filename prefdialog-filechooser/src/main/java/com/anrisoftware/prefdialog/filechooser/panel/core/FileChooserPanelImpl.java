@@ -131,7 +131,8 @@ class FileChooserPanelImpl implements FileChooserPanel {
 		list.setLayoutOrientation(renderer.getLayoutOrientation());
 		list.setVisibleRowCount(renderer.getVisibleRowCount());
 		list.setSelectionModel(selectionModel);
-		list.putClientProperty("List.isFileList", Boolean.TRUE);
+		selectionModel.setList(list);
+		// list.putClientProperty("List.isFileList", Boolean.TRUE);
 	}
 
 	@Override
