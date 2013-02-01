@@ -9,6 +9,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
@@ -71,6 +72,8 @@ final class UiFileChooserPanel extends JPanel {
 	private final JScrollPane filesScrollPane;
 	private final JList filesList;
 	private JLabel filterLabel;
+
+	private final PopupButton optionsButtonPopup;
 
 	/**
 	 * Create the panel.
@@ -166,6 +169,8 @@ final class UiFileChooserPanel extends JPanel {
 		optionsButton = new JButton("Options");
 		optionsButton.setName("options-button");
 		toolButtonsPanel.add(optionsButton, "cell 2 0");
+		optionsButtonPopup = PopupButton.decorate(optionsButton,
+				new JPopupMenu());
 
 		locationFieldPanel = new JPanel();
 		toolsPanel.add(locationFieldPanel, "cell 0 1,grow");
@@ -321,6 +326,10 @@ final class UiFileChooserPanel extends JPanel {
 
 	public JList getFilesList() {
 		return filesList;
+	}
+
+	public void setOptionsMenu(JPopupMenu menu) {
+		optionsButtonPopup.setPopupMenu(menu);
 	}
 
 	private void updateContainer(Container container) {
