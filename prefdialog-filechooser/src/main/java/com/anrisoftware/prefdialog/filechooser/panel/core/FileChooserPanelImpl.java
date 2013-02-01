@@ -2,6 +2,7 @@ package com.anrisoftware.prefdialog.filechooser.panel.core;
 
 import static java.lang.System.getProperty;
 
+import java.awt.Container;
 import java.awt.event.ActionListener;
 import java.io.File;
 
@@ -37,37 +38,48 @@ class FileChooserPanelImpl implements FileChooserPanel {
 
 	private FilePropertiesModel filePropertiesModel;
 
+	private final Container container;
+
 	@AssistedInject
-	FileChooserPanelImpl(UiFileChooserPanel panel, DefaultFileModel fileModel) {
-		this(panel, fileModel, new File(getProperty("user.home")));
+	FileChooserPanelImpl(UiFileChooserPanel panel, DefaultFileModel fileModel,
+			@Assisted Container container) {
+		this(panel, fileModel, container, new File(getProperty("user.home")));
 	}
 
 	@AssistedInject
 	FileChooserPanelImpl(UiFileChooserPanel panel, DefaultFileModel fileModel,
-			@Assisted String currentDirectory) {
-		this(panel, fileModel, new File(currentDirectory));
+			@Assisted Container container, @Assisted String currentDirectory) {
+		this(panel, fileModel, container, new File(currentDirectory));
 	}
 
 	@AssistedInject
 	FileChooserPanelImpl(UiFileChooserPanel panel, DefaultFileModel fileModel,
-			@Assisted File currentDirectory) {
-		this(panel, fileModel, currentDirectory, FileSystemView
+			@Assisted Container container, @Assisted File currentDirectory) {
+		this(panel, fileModel, container, currentDirectory, FileSystemView
 				.getFileSystemView());
 	}
 
 	@AssistedInject
 	FileChooserPanelImpl(UiFileChooserPanel panel, DefaultFileModel fileModel,
-			@Assisted String currentDirectory, @Assisted FileSystemView view) {
-		this(panel, fileModel, new File(currentDirectory), view);
+			@Assisted Container container, @Assisted String currentDirectory,
+			@Assisted FileSystemView view) {
+		this(panel, fileModel, container, new File(currentDirectory), view);
 	}
 
 	@AssistedInject
 	FileChooserPanelImpl(UiFileChooserPanel panel, DefaultFileModel fileModel,
-			@Assisted File currentDirectory, @Assisted FileSystemView view) {
+			@Assisted Container container, @Assisted File currentDirectory,
+			@Assisted FileSystemView view) {
 		this.actionListeners = new EventListenerSupport<ActionListener>(
 				ActionListener.class);
 		this.panel = panel;
 		this.fileModel = fileModel;
+		this.container = container;
+		setup(view);
+	}
+
+	private void setup(FileSystemView view) {
+		container.add(panel);
 		fileModel.setFileSystemView(view);
 	}
 

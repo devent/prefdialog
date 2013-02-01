@@ -20,6 +20,32 @@ import net.miginfocom.swing.MigLayout;
 @SuppressWarnings({ "serial", "rawtypes" })
 final class UiFileChooserPanel extends JPanel {
 
+	private static final String FILES_LIST_NAME = "files-list";
+
+	private static final String LOCATION_FIELD_NAME = "location-field";
+
+	private static final String PREVIEW_BUTTON_NAME = "preview-button";
+
+	private static final String REFRESH_BUTTON_NAME = "refresh-button";
+
+	private static final String UP_BUTTON_NAME = "up-button";
+
+	private static final String FORWARD_BUTTON_NAME = "forward-button";
+
+	private static final String BACK_BUTTON_NAME = "back-button";
+
+	private static final String CANCEL_BUTTON_NAME = "cancel-button";
+
+	private static final String FILTER_FIELD_NAME = "filter-field";
+
+	private static final String APPROVE_BUTTON_NAME = "approve-button";
+
+	private static final String NAME_FIELD_NAME = "name-field";
+
+	private static final String PLACES_LIST_NAME = "places-list";
+
+	private static final String PLACES_TOOLBAR_NAME = "places-toolbar";
+
 	private final JComboBox nameField;
 	private final JComboBox filterField;
 	private final JComboBox locationField;
@@ -54,6 +80,7 @@ final class UiFileChooserPanel extends JPanel {
 		setLayout(new BorderLayout(0, 0));
 
 		placesToolBar = new JToolBar();
+		placesToolBar.setName(PLACES_TOOLBAR_NAME);
 		placesToolBar.setOrientation(SwingConstants.VERTICAL);
 		add(placesToolBar, BorderLayout.WEST);
 
@@ -64,6 +91,7 @@ final class UiFileChooserPanel extends JPanel {
 		placesPanel.setLayout(new BorderLayout(0, 0));
 
 		placesList = new JList(new Object[] { "One", "Two", "Three" });
+		placesList.setName(PLACES_LIST_NAME);
 		JScrollPane placesScrollPane = new JScrollPane(placesList);
 		placesPanel.add(placesScrollPane);
 
@@ -75,20 +103,24 @@ final class UiFileChooserPanel extends JPanel {
 		inputPanel.add(nameLabel, "cell 0 0,alignx trailing");
 
 		nameField = new JComboBox();
+		nameField.setName(NAME_FIELD_NAME);
 		nameField.setEditable(true);
 		inputPanel.add(nameField, "cell 1 0,growx");
 
 		approveButton = new JButton("Approve");
+		approveButton.setName(APPROVE_BUTTON_NAME);
 		inputPanel.add(approveButton, "growx 2,growy 0");
 
 		filterLabel = new JLabel("Filter:");
 		inputPanel.add(filterLabel, "cell 0 1,alignx trailing");
 
 		filterField = new JComboBox();
+		filterField.setName(FILTER_FIELD_NAME);
 		filterField.setEditable(true);
 		inputPanel.add(filterField, "cell 1 1,growx");
 
 		cancelButton = new JButton("Cancel");
+		cancelButton.setName(CANCEL_BUTTON_NAME);
 		inputPanel.add(cancelButton, "growx 2,growy 1");
 
 		locationPanel = new JPanel();
@@ -112,21 +144,27 @@ final class UiFileChooserPanel extends JPanel {
 				0));
 
 		backButton = new JButton("Go back");
+		backButton.setName(BACK_BUTTON_NAME);
 		optionalToolButtonsPanel.add(backButton);
 
 		forwardButton = new JButton("Go forward");
+		forwardButton.setName(FORWARD_BUTTON_NAME);
 		optionalToolButtonsPanel.add(forwardButton);
 
 		upButton = new JButton("Go up");
+		upButton.setName(UP_BUTTON_NAME);
 		optionalToolButtonsPanel.add(upButton);
 
 		refreshButton = new JButton("Refresh");
+		refreshButton.setName(REFRESH_BUTTON_NAME);
 		optionalToolButtonsPanel.add(refreshButton);
 
 		showPreviewButton = new JToggleButton("Show preview");
+		showPreviewButton.setName(PREVIEW_BUTTON_NAME);
 		optionalToolButtonsPanel.add(showPreviewButton);
 
 		optionsButton = new JButton("Options");
+		optionsButton.setName("options-button");
 		toolButtonsPanel.add(optionsButton, "cell 2 0");
 
 		locationFieldPanel = new JPanel();
@@ -134,6 +172,7 @@ final class UiFileChooserPanel extends JPanel {
 		locationFieldPanel.setLayout(new MigLayout("", "0[grow]0", "0[]0"));
 
 		locationField = new JComboBox();
+		locationField.setName(LOCATION_FIELD_NAME);
 		locationFieldPanel.add(locationField, "cell 0 0,growx");
 		locationField.setEditable(true);
 
@@ -145,6 +184,7 @@ final class UiFileChooserPanel extends JPanel {
 		filesPanel.add(filesScrollPane, "cell 0 0");
 
 		filesList = new JList();
+		filesList.setName(FILES_LIST_NAME);
 		filesScrollPane.setViewportView(filesList);
 
 	}
@@ -204,6 +244,7 @@ final class UiFileChooserPanel extends JPanel {
 	public void setApproveButton(JButton button) {
 		JButton old = approveButton;
 		approveButton = button;
+		button.setName(APPROVE_BUTTON_NAME);
 		inputPanel.remove(old);
 		inputPanel.add(button, "growx 2,growy 0");
 		updateContainer(inputPanel);
@@ -216,6 +257,7 @@ final class UiFileChooserPanel extends JPanel {
 	public void setCancelButton(JButton button) {
 		JButton old = cancelButton;
 		cancelButton = button;
+		button.setName(CANCEL_BUTTON_NAME);
 		inputPanel.remove(old);
 		inputPanel.add(cancelButton, "growx 2,growy 1");
 		updateContainer(inputPanel);

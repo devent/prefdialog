@@ -8,8 +8,8 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.filechooser.FileView;
-import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.FileChooserUI;
+import javax.swing.plaf.basic.BasicFileChooserUI;
 
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileModel;
 
@@ -41,7 +41,7 @@ public class DefaultFileModel extends DefaultListModel implements FileModel {
 
 	private static FileView getDefaultFileView() {
 		JFileChooser chooser = new JFileChooser();
-		FileChooserUI ui = (FileChooserUI) ComponentUI.createUI(chooser);
+		FileChooserUI ui = (FileChooserUI) BasicFileChooserUI.createUI(chooser);
 		return ui.getFileView(chooser);
 	}
 
@@ -63,7 +63,7 @@ public class DefaultFileModel extends DefaultListModel implements FileModel {
 	@Override
 	public FileFilter getAcceptAllFileFilter() {
 		JFileChooser chooser = new JFileChooser();
-		FileChooserUI ui = (FileChooserUI) ComponentUI.createUI(chooser);
+		FileChooserUI ui = (FileChooserUI) BasicFileChooserUI.createUI(chooser);
 		return ui.getAcceptAllFileFilter(chooser);
 	}
 
