@@ -2,10 +2,12 @@ package com.anrisoftware.prefdialog.filechooser.panel.defaults;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.JList;
+import javax.swing.ListModel;
 import javax.swing.filechooser.FileSystemView;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -52,8 +54,6 @@ public class DefaultFileSelectionModel extends DefaultListSelectionModel
 
 	@Override
 	public void setSelectedFile(File file) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -64,8 +64,43 @@ public class DefaultFileSelectionModel extends DefaultListSelectionModel
 
 	@Override
 	public void setSelectedFiles(File[] selectedFiles) {
-		// TODO Auto-generated method stub
+		setSelectedFiles(Arrays.asList(selectedFiles));
+	}
 
+	@Override
+	public void setSelectedFiles(List<File> selectedFiles) {
+		if (!isMultiSelectionEnabled()) {
+			removeExceptLast(selectedFiles);
+		}
+		@SuppressWarnings("rawtypes")
+		ListModel model = list.getModel();
+		for (File file : selectedFiles) {
+			for (int i = 0; i < model.getSize(); i++) {
+				File fileB = (File) model.getElementAt(i);
+				boolean fileSystem = systemView.isFileSystem(file);
+				boolean traversable = systemView.isTraversable(file);
+				if (fileB.equals(file)) {
+					if (fileSelection && fileSystem && !traversable) {
+						addSelectionInterval(i, i);
+					}
+					if (directorySelection && fileSystem && traversable) {
+						addSelectionInterval(i, i);
+					}
+				}
+			}
+		}
+	}
+
+	private void removeExceptLast(List<File> selectedFiles) {
+		File last = last(selectedFiles);
+		selectedFiles.clear();
+		if (last != null) {
+			selectedFiles.add(last);
+		}
+	}
+
+	private File last(List<File> files) {
+		return files.size() > 0 ? files.get(files.size() - 1) : null;
 	}
 
 	@Override

@@ -21,6 +21,8 @@ public interface FileSelectionModel extends ListSelectionModel {
 
 	void setSelectedFiles(File[] selectedFiles);
 
+	void setSelectedFiles(List<File> selectedFiles);
+
 	File[] getSelectedFiles();
 
 	List<File> getSelectedFileList();

@@ -47,36 +47,66 @@ class FileChooserPanelTest {
 	}
 
 	@Test
-	void "set multi selection enabled"() {
+	void "set multi selection enabled, only files"() {
+		def title = "FileChooserPanelTest::set multi selection enabled, only files"
 		withFiles "files", {
-			def title = "FileChooserPanelTest::set multi selection enabled"
 			def frame = createFrame(it, title)
 			panel.getFileSelectionModel().setMultiSelectionEnabled true
 			frame.frameSize = new Dimension(480, 360)
-			frame.withFixture { FrameFixture f ->
-				f.list(FILES_LIST_NAME).selectItems(3, 4, 5)
+			frame.withFixture({ FrameFixture f ->
+				f.list(FILES_LIST_NAME).selectItems(0, 1, 2, 3, 4, 5)
 				assert panel.getFileSelectionModel().getSelectedFileList() == [
 					new File(it, "aaa.txt"),
 					new File(it, "bbb.txt"),
 					new File(it, "ccc.txt")
 				]
-			}
+			}, { FrameFixture f ->
+				f.list(FILES_LIST_NAME).clearSelection()
+			}, { FrameFixture f ->
+				panel.fileSelectionModel.setSelectedFiles([
+					new File(it, "Aaa"),
+					new File(it, "Bbb"),
+					new File(it, "ccc"),
+					new File(it, "aaa.txt"),
+					new File(it, "bbb.txt"),
+					new File(it, "ccc.txt")
+				])
+				assert panel.getFileSelectionModel().getSelectedFileList() == [
+					new File(it, "aaa.txt"),
+					new File(it, "bbb.txt"),
+					new File(it, "ccc.txt")
+				]
+			})
 		}, { createFiles(it) }
 	}
 
 	@Test
-	void "set multi selection disabled"() {
+	void "set multi selection disabled, only files"() {
+		def title = "FileChooserPanelTest::set multi selection disabled, only files"
 		withFiles "files", {
-			def title = "FileChooserPanelTest::set multi selection disabled"
 			def frame = createFrame(it, title)
 			panel.getFileSelectionModel().setMultiSelectionEnabled false
 			frame.frameSize = new Dimension(480, 360)
-			frame.withFixture { FrameFixture f ->
-				f.list(FILES_LIST_NAME).selectItems(3, 4, 5)
+			frame.withFixture({ FrameFixture f ->
+				f.list(FILES_LIST_NAME).selectItems(0, 1, 2, 3, 4, 5)
 				assert panel.getFileSelectionModel().getSelectedFileList() == [
 					new File(it, "ccc.txt")
 				]
-			}
+			}, { FrameFixture f ->
+				f.list(FILES_LIST_NAME).clearSelection()
+			}, { FrameFixture f ->
+				panel.fileSelectionModel.setSelectedFiles([
+					new File(it, "Aaa"),
+					new File(it, "Bbb"),
+					new File(it, "ccc"),
+					new File(it, "aaa.txt"),
+					new File(it, "bbb.txt"),
+					new File(it, "ccc.txt")
+				])
+				assert panel.getFileSelectionModel().getSelectedFileList() == [
+					new File(it, "ccc.txt")
+				]
+			})
 		}, { createFiles(it) }
 	}
 
