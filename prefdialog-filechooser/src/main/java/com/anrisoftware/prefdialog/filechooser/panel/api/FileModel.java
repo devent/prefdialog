@@ -1,5 +1,7 @@
 package com.anrisoftware.prefdialog.filechooser.panel.api;
 
+import java.io.File;
+
 import javax.swing.ListModel;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileSystemView;
@@ -27,4 +29,6 @@ public interface FileModel extends ListModel {
 	void setFileHidingEnabled(boolean b);
 
 	boolean isFileHidingEnabled();
+
+	void setDirectory(File directory);
 }
