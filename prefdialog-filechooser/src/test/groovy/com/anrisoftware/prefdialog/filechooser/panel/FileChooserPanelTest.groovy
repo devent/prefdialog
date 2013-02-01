@@ -11,7 +11,7 @@ import org.junit.BeforeClass
 import org.junit.Test
 
 import com.anrisoftware.globalpom.utils.TestFrameUtil
-import com.anrisoftware.globalpom.utils.TestUtils
+import com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanelFactory
 import com.anrisoftware.prefdialog.filechooser.panel.core.FileChooserPanelModule
 import com.google.inject.Guice
@@ -19,12 +19,15 @@ import com.google.inject.Injector
 
 class FileChooserPanelTest {
 
+	JPanel container
+
+	FileChooserPanel panel
+
 	@Test
 	void "show JFileChooser"() {
 		def title = "FileChooserPanelTest::show JFileChooser"
 		def chooser = new JFileChooser()
 		def frame = new TestFrameUtil(title, new JPanel())
-		TestUtils.endDelay = 20 * 1000
 		frame.withFixture {
 			chooser.showOpenDialog(frame.frame)
 		}
@@ -33,13 +36,35 @@ class FileChooserPanelTest {
 	@Test
 	void "show panel"() {
 		def title = "FileChooserPanelTest::show panel"
-		def container = new JPanel(new BorderLayout())
-		container.setBorder BorderFactory.createEmptyBorder(2, 2, 2, 2)
-		def panel = factory.create(container)
-		def frame = new TestFrameUtil(title, container)
-		TestUtils.endDelay = 20 * 1000
+		def frame = createFrame(title)
 		frame.frameSize = new Dimension(480, 360)
 		frame.withFixture { }
+	}
+
+	@Test
+	void "set multi selection enabled"() {
+		def title = "FileChooserPanelTest::set multi selection enabled"
+		def frame = createFrame(title)
+		panel.getFileSelectionModel().setMultiSelectionEnabled true
+		frame.frameSize = new Dimension(480, 360)
+		frame.withFixture { }
+	}
+
+	@Test
+	void "set multi selection disabled"() {
+		def title = "FileChooserPanelTest::set multi selection disabled"
+		def frame = createFrame(title)
+		panel.getFileSelectionModel().setMultiSelectionEnabled false
+		frame.frameSize = new Dimension(480, 360)
+		frame.withFixture { }
+	}
+
+	private TestFrameUtil createFrame(String title) {
+		container = new JPanel(new BorderLayout())
+		container.setBorder BorderFactory.createEmptyBorder(2, 2, 2, 2)
+		panel = factory.create(container)
+		def frame = new TestFrameUtil(title, container)
+		return frame
 	}
 
 	static Injector injector
