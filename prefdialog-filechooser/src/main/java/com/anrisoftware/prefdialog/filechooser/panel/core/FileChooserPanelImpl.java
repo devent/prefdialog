@@ -138,18 +138,8 @@ class FileChooserPanelImpl implements FileChooserPanel {
 	}
 
 	@Override
-	public void setApproveButton(JButton button) {
-		panel.setApproveButton(button);
-	}
-
-	@Override
 	public JButton getApproveButton() {
 		return panel.getApproveButton();
-	}
-
-	@Override
-	public void setCancelButton(JButton button) {
-		panel.setCancelButton(button);
 	}
 
 	@Override
@@ -158,18 +148,8 @@ class FileChooserPanelImpl implements FileChooserPanel {
 	}
 
 	@Override
-	public void setNameLabel(JLabel label) {
-		panel.setNameLabel(label);
-	}
-
-	@Override
 	public JLabel getNameLabel() {
 		return panel.getNameLabel();
-	}
-
-	@Override
-	public void setFilterLabel(JLabel label) {
-		panel.setFilterLabel(label);
 	}
 
 	@Override

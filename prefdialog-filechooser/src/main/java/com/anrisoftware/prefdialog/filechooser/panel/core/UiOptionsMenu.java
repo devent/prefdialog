@@ -8,29 +8,29 @@ import javax.swing.JRadioButtonMenuItem;
 @SuppressWarnings("serial")
 class UiOptionsMenu extends JPopupMenu {
 
-	private final JMenu sorting;
+	final JMenu sorting;
 
-	private final JMenu view;
+	final JMenu view;
 
-	private final JCheckBoxMenuItem showHiddenFiles;
+	final JCheckBoxMenuItem showHiddenFiles;
 
-	private final JCheckBoxMenuItem showPlaces;
+	final JCheckBoxMenuItem showPlaces;
 
-	private final JRadioButtonMenuItem sortName;
+	final JRadioButtonMenuItem sortName;
 
-	private final JRadioButtonMenuItem sortSize;
+	final JRadioButtonMenuItem sortSize;
 
-	private final JRadioButtonMenuItem sortDate;
+	final JRadioButtonMenuItem sortDate;
 
-	private final JRadioButtonMenuItem sortType;
+	final JRadioButtonMenuItem sortType;
 
-	private final JRadioButtonMenuItem viewShort;
+	final JRadioButtonMenuItem viewShort;
 
-	private final JRadioButtonMenuItem viewDetailed;
+	final JRadioButtonMenuItem viewDetailed;
 
-	private final JRadioButtonMenuItem viewTree;
+	final JRadioButtonMenuItem viewTree;
 
-	private final JRadioButtonMenuItem viewDetailedTree;
+	final JRadioButtonMenuItem viewDetailedTree;
 
 	UiOptionsMenu() {
 		this.sorting = new JMenu();

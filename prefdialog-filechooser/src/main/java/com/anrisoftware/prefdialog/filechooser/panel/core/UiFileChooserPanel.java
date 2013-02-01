@@ -1,7 +1,6 @@
 package com.anrisoftware.prefdialog.filechooser.panel.core;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.FlowLayout;
 
 import javax.swing.JButton;
@@ -47,31 +46,31 @@ final class UiFileChooserPanel extends JPanel {
 
 	private static final String PLACES_TOOLBAR_NAME = "places-toolbar";
 
-	private final JComboBox nameField;
-	private final JComboBox filterField;
-	private final JComboBox locationField;
-	private final JToolBar placesToolBar;
-	private final JPanel placesPanel;
-	private final JList placesList;
-	private final JPanel inputPanel;
-	private JLabel nameLabel;
-	private JButton approveButton;
-	private JButton cancelButton;
-	private final JPanel locationPanel;
-	private final JPanel toolsPanel;
-	private final JPanel toolButtonsPanel;
-	private final JPanel optionalToolButtonsPanel;
-	private final JButton backButton;
-	private final JButton forwardButton;
-	private final JButton upButton;
-	private final JButton refreshButton;
-	private final JToggleButton showPreviewButton;
-	private final JButton optionsButton;
-	private final JPanel locationFieldPanel;
-	private final JPanel filesPanel;
-	private final JScrollPane filesScrollPane;
-	private final JList filesList;
-	private JLabel filterLabel;
+	final JComboBox nameField;
+	final JComboBox filterField;
+	final JComboBox locationField;
+	final JToolBar placesToolBar;
+	final JPanel placesPanel;
+	final JList placesList;
+	final JPanel inputPanel;
+	final JLabel nameLabel;
+	final JButton approveButton;
+	final JButton cancelButton;
+	final JPanel locationPanel;
+	final JPanel toolsPanel;
+	final JPanel toolButtonsPanel;
+	final JPanel optionalToolButtonsPanel;
+	final JButton backButton;
+	final JButton forwardButton;
+	final JButton upButton;
+	final JButton refreshButton;
+	final JToggleButton showPreviewButton;
+	final JButton optionsButton;
+	final JPanel locationFieldPanel;
+	final JPanel filesPanel;
+	final JScrollPane filesScrollPane;
+	final JList filesList;
+	final JLabel filterLabel;
 
 	private final PopupButton optionsButtonPopup;
 
@@ -198,14 +197,6 @@ final class UiFileChooserPanel extends JPanel {
 		return nameField;
 	}
 
-	public void setFilterLabel(JLabel label) {
-		JLabel old = filterLabel;
-		filterLabel = label;
-		inputPanel.remove(old);
-		inputPanel.add(label, "cell 0 1,alignx trailing");
-		updateContainer(inputPanel);
-	}
-
 	public JLabel getFilterLabel() {
 		return filterLabel;
 	}
@@ -234,38 +225,12 @@ final class UiFileChooserPanel extends JPanel {
 		return inputPanel;
 	}
 
-	public void setNameLabel(JLabel label) {
-		JLabel old = nameLabel;
-		nameLabel = label;
-		inputPanel.remove(old);
-		inputPanel.add(label, "cell 0 0,alignx trailing");
-		updateContainer(inputPanel);
-	}
-
 	public JLabel getNameLabel() {
 		return nameLabel;
 	}
 
-	public void setApproveButton(JButton button) {
-		JButton old = approveButton;
-		approveButton = button;
-		button.setName(APPROVE_BUTTON_NAME);
-		inputPanel.remove(old);
-		inputPanel.add(button, "growx 2,growy 0");
-		updateContainer(inputPanel);
-	}
-
 	public JButton getApproveButton() {
 		return approveButton;
-	}
-
-	public void setCancelButton(JButton button) {
-		JButton old = cancelButton;
-		cancelButton = button;
-		button.setName(CANCEL_BUTTON_NAME);
-		inputPanel.remove(old);
-		inputPanel.add(cancelButton, "growx 2,growy 1");
-		updateContainer(inputPanel);
 	}
 
 	public JButton getCancelButton() {
@@ -330,11 +295,6 @@ final class UiFileChooserPanel extends JPanel {
 
 	public void setOptionsMenu(JPopupMenu menu) {
 		optionsButtonPopup.setPopupMenu(menu);
-	}
-
-	private void updateContainer(Container container) {
-		container.getLayout().layoutContainer(container);
-		container.repaint();
 	}
 
 }

@@ -11,19 +11,11 @@ public interface FileChooserPanel {
 
 	void cancelAction();
 
-	void setApproveButton(JButton button);
-
 	JButton getApproveButton();
-
-	void setCancelButton(JButton button);
 
 	JButton getCancelButton();
 
-	void setNameLabel(JLabel label);
-
 	JLabel getNameLabel();
-
-	void setFilterLabel(JLabel label);
 
 	JLabel getFilterLabel();
 
