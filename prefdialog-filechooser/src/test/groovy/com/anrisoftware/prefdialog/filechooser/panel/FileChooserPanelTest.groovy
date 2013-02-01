@@ -1,8 +1,10 @@
 package com.anrisoftware.prefdialog.filechooser.panel
 
 import java.awt.BorderLayout
+import java.awt.Dimension
 
 import javax.swing.BorderFactory
+import javax.swing.JFileChooser
 import javax.swing.JPanel
 
 import org.junit.BeforeClass
@@ -18,6 +20,17 @@ import com.google.inject.Injector
 class FileChooserPanelTest {
 
 	@Test
+	void "show JFileChooser"() {
+		def title = "FileChooserPanelTest::show JFileChooser"
+		def chooser = new JFileChooser()
+		def frame = new TestFrameUtil(title, new JPanel())
+		TestUtils.endDelay = 20 * 1000
+		frame.withFixture {
+			chooser.showOpenDialog(frame.frame)
+		}
+	}
+
+	@Test
 	void "show panel"() {
 		def title = "FileChooserPanelTest::show panel"
 		def container = new JPanel(new BorderLayout())
@@ -25,7 +38,7 @@ class FileChooserPanelTest {
 		def panel = factory.create(container)
 		def frame = new TestFrameUtil(title, container)
 		TestUtils.endDelay = 20 * 1000
-		frame.frameSize = container.preferredSize
+		frame.frameSize = new Dimension(480, 360)
 		frame.withFixture { }
 	}
 

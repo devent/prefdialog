@@ -3,6 +3,8 @@ package com.anrisoftware.prefdialog.filechooser.panel.defaults;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.swing.AbstractListModel;
@@ -14,6 +16,7 @@ import javax.swing.plaf.FileChooserUI;
 import javax.swing.plaf.basic.BasicFileChooserUI;
 
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileModel;
+import com.anrisoftware.prefdialog.filechooser.panel.api.FileSort;
 
 @SuppressWarnings({ "serial", "rawtypes" })
 public class DefaultFileModel extends AbstractListModel implements FileModel {
@@ -27,6 +30,16 @@ public class DefaultFileModel extends AbstractListModel implements FileModel {
 	private boolean useFileHiding;
 
 	private List<File> files;
+
+	private final FileSort sort;
+
+	private boolean descending;
+
+	private boolean folderFirst;
+
+	private Comparator<File> comparator;
+
+	private File directory;
 
 	public DefaultFileModel() {
 		this(FileSystemView.getFileSystemView(), null);
@@ -42,6 +55,11 @@ public class DefaultFileModel extends AbstractListModel implements FileModel {
 		this.useFileHiding = true;
 		this.systemView = systemView;
 		this.fileView = createFileView(fileView);
+		this.sort = FileSort.NAME;
+		this.descending = false;
+		this.folderFirst = true;
+		this.comparator = new FileByName();
+		this.comparator = new FileBySize();
 	}
 
 	private FileView createFileView(FileView fileView) {
@@ -54,6 +72,7 @@ public class DefaultFileModel extends AbstractListModel implements FileModel {
 	private static FileView getDefaultFileView() {
 		JFileChooser chooser = new JFileChooser();
 		FileChooserUI ui = (FileChooserUI) BasicFileChooserUI.createUI(chooser);
+		ui.installUI(chooser);
 		return ui.getFileView(chooser);
 	}
 
@@ -111,8 +130,103 @@ public class DefaultFileModel extends AbstractListModel implements FileModel {
 
 	@Override
 	public void setDirectory(File directory) {
-		files = Arrays.asList(systemView.getFiles(directory, useFileHiding));
+		File oldValue = this.directory;
+		if (!directory.equals(oldValue)) {
+			this.directory = directory;
+			updateDirectory(directory);
+		}
+	}
+
+	@Override
+	public void setSort(FileSort sort, boolean descending, boolean folderFirst) {
+		this.descending = descending;
+		this.folderFirst = folderFirst;
+		switch (sort) {
+		case NAME:
+			this.comparator = new FileByName();
+			break;
+		case SIZE:
+			this.comparator = new FileBySize();
+			break;
+		case DATE:
+			this.comparator = new FileByName();
+			break;
+		case TYPE:
+			this.comparator = new FileByName();
+			break;
+		}
+		updateDirectory(directory);
+	}
+
+	private void updateDirectory(File directory) {
+		List<File> list = Arrays.asList(systemView.getFiles(directory,
+				useFileHiding));
+		Collections.sort(list, comparator);
+		this.files = list;
 		fireContentsChanged(this, 0, getSize());
+	}
+
+	private abstract class AbstractFileComparator implements Comparator<File> {
+
+		@Override
+		public int compare(File o1, File o2) {
+			int mod = 1;
+			int compare = 0;
+			if (descending) {
+				mod = -1;
+			}
+			if (folderFirst) {
+				boolean traversable1 = systemView.isTraversable(o1);
+				boolean traversable2 = systemView.isTraversable(o2);
+				if (traversable1 && !traversable2) {
+					compare = -1;
+				} else if (!traversable1 && traversable2) {
+					compare = 1;
+				} else {
+					compare = compareDir(o1, o2);
+				}
+			} else {
+				compare = compareFile(o1, o2);
+			}
+			return compare * mod;
+		}
+
+		protected abstract int compareDir(File o1, File o2);
+
+		protected abstract int compareFile(File o1, File o2);
+
+	}
+
+	private class FileByName extends AbstractFileComparator {
+
+		@Override
+		protected int compareDir(File o1, File o2) {
+			return compareFile(o1, o2);
+		}
+
+		@Override
+		protected int compareFile(File o1, File o2) {
+			return fileView.getName(o1).compareToIgnoreCase(
+					fileView.getName(o2));
+		}
+
+	}
+
+	private class FileBySize extends AbstractFileComparator {
+
+		@Override
+		protected int compareDir(File o1, File o2) {
+			return fileView.getName(o1).compareToIgnoreCase(
+					fileView.getName(o2));
+		}
+
+		@Override
+		protected int compareFile(File o1, File o2) {
+			long l1 = o1.length();
+			long l2 = o2.length();
+			return l1 > l2 ? -1 : l1 < l2 ? 1 : 0;
+		}
+
 	}
 
 	@Override

@@ -10,7 +10,6 @@ import java.util.HashMap;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.ListCellRenderer;
 import javax.swing.filechooser.FileSystemView;
 
 import org.apache.commons.lang3.event.EventListenerSupport;
@@ -20,6 +19,7 @@ import com.anrisoftware.prefdialog.filechooser.panel.api.FileModel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FilePropertiesModel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileSelectionModel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileView;
+import com.anrisoftware.prefdialog.filechooser.panel.api.FileViewRenderer;
 import com.anrisoftware.prefdialog.filechooser.panel.api.PlacesModel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.ToolButtonsModel;
 import com.anrisoftware.prefdialog.filechooser.panel.defaults.DefaultFileModel;
@@ -46,7 +46,7 @@ class FileChooserPanelImpl implements FileChooserPanel {
 	private final Container container;
 
 	@SuppressWarnings("rawtypes")
-	private final HashMap<FileView, ListCellRenderer> views;
+	private final HashMap<FileView, FileViewRenderer> views;
 
 	private final PanelModel model;
 
@@ -95,7 +95,7 @@ class FileChooserPanelImpl implements FileChooserPanel {
 		this.model = model;
 		this.fileModel = fileModel;
 		this.container = container;
-		this.views = new HashMap<FileView, ListCellRenderer>(
+		this.views = new HashMap<FileView, FileViewRenderer>(
 				FileView.values().length);
 		setFileView(FileView.SHORT, shortView);
 		setup(view, currentDirectory);
@@ -112,7 +112,11 @@ class FileChooserPanelImpl implements FileChooserPanel {
 	private void setupFilesList() {
 		JList list = panel.getFilesList();
 		list.setModel(fileModel);
-		list.setCellRenderer(views.get(model.getView()));
+		FileViewRenderer renderer = views.get(model.getView());
+		list.setCellRenderer(renderer);
+		list.setLayoutOrientation(renderer.getLayoutOrientation());
+		list.setVisibleRowCount(renderer.getVisibleRowCount());
+		list.putClientProperty("List.isFileList", Boolean.TRUE);
 	}
 
 	@Override
@@ -217,9 +221,9 @@ class FileChooserPanelImpl implements FileChooserPanel {
 		return fileModel;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
-	public void setFileView(FileView view,
-			@SuppressWarnings("rawtypes") ListCellRenderer renderer) {
+	public void setFileView(FileView view, FileViewRenderer renderer) {
 		views.put(view, renderer);
 	}
 

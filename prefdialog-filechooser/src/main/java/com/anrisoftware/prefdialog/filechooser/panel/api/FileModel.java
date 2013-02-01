@@ -31,4 +31,6 @@ public interface FileModel extends ListModel {
 	boolean isFileHidingEnabled();
 
 	void setDirectory(File directory);
+
+	void setSort(FileSort sort, boolean descending, boolean folderFirst);
 }

@@ -4,7 +4,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.ListCellRenderer;
 
 public interface FileChooserPanel {
 
@@ -48,8 +47,8 @@ public interface FileChooserPanel {
 
 	FileModel getFileModel();
 
-	void setFileView(FileView view,
-			@SuppressWarnings("rawtypes") ListCellRenderer renderer);
+	@SuppressWarnings("rawtypes")
+	void setFileView(FileView view, FileViewRenderer renderer);
 
 	void addActionListener(ActionListener l);
 
