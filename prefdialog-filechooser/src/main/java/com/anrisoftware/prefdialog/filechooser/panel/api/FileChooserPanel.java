@@ -1,9 +1,11 @@
 package com.anrisoftware.prefdialog.filechooser.panel.api;
 
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.filechooser.FileSystemView;
 
 public interface FileChooserPanel {
 
@@ -32,6 +34,33 @@ public interface FileChooserPanel {
 	static final String PLACES_LIST_NAME = "places-list";
 
 	static final String PLACES_TOOLBAR_NAME = "places-toolbar";
+
+	/**
+	 * Creates the panel and returns it.
+	 * 
+	 * @return the {@link FileChooserPanel}.
+	 */
+	FileChooserPanel createPanel();
+
+	/**
+	 * Sets the current directory for the file chooser.
+	 * 
+	 * @param currentDirectory
+	 *            the current {@link File} directory.
+	 * 
+	 * @return the {@link FileChooserPanel}.
+	 */
+	FileChooserPanel withCurrentDirectory(File currentDirectory);
+
+	/**
+	 * Sets the file system view for the file chooser.
+	 * 
+	 * @param view
+	 *            the {@link FileSystemView} file system view.
+	 * 
+	 * @return the {@link FileChooserPanel}.
+	 */
+	FileChooserPanel withFileSystemView(FileSystemView view);
 
 	void approveAction();
 
@@ -66,7 +95,7 @@ public interface FileChooserPanel {
 	FileModel getFileModel();
 
 	@SuppressWarnings("rawtypes")
-	void setFileView(FileView view, FileViewRenderer renderer);
+	void setFileViewRenderer(FileView view, FileViewRenderer renderer);
 
 	void addActionListener(ActionListener l);
 

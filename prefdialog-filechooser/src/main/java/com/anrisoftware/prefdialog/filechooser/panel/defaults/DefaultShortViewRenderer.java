@@ -16,16 +16,16 @@ import javax.swing.plaf.basic.BasicFileChooserUI;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileViewRenderer;
 
 @SuppressWarnings("serial")
-public class DefaultShortView extends DefaultListCellRenderer implements
+public class DefaultShortViewRenderer extends DefaultListCellRenderer implements
 		FileViewRenderer<Object> {
 
 	private final FileView fileView;
 
-	public DefaultShortView() {
+	public DefaultShortViewRenderer() {
 		this(null);
 	}
 
-	public DefaultShortView(FileView fileView) {
+	public DefaultShortViewRenderer(FileView fileView) {
 		this.fileView = createFileView(fileView);
 	}
 

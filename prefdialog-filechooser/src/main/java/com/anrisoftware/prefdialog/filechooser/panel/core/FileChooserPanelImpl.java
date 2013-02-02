@@ -1,12 +1,11 @@
 package com.anrisoftware.prefdialog.filechooser.panel.core;
 
-import static java.lang.System.getProperty;
-
 import java.awt.Container;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.HashMap;
 
+import javax.inject.Inject;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -22,18 +21,23 @@ import com.anrisoftware.prefdialog.filechooser.panel.api.FileView;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileViewRenderer;
 import com.anrisoftware.prefdialog.filechooser.panel.api.PlacesModel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.ToolButtonsModel;
-import com.anrisoftware.prefdialog.filechooser.panel.defaults.DefaultFileModel;
-import com.anrisoftware.prefdialog.filechooser.panel.defaults.DefaultFileSelectionModel;
-import com.anrisoftware.prefdialog.filechooser.panel.defaults.DefaultShortView;
-import com.anrisoftware.prefdialog.filechooser.panel.defaults.DefaultToolButtonsModel;
+import com.anrisoftware.prefdialog.filechooser.panel.defaults.DefaultShortViewRenderer;
 import com.google.inject.assistedinject.Assisted;
-import com.google.inject.assistedinject.AssistedInject;
 
 class FileChooserPanelImpl implements FileChooserPanel {
 
-	private final UiFileChooserPanel panel;
-
 	private final EventListenerSupport<ActionListener> actionListeners;
+
+	private final Container container;
+
+	@SuppressWarnings("rawtypes")
+	private final HashMap<FileView, FileViewRenderer> views;
+
+	private FileSystemView systemView;
+
+	private File currentDirectory;
+
+	private UiFileChooserPanel panel;
 
 	private FileModel fileModel;
 
@@ -45,115 +49,72 @@ class FileChooserPanelImpl implements FileChooserPanel {
 
 	private FilePropertiesModel filePropertiesModel;
 
-	private final Container container;
+	private PanelProperties properties;
+
+	private UiOptionsMenu optionsMenu;
+
+	private NavigateDirectories navigateDirectories;
 
 	@SuppressWarnings("rawtypes")
-	private final HashMap<FileView, FileViewRenderer> views;
-
-	private final PanelModel model;
-
-	private final UiOptionsMenu optionsMenu;
-
-	private final ChangeDirectory changeDirectory;
-
-	@AssistedInject
-	FileChooserPanelImpl(UiFileChooserPanel panel, UiOptionsMenu optionsMenu,
-			PanelModel model, DefaultFileModel fileModel,
-			DefaultFileSelectionModel selectionModel,
-			DefaultToolButtonsModel toolButtonsModel,
-			ChangeDirectory changeDirectory, DefaultShortView shortView,
-			@Assisted Container container) {
-		this(panel, optionsMenu, model, fileModel, selectionModel,
-				toolButtonsModel, changeDirectory, shortView, container,
-				new File(getProperty("user.home")));
-	}
-
-	@AssistedInject
-	FileChooserPanelImpl(UiFileChooserPanel panel, UiOptionsMenu optionsMenu,
-			PanelModel model, DefaultFileModel fileModel,
-			DefaultFileSelectionModel selectionModel,
-			DefaultToolButtonsModel toolButtonsModel,
-			ChangeDirectory changeDirectory, DefaultShortView shortView,
-			@Assisted Container container, @Assisted String currentDirectory) {
-		this(panel, optionsMenu, model, fileModel, selectionModel,
-				toolButtonsModel, changeDirectory, shortView, container,
-				new File(currentDirectory));
-	}
-
-	@AssistedInject
-	FileChooserPanelImpl(UiFileChooserPanel panel, UiOptionsMenu optionsMenu,
-			PanelModel model, DefaultFileModel fileModel,
-			DefaultFileSelectionModel selectionModel,
-			DefaultToolButtonsModel toolButtonsModel,
-			ChangeDirectory changeDirectory, DefaultShortView shortView,
-			@Assisted Container container, @Assisted File currentDirectory) {
-		this(panel, optionsMenu, model, fileModel, selectionModel,
-				toolButtonsModel, changeDirectory, shortView, container,
-				currentDirectory, FileSystemView.getFileSystemView());
-	}
-
-	@AssistedInject
-	FileChooserPanelImpl(UiFileChooserPanel panel, UiOptionsMenu optionsMenu,
-			PanelModel model, DefaultFileModel fileModel,
-			DefaultFileSelectionModel selectionModel,
-			DefaultToolButtonsModel toolButtonsModel,
-			ChangeDirectory changeDirectory, DefaultShortView shortView,
-			@Assisted Container container, @Assisted String currentDirectory,
-			@Assisted FileSystemView view) {
-		this(panel, optionsMenu, model, fileModel, selectionModel,
-				toolButtonsModel, changeDirectory, shortView, container,
-				new File(currentDirectory), view);
-	}
-
-	@SuppressWarnings("rawtypes")
-	@AssistedInject
-	FileChooserPanelImpl(UiFileChooserPanel panel, UiOptionsMenu optionsMenu,
-			PanelModel model, DefaultFileModel fileModel,
-			DefaultFileSelectionModel selectionModel,
-			DefaultToolButtonsModel toolButtonsModel,
-			ChangeDirectory changeDirectory, DefaultShortView shortView,
-			@Assisted Container container, @Assisted File currentDirectory,
-			@Assisted FileSystemView view) {
+	@Inject
+	FileChooserPanelImpl(@Assisted Container container) {
+		this.systemView = FileSystemView.getFileSystemView();
+		this.currentDirectory = systemView.getDefaultDirectory();
+		this.container = container;
 		this.actionListeners = new EventListenerSupport<ActionListener>(
 				ActionListener.class);
-		this.panel = panel;
-		this.optionsMenu = optionsMenu;
-		this.model = model;
-		this.fileModel = fileModel;
-		this.selectionModel = selectionModel;
-		this.container = container;
-		this.changeDirectory = changeDirectory;
-		this.toolButtonsModel = toolButtonsModel;
 		this.views = new HashMap<FileView, FileViewRenderer>(
 				FileView.values().length);
-		setToolButtonsModel(toolButtonsModel);
-		getFileSelectionModel().setMultiSelectionEnabled(false);
-		setFileView(FileView.SHORT, shortView);
-		setup(view, currentDirectory);
 	}
 
-	private void setup(FileSystemView view, File currentDirectory) {
+	@Override
+	public FileChooserPanel withCurrentDirectory(File currentDirectory) {
+		this.currentDirectory = currentDirectory;
+		return this;
+	}
+
+	@Override
+	public FileChooserPanel withFileSystemView(FileSystemView view) {
+		this.systemView = view;
+		return this;
+	}
+
+	@Override
+	public FileChooserPanel createPanel() {
+		setup();
+		return this;
+	}
+
+	private void setup() {
 		container.add(panel);
-		fileModel.setFileSystemView(view);
+		fileModel.setFileSystemView(systemView);
 		fileModel.setDirectory(currentDirectory);
 		panel.setOptionsMenu(optionsMenu);
-		changeDirectory.setFileChooserPanel(this);
-		changeDirectory.setFileSystemView(view);
-		changeDirectory.setList(panel.getFilesList());
+		navigateDirectories.setFileChooserPanel(this);
+		navigateDirectories.setFileSystemView(systemView);
+		navigateDirectories.setList(panel.getFilesList());
 		setupFilesList();
+		setupToolButtons();
+
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void setupFilesList() {
 		JList list = panel.getFilesList();
 		list.setModel(fileModel);
-		FileViewRenderer renderer = views.get(model.getView());
+		FileViewRenderer renderer = views.get(properties.getView());
 		list.setCellRenderer(renderer);
 		list.setLayoutOrientation(renderer.getLayoutOrientation());
 		list.setVisibleRowCount(renderer.getVisibleRowCount());
 		list.setSelectionModel(selectionModel);
 		selectionModel.setList(list);
 		// list.putClientProperty("List.isFileList", Boolean.TRUE);
+	}
+
+	private void setupToolButtons() {
+		for (int i = 0; i < toolButtonsModel.getSize(); i++) {
+			panel.addToolButton(toolButtonsModel.getActionAt(i));
+		}
 	}
 
 	@Override
@@ -168,6 +129,31 @@ class FileChooserPanelImpl implements FileChooserPanel {
 	public void cancelAction() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Inject
+	void setNavigateDirectories(NavigateDirectories navigateDirectories) {
+		this.navigateDirectories = navigateDirectories;
+	}
+
+	@Inject
+	void setPanelProperties(PanelProperties properties) {
+		this.properties = properties;
+	}
+
+	@Inject
+	void setUiOptionsMenu(UiOptionsMenu optionsMenu) {
+		this.optionsMenu = optionsMenu;
+	}
+
+	@Inject
+	void setUiPanel(UiFileChooserPanel panel) {
+		this.panel = panel;
+	}
+
+	@Inject
+	void setShortViewRenderer(DefaultShortViewRenderer renderer) {
+		setFileViewRenderer(FileView.SHORT, renderer);
 	}
 
 	@Override
@@ -190,6 +176,7 @@ class FileChooserPanelImpl implements FileChooserPanel {
 		return panel.getFilterLabel();
 	}
 
+	// @Inject
 	@Override
 	public void setFilePropertiesModel(FilePropertiesModel model) {
 		this.filePropertiesModel = model;
@@ -200,6 +187,7 @@ class FileChooserPanelImpl implements FileChooserPanel {
 		return filePropertiesModel;
 	}
 
+	// @Inject
 	@Override
 	public void setPlacesModel(PlacesModel model) {
 		this.placesModel = model;
@@ -210,13 +198,11 @@ class FileChooserPanelImpl implements FileChooserPanel {
 		return placesModel;
 	}
 
+	@Inject
 	@Override
 	public void setToolButtonsModel(ToolButtonsModel model) {
 		this.toolButtonsModel = model;
-		panel.removeToolButtons();
-		for (int i = 0; i < model.getSize(); i++) {
-			panel.addToolButton(model.getActionAt(i));
-		}
+		// panel.removeToolButtons();
 	}
 
 	@Override
@@ -224,6 +210,7 @@ class FileChooserPanelImpl implements FileChooserPanel {
 		return toolButtonsModel;
 	}
 
+	@Inject
 	@Override
 	public void setFileSelectionModel(FileSelectionModel model) {
 		this.selectionModel = model;
@@ -234,6 +221,7 @@ class FileChooserPanelImpl implements FileChooserPanel {
 		return selectionModel;
 	}
 
+	@Inject
 	@Override
 	public void setFileModel(FileModel fileModel) {
 		this.fileModel = fileModel;
@@ -246,7 +234,7 @@ class FileChooserPanelImpl implements FileChooserPanel {
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public void setFileView(FileView view, FileViewRenderer renderer) {
+	public void setFileViewRenderer(FileView view, FileViewRenderer renderer) {
 		views.put(view, renderer);
 	}
 

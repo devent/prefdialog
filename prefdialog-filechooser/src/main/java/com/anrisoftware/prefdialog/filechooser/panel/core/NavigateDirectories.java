@@ -17,8 +17,14 @@ import sun.awt.shell.ShellFolder;
 
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel;
 
+/**
+ * Navigate in the file chooser directories per mouse and keyboard.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 1.0
+ */
 @SuppressWarnings("restriction")
-class ChangeDirectory implements MouseListener, KeyListener {
+class NavigateDirectories implements MouseListener, KeyListener {
 
 	private FileSystemView systemView;
 
@@ -26,7 +32,7 @@ class ChangeDirectory implements MouseListener, KeyListener {
 
 	private FileChooserPanel fileChooser;
 
-	ChangeDirectory() {
+	NavigateDirectories() {
 	}
 
 	public void setList(JList<?> list) {
