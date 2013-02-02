@@ -15,7 +15,9 @@ import javax.swing.filechooser.FileSystemView;
 
 import sun.awt.shell.ShellFolder;
 
+import com.anrisoftware.prefdialog.filechooser.panel.api.DirectoyModel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel;
+import com.anrisoftware.prefdialog.filechooser.panel.api.FileModel;
 
 /**
  * Navigate in the file chooser directories per mouse and keyboard.
@@ -30,7 +32,11 @@ class NavigateDirectories implements MouseListener, KeyListener {
 
 	private JList<?> list;
 
+	private FileModel fileModel;
+
 	private FileChooserPanel fileChooser;
+
+	private DirectoyModel directoyModel;
 
 	NavigateDirectories() {
 	}
@@ -50,8 +56,16 @@ class NavigateDirectories implements MouseListener, KeyListener {
 		this.systemView = view;
 	}
 
-	public void setFileChooserPanel(FileChooserPanel panel) {
-		this.fileChooser = panel;
+	public void setFileModel(FileModel model) {
+		this.fileModel = model;
+	}
+
+	public void setFileChooser(FileChooserPanel fileChooser) {
+		this.fileChooser = fileChooser;
+	}
+
+	public void setDirectoryModel(DirectoyModel model) {
+		this.directoyModel = model;
 	}
 
 	@Override
@@ -85,7 +99,8 @@ class NavigateDirectories implements MouseListener, KeyListener {
 					}
 					if (systemView.isTraversable(f)) {
 						list.clearSelection();
-						fileChooser.getFileModel().setDirectory(f);
+						directoyModel.setCurrentDirectory(f);
+						fileModel.setDirectory(f);
 					} else {
 						fileChooser.approveAction();
 					}

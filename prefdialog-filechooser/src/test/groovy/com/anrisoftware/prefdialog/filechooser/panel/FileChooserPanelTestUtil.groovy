@@ -4,6 +4,7 @@ import static com.anrisoftware.globalpom.utils.TestUtils.*
 import static org.apache.commons.io.FileUtils.*
 
 import java.awt.BorderLayout
+import java.awt.Dimension
 
 import javax.swing.BorderFactory
 import javax.swing.JPanel
@@ -34,7 +35,9 @@ class FileChooserPanelTestUtil {
 		container = new JPanel(new BorderLayout())
 		container.setBorder BorderFactory.createEmptyBorder(2, 2, 2, 2)
 		panel = factory.create(container).withCurrentDirectory(parent).createPanel()
-		new TestFrameUtil(title, container)
+		def frame = new TestFrameUtil(title, container)
+		frame.frameSize = new Dimension(480, 360)
+		frame
 	}
 
 	public static Injector injector

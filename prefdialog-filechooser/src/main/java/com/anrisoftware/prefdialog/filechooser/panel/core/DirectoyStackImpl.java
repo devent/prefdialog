@@ -3,9 +3,9 @@ package com.anrisoftware.prefdialog.filechooser.panel.core;
 import java.io.File;
 import java.util.Stack;
 
-import com.anrisoftware.prefdialog.filechooser.panel.api.DirectoyStack;
+import com.anrisoftware.prefdialog.filechooser.panel.api.DirectoyModel;
 
-class DirectoyStackImpl implements DirectoyStack {
+class DirectoyStackImpl implements DirectoyModel {
 
 	private final Stack<File> currentDirectories;
 
@@ -18,7 +18,9 @@ class DirectoyStackImpl implements DirectoyStack {
 
 	@Override
 	public void setCurrentDirectory(File currentDirectory) {
-		currentDirectories.push(currentDirectory);
+		if (!currentDirectories.contains(currentDirectory)) {
+			currentDirectories.push(currentDirectory);
+		}
 	}
 
 	@Override
@@ -27,10 +29,20 @@ class DirectoyStackImpl implements DirectoyStack {
 	}
 
 	@Override
+	public boolean canGoBack() {
+		return currentDirectories.size() > 1;
+	}
+
+	@Override
 	public File goBack() {
 		File dir = currentDirectories.pop();
 		lastDirectories.push(dir);
-		return dir;
+		return getCurrentDirectory();
+	}
+
+	@Override
+	public boolean canGoForward() {
+		return lastDirectories.size() > 0;
 	}
 
 	@Override
@@ -38,6 +50,12 @@ class DirectoyStackImpl implements DirectoyStack {
 		File dir = lastDirectories.pop();
 		currentDirectories.push(dir);
 		return dir;
+	}
+
+	@Override
+	public boolean canGoUp() {
+		File dir = getCurrentDirectory();
+		return dir.getParentFile() != null;
 	}
 
 	@Override

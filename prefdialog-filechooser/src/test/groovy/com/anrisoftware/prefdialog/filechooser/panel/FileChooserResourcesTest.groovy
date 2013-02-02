@@ -4,11 +4,6 @@ import static com.anrisoftware.globalpom.utils.TestUtils.*
 import static com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel.*
 import static org.apache.commons.io.FileUtils.*
 
-import java.awt.BorderLayout
-import java.awt.Dimension
-
-import javax.swing.BorderFactory
-import javax.swing.JFileChooser
 import javax.swing.JPanel
 
 import org.junit.BeforeClass
@@ -28,67 +23,16 @@ import com.anrisoftware.resources.images.scaling.ResourcesSmoothScalingModule
 import com.google.inject.Guice
 import com.google.inject.Injector
 
-class FileChooserResourcesTest {
-
-	JPanel container
-
-	FileChooserPanel panel
-
-	def dirs
-
-	def files
-
-	@Test
-	void "show JFileChooser"() {
-		def title = "FileChooserPanelTest::show JFileChooser"
-		def chooser = new JFileChooser()
-		def frame = new TestFrameUtil(title, new JPanel())
-		frame.withFixture {
-			chooser.showOpenDialog(frame.frame)
-		}
-	}
+class FileChooserResourcesTest extends FileChooserPanelTestUtil {
 
 	@Test
 	void "manually"() {
 		def title = "FileChooserPanelTest::manually"
-		withFiles "files", {
-			def frame = createFrame(it, title)
-			panel.getFileSelectionModel().setMultiSelectionEnabled true
-			createImageResources("ReflectionsKDE4", panel)
-
-			frame.frameSize = new Dimension(480, 360)
-			frame.withFixture({ Thread.sleep 60*1000 })
-		}, { createFiles(it) }
+		def frame = createFrame(title)
+		panel.getFileSelectionModel().setMultiSelectionEnabled true
+		createImageResources("ReflectionsKDE4", panel)
+		frame.withFixture({ Thread.sleep 60*1000 })
 	}
-
-	private TestFrameUtil createFrame(File currentDirectory, String title) {
-		container = new JPanel(new BorderLayout())
-		container.setBorder BorderFactory.createEmptyBorder(2, 2, 2, 2)
-		panel = factory.create(container, currentDirectory)
-		def frame = new TestFrameUtil(title, container)
-		return frame
-	}
-
-	private createFiles(File parent) {
-		dirs = [
-			new File(parent, "Aaa"),
-			new File(parent, "Bbb"),
-			new File(parent, "ccc")
-		]
-		dirs.each { it.mkdir() }
-
-		files = [
-			new File(parent, "aaa.txt"),
-			new File(parent, "bbb.txt"),
-			new File(parent, "ccc.txt"),
-			new File(dirs[0], "Aaa-aaa.txt")
-		]
-		files.each { touch it }
-	}
-
-	static Injector injector
-
-	static FileChooserPanelFactory factory
 
 	static ImagesFactory imagesFactory
 
@@ -96,6 +40,7 @@ class FileChooserResourcesTest {
 
 	@BeforeClass
 	static void setupFactory() {
+		FileChooserPanelTestUtil.setupFactory()
 		injector = Guice.createInjector(new FileChooserPanelModule(),
 						new FileChooserResourcesModule(),
 						new ImagesResourcesModule(), new ResourcesImagesMapsModule(),

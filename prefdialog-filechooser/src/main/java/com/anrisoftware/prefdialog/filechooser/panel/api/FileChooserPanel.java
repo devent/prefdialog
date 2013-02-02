@@ -74,6 +74,21 @@ public interface FileChooserPanel {
 
 	JLabel getFilterLabel();
 
+	/**
+	 * Sets the model to navigate in the directory structure.
+	 * 
+	 * @param stack
+	 *            the {@link DirectoyModel}.
+	 */
+	void setDirectoryModel(DirectoyModel model);
+
+	/**
+	 * Returns the model to navigate in the directory structure.
+	 * 
+	 * @return the {@link DirectoyModel}.
+	 */
+	DirectoyModel getDirectoryModel();
+
 	void setFilePropertiesModel(FilePropertiesModel model);
 
 	FilePropertiesModel getFilePropertiesModel();

@@ -6,6 +6,10 @@ import javax.swing.KeyStroke;
 
 public interface ToolAction extends Action {
 
+	void setFileModel(FileModel model);
+
+	void setDirectoryModel(DirectoyModel model);
+
 	void setText(String text);
 
 	void setMnemonic(int mnemonic);
@@ -27,4 +31,5 @@ public interface ToolAction extends Action {
 	boolean isToggleButton();
 
 	boolean isSeparator();
+
 }

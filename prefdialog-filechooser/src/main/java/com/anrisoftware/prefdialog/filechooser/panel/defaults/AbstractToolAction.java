@@ -4,11 +4,27 @@ import javax.swing.AbstractAction;
 import javax.swing.Icon;
 import javax.swing.KeyStroke;
 
+import com.anrisoftware.prefdialog.filechooser.panel.api.DirectoyModel;
+import com.anrisoftware.prefdialog.filechooser.panel.api.FileModel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.ToolAction;
 
 @SuppressWarnings("serial")
 public abstract class AbstractToolAction extends AbstractAction implements
 		ToolAction {
+
+	protected FileModel fileModel;
+
+	protected DirectoyModel directoyModel;
+
+	@Override
+	public void setFileModel(FileModel model) {
+		this.fileModel = model;
+	}
+
+	@Override
+	public void setDirectoryModel(DirectoyModel model) {
+		this.directoyModel = model;
+	}
 
 	@Override
 	public void setText(String text) {

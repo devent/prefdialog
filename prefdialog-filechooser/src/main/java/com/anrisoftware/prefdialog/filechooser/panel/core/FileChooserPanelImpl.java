@@ -13,6 +13,7 @@ import javax.swing.filechooser.FileSystemView;
 
 import org.apache.commons.lang3.event.EventListenerSupport;
 
+import com.anrisoftware.prefdialog.filechooser.panel.api.DirectoyModel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileModel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FilePropertiesModel;
@@ -20,6 +21,7 @@ import com.anrisoftware.prefdialog.filechooser.panel.api.FileSelectionModel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileView;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileViewRenderer;
 import com.anrisoftware.prefdialog.filechooser.panel.api.PlacesModel;
+import com.anrisoftware.prefdialog.filechooser.panel.api.ToolAction;
 import com.anrisoftware.prefdialog.filechooser.panel.api.ToolButtonsModel;
 import com.anrisoftware.prefdialog.filechooser.panel.defaults.DefaultShortViewRenderer;
 import com.google.inject.assistedinject.Assisted;
@@ -55,6 +57,8 @@ class FileChooserPanelImpl implements FileChooserPanel {
 
 	private NavigateDirectories navigateDirectories;
 
+	private DirectoyModel directoryModel;
+
 	@SuppressWarnings("rawtypes")
 	@Inject
 	FileChooserPanelImpl(@Assisted Container container) {
@@ -86,16 +90,23 @@ class FileChooserPanelImpl implements FileChooserPanel {
 	}
 
 	private void setup() {
+		directoryModel.setCurrentDirectory(currentDirectory);
 		container.add(panel);
 		fileModel.setFileSystemView(systemView);
 		fileModel.setDirectory(currentDirectory);
 		panel.setOptionsMenu(optionsMenu);
-		navigateDirectories.setFileChooserPanel(this);
-		navigateDirectories.setFileSystemView(systemView);
-		navigateDirectories.setList(panel.getFilesList());
+		setupNativateDirectories();
 		setupFilesList();
 		setupToolButtons();
 
+	}
+
+	private void setupNativateDirectories() {
+		navigateDirectories.setFileChooser(this);
+		navigateDirectories.setFileModel(fileModel);
+		navigateDirectories.setFileSystemView(systemView);
+		navigateDirectories.setDirectoryModel(directoryModel);
+		navigateDirectories.setList(panel.getFilesList());
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -113,7 +124,10 @@ class FileChooserPanelImpl implements FileChooserPanel {
 
 	private void setupToolButtons() {
 		for (int i = 0; i < toolButtonsModel.getSize(); i++) {
-			panel.addToolButton(toolButtonsModel.getActionAt(i));
+			ToolAction action = toolButtonsModel.getActionAt(i);
+			action.setFileModel(fileModel);
+			action.setDirectoryModel(directoryModel);
+			panel.addToolButton(action);
 		}
 	}
 
@@ -174,6 +188,17 @@ class FileChooserPanelImpl implements FileChooserPanel {
 	@Override
 	public JLabel getFilterLabel() {
 		return panel.getFilterLabel();
+	}
+
+	@Inject
+	@Override
+	public void setDirectoryModel(DirectoyModel model) {
+		this.directoryModel = model;
+	}
+
+	@Override
+	public DirectoyModel getDirectoryModel() {
+		return directoryModel;
 	}
 
 	// @Inject

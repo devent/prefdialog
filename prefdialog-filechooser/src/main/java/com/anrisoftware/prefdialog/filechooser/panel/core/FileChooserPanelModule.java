@@ -1,6 +1,6 @@
 package com.anrisoftware.prefdialog.filechooser.panel.core;
 
-import com.anrisoftware.prefdialog.filechooser.panel.api.DirectoyStack;
+import com.anrisoftware.prefdialog.filechooser.panel.api.DirectoyModel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanelFactory;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileModel;
@@ -22,7 +22,7 @@ public class FileChooserPanelModule extends AbstractModule {
 		bind(FileModel.class).to(DefaultFileModel.class);
 		bind(FileSelectionModel.class).to(DefaultFileSelectionModel.class);
 		bind(ToolButtonsModel.class).to(DefaultToolButtonsModel.class);
-		bind(DirectoyStack.class).to(DirectoyStackImpl.class);
+		bind(DirectoyModel.class).to(DirectoyStackImpl.class);
 	}
 
 }
