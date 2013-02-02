@@ -54,6 +54,7 @@ final class UiFileChooserPanel extends JPanel {
 	 */
 	@SuppressWarnings("unchecked")
 	UiFileChooserPanel() {
+		setOpaque(false);
 		setLayout(new BorderLayout(0, 0));
 
 		placesToolBar = new JToolBar();
@@ -73,6 +74,7 @@ final class UiFileChooserPanel extends JPanel {
 		placesPanel.add(placesScrollPane);
 
 		inputPanel = new JPanel();
+		inputPanel.setOpaque(false);
 		add(inputPanel, BorderLayout.SOUTH);
 		inputPanel.setLayout(new MigLayout("", "[][grow][]", "[][]"));
 
@@ -101,21 +103,25 @@ final class UiFileChooserPanel extends JPanel {
 		inputPanel.add(cancelButton, "growx 2,growy 1");
 
 		locationPanel = new JPanel();
+		locationPanel.setOpaque(false);
 		add(locationPanel, BorderLayout.CENTER);
 		locationPanel.setLayout(new BorderLayout(0, 0));
 
 		toolsPanel = new JPanel();
+		toolsPanel.setOpaque(false);
 		toolsPanel.setBorder(null);
 		locationPanel.add(toolsPanel, BorderLayout.NORTH);
 		toolsPanel.setLayout(new MigLayout("", "[grow]", "[][]"));
 
 		toolButtonsPanel = new JPanel();
+		toolButtonsPanel.setOpaque(false);
 		toolButtonsPanel.setBorder(null);
 		toolsPanel.add(toolButtonsPanel, "cell 0 0,growx");
 		toolButtonsPanel
 				.setLayout(new MigLayout("", "0[][grow][]0", "0[grow]0"));
 
 		optionalToolButtonsPanel = new JPanel();
+		optionalToolButtonsPanel.setOpaque(false);
 		toolButtonsPanel.add(optionalToolButtonsPanel, "cell 0 0");
 		optionalToolButtonsPanel
 				.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
@@ -127,6 +133,7 @@ final class UiFileChooserPanel extends JPanel {
 				new JPopupMenu());
 
 		locationFieldPanel = new JPanel();
+		locationFieldPanel.setOpaque(false);
 		toolsPanel.add(locationFieldPanel, "cell 0 1,grow");
 		locationFieldPanel.setLayout(new MigLayout("", "0[grow]0", "0[]0"));
 
@@ -136,6 +143,7 @@ final class UiFileChooserPanel extends JPanel {
 		locationField.setEditable(true);
 
 		filesPanel = new JPanel();
+		filesPanel.setOpaque(false);
 		locationPanel.add(filesPanel, BorderLayout.CENTER);
 		filesPanel.setLayout(new MigLayout("", "[grow,fill]", "0[grow,fill]3"));
 
