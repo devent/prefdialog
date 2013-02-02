@@ -1,6 +1,8 @@
 package com.anrisoftware.prefdialog.filechooser.panel.core;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 
 import javax.swing.JButton;
@@ -15,9 +17,10 @@ import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 
-import com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel;
-
 import net.miginfocom.swing.MigLayout;
+
+import com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel;
+import com.anrisoftware.prefdialog.filechooser.panel.api.ToolAction;
 
 @SuppressWarnings({ "serial", "rawtypes" })
 final class UiFileChooserPanel extends JPanel {
@@ -36,11 +39,6 @@ final class UiFileChooserPanel extends JPanel {
 	final JPanel toolsPanel;
 	final JPanel toolButtonsPanel;
 	final JPanel optionalToolButtonsPanel;
-	final JButton backButton;
-	final JButton forwardButton;
-	final JButton upButton;
-	final JButton refreshButton;
-	final JToggleButton showPreviewButton;
 	final JButton optionsButton;
 	final JPanel locationFieldPanel;
 	final JPanel filesPanel;
@@ -118,28 +116,8 @@ final class UiFileChooserPanel extends JPanel {
 
 		optionalToolButtonsPanel = new JPanel();
 		toolButtonsPanel.add(optionalToolButtonsPanel, "cell 0 0");
-		optionalToolButtonsPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0,
-				0));
-
-		backButton = new JButton("Go back");
-		backButton.setName(FileChooserPanel.BACK_BUTTON_NAME);
-		optionalToolButtonsPanel.add(backButton);
-
-		forwardButton = new JButton("Go forward");
-		forwardButton.setName(FileChooserPanel.FORWARD_BUTTON_NAME);
-		optionalToolButtonsPanel.add(forwardButton);
-
-		upButton = new JButton("Go up");
-		upButton.setName(FileChooserPanel.UP_BUTTON_NAME);
-		optionalToolButtonsPanel.add(upButton);
-
-		refreshButton = new JButton("Refresh");
-		refreshButton.setName(FileChooserPanel.REFRESH_BUTTON_NAME);
-		optionalToolButtonsPanel.add(refreshButton);
-
-		showPreviewButton = new JToggleButton("Show preview");
-		showPreviewButton.setName(FileChooserPanel.PREVIEW_BUTTON_NAME);
-		optionalToolButtonsPanel.add(showPreviewButton);
+		optionalToolButtonsPanel
+				.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 
 		optionsButton = new JButton("Options");
 		optionsButton.setName("options-button");
@@ -229,26 +207,6 @@ final class UiFileChooserPanel extends JPanel {
 		return optionalToolButtonsPanel;
 	}
 
-	public JButton getBackButton() {
-		return backButton;
-	}
-
-	public JButton getForwardButton() {
-		return forwardButton;
-	}
-
-	public JButton getUpButton() {
-		return upButton;
-	}
-
-	public JButton getRefreshButton() {
-		return refreshButton;
-	}
-
-	public JToggleButton getShowPreviewButton() {
-		return showPreviewButton;
-	}
-
 	public JButton getOptionsButton() {
 		return optionsButton;
 	}
@@ -271,6 +229,35 @@ final class UiFileChooserPanel extends JPanel {
 
 	public void setOptionsMenu(JPopupMenu menu) {
 		optionsButtonPopup.setPopupMenu(menu);
+	}
+
+	public void removeToolButtons() {
+		optionalToolButtonsPanel.removeAll();
+		optionalToolButtonsPanel.getLayout().layoutContainer(
+				optionalToolButtonsPanel);
+		optionalToolButtonsPanel.invalidate();
+	}
+
+	public void addToolButton(ToolAction action) {
+		Component component;
+		if (action.isToggleButton()) {
+			component = new JToggleButton(action);
+		} else if (action.isSeparator()) {
+			JButton button = new JButton(action);
+			button.setPreferredSize(new Dimension(6,
+					button.getPreferredSize().height));
+			button.setBorderPainted(false);
+			button.setContentAreaFilled(false);
+			button.setOpaque(false);
+			button.setFocusable(false);
+			component = button;
+		} else {
+			component = new JButton(action);
+		}
+		optionalToolButtonsPanel.add(component);
+		optionalToolButtonsPanel.getLayout().layoutContainer(
+				optionalToolButtonsPanel);
+		optionalToolButtonsPanel.invalidate();
 	}
 
 }

@@ -25,6 +25,7 @@ import com.anrisoftware.prefdialog.filechooser.panel.api.ToolButtonsModel;
 import com.anrisoftware.prefdialog.filechooser.panel.defaults.DefaultFileModel;
 import com.anrisoftware.prefdialog.filechooser.panel.defaults.DefaultFileSelectionModel;
 import com.anrisoftware.prefdialog.filechooser.panel.defaults.DefaultShortView;
+import com.anrisoftware.prefdialog.filechooser.panel.defaults.DefaultToolButtonsModel;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 
@@ -59,45 +60,49 @@ class FileChooserPanelImpl implements FileChooserPanel {
 	FileChooserPanelImpl(UiFileChooserPanel panel, UiOptionsMenu optionsMenu,
 			PanelModel model, DefaultFileModel fileModel,
 			DefaultFileSelectionModel selectionModel,
+			DefaultToolButtonsModel toolButtonsModel,
 			ChangeDirectory changeDirectory, DefaultShortView shortView,
 			@Assisted Container container) {
 		this(panel, optionsMenu, model, fileModel, selectionModel,
-				changeDirectory, shortView, container, new File(
-						getProperty("user.home")));
+				toolButtonsModel, changeDirectory, shortView, container,
+				new File(getProperty("user.home")));
 	}
 
 	@AssistedInject
 	FileChooserPanelImpl(UiFileChooserPanel panel, UiOptionsMenu optionsMenu,
 			PanelModel model, DefaultFileModel fileModel,
 			DefaultFileSelectionModel selectionModel,
+			DefaultToolButtonsModel toolButtonsModel,
 			ChangeDirectory changeDirectory, DefaultShortView shortView,
 			@Assisted Container container, @Assisted String currentDirectory) {
 		this(panel, optionsMenu, model, fileModel, selectionModel,
-				changeDirectory, shortView, container, new File(
-						currentDirectory));
+				toolButtonsModel, changeDirectory, shortView, container,
+				new File(currentDirectory));
 	}
 
 	@AssistedInject
 	FileChooserPanelImpl(UiFileChooserPanel panel, UiOptionsMenu optionsMenu,
 			PanelModel model, DefaultFileModel fileModel,
 			DefaultFileSelectionModel selectionModel,
+			DefaultToolButtonsModel toolButtonsModel,
 			ChangeDirectory changeDirectory, DefaultShortView shortView,
 			@Assisted Container container, @Assisted File currentDirectory) {
 		this(panel, optionsMenu, model, fileModel, selectionModel,
-				changeDirectory, shortView, container, currentDirectory,
-				FileSystemView.getFileSystemView());
+				toolButtonsModel, changeDirectory, shortView, container,
+				currentDirectory, FileSystemView.getFileSystemView());
 	}
 
 	@AssistedInject
 	FileChooserPanelImpl(UiFileChooserPanel panel, UiOptionsMenu optionsMenu,
 			PanelModel model, DefaultFileModel fileModel,
 			DefaultFileSelectionModel selectionModel,
+			DefaultToolButtonsModel toolButtonsModel,
 			ChangeDirectory changeDirectory, DefaultShortView shortView,
 			@Assisted Container container, @Assisted String currentDirectory,
 			@Assisted FileSystemView view) {
 		this(panel, optionsMenu, model, fileModel, selectionModel,
-				changeDirectory, shortView, container, new File(
-						currentDirectory), view);
+				toolButtonsModel, changeDirectory, shortView, container,
+				new File(currentDirectory), view);
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -105,6 +110,7 @@ class FileChooserPanelImpl implements FileChooserPanel {
 	FileChooserPanelImpl(UiFileChooserPanel panel, UiOptionsMenu optionsMenu,
 			PanelModel model, DefaultFileModel fileModel,
 			DefaultFileSelectionModel selectionModel,
+			DefaultToolButtonsModel toolButtonsModel,
 			ChangeDirectory changeDirectory, DefaultShortView shortView,
 			@Assisted Container container, @Assisted File currentDirectory,
 			@Assisted FileSystemView view) {
@@ -117,8 +123,10 @@ class FileChooserPanelImpl implements FileChooserPanel {
 		this.selectionModel = selectionModel;
 		this.container = container;
 		this.changeDirectory = changeDirectory;
+		this.toolButtonsModel = toolButtonsModel;
 		this.views = new HashMap<FileView, FileViewRenderer>(
 				FileView.values().length);
+		setToolButtonsModel(toolButtonsModel);
 		getFileSelectionModel().setMultiSelectionEnabled(false);
 		setFileView(FileView.SHORT, shortView);
 		setup(view, currentDirectory);
@@ -205,6 +213,10 @@ class FileChooserPanelImpl implements FileChooserPanel {
 	@Override
 	public void setToolButtonsModel(ToolButtonsModel model) {
 		this.toolButtonsModel = model;
+		panel.removeToolButtons();
+		for (int i = 0; i < model.getSize(); i++) {
+			panel.addToolButton(model.getActionAt(i));
+		}
 	}
 
 	@Override
