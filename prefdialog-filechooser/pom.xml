@@ -44,6 +44,7 @@
 			<groupId>com.anrisoftware.prefdialog</groupId>
 			<artifactId>prefdialog-icons-reflectionskde4</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
+			<optional>true</optional>
 		</dependency>
 	</dependencies>
 </project>
