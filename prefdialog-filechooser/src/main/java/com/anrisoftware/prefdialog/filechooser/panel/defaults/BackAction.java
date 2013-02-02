@@ -4,6 +4,8 @@ import static java.awt.event.KeyEvent.VK_B;
 
 import java.awt.event.ActionEvent;
 
+import com.anrisoftware.prefdialog.filechooser.panel.core.AbstractToolAction;
+
 @SuppressWarnings("serial")
 public class BackAction extends AbstractToolAction {
 

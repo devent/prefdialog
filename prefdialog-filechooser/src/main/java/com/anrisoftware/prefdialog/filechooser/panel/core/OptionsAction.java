@@ -1,26 +1,24 @@
-package com.anrisoftware.prefdialog.filechooser.panel.defaults;
+package com.anrisoftware.prefdialog.filechooser.panel.core;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-import com.anrisoftware.prefdialog.filechooser.panel.core.AbstractToolAction;
-
 @SuppressWarnings("serial")
-public class RefreshAction extends AbstractToolAction {
+public class OptionsAction extends AbstractToolAction {
 
-	public RefreshAction() {
-		setText("Refresh");
-		setMnemonic(KeyEvent.VK_R);
+	public OptionsAction() {
+		setText("Options");
+		setMnemonic(KeyEvent.VK_O);
 	}
 
 	@Override
 	public String getImageResource() {
-		return "action_view_refresh";
+		return "action_configure";
 	}
 
 	@Override
 	public boolean isToggleButton() {
-		return false;
+		return true;
 	}
 
 	@Override

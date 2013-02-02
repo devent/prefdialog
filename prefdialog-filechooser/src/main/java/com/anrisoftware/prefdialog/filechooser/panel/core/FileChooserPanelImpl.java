@@ -6,6 +6,7 @@ import java.io.File;
 import java.util.HashMap;
 
 import javax.inject.Inject;
+import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -59,6 +60,8 @@ class FileChooserPanelImpl implements FileChooserPanel {
 
 	private DirectoyModel directoryModel;
 
+	private OptionsAction optionsAction;
+
 	@SuppressWarnings("rawtypes")
 	@Inject
 	FileChooserPanelImpl(@Assisted Container container) {
@@ -95,6 +98,7 @@ class FileChooserPanelImpl implements FileChooserPanel {
 		fileModel.setFileSystemView(systemView);
 		fileModel.setDirectory(currentDirectory);
 		panel.setOptionsMenu(optionsMenu);
+		panel.getOptionsButton().setAction(optionsAction);
 		setupNativateDirectories();
 		setupFilesList();
 		setupToolButtons();
@@ -170,6 +174,11 @@ class FileChooserPanelImpl implements FileChooserPanel {
 		setFileViewRenderer(FileView.SHORT, renderer);
 	}
 
+	@Inject
+	void setOptionsAction(OptionsAction action) {
+		this.optionsAction = action;
+	}
+
 	@Override
 	public JButton getApproveButton() {
 		return panel.getApproveButton();
@@ -178,6 +187,11 @@ class FileChooserPanelImpl implements FileChooserPanel {
 	@Override
 	public JButton getCancelButton() {
 		return panel.getCancelButton();
+	}
+
+	@Override
+	public AbstractButton getOptionsButton() {
+		return panel.optionsButton;
 	}
 
 	@Override

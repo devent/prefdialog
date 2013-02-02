@@ -1,4 +1,4 @@
-package com.anrisoftware.prefdialog.filechooser.panel.defaults;
+package com.anrisoftware.prefdialog.filechooser.panel.core;
 
 import javax.swing.AbstractAction;
 import javax.swing.Icon;

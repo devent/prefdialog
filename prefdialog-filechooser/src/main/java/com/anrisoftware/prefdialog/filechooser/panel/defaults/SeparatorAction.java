@@ -2,6 +2,8 @@ package com.anrisoftware.prefdialog.filechooser.panel.defaults;
 
 import java.awt.event.ActionEvent;
 
+import com.anrisoftware.prefdialog.filechooser.panel.core.AbstractToolAction;
+
 @SuppressWarnings("serial")
 public class SeparatorAction extends AbstractToolAction {
 

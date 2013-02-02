@@ -3,6 +3,8 @@ package com.anrisoftware.prefdialog.filechooser.panel.defaults;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
+import com.anrisoftware.prefdialog.filechooser.panel.core.AbstractToolAction;
+
 @SuppressWarnings("serial")
 public class ForwardAction extends AbstractToolAction {
 

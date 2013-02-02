@@ -1,5 +1,6 @@
 package com.anrisoftware.prefdialog.filechooser.panel
 
+import static com.anrisoftware.globalpom.utils.TestFrameUtil.*
 import static com.anrisoftware.globalpom.utils.TestUtils.*
 import static org.apache.commons.io.FileUtils.*
 

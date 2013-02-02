@@ -3,6 +3,7 @@ package com.anrisoftware.prefdialog.filechooser.panel.api;
 import java.awt.event.ActionListener;
 import java.io.File;
 
+import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.filechooser.FileSystemView;
@@ -69,6 +70,8 @@ public interface FileChooserPanel {
 	JButton getApproveButton();
 
 	JButton getCancelButton();
+
+	AbstractButton getOptionsButton();
 
 	JLabel getNameLabel();
 

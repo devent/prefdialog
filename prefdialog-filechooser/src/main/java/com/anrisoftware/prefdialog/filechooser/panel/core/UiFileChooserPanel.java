@@ -128,6 +128,9 @@ final class UiFileChooserPanel extends JPanel {
 
 		optionsButton = new JButton("Options");
 		optionsButton.setName("options-button");
+		optionsButton.setMargin(new Insets(1, 1, 1, 1));
+		optionsButton.setBorderPainted(false);
+		optionsButton.setHideActionText(true);
 		toolButtonsPanel.add(optionsButton, "cell 2 0");
 		optionsButtonPopup = PopupButton.decorate(optionsButton,
 				new JPopupMenu());
@@ -264,7 +267,7 @@ final class UiFileChooserPanel extends JPanel {
 		}
 		component.setMargin(new Insets(1, 1, 1, 1));
 		component.setBorderPainted(false);
-		component.setHideActionText(false);
+		component.setHideActionText(true);
 		optionalToolButtonsPanel.add(component);
 		optionalToolButtonsPanel.getLayout().layoutContainer(
 				optionalToolButtonsPanel);
