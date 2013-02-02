@@ -12,6 +12,11 @@ public class ShowPreviewAction extends AbstractToolAction {
 	}
 
 	@Override
+	public String getImageResource() {
+		return "action_document_preview";
+	}
+
+	@Override
 	public boolean isToggleButton() {
 		return true;
 	}

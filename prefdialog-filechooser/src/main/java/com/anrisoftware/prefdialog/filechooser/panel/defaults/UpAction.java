@@ -12,6 +12,11 @@ public class UpAction extends AbstractToolAction {
 	}
 
 	@Override
+	public String getImageResource() {
+		return "action_go_up";
+	}
+
+	@Override
 	public boolean isToggleButton() {
 		return false;
 	}

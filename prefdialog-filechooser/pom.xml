@@ -35,5 +35,15 @@
 			<artifactId>commons-io</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.anrisoftware.resources</groupId>
+			<artifactId>resources-images</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>com.anrisoftware.prefdialog</groupId>
+			<artifactId>prefdialog-icons-reflectionskde4</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 </project>

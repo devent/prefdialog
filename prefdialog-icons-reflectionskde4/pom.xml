@@ -33,4 +33,10 @@ create and share this compilation
 theme. Thank you!
     </description>
 
+	<dependencies>
+		<dependency>
+			<groupId>com.anrisoftware.resources</groupId>
+			<artifactId>resources-images</artifactId>
+		</dependency>
+	</dependencies>
 </project>

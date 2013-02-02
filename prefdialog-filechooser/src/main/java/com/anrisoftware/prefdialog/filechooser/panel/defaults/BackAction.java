@@ -13,6 +13,11 @@ public class BackAction extends AbstractToolAction {
 	}
 
 	@Override
+	public String getImageResource() {
+		return "action_go_previous";
+	}
+
+	@Override
 	public boolean isToggleButton() {
 		return false;
 	}

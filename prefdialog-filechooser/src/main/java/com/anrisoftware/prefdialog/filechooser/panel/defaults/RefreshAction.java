@@ -12,6 +12,11 @@ public class RefreshAction extends AbstractToolAction {
 	}
 
 	@Override
+	public String getImageResource() {
+		return "action_view_refresh";
+	}
+
+	@Override
 	public boolean isToggleButton() {
 		return false;
 	}

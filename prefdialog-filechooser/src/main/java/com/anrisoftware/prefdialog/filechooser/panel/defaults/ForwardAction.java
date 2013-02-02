@@ -12,6 +12,11 @@ public class ForwardAction extends AbstractToolAction {
 	}
 
 	@Override
+	public String getImageResource() {
+		return "action_go_next";
+	}
+
+	@Override
 	public boolean isToggleButton() {
 		return false;
 	}

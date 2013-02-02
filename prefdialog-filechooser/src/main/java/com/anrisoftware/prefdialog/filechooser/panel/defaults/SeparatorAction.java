@@ -10,6 +10,11 @@ public class SeparatorAction extends AbstractToolAction {
 	}
 
 	@Override
+	public String getImageResource() {
+		return null;
+	}
+
+	@Override
 	public boolean isToggleButton() {
 		return false;
 	}

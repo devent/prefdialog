@@ -1,10 +1,11 @@
 package com.anrisoftware.prefdialog.filechooser.panel.core;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Insets;
 
+import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -239,21 +240,23 @@ final class UiFileChooserPanel extends JPanel {
 	}
 
 	public void addToolButton(ToolAction action) {
-		Component component;
+		AbstractButton component;
 		if (action.isToggleButton()) {
 			component = new JToggleButton(action);
 		} else if (action.isSeparator()) {
-			JButton button = new JButton(action);
-			button.setPreferredSize(new Dimension(6,
-					button.getPreferredSize().height));
-			button.setBorderPainted(false);
-			button.setContentAreaFilled(false);
-			button.setOpaque(false);
-			button.setFocusable(false);
-			component = button;
+			component = new JButton(action);
+			component.setPreferredSize(new Dimension(6, component
+					.getPreferredSize().height));
+			component.setBorderPainted(false);
+			component.setContentAreaFilled(false);
+			component.setOpaque(false);
+			component.setFocusable(false);
 		} else {
 			component = new JButton(action);
 		}
+		component.setMargin(new Insets(1, 1, 1, 1));
+		component.setBorderPainted(false);
+		component.setHideActionText(false);
 		optionalToolButtonsPanel.add(component);
 		optionalToolButtonsPanel.getLayout().layoutContainer(
 				optionalToolButtonsPanel);

@@ -6,23 +6,23 @@ import javax.swing.KeyStroke;
 
 public interface ToolAction extends Action {
 
-	public void setText(String text);
+	void setText(String text);
 
-	public void setMnemonic(int mnemonic);
+	void setMnemonic(int mnemonic);
 
-	public void setDisplayedMnemonicIndex(int index);
+	void setDisplayedMnemonicIndex(int index);
 
-	public void setAcceleratorKey(KeyStroke stroke);
+	void setAcceleratorKey(KeyStroke stroke);
 
-	public void setActionCommand(String command);
+	void setActionCommand(String command);
 
-	public void setLongDescription(String description);
+	void setLongDescription(String description);
 
-	public void setShortDescription(String description);
+	void setShortDescription(String description);
 
-	public void setLargeIcon(Icon icon);
+	void setLargeIcon(Icon icon);
 
-	public void setSmallIcon(Icon icon);
+	void setSmallIcon(Icon icon);
 
 	boolean isToggleButton();
 
