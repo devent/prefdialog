@@ -111,15 +111,15 @@ class FileChooserPanelImpl implements FileChooserPanel {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void setupFilesList() {
+		FileViewRenderer renderer = views.get(properties.getView());
 		JList list = panel.getFilesList();
 		list.setModel(fileModel);
-		FileViewRenderer renderer = views.get(properties.getView());
 		list.setCellRenderer(renderer);
 		list.setLayoutOrientation(renderer.getLayoutOrientation());
 		list.setVisibleRowCount(renderer.getVisibleRowCount());
 		list.setSelectionModel(selectionModel);
+		list.putClientProperty("List.isFileList", Boolean.TRUE);
 		selectionModel.setList(list);
-		// list.putClientProperty("List.isFileList", Boolean.TRUE);
 	}
 
 	private void setupToolButtons() {
