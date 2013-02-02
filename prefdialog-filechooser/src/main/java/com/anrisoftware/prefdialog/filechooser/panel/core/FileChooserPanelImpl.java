@@ -53,43 +53,51 @@ class FileChooserPanelImpl implements FileChooserPanel {
 
 	private final UiOptionsMenu optionsMenu;
 
+	private final ChangeDirectory changeDirectory;
+
 	@AssistedInject
 	FileChooserPanelImpl(UiFileChooserPanel panel, UiOptionsMenu optionsMenu,
 			PanelModel model, DefaultFileModel fileModel,
 			DefaultFileSelectionModel selectionModel,
-			DefaultShortView shortView, @Assisted Container container) {
-		this(panel, optionsMenu, model, fileModel, selectionModel, shortView,
-				container, new File(getProperty("user.home")));
+			ChangeDirectory changeDirectory, DefaultShortView shortView,
+			@Assisted Container container) {
+		this(panel, optionsMenu, model, fileModel, selectionModel,
+				changeDirectory, shortView, container, new File(
+						getProperty("user.home")));
 	}
 
 	@AssistedInject
 	FileChooserPanelImpl(UiFileChooserPanel panel, UiOptionsMenu optionsMenu,
 			PanelModel model, DefaultFileModel fileModel,
 			DefaultFileSelectionModel selectionModel,
-			DefaultShortView shortView, @Assisted Container container,
-			@Assisted String currentDirectory) {
-		this(panel, optionsMenu, model, fileModel, selectionModel, shortView,
-				container, new File(currentDirectory));
+			ChangeDirectory changeDirectory, DefaultShortView shortView,
+			@Assisted Container container, @Assisted String currentDirectory) {
+		this(panel, optionsMenu, model, fileModel, selectionModel,
+				changeDirectory, shortView, container, new File(
+						currentDirectory));
 	}
 
 	@AssistedInject
 	FileChooserPanelImpl(UiFileChooserPanel panel, UiOptionsMenu optionsMenu,
 			PanelModel model, DefaultFileModel fileModel,
 			DefaultFileSelectionModel selectionModel,
-			DefaultShortView shortView, @Assisted Container container,
-			@Assisted File currentDirectory) {
-		this(panel, optionsMenu, model, fileModel, selectionModel, shortView,
-				container, currentDirectory, FileSystemView.getFileSystemView());
+			ChangeDirectory changeDirectory, DefaultShortView shortView,
+			@Assisted Container container, @Assisted File currentDirectory) {
+		this(panel, optionsMenu, model, fileModel, selectionModel,
+				changeDirectory, shortView, container, currentDirectory,
+				FileSystemView.getFileSystemView());
 	}
 
 	@AssistedInject
 	FileChooserPanelImpl(UiFileChooserPanel panel, UiOptionsMenu optionsMenu,
 			PanelModel model, DefaultFileModel fileModel,
 			DefaultFileSelectionModel selectionModel,
-			DefaultShortView shortView, @Assisted Container container,
-			@Assisted String currentDirectory, @Assisted FileSystemView view) {
-		this(panel, optionsMenu, model, fileModel, selectionModel, shortView,
-				container, new File(currentDirectory), view);
+			ChangeDirectory changeDirectory, DefaultShortView shortView,
+			@Assisted Container container, @Assisted String currentDirectory,
+			@Assisted FileSystemView view) {
+		this(panel, optionsMenu, model, fileModel, selectionModel,
+				changeDirectory, shortView, container, new File(
+						currentDirectory), view);
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -97,8 +105,9 @@ class FileChooserPanelImpl implements FileChooserPanel {
 	FileChooserPanelImpl(UiFileChooserPanel panel, UiOptionsMenu optionsMenu,
 			PanelModel model, DefaultFileModel fileModel,
 			DefaultFileSelectionModel selectionModel,
-			DefaultShortView shortView, @Assisted Container container,
-			@Assisted File currentDirectory, @Assisted FileSystemView view) {
+			ChangeDirectory changeDirectory, DefaultShortView shortView,
+			@Assisted Container container, @Assisted File currentDirectory,
+			@Assisted FileSystemView view) {
 		this.actionListeners = new EventListenerSupport<ActionListener>(
 				ActionListener.class);
 		this.panel = panel;
@@ -107,6 +116,7 @@ class FileChooserPanelImpl implements FileChooserPanel {
 		this.fileModel = fileModel;
 		this.selectionModel = selectionModel;
 		this.container = container;
+		this.changeDirectory = changeDirectory;
 		this.views = new HashMap<FileView, FileViewRenderer>(
 				FileView.values().length);
 		getFileSelectionModel().setMultiSelectionEnabled(false);
@@ -119,6 +129,9 @@ class FileChooserPanelImpl implements FileChooserPanel {
 		fileModel.setFileSystemView(view);
 		fileModel.setDirectory(currentDirectory);
 		panel.setOptionsMenu(optionsMenu);
+		changeDirectory.setFileChooserPanel(this);
+		changeDirectory.setFileSystemView(view);
+		changeDirectory.setList(panel.getFilesList());
 		setupFilesList();
 	}
 
@@ -137,6 +150,8 @@ class FileChooserPanelImpl implements FileChooserPanel {
 
 	@Override
 	public void approveAction() {
+		System.out.println("FileChooserPanelImpl.approveAction()"); // TODO
+																	// println
 		// TODO Auto-generated method stub
 
 	}

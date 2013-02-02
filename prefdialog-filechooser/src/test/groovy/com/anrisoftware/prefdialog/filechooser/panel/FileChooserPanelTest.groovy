@@ -28,6 +28,10 @@ class FileChooserPanelTest {
 
 	FileChooserPanel panel
 
+	def dirs
+
+	def files
+
 	@Test
 	void "show JFileChooser"() {
 		def title = "FileChooserPanelTest::show JFileChooser"
@@ -39,11 +43,31 @@ class FileChooserPanelTest {
 	}
 
 	@Test
-	void "show panel"() {
-		def title = "FileChooserPanelTest::show panel"
-		def frame = createFrame(title)
-		frame.frameSize = new Dimension(480, 360)
-		frame.withFixture { }
+	void "manually"() {
+		def title = "FileChooserPanelTest::manually"
+		withFiles "files", {
+			def frame = createFrame(it, title)
+			panel.getFileSelectionModel().setMultiSelectionEnabled true
+			frame.frameSize = new Dimension(480, 360)
+			frame.withFixture({ Thread.sleep 60*1000 })
+		}, { createFiles(it) }
+	}
+
+	@Test
+	void "go in directory, select file"() {
+		def title = "FileChooserPanelTest::go in directory, select file"
+		withFiles "files", {
+			def frame = createFrame(it, title)
+			panel.getFileSelectionModel().setMultiSelectionEnabled true
+			frame.frameSize = new Dimension(480, 360)
+			frame.withFixture({ FrameFixture f ->
+				f.list(FILES_LIST_NAME).item(0).doubleClick()
+			}, { FrameFixture f ->
+				f.list(FILES_LIST_NAME).item(0).doubleClick()
+			}, { FrameFixture f ->
+				assert panel.getFileSelectionModel().getSelectedFileList() == [files[3]]
+			})
+		}, { createFiles(it) }
 	}
 
 	@Test
@@ -55,27 +79,19 @@ class FileChooserPanelTest {
 			frame.frameSize = new Dimension(480, 360)
 			frame.withFixture({ FrameFixture f ->
 				f.list(FILES_LIST_NAME).selectItems(0, 1, 2, 3, 4, 5)
-				assert panel.getFileSelectionModel().getSelectedFileList() == [
-					new File(it, "aaa.txt"),
-					new File(it, "bbb.txt"),
-					new File(it, "ccc.txt")
-				]
+				assert panel.getFileSelectionModel().getSelectedFileList() == [files[0], files[1], files[2]]
 			}, { FrameFixture f ->
 				f.list(FILES_LIST_NAME).clearSelection()
 			}, { FrameFixture f ->
 				panel.fileSelectionModel.setSelectedFiles([
-					new File(it, "Aaa"),
-					new File(it, "Bbb"),
-					new File(it, "ccc"),
-					new File(it, "aaa.txt"),
-					new File(it, "bbb.txt"),
-					new File(it, "ccc.txt")
+					dirs[0],
+					dirs[1],
+					dirs[2],
+					files[0],
+					files[1],
+					files[2]
 				])
-				assert panel.getFileSelectionModel().getSelectedFileList() == [
-					new File(it, "aaa.txt"),
-					new File(it, "bbb.txt"),
-					new File(it, "ccc.txt")
-				]
+				assert panel.getFileSelectionModel().getSelectedFileList() == [files[0], files[1], files[2]]
 			})
 		}, { createFiles(it) }
 	}
@@ -89,23 +105,19 @@ class FileChooserPanelTest {
 			frame.frameSize = new Dimension(480, 360)
 			frame.withFixture({ FrameFixture f ->
 				f.list(FILES_LIST_NAME).selectItems(0, 1, 2, 3, 4, 5)
-				assert panel.getFileSelectionModel().getSelectedFileList() == [
-					new File(it, "ccc.txt")
-				]
+				assert panel.getFileSelectionModel().getSelectedFileList() == [files[2]]
 			}, { FrameFixture f ->
 				f.list(FILES_LIST_NAME).clearSelection()
 			}, { FrameFixture f ->
 				panel.fileSelectionModel.setSelectedFiles([
-					new File(it, "Aaa"),
-					new File(it, "Bbb"),
-					new File(it, "ccc"),
-					new File(it, "aaa.txt"),
-					new File(it, "bbb.txt"),
-					new File(it, "ccc.txt")
+					dirs[0],
+					dirs[1],
+					dirs[2],
+					files[0],
+					files[1],
+					files[2]
 				])
-				assert panel.getFileSelectionModel().getSelectedFileList() == [
-					new File(it, "ccc.txt")
-				]
+				assert panel.getFileSelectionModel().getSelectedFileList() == [files[2]]
 			})
 		}, { createFiles(it) }
 	}
@@ -119,12 +131,20 @@ class FileChooserPanelTest {
 	}
 
 	private createFiles(File parent) {
-		new File(parent, "Aaa").mkdir()
-		new File(parent, "Bbb").mkdir()
-		new File(parent, "ccc").mkdir()
-		touch new File(parent, "aaa.txt")
-		touch new File(parent, "bbb.txt")
-		touch new File(parent, "ccc.txt")
+		dirs = [
+			new File(parent, "Aaa"),
+			new File(parent, "Bbb"),
+			new File(parent, "ccc")
+		]
+		dirs.each { it.mkdir() }
+
+		files = [
+			new File(parent, "aaa.txt"),
+			new File(parent, "bbb.txt"),
+			new File(parent, "ccc.txt"),
+			new File(dirs[0], "Aaa-aaa.txt")
+		]
+		files.each { touch it }
 	}
 
 	static Injector injector
