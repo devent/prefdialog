@@ -101,7 +101,7 @@ class FileChooserPanelTest extends FileChooserPanelTestUtil {
 	void "selected files set"() {
 		def title = "FileChooserPanelTest::selected files set"
 		def frame = createFrame(title)
-		panel.getFileSelectionModel().setMultiSelectionEnabled false
+		panel.getFileSelectionModel().setMultiSelectionEnabled true
 		panel.getFileChooserPanelProperties().addSelectedFilesToQueue(new HashSet([files[0], files[1]]))
 		panel.getFileChooserPanelProperties().addSelectedFilesToQueue(new HashSet([files[2]]))
 		frame.withFixture({ FrameFixture f ->

@@ -67,6 +67,7 @@ public class DefaultFileSelectionModel extends DefaultListSelectionModel
 		}
 		@SuppressWarnings("rawtypes")
 		ListModel model = list.getModel();
+		int lastIndex = -1;
 		for (File file : files) {
 			for (int i = 0; i < model.getSize(); i++) {
 				File fileB = (File) model.getElementAt(i);
@@ -75,12 +76,17 @@ public class DefaultFileSelectionModel extends DefaultListSelectionModel
 				if (fileB.equals(file)) {
 					if (fileSelection && fileSystem && !traversable) {
 						addSelectionInterval(i, i);
+						lastIndex = i;
 					}
 					if (directorySelection && fileSystem && traversable) {
 						addSelectionInterval(i, i);
+						lastIndex = i;
 					}
 				}
 			}
+		}
+		if (lastIndex != -1) {
+			list.ensureIndexIsVisible(lastIndex);
 		}
 	}
 

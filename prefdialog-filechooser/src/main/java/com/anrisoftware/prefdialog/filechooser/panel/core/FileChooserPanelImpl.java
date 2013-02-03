@@ -127,7 +127,9 @@ class FileChooserPanelImpl implements FileChooserPanel {
 
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
-				fileNameEditor.setCurrentDirectory(fileModel.getDirectory());
+				File file = fileModel.getDirectory();
+				fileNameEditor.setCurrentDirectory(file);
+				directoryModel.setCurrentDirectory(file);
 			}
 		};
 		this.fileNameListener = new ActionListener() {
@@ -139,6 +141,9 @@ class FileChooserPanelImpl implements FileChooserPanel {
 				if (files == null) {
 					return;
 				}
+				selectionModel.clearSelection();
+				selectionModel.setSelectedFiles(files.toArray(new File[files
+						.size()]));
 				Iterator<File> it = files.iterator();
 				if (!it.hasNext()) {
 					return;
