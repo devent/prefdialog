@@ -1,6 +1,7 @@
 package com.anrisoftware.prefdialog.filechooser.panel.core;
 
 import static com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanelProperties.SELECTED_FILES_IN_QUEUE_PROPERTY;
+import static com.anrisoftware.prefdialog.filechooser.panel.api.FileModel.DIRECTORY_PROPERTY;
 
 import java.awt.Container;
 import java.awt.event.ActionListener;
@@ -25,6 +26,7 @@ import com.anrisoftware.prefdialog.filechooser.panel.api.DirectoyModel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanelProperties;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileModel;
+import com.anrisoftware.prefdialog.filechooser.panel.api.FileNameEditor;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileNameRenderer;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FilePropertiesModel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileSelectionModel;
@@ -79,6 +81,12 @@ class FileChooserPanelImpl implements FileChooserPanel {
 
 	private FileNameRenderer fileNameRenderer;
 
+	private FileNameEditor fileNameEditor;
+
+	private PropertyChangeListener diListener;
+
+	private PropertyChangeListener directoryListener;
+
 	@SuppressWarnings("rawtypes")
 	@Inject
 	FileChooserPanelImpl(@Assisted Container container) {
@@ -112,6 +120,13 @@ class FileChooserPanelImpl implements FileChooserPanel {
 						.getSelectedFilesInQueue());
 			}
 		};
+		this.directoryListener = new PropertyChangeListener() {
+
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				fileNameEditor.setCurrentDirectory(fileModel.getDirectory());
+			}
+		};
 	}
 
 	@Override
@@ -141,15 +156,20 @@ class FileChooserPanelImpl implements FileChooserPanel {
 	private void setup() {
 		directoryModel.setCurrentDirectory(currentDirectory);
 		container.add(panel);
-		fileModel.setFileSystemView(systemView);
-		fileModel.setDirectory(currentDirectory);
 		panel.setOptionsMenu(optionsMenu);
 		panel.getOptionsButton().setAction(optionsAction);
+		setupFileModel();
 		setupNameField();
 		setupNativateDirectories();
 		setupFilesList();
 		setupToolButtons();
+	}
 
+	private void setupFileModel() {
+		fileModel.setFileSystemView(systemView);
+		fileModel.setDirectory(currentDirectory);
+		fileModel.addPropertyChangeListener(DIRECTORY_PROPERTY,
+				directoryListener);
 	}
 
 	private void setupNameField() {
@@ -159,6 +179,9 @@ class FileChooserPanelImpl implements FileChooserPanel {
 				.getSelectedFilesInQueue());
 		panel.nameField.setModel(selectedFilesQueueModel);
 		panel.nameField.setRenderer(fileNameRenderer);
+		fileNameEditor.setEditorDelegate(panel.nameField.getEditor());
+		panel.nameField.setEditor(fileNameEditor);
+		fileNameEditor.setCurrentDirectory(currentDirectory);
 	}
 
 	private void setupNativateDirectories() {
@@ -348,6 +371,12 @@ class FileChooserPanelImpl implements FileChooserPanel {
 	@Override
 	public void setFileNameRenderer(FileNameRenderer renderer) {
 		this.fileNameRenderer = renderer;
+	}
+
+	@Inject
+	@Override
+	public void setFileNameEditor(FileNameEditor editor) {
+		this.fileNameEditor = editor;
 	}
 
 	@Override

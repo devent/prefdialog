@@ -5,11 +5,13 @@ import com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanelFactory;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanelProperties;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileModel;
+import com.anrisoftware.prefdialog.filechooser.panel.api.FileNameEditor;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileNameRenderer;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileSelectionModel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.ToolButtonsModel;
 import com.anrisoftware.prefdialog.filechooser.panel.defaults.DefaultFileChooserPanelProperties;
 import com.anrisoftware.prefdialog.filechooser.panel.defaults.DefaultFileModel;
+import com.anrisoftware.prefdialog.filechooser.panel.defaults.DefaultFileNameEditor;
 import com.anrisoftware.prefdialog.filechooser.panel.defaults.DefaultFileNameRenderer;
 import com.anrisoftware.prefdialog.filechooser.panel.defaults.DefaultFileSelectionModel;
 import com.anrisoftware.prefdialog.filechooser.panel.defaults.DefaultToolButtonsModel;
@@ -30,6 +32,7 @@ public class FileChooserPanelModule extends AbstractModule {
 		bind(ToolButtonsModel.class).to(DefaultToolButtonsModel.class);
 		bind(DirectoyModel.class).to(DirectoyStackImpl.class);
 		bind(FileNameRenderer.class).to(DefaultFileNameRenderer.class);
+		bind(FileNameEditor.class).to(DefaultFileNameEditor.class);
 	}
 
 }

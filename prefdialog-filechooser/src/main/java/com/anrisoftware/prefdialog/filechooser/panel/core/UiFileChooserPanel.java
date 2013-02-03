@@ -15,7 +15,6 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
@@ -51,7 +50,6 @@ final class UiFileChooserPanel extends JPanel {
 	final JLabel filterLabel;
 
 	private final PopupButton optionsButtonPopup;
-	private final JTextField textField;
 
 	/**
 	 * Create the panel.
@@ -128,10 +126,6 @@ final class UiFileChooserPanel extends JPanel {
 		toolButtonsPanel.add(optionalToolButtonsPanel, "cell 0 0");
 		optionalToolButtonsPanel
 				.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
-
-		textField = new JTextField();
-		toolButtonsPanel.add(textField, "cell 1 0,growx");
-		textField.setColumns(10);
 
 		optionsButton = new JButton("Options");
 		optionsButton.setName("options-button");

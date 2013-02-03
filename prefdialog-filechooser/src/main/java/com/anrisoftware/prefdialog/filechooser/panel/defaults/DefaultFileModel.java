@@ -1,5 +1,7 @@
 package com.anrisoftware.prefdialog.filechooser.panel.defaults;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,6 +22,8 @@ import com.anrisoftware.prefdialog.filechooser.panel.api.FileSort;
 
 @SuppressWarnings({ "serial", "rawtypes" })
 public class DefaultFileModel extends AbstractListModel implements FileModel {
+
+	private final PropertyChangeSupport support;
 
 	private FileSystemView systemView;
 
@@ -50,6 +54,7 @@ public class DefaultFileModel extends AbstractListModel implements FileModel {
 	}
 
 	public DefaultFileModel(FileSystemView systemView, FileView fileView) {
+		this.support = new PropertyChangeSupport(this);
 		this.filters = new ArrayList<FileFilter>();
 		this.files = new ArrayList<File>();
 		this.useFileHiding = true;
@@ -120,7 +125,9 @@ public class DefaultFileModel extends AbstractListModel implements FileModel {
 
 	@Override
 	public void setFileHidingEnabled(boolean b) {
+		boolean oldValue = this.useFileHiding;
 		this.useFileHiding = b;
+		support.firePropertyChange(FILE_HIDDING_PROPERTY, oldValue, b);
 	}
 
 	@Override
@@ -135,6 +142,12 @@ public class DefaultFileModel extends AbstractListModel implements FileModel {
 			this.directory = directory;
 			updateDirectory(directory);
 		}
+		support.firePropertyChange(DIRECTORY_PROPERTY, oldValue, directory);
+	}
+
+	@Override
+	public File getDirectory() {
+		return directory;
 	}
 
 	@Override
@@ -239,4 +252,24 @@ public class DefaultFileModel extends AbstractListModel implements FileModel {
 		return files.get(index);
 	}
 
+	@Override
+	public void addPropertyChangeListener(PropertyChangeListener l) {
+		support.addPropertyChangeListener(l);
+	}
+
+	@Override
+	public void addPropertyChangeListener(String name, PropertyChangeListener l) {
+		support.addPropertyChangeListener(name, l);
+	}
+
+	@Override
+	public void removePropertyChangeListener(PropertyChangeListener l) {
+		support.removePropertyChangeListener(l);
+	}
+
+	@Override
+	public void removePropertyChangeListener(String name,
+			PropertyChangeListener l) {
+		support.removePropertyChangeListener(name, l);
+	}
 }
