@@ -4,12 +4,15 @@ import static com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel
 import static com.anrisoftware.prefdialog.filechooser.panel.api.FileModel.DIRECTORY_PROPERTY;
 
 import java.awt.Container;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.swing.AbstractButton;
@@ -83,9 +86,9 @@ class FileChooserPanelImpl implements FileChooserPanel {
 
 	private FileNameEditor fileNameEditor;
 
-	private PropertyChangeListener diListener;
-
 	private PropertyChangeListener directoryListener;
+
+	private ActionListener fileNameListener;
 
 	@SuppressWarnings("rawtypes")
 	@Inject
@@ -125,6 +128,27 @@ class FileChooserPanelImpl implements FileChooserPanel {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				fileNameEditor.setCurrentDirectory(fileModel.getDirectory());
+			}
+		};
+		this.fileNameListener = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				@SuppressWarnings("unchecked")
+				Set<File> files = (Set<File>) panel.nameField.getSelectedItem();
+				if (files == null) {
+					return;
+				}
+				Iterator<File> it = files.iterator();
+				if (!it.hasNext()) {
+					return;
+				}
+				File file = it.next();
+				if (file.isDirectory()) {
+					fileModel.setDirectory(file);
+				} else {
+					fileModel.setDirectory(file.getParentFile());
+				}
 			}
 		};
 	}
@@ -182,6 +206,7 @@ class FileChooserPanelImpl implements FileChooserPanel {
 		fileNameEditor.setEditorDelegate(panel.nameField.getEditor());
 		panel.nameField.setEditor(fileNameEditor);
 		fileNameEditor.setCurrentDirectory(currentDirectory);
+		panel.nameField.addActionListener(fileNameListener);
 	}
 
 	private void setupNativateDirectories() {

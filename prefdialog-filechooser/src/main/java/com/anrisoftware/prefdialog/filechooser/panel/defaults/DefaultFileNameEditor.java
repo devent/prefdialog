@@ -65,12 +65,12 @@ public class DefaultFileNameEditor implements FileNameEditor {
 
 	@Override
 	public void addActionListener(ActionListener l) {
-		editorDelegate.addActionListener(l);
+		field.addActionListener(l);
 	}
 
 	@Override
 	public void removeActionListener(ActionListener l) {
-		editorDelegate.removeActionListener(l);
+		field.removeActionListener(l);
 	}
 
 	@SuppressWarnings("serial")
