@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Insets;
+import java.io.File;
+import java.util.Set;
 
 import javax.swing.AbstractButton;
 import javax.swing.JButton;
@@ -26,7 +28,7 @@ import com.anrisoftware.prefdialog.filechooser.panel.api.ToolAction;
 @SuppressWarnings({ "serial", "rawtypes" })
 final class UiFileChooserPanel extends JPanel {
 
-	final JComboBox nameField;
+	final JComboBox<Set<File>> nameField;
 	final JComboBox filterField;
 	final JComboBox locationField;
 	final JToolBar placesToolBar;

@@ -1,7 +1,11 @@
 package com.anrisoftware.prefdialog.filechooser.panel.core;
 
+import static com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanelProperties.SELECTED_FILES_IN_QUEUE_PROPERTY;
+
 import java.awt.Container;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
@@ -68,6 +72,10 @@ class FileChooserPanelImpl implements FileChooserPanel {
 
 	private OptionsAction optionsAction;
 
+	private SelectedFilesQueueModel selectedFilesQueueModel;
+
+	private PropertyChangeListener selectedFilesInQueueListener;
+
 	@SuppressWarnings("rawtypes")
 	@Inject
 	FileChooserPanelImpl(@Assisted Container container) {
@@ -86,12 +94,19 @@ class FileChooserPanelImpl implements FileChooserPanel {
 					return;
 				}
 				List<File> files = selectionModel.getSelectedFileList();
-				System.out.println(files);// TODO println
 				if (files.size() == 0) {
 					properties.clearSelectedFiles();
 				} else {
 					properties.addSelectedFiles(files);
 				}
+			}
+		};
+		this.selectedFilesInQueueListener = new PropertyChangeListener() {
+
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				selectedFilesQueueModel.setSelectedFiles(properties
+						.getSelectedFilesInQueue());
 			}
 		};
 	}
@@ -127,10 +142,19 @@ class FileChooserPanelImpl implements FileChooserPanel {
 		fileModel.setDirectory(currentDirectory);
 		panel.setOptionsMenu(optionsMenu);
 		panel.getOptionsButton().setAction(optionsAction);
+		setupNameField();
 		setupNativateDirectories();
 		setupFilesList();
 		setupToolButtons();
 
+	}
+
+	private void setupNameField() {
+		properties.addPropertyChangeListener(SELECTED_FILES_IN_QUEUE_PROPERTY,
+				selectedFilesInQueueListener);
+		selectedFilesQueueModel.setSelectedFiles(properties
+				.getSelectedFilesInQueue());
+		panel.nameField.setModel(selectedFilesQueueModel);
 	}
 
 	private void setupNativateDirectories() {
@@ -208,6 +232,11 @@ class FileChooserPanelImpl implements FileChooserPanel {
 		this.optionsAction = action;
 	}
 
+	@Inject
+	void setSelectedFilesQueueModel(SelectedFilesQueueModel model) {
+		this.selectedFilesQueueModel = model;
+	}
+
 	@Override
 	public JButton getApproveButton() {
 		return panel.getApproveButton();
@@ -231,6 +260,11 @@ class FileChooserPanelImpl implements FileChooserPanel {
 	@Override
 	public JLabel getFilterLabel() {
 		return panel.getFilterLabel();
+	}
+
+	@Override
+	public FileChooserPanelProperties getFileChooserPanelProperties() {
+		return properties;
 	}
 
 	@Inject

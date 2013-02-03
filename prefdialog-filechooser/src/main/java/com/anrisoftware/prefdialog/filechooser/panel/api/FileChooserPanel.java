@@ -87,6 +87,8 @@ public interface FileChooserPanel {
 
 	JLabel getFilterLabel();
 
+	FileChooserPanelProperties getFileChooserPanelProperties();
+
 	/**
 	 * Sets the model to navigate in the directory structure.
 	 * 

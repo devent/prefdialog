@@ -79,7 +79,6 @@ class FileChooserPanelTest extends FileChooserPanelTestUtil {
 		def title = "FileChooserPanelTest::set multi selection disabled, only files"
 		def frame = createFrame(title)
 		panel.getFileSelectionModel().setMultiSelectionEnabled false
-		frame.frameSize = new Dimension(480, 360)
 		frame.withFixture({ FrameFixture f ->
 			f.list(FILES_LIST_NAME).selectItems(0, 1, 2, 3, 4, 5)
 			assert panel.getFileSelectionModel().getSelectedFileList() == [files[2]]
@@ -95,6 +94,20 @@ class FileChooserPanelTest extends FileChooserPanelTestUtil {
 				files[2]
 			])
 			assert panel.getFileSelectionModel().getSelectedFileList() == [files[2]]
+		})
+	}
+
+	@Test
+	void "selected files set"() {
+		def title = "FileChooserPanelTest::selected files set"
+		def frame = createFrame(title)
+		panel.getFileSelectionModel().setMultiSelectionEnabled false
+		panel.getFileChooserPanelProperties().addSelectedFilesToQueue(new HashSet([files[0], files[1]]))
+		panel.getFileChooserPanelProperties().addSelectedFilesToQueue(new HashSet([files[2]]))
+		frame.withFixture({ FrameFixture f ->
+			f.comboBox(NAME_FIELD_NAME).selectItem(0)
+		}, { FrameFixture f ->
+			f.comboBox(NAME_FIELD_NAME).selectItem(1)
 		})
 	}
 }
