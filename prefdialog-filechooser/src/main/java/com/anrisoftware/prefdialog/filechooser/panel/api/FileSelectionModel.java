@@ -5,23 +5,22 @@ import java.util.List;
 
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
+import javax.swing.filechooser.FileSystemView;
 
 public interface FileSelectionModel extends ListSelectionModel {
 
+	void setFileSystemView(FileSystemView systemView);
+
 	@SuppressWarnings("rawtypes")
 	void setList(JList list);
-
-	File getCurrentDirectory();
-
-	void changeToParentDirectory();
 
 	void setSelectedFile(File file);
 
 	File getSelectedFile();
 
-	void setSelectedFiles(File[] selectedFiles);
+	void setSelectedFiles(File[] files);
 
-	void setSelectedFiles(List<File> selectedFiles);
+	void setSelectedFiles(List<File> files);
 
 	File[] getSelectedFiles();
 

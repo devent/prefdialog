@@ -63,6 +63,16 @@ public interface FileChooserPanel {
 	 */
 	FileChooserPanel withFileSystemView(FileSystemView view);
 
+	/**
+	 * Sets the file chooser properties.
+	 * 
+	 * @param view
+	 *            the {@link FileChooserPanelProperties} properties.
+	 * 
+	 * @return the {@link FileChooserPanel}.
+	 */
+	FileChooserPanel withProperties(FileChooserPanelProperties properties);
+
 	void approveAction();
 
 	void cancelAction();

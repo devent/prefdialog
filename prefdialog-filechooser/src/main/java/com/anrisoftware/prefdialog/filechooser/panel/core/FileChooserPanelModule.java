@@ -3,9 +3,11 @@ package com.anrisoftware.prefdialog.filechooser.panel.core;
 import com.anrisoftware.prefdialog.filechooser.panel.api.DirectoyModel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanelFactory;
+import com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanelProperties;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileModel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileSelectionModel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.ToolButtonsModel;
+import com.anrisoftware.prefdialog.filechooser.panel.defaults.DefaultFileChooserPanelProperties;
 import com.anrisoftware.prefdialog.filechooser.panel.defaults.DefaultFileModel;
 import com.anrisoftware.prefdialog.filechooser.panel.defaults.DefaultFileSelectionModel;
 import com.anrisoftware.prefdialog.filechooser.panel.defaults.DefaultToolButtonsModel;
@@ -19,6 +21,8 @@ public class FileChooserPanelModule extends AbstractModule {
 		install(new FactoryModuleBuilder().implement(FileChooserPanel.class,
 				FileChooserPanelImpl.class)
 				.build(FileChooserPanelFactory.class));
+		bind(FileChooserPanelProperties.class).to(
+				DefaultFileChooserPanelProperties.class);
 		bind(FileModel.class).to(DefaultFileModel.class);
 		bind(FileSelectionModel.class).to(DefaultFileSelectionModel.class);
 		bind(ToolButtonsModel.class).to(DefaultToolButtonsModel.class);

@@ -4,18 +4,22 @@ import java.awt.Container;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileSystemView;
 
 import org.apache.commons.lang3.event.EventListenerSupport;
 
 import com.anrisoftware.prefdialog.filechooser.panel.api.DirectoyModel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel;
+import com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanelProperties;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileModel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FilePropertiesModel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileSelectionModel;
@@ -36,6 +40,8 @@ class FileChooserPanelImpl implements FileChooserPanel {
 	@SuppressWarnings("rawtypes")
 	private final HashMap<FileView, FileViewRenderer> views;
 
+	private final ListSelectionListener fileSelectionListener;
+
 	private FileSystemView systemView;
 
 	private File currentDirectory;
@@ -52,7 +58,7 @@ class FileChooserPanelImpl implements FileChooserPanel {
 
 	private FilePropertiesModel filePropertiesModel;
 
-	private PanelProperties properties;
+	private FileChooserPanelProperties properties;
 
 	private UiOptionsMenu optionsMenu;
 
@@ -72,6 +78,22 @@ class FileChooserPanelImpl implements FileChooserPanel {
 				ActionListener.class);
 		this.views = new HashMap<FileView, FileViewRenderer>(
 				FileView.values().length);
+		this.fileSelectionListener = new ListSelectionListener() {
+
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				if (e.getValueIsAdjusting()) {
+					return;
+				}
+				List<File> files = selectionModel.getSelectedFileList();
+				System.out.println(files);// TODO println
+				if (files.size() == 0) {
+					properties.clearSelectedFiles();
+				} else {
+					properties.addSelectedFiles(files);
+				}
+			}
+		};
 	}
 
 	@Override
@@ -83,6 +105,12 @@ class FileChooserPanelImpl implements FileChooserPanel {
 	@Override
 	public FileChooserPanel withFileSystemView(FileSystemView view) {
 		this.systemView = view;
+		return this;
+	}
+
+	@Override
+	public FileChooserPanel withProperties(FileChooserPanelProperties properties) {
+		setPanelProperties(properties);
 		return this;
 	}
 
@@ -124,6 +152,7 @@ class FileChooserPanelImpl implements FileChooserPanel {
 		list.setSelectionModel(selectionModel);
 		list.putClientProperty("List.isFileList", Boolean.TRUE);
 		selectionModel.setList(list);
+		selectionModel.addListSelectionListener(fileSelectionListener);
 	}
 
 	private void setupToolButtons() {
@@ -155,7 +184,7 @@ class FileChooserPanelImpl implements FileChooserPanel {
 	}
 
 	@Inject
-	void setPanelProperties(PanelProperties properties) {
+	void setPanelProperties(FileChooserPanelProperties properties) {
 		this.properties = properties;
 	}
 

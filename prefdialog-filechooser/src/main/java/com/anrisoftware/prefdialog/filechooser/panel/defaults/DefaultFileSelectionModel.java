@@ -19,19 +19,23 @@ public class DefaultFileSelectionModel extends DefaultListSelectionModel
 		implements FileSelectionModel {
 
 	private boolean directorySelection;
+
 	private boolean fileSelection;
-	private final FileSystemView systemView;
+
+	private FileSystemView systemView;
+
 	@SuppressWarnings("rawtypes")
 	private JList list;
 
 	public DefaultFileSelectionModel() {
-		this(FileSystemView.getFileSystemView());
-	}
-
-	public DefaultFileSelectionModel(FileSystemView systemView) {
-		this.systemView = systemView;
+		setFileSystemView(FileSystemView.getFileSystemView());
 		setDirectorySelectionEnabled(false);
 		setFileSelectionEnabled(true);
+	}
+
+	@Override
+	public void setFileSystemView(FileSystemView systemView) {
+		this.systemView = systemView;
 	}
 
 	@Override
@@ -41,19 +45,8 @@ public class DefaultFileSelectionModel extends DefaultListSelectionModel
 	}
 
 	@Override
-	public File getCurrentDirectory() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void changeToParentDirectory() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void setSelectedFile(File file) {
+		setSelectedFiles(Arrays.asList(file));
 	}
 
 	@Override
@@ -63,18 +56,18 @@ public class DefaultFileSelectionModel extends DefaultListSelectionModel
 	}
 
 	@Override
-	public void setSelectedFiles(File[] selectedFiles) {
-		setSelectedFiles(Arrays.asList(selectedFiles));
+	public void setSelectedFiles(File[] files) {
+		setSelectedFiles(Arrays.asList(files));
 	}
 
 	@Override
-	public void setSelectedFiles(List<File> selectedFiles) {
+	public void setSelectedFiles(List<File> files) {
 		if (!isMultiSelectionEnabled()) {
-			removeExceptLast(selectedFiles);
+			removeExceptLast(files);
 		}
 		@SuppressWarnings("rawtypes")
 		ListModel model = list.getModel();
-		for (File file : selectedFiles) {
+		for (File file : files) {
 			for (int i = 0; i < model.getSize(); i++) {
 				File fileB = (File) model.getElementAt(i);
 				boolean fileSystem = systemView.isFileSystem(file);
