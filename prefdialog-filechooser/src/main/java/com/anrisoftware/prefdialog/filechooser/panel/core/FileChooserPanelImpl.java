@@ -25,6 +25,7 @@ import com.anrisoftware.prefdialog.filechooser.panel.api.DirectoyModel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanelProperties;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileModel;
+import com.anrisoftware.prefdialog.filechooser.panel.api.FileNameRenderer;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FilePropertiesModel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileSelectionModel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileView;
@@ -75,6 +76,8 @@ class FileChooserPanelImpl implements FileChooserPanel {
 	private SelectedFilesQueueModel selectedFilesQueueModel;
 
 	private PropertyChangeListener selectedFilesInQueueListener;
+
+	private FileNameRenderer fileNameRenderer;
 
 	@SuppressWarnings("rawtypes")
 	@Inject
@@ -155,6 +158,7 @@ class FileChooserPanelImpl implements FileChooserPanel {
 		selectedFilesQueueModel.setSelectedFiles(properties
 				.getSelectedFilesInQueue());
 		panel.nameField.setModel(selectedFilesQueueModel);
+		panel.nameField.setRenderer(fileNameRenderer);
 	}
 
 	private void setupNativateDirectories() {
@@ -338,6 +342,12 @@ class FileChooserPanelImpl implements FileChooserPanel {
 	@Override
 	public void setFileViewRenderer(FileView view, FileViewRenderer renderer) {
 		views.put(view, renderer);
+	}
+
+	@Inject
+	@Override
+	public void setFileNameRenderer(FileNameRenderer renderer) {
+		this.fileNameRenderer = renderer;
 	}
 
 	@Override

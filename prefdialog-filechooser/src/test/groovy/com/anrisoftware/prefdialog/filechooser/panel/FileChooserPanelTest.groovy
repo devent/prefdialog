@@ -108,6 +108,8 @@ class FileChooserPanelTest extends FileChooserPanelTestUtil {
 			f.comboBox(NAME_FIELD_NAME).selectItem(0)
 		}, { FrameFixture f ->
 			f.comboBox(NAME_FIELD_NAME).selectItem(1)
+		}, { FrameFixture f ->
+			Thread.sleep 60*1000
 		})
 	}
 }

@@ -133,4 +133,6 @@ public interface FileChooserPanel {
 
 	void updateUI();
 
+	void setFileNameRenderer(FileNameRenderer renderer);
+
 }
