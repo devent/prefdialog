@@ -3,6 +3,7 @@ package com.anrisoftware.prefdialog.filechooser.panel.api;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
+import java.util.List;
 
 import javax.swing.ListModel;
 import javax.swing.filechooser.FileFilter;
@@ -20,7 +21,7 @@ public interface FileModel extends ListModel {
 
 	boolean removeChoosableFileFilter(FileFilter filter);
 
-	FileFilter[] getChoosableFileFilters();
+	List<FileFilter> getChoosableFileFilters();
 
 	FileFilter getAcceptAllFileFilter();
 
@@ -32,7 +33,7 @@ public interface FileModel extends ListModel {
 
 	FileView getFileView();
 
-	void setFileHidingEnabled(boolean b);
+	void setFileHidingEnabled(boolean enabled);
 
 	boolean isFileHidingEnabled();
 
@@ -40,7 +41,17 @@ public interface FileModel extends ListModel {
 
 	File getDirectory();
 
-	void setSort(FileSort sort, boolean descending, boolean folderFirst);
+	void setFileSort(FileSort sort);
+
+	FileSort getFileSort();
+
+	void setDescendingSort(boolean descending);
+
+	boolean isDescendingSort();
+
+	void setFolderFirst(boolean folderFirst);
+
+	boolean isFolderFirst();
 
 	/**
 	 * Add a PropertyChangeListener to the listener list. The listener is

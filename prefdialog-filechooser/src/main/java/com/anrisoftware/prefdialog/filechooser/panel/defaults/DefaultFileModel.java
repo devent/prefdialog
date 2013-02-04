@@ -35,7 +35,7 @@ public class DefaultFileModel extends AbstractListModel implements FileModel {
 
 	private List<File> files;
 
-	private final FileSort sort;
+	private FileSort sort;
 
 	private boolean descending;
 
@@ -92,8 +92,8 @@ public class DefaultFileModel extends AbstractListModel implements FileModel {
 	}
 
 	@Override
-	public FileFilter[] getChoosableFileFilters() {
-		return filters.toArray(new FileFilter[filters.size()]);
+	public List<FileFilter> getChoosableFileFilters() {
+		return filters;
 	}
 
 	@Override
@@ -151,9 +151,8 @@ public class DefaultFileModel extends AbstractListModel implements FileModel {
 	}
 
 	@Override
-	public void setSort(FileSort sort, boolean descending, boolean folderFirst) {
-		this.descending = descending;
-		this.folderFirst = folderFirst;
+	public void setFileSort(FileSort sort) {
+		this.sort = sort;
 		switch (sort) {
 		case NAME:
 			this.comparator = new FileByName();
@@ -169,6 +168,31 @@ public class DefaultFileModel extends AbstractListModel implements FileModel {
 			break;
 		}
 		updateDirectory(directory);
+	}
+
+	@Override
+	public FileSort getFileSort() {
+		return sort;
+	}
+
+	@Override
+	public void setDescendingSort(boolean descending) {
+		this.descending = descending;
+	}
+
+	@Override
+	public boolean isDescendingSort() {
+		return descending;
+	}
+
+	@Override
+	public void setFolderFirst(boolean folderFirst) {
+		this.folderFirst = folderFirst;
+	}
+
+	@Override
+	public boolean isFolderFirst() {
+		return folderFirst;
 	}
 
 	private void updateDirectory(File directory) {
