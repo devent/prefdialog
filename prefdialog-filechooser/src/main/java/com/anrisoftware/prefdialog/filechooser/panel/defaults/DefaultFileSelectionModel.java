@@ -3,6 +3,8 @@ package com.anrisoftware.prefdialog.filechooser.panel.defaults;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.DefaultListSelectionModel;
@@ -61,9 +63,9 @@ public class DefaultFileSelectionModel extends DefaultListSelectionModel
 	}
 
 	@Override
-	public void setSelectedFiles(List<File> files) {
+	public void setSelectedFiles(Collection<File> files) {
 		if (!isMultiSelectionEnabled()) {
-			removeExceptLast(files);
+			removeExceptFirst(files);
 		}
 		@SuppressWarnings("rawtypes")
 		ListModel model = list.getModel();
@@ -90,16 +92,20 @@ public class DefaultFileSelectionModel extends DefaultListSelectionModel
 		}
 	}
 
-	private void removeExceptLast(List<File> selectedFiles) {
-		File last = last(selectedFiles);
-		selectedFiles.clear();
+	private void removeExceptFirst(Collection<File> files) {
+		File last = first(files);
+		files.clear();
 		if (last != null) {
-			selectedFiles.add(last);
+			files.add(last);
 		}
 	}
 
-	private File last(List<File> files) {
-		return files.size() > 0 ? files.get(files.size() - 1) : null;
+	private File first(Collection<File> files) {
+		Iterator<File> it = files.iterator();
+		if (it.hasNext()) {
+			return it.next();
+		}
+		return null;
 	}
 
 	@Override

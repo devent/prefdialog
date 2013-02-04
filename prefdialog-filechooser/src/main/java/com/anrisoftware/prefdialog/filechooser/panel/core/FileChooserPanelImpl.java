@@ -10,6 +10,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -90,6 +91,8 @@ class FileChooserPanelImpl implements FileChooserPanel {
 
 	private ActionListener fileNameListener;
 
+	protected AdjustingSemaphore nameFieldAdjusting;
+
 	@SuppressWarnings("rawtypes")
 	@Inject
 	FileChooserPanelImpl(@Assisted Container container) {
@@ -100,6 +103,7 @@ class FileChooserPanelImpl implements FileChooserPanel {
 				ActionListener.class);
 		this.views = new HashMap<FileView, FileViewRenderer>(
 				FileView.values().length);
+		this.nameFieldAdjusting = new AdjustingSemaphore();
 		this.fileSelectionListener = new ListSelectionListener() {
 
 			@Override
@@ -108,11 +112,15 @@ class FileChooserPanelImpl implements FileChooserPanel {
 					return;
 				}
 				List<File> files = selectionModel.getSelectedFileList();
+				nameFieldAdjusting.adjusting();
 				if (files.size() == 0) {
 					properties.clearSelectedFiles();
+					panel.nameField.setSelectedItem(new HashSet<File>());
 				} else {
 					properties.addSelectedFiles(files);
+					panel.nameField.setSelectedItem(new HashSet<File>(files));
 				}
+				nameFieldAdjusting.doneAdjusting();
 			}
 		};
 		this.selectedFilesInQueueListener = new PropertyChangeListener() {
@@ -132,18 +140,18 @@ class FileChooserPanelImpl implements FileChooserPanel {
 				directoryModel.setCurrentDirectory(file);
 			}
 		};
-		this.fileNameListener = new ActionListener() {
+		this.fileNameListener = new AdjustingAwareActionListener(
+				nameFieldAdjusting) {
 
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void doAction(ActionEvent e) {
 				@SuppressWarnings("unchecked")
 				Set<File> files = (Set<File>) panel.nameField.getSelectedItem();
 				if (files == null) {
 					return;
 				}
 				selectionModel.clearSelection();
-				selectionModel.setSelectedFiles(files.toArray(new File[files
-						.size()]));
+				selectionModel.setSelectedFiles(files);
 				Iterator<File> it = files.iterator();
 				if (!it.hasNext()) {
 					return;

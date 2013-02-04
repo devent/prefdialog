@@ -1,6 +1,7 @@
 package com.anrisoftware.prefdialog.filechooser.panel.api;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.List;
 
 import javax.swing.JList;
@@ -20,7 +21,7 @@ public interface FileSelectionModel extends ListSelectionModel {
 
 	void setSelectedFiles(File[] files);
 
-	void setSelectedFiles(List<File> files);
+	void setSelectedFiles(Collection<File> files);
 
 	File[] getSelectedFiles();
 
@@ -34,7 +35,7 @@ public interface FileSelectionModel extends ListSelectionModel {
 
 	boolean isFileSelectionEnabled();
 
-	void setMultiSelectionEnabled(boolean b);
+	void setMultiSelectionEnabled(boolean enabled);
 
 	boolean isMultiSelectionEnabled();
 
