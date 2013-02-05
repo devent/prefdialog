@@ -104,13 +104,10 @@ class FileChooserPanelImpl implements FileChooserPanel {
 		this.views = new HashMap<FileView, FileViewRenderer>(
 				FileView.values().length);
 		this.nameFieldAdjusting = new AdjustingSemaphore();
-		this.fileSelectionListener = new ListSelectionListener() {
+		this.fileSelectionListener = new AdjustingAwareListSelectionListener() {
 
 			@Override
-			public void valueChanged(ListSelectionEvent e) {
-				if (e.getValueIsAdjusting()) {
-					return;
-				}
+			protected void doValueChanged(ListSelectionEvent event) {
 				List<File> files = selectionModel.getSelectedFileList();
 				nameFieldAdjusting.adjusting();
 				if (files.size() == 0) {
@@ -144,7 +141,7 @@ class FileChooserPanelImpl implements FileChooserPanel {
 				nameFieldAdjusting) {
 
 			@Override
-			public void doAction(ActionEvent e) {
+			protected void doAction(ActionEvent event) {
 				@SuppressWarnings("unchecked")
 				Set<File> files = (Set<File>) panel.nameField.getSelectedItem();
 				if (files == null) {
