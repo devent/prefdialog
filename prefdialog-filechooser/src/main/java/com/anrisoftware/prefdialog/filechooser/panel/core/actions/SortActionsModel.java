@@ -16,14 +16,22 @@ public class SortActionsModel {
 
 	private final SortTypeAction sortTypeAction;
 
+	private final SortDescendingAction sortDescendingAction;
+
+	private final SortFolderFirstAction sortFolderFirstAction;
+
 	@Inject
 	SortActionsModel(SortDateAction sortDateAction,
 			SortNameAction sortNameAction, SortSizeAction sortSizeAction,
-			SortTypeAction sortTypeAction) {
+			SortTypeAction sortTypeAction,
+			SortDescendingAction sortDescendingAction,
+			SortFolderFirstAction sortFolderFirstAction) {
 		this.sortDateAction = sortDateAction;
 		this.sortNameAction = sortNameAction;
 		this.sortSizeAction = sortSizeAction;
 		this.sortTypeAction = sortTypeAction;
+		this.sortDescendingAction = sortDescendingAction;
+		this.sortFolderFirstAction = sortFolderFirstAction;
 	}
 
 	public void setFileModel(FileModel model) {
@@ -31,6 +39,8 @@ public class SortActionsModel {
 		sortNameAction.setFileModel(model);
 		sortSizeAction.setFileModel(model);
 		sortTypeAction.setFileModel(model);
+		sortDescendingAction.setFileModel(model);
+		sortFolderFirstAction.setFileModel(model);
 	}
 
 	public ActionListener getSortDateAction() {
@@ -47,5 +57,13 @@ public class SortActionsModel {
 
 	public ActionListener getSortTypeAction() {
 		return sortTypeAction;
+	}
+
+	public ActionListener getSortDescendingAction() {
+		return sortDescendingAction;
+	}
+
+	public ActionListener getSortFolderFirstAction() {
+		return sortFolderFirstAction;
 	}
 }

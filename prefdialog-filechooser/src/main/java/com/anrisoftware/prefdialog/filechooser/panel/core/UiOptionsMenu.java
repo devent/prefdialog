@@ -27,6 +27,10 @@ class UiOptionsMenu extends JPopupMenu {
 
 	final JRadioButtonMenuItem sortType;
 
+	final JCheckBoxMenuItem sortDescending;
+
+	final JCheckBoxMenuItem sortFolderFirst;
+
 	final JRadioButtonMenuItem viewShort;
 
 	final JRadioButtonMenuItem viewDetailed;
@@ -44,7 +48,9 @@ class UiOptionsMenu extends JPopupMenu {
 		this.sortName = new JRadioButtonMenuItem("By Name");
 		this.sortSize = new JRadioButtonMenuItem("By Size");
 		this.sortDate = new JRadioButtonMenuItem("By Date");
-		this.sortType = new JRadioButtonMenuItem("Bt Type");
+		this.sortType = new JRadioButtonMenuItem("By Type");
+		this.sortDescending = new JCheckBoxMenuItem("Descending");
+		this.sortFolderFirst = new JCheckBoxMenuItem("Folder First");
 		this.viewShort = new JRadioButtonMenuItem("Short View");
 		this.viewDetailed = new JRadioButtonMenuItem("Detailed View");
 		this.viewTree = new JRadioButtonMenuItem("Tree View");
@@ -62,6 +68,9 @@ class UiOptionsMenu extends JPopupMenu {
 		sorting.add(sortSize);
 		sorting.add(sortDate);
 		sorting.add(sortType);
+		sorting.addSeparator();
+		sorting.add(sortDescending);
+		sorting.add(sortFolderFirst);
 		sortingGroup.add(sortName);
 		sortingGroup.add(sortSize);
 		sortingGroup.add(sortDate);
@@ -98,6 +107,12 @@ class UiOptionsMenu extends JPopupMenu {
 		sortType.setText("By Type");
 		sortType.setName("sort-type-menu");
 		sortType.setMnemonic('t');
+		sortDescending.setText("Descending");
+		sortDescending.setName("sort-descending-menu");
+		sortDescending.setMnemonic('e');
+		sortFolderFirst.setText("Folder First");
+		sortFolderFirst.setName("sort-folder-first-menu");
+		sortFolderFirst.setMnemonic('f');
 		viewShort.setText("Short View");
 		viewShort.setName("short-view-menu");
 		viewShort.setMnemonic('s');

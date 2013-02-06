@@ -224,10 +224,16 @@ class FileChooserPanelImpl implements FileChooserPanel {
 				.getSortSizeAction());
 		optionsMenu.sortType.addActionListener(sortActionsModel
 				.getSortTypeAction());
+		optionsMenu.sortDescending.addActionListener(sortActionsModel
+				.getSortDescendingAction());
+		optionsMenu.sortFolderFirst.addActionListener(sortActionsModel
+				.getSortFolderFirstAction());
 		sortActionsModel.setFileModel(fileModel);
 		fileModel.addPropertyChangeListener(FileModel.FILE_SORT,
 				fileSortListener);
 		updateSelectedFileSort(properties.getFileSort());
+		optionsMenu.sortDescending.setSelected(properties.isDescendingSort());
+		optionsMenu.sortFolderFirst.setSelected(properties.isFolderFirstSort());
 	}
 
 	private void updateSelectedFileSort(FileSort sort) {

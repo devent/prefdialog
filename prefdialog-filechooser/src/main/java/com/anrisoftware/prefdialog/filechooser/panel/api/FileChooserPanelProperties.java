@@ -27,6 +27,14 @@ public interface FileChooserPanelProperties {
 
 	void setFileSort(FileSort sort);
 
+	void setDescendingSort(boolean descending);
+
+	boolean isDescendingSort();
+
+	void setFolderFirstSort(boolean folderFirst);
+
+	boolean isFolderFirstSort();
+
 	void setSelectedFiles(Set<File> selectedFiles);
 
 	Set<File> getSelectedFiles();

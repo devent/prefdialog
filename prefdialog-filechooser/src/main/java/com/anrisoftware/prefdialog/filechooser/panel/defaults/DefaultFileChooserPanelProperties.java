@@ -36,6 +36,10 @@ public class DefaultFileChooserPanelProperties implements
 
 	private FileSort sort;
 
+	private boolean descending;
+
+	private boolean folderFirst;
+
 	public DefaultFileChooserPanelProperties() {
 		this.support = new PropertyChangeSupport(this);
 		this.view = FileView.SHORT;
@@ -43,6 +47,8 @@ public class DefaultFileChooserPanelProperties implements
 		this.maxSelectedFiles = 6;
 		this.selectedFiles = new HashSet<File>();
 		this.selectedFilesQueue = new ArrayDeque<Set<File>>();
+		this.descending = false;
+		this.folderFirst = true;
 	}
 
 	@Override
@@ -65,6 +71,26 @@ public class DefaultFileChooserPanelProperties implements
 	@Override
 	public FileSort getFileSort() {
 		return sort;
+	}
+
+	@Override
+	public void setDescendingSort(boolean descending) {
+		this.descending = descending;
+	}
+
+	@Override
+	public boolean isDescendingSort() {
+		return descending;
+	}
+
+	@Override
+	public void setFolderFirstSort(boolean folderFirst) {
+		this.folderFirst = folderFirst;
+	}
+
+	@Override
+	public boolean isFolderFirstSort() {
+		return folderFirst;
 	}
 
 	@Override
