@@ -17,6 +17,8 @@ public interface FileModel extends ListModel {
 
 	static final String DIRECTORY_PROPERTY = "directory";
 
+	static final String FILE_SORT = "file_sort";
+
 	void addChoosableFileFilter(FileFilter filter);
 
 	boolean removeChoosableFileFilter(FileFilter filter);
@@ -63,6 +65,7 @@ public interface FileModel extends ListModel {
 	 * @see PropertyChangeSupport#addPropertyChangeListener(PropertyChangeListener)
 	 * @see #FILE_HIDDING_PROPERTY
 	 * @see #DIRECTORY_PROPERTY
+	 * @see #FILE_SORT
 	 */
 	void addPropertyChangeListener(PropertyChangeListener l);
 
@@ -80,6 +83,7 @@ public interface FileModel extends ListModel {
 	 *      PropertyChangeListener)
 	 * @see #FILE_HIDDING_PROPERTY
 	 * @see #DIRECTORY_PROPERTY
+	 * @see #FILE_SORT
 	 */
 	void addPropertyChangeListener(String name, PropertyChangeListener l);
 
@@ -93,6 +97,7 @@ public interface FileModel extends ListModel {
 	 * @see PropertyChangeSupport#removePropertyChangeListener(PropertyChangeListener)
 	 * @see #FILE_HIDDING_PROPERTY
 	 * @see #DIRECTORY_PROPERTY
+	 * @see #FILE_SORT
 	 */
 	void removePropertyChangeListener(PropertyChangeListener l);
 
@@ -109,6 +114,7 @@ public interface FileModel extends ListModel {
 	 *      PropertyChangeListener)
 	 * @see #FILE_HIDDING_PROPERTY
 	 * @see #DIRECTORY_PROPERTY
+	 * @see #FILE_SORT
 	 */
 	void removePropertyChangeListener(String name, PropertyChangeListener l);
 }

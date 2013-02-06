@@ -17,9 +17,15 @@ public interface FileChooserPanelProperties {
 
 	static final String SELECTED_FILES_IN_QUEUE_PROPERTY = "selected_files_in_queue";
 
+	static final String FILE_SORT_PROPERTY = "file_sort";
+
 	void setView(FileView view);
 
 	FileView getView();
+
+	FileSort getFileSort();
+
+	void setFileSort(FileSort sort);
 
 	void setSelectedFiles(Set<File> selectedFiles);
 

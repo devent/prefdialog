@@ -1,5 +1,6 @@
 package com.anrisoftware.prefdialog.filechooser.panel.core;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
@@ -9,6 +10,8 @@ import javax.swing.JRadioButtonMenuItem;
 class UiOptionsMenu extends JPopupMenu {
 
 	final JMenu sorting;
+
+	final ButtonGroup sortingGroup;
 
 	final JMenu view;
 
@@ -35,6 +38,7 @@ class UiOptionsMenu extends JPopupMenu {
 	UiOptionsMenu() {
 		this.sorting = new JMenu("Sorting");
 		this.view = new JMenu("View");
+		this.sortingGroup = new ButtonGroup();
 		this.showHiddenFiles = new JCheckBoxMenuItem("Show Hidden Files");
 		this.showPlaces = new JCheckBoxMenuItem("Show Places Panel");
 		this.sortName = new JRadioButtonMenuItem("By Name");
@@ -58,6 +62,10 @@ class UiOptionsMenu extends JPopupMenu {
 		sorting.add(sortSize);
 		sorting.add(sortDate);
 		sorting.add(sortType);
+		sortingGroup.add(sortName);
+		sortingGroup.add(sortSize);
+		sortingGroup.add(sortDate);
+		sortingGroup.add(sortType);
 		view.add(viewShort);
 		view.add(viewDetailed);
 		view.add(viewTree);

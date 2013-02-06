@@ -152,6 +152,7 @@ public class DefaultFileModel extends AbstractListModel implements FileModel {
 
 	@Override
 	public void setFileSort(FileSort sort) {
+		FileSort oldValue = this.sort;
 		this.sort = sort;
 		switch (sort) {
 		case NAME:
@@ -168,6 +169,7 @@ public class DefaultFileModel extends AbstractListModel implements FileModel {
 			break;
 		}
 		updateDirectory(directory);
+		support.firePropertyChange(FILE_SORT, oldValue, sort);
 	}
 
 	@Override

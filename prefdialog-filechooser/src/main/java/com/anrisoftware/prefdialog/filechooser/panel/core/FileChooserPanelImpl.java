@@ -17,6 +17,7 @@ import java.util.Set;
 
 import javax.inject.Inject;
 import javax.swing.AbstractButton;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -34,11 +35,13 @@ import com.anrisoftware.prefdialog.filechooser.panel.api.FileNameEditor;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileNameRenderer;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FilePropertiesModel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileSelectionModel;
+import com.anrisoftware.prefdialog.filechooser.panel.api.FileSort;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileView;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileViewRenderer;
 import com.anrisoftware.prefdialog.filechooser.panel.api.PlacesModel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.ToolAction;
 import com.anrisoftware.prefdialog.filechooser.panel.api.ToolButtonsModel;
+import com.anrisoftware.prefdialog.filechooser.panel.core.actions.SortActionsModel;
 import com.anrisoftware.prefdialog.filechooser.panel.defaults.DefaultShortViewRenderer;
 import com.google.inject.assistedinject.Assisted;
 
@@ -92,6 +95,10 @@ class FileChooserPanelImpl implements FileChooserPanel {
 	private ActionListener fileNameListener;
 
 	protected AdjustingSemaphore nameFieldAdjusting;
+
+	private SortActionsModel sortActionsModel;
+
+	private PropertyChangeListener fileSortListener;
 
 	@SuppressWarnings("rawtypes")
 	@Inject
@@ -161,6 +168,14 @@ class FileChooserPanelImpl implements FileChooserPanel {
 				}
 			}
 		};
+		this.fileSortListener = new PropertyChangeListener() {
+
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				updateSelectedFileSort((FileSort) evt.getNewValue());
+			}
+
+		};
 	}
 
 	@Override
@@ -197,6 +212,41 @@ class FileChooserPanelImpl implements FileChooserPanel {
 		setupNativateDirectories();
 		setupFilesList();
 		setupToolButtons();
+		setupSorting();
+	}
+
+	private void setupSorting() {
+		optionsMenu.sortDate.addActionListener(sortActionsModel
+				.getSortDateAction());
+		optionsMenu.sortName.addActionListener(sortActionsModel
+				.getSortNameAction());
+		optionsMenu.sortSize.addActionListener(sortActionsModel
+				.getSortSizeAction());
+		optionsMenu.sortType.addActionListener(sortActionsModel
+				.getSortTypeAction());
+		sortActionsModel.setFileModel(fileModel);
+		fileModel.addPropertyChangeListener(FileModel.FILE_SORT,
+				fileSortListener);
+		updateSelectedFileSort(properties.getFileSort());
+	}
+
+	private void updateSelectedFileSort(FileSort sort) {
+		UiOptionsMenu menu = optionsMenu;
+		ButtonGroup group = menu.sortingGroup;
+		switch (sort) {
+		case DATE:
+			group.setSelected(menu.sortDate.getModel(), true);
+			break;
+		case NAME:
+			group.setSelected(menu.sortName.getModel(), true);
+			break;
+		case SIZE:
+			group.setSelected(menu.sortSize.getModel(), true);
+			break;
+		case TYPE:
+			group.setSelected(menu.sortType.getModel(), true);
+			break;
+		}
 	}
 
 	private void setupFileModel() {
@@ -298,6 +348,11 @@ class FileChooserPanelImpl implements FileChooserPanel {
 	@Inject
 	void setSelectedFilesQueueModel(SelectedFilesQueueModel model) {
 		this.selectedFilesQueueModel = model;
+	}
+
+	@Inject
+	void setSortActionsModel(SortActionsModel model) {
+		this.sortActionsModel = model;
 	}
 
 	@Override

@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanelProperties;
+import com.anrisoftware.prefdialog.filechooser.panel.api.FileSort;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileView;
 
 /**
@@ -33,9 +34,12 @@ public class DefaultFileChooserPanelProperties implements
 
 	private final Deque<Set<File>> selectedFilesQueue;
 
+	private FileSort sort;
+
 	public DefaultFileChooserPanelProperties() {
 		this.support = new PropertyChangeSupport(this);
 		this.view = FileView.SHORT;
+		this.sort = FileSort.NAME;
 		this.maxSelectedFiles = 6;
 		this.selectedFiles = new HashSet<File>();
 		this.selectedFilesQueue = new ArrayDeque<Set<File>>();
@@ -49,6 +53,18 @@ public class DefaultFileChooserPanelProperties implements
 	@Override
 	public FileView getView() {
 		return view;
+	}
+
+	@Override
+	public void setFileSort(FileSort sort) {
+		FileSort oldValue = this.sort;
+		this.sort = sort;
+		support.firePropertyChange(FILE_SORT_PROPERTY, oldValue, sort);
+	}
+
+	@Override
+	public FileSort getFileSort() {
+		return sort;
 	}
 
 	@Override
