@@ -10,11 +10,11 @@ import com.anrisoftware.prefdialog.filechooser.panel.api.FileNameRenderer;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileSelectionModel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.ToolButtonsModel;
 import com.anrisoftware.prefdialog.filechooser.panel.defaults.DefaultFileChooserPanelProperties;
-import com.anrisoftware.prefdialog.filechooser.panel.defaults.DefaultFileModel;
 import com.anrisoftware.prefdialog.filechooser.panel.defaults.DefaultFileNameEditor;
 import com.anrisoftware.prefdialog.filechooser.panel.defaults.DefaultFileNameRenderer;
 import com.anrisoftware.prefdialog.filechooser.panel.defaults.DefaultFileSelectionModel;
 import com.anrisoftware.prefdialog.filechooser.panel.defaults.DefaultToolButtonsModel;
+import com.anrisoftware.prefdialog.filechooser.panel.defaults.filemodel.DefaultFileModel;
 import com.google.inject.AbstractModule;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 
