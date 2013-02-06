@@ -24,6 +24,7 @@ import net.miginfocom.swing.MigLayout;
 
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.ToolAction;
+import com.anrisoftware.prefdialog.miscswing.lists.RubberBandingList;
 
 @SuppressWarnings({ "serial", "rawtypes" })
 final class UiFileChooserPanel extends JPanel {
@@ -70,7 +71,8 @@ final class UiFileChooserPanel extends JPanel {
 		placesToolBar.add(placesPanel);
 		placesPanel.setLayout(new BorderLayout(0, 0));
 
-		placesList = new JList(new Object[] { "One", "Two", "Three" });
+		placesList = new RubberBandingList(
+				new Object[] { "One", "Two", "Three" });
 		placesList.setName(FileChooserPanel.PLACES_LIST_NAME);
 		JScrollPane placesScrollPane = new JScrollPane(placesList);
 		placesPanel.add(placesScrollPane);
@@ -154,7 +156,7 @@ final class UiFileChooserPanel extends JPanel {
 		filesScrollPane = new JScrollPane();
 		filesPanel.add(filesScrollPane, "cell 0 0");
 
-		filesList = new JList();
+		filesList = new RubberBandingList();
 		filesList.setName(FileChooserPanel.FILES_LIST_NAME);
 		filesScrollPane.setViewportView(filesList);
 

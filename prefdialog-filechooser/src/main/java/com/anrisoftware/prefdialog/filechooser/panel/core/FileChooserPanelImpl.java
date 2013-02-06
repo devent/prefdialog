@@ -246,6 +246,7 @@ class FileChooserPanelImpl implements FileChooserPanel {
 			ToolAction action = toolButtonsModel.getActionAt(i);
 			action.setFileModel(fileModel);
 			action.setDirectoryModel(directoryModel);
+			action.setFileSelectionModel(selectionModel);
 			panel.addToolButton(action);
 		}
 	}

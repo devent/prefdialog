@@ -32,6 +32,7 @@ public class BackAction extends AbstractToolAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (directoyModel.canGoBack()) {
+			fileSelectionModel.clearSelection();
 			fileModel.setDirectory(directoyModel.goBack());
 		}
 	}

@@ -30,6 +30,7 @@ public class RefreshAction extends AbstractToolAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		fileSelectionModel.clearSelection();
 	}
 
 }

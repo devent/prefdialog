@@ -8,6 +8,8 @@ public interface ToolAction extends Action {
 
 	void setFileModel(FileModel model);
 
+	void setFileSelectionModel(FileSelectionModel model);
+
 	void setDirectoryModel(DirectoyModel model);
 
 	void setText(String text);

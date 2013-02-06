@@ -6,6 +6,7 @@ import javax.swing.KeyStroke;
 
 import com.anrisoftware.prefdialog.filechooser.panel.api.DirectoyModel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileModel;
+import com.anrisoftware.prefdialog.filechooser.panel.api.FileSelectionModel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.ToolAction;
 
 @SuppressWarnings("serial")
@@ -16,9 +17,16 @@ public abstract class AbstractToolAction extends AbstractAction implements
 
 	protected DirectoyModel directoyModel;
 
+	protected FileSelectionModel fileSelectionModel;
+
 	@Override
 	public void setFileModel(FileModel model) {
 		this.fileModel = model;
+	}
+
+	@Override
+	public void setFileSelectionModel(FileSelectionModel model) {
+		this.fileSelectionModel = model;
 	}
 
 	@Override

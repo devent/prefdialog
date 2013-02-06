@@ -31,6 +31,7 @@ public class UpAction extends AbstractToolAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (directoyModel.canGoUp()) {
+			fileSelectionModel.clearSelection();
 			fileModel.setDirectory(directoyModel.goUp());
 		}
 	}

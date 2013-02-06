@@ -31,6 +31,7 @@ public class ForwardAction extends AbstractToolAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (directoyModel.canGoForward()) {
+			fileSelectionModel.clearSelection();
 			fileModel.setDirectory(directoyModel.goForward());
 		}
 	}
