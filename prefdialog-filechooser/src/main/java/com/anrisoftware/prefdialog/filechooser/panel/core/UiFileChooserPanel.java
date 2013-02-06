@@ -115,13 +115,14 @@ final class UiFileChooserPanel extends JPanel {
 		toolsPanel.setOpaque(false);
 		toolsPanel.setBorder(null);
 		locationPanel.add(toolsPanel, BorderLayout.NORTH);
-		toolsPanel.setLayout(new MigLayout("", "[grow]", "[][]"));
+		toolsPanel.setLayout(new MigLayout("", "[grow]", "0[][]"));
 
 		toolButtonsPanel = new JPanel();
 		toolButtonsPanel.setOpaque(false);
 		toolButtonsPanel.setBorder(null);
 		toolsPanel.add(toolButtonsPanel, "cell 0 0,growx");
-		toolButtonsPanel.setLayout(new MigLayout("", "[][grow][]", "[grow]"));
+		toolButtonsPanel
+				.setLayout(new MigLayout("", "0[][grow][]0", "0[grow]0"));
 
 		optionalToolButtonsPanel = new JPanel();
 		optionalToolButtonsPanel.setOpaque(false);
