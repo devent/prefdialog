@@ -51,9 +51,9 @@ public interface FileModel extends ListModel {
 
 	boolean isDescendingSort();
 
-	void setFolderFirst(boolean folderFirst);
+	void setFolderFirstSort(boolean folderFirst);
 
-	boolean isFolderFirst();
+	boolean isFolderFirstSort();
 
 	/**
 	 * Add a PropertyChangeListener to the listener list. The listener is

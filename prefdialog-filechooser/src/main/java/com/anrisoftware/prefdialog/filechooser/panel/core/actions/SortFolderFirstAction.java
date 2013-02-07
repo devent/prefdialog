@@ -6,7 +6,7 @@ class SortFolderFirstAction extends AbstractOptionMenuAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		fileModel.setFolderFirst(!fileModel.isFolderFirst());
+		fileModel.setFolderFirstSort(!fileModel.isFolderFirstSort());
 	}
 
 }

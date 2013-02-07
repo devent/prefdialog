@@ -181,12 +181,12 @@ public class DefaultFileModel extends AbstractListModel implements FileModel {
 	}
 
 	@Override
-	public void setFolderFirst(boolean folderFirst) {
+	public void setFolderFirstSort(boolean folderFirst) {
 		fileSorting.setFolderFirst(folderFirst);
 	}
 
 	@Override
-	public boolean isFolderFirst() {
+	public boolean isFolderFirstSort() {
 		return fileSorting.isFolderFirst();
 	}
 
