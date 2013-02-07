@@ -19,6 +19,8 @@ public interface FileChooserPanelProperties {
 
 	static final String FILE_SORT_PROPERTY = "file_sort";
 
+	static final String PLACES_PROPERTY = "places";
+
 	void setView(FileView view);
 
 	FileView getView();
@@ -63,6 +65,8 @@ public interface FileChooserPanelProperties {
 	 * @see #SELECTED_FILES_PROPERTY
 	 * @see #MAX_SELECTED_FILES_IN_QUEUE_PROPERTY
 	 * @see #SELECTED_FILES_IN_QUEUE_PROPERTY
+	 * @see #FILE_SORT_PROPERTY
+	 * @see #PLACES_PROPERTY
 	 */
 	void addPropertyChangeListener(PropertyChangeListener l);
 
@@ -82,6 +86,8 @@ public interface FileChooserPanelProperties {
 	 * @see #SELECTED_FILES_PROPERTY
 	 * @see #MAX_SELECTED_FILES_IN_QUEUE_PROPERTY
 	 * @see #SELECTED_FILES_IN_QUEUE_PROPERTY
+	 * @see #FILE_SORT_PROPERTY
+	 * @see #PLACES_PROPERTY
 	 */
 	void addPropertyChangeListener(String name, PropertyChangeListener l);
 
@@ -97,6 +103,8 @@ public interface FileChooserPanelProperties {
 	 * @see #SELECTED_FILES_PROPERTY
 	 * @see #MAX_SELECTED_FILES_IN_QUEUE_PROPERTY
 	 * @see #SELECTED_FILES_IN_QUEUE_PROPERTY
+	 * @see #FILE_SORT_PROPERTY
+	 * @see #PLACES_PROPERTY
 	 */
 	void removePropertyChangeListener(PropertyChangeListener l);
 
@@ -115,6 +123,8 @@ public interface FileChooserPanelProperties {
 	 * @see #SELECTED_FILES_PROPERTY
 	 * @see #MAX_SELECTED_FILES_IN_QUEUE_PROPERTY
 	 * @see #SELECTED_FILES_IN_QUEUE_PROPERTY
+	 * @see #FILE_SORT_PROPERTY
+	 * @see #PLACES_PROPERTY
 	 */
 	void removePropertyChangeListener(String name, PropertyChangeListener l);
 

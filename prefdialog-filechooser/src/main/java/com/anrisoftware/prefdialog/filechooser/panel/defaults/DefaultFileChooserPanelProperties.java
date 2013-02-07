@@ -40,6 +40,8 @@ public class DefaultFileChooserPanelProperties implements
 
 	private boolean folderFirst;
 
+	private List<File> places;
+
 	public DefaultFileChooserPanelProperties() {
 		this.support = new PropertyChangeSupport(this);
 		this.view = FileView.SHORT;
@@ -49,6 +51,7 @@ public class DefaultFileChooserPanelProperties implements
 		this.selectedFilesQueue = new ArrayDeque<Set<File>>();
 		this.descending = false;
 		this.folderFirst = true;
+		this.places = new ArrayList<File>();
 	}
 
 	@Override
@@ -146,6 +149,30 @@ public class DefaultFileChooserPanelProperties implements
 	@Override
 	public List<Set<File>> getSelectedFilesInQueue() {
 		return new ArrayList<Set<File>>(selectedFilesQueue);
+	}
+
+	public void setPlaces(List<File> places) {
+		Set<File> unique = new HashSet<File>(places);
+		this.places = new ArrayList<File>(unique);
+		support.firePropertyChange(PLACES_PROPERTY, null, this.places);
+	}
+
+	public List<File> getPlaces() {
+		return places;
+	}
+
+	public void addPlace(File place) {
+		if (!places.contains(place)) {
+			if (places.add(place)) {
+				support.firePropertyChange(PLACES_PROPERTY, null, this.places);
+			}
+		}
+	}
+
+	public void removePlace(File place) {
+		if (places.remove(place)) {
+			support.firePropertyChange(PLACES_PROPERTY, null, this.places);
+		}
 	}
 
 	@Override

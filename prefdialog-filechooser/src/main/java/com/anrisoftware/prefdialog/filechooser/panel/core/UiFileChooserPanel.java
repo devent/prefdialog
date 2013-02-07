@@ -34,7 +34,7 @@ final class UiFileChooserPanel extends JPanel {
 	final JComboBox locationField;
 	final JToolBar placesToolBar;
 	final JPanel placesPanel;
-	final JList placesList;
+	final JList<File> placesList;
 	final JPanel inputPanel;
 	final JLabel nameLabel;
 	final JButton approveButton;

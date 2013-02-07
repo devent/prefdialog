@@ -213,6 +213,11 @@ class FileChooserPanelImpl implements FileChooserPanel {
 		setupFilesList();
 		setupToolButtons();
 		setupSorting();
+		setupPlaces();
+	}
+
+	private void setupPlaces() {
+		panel.placesList.setModel(placesModel);
 	}
 
 	private void setupSorting() {
@@ -413,7 +418,7 @@ class FileChooserPanelImpl implements FileChooserPanel {
 		return filePropertiesModel;
 	}
 
-	// @Inject
+	@Inject
 	@Override
 	public void setPlacesModel(PlacesModel model) {
 		this.placesModel = model;

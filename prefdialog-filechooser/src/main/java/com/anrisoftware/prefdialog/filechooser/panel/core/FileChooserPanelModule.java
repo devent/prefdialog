@@ -8,6 +8,7 @@ import com.anrisoftware.prefdialog.filechooser.panel.api.FileModel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileNameEditor;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileNameRenderer;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileSelectionModel;
+import com.anrisoftware.prefdialog.filechooser.panel.api.PlacesModel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.ToolButtonsModel;
 import com.anrisoftware.prefdialog.filechooser.panel.defaults.DefaultFileChooserPanelProperties;
 import com.anrisoftware.prefdialog.filechooser.panel.defaults.DefaultFileNameEditor;
@@ -15,6 +16,7 @@ import com.anrisoftware.prefdialog.filechooser.panel.defaults.DefaultFileNameRen
 import com.anrisoftware.prefdialog.filechooser.panel.defaults.DefaultFileSelectionModel;
 import com.anrisoftware.prefdialog.filechooser.panel.defaults.DefaultToolButtonsModel;
 import com.anrisoftware.prefdialog.filechooser.panel.defaults.filemodel.DefaultFileModel;
+import com.anrisoftware.prefdialog.filechooser.panel.defaults.places.DefaultPlacesModel;
 import com.google.inject.AbstractModule;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 
@@ -33,6 +35,7 @@ public class FileChooserPanelModule extends AbstractModule {
 		bind(DirectoyModel.class).to(DirectoyStackImpl.class);
 		bind(FileNameRenderer.class).to(DefaultFileNameRenderer.class);
 		bind(FileNameEditor.class).to(DefaultFileNameEditor.class);
+		bind(PlacesModel.class).to(DefaultPlacesModel.class);
 	}
 
 }
