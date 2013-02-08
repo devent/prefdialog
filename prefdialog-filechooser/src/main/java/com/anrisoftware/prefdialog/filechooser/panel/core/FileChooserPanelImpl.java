@@ -45,6 +45,7 @@ import com.anrisoftware.prefdialog.filechooser.panel.core.actions.SortActionsMod
 import com.anrisoftware.prefdialog.filechooser.panel.core.docking.Docking;
 import com.anrisoftware.prefdialog.filechooser.panel.core.docking.DockingFactory;
 import com.anrisoftware.prefdialog.filechooser.panel.defaults.DefaultShortViewRenderer;
+import com.anrisoftware.prefdialog.miscswing.lists.ActionList;
 import com.google.inject.assistedinject.Assisted;
 
 class FileChooserPanelImpl implements FileChooserPanel {
@@ -109,6 +110,10 @@ class FileChooserPanelImpl implements FileChooserPanel {
 	private UiPlacesPanel placesPanel;
 
 	private UiInputPanel inputPanel;
+
+	private ActionListener placesListener;
+
+	private ActionList<File> placesActionList;
 
 	@SuppressWarnings("rawtypes")
 	@Inject
@@ -188,6 +193,15 @@ class FileChooserPanelImpl implements FileChooserPanel {
 			}
 
 		};
+		this.placesListener = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				File file = placesPanel.placesList.getSelectedValue();
+				selectionModel.clearSelection();
+				fileModel.setDirectory(file);
+			}
+		};
 	}
 
 	@Override
@@ -232,6 +246,8 @@ class FileChooserPanelImpl implements FileChooserPanel {
 	}
 
 	private void setupPlaces() {
+		placesActionList = new ActionList<File>(placesPanel.placesList);
+		placesActionList.addActionListener(placesListener);
 		placesPanel.placesList.setModel(placesModel);
 	}
 
