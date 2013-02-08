@@ -40,8 +40,13 @@ public class Docking {
 		this.mainDock = createFixedDock("main-dock", "Main Dock");
 		this.inputDock = createFixedDock("input-dock", "Input Dock");
 		this.placesDock = createPlacesDock();
+		setupInputDock();
 		setupContainer();
 		setupDocks();
+	}
+
+	private void setupInputDock() {
+		inputDock.setResizeLocked(true);
 	}
 
 	private void setupContainer() {
