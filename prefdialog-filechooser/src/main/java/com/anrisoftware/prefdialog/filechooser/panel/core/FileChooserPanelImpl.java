@@ -42,6 +42,8 @@ import com.anrisoftware.prefdialog.filechooser.panel.api.PlacesModel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.ToolAction;
 import com.anrisoftware.prefdialog.filechooser.panel.api.ToolButtonsModel;
 import com.anrisoftware.prefdialog.filechooser.panel.core.actions.SortActionsModel;
+import com.anrisoftware.prefdialog.filechooser.panel.core.docking.Docking;
+import com.anrisoftware.prefdialog.filechooser.panel.core.docking.DockingFactory;
 import com.anrisoftware.prefdialog.filechooser.panel.defaults.DefaultShortViewRenderer;
 import com.google.inject.assistedinject.Assisted;
 
@@ -60,7 +62,7 @@ class FileChooserPanelImpl implements FileChooserPanel {
 
 	private File currentDirectory;
 
-	private UiFileChooserPanel panel;
+	private UiFilesListPanel panel;
 
 	private FileModel fileModel;
 
@@ -100,6 +102,14 @@ class FileChooserPanelImpl implements FileChooserPanel {
 
 	private PropertyChangeListener fileSortListener;
 
+	private DockingFactory dockingFactory;
+
+	private Docking docking;
+
+	private UiPlacesPanel placesPanel;
+
+	private UiInputPanel inputPanel;
+
 	@SuppressWarnings("rawtypes")
 	@Inject
 	FileChooserPanelImpl(@Assisted Container container) {
@@ -119,10 +129,11 @@ class FileChooserPanelImpl implements FileChooserPanel {
 				nameFieldAdjusting.adjusting();
 				if (files.size() == 0) {
 					properties.clearSelectedFiles();
-					panel.nameField.setSelectedItem(new HashSet<File>());
+					inputPanel.nameField.setSelectedItem(new HashSet<File>());
 				} else {
 					properties.addSelectedFiles(files);
-					panel.nameField.setSelectedItem(new HashSet<File>(files));
+					inputPanel.nameField.setSelectedItem(new HashSet<File>(
+							files));
 				}
 				nameFieldAdjusting.doneAdjusting();
 			}
@@ -150,7 +161,8 @@ class FileChooserPanelImpl implements FileChooserPanel {
 			@Override
 			protected void doAction(ActionEvent event) {
 				@SuppressWarnings("unchecked")
-				Set<File> files = (Set<File>) panel.nameField.getSelectedItem();
+				Set<File> files = (Set<File>) inputPanel.nameField
+						.getSelectedItem();
 				if (files == null) {
 					return;
 				}
@@ -203,10 +215,13 @@ class FileChooserPanelImpl implements FileChooserPanel {
 	}
 
 	private void setup() {
+		docking = dockingFactory.create(container);
+		docking.setMainDockPanel(panel);
+		docking.setPlacesDockPanel(placesPanel);
+		docking.setInputDockPanel(inputPanel);
 		directoryModel.setCurrentDirectory(currentDirectory);
-		container.add(panel);
 		panel.setOptionsMenu(optionsMenu);
-		panel.getOptionsButton().setAction(optionsAction);
+		panel.optionsButton.setAction(optionsAction);
 		setupFileModel();
 		setupNameField();
 		setupNativateDirectories();
@@ -217,7 +232,7 @@ class FileChooserPanelImpl implements FileChooserPanel {
 	}
 
 	private void setupPlaces() {
-		panel.placesList.setModel(placesModel);
+		placesPanel.placesList.setModel(placesModel);
 	}
 
 	private void setupSorting() {
@@ -272,12 +287,12 @@ class FileChooserPanelImpl implements FileChooserPanel {
 				selectedFilesInQueueListener);
 		selectedFilesQueueModel.setSelectedFiles(properties
 				.getSelectedFilesInQueue());
-		panel.nameField.setModel(selectedFilesQueueModel);
-		panel.nameField.setRenderer(fileNameRenderer);
-		fileNameEditor.setEditorDelegate(panel.nameField.getEditor());
-		panel.nameField.setEditor(fileNameEditor);
+		inputPanel.nameField.setModel(selectedFilesQueueModel);
+		inputPanel.nameField.setRenderer(fileNameRenderer);
+		fileNameEditor.setEditorDelegate(inputPanel.nameField.getEditor());
+		inputPanel.nameField.setEditor(fileNameEditor);
 		fileNameEditor.setCurrentDirectory(currentDirectory);
-		panel.nameField.addActionListener(fileNameListener);
+		inputPanel.nameField.addActionListener(fileNameListener);
 	}
 
 	private void setupNativateDirectories() {
@@ -285,13 +300,13 @@ class FileChooserPanelImpl implements FileChooserPanel {
 		navigateDirectories.setFileModel(fileModel);
 		navigateDirectories.setFileSystemView(systemView);
 		navigateDirectories.setDirectoryModel(directoryModel);
-		navigateDirectories.setList(panel.getFilesList());
+		navigateDirectories.setList(panel.filesList);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void setupFilesList() {
 		FileViewRenderer renderer = views.get(properties.getView());
-		JList list = panel.getFilesList();
+		JList list = panel.filesList;
 		list.setModel(fileModel);
 		list.setCellRenderer(renderer);
 		list.setLayoutOrientation(renderer.getLayoutOrientation());
@@ -327,6 +342,11 @@ class FileChooserPanelImpl implements FileChooserPanel {
 	}
 
 	@Inject
+	void setDockingFactory(DockingFactory dockingFactory) {
+		this.dockingFactory = dockingFactory;
+	}
+
+	@Inject
 	void setNavigateDirectories(NavigateDirectories navigateDirectories) {
 		this.navigateDirectories = navigateDirectories;
 	}
@@ -342,8 +362,18 @@ class FileChooserPanelImpl implements FileChooserPanel {
 	}
 
 	@Inject
-	void setUiPanel(UiFileChooserPanel panel) {
+	void setUiPanel(UiFilesListPanel panel) {
 		this.panel = panel;
+	}
+
+	@Inject
+	void setUiInputPanel(UiInputPanel panel) {
+		this.inputPanel = panel;
+	}
+
+	@Inject
+	void setUiPlacesPanel(UiPlacesPanel panel) {
+		this.placesPanel = panel;
 	}
 
 	@Inject
@@ -368,12 +398,12 @@ class FileChooserPanelImpl implements FileChooserPanel {
 
 	@Override
 	public JButton getApproveButton() {
-		return panel.getApproveButton();
+		return inputPanel.approveButton;
 	}
 
 	@Override
 	public JButton getCancelButton() {
-		return panel.getCancelButton();
+		return inputPanel.cancelButton;
 	}
 
 	@Override
@@ -383,12 +413,12 @@ class FileChooserPanelImpl implements FileChooserPanel {
 
 	@Override
 	public JLabel getNameLabel() {
-		return panel.getNameLabel();
+		return inputPanel.nameLabel;
 	}
 
 	@Override
 	public JLabel getFilterLabel() {
-		return panel.getFilterLabel();
+		return inputPanel.filterLabel;
 	}
 
 	@Override

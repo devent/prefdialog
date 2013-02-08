@@ -10,6 +10,7 @@ import com.anrisoftware.prefdialog.filechooser.panel.api.FileNameRenderer;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileSelectionModel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.PlacesModel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.ToolButtonsModel;
+import com.anrisoftware.prefdialog.filechooser.panel.core.docking.DockingModule;
 import com.anrisoftware.prefdialog.filechooser.panel.defaults.DefaultFileChooserPanelProperties;
 import com.anrisoftware.prefdialog.filechooser.panel.defaults.DefaultFileNameEditor;
 import com.anrisoftware.prefdialog.filechooser.panel.defaults.DefaultFileNameRenderer;
@@ -24,6 +25,7 @@ public class FileChooserPanelModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
+		install(new DockingModule());
 		install(new FactoryModuleBuilder().implement(FileChooserPanel.class,
 				FileChooserPanelImpl.class)
 				.build(FileChooserPanelFactory.class));

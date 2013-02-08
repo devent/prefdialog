@@ -56,5 +56,10 @@
 			<artifactId>resources-images</artifactId>
 			<optional>true</optional>
 		</dependency>
+		<dependency>
+			<groupId>org.dockingframes</groupId>
+			<artifactId>docking-frames-common</artifactId>
+			<version>1.1.1</version>
+		</dependency>
 	</dependencies>
 </project>
