@@ -158,6 +158,12 @@ class FileChooserPanelImpl implements FileChooserPanel {
 				File file = fileModel.getDirectory();
 				fileNameEditor.setCurrentDirectory(file);
 				directoryModel.setCurrentDirectory(file);
+				int index = placesModel.indexOf(file);
+				if (index != -1) {
+					placesPanel.placesList.setSelectedIndex(index);
+				} else {
+					placesPanel.placesList.clearSelection();
+				}
 			}
 		};
 		this.fileNameListener = new AdjustingAwareActionListener(

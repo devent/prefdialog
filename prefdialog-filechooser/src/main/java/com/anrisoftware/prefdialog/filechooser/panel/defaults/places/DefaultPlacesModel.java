@@ -32,4 +32,8 @@ public class DefaultPlacesModel extends DefaultListModel<File> implements
 		return getElementAt(index);
 	}
 
+	@Override
+	public int indexOf(File file) {
+		return super.indexOf(file);
+	}
 }
