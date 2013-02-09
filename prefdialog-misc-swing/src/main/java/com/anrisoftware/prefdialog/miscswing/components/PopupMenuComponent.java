@@ -54,9 +54,12 @@ public class PopupMenuComponent implements Serializable {
 		 * @param c
 		 *            the {@link Component}.
 		 * 
+		 * @param mouseLocation
+		 *            the {@link Point} location of the mouse.
+		 * 
 		 * @return the {@link Point} position of the popup menu.
 		 */
-		Point getPosition(Component c);
+		Point getPosition(Component c, Point mouseLocation);
 
 	}
 
@@ -88,7 +91,7 @@ public class PopupMenuComponent implements Serializable {
 		private static final long serialVersionUID = 1209985974108811540L;
 
 		@Override
-		public Point getPosition(Component c) {
+		public Point getPosition(Component c, Point mouseLocation) {
 			return new Point(-1, c.getHeight());
 		}
 
@@ -161,7 +164,7 @@ public class PopupMenuComponent implements Serializable {
 					return;
 				}
 				if (showPopup) {
-					showPopup();
+					showPopup(e.getPoint());
 				} else {
 					showPopup = true;
 				}
@@ -185,9 +188,9 @@ public class PopupMenuComponent implements Serializable {
 		};
 	}
 
-	private void showPopup() {
+	private void showPopup(Point mouseLocation) {
 		Component c = component;
-		Point position = popupMenuPosition.getPosition(c);
+		Point position = popupMenuPosition.getPosition(c, mouseLocation);
 		menu.show(c, position.x, position.y);
 		menu.requestFocus();
 	}
