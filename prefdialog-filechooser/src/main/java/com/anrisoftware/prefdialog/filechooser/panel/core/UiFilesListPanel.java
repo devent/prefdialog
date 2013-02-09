@@ -18,6 +18,7 @@ import net.miginfocom.swing.MigLayout;
 
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.ToolAction;
+import com.anrisoftware.prefdialog.miscswing.components.PopupMenuComponent;
 import com.anrisoftware.prefdialog.miscswing.lists.RubberBandingList;
 
 @SuppressWarnings({ "serial", "rawtypes" })
@@ -37,7 +38,7 @@ final class UiFilesListPanel extends JPanel {
 
 	final JList filesList;
 
-	private final PopupButton optionsButtonPopup;
+	private final PopupMenuComponent optionsPopup;
 
 	/**
 	 * Create the panel.
@@ -71,8 +72,7 @@ final class UiFilesListPanel extends JPanel {
 		optionsButton.setBorderPainted(false);
 		optionsButton.setHideActionText(true);
 		toolButtonsPanel.add(optionsButton, "cell 2 0");
-		optionsButtonPopup = PopupButton.decorate(optionsButton,
-				new JPopupMenu());
+		optionsPopup = new PopupMenuComponent(optionsButton, new JPopupMenu());
 
 		locationField = new JComboBox();
 		locationField.setName(FileChooserPanel.LOCATION_FIELD_NAME);
@@ -89,7 +89,7 @@ final class UiFilesListPanel extends JPanel {
 	}
 
 	public void setOptionsMenu(JPopupMenu menu) {
-		optionsButtonPopup.setPopupMenu(menu);
+		optionsPopup.setPopupMenu(menu);
 	}
 
 	public void removeToolButtons() {
