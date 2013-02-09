@@ -7,6 +7,7 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
 
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileNameRenderer;
+import com.anrisoftware.prefdialog.filechooser.panel.defaults.formats.FileNameFormat;
 
 @SuppressWarnings("serial")
 public class DefaultFileNameRenderer extends DefaultListCellRenderer implements

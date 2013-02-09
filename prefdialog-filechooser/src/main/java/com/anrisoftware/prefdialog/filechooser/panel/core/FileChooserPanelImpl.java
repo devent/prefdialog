@@ -39,6 +39,7 @@ import com.anrisoftware.prefdialog.filechooser.panel.api.FileSort;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileView;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileViewRenderer;
 import com.anrisoftware.prefdialog.filechooser.panel.api.PlacesModel;
+import com.anrisoftware.prefdialog.filechooser.panel.api.PlacesRenderer;
 import com.anrisoftware.prefdialog.filechooser.panel.api.ToolAction;
 import com.anrisoftware.prefdialog.filechooser.panel.api.ToolButtonsModel;
 import com.anrisoftware.prefdialog.filechooser.panel.core.actions.SortActionsModel;
@@ -114,6 +115,8 @@ class FileChooserPanelImpl implements FileChooserPanel {
 	private ActionListener placesListener;
 
 	private ActionList<File> placesActionList;
+
+	private PlacesRenderer placesRenderer;
 
 	@SuppressWarnings("rawtypes")
 	@Inject
@@ -255,6 +258,7 @@ class FileChooserPanelImpl implements FileChooserPanel {
 		placesActionList = new ActionList<File>(placesPanel.placesList);
 		placesActionList.addActionListener(placesListener);
 		placesPanel.placesList.setModel(placesModel);
+		placesPanel.placesList.setCellRenderer(placesRenderer);
 	}
 
 	private void setupSorting() {
@@ -483,9 +487,19 @@ class FileChooserPanelImpl implements FileChooserPanel {
 
 	@Inject
 	@Override
+	public void setPlacesRenderer(PlacesRenderer renderer) {
+		this.placesRenderer = renderer;
+	}
+
+	@Override
+	public PlacesRenderer getPlacesRenderer() {
+		return placesRenderer;
+	}
+
+	@Inject
+	@Override
 	public void setToolButtonsModel(ToolButtonsModel model) {
 		this.toolButtonsModel = model;
-		// panel.removeToolButtons();
 	}
 
 	@Override

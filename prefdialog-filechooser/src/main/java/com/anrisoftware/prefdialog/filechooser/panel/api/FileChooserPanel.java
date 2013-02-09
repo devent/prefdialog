@@ -137,4 +137,8 @@ public interface FileChooserPanel {
 
 	void setFileNameEditor(FileNameEditor editor);
 
+	void setPlacesRenderer(PlacesRenderer renderer);
+
+	PlacesRenderer getPlacesRenderer();
+
 }

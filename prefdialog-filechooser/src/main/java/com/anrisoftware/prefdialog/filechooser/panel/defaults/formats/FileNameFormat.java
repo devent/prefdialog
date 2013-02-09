@@ -1,4 +1,4 @@
-package com.anrisoftware.prefdialog.filechooser.panel.defaults;
+package com.anrisoftware.prefdialog.filechooser.panel.defaults.formats;
 
 import static org.apache.commons.lang3.StringUtils.join;
 
@@ -16,8 +16,15 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * Formats one or multiple files. Multiple files are separated by a whitespace
+ * and enclosed in double quotes.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 1.0
+ */
 @SuppressWarnings("serial")
-class FileNameFormat extends Format {
+public class FileNameFormat extends Format {
 
 	private static final Pattern FILES_PATTERN = Pattern.compile("\"(.*)\"");
 
@@ -30,7 +37,6 @@ class FileNameFormat extends Format {
 
 	@Override
 	public StringBuffer format(Object obj, StringBuffer buff, FieldPosition pos) {
-		System.out.println("format: " + obj);// TODO println
 		if (obj instanceof Set) {
 			@SuppressWarnings("unchecked")
 			Set<File> files = (Set<File>) obj;
@@ -63,7 +69,6 @@ class FileNameFormat extends Format {
 
 	@Override
 	public Object parseObject(String source, ParsePosition pos) {
-		System.out.println("parse: " + source);// TODO println
 		String[] split = StringUtils.split(source);
 		Set<File> set = new TreeSet<File>();
 		if (split.length == 1) {
@@ -73,7 +78,6 @@ class FileNameFormat extends Format {
 		}
 		pos.setIndex(source.length());
 		pos.setErrorIndex(-1);
-		System.out.println(set);// TODO println
 		return set;
 	}
 

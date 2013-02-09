@@ -13,6 +13,7 @@ import javax.swing.text.DefaultFormatter;
 import javax.swing.text.DefaultFormatterFactory;
 
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileNameEditor;
+import com.anrisoftware.prefdialog.filechooser.panel.defaults.formats.FileNameFormat;
 
 public class DefaultFileNameEditor implements FileNameEditor {
 
