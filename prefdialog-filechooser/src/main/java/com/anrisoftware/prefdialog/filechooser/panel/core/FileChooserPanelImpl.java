@@ -2,6 +2,7 @@ package com.anrisoftware.prefdialog.filechooser.panel.core;
 
 import static com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanelProperties.SELECTED_FILES_IN_QUEUE_PROPERTY;
 import static com.anrisoftware.prefdialog.filechooser.panel.api.FileModel.DIRECTORY_PROPERTY;
+import static java.util.Collections.unmodifiableMap;
 
 import java.awt.Container;
 import java.awt.event.ActionEvent;
@@ -13,13 +14,12 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.inject.Inject;
-import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JLabel;
+import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -423,31 +423,6 @@ class FileChooserPanelImpl implements FileChooserPanel {
 	}
 
 	@Override
-	public JButton getApproveButton() {
-		return inputPanel.approveButton;
-	}
-
-	@Override
-	public JButton getCancelButton() {
-		return inputPanel.cancelButton;
-	}
-
-	@Override
-	public AbstractButton getOptionsButton() {
-		return panel.optionsButton;
-	}
-
-	@Override
-	public JLabel getNameLabel() {
-		return inputPanel.nameLabel;
-	}
-
-	@Override
-	public JLabel getFilterLabel() {
-		return inputPanel.filterLabel;
-	}
-
-	@Override
 	public FileChooserPanelProperties getFileChooserPanelProperties() {
 		return properties;
 	}
@@ -560,5 +535,14 @@ class FileChooserPanelImpl implements FileChooserPanel {
 	@Override
 	public void updateUI() {
 		panel.updateUI();
+	}
+
+	@Override
+	public Map<String, JComponent> getComponents() {
+		Map<String, JComponent> map = new HashMap<String, JComponent>(100);
+		map.putAll(panel.components);
+		map.putAll(inputPanel.components);
+		map.putAll(optionsMenu.components);
+		return unmodifiableMap(map);
 	}
 }

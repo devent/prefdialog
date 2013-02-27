@@ -1,8 +1,11 @@
 package com.anrisoftware.prefdialog.filechooser.panel.resources;
 
+import static com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel.OPTIONS_BUTTON_NAME;
+
 import java.util.Locale;
 
 import javax.inject.Inject;
+import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
 import javax.swing.UIManager;
 
@@ -34,8 +37,8 @@ public class ImageResources {
 	}
 
 	private void setupOptionsButton() {
-		AbstractToolAction toolAction = (AbstractToolAction) fileChooser
-				.getOptionsButton().getAction();
+		AbstractToolAction toolAction = (AbstractToolAction) ((AbstractButton) (fileChooser
+				.getComponents().get(OPTIONS_BUTTON_NAME))).getAction();
 		String resource = toolAction.getImageResource();
 		if (resource != null) {
 			IconSize size = IconSize.SMALL;

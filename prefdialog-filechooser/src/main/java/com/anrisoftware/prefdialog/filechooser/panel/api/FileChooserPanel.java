@@ -2,10 +2,9 @@ package com.anrisoftware.prefdialog.filechooser.panel.api;
 
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.Map;
 
-import javax.swing.AbstractButton;
-import javax.swing.JButton;
-import javax.swing.JLabel;
+import javax.swing.JComponent;
 import javax.swing.filechooser.FileSystemView;
 
 public interface FileChooserPanel {
@@ -35,6 +34,38 @@ public interface FileChooserPanel {
 	static final String PLACES_LIST_NAME = "places-list";
 
 	static final String PLACES_TOOLBAR_NAME = "places-toolbar";
+
+	static final String DETAILED_TREE_VIEW_MENU_NAME = "detailed-tree-view-menu";
+
+	static final String TREE_VIEW_MENU_NAME = "tree-view-menu";
+
+	static final String DETAILED_VIEW_MENU_NAME = "detailed-view-menu";
+
+	static final String SHORT_VIEW_MENU_NAME = "short-view-menu";
+
+	static final String SORT_FOLDER_FIRST_MENU_NAME = "sort-folder-first-menu";
+
+	static final String SORT_DESCENDING_MENU_NAME = "sort-descending-menu";
+
+	static final String SORT_TYPE_MENU_NAME = "sort-type-menu";
+
+	static final String SORT_DATE_MENU_NAME = "sort-date-menu";
+
+	static final String SORT_SIZE_MENU_NAME = "sort-size-menu";
+
+	static final String SORT_NAME_MENU_NAME = "sort-name-menu";
+
+	static final String SHOW_HIDDEN_FILES_MENU_NAME = "show-hidden-files-menu";
+
+	static final String VIEW_MENU_NAME = "view-menu";
+
+	static final String SORTING_MENU_NAME = "sorting-menu";
+
+	static final String FILTER_LABEL_NAME = "filter-label";
+
+	static final String NAME_LABEL_NAME = "name-label";
+
+	public static final String OPTIONS_BUTTON_NAME = "options-button";
 
 	/**
 	 * Creates the panel and returns it.
@@ -76,16 +107,6 @@ public interface FileChooserPanel {
 	void approveAction();
 
 	void cancelAction();
-
-	JButton getApproveButton();
-
-	JButton getCancelButton();
-
-	AbstractButton getOptionsButton();
-
-	JLabel getNameLabel();
-
-	JLabel getFilterLabel();
 
 	FileChooserPanelProperties getFileChooserPanelProperties();
 
@@ -140,5 +161,13 @@ public interface FileChooserPanel {
 	void setPlacesRenderer(PlacesRenderer renderer);
 
 	PlacesRenderer getPlacesRenderer();
+
+	/**
+	 * Returns the components in the file chooser panel for direct manipulation.
+	 * 
+	 * @return a {@link Map} where the keys are the names of the components and
+	 *         the values are the {@link JComponent} components.
+	 */
+	Map<String, JComponent> getComponents();
 
 }
