@@ -6,6 +6,8 @@ import javax.swing.KeyStroke;
 
 public interface ToolAction extends Action {
 
+	String getName();
+
 	void setFileModel(FileModel model);
 
 	void setFileSelectionModel(FileSelectionModel model);

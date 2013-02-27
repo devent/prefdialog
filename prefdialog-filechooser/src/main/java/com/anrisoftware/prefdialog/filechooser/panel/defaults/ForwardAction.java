@@ -1,5 +1,7 @@
 package com.anrisoftware.prefdialog.filechooser.panel.defaults;
 
+import static com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel.FORWARD_BUTTON_NAME;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
@@ -11,6 +13,11 @@ public class ForwardAction extends AbstractToolAction {
 	public ForwardAction() {
 		setText("Go Forward");
 		setMnemonic(KeyEvent.VK_F);
+	}
+
+	@Override
+	public String getName() {
+		return FORWARD_BUTTON_NAME;
 	}
 
 	@Override

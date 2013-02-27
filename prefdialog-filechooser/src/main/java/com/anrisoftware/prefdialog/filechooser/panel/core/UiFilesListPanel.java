@@ -80,7 +80,6 @@ final class UiFilesListPanel extends JPanel {
 		optionsButton.setName(OPTIONS_BUTTON_NAME);
 		optionsButton.setMargin(new Insets(1, 1, 1, 1));
 		optionsButton.setBorderPainted(false);
-		optionsButton.setHideActionText(true);
 		toolButtonsPanel.add(optionsButton, "cell 2 0");
 		components.put(OPTIONS_BUTTON_NAME, optionsButton);
 		optionsPopup = new PopupMenuComponent(optionsButton, new JPopupMenu());
@@ -127,9 +126,11 @@ final class UiFilesListPanel extends JPanel {
 		} else {
 			component = new JButton(action);
 		}
+		component.setName(action.getName());
 		component.setMargin(new Insets(1, 1, 1, 1));
 		component.setBorderPainted(false);
 		component.setHideActionText(true);
+		components.put(action.getName(), component);
 		optionalToolButtonsPanel.add(component);
 		optionalToolButtonsPanel.getLayout().layoutContainer(
 				optionalToolButtonsPanel);

@@ -2,6 +2,7 @@ package com.anrisoftware.prefdialog.filechooser.panel.core;
 
 import static com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanelProperties.SELECTED_FILES_IN_QUEUE_PROPERTY;
 import static com.anrisoftware.prefdialog.filechooser.panel.api.FileModel.DIRECTORY_PROPERTY;
+import static com.anrisoftware.prefdialog.filechooser.panel.api.FileModel.FILE_SORT;
 import static java.util.Collections.unmodifiableMap;
 
 import java.awt.Container;
@@ -275,8 +276,7 @@ class FileChooserPanelImpl implements FileChooserPanel {
 		optionsMenu.sortFolderFirst.addActionListener(sortActionsModel
 				.getSortFolderFirstAction());
 		sortActionsModel.setFileModel(fileModel);
-		fileModel.addPropertyChangeListener(FileModel.FILE_SORT,
-				fileSortListener);
+		fileModel.addPropertyChangeListener(FILE_SORT, fileSortListener);
 		updateSelectedFileSort(properties.getFileSort());
 		optionsMenu.sortDescending.setSelected(properties.isDescendingSort());
 		optionsMenu.sortFolderFirst.setSelected(properties.isFolderFirstSort());

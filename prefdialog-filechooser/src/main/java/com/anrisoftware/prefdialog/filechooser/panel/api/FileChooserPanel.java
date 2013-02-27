@@ -19,6 +19,8 @@ public interface FileChooserPanel {
 
 	static final String UP_BUTTON_NAME = "up-button";
 
+	static final String SHOW_PREVIEW_BUTTON_NAME = "show-preview-button";
+
 	static final String FORWARD_BUTTON_NAME = "forward-button";
 
 	static final String BACK_BUTTON_NAME = "back-button";
@@ -65,7 +67,27 @@ public interface FileChooserPanel {
 
 	static final String NAME_LABEL_NAME = "name-label";
 
-	public static final String OPTIONS_BUTTON_NAME = "options-button";
+	static final String OPTIONS_BUTTON_NAME = "options-button";
+
+	static final String HUGE_ICON_MENU_NAME = "huge-icon-menu";
+
+	static final String LARGE_ICON_MENU_NAME = "large-icon-menu";
+
+	static final String MEDIUM_ICON_MENU_NAME = "medium-icon-menu";
+
+	static final String SMALL_ICON_MENU_NAME = "small-icon-menu";
+
+	static final String DEFAULT_ICON_MENU_NAME = "default-icon-menu";
+
+	static final String ICON_SIZE_MENU_NAME = "icon-size-menu";
+
+	static final String TEXT_ALONGSIDE_ICONS_MENU_NAME = "text-alongside-icons-menu";
+
+	static final String TEXT_ONLY_MENU_NAME = "text-only-menu";
+
+	static final String ICONS_ONLY_MENU_NAME = "icons-only-menu";
+
+	static final String TEXT_POSITION_MENU_NAME = "text-position-menu";
 
 	/**
 	 * Creates the panel and returns it.

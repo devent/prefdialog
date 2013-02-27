@@ -12,6 +12,11 @@ public class SeparatorAction extends AbstractToolAction {
 	}
 
 	@Override
+	public String getName() {
+		return null;
+	}
+
+	@Override
 	public String getImageResource() {
 		return null;
 	}

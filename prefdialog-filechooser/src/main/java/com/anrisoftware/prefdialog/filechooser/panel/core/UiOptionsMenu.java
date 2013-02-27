@@ -1,5 +1,29 @@
 package com.anrisoftware.prefdialog.filechooser.panel.core;
 
+import static com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel.DEFAULT_ICON_MENU_NAME;
+import static com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel.DETAILED_TREE_VIEW_MENU_NAME;
+import static com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel.DETAILED_VIEW_MENU_NAME;
+import static com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel.HUGE_ICON_MENU_NAME;
+import static com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel.ICONS_ONLY_MENU_NAME;
+import static com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel.ICON_SIZE_MENU_NAME;
+import static com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel.LARGE_ICON_MENU_NAME;
+import static com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel.MEDIUM_ICON_MENU_NAME;
+import static com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel.SHORT_VIEW_MENU_NAME;
+import static com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel.SHOW_HIDDEN_FILES_MENU_NAME;
+import static com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel.SMALL_ICON_MENU_NAME;
+import static com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel.SORTING_MENU_NAME;
+import static com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel.SORT_DATE_MENU_NAME;
+import static com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel.SORT_DESCENDING_MENU_NAME;
+import static com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel.SORT_FOLDER_FIRST_MENU_NAME;
+import static com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel.SORT_NAME_MENU_NAME;
+import static com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel.SORT_SIZE_MENU_NAME;
+import static com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel.SORT_TYPE_MENU_NAME;
+import static com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel.TEXT_ALONGSIDE_ICONS_MENU_NAME;
+import static com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel.TEXT_ONLY_MENU_NAME;
+import static com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel.TEXT_POSITION_MENU_NAME;
+import static com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel.TREE_VIEW_MENU_NAME;
+import static com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel.VIEW_MENU_NAME;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,8 +33,6 @@ import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
-
-import com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel;
 
 @SuppressWarnings("serial")
 class UiOptionsMenu extends JPopupMenu {
@@ -147,73 +169,113 @@ class UiOptionsMenu extends JPopupMenu {
 
 	private void setupMenuItems() {
 		sorting.setText("Sorting");
-		sorting.setName(FileChooserPanel.SORTING_MENU_NAME);
+		sorting.setName(SORTING_MENU_NAME);
 		sorting.setMnemonic('s');
-		components.put(FileChooserPanel.SORTING_MENU_NAME, sorting);
+		components.put(SORTING_MENU_NAME, sorting);
 
 		view.setText("View");
-		view.setName(FileChooserPanel.VIEW_MENU_NAME);
+		view.setName(VIEW_MENU_NAME);
 		view.setMnemonic('v');
-		components.put(FileChooserPanel.VIEW_MENU_NAME, sorting);
+		components.put(VIEW_MENU_NAME, sorting);
 
 		showHiddenFiles.setText("Show Hidden Files");
-		showHiddenFiles.setName(FileChooserPanel.SHOW_HIDDEN_FILES_MENU_NAME);
+		showHiddenFiles.setName(SHOW_HIDDEN_FILES_MENU_NAME);
 		showHiddenFiles.setMnemonic('h');
 		showHiddenFiles.setDisplayedMnemonicIndex(5);
-		components.put(FileChooserPanel.SHOW_HIDDEN_FILES_MENU_NAME, sorting);
+		components.put(SHOW_HIDDEN_FILES_MENU_NAME, sorting);
 
 		showPlaces.setText("Show Places Panel");
 		showPlaces.setName("show-places-panel");
 		showPlaces.setMnemonic('p');
 
 		sortName.setText("By Name");
-		sortName.setName(FileChooserPanel.SORT_NAME_MENU_NAME);
+		sortName.setName(SORT_NAME_MENU_NAME);
 		sortName.setMnemonic('n');
-		components.put(FileChooserPanel.SORT_NAME_MENU_NAME, sorting);
+		components.put(SORT_NAME_MENU_NAME, sorting);
 
 		sortSize.setText("By Size");
-		sortSize.setName(FileChooserPanel.SORT_SIZE_MENU_NAME);
+		sortSize.setName(SORT_SIZE_MENU_NAME);
 		sortSize.setMnemonic('s');
-		components.put(FileChooserPanel.SORT_SIZE_MENU_NAME, sorting);
+		components.put(SORT_SIZE_MENU_NAME, sorting);
 
 		sortDate.setText("By Date");
-		sortDate.setName(FileChooserPanel.SORT_DATE_MENU_NAME);
+		sortDate.setName(SORT_DATE_MENU_NAME);
 		sortDate.setMnemonic('d');
-		components.put(FileChooserPanel.SORT_DATE_MENU_NAME, sorting);
+		components.put(SORT_DATE_MENU_NAME, sorting);
 
 		sortType.setText("By Type");
-		sortType.setName(FileChooserPanel.SORT_TYPE_MENU_NAME);
+		sortType.setName(SORT_TYPE_MENU_NAME);
 		sortType.setMnemonic('t');
-		components.put(FileChooserPanel.SORT_TYPE_MENU_NAME, sorting);
+		components.put(SORT_TYPE_MENU_NAME, sorting);
 
 		sortDescending.setText("Descending");
-		sortDescending.setName(FileChooserPanel.SORT_DESCENDING_MENU_NAME);
+		sortDescending.setName(SORT_DESCENDING_MENU_NAME);
 		sortDescending.setMnemonic('e');
-		components.put(FileChooserPanel.SORT_DESCENDING_MENU_NAME, sorting);
+		components.put(SORT_DESCENDING_MENU_NAME, sorting);
 
 		sortFolderFirst.setText("Folder First");
-		sortFolderFirst.setName(FileChooserPanel.SORT_FOLDER_FIRST_MENU_NAME);
+		sortFolderFirst.setName(SORT_FOLDER_FIRST_MENU_NAME);
 		sortFolderFirst.setMnemonic('f');
-		components.put(FileChooserPanel.SORT_FOLDER_FIRST_MENU_NAME, sorting);
+		components.put(SORT_FOLDER_FIRST_MENU_NAME, sorting);
 
 		viewShort.setText("Short View");
-		viewShort.setName(FileChooserPanel.SHORT_VIEW_MENU_NAME);
+		viewShort.setName(SHORT_VIEW_MENU_NAME);
 		viewShort.setMnemonic('s');
-		components.put(FileChooserPanel.SHORT_VIEW_MENU_NAME, sorting);
+		components.put(SHORT_VIEW_MENU_NAME, sorting);
 
 		viewDetailed.setText("Detailed View");
-		viewDetailed.setName(FileChooserPanel.DETAILED_VIEW_MENU_NAME);
+		viewDetailed.setName(DETAILED_VIEW_MENU_NAME);
 		viewDetailed.setMnemonic('d');
-		components.put(FileChooserPanel.DETAILED_VIEW_MENU_NAME, sorting);
+		components.put(DETAILED_VIEW_MENU_NAME, sorting);
 
 		viewTree.setText("Tree View");
-		viewTree.setName(FileChooserPanel.TREE_VIEW_MENU_NAME);
+		viewTree.setName(TREE_VIEW_MENU_NAME);
 		viewTree.setMnemonic('t');
-		components.put(FileChooserPanel.TREE_VIEW_MENU_NAME, sorting);
+		components.put(TREE_VIEW_MENU_NAME, sorting);
 
 		viewDetailedTree.setText("Detailed Tree View");
-		viewDetailedTree.setName(FileChooserPanel.DETAILED_TREE_VIEW_MENU_NAME);
+		viewDetailedTree.setName(DETAILED_TREE_VIEW_MENU_NAME);
 		viewDetailedTree.setMnemonic('v');
-		components.put(FileChooserPanel.DETAILED_TREE_VIEW_MENU_NAME, sorting);
+		components.put(DETAILED_TREE_VIEW_MENU_NAME, sorting);
+
+		textPosition.setName(TEXT_POSITION_MENU_NAME);
+		textPosition.setMnemonic('t');
+		components.put(TEXT_POSITION_MENU_NAME, textPosition);
+
+		iconsOnly.setName(ICONS_ONLY_MENU_NAME);
+		iconsOnly.setMnemonic('i');
+		components.put(ICONS_ONLY_MENU_NAME, iconsOnly);
+
+		textOnly.setName(TEXT_ONLY_MENU_NAME);
+		textOnly.setMnemonic('t');
+		components.put(TEXT_ONLY_MENU_NAME, textOnly);
+
+		textAlongsideIcons.setName(TEXT_ALONGSIDE_ICONS_MENU_NAME);
+		textAlongsideIcons.setMnemonic('a');
+		components.put(TEXT_ALONGSIDE_ICONS_MENU_NAME, textAlongsideIcons);
+
+		iconSize.setName(ICON_SIZE_MENU_NAME);
+		iconSize.setMnemonic('i');
+		components.put(ICON_SIZE_MENU_NAME, iconSize);
+
+		defaultIcon.setName(DEFAULT_ICON_MENU_NAME);
+		defaultIcon.setMnemonic('d');
+		components.put(DEFAULT_ICON_MENU_NAME, defaultIcon);
+
+		smallIcon.setName(SMALL_ICON_MENU_NAME);
+		smallIcon.setMnemonic('s');
+		components.put(SMALL_ICON_MENU_NAME, smallIcon);
+
+		mediumIcon.setName(MEDIUM_ICON_MENU_NAME);
+		mediumIcon.setMnemonic('m');
+		components.put(MEDIUM_ICON_MENU_NAME, mediumIcon);
+
+		largeIcon.setName(LARGE_ICON_MENU_NAME);
+		largeIcon.setMnemonic('l');
+		components.put(LARGE_ICON_MENU_NAME, largeIcon);
+
+		hugeIcon.setName(HUGE_ICON_MENU_NAME);
+		hugeIcon.setMnemonic('h');
+		components.put(HUGE_ICON_MENU_NAME, hugeIcon);
 	}
 }

@@ -1,5 +1,6 @@
 package com.anrisoftware.prefdialog.filechooser.panel.defaults;
 
+import static com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel.BACK_BUTTON_NAME;
 import static java.awt.event.KeyEvent.VK_B;
 
 import java.awt.event.ActionEvent;
@@ -12,6 +13,11 @@ public class BackAction extends AbstractToolAction {
 	public BackAction() {
 		setText("Go Back");
 		setMnemonic(VK_B);
+	}
+
+	@Override
+	public String getName() {
+		return BACK_BUTTON_NAME;
 	}
 
 	@Override

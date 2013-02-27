@@ -1,5 +1,7 @@
 package com.anrisoftware.prefdialog.filechooser.panel.defaults;
 
+import static com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel.REFRESH_BUTTON_NAME;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
@@ -11,6 +13,11 @@ public class RefreshAction extends AbstractToolAction {
 	public RefreshAction() {
 		setText("Refresh");
 		setMnemonic(KeyEvent.VK_R);
+	}
+
+	@Override
+	public String getName() {
+		return REFRESH_BUTTON_NAME;
 	}
 
 	@Override

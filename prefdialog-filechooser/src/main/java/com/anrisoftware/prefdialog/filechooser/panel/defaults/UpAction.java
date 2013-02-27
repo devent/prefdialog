@@ -1,5 +1,7 @@
 package com.anrisoftware.prefdialog.filechooser.panel.defaults;
 
+import static com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel.UP_BUTTON_NAME;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
@@ -11,6 +13,11 @@ public class UpAction extends AbstractToolAction {
 	public UpAction() {
 		setText("Go Up");
 		setMnemonic(KeyEvent.VK_U);
+	}
+
+	@Override
+	public String getName() {
+		return UP_BUTTON_NAME;
 	}
 
 	@Override

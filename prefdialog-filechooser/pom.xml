@@ -56,6 +56,11 @@
 			<artifactId>resources-images</artifactId>
 			<optional>true</optional>
 		</dependency>
+        <dependency>
+            <groupId>com.anrisoftware.resources</groupId>
+            <artifactId>resources-texts</artifactId>
+            <optional>true</optional>
+        </dependency>
 		<dependency>
 			<groupId>org.dockingframes</groupId>
 			<artifactId>docking-frames-common</artifactId>
