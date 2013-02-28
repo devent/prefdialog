@@ -1,8 +1,9 @@
 package com.anrisoftware.prefdialog.filechooser.panel.core;
 
 import static com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanelProperties.SELECTED_FILES_IN_QUEUE_PROPERTY;
+import static com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanelProperties.TEXT_POSITION_PROPERTY;
 import static com.anrisoftware.prefdialog.filechooser.panel.api.FileModel.DIRECTORY_PROPERTY;
-import static com.anrisoftware.prefdialog.filechooser.panel.api.FileModel.FILE_SORT;
+import static com.anrisoftware.prefdialog.filechooser.panel.api.FileModel.FILE_SORT_PROPERTY;
 import static java.util.Collections.unmodifiableMap;
 
 import java.awt.Container;
@@ -16,7 +17,10 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 import javax.swing.ButtonGroup;
@@ -28,6 +32,7 @@ import javax.swing.filechooser.FileSystemView;
 
 import org.apache.commons.lang3.event.EventListenerSupport;
 
+import com.anrisoftware.prefdialog.annotations.TextPosition;
 import com.anrisoftware.prefdialog.filechooser.panel.api.DirectoyModel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanelProperties;
@@ -43,7 +48,8 @@ import com.anrisoftware.prefdialog.filechooser.panel.api.PlacesModel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.PlacesRenderer;
 import com.anrisoftware.prefdialog.filechooser.panel.api.ToolAction;
 import com.anrisoftware.prefdialog.filechooser.panel.api.ToolButtonsModel;
-import com.anrisoftware.prefdialog.filechooser.panel.core.actions.SortActionsModel;
+import com.anrisoftware.prefdialog.filechooser.panel.core.actions.sorting.SortActionsModel;
+import com.anrisoftware.prefdialog.filechooser.panel.core.actions.textposition.TextPositionActionsModel;
 import com.anrisoftware.prefdialog.filechooser.panel.core.docking.Docking;
 import com.anrisoftware.prefdialog.filechooser.panel.core.docking.DockingFactory;
 import com.anrisoftware.prefdialog.filechooser.panel.defaults.DefaultShortViewRenderer;
@@ -118,6 +124,10 @@ class FileChooserPanelImpl implements FileChooserPanel {
 	private ActionList<File> placesActionList;
 
 	private PlacesRenderer placesRenderer;
+
+	private TextPositionActionsModel textPositionActionsModel;
+
+	private PropertyChangeListener textPositionListener;
 
 	@SuppressWarnings("rawtypes")
 	@Inject
@@ -212,6 +222,14 @@ class FileChooserPanelImpl implements FileChooserPanel {
 				fileModel.setDirectory(file);
 			}
 		};
+		this.textPositionListener = new PropertyChangeListener() {
+
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				optionsMenu.updateSelectedTextPosition((TextPosition) evt
+						.getNewValue());
+			}
+		};
 	}
 
 	@Override
@@ -253,6 +271,7 @@ class FileChooserPanelImpl implements FileChooserPanel {
 		setupToolButtons();
 		setupSorting();
 		setupPlaces();
+		setupTextPosition();
 	}
 
 	private void setupPlaces() {
@@ -276,7 +295,8 @@ class FileChooserPanelImpl implements FileChooserPanel {
 		optionsMenu.sortFolderFirst.addActionListener(sortActionsModel
 				.getSortFolderFirstAction());
 		sortActionsModel.setFileModel(fileModel);
-		fileModel.addPropertyChangeListener(FILE_SORT, fileSortListener);
+		fileModel.addPropertyChangeListener(FILE_SORT_PROPERTY,
+				fileSortListener);
 		updateSelectedFileSort(properties.getFileSort());
 		optionsMenu.sortDescending.setSelected(properties.isDescendingSort());
 		optionsMenu.sortFolderFirst.setSelected(properties.isFolderFirstSort());
@@ -299,6 +319,22 @@ class FileChooserPanelImpl implements FileChooserPanel {
 			group.setSelected(menu.sortType.getModel(), true);
 			break;
 		}
+	}
+
+	private void setupTextPosition() {
+		optionsMenu.textOnly.addActionListener(textPositionActionsModel
+				.getTextOnlyAction());
+		optionsMenu.iconsOnly.addActionListener(textPositionActionsModel
+				.getIconOnlyAction());
+		optionsMenu.textAlongsideIcons
+				.addActionListener(textPositionActionsModel
+						.getTextAlongsideIconAction());
+		textPositionActionsModel.setFileModel(fileModel);
+		textPositionActionsModel.setFileChooserPanel(this);
+		properties.addPropertyChangeListener(TEXT_POSITION_PROPERTY,
+				textPositionListener);
+		textPositionListener.propertyChange(new PropertyChangeEvent(properties,
+				TEXT_POSITION_PROPERTY, null, properties.getTextPosition()));
 	}
 
 	private void setupFileModel() {
@@ -422,6 +458,11 @@ class FileChooserPanelImpl implements FileChooserPanel {
 		this.sortActionsModel = model;
 	}
 
+	@Inject
+	void setTextPositionActionsModel(TextPositionActionsModel model) {
+		this.textPositionActionsModel = model;
+	}
+
 	@Override
 	public FileChooserPanelProperties getFileChooserPanelProperties() {
 		return properties;
@@ -538,6 +579,36 @@ class FileChooserPanelImpl implements FileChooserPanel {
 	}
 
 	@Override
+	public <T extends JComponent> Map<String, T> getComponents(Pattern pattern,
+			Class<? extends T>... componentClasses) {
+		Map<String, T> map = new HashMap<String, T>(100);
+		Map<String, T> components = getComponents(componentClasses);
+		for (Map.Entry<String, T> entry : components.entrySet()) {
+			Matcher matcher = pattern.matcher(entry.getKey());
+			if (matcher.matches()) {
+				map.put(entry.getKey(), entry.getValue());
+			}
+		}
+		return map;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T extends JComponent> Map<String, T> getComponents(
+			Class<? extends T>... componentClasses) {
+		Map<String, T> map = new HashMap<String, T>(100);
+		for (Entry<String, JComponent> entry : getComponents().entrySet()) {
+			Class<?> type = entry.getValue().getClass();
+			for (Class<?> neededType : componentClasses) {
+				if (type.equals(neededType)) {
+					map.put(entry.getKey(), (T) entry.getValue());
+				}
+			}
+		}
+		return map;
+	}
+
+	@Override
 	public Map<String, JComponent> getComponents() {
 		Map<String, JComponent> map = new HashMap<String, JComponent>(100);
 		map.putAll(panel.components);
@@ -545,4 +616,5 @@ class FileChooserPanelImpl implements FileChooserPanel {
 		map.putAll(optionsMenu.components);
 		return unmodifiableMap(map);
 	}
+
 }

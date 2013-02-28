@@ -3,6 +3,7 @@ package com.anrisoftware.prefdialog.filechooser.panel.api;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.swing.JComponent;
 import javax.swing.filechooser.FileSystemView;
@@ -13,17 +14,17 @@ public interface FileChooserPanel {
 
 	static final String LOCATION_FIELD_NAME = "location-field";
 
-	static final String PREVIEW_BUTTON_NAME = "preview-button";
+	static final String PREVIEW_BUTTON_NAME = "preview-tool-button";
 
-	static final String REFRESH_BUTTON_NAME = "refresh-button";
+	static final String REFRESH_BUTTON_NAME = "refresh-tool-button";
 
-	static final String UP_BUTTON_NAME = "up-button";
+	static final String UP_BUTTON_NAME = "up-tool-button";
 
-	static final String SHOW_PREVIEW_BUTTON_NAME = "show-preview-button";
+	static final String SHOW_PREVIEW_BUTTON_NAME = "show-preview-tool-button";
 
-	static final String FORWARD_BUTTON_NAME = "forward-button";
+	static final String FORWARD_BUTTON_NAME = "forward-tool-button";
 
-	static final String BACK_BUTTON_NAME = "back-button";
+	static final String BACK_BUTTON_NAME = "back-tool-button";
 
 	static final String CANCEL_BUTTON_NAME = "cancel-button";
 
@@ -67,7 +68,7 @@ public interface FileChooserPanel {
 
 	static final String NAME_LABEL_NAME = "name-label";
 
-	static final String OPTIONS_BUTTON_NAME = "options-button";
+	static final String OPTIONS_BUTTON_NAME = "options-tool-button";
 
 	static final String HUGE_ICON_MENU_NAME = "huge-icon-menu";
 
@@ -191,5 +192,38 @@ public interface FileChooserPanel {
 	 *         the values are the {@link JComponent} components.
 	 */
 	Map<String, JComponent> getComponents();
+
+	/**
+	 * Returns the components in the file chooser panel for direct manipulation.
+	 * 
+	 * @param componentClasses
+	 *            the needed {@link Class} types of the component.
+	 * 
+	 * @param <T>
+	 *            the needed type of the component.
+	 * 
+	 * @return a {@link Map} where the keys are the names of the components and
+	 *         the values are the {@link JComponent} components.
+	 */
+	<T extends JComponent> Map<String, T> getComponents(
+			Class<? extends T>... componentClasses);
+
+	/**
+	 * Returns the components in the file chooser panel for direct manipulation.
+	 * 
+	 * @param pattern
+	 *            the pattern that should match the name of the component.
+	 * 
+	 * @param componentClasses
+	 *            the needed {@link Class} types of the component.
+	 * 
+	 * @param <T>
+	 *            the needed type of the component.
+	 * 
+	 * @return a {@link Map} where the keys are the names of the components and
+	 *         the values are the {@link JComponent} components.
+	 */
+	<T extends JComponent> Map<String, T> getComponents(Pattern pattern,
+			Class<? extends T>... componentClasses);
 
 }

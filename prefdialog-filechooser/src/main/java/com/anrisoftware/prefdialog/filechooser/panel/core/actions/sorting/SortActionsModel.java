@@ -1,4 +1,4 @@
-package com.anrisoftware.prefdialog.filechooser.panel.core.actions;
+package com.anrisoftware.prefdialog.filechooser.panel.core.actions.sorting;
 
 import java.awt.event.ActionListener;
 

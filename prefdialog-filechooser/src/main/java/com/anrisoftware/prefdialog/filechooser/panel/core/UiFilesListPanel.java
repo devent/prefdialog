@@ -130,7 +130,9 @@ final class UiFilesListPanel extends JPanel {
 		component.setMargin(new Insets(1, 1, 1, 1));
 		component.setBorderPainted(false);
 		component.setHideActionText(true);
-		components.put(action.getName(), component);
+		if (action.getName() != null) {
+			components.put(action.getName(), component);
+		}
 		optionalToolButtonsPanel.add(component);
 		optionalToolButtonsPanel.getLayout().layoutContainer(
 				optionalToolButtonsPanel);

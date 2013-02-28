@@ -162,7 +162,7 @@ public class DefaultFileModel extends AbstractListModel implements FileModel {
 	public void setFileSort(FileSort sort) {
 		FileSort oldValue = fileSorting.getFileSort();
 		fileSorting.setFileSort(sort);
-		support.firePropertyChange(FILE_SORT, oldValue, sort);
+		support.firePropertyChange(FILE_SORT_PROPERTY, oldValue, sort);
 	}
 
 	@Override

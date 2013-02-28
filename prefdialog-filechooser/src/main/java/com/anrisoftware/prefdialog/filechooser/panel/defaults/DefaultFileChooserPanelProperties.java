@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.anrisoftware.prefdialog.annotations.TextPosition;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanelProperties;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileSort;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileView;
@@ -42,6 +43,8 @@ public class DefaultFileChooserPanelProperties implements
 
 	private List<File> places;
 
+	private TextPosition textPosition;
+
 	public DefaultFileChooserPanelProperties() {
 		this.support = new PropertyChangeSupport(this);
 		this.view = FileView.SHORT;
@@ -52,6 +55,7 @@ public class DefaultFileChooserPanelProperties implements
 		this.descending = false;
 		this.folderFirst = true;
 		this.places = new ArrayList<File>();
+		this.textPosition = TextPosition.ICON_ONLY;
 	}
 
 	@Override
@@ -173,6 +177,18 @@ public class DefaultFileChooserPanelProperties implements
 		if (places.remove(place)) {
 			support.firePropertyChange(PLACES_PROPERTY, null, this.places);
 		}
+	}
+
+	@Override
+	public void setTextPosition(TextPosition position) {
+		TextPosition oldValue = this.textPosition;
+		this.textPosition = position;
+		support.firePropertyChange(TEXT_POSITION_PROPERTY, oldValue, position);
+	}
+
+	@Override
+	public TextPosition getTextPosition() {
+		return textPosition;
 	}
 
 	@Override

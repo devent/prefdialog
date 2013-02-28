@@ -7,6 +7,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import com.anrisoftware.prefdialog.annotations.TextPosition;
+
 public interface FileChooserPanelProperties {
 
 	static final String FILE_VIEW_PROPERTY = "file_view";
@@ -20,6 +22,8 @@ public interface FileChooserPanelProperties {
 	static final String FILE_SORT_PROPERTY = "file_sort";
 
 	static final String PLACES_PROPERTY = "places";
+
+	static final String TEXT_POSITION_PROPERTY = "text_position";
 
 	void setView(FileView view);
 
@@ -53,6 +57,10 @@ public interface FileChooserPanelProperties {
 
 	List<Set<File>> getSelectedFilesInQueue();
 
+	void setTextPosition(TextPosition position);
+
+	TextPosition getTextPosition();
+
 	/**
 	 * Add a PropertyChangeListener to the listener list. The listener is
 	 * registered for all properties.
@@ -67,6 +75,7 @@ public interface FileChooserPanelProperties {
 	 * @see #SELECTED_FILES_IN_QUEUE_PROPERTY
 	 * @see #FILE_SORT_PROPERTY
 	 * @see #PLACES_PROPERTY
+	 * @see #TEXT_POSITION_PROPERTY
 	 */
 	void addPropertyChangeListener(PropertyChangeListener l);
 
@@ -88,6 +97,7 @@ public interface FileChooserPanelProperties {
 	 * @see #SELECTED_FILES_IN_QUEUE_PROPERTY
 	 * @see #FILE_SORT_PROPERTY
 	 * @see #PLACES_PROPERTY
+	 * @see #TEXT_POSITION_PROPERTY
 	 */
 	void addPropertyChangeListener(String name, PropertyChangeListener l);
 
@@ -105,6 +115,7 @@ public interface FileChooserPanelProperties {
 	 * @see #SELECTED_FILES_IN_QUEUE_PROPERTY
 	 * @see #FILE_SORT_PROPERTY
 	 * @see #PLACES_PROPERTY
+	 * @see #TEXT_POSITION_PROPERTY
 	 */
 	void removePropertyChangeListener(PropertyChangeListener l);
 
@@ -125,6 +136,7 @@ public interface FileChooserPanelProperties {
 	 * @see #SELECTED_FILES_IN_QUEUE_PROPERTY
 	 * @see #FILE_SORT_PROPERTY
 	 * @see #PLACES_PROPERTY
+	 * @see #TEXT_POSITION_PROPERTY
 	 */
 	void removePropertyChangeListener(String name, PropertyChangeListener l);
 

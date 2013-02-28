@@ -23,6 +23,7 @@ import static com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel
 import static com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel.TEXT_POSITION_MENU_NAME;
 import static com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel.TREE_VIEW_MENU_NAME;
 import static com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel.VIEW_MENU_NAME;
+import static javax.swing.SwingUtilities.invokeLater;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,6 +34,8 @@ import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
+
+import com.anrisoftware.prefdialog.annotations.TextPosition;
 
 @SuppressWarnings("serial")
 class UiOptionsMenu extends JPopupMenu {
@@ -277,5 +280,33 @@ class UiOptionsMenu extends JPopupMenu {
 		hugeIcon.setName(HUGE_ICON_MENU_NAME);
 		hugeIcon.setMnemonic('h');
 		components.put(HUGE_ICON_MENU_NAME, hugeIcon);
+	}
+
+	public void updateSelectedTextPosition(final TextPosition position) {
+		invokeLater(new Runnable() {
+
+			@Override
+			public void run() {
+				updateSelectedTextPosition0(position);
+			}
+		});
+	}
+
+	private void updateSelectedTextPosition0(final TextPosition position) {
+		switch (position) {
+		case ICON_ONLY:
+			iconsOnly.doClick();
+			break;
+		case TEXT_ALONGSIDE_ICON:
+			textAlongsideIcons.doClick();
+			break;
+		case TEXT_ONLY:
+			textOnly.doClick();
+			break;
+		case TEXT_UNDER_ICON:
+			break;
+		default:
+			break;
+		}
 	}
 }
