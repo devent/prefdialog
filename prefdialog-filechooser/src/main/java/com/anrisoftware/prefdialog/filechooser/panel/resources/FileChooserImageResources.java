@@ -18,7 +18,7 @@ import com.anrisoftware.resources.images.api.ImageResource;
 import com.anrisoftware.resources.images.api.Images;
 import com.google.inject.assistedinject.Assisted;
 
-public class ImageResources {
+public class FileChooserImageResources {
 
 	private final FileChooserPanel fileChooser;
 
@@ -27,7 +27,7 @@ public class ImageResources {
 	private final Locale defaultLocale;
 
 	@Inject
-	ImageResources(@Assisted Images images,
+	FileChooserImageResources(@Assisted Images images,
 			@Assisted FileChooserPanel fileChooser) {
 		this.images = images;
 		this.fileChooser = fileChooser;
