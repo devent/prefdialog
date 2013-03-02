@@ -18,9 +18,17 @@ class DirectoyStackImpl implements DirectoyModel {
 
 	@Override
 	public void setCurrentDirectory(File currentDirectory) {
-		if (!currentDirectories.contains(currentDirectory)) {
+		if (!topEquals(currentDirectory)) {
 			currentDirectories.push(currentDirectory);
 		}
+	}
+
+	private boolean topEquals(File dir) {
+		File top = null;
+		if (currentDirectories.size() > 0) {
+			top = currentDirectories.peek();
+		}
+		return top != null && top.equals(dir);
 	}
 
 	@Override

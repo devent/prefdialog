@@ -241,8 +241,10 @@ class FileChooserPanelImpl implements FileChooserPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-
+				Object selected = locationsModel.getSelectedItem();
+				File path = new File(selected.toString());
+				fileModel.setDirectory(path);
+				directoryModel.setCurrentDirectory(path);
 			}
 		};
 	}
@@ -292,6 +294,7 @@ class FileChooserPanelImpl implements FileChooserPanel {
 
 	private void setupLocation() {
 		panel.locationField.setModel(locationsModel);
+		panel.locationField.addActionListener(locationsListener);
 		locationsModel.addLocation(currentDirectory);
 		locationsModel.setSelectedItem(currentDirectory);
 	}
