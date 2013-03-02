@@ -168,6 +168,10 @@ public interface FileChooserPanel {
 
 	FileModel getFileModel();
 
+	void setLocationsModel(LocationsModel model);
+
+	LocationsModel getLocationsModel();
+
 	@SuppressWarnings("rawtypes")
 	void setFileViewRenderer(FileView view, FileViewRenderer renderer);
 

@@ -8,6 +8,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Insets;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,12 +28,12 @@ import com.anrisoftware.prefdialog.filechooser.panel.api.ToolAction;
 import com.anrisoftware.prefdialog.miscswing.components.PopupMenuComponent;
 import com.anrisoftware.prefdialog.miscswing.lists.RubberBandingList;
 
-@SuppressWarnings({ "serial", "rawtypes" })
+@SuppressWarnings({ "serial" })
 final class UiFilesListPanel extends JPanel {
 
 	final Map<String, JComponent> components;
 
-	final JComboBox locationField;
+	final JComboBox<File> locationField;
 
 	final JPanel toolsPanel;
 
@@ -84,7 +85,7 @@ final class UiFilesListPanel extends JPanel {
 		components.put(OPTIONS_BUTTON_NAME, optionsButton);
 		optionsPopup = new PopupMenuComponent(optionsButton, new JPopupMenu());
 
-		locationField = new JComboBox();
+		locationField = new JComboBox<File>();
 		locationField.setName(LOCATION_FIELD_NAME);
 		locationField.setEditable(true);
 		toolsPanel.add(locationField, "cell 0 1,growx");

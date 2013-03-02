@@ -8,6 +8,7 @@ import javax.swing.filechooser.FileSystemView;
 import com.anrisoftware.prefdialog.filechooser.panel.api.PlacesModel;
 
 /**
+ * Adds the home directory and any file system roots to the places.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0

@@ -44,6 +44,7 @@ import com.anrisoftware.prefdialog.filechooser.panel.api.FileSelectionModel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileSort;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileView;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileViewRenderer;
+import com.anrisoftware.prefdialog.filechooser.panel.api.LocationsModel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.PlacesModel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.PlacesRenderer;
 import com.anrisoftware.prefdialog.filechooser.panel.api.ToolAction;
@@ -129,6 +130,10 @@ class FileChooserPanelImpl implements FileChooserPanel {
 
 	private PropertyChangeListener textPositionListener;
 
+	private LocationsModel locationsModel;
+
+	private ActionListener locationsListener;
+
 	@SuppressWarnings("rawtypes")
 	@Inject
 	FileChooserPanelImpl(@Assisted Container container) {
@@ -172,6 +177,8 @@ class FileChooserPanelImpl implements FileChooserPanel {
 				File file = fileModel.getDirectory();
 				fileNameEditor.setCurrentDirectory(file);
 				directoryModel.setCurrentDirectory(file);
+				locationsModel.addLocation(file);
+				locationsModel.setSelectedItem(file);
 				int index = placesModel.indexOf(file);
 				if (index != -1) {
 					placesPanel.placesList.setSelectedIndex(index);
@@ -230,6 +237,14 @@ class FileChooserPanelImpl implements FileChooserPanel {
 						.getNewValue());
 			}
 		};
+		this.locationsListener = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+		};
 	}
 
 	@Override
@@ -272,6 +287,13 @@ class FileChooserPanelImpl implements FileChooserPanel {
 		setupSorting();
 		setupPlaces();
 		setupTextPosition();
+		setupLocation();
+	}
+
+	private void setupLocation() {
+		panel.locationField.setModel(locationsModel);
+		locationsModel.addLocation(currentDirectory);
+		locationsModel.setSelectedItem(currentDirectory);
 	}
 
 	private void setupPlaces() {
@@ -561,6 +583,17 @@ class FileChooserPanelImpl implements FileChooserPanel {
 	@Override
 	public void setFileNameEditor(FileNameEditor editor) {
 		this.fileNameEditor = editor;
+	}
+
+	@Inject
+	@Override
+	public void setLocationsModel(LocationsModel model) {
+		this.locationsModel = model;
+	}
+
+	@Override
+	public LocationsModel getLocationsModel() {
+		return locationsModel;
 	}
 
 	@Override
