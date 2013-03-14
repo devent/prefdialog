@@ -354,7 +354,6 @@ class FileChooserPanelImpl implements FileChooserPanel {
 		optionsMenu.textAlongsideIcons
 				.addActionListener(textPositionActionsModel
 						.getTextAlongsideIconAction());
-		textPositionActionsModel.setFileModel(fileModel);
 		textPositionActionsModel.setFileChooserPanel(this);
 		properties.addPropertyChangeListener(TEXT_POSITION_PROPERTY,
 				textPositionListener);

@@ -25,7 +25,7 @@ class IconOnlyAction extends AbstractTextPositionAction {
 				.entrySet()) {
 			AbstractButton button = entry.getValue();
 			restoreIcon(entry.getKey(), button);
-			saveText(entry.getKey(), button.getText());
+			saveText(entry.getKey(), button);
 			button.setText(null);
 		}
 	}

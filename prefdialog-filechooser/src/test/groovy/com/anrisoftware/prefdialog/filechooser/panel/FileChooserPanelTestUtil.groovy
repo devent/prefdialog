@@ -2,6 +2,7 @@ package com.anrisoftware.prefdialog.filechooser.panel
 
 import static com.anrisoftware.globalpom.utils.TestFrameUtil.*
 import static com.anrisoftware.globalpom.utils.TestUtils.*
+import static javax.swing.SwingUtilities.*
 import static org.apache.commons.io.FileUtils.*
 
 import java.awt.BorderLayout
@@ -35,7 +36,8 @@ class FileChooserPanelTestUtil {
 	TestFrameUtil createFrame(String title) {
 		container = new JPanel(new BorderLayout())
 		container.setBorder BorderFactory.createEmptyBorder(2, 2, 2, 2)
-		panel = factory.create(container).withCurrentDirectory(parent).createPanel()
+		panel = factory.create(container).withCurrentDirectory(parent)
+		invokeLater { panel.createPanel() }
 		def frame = new TestFrameUtil(title, container)
 		frame.frameSize = new Dimension(480, 360)
 		frame

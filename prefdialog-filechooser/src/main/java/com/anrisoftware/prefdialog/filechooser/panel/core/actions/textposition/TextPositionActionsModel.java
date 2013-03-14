@@ -8,7 +8,6 @@ import javax.inject.Inject;
 import javax.swing.Icon;
 
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel;
-import com.anrisoftware.prefdialog.filechooser.panel.api.FileModel;
 
 public class TextPositionActionsModel {
 
@@ -40,12 +39,6 @@ public class TextPositionActionsModel {
 		textOnlyAction.setFileChooserPanel(panel);
 		iconOnlyAction.setFileChooserPanel(panel);
 		textAlongsideIconAction.setFileChooserPanel(panel);
-	}
-
-	public void setFileModel(FileModel model) {
-		textOnlyAction.setFileModel(model);
-		iconOnlyAction.setFileModel(model);
-		textAlongsideIconAction.setFileModel(model);
 	}
 
 	public ActionListener getTextOnlyAction() {
