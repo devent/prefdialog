@@ -11,9 +11,6 @@ import java.awt.Dimension
 import javax.swing.BorderFactory
 import javax.swing.JPanel
 
-import org.junit.AfterClass
-import org.junit.BeforeClass
-
 import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanelFactory
@@ -21,6 +18,12 @@ import com.anrisoftware.prefdialog.filechooser.panel.core.FileChooserPanelModule
 import com.google.inject.Guice
 import com.google.inject.Injector
 
+/**
+ * Utilities to test the file chooser.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 1.0
+ */
 class FileChooserPanelTestUtil {
 
 	JPanel container
@@ -31,30 +34,32 @@ class FileChooserPanelTestUtil {
 
 	public static List dirs
 
-	public static List files
-
 	TestFrameUtil createFrame(String title) {
 		container = new JPanel(new BorderLayout())
 		container.setBorder BorderFactory.createEmptyBorder(2, 2, 2, 2)
 		panel = factory.create(container).withCurrentDirectory(parent)
-		invokeLater { panel.createPanel() }
+		invokeLater { createPanel(panel) }
 		def frame = new TestFrameUtil(title, container)
 		frame.frameSize = new Dimension(480, 360)
 		frame
 	}
 
+	void createPanel(FileChooserPanel panel) {
+		panel.createPanel()
+	}
+
+	public static List files
+
 	public static Injector injector
 
 	public static FileChooserPanelFactory factory
 
-	@BeforeClass
 	public static void setupFactory() {
 		injector = Guice.createInjector(new FileChooserPanelModule())
 		factory = injector.getInstance FileChooserPanelFactory
 		parent = createFiles()
 	}
 
-	@AfterClass
 	public static void deleteFiles() {
 		deleteDirectory parent
 	}

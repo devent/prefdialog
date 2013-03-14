@@ -9,6 +9,8 @@ import javax.swing.JFileChooser
 import javax.swing.JPanel
 
 import org.fest.swing.fixture.FrameFixture
+import org.junit.AfterClass
+import org.junit.BeforeClass
 import org.junit.Test
 
 import com.anrisoftware.globalpom.utils.TestFrameUtil
@@ -16,7 +18,7 @@ import com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel
 
 class FileChooserPanelTest extends FileChooserPanelTestUtil {
 
-	@Test
+	//@Test
 	void "show JFileChooser"() {
 		def title = "FileChooserPanelTest::show JFileChooser"
 		def chooser = new JFileChooser()
@@ -26,7 +28,7 @@ class FileChooserPanelTest extends FileChooserPanelTestUtil {
 		}
 	}
 
-	@Test
+	//@Test
 	void "manually"() {
 		def title = "FileChooserPanelTest::manually"
 		def frame = createFrame(title)
@@ -43,10 +45,6 @@ class FileChooserPanelTest extends FileChooserPanelTestUtil {
 		frame.frameSize = new Dimension(480, 360)
 		frame.withFixture({ FrameFixture f ->
 			f.list(FILES_LIST_NAME).item(0).doubleClick()
-		}, { FrameFixture f ->
-			f.list(FILES_LIST_NAME).item(0).doubleClick()
-		}, { FrameFixture f ->
-			assert panel.getFileSelectionModel().getSelectedFileList() == [files[3]]
 		})
 	}
 
@@ -93,7 +91,7 @@ class FileChooserPanelTest extends FileChooserPanelTestUtil {
 				files[1],
 				files[2]
 			])
-			assert panel.getFileSelectionModel().getSelectedFileList() == [files[2]]
+			assert panel.fileSelectionModel.getSelectedFileList() == [files[2]]
 		})
 	}
 
@@ -108,8 +106,17 @@ class FileChooserPanelTest extends FileChooserPanelTestUtil {
 			f.comboBox(NAME_FIELD_NAME).selectItem(0)
 		}, { FrameFixture f ->
 			f.comboBox(NAME_FIELD_NAME).selectItem(1)
-		}, { FrameFixture f ->
-			Thread.sleep 60*1000
 		})
 	}
+
+	@BeforeClass
+	public static void setupFactory() {
+		FileChooserPanelTestUtil.setupFactory()
+	}
+
+	@AfterClass
+	public static void deleteFiles() {
+		FileChooserPanelTestUtil.deleteFiles()
+	}
+
 }
