@@ -5,6 +5,8 @@ import static com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel
 import java.awt.Dimension
 
 import org.fest.swing.fixture.FrameFixture
+import org.junit.AfterClass
+import org.junit.BeforeClass
 import org.junit.Test
 
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel
@@ -42,5 +44,15 @@ class FileChooserTextPositionTest extends FileChooserPanelTestUtil {
 		}, { FrameFixture f ->
 			f.button OPTIONS_BUTTON_NAME requireText "Options"
 		})
+	}
+
+	@BeforeClass
+	public static void setupFactory() {
+		FileChooserPanelTestUtil.setupFactory()
+	}
+
+	@AfterClass
+	public static void deleteFiles() {
+		FileChooserPanelTestUtil.deleteFiles()
 	}
 }
