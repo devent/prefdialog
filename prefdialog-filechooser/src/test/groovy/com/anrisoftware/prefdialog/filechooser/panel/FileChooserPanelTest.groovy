@@ -38,8 +38,8 @@ class FileChooserPanelTest extends FileChooserPanelTestUtil {
 	}
 
 	@Test
-	void "go in directory, select file"() {
-		def title = "FileChooserPanelTest::go in directory, select file"
+	void "go in directory"() {
+		def title = "FileChooserPanelTest::go in directory"
 		def frame = createFrame(title)
 		panel.getFileSelectionModel().setMultiSelectionEnabled true
 		frame.frameSize = new Dimension(480, 360)
@@ -91,7 +91,7 @@ class FileChooserPanelTest extends FileChooserPanelTestUtil {
 				files[1],
 				files[2]
 			])
-			assert panel.fileSelectionModel.getSelectedFileList() == [files[2]]
+			assert panel.fileSelectionModel.getSelectedFileList() == [files[0]]
 		})
 	}
 

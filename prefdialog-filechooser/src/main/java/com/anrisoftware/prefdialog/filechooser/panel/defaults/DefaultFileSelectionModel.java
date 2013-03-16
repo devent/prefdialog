@@ -64,8 +64,11 @@ public class DefaultFileSelectionModel extends DefaultListSelectionModel
 
 	@Override
 	public void setSelectedFiles(Collection<File> files) {
+		if (fileSelection) {
+			files = removeDirectories(files);
+		}
 		if (!isMultiSelectionEnabled()) {
-			removeExceptFirst(files);
+			files = removeExceptFirst(files);
 		}
 		@SuppressWarnings("rawtypes")
 		ListModel model = list.getModel();
@@ -92,12 +95,23 @@ public class DefaultFileSelectionModel extends DefaultListSelectionModel
 		}
 	}
 
-	private void removeExceptFirst(Collection<File> files) {
-		File last = first(files);
-		files.clear();
-		if (last != null) {
-			files.add(last);
+	private List<File> removeDirectories(Collection<File> files) {
+		List<File> list = new ArrayList<File>(files.size());
+		for (File file : files) {
+			if (!systemView.isTraversable(file)) {
+				list.add(file);
+			}
 		}
+		return list;
+	}
+
+	private List<File> removeExceptFirst(Collection<File> files) {
+		List<File> list = new ArrayList<File>(1);
+		File last = first(files);
+		if (last != null) {
+			list.add(last);
+		}
+		return list;
 	}
 
 	private File first(Collection<File> files) {
