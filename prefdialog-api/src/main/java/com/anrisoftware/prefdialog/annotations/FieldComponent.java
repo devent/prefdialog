@@ -26,11 +26,14 @@ import java.lang.annotation.Target;
 
 import com.anrisoftware.resources.images.api.IconSize;
 import com.anrisoftware.resources.images.api.Images;
+import com.anrisoftware.resources.texts.api.Texts;
 
 /**
  * Field component. All fields for which a field component should be created
- * must be annotated with this annotation.
+ * must be annotated with this annotation. Defines attributes that are common to
+ * all fields.
  * <p>
+ * 
  * Example:
  * 
  * <pre>
@@ -64,10 +67,18 @@ public @interface FieldComponent {
 	boolean showTitle() default true;
 
 	/**
-	 * The tool-tip text for the field. Defaults to the empty text which means
-	 * no tool-tip will be shown.
+	 * The tool-tip text for the field.
+	 * <p>
+	 * The tool-tip can also be a resource name that is queried in the supplied
+	 * texts resource.
 	 */
 	String toolTip() default "";
+
+	/**
+	 * If the tool-tip of the field should be shown or not. Defaults to
+	 * {@code true} which means the tool-tip should be shown.
+	 */
+	boolean showToolTip() default true;
 
 	/**
 	 * If this field should be read-only. If read-only is set then the user can
@@ -78,7 +89,7 @@ public @interface FieldComponent {
 	/**
 	 * The width of the field inside the container. The width can be in pixels,
 	 * a percentage or some special constant. Default is set to the TableLayout
-	 * preffered size constant.
+	 * preferred size constant.
 	 */
 	double width() default -1.0;
 
@@ -91,13 +102,18 @@ public @interface FieldComponent {
 	TextPosition titlePosition() default TextPosition.TEXT_ONLY;
 
 	/**
-	 * The resource name of icon or empty if no icon should be set. The resource
-	 * name is queried in the supplied images resource. Defaults to the empty
-	 * resource name which means no icon is set.
+	 * The resource name of the icon or empty if no icon should be set. The
+	 * resource name is queried in the supplied images resource.
 	 * 
 	 * @see Images
 	 */
 	String icon() default "";
+
+	/**
+	 * If the icon of the field should be shown or not. Defaults to
+	 * {@code false} which means the icon should not be shown.
+	 */
+	boolean showIcon() default false;
 
 	/**
 	 * The size of the icon. Defaults to {@link IconSize#SMALL}.

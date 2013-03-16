@@ -28,8 +28,18 @@
 			<artifactId>commons-io</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.anrisoftware.globalpom</groupId>
+			<artifactId>globalpom-utils</artifactId>
+			<scope>test</scope>
+		</dependency>
 
 		<!-- own module dependencies -->
+		<dependency>
+			<groupId>com.anrisoftware.prefdialog</groupId>
+			<artifactId>prefdialog-api</artifactId>
+			<version>3.0-SNAPSHOT</version>
+		</dependency>
 		<dependency>
 			<groupId>com.anrisoftware.prefdialog</groupId>
 			<artifactId>prefdialog-icons-reflectionskde4</artifactId>
@@ -52,35 +62,26 @@
 			<artifactId>commons-lang3</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.dockingframes</groupId>
+			<artifactId>docking-frames-common</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.miglayout</groupId>
+			<artifactId>miglayout-swing</artifactId>
+		</dependency>
+
+		<!-- for image resources -->
+		<dependency>
 			<groupId>com.anrisoftware.resources</groupId>
 			<artifactId>resources-images</artifactId>
 			<optional>true</optional>
 		</dependency>
+
+		<!-- for text resources -->
         <dependency>
             <groupId>com.anrisoftware.resources</groupId>
             <artifactId>resources-texts</artifactId>
             <optional>true</optional>
         </dependency>
-		<dependency>
-			<groupId>org.dockingframes</groupId>
-			<artifactId>docking-frames-common</artifactId>
-			<version>1.1.1</version>
-		</dependency>
-		<dependency>
-			<groupId>com.miglayout</groupId>
-			<artifactId>miglayout-swing</artifactId>
-			<version>4.2</version>
-		</dependency>
-		<dependency>
-			<groupId>com.anrisoftware.prefdialog</groupId>
-			<artifactId>prefdialog-core</artifactId>
-			<version>1.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>com.anrisoftware.globalpom</groupId>
-			<artifactId>globalpom-utils</artifactId>
-			<version>1.2-SNAPSHOT</version>
-			<scope>test</scope>
-		</dependency>
 	</dependencies>
 </project>
