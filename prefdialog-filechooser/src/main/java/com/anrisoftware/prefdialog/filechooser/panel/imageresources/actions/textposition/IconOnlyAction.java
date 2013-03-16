@@ -1,4 +1,4 @@
-package com.anrisoftware.prefdialog.filechooser.panel.core.actions.textposition;
+package com.anrisoftware.prefdialog.filechooser.panel.imageresources.actions.textposition;
 
 import static javax.swing.SwingUtilities.invokeLater;
 
@@ -7,7 +7,7 @@ import java.util.Map.Entry;
 
 import javax.swing.AbstractButton;
 
-class TextAlongsideIconAction extends AbstractTextPositionAction {
+class IconOnlyAction extends AbstractTextPositionAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -15,19 +15,18 @@ class TextAlongsideIconAction extends AbstractTextPositionAction {
 
 			@Override
 			public void run() {
-				showText();
+				hideText();
 			}
 		});
 	}
 
-	private void showText() {
+	private void hideText() {
 		for (Entry<String, ? extends AbstractButton> entry : getFontChooserButtons()
 				.entrySet()) {
 			AbstractButton button = entry.getValue();
 			restoreIcon(entry.getKey(), button);
-			restoreText(entry.getKey(), button);
-			button.setHideActionText(false);
+			saveText(entry.getKey(), button);
+			button.setText(null);
 		}
 	}
-
 }

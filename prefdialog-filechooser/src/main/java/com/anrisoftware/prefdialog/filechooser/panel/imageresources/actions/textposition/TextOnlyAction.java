@@ -1,4 +1,4 @@
-package com.anrisoftware.prefdialog.filechooser.panel.core.actions.textposition;
+package com.anrisoftware.prefdialog.filechooser.panel.imageresources.actions.textposition;
 
 import static javax.swing.SwingUtilities.invokeLater;
 

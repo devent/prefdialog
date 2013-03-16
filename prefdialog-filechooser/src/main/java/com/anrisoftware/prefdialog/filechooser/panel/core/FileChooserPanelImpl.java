@@ -1,5 +1,7 @@
 package com.anrisoftware.prefdialog.filechooser.panel.core;
 
+import static com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanelProperties.DEFAULT_ICON_SIZE_PROPERTY;
+import static com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanelProperties.ICON_SIZE_PROPERTY;
 import static com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanelProperties.SELECTED_FILES_IN_QUEUE_PROPERTY;
 import static com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanelProperties.TEXT_POSITION_PROPERTY;
 import static com.anrisoftware.prefdialog.filechooser.panel.api.FileModel.DIRECTORY_PROPERTY;
@@ -44,17 +46,19 @@ import com.anrisoftware.prefdialog.filechooser.panel.api.FileSelectionModel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileSort;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileView;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileViewRenderer;
+import com.anrisoftware.prefdialog.filechooser.panel.api.IconSizeActionsModel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.LocationsModel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.PlacesModel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.PlacesRenderer;
+import com.anrisoftware.prefdialog.filechooser.panel.api.TextPositionActionsModel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.ToolAction;
 import com.anrisoftware.prefdialog.filechooser.panel.api.ToolButtonsModel;
 import com.anrisoftware.prefdialog.filechooser.panel.core.actions.sorting.SortActionsModel;
-import com.anrisoftware.prefdialog.filechooser.panel.core.actions.textposition.TextPositionActionsModel;
 import com.anrisoftware.prefdialog.filechooser.panel.core.docking.Docking;
 import com.anrisoftware.prefdialog.filechooser.panel.core.docking.DockingFactory;
 import com.anrisoftware.prefdialog.filechooser.panel.defaults.DefaultShortViewRenderer;
 import com.anrisoftware.prefdialog.miscswing.lists.ActionList;
+import com.anrisoftware.resources.images.api.IconSize;
 import com.google.inject.assistedinject.Assisted;
 
 class FileChooserPanelImpl implements FileChooserPanel {
@@ -133,6 +137,12 @@ class FileChooserPanelImpl implements FileChooserPanel {
 	private LocationsModel locationsModel;
 
 	private ActionListener locationsListener;
+
+	private IconSizeActionsModel iconSizeActionsModel;
+
+	private PropertyChangeListener iconSizeListener;
+
+	private PropertyChangeListener defaultIconSizeListener;
 
 	@SuppressWarnings("rawtypes")
 	@Inject
@@ -247,6 +257,22 @@ class FileChooserPanelImpl implements FileChooserPanel {
 				directoryModel.setCurrentDirectory(path);
 			}
 		};
+		this.iconSizeListener = new PropertyChangeListener() {
+
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				IconSize size = (IconSize) evt.getNewValue();
+				optionsMenu.updateSelectedIconSize(size);
+			}
+		};
+		this.defaultIconSizeListener = new PropertyChangeListener() {
+
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				IconSize size = (IconSize) evt.getNewValue();
+				iconSizeActionsModel.setDefaultIconSize(size);
+			}
+		};
 	}
 
 	@Override
@@ -290,6 +316,7 @@ class FileChooserPanelImpl implements FileChooserPanel {
 		setupPlaces();
 		setupTextPosition();
 		setupLocation();
+		setupIconSize();
 	}
 
 	private void setupLocation() {
@@ -347,18 +374,33 @@ class FileChooserPanelImpl implements FileChooserPanel {
 	}
 
 	private void setupTextPosition() {
-		optionsMenu.textOnly.addActionListener(textPositionActionsModel
-				.getTextOnlyAction());
-		optionsMenu.iconsOnly.addActionListener(textPositionActionsModel
-				.getIconOnlyAction());
-		optionsMenu.textAlongsideIcons
-				.addActionListener(textPositionActionsModel
-						.getTextAlongsideIconAction());
-		textPositionActionsModel.setFileChooserPanel(this);
+		TextPositionActionsModel model = textPositionActionsModel;
+		optionsMenu.textOnly.addActionListener(model.getTextOnlyAction());
+		optionsMenu.iconsOnly.addActionListener(model.getIconOnlyAction());
+		optionsMenu.textAlongsideIcons.addActionListener(model
+				.getTextAlongsideIconAction());
 		properties.addPropertyChangeListener(TEXT_POSITION_PROPERTY,
 				textPositionListener);
 		textPositionListener.propertyChange(new PropertyChangeEvent(properties,
 				TEXT_POSITION_PROPERTY, null, properties.getTextPosition()));
+	}
+
+	private void setupIconSize() {
+		IconSizeActionsModel model = iconSizeActionsModel;
+		optionsMenu.hugeIcon.addActionListener(model.getHugeSizeAction());
+		optionsMenu.largeIcon.addActionListener(model.getLargeSizeAction());
+		optionsMenu.mediumIcon.addActionListener(model.getMediumSizeAction());
+		optionsMenu.smallIcon.addActionListener(model.getSmallSizeAction());
+		optionsMenu.defaultIcon.addActionListener(model.getDefaultSizeAction());
+		properties.addPropertyChangeListener(ICON_SIZE_PROPERTY,
+				iconSizeListener);
+		iconSizeListener.propertyChange(new PropertyChangeEvent(properties,
+				ICON_SIZE_PROPERTY, null, properties.getIconSize()));
+		properties.addPropertyChangeListener(DEFAULT_ICON_SIZE_PROPERTY,
+				defaultIconSizeListener);
+		defaultIconSizeListener.propertyChange(new PropertyChangeEvent(
+				properties, DEFAULT_ICON_SIZE_PROPERTY, null, properties
+						.getDefaultIconSize()));
 	}
 
 	private void setupFileModel() {
@@ -482,9 +524,26 @@ class FileChooserPanelImpl implements FileChooserPanel {
 		this.sortActionsModel = model;
 	}
 
+	@Override
 	@Inject
-	void setTextPositionActionsModel(TextPositionActionsModel model) {
+	public void setTextPositionActionsModel(TextPositionActionsModel model) {
 		this.textPositionActionsModel = model;
+	}
+
+	@Override
+	public TextPositionActionsModel getTextPositionActionsModel() {
+		return textPositionActionsModel;
+	}
+
+	@Override
+	@Inject
+	public void setIconSizeActionsModel(IconSizeActionsModel model) {
+		this.iconSizeActionsModel = model;
+	}
+
+	@Override
+	public IconSizeActionsModel getIconSizeActionsModel() {
+		return iconSizeActionsModel;
 	}
 
 	@Override
@@ -503,7 +562,7 @@ class FileChooserPanelImpl implements FileChooserPanel {
 		return directoryModel;
 	}
 
-	// @Inject
+	// @Inject TODO
 	@Override
 	public void setFilePropertiesModel(FilePropertiesModel model) {
 		this.filePropertiesModel = model;

@@ -10,8 +10,8 @@ import org.junit.Test
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanelFactory
 import com.anrisoftware.prefdialog.filechooser.panel.core.FileChooserPanelModule
-import com.anrisoftware.prefdialog.filechooser.panel.resources.FileChooserImageResourcesModule
-import com.anrisoftware.prefdialog.filechooser.panel.resources.FileChooserImageResourcesFactory
+import com.anrisoftware.prefdialog.filechooser.panel.imageresources.FileChooserImageResourcesFactory
+import com.anrisoftware.prefdialog.filechooser.panel.imageresources.FileChooserImageResourcesModule
 import com.anrisoftware.prefdialog.filechooser.panel.textresources.FileChooserTextResourcesFactory
 import com.anrisoftware.prefdialog.filechooser.panel.textresources.FileChooserTextResourcesModule
 import com.anrisoftware.resources.binary.binaries.BinariesResourcesModule
@@ -50,16 +50,16 @@ class FileChooserResourcesTest extends FileChooserPanelTestUtil {
 	static void setupFactory() {
 		FileChooserPanelTestUtil.setupFactory()
 		injector = Guice.createInjector(new FileChooserPanelModule(),
-						new FileChooserTextResourcesModule(),
-						new FileChooserImageResourcesModule(),
-						new TextsResourcesModule(),
-						new TextsDefaultMapsModule(),
-						new TextsResourcesCharsetModule(),
-						new BinariesResourcesModule(),
-						new BinariesDefaultMapsModule(),
-						new ImagesResourcesModule(),
-						new ResourcesImagesMapsModule(),
-						new ResourcesSmoothScalingModule())
+				new FileChooserTextResourcesModule(),
+				new FileChooserImageResourcesModule(),
+				new TextsResourcesModule(),
+				new TextsDefaultMapsModule(),
+				new TextsResourcesCharsetModule(),
+				new BinariesResourcesModule(),
+				new BinariesDefaultMapsModule(),
+				new ImagesResourcesModule(),
+				new ResourcesImagesMapsModule(),
+				new ResourcesSmoothScalingModule())
 		factory = injector.getInstance FileChooserPanelFactory
 		textResourcesFactory = injector.getInstance FileChooserTextResourcesFactory
 		textsResources = injector.getInstance TextsResources

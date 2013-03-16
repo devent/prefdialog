@@ -1,4 +1,4 @@
-package com.anrisoftware.prefdialog.filechooser.panel.core.actions.textposition;
+package com.anrisoftware.prefdialog.filechooser.panel.imageresources.actions.textposition;
 
 import java.awt.event.ActionListener;
 import java.util.HashMap;
@@ -8,8 +8,9 @@ import javax.inject.Inject;
 import javax.swing.Icon;
 
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel;
+import com.anrisoftware.prefdialog.filechooser.panel.api.TextPositionActionsModel;
 
-public class TextPositionActionsModel {
+public class TextPositionActionsModelImpl implements TextPositionActionsModel {
 
 	private final TextOnlyAction textOnlyAction;
 
@@ -22,7 +23,7 @@ public class TextPositionActionsModel {
 	Map<String, String> savedText;
 
 	@Inject
-	TextPositionActionsModel(TextOnlyAction textOnlyAction,
+	TextPositionActionsModelImpl(TextOnlyAction textOnlyAction,
 			IconOnlyAction iconOnlyAction,
 			TextAlongsideIconAction textAlongsideIconAction) {
 		this.savedIcons = new HashMap<String, Icon>(100);
@@ -41,14 +42,17 @@ public class TextPositionActionsModel {
 		textAlongsideIconAction.setFileChooserPanel(panel);
 	}
 
+	@Override
 	public ActionListener getTextOnlyAction() {
 		return textOnlyAction;
 	}
 
+	@Override
 	public ActionListener getIconOnlyAction() {
 		return iconOnlyAction;
 	}
 
+	@Override
 	public ActionListener getTextAlongsideIconAction() {
 		return textAlongsideIconAction;
 	}

@@ -1,24 +1,33 @@
 package com.anrisoftware.prefdialog.filechooser.panel.core.actions.sorting;
 
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileModel;
 
+/**
+ * Returns the sorting menu actions.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 1.0
+ */
 public class SortActionsModel {
 
-	private final SortDateAction sortDateAction;
+	private final ActionListener sortDateAction;
 
-	private final SortNameAction sortNameAction;
+	private final ActionListener sortNameAction;
 
-	private final SortSizeAction sortSizeAction;
+	private final ActionListener sortSizeAction;
 
-	private final SortTypeAction sortTypeAction;
+	private final ActionListener sortTypeAction;
 
-	private final SortDescendingAction sortDescendingAction;
+	private final ActionListener sortDescendingAction;
 
-	private final SortFolderFirstAction sortFolderFirstAction;
+	private final ActionListener sortFolderFirstAction;
+
+	private final ArrayList<AbstractSortingAction> sortingActions;
 
 	@Inject
 	SortActionsModel(SortDateAction sortDateAction,
@@ -32,15 +41,18 @@ public class SortActionsModel {
 		this.sortTypeAction = sortTypeAction;
 		this.sortDescendingAction = sortDescendingAction;
 		this.sortFolderFirstAction = sortFolderFirstAction;
+		this.sortingActions = new ArrayList<AbstractSortingAction>();
+		sortingActions.add(sortDateAction);
+		sortingActions.add(sortNameAction);
+		sortingActions.add(sortTypeAction);
+		sortingActions.add(sortDescendingAction);
+		sortingActions.add(sortFolderFirstAction);
 	}
 
 	public void setFileModel(FileModel model) {
-		sortDateAction.setFileModel(model);
-		sortNameAction.setFileModel(model);
-		sortSizeAction.setFileModel(model);
-		sortTypeAction.setFileModel(model);
-		sortDescendingAction.setFileModel(model);
-		sortFolderFirstAction.setFileModel(model);
+		for (AbstractSortingAction action : sortingActions) {
+			action.setFileModel(model);
+		}
 	}
 
 	public ActionListener getSortDateAction() {

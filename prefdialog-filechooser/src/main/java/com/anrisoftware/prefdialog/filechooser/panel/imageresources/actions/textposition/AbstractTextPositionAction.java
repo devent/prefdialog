@@ -1,4 +1,4 @@
-package com.anrisoftware.prefdialog.filechooser.panel.core.actions.textposition;
+package com.anrisoftware.prefdialog.filechooser.panel.imageresources.actions.textposition;
 
 import static java.util.regex.Pattern.compile;
 
@@ -18,7 +18,7 @@ abstract class AbstractTextPositionAction implements ActionListener {
 
 	private static final Pattern TOOL_BUTTON_PATTERN = compile(".*-tool-button");
 
-	private TextPositionActionsModel model;
+	private TextPositionActionsModelImpl model;
 
 	private FileChooserPanel fileChooserPanel;
 
@@ -26,7 +26,7 @@ abstract class AbstractTextPositionAction implements ActionListener {
 		this.fileChooserPanel = panel;
 	}
 
-	public void setModel(TextPositionActionsModel model) {
+	public void setModel(TextPositionActionsModelImpl model) {
 		this.model = model;
 	}
 

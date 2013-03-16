@@ -36,6 +36,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 
 import com.anrisoftware.prefdialog.annotations.TextPosition;
+import com.anrisoftware.resources.images.api.IconSize;
 
 @SuppressWarnings("serial")
 class UiOptionsMenu extends JPopupMenu {
@@ -304,6 +305,35 @@ class UiOptionsMenu extends JPopupMenu {
 			textOnly.doClick();
 			break;
 		case TEXT_UNDER_ICON:
+			break;
+		default:
+			break;
+		}
+	}
+
+	public void updateSelectedIconSize(final IconSize size) {
+		invokeLater(new Runnable() {
+
+			@Override
+			public void run() {
+				updateSelectedIconSize0(size);
+			}
+		});
+	}
+
+	private void updateSelectedIconSize0(IconSize size) {
+		switch (size) {
+		case HUGE:
+			hugeIcon.doClick();
+			break;
+		case LARGE:
+			largeIcon.doClick();
+			break;
+		case MEDIUM:
+			mediumIcon.doClick();
+			break;
+		case SMALL:
+			smallIcon.doClick();
 			break;
 		default:
 			break;

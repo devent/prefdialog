@@ -189,6 +189,14 @@ public interface FileChooserPanel {
 
 	PlacesRenderer getPlacesRenderer();
 
+	void setTextPositionActionsModel(TextPositionActionsModel model);
+
+	TextPositionActionsModel getTextPositionActionsModel();
+
+	void setIconSizeActionsModel(IconSizeActionsModel model);
+
+	IconSizeActionsModel getIconSizeActionsModel();
+
 	/**
 	 * Returns the components in the file chooser panel for direct manipulation.
 	 * 

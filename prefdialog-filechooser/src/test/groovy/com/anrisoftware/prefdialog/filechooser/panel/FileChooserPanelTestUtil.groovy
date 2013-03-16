@@ -15,6 +15,10 @@ import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanelFactory
 import com.anrisoftware.prefdialog.filechooser.panel.core.FileChooserPanelModule
+import com.anrisoftware.prefdialog.filechooser.panel.imageresources.FileChooserImageResourcesModule
+import com.anrisoftware.resources.images.images.ImagesResourcesModule
+import com.anrisoftware.resources.images.maps.ResourcesImagesMapsModule
+import com.anrisoftware.resources.images.scaling.ResourcesSmoothScalingModule
 import com.google.inject.Guice
 import com.google.inject.Injector
 
@@ -55,7 +59,13 @@ class FileChooserPanelTestUtil {
 	public static FileChooserPanelFactory factory
 
 	public static void setupFactory() {
-		injector = Guice.createInjector(new FileChooserPanelModule())
+		injector = Guice.createInjector(
+				new FileChooserPanelModule(),
+				new FileChooserImageResourcesModule(),
+				new ImagesResourcesModule(),
+				new ResourcesImagesMapsModule(),
+				new ResourcesSmoothScalingModule()
+				)
 		factory = injector.getInstance FileChooserPanelFactory
 		parent = createFiles()
 	}

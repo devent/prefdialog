@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.anrisoftware.prefdialog.annotations.TextPosition;
+import com.anrisoftware.resources.images.api.IconSize;
 
 public interface FileChooserPanelProperties {
 
@@ -24,6 +25,10 @@ public interface FileChooserPanelProperties {
 	static final String PLACES_PROPERTY = "places";
 
 	static final String TEXT_POSITION_PROPERTY = "text_position";
+
+	static final String ICON_SIZE_PROPERTY = "icon_size";
+
+	static final String DEFAULT_ICON_SIZE_PROPERTY = "default_icon_size";
 
 	void setView(FileView view);
 
@@ -61,6 +66,14 @@ public interface FileChooserPanelProperties {
 
 	TextPosition getTextPosition();
 
+	void setIconSize(IconSize size);
+
+	IconSize getIconSize();
+
+	void setDefaultIconSize(IconSize size);
+
+	IconSize getDefaultIconSize();
+
 	/**
 	 * Add a PropertyChangeListener to the listener list. The listener is
 	 * registered for all properties.
@@ -76,6 +89,8 @@ public interface FileChooserPanelProperties {
 	 * @see #FILE_SORT_PROPERTY
 	 * @see #PLACES_PROPERTY
 	 * @see #TEXT_POSITION_PROPERTY
+	 * @see #ICON_SIZE_PROPERTY
+	 * @see #DEFAULT_ICON_SIZE_PROPERTY
 	 */
 	void addPropertyChangeListener(PropertyChangeListener l);
 
@@ -98,6 +113,8 @@ public interface FileChooserPanelProperties {
 	 * @see #FILE_SORT_PROPERTY
 	 * @see #PLACES_PROPERTY
 	 * @see #TEXT_POSITION_PROPERTY
+	 * @see #ICON_SIZE_PROPERTY
+	 * @see #DEFAULT_ICON_SIZE_PROPERTY
 	 */
 	void addPropertyChangeListener(String name, PropertyChangeListener l);
 
@@ -116,6 +133,8 @@ public interface FileChooserPanelProperties {
 	 * @see #FILE_SORT_PROPERTY
 	 * @see #PLACES_PROPERTY
 	 * @see #TEXT_POSITION_PROPERTY
+	 * @see #ICON_SIZE_PROPERTY
+	 * @see #DEFAULT_ICON_SIZE_PROPERTY
 	 */
 	void removePropertyChangeListener(PropertyChangeListener l);
 
@@ -137,6 +156,8 @@ public interface FileChooserPanelProperties {
 	 * @see #FILE_SORT_PROPERTY
 	 * @see #PLACES_PROPERTY
 	 * @see #TEXT_POSITION_PROPERTY
+	 * @see #ICON_SIZE_PROPERTY
+	 * @see #DEFAULT_ICON_SIZE_PROPERTY
 	 */
 	void removePropertyChangeListener(String name, PropertyChangeListener l);
 

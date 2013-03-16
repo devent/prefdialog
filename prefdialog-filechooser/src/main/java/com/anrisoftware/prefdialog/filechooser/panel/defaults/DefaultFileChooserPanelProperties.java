@@ -15,6 +15,7 @@ import com.anrisoftware.prefdialog.annotations.TextPosition;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanelProperties;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileSort;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileView;
+import com.anrisoftware.resources.images.api.IconSize;
 
 /**
  * Saves the file chooser panel properties that the user can change.
@@ -45,6 +46,10 @@ public class DefaultFileChooserPanelProperties implements
 
 	private TextPosition textPosition;
 
+	private IconSize iconSize;
+
+	private IconSize defaultIconSize;
+
 	public DefaultFileChooserPanelProperties() {
 		this.support = new PropertyChangeSupport(this);
 		this.view = FileView.SHORT;
@@ -56,6 +61,8 @@ public class DefaultFileChooserPanelProperties implements
 		this.folderFirst = true;
 		this.places = new ArrayList<File>();
 		this.textPosition = TextPosition.ICON_ONLY;
+		this.iconSize = IconSize.SMALL;
+		this.defaultIconSize = IconSize.SMALL;
 	}
 
 	@Override
@@ -189,6 +196,31 @@ public class DefaultFileChooserPanelProperties implements
 	@Override
 	public TextPosition getTextPosition() {
 		return textPosition;
+	}
+
+	@Override
+	public void setIconSize(IconSize iconSize) {
+		IconSize oldValue = this.iconSize;
+		this.iconSize = iconSize;
+		support.firePropertyChange(ICON_SIZE_PROPERTY, oldValue, iconSize);
+	}
+
+	@Override
+	public IconSize getIconSize() {
+		return iconSize;
+	}
+
+	@Override
+	public void setDefaultIconSize(IconSize defaultIconSize) {
+		IconSize oldValue = this.defaultIconSize;
+		this.defaultIconSize = defaultIconSize;
+		support.firePropertyChange(DEFAULT_ICON_SIZE_PROPERTY, oldValue,
+				iconSize);
+	}
+
+	@Override
+	public IconSize getDefaultIconSize() {
+		return defaultIconSize;
 	}
 
 	@Override
