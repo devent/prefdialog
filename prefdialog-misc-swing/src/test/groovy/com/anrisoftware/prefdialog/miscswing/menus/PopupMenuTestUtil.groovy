@@ -1,4 +1,4 @@
-package com.anrisoftware.prefdialog.miscswing.components
+package com.anrisoftware.prefdialog.miscswing.menus
 
 import javax.swing.JButton
 import javax.swing.JComponent
@@ -31,8 +31,7 @@ class PopupMenuTestUtil {
 		menu = createMenu()
 		popup = createPopup(component, menu)
 		panel = createPanel(component)
-		def frame = new TestFrameUtil(title, panel)
-		frame.withFixture { Thread.sleep 60*1000 }
+		new TestFrameUtil(title, panel)
 	}
 
 	JPanel createPanel(def component) {

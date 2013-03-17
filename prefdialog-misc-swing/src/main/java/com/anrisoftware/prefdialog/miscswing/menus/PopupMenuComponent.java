@@ -1,4 +1,4 @@
-package com.anrisoftware.prefdialog.miscswing.components;
+package com.anrisoftware.prefdialog.miscswing.menus;
 
 import java.awt.Component;
 import java.awt.Point;

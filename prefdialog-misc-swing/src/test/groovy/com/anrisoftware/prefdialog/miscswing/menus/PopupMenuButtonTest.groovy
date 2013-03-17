@@ -1,4 +1,4 @@
-package com.anrisoftware.prefdialog.miscswing.components
+package com.anrisoftware.prefdialog.miscswing.menus
 
 import javax.swing.JButton
 import javax.swing.JMenuItem
@@ -18,7 +18,7 @@ import com.anrisoftware.globalpom.utils.TestUtils
  */
 class PopupMenuButtonTest extends PopupMenuTestUtil {
 
-	@Test
+	//@Test
 	void "manually"() {
 		def title = "PopupMenuComponentTest::manually"
 		def frame = createFrame title
@@ -28,8 +28,7 @@ class PopupMenuButtonTest extends PopupMenuTestUtil {
 	@Test
 	void "show and hide popup"() {
 		def title = "PopupMenuComponentTest::show and hide popup"
-		def panel = createPanel()
-		def frame = new TestFrameUtil(title, panel)
+		def frame = createFrame title
 		frame.withFixture({ FrameFixture it ->
 			it.button(POPUP_BUTTON_NAME).click()
 		}, { FrameFixture it ->
@@ -44,8 +43,7 @@ class PopupMenuButtonTest extends PopupMenuTestUtil {
 	@Test
 	void "show popup and select item"() {
 		def title = "PopupMenuComponentTest::show popup and select item"
-		def panel = createPanel()
-		def frame = new TestFrameUtil(title, panel)
+		def frame = createFrame title
 		frame.withFixture({ FrameFixture it ->
 			it.button(POPUP_BUTTON_NAME).click()
 		}, { FrameFixture it ->
@@ -60,8 +58,7 @@ class PopupMenuButtonTest extends PopupMenuTestUtil {
 	@Test
 	void "show popup and click other button"() {
 		def title = "PopupMenuComponentTest::show popup and click other button"
-		def panel = createPanel()
-		def frame = new TestFrameUtil(title, panel)
+		def frame = createFrame title
 		frame.withFixture({ FrameFixture it ->
 			it.button(POPUP_BUTTON_NAME).click()
 		}, { FrameFixture it ->
