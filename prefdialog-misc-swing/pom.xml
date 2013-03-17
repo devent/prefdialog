@@ -43,5 +43,12 @@
 			<groupId>com.anrisoftware.globalpom</groupId>
 			<artifactId>globalpom-utils</artifactId>
 		</dependency>
+
+		<!-- for docks -->
+		<dependency>
+			<groupId>org.dockingframes</groupId>
+			<artifactId>docking-frames-common</artifactId>
+			<optional>true</optional>
+		</dependency>
 	</dependencies>
 </project>
