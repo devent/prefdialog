@@ -18,10 +18,7 @@
 	<inceptionYear>2013</inceptionYear>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-		</dependency>
+		<!-- test dependencies -->
 		<dependency>
 			<groupId>com.anrisoftware.globalpom</groupId>
 			<artifactId>globalpom-groovytestutils</artifactId>
@@ -30,8 +27,21 @@
 		<dependency>
 			<groupId>com.miglayout</groupId>
 			<artifactId>miglayout-swing</artifactId>
-			<version>4.2</version>
 			<scope>test</scope>
+		</dependency>
+
+		<!-- compile dependencies -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.anrisoftware.globalpom</groupId>
+			<artifactId>globalpom-log</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.anrisoftware.globalpom</groupId>
+			<artifactId>globalpom-utils</artifactId>
 		</dependency>
 	</dependencies>
 </project>
