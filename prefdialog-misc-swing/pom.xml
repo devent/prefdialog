@@ -10,7 +10,6 @@
 		<relativePath>../prefdialog-parent</relativePath>
 	</parent>
 
-
 	<artifactId>prefdialog-misc-swing</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Prefdialog :: Miscellaneous Swing Components</name>
