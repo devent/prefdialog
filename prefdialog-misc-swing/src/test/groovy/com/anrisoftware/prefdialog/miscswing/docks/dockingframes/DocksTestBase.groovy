@@ -15,7 +15,7 @@ import com.anrisoftware.prefdialog.miscswing.docks.api.Dock
 import com.anrisoftware.prefdialog.miscswing.docks.api.PerspectiveTask
 import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.core.DefaultWorkDockWindow
 import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.core.DockingFramesModule
-import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.singledockable.DefaultSingleDockWindow
+import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.viewdockable.DefaultViewDockWindow
 import com.anrisoftware.prefdialog.miscswing.docks.perspectives.dockingframes.DefaultPerspectiveTask
 import com.google.inject.Guice
 import com.google.inject.Injector
@@ -37,19 +37,19 @@ class DocksTestBase {
 	}
 
 	static singleWindows = [
-		new DefaultSingleDockWindow("single_a", "Single West A", WEST, BLUE),
-		new DefaultSingleDockWindow("single_b", "Single West B", WEST, RED)
+		new DefaultViewDockWindow("view_a", "View West A", WEST, BLUE),
+		new DefaultViewDockWindow("view_b", "View West B", WEST, RED)
 	]
 
 	static workWindows = [
-		new DefaultWorkDockWindow("work_1", "Work 1", CENTER, BLUE),
-		new DefaultWorkDockWindow("work_2", "Work 2", CENTER, RED)
+		new DefaultWorkDockWindow("editor_1", "Editor 1", CENTER, BLUE),
+		new DefaultWorkDockWindow("editor_2", "Editor 2", CENTER, RED)
 	]
 
 	static DefaultWorkDockWindow createWorkWindow(int number) {
 		def color = RGBtoHSB(0, 255, 255, null)
 		color = new Color(HSBtoRGB(color[0], color[1], (float)color[2] * 0.2f * number))
-		new DefaultWorkDockWindow("work_${number}", "Work ${number}", CENTER, color)
+		new DefaultWorkDockWindow("editor_${number}", "Editor ${number}", CENTER, color)
 	}
 
 	static Injector createInjector() {

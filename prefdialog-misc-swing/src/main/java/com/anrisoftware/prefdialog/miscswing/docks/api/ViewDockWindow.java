@@ -6,6 +6,6 @@ package com.anrisoftware.prefdialog.miscswing.docks.api;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
  */
-public interface SingleDockWindow extends DockWindow {
+public interface ViewDockWindow extends DockWindow {
 
 }

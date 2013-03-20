@@ -65,12 +65,12 @@ class DocksTest extends DocksTestBase {
 			log.info "Choose your layout."
 			Thread.sleep 10*1000
 			invokeLater { dock.savePerspective(name, tmp) }
+			log.info "Layout saved as $name."
 		},{
-			Thread.sleep 10*1000
-			log.info "Load your layout."
 			invokeLater { dock.loadPerspective(name, tmp) }
+			log.info "Layout restored as $name."
 		},
-		{ Thread.sleep 10*1000 })
+		{ Thread.sleep 5*1000 })
 	}
 
 	static Injector injector

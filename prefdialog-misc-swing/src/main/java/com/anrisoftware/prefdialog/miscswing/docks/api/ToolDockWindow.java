@@ -1,7 +1,7 @@
 package com.anrisoftware.prefdialog.miscswing.docks.api;
 
 /**
- * Window that is outside of the working area and contains different tool
+ * Dock that is outside of the working area and contains different tool
  * elements.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org

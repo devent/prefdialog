@@ -1,4 +1,4 @@
-package com.anrisoftware.prefdialog.miscswing.docks.dockingframes.singledockable;
+package com.anrisoftware.prefdialog.miscswing.docks.dockingframes.viewdockable;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
@@ -10,16 +10,16 @@ import com.google.inject.assistedinject.FactoryModuleBuilder;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
  */
-public class SingleDockableModule extends AbstractModule {
+public class ViewDockableModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
 		install(new FactoryModuleBuilder().implement(
-				SingleDockableFactory.class, SingleDockableFactory.class)
-				.build(SingleDockableFactoryFactory.class));
+				ViewDockableFactory.class, ViewDockableFactory.class)
+				.build(ViewDockableFactoryFactory.class));
 		install(new FactoryModuleBuilder().implement(
-				SingleDockableLayout.class, SingleDockableLayout.class).build(
-				SingleDockableLayoutFactory.class));
+				ViewDockableLayout.class, ViewDockableLayout.class).build(
+				ViewDockableLayoutFactory.class));
 	}
 
 }

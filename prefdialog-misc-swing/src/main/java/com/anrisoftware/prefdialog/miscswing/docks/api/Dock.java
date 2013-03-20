@@ -45,17 +45,17 @@ public interface Dock {
 	 * Adds a window in the outside of the working area.
 	 * 
 	 * @param window
-	 *            the {@link SingleDockWindow}.
+	 *            the {@link ViewDockWindow}.
 	 */
-	void addSingleDock(SingleDockWindow window);
+	void addSingleDock(ViewDockWindow window);
 
 	/**
 	 * Adds a window in the working area.
 	 * 
 	 * @param window
-	 *            the {@link WorkDockWindow}.
+	 *            the {@link EditorDockWindow}.
 	 */
-	void addWorkDock(WorkDockWindow window);
+	void addWorkDock(EditorDockWindow window);
 
 	/**
 	 * Adds a window that contains tool elements.

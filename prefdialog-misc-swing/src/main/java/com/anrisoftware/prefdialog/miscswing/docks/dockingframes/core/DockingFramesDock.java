@@ -21,15 +21,15 @@ import bibliothek.gui.dock.common.theme.ThemeMap;
 
 import com.anrisoftware.prefdialog.miscswing.docks.api.Dock;
 import com.anrisoftware.prefdialog.miscswing.docks.api.PerspectiveTask;
-import com.anrisoftware.prefdialog.miscswing.docks.api.SingleDockWindow;
+import com.anrisoftware.prefdialog.miscswing.docks.api.ViewDockWindow;
 import com.anrisoftware.prefdialog.miscswing.docks.api.ToolDockWindow;
-import com.anrisoftware.prefdialog.miscswing.docks.api.WorkDockWindow;
-import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.singledockable.SingleDockableFactory;
-import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.singledockable.SingleDockableFactoryFactory;
-import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.singledockable.SingleDockableLayoutFactory;
-import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.workdockable.WorkDockableFactory;
-import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.workdockable.WorkDockableFactoryFactory;
-import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.workdockable.WorkDockableLayoutFactory;
+import com.anrisoftware.prefdialog.miscswing.docks.api.EditorDockWindow;
+import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.editordockable.EditorDockableFactory;
+import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.editordockable.EditorDockableFactoryFactory;
+import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.editordockable.EditorDockableLayoutFactory;
+import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.viewdockable.ViewDockableFactory;
+import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.viewdockable.ViewDockableFactoryFactory;
+import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.viewdockable.ViewDockableLayoutFactory;
 
 public class DockingFramesDock implements Dock {
 
@@ -41,13 +41,13 @@ public class DockingFramesDock implements Dock {
 
 	private final Map<String, DockablePerspective> workDockablePerspectives;
 
-	private final SingleDockableFactoryFactory singleDockableFactoryFactory;
+	private final ViewDockableFactoryFactory singleDockableFactoryFactory;
 
-	private final SingleDockableLayoutFactory singleDockableLayoutFactory;
+	private final ViewDockableLayoutFactory singleDockableLayoutFactory;
 
-	private final WorkDockableFactoryFactory workDockableFactoryFactory;
+	private final EditorDockableFactoryFactory workDockableFactoryFactory;
 
-	private final WorkDockableLayoutFactory workDockableLayoutFactory;
+	private final EditorDockableLayoutFactory workDockableLayoutFactory;
 
 	private CPerspective perspective;
 
@@ -55,10 +55,10 @@ public class DockingFramesDock implements Dock {
 
 	@Inject
 	DockingFramesDock(
-			SingleDockableFactoryFactory singleDockableFactoryFactory,
-			SingleDockableLayoutFactory singleDockableLayoutFactory,
-			WorkDockableFactoryFactory workDockableFactoryFactory,
-			WorkDockableLayoutFactory workDockableLayoutFactory) {
+			ViewDockableFactoryFactory singleDockableFactoryFactory,
+			ViewDockableLayoutFactory singleDockableLayoutFactory,
+			EditorDockableFactoryFactory workDockableFactoryFactory,
+			EditorDockableLayoutFactory workDockableLayoutFactory) {
 		this.singleDockableFactoryFactory = singleDockableFactoryFactory;
 		this.singleDockableLayoutFactory = singleDockableLayoutFactory;
 		this.workDockableFactoryFactory = workDockableFactoryFactory;
@@ -70,9 +70,9 @@ public class DockingFramesDock implements Dock {
 	@Override
 	public Dock withFrame(JFrame frame) {
 		control = new CControl(frame);
-		control.addMultipleDockableFactory(SingleDockableFactory.ID,
+		control.addMultipleDockableFactory(ViewDockableFactory.ID,
 				singleDockableFactoryFactory.create());
-		control.addMultipleDockableFactory(WorkDockableFactory.ID,
+		control.addMultipleDockableFactory(EditorDockableFactory.ID,
 				workDockableFactoryFactory.create());
 		frame.add(getComponent(), BorderLayout.CENTER);
 		control.createWorkingArea(WORK_AREA_ID);
@@ -91,18 +91,18 @@ public class DockingFramesDock implements Dock {
 	}
 
 	@Override
-	public void addSingleDock(SingleDockWindow window) {
+	public void addSingleDock(ViewDockWindow window) {
 		singleDockablePerspectives.put(window.getId(), new DockablePerspective(
 				window, new MultipleCDockablePerspective(
-						SingleDockableFactory.ID, window.getId(),
+						ViewDockableFactory.ID, window.getId(),
 						singleDockableLayoutFactory.createFor(window))));
 	}
 
 	@Override
-	public void addWorkDock(WorkDockWindow window) {
+	public void addWorkDock(EditorDockWindow window) {
 		workDockablePerspectives.put(window.getId(), new DockablePerspective(
 				window, new MultipleCDockablePerspective(
-						WorkDockableFactory.ID, window.getId(),
+						EditorDockableFactory.ID, window.getId(),
 						workDockableLayoutFactory.createFor(window))));
 	}
 

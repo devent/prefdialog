@@ -1,8 +1,8 @@
 package com.anrisoftware.prefdialog.miscswing.docks.dockingframes.core;
 
 import com.anrisoftware.prefdialog.miscswing.docks.api.Dock;
-import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.singledockable.SingleDockableModule;
-import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.workdockable.WorkDockableModule;
+import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.editordockable.EditorDockableModule;
+import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.viewdockable.ViewDockableModule;
 import com.google.inject.AbstractModule;
 
 /**
@@ -16,8 +16,8 @@ public class DockingFramesModule extends AbstractModule {
 	@Override
 	protected void configure() {
 		bind(Dock.class).to(DockingFramesDock.class);
-		install(new SingleDockableModule());
-		install(new WorkDockableModule());
+		install(new ViewDockableModule());
+		install(new EditorDockableModule());
 	}
 
 }

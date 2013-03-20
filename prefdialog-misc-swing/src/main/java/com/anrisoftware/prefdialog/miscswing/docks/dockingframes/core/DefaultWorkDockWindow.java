@@ -10,9 +10,9 @@ import javax.swing.JPanel;
 
 import com.anrisoftware.prefdialog.miscswing.docks.api.DockWindow;
 import com.anrisoftware.prefdialog.miscswing.docks.api.PerspectivePosition;
-import com.anrisoftware.prefdialog.miscswing.docks.api.WorkDockWindow;
+import com.anrisoftware.prefdialog.miscswing.docks.api.EditorDockWindow;
 
-public class DefaultWorkDockWindow implements WorkDockWindow {
+public class DefaultWorkDockWindow implements EditorDockWindow {
 
 	private String id;
 

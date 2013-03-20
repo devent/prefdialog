@@ -1,4 +1,4 @@
-package com.anrisoftware.prefdialog.miscswing.docks.dockingframes.singledockable;
+package com.anrisoftware.prefdialog.miscswing.docks.dockingframes.viewdockable;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -10,9 +10,9 @@ import javax.swing.JPanel;
 
 import com.anrisoftware.prefdialog.miscswing.docks.api.DockWindow;
 import com.anrisoftware.prefdialog.miscswing.docks.api.PerspectivePosition;
-import com.anrisoftware.prefdialog.miscswing.docks.api.SingleDockWindow;
+import com.anrisoftware.prefdialog.miscswing.docks.api.ViewDockWindow;
 
-public class DefaultSingleDockWindow implements SingleDockWindow {
+public class DefaultViewDockWindow implements ViewDockWindow {
 
 	private String id;
 
@@ -22,10 +22,10 @@ public class DefaultSingleDockWindow implements SingleDockWindow {
 
 	private Color color;
 
-	public DefaultSingleDockWindow() {
+	public DefaultViewDockWindow() {
 	}
 
-	public DefaultSingleDockWindow(String id, String title,
+	public DefaultViewDockWindow(String id, String title,
 			PerspectivePosition position, Color color) {
 		this.id = id;
 		this.title = title;
