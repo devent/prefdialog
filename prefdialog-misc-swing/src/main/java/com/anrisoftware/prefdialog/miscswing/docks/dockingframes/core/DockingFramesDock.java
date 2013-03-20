@@ -12,7 +12,9 @@ import javax.swing.JFrame;
 
 import bibliothek.gui.dock.common.CControl;
 import bibliothek.gui.dock.common.perspective.CControlPerspective;
+import bibliothek.gui.dock.common.perspective.CGridPerspective;
 import bibliothek.gui.dock.common.perspective.CPerspective;
+import bibliothek.gui.dock.common.perspective.CWorkingPerspective;
 import bibliothek.gui.dock.common.perspective.MultipleCDockablePerspective;
 import bibliothek.gui.dock.common.perspective.SingleCDockablePerspective;
 import bibliothek.gui.dock.common.theme.ThemeMap;
@@ -75,10 +77,10 @@ public class DockingFramesDock implements Dock {
 		control.createWorkingArea(WORK_AREA_ID);
 		perspectives = control.getPerspectives();
 		perspective = perspectives.createEmptyPerspective();
-		// CGridPerspective center = perspective.getContentArea().getCenter();
-		// CWorkingPerspective work = (CWorkingPerspective) perspective
-		// .getStation(WORK_AREA_ID);
-		// center.gridAdd(0, 0, 0, 0, work);
+		CGridPerspective center = perspective.getContentArea().getCenter();
+		CWorkingPerspective work = (CWorkingPerspective) perspective
+				.getStation(WORK_AREA_ID);
+		center.gridAdd(0, 50, 200, 200, work);
 		return this;
 	}
 
