@@ -24,20 +24,20 @@ public interface DockingFramesPerspectiveTask extends PerspectiveTask {
 	 * @param perspective
 	 *            the {@link CPerspective}.
 	 * 
-	 * @param singleDockablePerspectives
+	 * @param viewDockablePerspectives
 	 *            the {@link Map} of the {@link DockablePerspective} for the
-	 *            windows outside of the work area.
+	 *            docks outside of the work area.
 	 * 
-	 * @param workDockablePerspectives
+	 * @param editorDockablePerspectives
 	 *            the {@link Map} of the {@link DockablePerspective} for the
-	 *            windows in the work area.
+	 *            docks in the work area.
 	 * 
 	 * @param workAreaId
 	 *            the identifier of the work area.
 	 */
 	public void setupPerspective(CControlPerspective perspectives,
 			CPerspective perspective,
-			Map<String, DockablePerspective> singleDockablePerspectives,
-			Map<String, DockablePerspective> workDockablePerspectives,
+			Map<String, DockablePerspective> viewDockablePerspectives,
+			Map<String, DockablePerspective> editorDockablePerspectives,
 			String workAreaId);
 }

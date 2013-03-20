@@ -79,8 +79,8 @@ public class DefaultPerspectiveTask implements DockingFramesPerspectiveTask {
 		setupGridPerspective(work, editorDockablePerspectives);
 		perspective.storeLocations();
 		setupMinimizePerspective(viewDockablePerspectives, perspective);
-		perspective.shrink();
-		perspectives.setPerspective(perspective, true);
+		// perspective.shrink();
+		// perspectives.setPerspective(perspective, true);
 	}
 
 	private void setupGridPerspective(CGridPerspective grid,

@@ -13,7 +13,7 @@ import bibliothek.gui.dock.common.MultipleCDockableFactory;
 public class ViewDockableFactory implements
 		MultipleCDockableFactory<ViewDockable, ViewDockableLayout> {
 
-	public static String ID = "single_dockable_factory";
+	public static String ID = "view_dockable_factory";
 
 	private final ViewDockableLayoutFactory layoutFactory;
 

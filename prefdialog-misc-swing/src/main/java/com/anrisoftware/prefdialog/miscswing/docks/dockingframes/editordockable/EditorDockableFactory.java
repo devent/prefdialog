@@ -15,7 +15,7 @@ import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.core.DefaultWor
 public class EditorDockableFactory implements
 		MultipleCDockableFactory<EditorDockable, EditorDockableLayout> {
 
-	public static String ID = "work_dockable_factory";
+	public static String ID = "editor_dockable_factory";
 
 	private final EditorDockableLayoutFactory layoutFactory;
 

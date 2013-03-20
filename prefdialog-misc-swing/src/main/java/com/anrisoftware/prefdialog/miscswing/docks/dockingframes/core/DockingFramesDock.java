@@ -20,10 +20,10 @@ import bibliothek.gui.dock.common.perspective.SingleCDockablePerspective;
 import bibliothek.gui.dock.common.theme.ThemeMap;
 
 import com.anrisoftware.prefdialog.miscswing.docks.api.Dock;
-import com.anrisoftware.prefdialog.miscswing.docks.api.PerspectiveTask;
-import com.anrisoftware.prefdialog.miscswing.docks.api.ViewDockWindow;
-import com.anrisoftware.prefdialog.miscswing.docks.api.ToolDockWindow;
 import com.anrisoftware.prefdialog.miscswing.docks.api.EditorDockWindow;
+import com.anrisoftware.prefdialog.miscswing.docks.api.PerspectiveTask;
+import com.anrisoftware.prefdialog.miscswing.docks.api.ToolDockWindow;
+import com.anrisoftware.prefdialog.miscswing.docks.api.ViewDockWindow;
 import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.editordockable.EditorDockableFactory;
 import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.editordockable.EditorDockableFactoryFactory;
 import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.editordockable.EditorDockableLayoutFactory;
@@ -37,43 +37,42 @@ public class DockingFramesDock implements Dock {
 
 	private CControl control;
 
-	private final Map<String, DockablePerspective> singleDockablePerspectives;
+	private final Map<String, DockablePerspective> viewDockablePerspectives;
 
-	private final Map<String, DockablePerspective> workDockablePerspectives;
+	private final Map<String, DockablePerspective> editorDockablePerspectives;
 
-	private final ViewDockableFactoryFactory singleDockableFactoryFactory;
+	private final ViewDockableFactoryFactory viewDockableFactoryFactory;
 
-	private final ViewDockableLayoutFactory singleDockableLayoutFactory;
+	private final ViewDockableLayoutFactory viewDockableLayoutFactory;
 
-	private final EditorDockableFactoryFactory workDockableFactoryFactory;
+	private final EditorDockableFactoryFactory editorDockableFactoryFactory;
 
-	private final EditorDockableLayoutFactory workDockableLayoutFactory;
+	private final EditorDockableLayoutFactory editorDockableLayoutFactory;
 
 	private CPerspective perspective;
 
 	private CControlPerspective perspectives;
 
 	@Inject
-	DockingFramesDock(
-			ViewDockableFactoryFactory singleDockableFactoryFactory,
-			ViewDockableLayoutFactory singleDockableLayoutFactory,
-			EditorDockableFactoryFactory workDockableFactoryFactory,
-			EditorDockableLayoutFactory workDockableLayoutFactory) {
-		this.singleDockableFactoryFactory = singleDockableFactoryFactory;
-		this.singleDockableLayoutFactory = singleDockableLayoutFactory;
-		this.workDockableFactoryFactory = workDockableFactoryFactory;
-		this.workDockableLayoutFactory = workDockableLayoutFactory;
-		this.singleDockablePerspectives = new ConcurrentHashMap<String, DockablePerspective>();
-		this.workDockablePerspectives = new ConcurrentHashMap<String, DockablePerspective>();
+	DockingFramesDock(ViewDockableFactoryFactory viewDockableFactoryFactory,
+			ViewDockableLayoutFactory viewDockableLayoutFactory,
+			EditorDockableFactoryFactory editorDockableFactoryFactory,
+			EditorDockableLayoutFactory editorDockableLayoutFactory) {
+		this.viewDockableFactoryFactory = viewDockableFactoryFactory;
+		this.viewDockableLayoutFactory = viewDockableLayoutFactory;
+		this.editorDockableFactoryFactory = editorDockableFactoryFactory;
+		this.editorDockableLayoutFactory = editorDockableLayoutFactory;
+		this.viewDockablePerspectives = new ConcurrentHashMap<String, DockablePerspective>();
+		this.editorDockablePerspectives = new ConcurrentHashMap<String, DockablePerspective>();
 	}
 
 	@Override
 	public Dock withFrame(JFrame frame) {
 		control = new CControl(frame);
 		control.addMultipleDockableFactory(ViewDockableFactory.ID,
-				singleDockableFactoryFactory.create());
+				viewDockableFactoryFactory.create());
 		control.addMultipleDockableFactory(EditorDockableFactory.ID,
-				workDockableFactoryFactory.create());
+				editorDockableFactoryFactory.create());
 		frame.add(getComponent(), BorderLayout.CENTER);
 		control.createWorkingArea(WORK_AREA_ID);
 		perspectives = control.getPerspectives();
@@ -81,7 +80,7 @@ public class DockingFramesDock implements Dock {
 		CGridPerspective center = perspective.getContentArea().getCenter();
 		CWorkingPerspective work = (CWorkingPerspective) perspective
 				.getStation(WORK_AREA_ID);
-		center.gridAdd(0, 0, 200, 200, work);
+		center.gridAdd(0, 0, 0, 0, work);
 		return this;
 	}
 
@@ -92,23 +91,23 @@ public class DockingFramesDock implements Dock {
 
 	@Override
 	public void addSingleDock(ViewDockWindow window) {
-		singleDockablePerspectives.put(window.getId(), new DockablePerspective(
+		viewDockablePerspectives.put(window.getId(), new DockablePerspective(
 				window, new MultipleCDockablePerspective(
 						ViewDockableFactory.ID, window.getId(),
-						singleDockableLayoutFactory.createFor(window))));
+						viewDockableLayoutFactory.createFor(window))));
 	}
 
 	@Override
 	public void addWorkDock(EditorDockWindow window) {
-		workDockablePerspectives.put(window.getId(), new DockablePerspective(
+		editorDockablePerspectives.put(window.getId(), new DockablePerspective(
 				window, new MultipleCDockablePerspective(
 						EditorDockableFactory.ID, window.getId(),
-						workDockableLayoutFactory.createFor(window))));
+						editorDockableLayoutFactory.createFor(window))));
 	}
 
 	@Override
 	public void addToolDock(ToolDockWindow window) {
-		singleDockablePerspectives.put(window.getId(), new DockablePerspective(
+		viewDockablePerspectives.put(window.getId(), new DockablePerspective(
 				window, new SingleCDockablePerspective(window.getId())));
 	}
 
@@ -120,8 +119,8 @@ public class DockingFramesDock implements Dock {
 	@Override
 	public void applyPerspective(PerspectiveTask task) {
 		((DockingFramesPerspectiveTask) task).setupPerspective(perspectives,
-				perspective, singleDockablePerspectives,
-				workDockablePerspectives, WORK_AREA_ID);
+				perspective, viewDockablePerspectives,
+				editorDockablePerspectives, WORK_AREA_ID);
 		perspective.shrink();
 		perspectives.setPerspective(perspective, true);
 		perspectives.setPerspective(task.getName(), perspective);
