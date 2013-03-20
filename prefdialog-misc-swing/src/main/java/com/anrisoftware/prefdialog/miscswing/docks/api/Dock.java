@@ -42,28 +42,28 @@ public interface Dock {
 	Component getComponent();
 
 	/**
-	 * Adds a window in the outside of the working area.
+	 * Adds a dock in the outside of the working area.
 	 * 
-	 * @param window
+	 * @param dock
 	 *            the {@link ViewDockWindow}.
 	 */
-	void addSingleDock(ViewDockWindow window);
+	void addViewDock(ViewDockWindow dock);
 
 	/**
-	 * Adds a window in the working area.
+	 * Adds a dock in the working area.
 	 * 
-	 * @param window
+	 * @param dock
 	 *            the {@link EditorDockWindow}.
 	 */
-	void addWorkDock(EditorDockWindow window);
+	void addEditorDock(EditorDockWindow dock);
 
 	/**
-	 * Adds a window that contains tool elements.
+	 * Adds a dock that contains tool elements.
 	 * 
-	 * @param window
+	 * @param dock
 	 *            the {@link ToolDockWindow}.
 	 */
-	void addToolDock(ToolDockWindow window);
+	void addToolDock(ToolDockWindow dock);
 
 	/**
 	 * Apply the perspective.

@@ -12,9 +12,7 @@ import javax.swing.JFrame;
 
 import bibliothek.gui.dock.common.CControl;
 import bibliothek.gui.dock.common.perspective.CControlPerspective;
-import bibliothek.gui.dock.common.perspective.CGridPerspective;
 import bibliothek.gui.dock.common.perspective.CPerspective;
-import bibliothek.gui.dock.common.perspective.CWorkingPerspective;
 import bibliothek.gui.dock.common.perspective.MultipleCDockablePerspective;
 import bibliothek.gui.dock.common.perspective.SingleCDockablePerspective;
 import bibliothek.gui.dock.common.theme.ThemeMap;
@@ -77,10 +75,10 @@ public class DockingFramesDock implements Dock {
 		control.createWorkingArea(WORK_AREA_ID);
 		perspectives = control.getPerspectives();
 		perspective = perspectives.createEmptyPerspective();
-		CGridPerspective center = perspective.getContentArea().getCenter();
-		CWorkingPerspective work = (CWorkingPerspective) perspective
-				.getStation(WORK_AREA_ID);
-		center.gridAdd(0, 0, 0, 0, work);
+		// CGridPerspective center = perspective.getContentArea().getCenter();
+		// CWorkingPerspective work = (CWorkingPerspective) perspective
+		// .getStation(WORK_AREA_ID);
+		// center.gridAdd(0, 0, 0, 0, work);
 		return this;
 	}
 
@@ -90,25 +88,25 @@ public class DockingFramesDock implements Dock {
 	}
 
 	@Override
-	public void addSingleDock(ViewDockWindow window) {
-		viewDockablePerspectives.put(window.getId(), new DockablePerspective(
-				window, new MultipleCDockablePerspective(
-						ViewDockableFactory.ID, window.getId(),
-						viewDockableLayoutFactory.createFor(window))));
+	public void addViewDock(ViewDockWindow dock) {
+		viewDockablePerspectives.put(dock.getId(),
+				new DockablePerspective(dock, new MultipleCDockablePerspective(
+						ViewDockableFactory.ID, dock.getId(),
+						viewDockableLayoutFactory.createFor(dock))));
 	}
 
 	@Override
-	public void addWorkDock(EditorDockWindow window) {
-		editorDockablePerspectives.put(window.getId(), new DockablePerspective(
-				window, new MultipleCDockablePerspective(
-						EditorDockableFactory.ID, window.getId(),
-						editorDockableLayoutFactory.createFor(window))));
+	public void addEditorDock(EditorDockWindow dock) {
+		editorDockablePerspectives.put(dock.getId(), new DockablePerspective(
+				dock, new MultipleCDockablePerspective(
+						EditorDockableFactory.ID, dock.getId(),
+						editorDockableLayoutFactory.createFor(dock))));
 	}
 
 	@Override
-	public void addToolDock(ToolDockWindow window) {
-		viewDockablePerspectives.put(window.getId(), new DockablePerspective(
-				window, new SingleCDockablePerspective(window.getId())));
+	public void addToolDock(ToolDockWindow dock) {
+		viewDockablePerspectives.put(dock.getId(), new DockablePerspective(
+				dock, new SingleCDockablePerspective(dock.getId())));
 	}
 
 	/**
