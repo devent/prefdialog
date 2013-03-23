@@ -20,9 +20,9 @@ class DocksTest extends DocksTestBase {
 	void "manually"() {
 		String title = "DocksTest::manually"
 		withFrame(title, {
-			singleWindows.each { dock.addViewDock(it) }
-			dock.addEditorDock(workWindows[0])
-			dock.addEditorDock(workWindows[1])
+			viewDocks.each { dock.addViewDock(it) }
+			dock.addEditorDock(editorDocks[0])
+			dock.addEditorDock(editorDocks[1])
 			dock.applyPerspective defaultPerspective
 		}).withFixture({ Thread.sleep 60*1000 })
 	}
@@ -31,9 +31,9 @@ class DocksTest extends DocksTestBase {
 	void "manually set flat theme"() {
 		String title = "DocksTest::manually set flat theme"
 		withFrame(title, {
-			singleWindows.each { dock.addViewDock(it) }
-			dock.addEditorDock(workWindows[0])
-			dock.addEditorDock(workWindows[1])
+			viewDocks.each { dock.addViewDock(it) }
+			dock.addEditorDock(editorDocks[0])
+			dock.addEditorDock(editorDocks[1])
 			dock.applyPerspective defaultPerspective
 			dock.setTheme(ThemeMap.KEY_FLAT_THEME)
 		}).withFixture({ Thread.sleep 60*1000 })
@@ -43,9 +43,9 @@ class DocksTest extends DocksTestBase {
 	void "manually set eclipse theme"() {
 		String title = "DocksTest::manually set eclipse theme"
 		withFrame(title, {
-			singleWindows.each { dock.addViewDock(it) }
-			dock.addEditorDock(workWindows[0])
-			dock.addEditorDock(workWindows[1])
+			viewDocks.each { dock.addViewDock(it) }
+			dock.addEditorDock(editorDocks[0])
+			dock.addEditorDock(editorDocks[1])
 			dock.applyPerspective defaultPerspective
 			dock.setTheme(ThemeMap.KEY_ECLIPSE_THEME)
 		}).withFixture({ Thread.sleep 60*1000 })
@@ -57,9 +57,9 @@ class DocksTest extends DocksTestBase {
 		String title = "DocksTest::manually store and load perspective"
 		String name = "test"
 		withFrame(title, {
-			singleWindows.each { dock.addViewDock(it) }
-			dock.addEditorDock(workWindows[0])
-			dock.addEditorDock(workWindows[1])
+			viewDocks.each { dock.addViewDock(it) }
+			dock.addEditorDock(editorDocks[0])
+			dock.addEditorDock(editorDocks[1])
 			dock.applyPerspective defaultPerspective
 		}).withFixture({
 			log.info "Choose your layout."

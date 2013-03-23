@@ -1,4 +1,4 @@
-package com.anrisoftware.prefdialog.miscswing.docks.dockingframes.core;
+package com.anrisoftware.prefdialog.miscswing.docks.dockingframes;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 

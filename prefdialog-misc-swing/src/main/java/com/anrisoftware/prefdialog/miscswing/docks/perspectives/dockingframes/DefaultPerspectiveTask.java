@@ -1,22 +1,28 @@
 package com.anrisoftware.prefdialog.miscswing.docks.perspectives.dockingframes;
 
+import java.awt.Component;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.Map;
 
-import bibliothek.gui.dock.common.perspective.CControlPerspective;
-import bibliothek.gui.dock.common.perspective.CGridPerspective;
-import bibliothek.gui.dock.common.perspective.CMinimizePerspective;
-import bibliothek.gui.dock.common.perspective.CPerspective;
-import bibliothek.gui.dock.common.perspective.CWorkingPerspective;
+import bibliothek.gui.dock.common.CControl;
+import bibliothek.gui.dock.common.CGrid;
+import bibliothek.gui.dock.common.CWorkingArea;
+import bibliothek.gui.dock.common.DefaultMultipleCDockable;
+import bibliothek.gui.dock.common.DefaultSingleCDockable;
+import bibliothek.gui.dock.common.MultipleCDockable;
+import bibliothek.gui.dock.common.SingleCDockable;
 
 import com.anrisoftware.prefdialog.miscswing.docks.api.DockWindow;
+import com.anrisoftware.prefdialog.miscswing.docks.api.EditorDockWindow;
 import com.anrisoftware.prefdialog.miscswing.docks.api.PerspectivePosition;
-import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.core.DockablePerspective;
-import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.core.DockingFramesPerspectiveTask;
+import com.anrisoftware.prefdialog.miscswing.docks.api.ViewDockWindow;
+import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.DockingFramesPerspectiveTask;
 
 /**
  * Sets the default perspective.
+ * <p>
+ * Arrange the docks according to their perspective position.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
@@ -43,83 +49,63 @@ public class DefaultPerspectiveTask implements DockingFramesPerspectiveTask {
 		return name;
 	}
 
-	/**
-	 * Sets the default perspective.
-	 * 
-	 * @param perspectives
-	 *            the {@link CControlPerspective}.
-	 * 
-	 * @param perspective
-	 *            the {@link CPerspective}.
-	 * 
-	 * @param viewDockablePerspectives
-	 *            the {@link Map} of the {@link DockablePerspective} for the
-	 *            docks outside of the work area.
-	 * 
-	 * @param editorDockablePerspectives
-	 *            the {@link Map} of the {@link DockablePerspective} for the
-	 *            docks in the work area.
-	 * 
-	 * @param workAreaId
-	 *            the identifier of the work area.
-	 */
 	@Override
-	public void setupPerspective(CControlPerspective perspectives,
-			CPerspective perspective,
-			Map<String, DockablePerspective> viewDockablePerspectives,
-			Map<String, DockablePerspective> editorDockablePerspectives,
-			String workAreaId) {
-		setupMinimizePerspective(viewDockablePerspectives, perspective);
-		setupMinimizePerspective(editorDockablePerspectives, perspective);
-		perspective.storeLocations();
-		CWorkingPerspective work = (CWorkingPerspective) perspective
-				.getStation(workAreaId);
-		setupGridPerspective(work, viewDockablePerspectives);
-		setupGridPerspective(work, editorDockablePerspectives);
-		perspective.storeLocations();
+	public void setupPerspective(CControl control, CWorkingArea workingArea,
+			Map<String, ViewDockWindow> viewDocks,
+			Map<String, EditorDockWindow> editorDocks) {
+		setupWorkingArea(workingArea, editorDocks);
+		CGrid grid = new CGrid(control);
+		grid.add(50, 50, 150, 150, workingArea);
+		setupGrid(grid, viewDocks);
+		control.getContentArea().deploy(grid);
 	}
 
-	private void setupGridPerspective(CGridPerspective grid,
-			Map<String, DockablePerspective> perspectives) {
-		for (DockablePerspective perspective : perspectives.values()) {
-			DockWindow window = perspective.window;
-			PerspectivePosition position = window.getPosition();
+	private void setupWorkingArea(CWorkingArea workingArea,
+			Map<String, EditorDockWindow> editorDocks) {
+		for (DockWindow dock : editorDocks.values()) {
+			MultipleCDockable dockable = createMultipleDock(dock);
+			workingArea.show(dockable);
+		}
+	}
+
+	private MultipleCDockable createMultipleDock(DockWindow dock) {
+		String title = dock.getTitle();
+		Component component = dock.getComponent();
+		DefaultMultipleCDockable dockable = new DefaultMultipleCDockable(null,
+				title, component);
+		dockable.setCloseable(dock.isCloseable());
+		dockable.setExternalizable(dock.isExternalizable());
+		dockable.setMaximizable(dock.isMaximizable());
+		dockable.setMinimizable(dock.isMinimizable());
+		dockable.setStackable(dock.isStackable());
+		return dockable;
+	}
+
+	private void setupGrid(CGrid grid,
+			Map<String, ? extends DockWindow> viewDocks) {
+		for (DockWindow dock : viewDocks.values()) {
+			SingleCDockable dockable = createSingleDock(dock);
+			PerspectivePosition position = dock.getPosition();
 			int x = getPerspectiveX(position);
 			int y = getPerspectiveY(position);
 			int w = getPerspectiveW(position);
 			int h = getPerspectiveH(position);
-			grid.gridAdd(x, y, w, h, perspective.perspective);
+			grid.add(x, y, w, h, dockable);
 		}
 	}
 
-	private void setupMinimizePerspective(
-			Map<String, DockablePerspective> dockablePerspectives,
-			CPerspective perspective) {
-		for (DockablePerspective dockablePerspective : dockablePerspectives
-				.values()) {
-			DockWindow window = dockablePerspective.window;
-			PerspectivePosition position = window.getPosition();
-			CMinimizePerspective min = getMinimizePerspective(position,
-					perspective);
-			min.add(dockablePerspective.perspective);
-		}
-	}
-
-	private CMinimizePerspective getMinimizePerspective(
-			PerspectivePosition position, CPerspective perspective) {
-		switch (position) {
-		case CENTER:
-			return perspective.getContentArea().getSouth();
-		case EAST:
-			return perspective.getContentArea().getEast();
-		case NORTH:
-			return perspective.getContentArea().getNorth();
-		case SOUTH:
-			return perspective.getContentArea().getSouth();
-		case WEST:
-			return perspective.getContentArea().getWest();
-		}
-		throw new IllegalArgumentException();
+	private SingleCDockable createSingleDock(DockWindow dock) {
+		String title = dock.getTitle();
+		Component component = dock.getComponent();
+		String id = dock.getId();
+		DefaultSingleCDockable dockable = new DefaultSingleCDockable(id, title,
+				component);
+		dockable.setCloseable(dock.isCloseable());
+		dockable.setExternalizable(dock.isExternalizable());
+		dockable.setMaximizable(dock.isMaximizable());
+		dockable.setMinimizable(dock.isMinimizable());
+		dockable.setStackable(dock.isStackable());
+		return dockable;
 	}
 
 	private int getPerspectiveX(PerspectivePosition position) {

@@ -1,9 +1,6 @@
 package com.anrisoftware.prefdialog.miscswing.docks.api;
 
 import java.awt.Component;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
 
 /**
  * Child window that is docked.
@@ -36,47 +33,19 @@ public interface DockWindow {
 	Component getComponent();
 
 	/**
-	 * Returns the position of the window relative to the main window.
+	 * Returns the position of the window relative to the working area.
 	 * 
 	 * @return the {@link PerspectivePosition}.
 	 */
 	PerspectivePosition getPosition();
 
-	/**
-	 * Tests if this window matches the specified window.
-	 * 
-	 * @param window
-	 *            the {@link DockWindow}.
-	 * 
-	 * @return {@code true} if it matches, {@code false} if not.
-	 */
-	boolean match(DockWindow window);
+	boolean isCloseable();
 
-	/**
-	 * Writes this window information to the output.
-	 * 
-	 * @param out
-	 *            the {@link ObjectOutput}.
-	 * 
-	 * @throws IOException
-	 *             if there was I/O error writing the information to the output.
-	 */
-	void writeExternal(ObjectOutput out) throws IOException;
+	boolean isExternalizable();
 
-	/**
-	 * Reads this window information from the input.
-	 * 
-	 * @param in
-	 *            the {@link ObjectInput}.
-	 * 
-	 * @throws IOException
-	 *             if there was I/O error reading the information from the
-	 *             input.
-	 * 
-	 * @throws ClassNotFoundException
-	 *             if a needed class was not found.
-	 */
-	void readExternal(ObjectInput in) throws IOException,
-			ClassNotFoundException;
+	boolean isMaximizable();
 
+	boolean isMinimizable();
+
+	boolean isStackable();
 }

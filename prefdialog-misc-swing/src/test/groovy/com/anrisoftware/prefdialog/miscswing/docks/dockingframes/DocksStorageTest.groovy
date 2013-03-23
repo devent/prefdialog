@@ -23,9 +23,9 @@ class DocksStorageTest extends DocksTestBase {
 		tmp.deleteOnExit()
 		String title = "PerspectiveManuallyTest::manually store and load perspective"
 		withFrame(title, {
-			singleWindows.each { dock.addSingleDock(it) }
-			dock.addWorkDock(workWindows[0])
-			dock.addWorkDock(workWindows[1])
+			viewDocks.each { dock.addSingleDock(it) }
+			dock.addWorkDock(editorDocks[0])
+			dock.addWorkDock(editorDocks[1])
 			dock.setDefaultPerspective()
 			dock.setTheme(ThemeMap.KEY_ECLIPSE_THEME)
 		}).withFixture({
