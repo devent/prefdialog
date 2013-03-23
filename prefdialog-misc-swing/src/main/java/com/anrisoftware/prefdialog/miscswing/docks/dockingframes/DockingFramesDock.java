@@ -4,8 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.inject.Inject;
 import javax.swing.JFrame;
@@ -17,28 +19,26 @@ import bibliothek.gui.dock.common.theme.ThemeMap;
 import com.anrisoftware.prefdialog.miscswing.docks.api.Dock;
 import com.anrisoftware.prefdialog.miscswing.docks.api.EditorDockWindow;
 import com.anrisoftware.prefdialog.miscswing.docks.api.PerspectiveTask;
-import com.anrisoftware.prefdialog.miscswing.docks.api.ToolDockWindow;
 import com.anrisoftware.prefdialog.miscswing.docks.api.ViewDockWindow;
 
 public class DockingFramesDock implements Dock {
 
 	private static final String WORK_AREA_ID = "work";
 
-	private final Map<String, ToolDockWindow> toolDocks;
-
 	private final Map<String, ViewDockWindow> viewDocks;
 
-	private final Map<String, EditorDockWindow> editorDocks;
+	private final List<EditorDockWindow> editorDocks;
 
 	private CControl control;
 
 	private CWorkingArea workingArea;
 
+	private DockingFramesPerspectiveTask currentLayout;
+
 	@Inject
 	DockingFramesDock() {
 		this.viewDocks = new ConcurrentHashMap<String, ViewDockWindow>();
-		this.editorDocks = new ConcurrentHashMap<String, EditorDockWindow>();
-		this.toolDocks = new ConcurrentHashMap<String, ToolDockWindow>();
+		this.editorDocks = new CopyOnWriteArrayList<EditorDockWindow>();
 	}
 
 	@Override
@@ -61,12 +61,8 @@ public class DockingFramesDock implements Dock {
 
 	@Override
 	public void addEditorDock(EditorDockWindow dock) {
-		editorDocks.put(dock.getId(), dock);
-	}
-
-	@Override
-	public void addToolDock(ToolDockWindow dock) {
-		toolDocks.put(dock.getId(), dock);
+		editorDocks.add(dock);
+		currentLayout.addEditor(workingArea, dock);
 	}
 
 	/**
@@ -76,8 +72,8 @@ public class DockingFramesDock implements Dock {
 	 */
 	@Override
 	public void applyPerspective(PerspectiveTask task) {
-		((DockingFramesPerspectiveTask) task).setupPerspective(control,
-				workingArea, viewDocks, editorDocks);
+		this.currentLayout = (DockingFramesPerspectiveTask) task;
+		currentLayout.setupPerspective(control, workingArea, viewDocks);
 	}
 
 	@Override

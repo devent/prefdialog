@@ -1,5 +1,7 @@
 package com.anrisoftware.prefdialog.miscswing.docks.perspectives.dockingframes;
 
+import static javax.swing.SwingUtilities.invokeLater;
+
 import java.awt.Component;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -10,7 +12,6 @@ import bibliothek.gui.dock.common.CGrid;
 import bibliothek.gui.dock.common.CWorkingArea;
 import bibliothek.gui.dock.common.DefaultMultipleCDockable;
 import bibliothek.gui.dock.common.DefaultSingleCDockable;
-import bibliothek.gui.dock.common.MultipleCDockable;
 import bibliothek.gui.dock.common.SingleCDockable;
 
 import com.anrisoftware.prefdialog.miscswing.docks.api.DockWindow;
@@ -50,35 +51,25 @@ public class DefaultPerspectiveTask implements DockingFramesPerspectiveTask {
 	}
 
 	@Override
-	public void setupPerspective(CControl control, CWorkingArea workingArea,
-			Map<String, ViewDockWindow> viewDocks,
-			Map<String, EditorDockWindow> editorDocks) {
-		setupWorkingArea(workingArea, editorDocks);
+	public void setupPerspective(final CControl control,
+			final CWorkingArea workingArea,
+			final Map<String, ViewDockWindow> docks) {
+		invokeLater(new Runnable() {
+
+			@Override
+			public void run() {
+				setupPerspectiveInAWT(control, workingArea, docks);
+			}
+
+		});
+	}
+
+	private void setupPerspectiveInAWT(CControl control,
+			CWorkingArea workingArea, Map<String, ViewDockWindow> docks) {
 		CGrid grid = new CGrid(control);
 		grid.add(50, 50, 150, 150, workingArea);
-		setupGrid(grid, viewDocks);
+		setupGrid(grid, docks);
 		control.getContentArea().deploy(grid);
-	}
-
-	private void setupWorkingArea(CWorkingArea workingArea,
-			Map<String, EditorDockWindow> editorDocks) {
-		for (DockWindow dock : editorDocks.values()) {
-			MultipleCDockable dockable = createMultipleDock(dock);
-			workingArea.show(dockable);
-		}
-	}
-
-	private MultipleCDockable createMultipleDock(DockWindow dock) {
-		String title = dock.getTitle();
-		Component component = dock.getComponent();
-		DefaultMultipleCDockable dockable = new DefaultMultipleCDockable(null,
-				title, component);
-		dockable.setCloseable(dock.isCloseable());
-		dockable.setExternalizable(dock.isExternalizable());
-		dockable.setMaximizable(dock.isMaximizable());
-		dockable.setMinimizable(dock.isMinimizable());
-		dockable.setStackable(dock.isStackable());
-		return dockable;
 	}
 
 	private void setupGrid(CGrid grid,
@@ -170,6 +161,33 @@ public class DefaultPerspectiveTask implements DockingFramesPerspectiveTask {
 			return 200;
 		}
 		throw new IllegalArgumentException();
+	}
+
+	@Override
+	public void addEditor(final CWorkingArea workingArea,
+			final EditorDockWindow dock) {
+		invokeLater(new Runnable() {
+
+			@Override
+			public void run() {
+				addEditorInAWT(workingArea, dock);
+			}
+
+		});
+	}
+
+	private void addEditorInAWT(CWorkingArea workingArea, EditorDockWindow dock) {
+		DefaultMultipleCDockable dockable = createMultipleDock(dock);
+		workingArea.show(dockable);
+		dockable.toFront();
+	}
+
+	private DefaultMultipleCDockable createMultipleDock(DockWindow dock) {
+		String title = dock.getTitle();
+		Component component = dock.getComponent();
+		DefaultMultipleCDockable dockable = new DefaultMultipleCDockable(null,
+				title, component);
+		return dockable;
 	}
 
 	@Override

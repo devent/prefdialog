@@ -58,14 +58,6 @@ public interface Dock {
 	void addEditorDock(EditorDockWindow dock);
 
 	/**
-	 * Adds a dock that contains tool elements.
-	 * 
-	 * @param dock
-	 *            the {@link ToolDockWindow}.
-	 */
-	void addToolDock(ToolDockWindow dock);
-
-	/**
 	 * Apply the perspective.
 	 * 
 	 * @param task

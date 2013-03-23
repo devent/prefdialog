@@ -57,11 +57,14 @@ class DocksTest extends DocksTestBase {
 		String title = "DocksTest::manually store and load perspective"
 		String name = "test"
 		withFrame(title, {
+			dock.applyPerspective defaultPerspective
 			viewDocks.each { dock.addViewDock(it) }
-			dock.addEditorDock(editorDocks[0])
-			dock.addEditorDock(editorDocks[1])
 			dock.applyPerspective defaultPerspective
 		}).withFixture({
+			dock.addEditorDock(editorDocks[0])
+		},{
+			dock.addEditorDock(editorDocks[1])
+		},{
 			log.info "Choose your layout."
 			Thread.sleep 10*1000
 			invokeLater { dock.savePerspective(name, tmp) }

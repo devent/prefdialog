@@ -26,14 +26,12 @@ public interface DockingFramesPerspectiveTask extends PerspectiveTask {
 	 * @param workingArea
 	 *            the {@link CWorkingArea}.
 	 * 
-	 * @param viewDockablePerspectives
+	 * @param docks
 	 *            the {@link Map} of the docks that are outside of the work
 	 *            area.
-	 * 
-	 * @param editorDockablePerspectives
-	 *            the {@link Map} of the docks that are in the work area.
 	 */
 	void setupPerspective(CControl control, CWorkingArea workingArea,
-			Map<String, ViewDockWindow> viewDocks,
-			Map<String, EditorDockWindow> editorDocks);
+			Map<String, ViewDockWindow> docks);
+
+	void addEditor(CWorkingArea workingArea, EditorDockWindow dock);
 }
