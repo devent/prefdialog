@@ -18,7 +18,7 @@ import bibliothek.gui.dock.common.theme.ThemeMap;
 
 import com.anrisoftware.prefdialog.miscswing.docks.api.Dock;
 import com.anrisoftware.prefdialog.miscswing.docks.api.EditorDockWindow;
-import com.anrisoftware.prefdialog.miscswing.docks.api.PerspectiveTask;
+import com.anrisoftware.prefdialog.miscswing.docks.api.LayoutTask;
 import com.anrisoftware.prefdialog.miscswing.docks.api.ViewDockWindow;
 
 public class DockingFramesDock implements Dock {
@@ -33,7 +33,7 @@ public class DockingFramesDock implements Dock {
 
 	private CWorkingArea workingArea;
 
-	private DockingFramesPerspectiveTask currentLayout;
+	private DockingFramesLayoutTask currentLayout;
 
 	@Inject
 	DockingFramesDock() {
@@ -68,22 +68,22 @@ public class DockingFramesDock implements Dock {
 	/**
 	 * @throws ClassCastException
 	 *             if the specified task is not of type
-	 *             {@link DockingFramesPerspectiveTask}.
+	 *             {@link DockingFramesLayoutTask}.
 	 */
 	@Override
-	public void applyPerspective(PerspectiveTask task) {
-		this.currentLayout = (DockingFramesPerspectiveTask) task;
-		currentLayout.setupPerspective(control, workingArea, viewDocks);
+	public void applyLayout(LayoutTask layout) {
+		this.currentLayout = (DockingFramesLayoutTask) layout;
+		currentLayout.setupLayout(control, workingArea, viewDocks);
 	}
 
 	@Override
-	public void savePerspective(String name, File file) throws IOException {
+	public void saveLayout(String name, File file) throws IOException {
 		control.save(name);
 		control.write(file);
 	}
 
 	@Override
-	public void loadPerspective(String name, File file) throws IOException {
+	public void loadLayout(String name, File file) throws IOException {
 		control.read(file);
 		control.load(name);
 	}

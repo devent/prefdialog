@@ -14,27 +14,27 @@ import bibliothek.gui.dock.common.DefaultMultipleCDockable;
 import bibliothek.gui.dock.common.DefaultSingleCDockable;
 import bibliothek.gui.dock.common.SingleCDockable;
 
+import com.anrisoftware.prefdialog.miscswing.docks.api.DockPosition;
 import com.anrisoftware.prefdialog.miscswing.docks.api.DockWindow;
 import com.anrisoftware.prefdialog.miscswing.docks.api.EditorDockWindow;
-import com.anrisoftware.prefdialog.miscswing.docks.api.PerspectivePosition;
 import com.anrisoftware.prefdialog.miscswing.docks.api.ViewDockWindow;
-import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.DockingFramesPerspectiveTask;
+import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.DockingFramesLayoutTask;
 
 /**
- * Sets the default perspective.
+ * Sets the default layout.
  * <p>
- * Arrange the docks according to their perspective position.
+ * Arrange the docks according to their positions in a grid.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
  */
-public class DefaultPerspectiveTask implements DockingFramesPerspectiveTask {
+public class DefaultLayoutTask implements DockingFramesLayoutTask {
 
 	private final PropertyChangeSupport propertySupport;
 
 	private String name;
 
-	public DefaultPerspectiveTask() {
+	public DefaultLayoutTask() {
 		this.propertySupport = new PropertyChangeSupport(this);
 	}
 
@@ -51,7 +51,7 @@ public class DefaultPerspectiveTask implements DockingFramesPerspectiveTask {
 	}
 
 	@Override
-	public void setupPerspective(final CControl control,
+	public void setupLayout(final CControl control,
 			final CWorkingArea workingArea,
 			final Map<String, ViewDockWindow> docks) {
 		invokeLater(new Runnable() {
@@ -76,7 +76,7 @@ public class DefaultPerspectiveTask implements DockingFramesPerspectiveTask {
 			Map<String, ? extends DockWindow> viewDocks) {
 		for (DockWindow dock : viewDocks.values()) {
 			SingleCDockable dockable = createSingleDock(dock);
-			PerspectivePosition position = dock.getPosition();
+			DockPosition position = dock.getPosition();
 			int x = getPerspectiveX(position);
 			int y = getPerspectiveY(position);
 			int w = getPerspectiveW(position);
@@ -99,7 +99,7 @@ public class DefaultPerspectiveTask implements DockingFramesPerspectiveTask {
 		return dockable;
 	}
 
-	private int getPerspectiveX(PerspectivePosition position) {
+	private int getPerspectiveX(DockPosition position) {
 		switch (position) {
 		case CENTER:
 			return 0;
@@ -115,7 +115,7 @@ public class DefaultPerspectiveTask implements DockingFramesPerspectiveTask {
 		throw new IllegalArgumentException();
 	}
 
-	private int getPerspectiveY(PerspectivePosition position) {
+	private int getPerspectiveY(DockPosition position) {
 		switch (position) {
 		case CENTER:
 			return 0;
@@ -131,7 +131,7 @@ public class DefaultPerspectiveTask implements DockingFramesPerspectiveTask {
 		throw new IllegalArgumentException();
 	}
 
-	private int getPerspectiveW(PerspectivePosition position) {
+	private int getPerspectiveW(DockPosition position) {
 		switch (position) {
 		case CENTER:
 			return 200;
@@ -147,7 +147,7 @@ public class DefaultPerspectiveTask implements DockingFramesPerspectiveTask {
 		throw new IllegalArgumentException();
 	}
 
-	private int getPerspectiveH(PerspectivePosition position) {
+	private int getPerspectiveH(DockPosition position) {
 		switch (position) {
 		case CENTER:
 			return 200;

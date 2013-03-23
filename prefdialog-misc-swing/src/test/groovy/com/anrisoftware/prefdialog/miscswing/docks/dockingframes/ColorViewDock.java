@@ -5,7 +5,7 @@ import java.awt.Component;
 
 import javax.swing.JPanel;
 
-import com.anrisoftware.prefdialog.miscswing.docks.api.PerspectivePosition;
+import com.anrisoftware.prefdialog.miscswing.docks.api.DockPosition;
 import com.anrisoftware.prefdialog.miscswing.docks.api.ViewDockWindow;
 
 public class ColorViewDock implements ViewDockWindow {
@@ -14,14 +14,14 @@ public class ColorViewDock implements ViewDockWindow {
 
 	private String title;
 
-	private PerspectivePosition position;
+	private DockPosition position;
 
 	private Color color;
 
 	public ColorViewDock() {
 	}
 
-	public ColorViewDock(String id, String title, PerspectivePosition position,
+	public ColorViewDock(String id, String title, DockPosition position,
 			Color color) {
 		this.id = id;
 		this.title = title;
@@ -47,7 +47,7 @@ public class ColorViewDock implements ViewDockWindow {
 	}
 
 	@Override
-	public PerspectivePosition getPosition() {
+	public DockPosition getPosition() {
 		return position;
 	}
 

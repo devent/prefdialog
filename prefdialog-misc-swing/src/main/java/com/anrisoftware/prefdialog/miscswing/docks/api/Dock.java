@@ -60,10 +60,10 @@ public interface Dock {
 	/**
 	 * Apply the perspective.
 	 * 
-	 * @param task
-	 *            the {@link PerspectiveTask} that apply to perspective.
+	 * @param layout
+	 *            the {@link LayoutTask} that apply to perspective.
 	 */
-	void applyPerspective(PerspectiveTask task);
+	void applyLayout(LayoutTask layout);
 
 	/**
 	 * Saves the current perspective under the specified name.
@@ -77,7 +77,7 @@ public interface Dock {
 	 * @throws IOException
 	 *             if there was I/O error saving the perspectives.
 	 */
-	void savePerspective(String name, File file) throws IOException;
+	void saveLayout(String name, File file) throws IOException;
 
 	/**
 	 * Loads the previously saved perspective with the specified name.
@@ -91,7 +91,7 @@ public interface Dock {
 	 * @throws IOException
 	 *             if there was I/O error loading the perspectives.
 	 */
-	void loadPerspective(String name, File file) throws IOException;
+	void loadLayout(String name, File file) throws IOException;
 
 	/**
 	 * Sets a theme.

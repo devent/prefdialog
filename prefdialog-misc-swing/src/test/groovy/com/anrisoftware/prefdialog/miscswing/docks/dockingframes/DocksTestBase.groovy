@@ -1,6 +1,6 @@
 package com.anrisoftware.prefdialog.miscswing.docks.dockingframes
 
-import static com.anrisoftware.prefdialog.miscswing.docks.api.PerspectivePosition.*
+import static com.anrisoftware.prefdialog.miscswing.docks.api.DockPosition.*
 import static java.awt.Color.*
 
 import java.awt.Color
@@ -12,8 +12,8 @@ import javax.swing.JPanel
 import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.globalpom.utils.TestUtils
 import com.anrisoftware.prefdialog.miscswing.docks.api.Dock
-import com.anrisoftware.prefdialog.miscswing.docks.api.PerspectiveTask
-import com.anrisoftware.prefdialog.miscswing.docks.perspectives.dockingframes.DefaultPerspectiveTask
+import com.anrisoftware.prefdialog.miscswing.docks.api.LayoutTask
+import com.anrisoftware.prefdialog.miscswing.docks.perspectives.dockingframes.DefaultLayoutTask
 import com.google.inject.Guice
 import com.google.inject.Injector
 
@@ -54,8 +54,8 @@ class DocksTestBase {
 		Guice.createInjector new DockingFramesModule()
 	}
 
-	static PerspectiveTask createDefaultPerspective(Injector injector, name) {
-		PerspectiveTask task = injector.getInstance(DefaultPerspectiveTask)
+	static LayoutTask createDefaultPerspective(Injector injector, name) {
+		LayoutTask task = injector.getInstance(DefaultLayoutTask)
 		task.setName name
 		return task
 	}

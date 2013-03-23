@@ -6,7 +6,7 @@ import java.awt.Component;
 import javax.swing.JPanel;
 
 import com.anrisoftware.prefdialog.miscswing.docks.api.EditorDockWindow;
-import com.anrisoftware.prefdialog.miscswing.docks.api.PerspectivePosition;
+import com.anrisoftware.prefdialog.miscswing.docks.api.DockPosition;
 
 public class ColorEditorDock implements EditorDockWindow {
 
@@ -14,7 +14,7 @@ public class ColorEditorDock implements EditorDockWindow {
 
 	private String title;
 
-	private PerspectivePosition position;
+	private DockPosition position;
 
 	private Color color;
 
@@ -22,7 +22,7 @@ public class ColorEditorDock implements EditorDockWindow {
 	}
 
 	public ColorEditorDock(String id, String title,
-			PerspectivePosition position, Color color) {
+			DockPosition position, Color color) {
 		this.id = id;
 		this.title = title;
 		this.position = position;
@@ -47,7 +47,7 @@ public class ColorEditorDock implements EditorDockWindow {
 	}
 
 	@Override
-	public PerspectivePosition getPosition() {
+	public DockPosition getPosition() {
 		return position;
 	}
 

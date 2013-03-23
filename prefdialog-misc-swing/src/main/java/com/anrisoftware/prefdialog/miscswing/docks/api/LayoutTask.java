@@ -4,12 +4,12 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 /**
- * Apply a perspective.
+ * Apply the layout.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
  */
-public interface PerspectiveTask {
+public interface LayoutTask {
 
 	/**
 	 * Property name of the name property.
@@ -17,7 +17,7 @@ public interface PerspectiveTask {
 	static final String NAME_PROPERTY = "name";
 
 	/**
-	 * Sets the name of the perspective.
+	 * Sets the name of the layout.
 	 * <p>
 	 * Property change listeners should be informed of the new name.
 	 * 
@@ -29,9 +29,9 @@ public interface PerspectiveTask {
 	void setName(String name);
 
 	/**
-	 * Returns the name of the perspective.
+	 * Returns the name of the layout.
 	 * 
-	 * @return the name of the perspective.
+	 * @return the name of the layout.
 	 */
 	String getName();
 

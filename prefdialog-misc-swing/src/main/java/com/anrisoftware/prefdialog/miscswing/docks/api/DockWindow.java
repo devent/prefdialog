@@ -35,9 +35,9 @@ public interface DockWindow {
 	/**
 	 * Returns the position of the window relative to the working area.
 	 * 
-	 * @return the {@link PerspectivePosition}.
+	 * @return the {@link DockPosition}.
 	 */
-	PerspectivePosition getPosition();
+	DockPosition getPosition();
 
 	boolean isCloseable();
 

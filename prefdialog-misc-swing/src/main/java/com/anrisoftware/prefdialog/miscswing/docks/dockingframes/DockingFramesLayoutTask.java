@@ -6,19 +6,19 @@ import bibliothek.gui.dock.common.CControl;
 import bibliothek.gui.dock.common.CWorkingArea;
 
 import com.anrisoftware.prefdialog.miscswing.docks.api.EditorDockWindow;
-import com.anrisoftware.prefdialog.miscswing.docks.api.PerspectiveTask;
+import com.anrisoftware.prefdialog.miscswing.docks.api.LayoutTask;
 import com.anrisoftware.prefdialog.miscswing.docks.api.ViewDockWindow;
 
 /**
- * Apply a perspective for the Docking Frames.
+ * Apply a layout for the Docking Frames.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
  */
-public interface DockingFramesPerspectiveTask extends PerspectiveTask {
+public interface DockingFramesLayoutTask extends LayoutTask {
 
 	/**
-	 * Sets the perspective.
+	 * Sets the layout.
 	 * 
 	 * @param control
 	 *            the {@link CControl}.
@@ -30,7 +30,7 @@ public interface DockingFramesPerspectiveTask extends PerspectiveTask {
 	 *            the {@link Map} of the docks that are outside of the work
 	 *            area.
 	 */
-	void setupPerspective(CControl control, CWorkingArea workingArea,
+	void setupLayout(CControl control, CWorkingArea workingArea,
 			Map<String, ViewDockWindow> docks);
 
 	void addEditor(CWorkingArea workingArea, EditorDockWindow dock);

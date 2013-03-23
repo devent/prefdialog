@@ -10,7 +10,7 @@ import org.junit.Test
 import bibliothek.gui.dock.common.theme.ThemeMap
 
 import com.anrisoftware.prefdialog.miscswing.docks.api.Dock
-import com.anrisoftware.prefdialog.miscswing.docks.api.PerspectiveTask
+import com.anrisoftware.prefdialog.miscswing.docks.api.LayoutTask
 import com.google.inject.Injector
 
 @Slf4j
@@ -23,7 +23,7 @@ class DocksTest extends DocksTestBase {
 			viewDocks.each { dock.addViewDock(it) }
 			dock.addEditorDock(editorDocks[0])
 			dock.addEditorDock(editorDocks[1])
-			dock.applyPerspective defaultPerspective
+			dock.applyLayout defaultPerspective
 		}).withFixture({ Thread.sleep 60*1000 })
 	}
 
@@ -34,7 +34,7 @@ class DocksTest extends DocksTestBase {
 			viewDocks.each { dock.addViewDock(it) }
 			dock.addEditorDock(editorDocks[0])
 			dock.addEditorDock(editorDocks[1])
-			dock.applyPerspective defaultPerspective
+			dock.applyLayout defaultPerspective
 			dock.setTheme(ThemeMap.KEY_FLAT_THEME)
 		}).withFixture({ Thread.sleep 60*1000 })
 	}
@@ -46,7 +46,7 @@ class DocksTest extends DocksTestBase {
 			viewDocks.each { dock.addViewDock(it) }
 			dock.addEditorDock(editorDocks[0])
 			dock.addEditorDock(editorDocks[1])
-			dock.applyPerspective defaultPerspective
+			dock.applyLayout defaultPerspective
 			dock.setTheme(ThemeMap.KEY_ECLIPSE_THEME)
 		}).withFixture({ Thread.sleep 60*1000 })
 	}
@@ -57,9 +57,9 @@ class DocksTest extends DocksTestBase {
 		String title = "DocksTest::manually store and load perspective"
 		String name = "test"
 		withFrame(title, {
-			dock.applyPerspective defaultPerspective
+			dock.applyLayout defaultPerspective
 			viewDocks.each { dock.addViewDock(it) }
-			dock.applyPerspective defaultPerspective
+			dock.applyLayout defaultPerspective
 		}).withFixture({
 			dock.addEditorDock(editorDocks[0])
 		},{
@@ -67,10 +67,10 @@ class DocksTest extends DocksTestBase {
 		},{
 			log.info "Choose your layout."
 			Thread.sleep 10*1000
-			invokeLater { dock.savePerspective(name, tmp) }
+			invokeLater { dock.saveLayout(name, tmp) }
 			log.info "Layout saved as $name."
 		},{
-			invokeLater { dock.loadPerspective(name, tmp) }
+			invokeLater { dock.loadLayout(name, tmp) }
 			log.info "Layout restored as $name."
 		},
 		{ Thread.sleep 5*1000 })
@@ -78,7 +78,7 @@ class DocksTest extends DocksTestBase {
 
 	static Injector injector
 
-	static PerspectiveTask defaultPerspective
+	static LayoutTask defaultPerspective
 
 	@BeforeClass
 	static void setup() {
