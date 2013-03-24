@@ -34,4 +34,6 @@ public interface DockingFramesLayoutTask extends LayoutTask {
 			Map<String, ViewDockWindow> docks);
 
 	void addEditor(CWorkingArea workingArea, EditorDockWindow dock);
+
+	void addView(CControl control, ViewDockWindow dock);
 }

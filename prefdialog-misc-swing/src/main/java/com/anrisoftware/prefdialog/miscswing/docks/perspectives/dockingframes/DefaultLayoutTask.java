@@ -1,5 +1,6 @@
 package com.anrisoftware.prefdialog.miscswing.docks.perspectives.dockingframes;
 
+import static bibliothek.gui.dock.common.CLocation.normalized;
 import static bibliothek.gui.dock.common.mode.ExtendedMode.MINIMIZED;
 import static javax.swing.SwingUtilities.invokeLater;
 
@@ -128,6 +129,14 @@ public class DefaultLayoutTask implements DockingFramesLayoutTask {
 	private void addViewInAWT(CControl control, ViewDockWindow dock) {
 		DefaultSingleCDockable dockable = createSingleDock(dock);
 		CGridArea center = control.getContentArea().getCenterArea();
+		double x = getPerspectiveX(dock.getPosition()) / 200.0;
+		double y = getPerspectiveY(dock.getPosition()) / 200.0;
+		double w = getPerspectiveW(dock.getPosition()) / 200.0;
+		double h = getPerspectiveH(dock.getPosition()) / 200.0;
+		setupDefaultMinizedLocation(dockable, dock.getPosition());
+		dockable.setLocation(normalized(center).rectangle(x, y, w, h));
+		control.addDockable(dockable);
+		dockable.setVisible(true);
 	}
 
 	private DefaultSingleCDockable createSingleDock(DockWindow dock) {

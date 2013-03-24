@@ -43,7 +43,13 @@ class DocksTestBase {
 		new ColorEditorDock("editor_2", "Editor 2", CENTER, RED)
 	]
 
-	static ColorEditorDock createEditorWindow(int number) {
+	static ColorViewDock createViewDock(int number, def pos) {
+		def color = RGBtoHSB(0, 255, 255, null)
+		color = new Color(HSBtoRGB(color[0], color[1], (float)color[2] * 0.2f * number + 0.2f))
+		new ColorViewDock("view_${number}", "View ${number}", pos, color)
+	}
+
+	static ColorEditorDock createEditorDock(int number) {
 		def color = RGBtoHSB(0, 255, 255, null)
 		color = new Color(HSBtoRGB(color[0], color[1], (float)color[2] * 0.2f * number))
 		new ColorEditorDock("editor_${number}", "Editor ${number}", CENTER, color)

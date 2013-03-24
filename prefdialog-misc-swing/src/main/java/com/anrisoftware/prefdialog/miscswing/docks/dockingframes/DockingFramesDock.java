@@ -57,6 +57,7 @@ public class DockingFramesDock implements Dock {
 	@Override
 	public void addViewDock(ViewDockWindow dock) {
 		viewDocks.put(dock.getId(), dock);
+		currentLayout.addView(control, dock);
 	}
 
 	@Override
