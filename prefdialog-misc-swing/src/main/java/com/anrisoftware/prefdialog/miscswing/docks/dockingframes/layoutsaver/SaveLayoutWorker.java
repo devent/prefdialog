@@ -23,6 +23,12 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
 
+/**
+ * Stores and saves the layout in a stream in the AWT thread.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 1.0
+ */
 class SaveLayoutWorker extends SwingWorker<OutputStream, OutputStream> {
 
 	private static final int BUFF_SIZE = 20 * 1024;
@@ -41,6 +47,10 @@ class SaveLayoutWorker extends SwingWorker<OutputStream, OutputStream> {
 
 	private final Provider<Kryo> serializer;
 
+	/**
+	 * @see SaveLayoutWorkerFactory#create(EventListenerSupport,
+	 *      DockingFramesDock, String, CControl, OutputStream)
+	 */
 	@Inject
 	SaveLayoutWorker(SaveLayoutWorkerLogger logger, Provider<Kryo> serializer,
 			@Assisted EventListenerSupport<LayoutListener> listeners,

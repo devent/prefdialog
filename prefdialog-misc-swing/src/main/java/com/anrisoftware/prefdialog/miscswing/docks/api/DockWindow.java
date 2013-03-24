@@ -39,13 +39,42 @@ public interface DockWindow {
 	 */
 	DockPosition getPosition();
 
+	/**
+	 * Returns if the user should be able to close the dock.
+	 * 
+	 * @return {@code true} if the dock can be closed or {@code false} if not.
+	 */
 	boolean isCloseable();
 
+	/**
+	 * Returns if the user should be able to move the dock out of the main
+	 * window.
+	 * 
+	 * @return {@code true} if the dock can be moved out or {@code false} if
+	 *         not.
+	 */
 	boolean isExternalizable();
 
+	/**
+	 * Returns if the user should be able to maximize the dock.
+	 * 
+	 * @return {@code true} if the dock can be maximized or {@code false} if
+	 *         not.
+	 */
 	boolean isMaximizable();
 
+	/**
+	 * Returns if the user should be able to minimize the dock.
+	 * 
+	 * @return {@code true} if the dock can be minimized or {@code false} if
+	 *         not.
+	 */
 	boolean isMinimizable();
 
+	/**
+	 * Returns if the user should be able to stack the dock.
+	 * 
+	 * @return {@code true} if the dock can be stacked or {@code false} if not.
+	 */
 	boolean isStackable();
 }

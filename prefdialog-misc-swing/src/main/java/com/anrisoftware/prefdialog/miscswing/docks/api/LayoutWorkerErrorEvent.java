@@ -2,6 +2,12 @@ package com.anrisoftware.prefdialog.miscswing.docks.api;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+/**
+ * Event of an error in the layout.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 1.0
+ */
 @SuppressWarnings("serial")
 public class LayoutWorkerErrorEvent extends LayoutWorkerEvent {
 
