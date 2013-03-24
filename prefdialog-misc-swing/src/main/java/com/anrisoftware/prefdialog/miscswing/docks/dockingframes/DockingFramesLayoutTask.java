@@ -1,5 +1,6 @@
 package com.anrisoftware.prefdialog.miscswing.docks.dockingframes;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import bibliothek.gui.dock.common.CControl;
@@ -15,7 +16,7 @@ import com.anrisoftware.prefdialog.miscswing.docks.api.ViewDockWindow;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
  */
-public interface DockingFramesLayoutTask extends LayoutTask {
+public interface DockingFramesLayoutTask extends LayoutTask, Serializable {
 
 	/**
 	 * Sets the layout.

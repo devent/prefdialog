@@ -24,16 +24,16 @@ class DockingFramesDockLogger extends AbstractLogger {
 
 	IOException saveLayoutInterrupted(DockingFramesDock dock, String name) {
 		IOException ex = new IOException(format(
-				"Save layout '{0}' interruped for {1}.", name, dock));
-		logException(format("Save layout '{0}' interruped.", name, dock), ex);
+				"Save layout '%s' interruped for %s.", name, dock));
+		logException(format("Save layout '%s' interruped.", name, dock), ex);
 		return ex;
 	}
 
 	IOException saveLayoutError(DockingFramesDock dock, String name,
 			Throwable cause) {
 		IOException ex = new IOException(format(
-				"Save layout '{0}' error for {1}.", name, dock), cause);
-		logException(format("Save layout '{0}' error.", name), ex);
+				"Save layout '%s' error for %s.", name, dock), cause);
+		logException(format("Save layout '%s' error.", name), ex);
 		return ex;
 	}
 
@@ -46,16 +46,16 @@ class DockingFramesDockLogger extends AbstractLogger {
 
 	IOException loadLayoutInterrupted(DockingFramesDock dock, String name) {
 		IOException ex = new IOException(format(
-				"Load layout '{0}' interruped for {1}.", name, dock));
-		logException(format("Load layout '{0}' interruped.", name, dock), ex);
+				"Load layout '%s' interruped for %s.", name, dock));
+		logException(format("Load layout '%s' interruped.", name, dock), ex);
 		return ex;
 	}
 
 	IOException loadLayoutError(DockingFramesDock dock, String name,
 			Throwable cause) {
 		IOException ex = new IOException(format(
-				"Load layout '{0}' error for {1}.", name, dock), cause);
-		logException(format("Load layout '{0}' error.", name), ex);
+				"Load layout '%s' error for %s.", name, dock), cause);
+		logException(format("Load layout '%s' error.", name), ex);
 		return ex;
 	}
 

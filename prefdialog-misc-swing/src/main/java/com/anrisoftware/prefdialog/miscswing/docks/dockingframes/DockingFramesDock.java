@@ -111,6 +111,7 @@ public class DockingFramesDock implements Dock {
 		log.layoutSaved(this, name, file);
 	}
 
+	@Override
 	public synchronized void saveLayout(String name, OutputStream stream)
 			throws IOException {
 		try {
@@ -133,6 +134,7 @@ public class DockingFramesDock implements Dock {
 		log.layoutLoaded(this, name, file);
 	}
 
+	@Override
 	public synchronized void loadLayout(String name, InputStream stream)
 			throws IOException {
 		try {
@@ -145,6 +147,25 @@ public class DockingFramesDock implements Dock {
 		} catch (ExecutionException e) {
 			throw log.loadLayoutError(this, name, e.getCause());
 		}
+	}
+
+	@Override
+	public LayoutTask getCurrentLayout() {
+		return currentLayout;
+	}
+
+	/**
+	 * Sets the current layout without applying it.
+	 * 
+	 * @param currentLayout
+	 *            the new current layout.
+	 * 
+	 * @throws ClassCastException
+	 *             if the specified task is not of type
+	 *             {@link DockingFramesLayoutTask}.
+	 */
+	public void setCurrentLayout(LayoutTask currentLayout) {
+		this.currentLayout = (DockingFramesLayoutTask) currentLayout;
 	}
 
 	@Override

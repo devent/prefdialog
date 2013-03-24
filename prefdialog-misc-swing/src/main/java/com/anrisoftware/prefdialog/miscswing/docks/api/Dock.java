@@ -3,6 +3,8 @@ package com.anrisoftware.prefdialog.miscswing.docks.api;
 import java.awt.Component;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import javax.swing.JFrame;
 
@@ -79,6 +81,8 @@ public interface Dock {
 	 */
 	void saveLayout(String name, File file) throws IOException;
 
+	void saveLayout(String name, OutputStream stream) throws IOException;
+
 	/**
 	 * Loads the previously saved perspective with the specified name.
 	 * 
@@ -93,6 +97,10 @@ public interface Dock {
 	 */
 	void loadLayout(String name, File file) throws IOException;
 
+	void loadLayout(String name, InputStream stream) throws IOException;
+
+	LayoutTask getCurrentLayout();
+
 	/**
 	 * Sets a theme.
 	 * 
@@ -104,4 +112,5 @@ public interface Dock {
 	void addLayoutListener(LayoutListener listener);
 
 	void removeLayoutListener(LayoutListener listener);
+
 }

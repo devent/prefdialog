@@ -22,7 +22,7 @@ class SaveLayoutWorkerLogger extends AbstractLogger {
 	}
 
 	void loadLayoutError(DockingFramesDock dock, String name, IOException e) {
-		String message = format("Save layout '{0}' error for {1}.", name, dock);
+		String message = format("Save layout '%s' error for %s.", name, dock);
 		if (log.isTraceEnabled()) {
 			log.error(message, e);
 		} else if (log.isDebugEnabled()) {

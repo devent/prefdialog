@@ -33,14 +33,22 @@ import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.DockingFramesLa
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
  */
+@SuppressWarnings("serial")
 public class DefaultLayoutTask implements DockingFramesLayoutTask {
 
-	private final PropertyChangeSupport propertySupport;
+	private transient PropertyChangeSupport propertySupport;
 
 	private String name;
 
 	public DefaultLayoutTask() {
-		this.propertySupport = new PropertyChangeSupport(this);
+		readResolve();
+	}
+
+	private Object readResolve() {
+		if (propertySupport == null) {
+			propertySupport = new PropertyChangeSupport(this);
+		}
+		return this;
 	}
 
 	@Override

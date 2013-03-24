@@ -19,8 +19,8 @@ class DocksStorageTest extends DocksTestBase {
 
 	@Test
 	void "set layout, store and load layout"() {
-		File tmp = File.createTempFile("docks-storane", null)
-		tmp.deleteOnExit()
+		File tmp = File.createTempFile("docks", "layout")
+		//tmp.deleteOnExit()
 		int number = 0
 		String title = "PerspectiveManuallyTest::set layout, store and load layout"
 		String name = "test"
