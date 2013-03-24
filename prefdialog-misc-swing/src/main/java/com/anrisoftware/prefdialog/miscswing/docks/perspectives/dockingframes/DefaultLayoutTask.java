@@ -1,5 +1,6 @@
 package com.anrisoftware.prefdialog.miscswing.docks.perspectives.dockingframes;
 
+import static bibliothek.gui.dock.common.mode.ExtendedMode.MINIMIZED;
 import static javax.swing.SwingUtilities.invokeLater;
 
 import java.awt.Component;
@@ -9,10 +10,13 @@ import java.util.Map;
 
 import bibliothek.gui.dock.common.CControl;
 import bibliothek.gui.dock.common.CGrid;
+import bibliothek.gui.dock.common.CGridArea;
+import bibliothek.gui.dock.common.CLocation;
 import bibliothek.gui.dock.common.CWorkingArea;
 import bibliothek.gui.dock.common.DefaultMultipleCDockable;
 import bibliothek.gui.dock.common.DefaultSingleCDockable;
-import bibliothek.gui.dock.common.SingleCDockable;
+import bibliothek.gui.dock.common.intern.AbstractCDockable;
+import bibliothek.gui.dock.common.location.CFlapIndexLocation;
 
 import com.anrisoftware.prefdialog.miscswing.docks.api.DockPosition;
 import com.anrisoftware.prefdialog.miscswing.docks.api.DockWindow;
@@ -58,24 +62,25 @@ public class DefaultLayoutTask implements DockingFramesLayoutTask {
 
 			@Override
 			public void run() {
-				setupPerspectiveInAWT(control, workingArea, docks);
+				setupGridInAWT(control, workingArea, docks);
 			}
 
 		});
 	}
 
-	private void setupPerspectiveInAWT(CControl control,
-			CWorkingArea workingArea, Map<String, ViewDockWindow> docks) {
+	private void setupGridInAWT(CControl control, CWorkingArea workingArea,
+			Map<String, ViewDockWindow> docks) {
 		CGrid grid = new CGrid(control);
 		grid.add(50, 50, 150, 150, workingArea);
-		setupGrid(grid, docks);
+		setupGrid(control, grid, docks);
 		control.getContentArea().deploy(grid);
 	}
 
-	private void setupGrid(CGrid grid,
+	private void setupGrid(CControl control, CGrid grid,
 			Map<String, ? extends DockWindow> viewDocks) {
 		for (DockWindow dock : viewDocks.values()) {
-			SingleCDockable dockable = createSingleDock(dock);
+			DefaultSingleCDockable dockable = createSingleDock(dock);
+			setupDefaultMinizedLocation(dockable, dock.getPosition());
 			DockPosition position = dock.getPosition();
 			int x = getPerspectiveX(position);
 			int y = getPerspectiveY(position);
@@ -85,7 +90,47 @@ public class DefaultLayoutTask implements DockingFramesLayoutTask {
 		}
 	}
 
-	private SingleCDockable createSingleDock(DockWindow dock) {
+	private void setupDefaultMinizedLocation(AbstractCDockable dockable,
+			DockPosition position) {
+		CFlapIndexLocation location = getMinimizedLocation(position);
+		dockable.setDefaultLocation(MINIMIZED, location);
+	}
+
+	private CFlapIndexLocation getMinimizedLocation(DockPosition position) {
+		switch (position) {
+		case CENTER:
+			return CLocation.base().minimalSouth();
+		case EAST:
+			return CLocation.base().minimalEast();
+		case NORTH:
+			return CLocation.base().minimalNorth();
+		case SOUTH:
+			return CLocation.base().minimalSouth();
+		case WEST:
+			return CLocation.base().minimalWest();
+		default:
+			throw new IllegalArgumentException();
+		}
+	}
+
+	@Override
+	public void addView(final CControl control, final ViewDockWindow dock) {
+		invokeLater(new Runnable() {
+
+			@Override
+			public void run() {
+				addViewInAWT(control, dock);
+			}
+
+		});
+	}
+
+	private void addViewInAWT(CControl control, ViewDockWindow dock) {
+		DefaultSingleCDockable dockable = createSingleDock(dock);
+		CGridArea center = control.getContentArea().getCenterArea();
+	}
+
+	private DefaultSingleCDockable createSingleDock(DockWindow dock) {
 		String title = dock.getTitle();
 		Component component = dock.getComponent();
 		String id = dock.getId();
@@ -178,6 +223,8 @@ public class DefaultLayoutTask implements DockingFramesLayoutTask {
 
 	private void addEditorInAWT(CWorkingArea workingArea, EditorDockWindow dock) {
 		DefaultMultipleCDockable dockable = createMultipleDock(dock);
+		DockPosition position = dock.getPosition();
+		setupDefaultMinizedLocation(dockable, position);
 		workingArea.show(dockable);
 		dockable.toFront();
 	}
