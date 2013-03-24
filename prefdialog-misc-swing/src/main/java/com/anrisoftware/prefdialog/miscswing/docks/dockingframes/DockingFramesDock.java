@@ -1,5 +1,7 @@
 package com.anrisoftware.prefdialog.miscswing.docks.dockingframes;
 
+import static javax.swing.SwingUtilities.invokeLater;
+
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.io.File;
@@ -90,8 +92,14 @@ public class DockingFramesDock implements Dock {
 	}
 
 	@Override
-	public void setTheme(String name) {
-		ThemeMap themes = control.getThemes();
-		themes.select(name);
+	public void setTheme(final String name) {
+		invokeLater(new Runnable() {
+
+			@Override
+			public void run() {
+				ThemeMap themes = control.getThemes();
+				themes.select(name);
+			}
+		});
 	}
 }

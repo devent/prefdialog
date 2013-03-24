@@ -71,15 +71,22 @@ public class DefaultLayoutTask implements DockingFramesLayoutTask {
 
 	private void setupGridInAWT(CControl control, CWorkingArea workingArea,
 			Map<String, ViewDockWindow> docks) {
+		removeDocks(control, docks);
 		CGrid grid = new CGrid(control);
 		grid.add(50, 50, 150, 150, workingArea);
-		setupGrid(control, grid, docks);
+		setupGrid(grid, docks);
 		control.getContentArea().deploy(grid);
 	}
 
-	private void setupGrid(CControl control, CGrid grid,
-			Map<String, ? extends DockWindow> viewDocks) {
-		for (DockWindow dock : viewDocks.values()) {
+	private void removeDocks(CControl control, Map<String, ViewDockWindow> docks) {
+		for (DockWindow dock : docks.values()) {
+			String id = dock.getId();
+			control.removeDockable(control.getSingleDockable(id));
+		}
+	}
+
+	private void setupGrid(CGrid grid, Map<String, ViewDockWindow> docks) {
+		for (DockWindow dock : docks.values()) {
 			DefaultSingleCDockable dockable = createSingleDock(dock);
 			setupDefaultMinizedLocation(dockable, dock.getPosition());
 			DockPosition position = dock.getPosition();
