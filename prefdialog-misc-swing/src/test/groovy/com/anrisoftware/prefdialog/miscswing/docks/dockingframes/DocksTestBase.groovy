@@ -13,6 +13,7 @@ import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.globalpom.utils.TestUtils
 import com.anrisoftware.prefdialog.miscswing.docks.api.Dock
 import com.anrisoftware.prefdialog.miscswing.docks.api.LayoutTask
+import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.core.DockingFramesModule;
 import com.anrisoftware.prefdialog.miscswing.docks.layouts.dockingframes.DefaultLayoutTask
 import com.google.inject.Guice
 import com.google.inject.Injector

@@ -1,4 +1,4 @@
-package com.anrisoftware.prefdialog.miscswing.docks.dockingframes;
+package com.anrisoftware.prefdialog.miscswing.docks.dockingframes.core;
 
 import static javax.swing.SwingUtilities.invokeLater;
 
@@ -18,6 +18,7 @@ import java.util.concurrent.ExecutionException;
 
 import javax.inject.Inject;
 import javax.swing.JFrame;
+import javax.swing.SwingWorker;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.event.EventListenerSupport;
@@ -31,6 +32,8 @@ import com.anrisoftware.prefdialog.miscswing.docks.api.EditorDockWindow;
 import com.anrisoftware.prefdialog.miscswing.docks.api.LayoutListener;
 import com.anrisoftware.prefdialog.miscswing.docks.api.LayoutTask;
 import com.anrisoftware.prefdialog.miscswing.docks.api.ViewDockWindow;
+import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.layoutloader.LoadLayoutWorkerFactory;
+import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.layoutsaver.SaveLayoutWorkerFactory;
 
 public class DockingFramesDock implements Dock {
 
@@ -115,8 +118,8 @@ public class DockingFramesDock implements Dock {
 	public synchronized void saveLayout(String name, OutputStream stream)
 			throws IOException {
 		try {
-			SaveLayoutWorker worker;
-			worker = saveFactory.create(listeners, this, name, control, stream);
+			SwingWorker<OutputStream, OutputStream> worker = saveFactory
+					.create(listeners, this, name, control, stream);
 			worker.execute();
 			worker.get();
 		} catch (InterruptedException e) {
@@ -138,8 +141,8 @@ public class DockingFramesDock implements Dock {
 	public synchronized void loadLayout(String name, InputStream stream)
 			throws IOException {
 		try {
-			LoadLayoutWorker worker;
-			worker = loadFactory.create(listeners, this, name, control, stream);
+			SwingWorker<InputStream, InputStream> worker = loadFactory.create(
+					listeners, this, name, control, stream);
 			worker.execute();
 			worker.get();
 		} catch (InterruptedException e) {

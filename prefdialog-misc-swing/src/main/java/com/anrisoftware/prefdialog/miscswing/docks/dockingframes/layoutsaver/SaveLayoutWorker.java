@@ -1,4 +1,4 @@
-package com.anrisoftware.prefdialog.miscswing.docks.dockingframes;
+package com.anrisoftware.prefdialog.miscswing.docks.dockingframes.layoutsaver;
 
 import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
@@ -16,6 +16,7 @@ import com.anrisoftware.prefdialog.miscswing.docks.api.LayoutListener;
 import com.anrisoftware.prefdialog.miscswing.docks.api.LayoutTask;
 import com.anrisoftware.prefdialog.miscswing.docks.api.LayoutWorkerErrorEvent;
 import com.anrisoftware.prefdialog.miscswing.docks.api.LayoutWorkerEvent;
+import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.core.DockingFramesDock;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Output;
 import com.google.inject.Inject;

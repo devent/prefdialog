@@ -1,4 +1,4 @@
-package com.anrisoftware.prefdialog.miscswing.docks.dockingframes;
+package com.anrisoftware.prefdialog.miscswing.docks.dockingframes.core;
 
 import javax.inject.Singleton;
 

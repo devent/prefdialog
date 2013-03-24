@@ -23,7 +23,7 @@ import com.anrisoftware.prefdialog.miscswing.docks.api.DockPosition;
 import com.anrisoftware.prefdialog.miscswing.docks.api.DockWindow;
 import com.anrisoftware.prefdialog.miscswing.docks.api.EditorDockWindow;
 import com.anrisoftware.prefdialog.miscswing.docks.api.ViewDockWindow;
-import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.DockingFramesLayoutTask;
+import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.core.DockingFramesLayoutTask;
 
 /**
  * Sets the default layout.
