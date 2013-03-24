@@ -1,4 +1,4 @@
-package com.anrisoftware.prefdialog.miscswing.docks.perspectives.dockingframes;
+package com.anrisoftware.prefdialog.miscswing.docks.layouts.dockingframes;
 
 import static bibliothek.gui.dock.common.CLocation.normalized;
 import static bibliothek.gui.dock.common.mode.ExtendedMode.MINIMIZED;

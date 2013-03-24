@@ -28,28 +28,19 @@ class DocksStorageTest extends DocksTestBase {
 			dock.applyLayout defaultPerspective }
 		).withFixture( {
 			dock.addViewDock createViewDock(number++, NORTH)
-		}, {
 			dock.addViewDock createViewDock(number++, WEST)
-		}, {
 			dock.addViewDock createViewDock(number++, SOUTH)
-		}, {
 			dock.addViewDock createViewDock(number++, EAST)
-		}, {
 			dock.addEditorDock createEditorDock(number++)
-		}, {
 			dock.addEditorDock createEditorDock(number++)
 		}, {
 			log.info "Store your layout."
-			invokeLater {
-				dock.saveLayout(name, tmp)
-			}
+			dock.saveLayout(name, tmp)
 		},{
 			log.info "Load your layout."
-			invokeLater {
-				dock.loadLayout(name, tmp)
-			}
+			dock.loadLayout(name, tmp)
 		},
-		{ Thread.sleep 60*1000 })
+		{ Thread.sleep 3*1000 })
 	}
 
 	@Test
@@ -63,22 +54,19 @@ class DocksStorageTest extends DocksTestBase {
 			dock.applyLayout defaultPerspective
 			dock.setTheme(ThemeMap.KEY_ECLIPSE_THEME)
 		}).withFixture({
-			dock.addViewDock createViewDock(number++, EAST)
-			dock.addViewDock createViewDock(number++, EAST)
+			dock.addViewDock createViewDock(number++, NORTH)
+			dock.addViewDock createViewDock(number++, WEST)
+			dock.addViewDock createViewDock(number++, SOUTH)
 			dock.addViewDock createViewDock(number++, EAST)
 			dock.addEditorDock createEditorDock(number++)
 			dock.addEditorDock createEditorDock(number++)
 			Thread.sleep 10*1000
 			log.info "Store your layout."
-			invokeLater {
-				dock.saveLayout(name, tmp)
-			}
+			dock.saveLayout(name, tmp)
 		},{
 			Thread.sleep 10*1000
 			log.info "Load your layout."
-			invokeLater {
-				dock.loadLayout(name, tmp)
-			}
+			dock.loadLayout(name, tmp)
 		},
 		{ Thread.sleep 60*1000 })
 	}

@@ -100,4 +100,8 @@ public interface Dock {
 	 *            the theme name.
 	 */
 	void setTheme(String name);
+
+	void addLayoutListener(LayoutListener listener);
+
+	void removeLayoutListener(LayoutListener listener);
 }
