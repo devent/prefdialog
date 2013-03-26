@@ -19,6 +19,7 @@
 package com.anrisoftware.prefdialog.reflection.annotations;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.assistedinject.FactoryModuleBuilder;
 
 /**
  * Binds the annotation access.
@@ -30,7 +31,9 @@ public class AnnotationsModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
-		bind(AnnotationAccess.class).to(AnnotationAccessImpl.class);
+		install(new FactoryModuleBuilder().implement(AnnotationAccess.class,
+				AnnotationAccessImpl.class)
+				.build(AnnotationAccessFactory.class));
 	}
 
 }

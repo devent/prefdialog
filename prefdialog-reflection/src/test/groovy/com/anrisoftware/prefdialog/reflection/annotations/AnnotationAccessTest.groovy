@@ -18,12 +18,17 @@
  */
 package com.anrisoftware.prefdialog.reflection.annotations
 
+import java.lang.reflect.Field
+
 import org.apache.commons.lang3.reflect.FieldUtils
+import org.junit.BeforeClass
 import org.junit.Test
 
 import com.anrisoftware.prefdialog.reflection.exceptions.ReflectionError
 import com.anrisoftware.prefdialog.reflection.utils.Bean
 import com.anrisoftware.prefdialog.reflection.utils.BeanAnnotation
+import com.anrisoftware.prefdialog.reflection.utils.ParentBean
+import com.google.inject.Injector
 
 /**
  * Tests for {@link AnnotationAccessImpl}.
@@ -35,28 +40,41 @@ class AnnotationAccessTest extends AnnotationUtils {
 
 	@Test
 	void "read annotation value"() {
-		AnnotationAccess a = injector.getInstance AnnotationAccess
-		def field = FieldUtils.getField Bean, "annotatedField", true
-		def value = a.getElementValue BeanAnnotation.class, field
+		def access = factory.create BeanAnnotation, field
+		def value = access.getValue()
 		assertStringContent value, "Annotation Value"
 	}
 
 	@Test
 	void "read annotation title value"() {
-		AnnotationAccess a = injector.getInstance AnnotationAccess
-		def field = FieldUtils.getField Bean, "annotatedField", true
 		def name = "title"
-		def value = a.getValue BeanAnnotation.class, field, name
+		def access = factory.create BeanAnnotation, field
+		def value = access.getValue(name)
 		assertStringContent value, "Annotation Title"
 	}
 
 	@Test
 	void "read undefined annotation element"() {
-		AnnotationAccess a = injector.getInstance AnnotationAccess
-		def field = FieldUtils.getField Bean, "annotatedField", true
 		def name = "not defined"
+		def access = factory.create BeanAnnotation, field
 		shouldFailWith(ReflectionError) {
-			a.getValue BeanAnnotation.class, field, name
+			def value = access.getValue(name)
 		}
+	}
+
+	static Injector injector
+
+	static AnnotationAccessFactory factory
+
+	static ParentBean bean
+
+	static Field field
+
+	@BeforeClass
+	static void setupFactory() {
+		injector = createInjector()
+		factory = createFactory(injector)
+		bean = new ParentBean()
+		field = FieldUtils.getField Bean, "annotatedField", true
 	}
 }

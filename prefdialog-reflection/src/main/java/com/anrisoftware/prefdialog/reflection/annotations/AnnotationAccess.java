@@ -18,9 +18,6 @@
  */
 package com.anrisoftware.prefdialog.reflection.annotations;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-
 import com.anrisoftware.prefdialog.reflection.exceptions.ReflectionError;
 
 /**
@@ -34,11 +31,13 @@ public interface AnnotationAccess {
 	/**
 	 * Returns the value of the annotation element "value".
 	 * 
-	 * @param annotationClass
-	 *            the {@link Class} of the {@link Annotation}.
+	 * <pre>
+	 * &#064;SomeAnnotation(&quot;some-value&quot;)
+	 * FomeField
 	 * 
-	 * @param field
-	 *            the {@link Field} where the annotation is set.
+	 * String value = access.getValue();
+	 * assert value == &quot;some-value&quot;;
+	 * </pre>
 	 * 
 	 * @return the value of the annotation field.
 	 * 
@@ -46,17 +45,18 @@ public interface AnnotationAccess {
 	 *             if the element was not found in the annotation, the element
 	 *             can not be accessed or the element throws an exception.
 	 */
-	<T> T getElementValue(Class<? extends Annotation> annotationClass,
-			Field field);
+	<T> T getValue();
 
 	/**
 	 * Returns the value of an annotation element.
 	 * 
-	 * @param annotationClass
-	 *            the {@link Class} of the {@link Annotation}.
+	 * <pre>
+	 * &#064;SomeAnnotation(element = &quot;some-value&quot;)
+	 * FomeField
 	 * 
-	 * @param field
-	 *            the {@link Field} where the annotation is set.
+	 * String value = access.getValue("element");
+	 * assert value == &quot;some-value&quot;;
+	 * </pre>
 	 * 
 	 * @param name
 	 *            the name of the annotation element.
@@ -67,6 +67,5 @@ public interface AnnotationAccess {
 	 *             if the element was not found in the annotation, the element
 	 *             can not be accessed or the element throws an exception.
 	 */
-	<T> T getValue(Class<? extends Annotation> annotationClass,
-			Field field, String name);
+	<T> T getValue(String name);
 }

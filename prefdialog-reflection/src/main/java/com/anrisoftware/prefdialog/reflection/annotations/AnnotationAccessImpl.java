@@ -26,6 +26,8 @@ import javax.inject.Inject;
 
 import org.apache.commons.lang3.reflect.MethodUtils;
 
+import com.google.inject.assistedinject.Assisted;
+
 /**
  * Read access to the elements of an annotation via reflection.
  * 
@@ -36,26 +38,29 @@ class AnnotationAccessImpl implements AnnotationAccess {
 
 	private final AnnotationAccessImplLogger log;
 
+	private final Class<? extends Annotation> annotationClass;
+
+	private final Field field;
+
 	/**
-	 * Sets the logger.
-	 * 
-	 * @param logger
-	 *            the {@link AnnotationAccessImplLogger}.
+	 * @see AnnotationAccessFactory#create(Class, Field)
 	 */
 	@Inject
-	AnnotationAccessImpl(AnnotationAccessImplLogger logger) {
+	AnnotationAccessImpl(AnnotationAccessImplLogger logger,
+			@Assisted Class<? extends Annotation> annotationClass,
+			@Assisted Field field) {
 		this.log = logger;
+		this.annotationClass = annotationClass;
+		this.field = field;
 	}
 
 	@Override
-	public <T> T getElementValue(Class<? extends Annotation> annotationClass,
-			Field field) {
-		return getValue(annotationClass, field, "value");
+	public <T> T getValue() {
+		return getValue("value");
 	}
 
 	@Override
-	public <T> T getValue(Class<? extends Annotation> annotationClass,
-			Field field, String name) {
+	public <T> T getValue(String name) {
 		Annotation a = field.getAnnotation(annotationClass);
 		try {
 			return asType(name, a);

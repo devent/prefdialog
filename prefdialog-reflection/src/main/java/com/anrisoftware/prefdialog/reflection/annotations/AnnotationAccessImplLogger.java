@@ -18,6 +18,8 @@
  */
 package com.anrisoftware.prefdialog.reflection.annotations;
 
+import static java.lang.String.format;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -43,36 +45,39 @@ class AnnotationAccessImplLogger extends AbstractLogger {
 	ReflectionError noSuchMethodError(NoSuchMethodException e,
 			Class<? extends Annotation> annotationClass, Field field,
 			String name) {
-		ReflectionError ex = new ReflectionError(
-				"No such element found in the annotation", e)
+		ReflectionError ex = new ReflectionError("No such element found", e)
 				.addContextValue("name", name)
 				.addContextValue("annotation", annotationClass)
 				.addContextValue("field", field);
-		log.error(ex.getLocalizedMessage());
+		logException(
+				format("No such element found '%s' in @%s %s.", name,
+						annotationClass.getName(), field), ex);
 		return ex;
 	}
 
 	ReflectionError illegalAccessError(IllegalAccessException e,
 			Class<? extends Annotation> annotationClass, Field field,
 			String name) {
-		ReflectionError ex = new ReflectionError(
-				"Illegal access to the element in the annotation", e)
+		ReflectionError ex = new ReflectionError("Illegal access to element", e)
 				.addContextValue("name", name)
 				.addContextValue("annotation", annotationClass)
 				.addContextValue("field", field);
-		log.error(ex.getLocalizedMessage());
+		logException(
+				format("Illegal access to element '%s' in @%s %s.", name,
+						annotationClass.getName(), field), ex);
 		return ex;
 	}
 
 	ReflectionError invocationTargetError(InvocationTargetException e,
 			Class<? extends Annotation> annotationClass, Field field,
 			String name) {
-		ReflectionError ex = new ReflectionError(
-				"Exception thrown in the element of the annotation", e)
-				.addContextValue("name", name)
+		ReflectionError ex = new ReflectionError("Exception thrown in element",
+				e).addContextValue("name", name)
 				.addContextValue("annotation", annotationClass)
 				.addContextValue("field", field);
-		log.error(ex.getLocalizedMessage());
+		logException(
+				format("Exception thrown in element '%s' in @%s %s.", name,
+						annotationClass.getName(), field), ex);
 		return ex;
 	}
 }
