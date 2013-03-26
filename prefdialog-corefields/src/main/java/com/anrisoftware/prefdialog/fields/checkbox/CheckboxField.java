@@ -32,7 +32,7 @@ import javax.swing.JCheckBox;
 
 import com.anrisoftware.prefdialog.annotations.Checkbox;
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
-import com.anrisoftware.resources.api.Texts;
+import com.anrisoftware.resources.texts.api.Texts;
 import com.google.inject.assistedinject.Assisted;
 
 /**
