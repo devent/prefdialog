@@ -19,6 +19,7 @@
 package com.anrisoftware.prefdialog.reflection.annotations
 
 import com.anrisoftware.globalpom.utils.TestUtils
+import com.anrisoftware.resources.texts.defaults.TextsResourcesDefaultModule
 import com.google.inject.Guice
 import com.google.inject.Injector
 
@@ -31,7 +32,7 @@ import com.google.inject.Injector
 class AnnotationUtils extends TestUtils {
 
 	static Injector createInjector() {
-		Guice.createInjector new AnnotationsModule()
+		Guice.createInjector new AnnotationsModule(), new TextsResourcesDefaultModule()
 	}
 
 	static AnnotationAccessFactory createFactory(Injector injector) {

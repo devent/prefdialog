@@ -78,12 +78,12 @@
 			<dependency>
 				<groupId>com.anrisoftware.resources</groupId>
 				<artifactId>resources-texts</artifactId>
-				<version>1.4</version>
+				<version>1.5-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.anrisoftware.globalpom</groupId>
 				<artifactId>globalpom-log</artifactId>
-				<version>1.9.1</version>
+				<version>1.10-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.anrisoftware.globalpom</groupId>
