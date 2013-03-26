@@ -24,9 +24,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import javax.inject.Inject;
-
 import org.apache.commons.lang3.reflect.FieldUtils;
+
+import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
 
 /**
  * Access the fields of an bean object.
@@ -38,33 +39,47 @@ class BeanAccessImpl implements BeanAccess {
 
 	private final BeanAccessImplLogger log;
 
+	private final Field field;
+
+	private final Object parentObject;
+
 	/**
-	 * Sets the logger
-	 * 
-	 * @param logger
-	 *            the {@link BeanAccessImplLogger}.
+	 * @see BeanAccessFactory#create(String, Object)
 	 */
-	@Inject
-	BeanAccessImpl(BeanAccessImplLogger logger) {
+	@AssistedInject
+	BeanAccessImpl(BeanAccessImplLogger logger, @Assisted String fieldName,
+			@Assisted Object parentObject) {
 		this.log = logger;
+		log.checkFieldName(fieldName);
+		log.checkParentObject(parentObject);
+		this.parentObject = parentObject;
+		this.field = toField(fieldName, parentObject);
 	}
 
-	@Override
-	public Field getField(String fieldName, Object parentObject) {
+	/**
+	 * @see BeanAccessFactory#create(Field, Object)
+	 */
+	@AssistedInject
+	BeanAccessImpl(BeanAccessImplLogger logger, @Assisted Field field,
+			@Assisted Object parentObject) {
+		this.log = logger;
+		log.checkField(field);
 		log.checkParentObject(parentObject);
+		this.parentObject = parentObject;
+		this.field = field;
+	}
+
+	private Field toField(String fieldName, Object parentObject) {
 		return FieldUtils.getField(parentObject.getClass(), fieldName, true);
 	}
 
 	@Override
-	public <T> T getValue(String fieldName, Object parentObject) {
-		Field field = getField(fieldName, parentObject);
-		return getValue(field, parentObject);
+	public Field getField() {
+		return field;
 	}
 
 	@Override
-	public <T> T getValue(Field field, Object parentObject) {
-		log.checkField(field);
-		log.checkParentObject(parentObject);
+	public <T> T getValue() {
 		T value = getValueFromGetter(field, parentObject);
 		if (value == null) {
 			value = getValueFromField(field, parentObject);
@@ -113,9 +128,7 @@ class BeanAccessImpl implements BeanAccess {
 	}
 
 	@Override
-	public void setValue(Object value, Field field, Object parentObject) {
-		log.checkField(field);
-		log.checkParentObject(parentObject);
+	public void setValue(Object value) {
 		boolean set = setValueWithSetter(value, field, parentObject);
 		if (!set) {
 			setValueFromField(value, field, parentObject);

@@ -31,14 +31,7 @@ import com.anrisoftware.prefdialog.reflection.exceptions.ReflectionError;
 public interface BeanAccess {
 
 	/**
-	 * Returns the field with the specified name in the parent object.
-	 * 
-	 * @param fieldName
-	 *            the field name.
-	 * 
-	 * 
-	 * @param parentObject
-	 *            the parent {@link Object}.
+	 * Returns the field.
 	 * 
 	 * @return the {@link Field}.
 	 * 
@@ -46,7 +39,7 @@ public interface BeanAccess {
 	 *             if the specified field name or parent object is {@code null}.
 	 * 
 	 */
-	Field getField(String fieldName, Object parentObject);
+	Field getField();
 
 	/**
 	 * Return the value from a field with the specified name.
@@ -59,12 +52,6 @@ public interface BeanAccess {
 	 * If no such getter is defined, the value of the field will be returned by
 	 * using reflection.
 	 * 
-	 * @param fieldName
-	 *            the name of the field.
-	 * 
-	 * @param parentObject
-	 *            the {@link Object} in which the field is defined.
-	 * 
 	 * @return the value of the field.
 	 * 
 	 * @throws NullPointerException
@@ -75,46 +62,14 @@ public interface BeanAccess {
 	 *             can not be accessed or the getter of the field throws an
 	 *             exception.
 	 */
-	<T> T getValue(String fieldName, Object parentObject);
-
-	/**
-	 * Return the value from a field.
-	 * <p>
-	 * If a getter for this field is defined it tries to use the getter first. A
-	 * getter is a method with the pattern <code>FieldType getFieldName()</code>
-	 * where <code>FieldType</code> the type of the field and
-	 * <code>FieldName</code> the name of the field is.
-	 * <p>
-	 * If no such getter is defined, the value of the field will be returned by
-	 * using reflection.
-	 * 
-	 * @param field
-	 *            the {@link Field}.
-	 * 
-	 * @param parentObject
-	 *            the {@link Object} in which the field is defined.
-	 * 
-	 * @return the value of the field.
-	 * 
-	 * @throws NullPointerException
-	 *             if the specified field name or parent object is {@code null}.
-	 * 
-	 * @throws ReflectionError
-	 *             if the field can not be found in the parent object, the field
-	 *             can not be accessed or the getter of the field throws an
-	 *             exception.
-	 */
-	<T> T getValue(Field field, Object parentObject);
+	<T> T getValue();
 
 	/**
 	 * Sets the value to the field.
 	 * 
 	 * @param value
 	 *            the value to be set.
-	 * 
-	 * @param field
-	 * @param parentObject
 	 */
-	void setValue(Object value, Field field, Object parentObject);
+	void setValue(Object value);
 
 }

@@ -19,10 +19,14 @@
 package com.anrisoftware.prefdialog.reflection.beans
 
 import org.apache.commons.lang3.reflect.FieldUtils
+import org.junit.Before
+import org.junit.BeforeClass
 import org.junit.Test
 
 import com.anrisoftware.prefdialog.reflection.exceptions.ReflectionError
 import com.anrisoftware.prefdialog.reflection.utils.Bean
+import com.anrisoftware.prefdialog.reflection.utils.ParentBean
+import com.google.inject.Injector
 
 /**
  * Tests for {@link BeanAccessImpl}.
@@ -34,56 +38,67 @@ class BeanAccessTest extends BeanUtils {
 
 	@Test
 	void "read field value"() {
-		BeanAccess a = injector.getInstance BeanAccess
 		def field = FieldUtils.getField Bean, "stringField", true
-		def value = a.getValue field, bean.bean
+		def value = factory.create(field, bean.bean).getValue()
 		assertStringContent value, "Text"
 	}
 
 	@Test
 	void "read field value via getter"() {
-		BeanAccess a = injector.getInstance BeanAccess
 		def field = FieldUtils.getField Bean, "getterField", true
-		def value = a.getValue field, bean.bean
+		def value = factory.create(field, bean.bean).getValue()
 		assertStringContent value, "Getter Text"
 		assert bean.bean.getterOfGetterFieldCalled
 	}
 
 	@Test
 	void "read field value via getter that throws exception"() {
-		BeanAccess a = injector.getInstance BeanAccess
 		def field = FieldUtils.getField Bean, "getterFieldThatThrowsException", true
 		shouldFailWith(ReflectionError) {
-			a.getValue field, bean.bean
+			def value = factory.create(field, bean.bean).getValue()
 		}
 	}
 
 	@Test
 	void "write field value"() {
-		BeanAccess a = injector.getInstance BeanAccess
 		def field = FieldUtils.getField Bean, "stringField", true
 		String value = "value"
-		a.setValue value, field, bean.bean
+		factory.create(field, bean.bean).setValue(value)
 		assertStringContent bean.bean.stringField, value
 	}
 
 	@Test
 	void "write field value via setter"() {
-		BeanAccess a = injector.getInstance BeanAccess
 		def field = FieldUtils.getField Bean, "setterField", true
 		String value = "value"
-		a.setValue value, field, bean.bean
+		factory.create(field, bean.bean).setValue(value)
 		assertStringContent bean.bean.setterField, value
 		assert bean.bean.setterOfSetterFieldCalled
 	}
 
 	@Test
 	void "write field value via setter that throws exception"() {
-		BeanAccess a = injector.getInstance BeanAccess
 		def field = FieldUtils.getField Bean, "setterFieldThatThrowsException", true
 		String value = "value"
 		shouldFailWith(ReflectionError) {
-			a.setValue value, field, bean.bean
+			factory.create(field, bean.bean).setValue(value)
 		}
+	}
+
+	static Injector injector
+
+	static BeanAccessFactory factory
+
+	ParentBean bean
+
+	@Before
+	void setupBean() {
+		bean = new ParentBean()
+	}
+
+	@BeforeClass
+	static void setupFactory() {
+		injector = createInjector()
+		factory = createFactory(injector)
 	}
 }

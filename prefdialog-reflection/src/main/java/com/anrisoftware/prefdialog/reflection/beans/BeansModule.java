@@ -19,6 +19,7 @@
 package com.anrisoftware.prefdialog.reflection.beans;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.assistedinject.FactoryModuleBuilder;
 
 /**
  * Binds the bean access and bean factory.
@@ -30,7 +31,8 @@ public class BeansModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
-		bind(BeanAccess.class).to(BeanAccessImpl.class);
+		install(new FactoryModuleBuilder().implement(BeanAccess.class,
+				BeanAccessImpl.class).build(BeanAccessFactory.class));
 		bind(BeanFactory.class).to(BeanFactoryImpl.class);
 	}
 

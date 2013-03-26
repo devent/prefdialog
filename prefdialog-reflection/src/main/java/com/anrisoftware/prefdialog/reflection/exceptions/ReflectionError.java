@@ -19,7 +19,6 @@
 package com.anrisoftware.prefdialog.reflection.exceptions;
 
 import org.apache.commons.lang3.exception.ContextedRuntimeException;
-import org.apache.commons.lang3.exception.ExceptionContext;
 
 /**
  * Error while accessing fields or methods with reflection.
@@ -31,28 +30,10 @@ import org.apache.commons.lang3.exception.ExceptionContext;
 public class ReflectionError extends ContextedRuntimeException {
 
 	/**
-	 * No message or cause set.
+	 * For serialization.
 	 */
 	public ReflectionError() {
 		super();
-	}
-
-	/**
-	 * Sets the message and the cause of the error.
-	 * 
-	 * @param message
-	 *            the message of the error.
-	 * 
-	 * @param cause
-	 *            the {@link Throwable} cause of the error.
-	 * 
-	 * @param context
-	 *            the {@link ExceptionContext} used to store the additional
-	 *            information, {@code null} uses default implementation.
-	 */
-	public ReflectionError(String message, Throwable cause,
-			ExceptionContext context) {
-		super(message, cause, context);
 	}
 
 	/**
@@ -76,16 +57,6 @@ public class ReflectionError extends ContextedRuntimeException {
 	 */
 	public ReflectionError(String message) {
 		super(message);
-	}
-
-	/**
-	 * Set the cause of the error, but with no message.
-	 * 
-	 * @param cause
-	 *            the {@link Throwable} cause of the error.
-	 */
-	public ReflectionError(Throwable cause) {
-		super(cause);
 	}
 
 	@Override

@@ -78,6 +78,10 @@ class BeanAccessImplLogger extends AbstractLogger {
 		return ex;
 	}
 
+	void checkFieldName(String fieldName) {
+		notNull(fieldName, "The specified field name cannot be null.");
+	}
+
 	void checkParentObject(Object parentObject) {
 		notNull(parentObject, "The specified parent object cannot be null.");
 	}
