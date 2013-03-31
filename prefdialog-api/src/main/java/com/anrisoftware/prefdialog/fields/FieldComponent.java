@@ -32,41 +32,15 @@ import com.anrisoftware.resources.images.api.Images;
 import com.anrisoftware.resources.texts.api.Texts;
 
 /**
- * The preference panel field.
+ * The field component.
  * 
  * @param <ComponentType>
  *            the {@link Component} for this field.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 1.0
+ * @since 3.0
  */
 public interface FieldComponent<ComponentType extends Component> {
-
-	/**
-	 * Sets the properties of the field from the annotation element values. The
-	 * method will allow fluent-api like syntax:
-	 * 
-	 * <pre>
-	 * fieldComponent = fieldComponent.createField()
-	 * </pre>
-	 * 
-	 * @return this {@link FieldComponent}.
-	 */
-	FieldComponent<ComponentType> createField();
-
-	/**
-	 * Sets the texts resource. The method will allow fluent-api like syntax:
-	 * 
-	 * <pre>
-	 * fieldComponent = fieldComponent.withTextsResource(texts).createField()
-	 * </pre>
-	 * 
-	 * @param texts
-	 *            the {@link Texts} resource.
-	 * 
-	 * @return this {@link FieldComponent}.
-	 */
-	FieldComponent<ComponentType> withTextsResource(Texts texts);
 
 	/**
 	 * Sets the texts resource.
@@ -82,26 +56,6 @@ public interface FieldComponent<ComponentType extends Component> {
 	 * @return the {@link Texts} resource.
 	 */
 	Texts getTexts();
-
-	/**
-	 * Sets the images resource. The method will allow fluent-api like syntax:
-	 * 
-	 * <pre>
-	 * fieldComponent = fieldComponent.withImagesResource(images).createField()
-	 * </pre>
-	 * 
-	 * @param images
-	 *            the {@link Images} resources.
-	 * 
-	 * @return this {@link FieldComponent}.
-	 * 
-	 * @throws ResourcesException
-	 *             if the icon resource is not available.
-	 * 
-	 * @throws MissingResourceException
-	 *             if the icon resource could not be found.
-	 */
-	FieldComponent<ComponentType> withImagesResource(Images images);
 
 	/**
 	 * Sets the images resource.
@@ -140,10 +94,10 @@ public interface FieldComponent<ComponentType extends Component> {
 	 * Sets the title of the field. The title is visible to the user and do not
 	 * have to be unique.
 	 * 
-	 * @param newTitle
+	 * @param title
 	 *            the title.
 	 */
-	void setTitle(String newTitle);
+	void setTitle(String title);
 
 	/**
 	 * Returns the title of the field.
@@ -172,7 +126,7 @@ public interface FieldComponent<ComponentType extends Component> {
 	/**
 	 * Sets the value of the field.
 	 * 
-	 * @param newValue
+	 * @param value
 	 *            the value {@link Object}.
 	 * 
 	 * @throws NullPointerException
@@ -181,7 +135,7 @@ public interface FieldComponent<ComponentType extends Component> {
 	 * @throws PropertyVetoException
 	 *             if the user input is not valid.
 	 */
-	void setValue(Object newValue) throws PropertyVetoException;
+	void setValue(Object value) throws PropertyVetoException;
 
 	/**
 	 * Returns the value of the field.
@@ -210,13 +164,13 @@ public interface FieldComponent<ComponentType extends Component> {
 	 * Sets the physical width of the field inside the container. The width can
 	 * be in pixels, a percentage or some special constant.
 	 * 
-	 * @param newWidth
+	 * @param width
 	 *            the width {@link Number}.
 	 * 
 	 * @throws NullPointerException
 	 *             if the new width is {@code null}.
 	 */
-	void setWidth(Number newWidth);
+	void setWidth(Number width);
 
 	/**
 	 * Returns the physical width of the field inside the container. The width
@@ -248,10 +202,10 @@ public interface FieldComponent<ComponentType extends Component> {
 	 * If a texts resource is set then the title, tool-tip text and icon are
 	 * retrieved with the new locale.
 	 * 
-	 * @param newLocale
+	 * @param locale
 	 *            the {@link Locale}.
 	 */
-	void setLocale(Locale newLocale);
+	void setLocale(Locale locale);
 
 	/**
 	 * Returns the locale of the field.
@@ -263,10 +217,10 @@ public interface FieldComponent<ComponentType extends Component> {
 	/**
 	 * Sets the position of the title text and icon.
 	 * 
-	 * @param newPosition
+	 * @param position
 	 *            the {@link TextPosition}.
 	 */
-	void setTitlePosition(TextPosition newPosition);
+	void setTitlePosition(TextPosition position);
 
 	/**
 	 * Returns the position of the title text and icon.
@@ -278,7 +232,7 @@ public interface FieldComponent<ComponentType extends Component> {
 	/**
 	 * Sets the size of the icon.
 	 * 
-	 * @param newSize
+	 * @param size
 	 *            the {@link IconSize}.
 	 * 
 	 * @throws ResourcesException
@@ -287,7 +241,7 @@ public interface FieldComponent<ComponentType extends Component> {
 	 * @throws MissingResourceException
 	 *             if the icon resource could not be found.
 	 */
-	void setIconSize(IconSize newSize);
+	void setIconSize(IconSize size);
 
 	/**
 	 * Returns the size of the icon.
@@ -300,7 +254,7 @@ public interface FieldComponent<ComponentType extends Component> {
 	 * Sets the resource for the icon. The resource is loaded from the specified
 	 * images resources.
 	 * 
-	 * @param newIconResource
+	 * @param name
 	 *            the icon resource name or {@code null} or empty if the old
 	 *            icon should be deleted.
 	 * 
@@ -310,17 +264,17 @@ public interface FieldComponent<ComponentType extends Component> {
 	 * @throws MissingResourceException
 	 *             if the icon resource could not be found.
 	 */
-	void setIcon(String newIconResource);
+	void setIconResource(String name);
 
 	/**
 	 * Sets the new icon for the field. No icon resource name is set that means
 	 * that we can not change the locale or the size of the icon.
 	 * 
-	 * @param newIcon
+	 * @param icon
 	 *            the {@link Icon} for the field or {@code null} if the old icon
 	 *            should be deleted.
 	 */
-	void setIcon(Icon newIcon);
+	void setIcon(Icon icon);
 
 	/**
 	 * Returns the icon for this field.
@@ -356,7 +310,7 @@ public interface FieldComponent<ComponentType extends Component> {
 	 * 
 	 * @return the {@link Component}.
 	 */
-	ComponentType getAWTComponent();
+	ComponentType getComponent();
 
 	/**
 	 * Add a new child field component to this field.
@@ -382,12 +336,9 @@ public interface FieldComponent<ComponentType extends Component> {
 	 * @param <T>
 	 *            the type of the {@link FieldComponent}.
 	 * 
-	 * @return the {@link FieldComponent} with the specified name.
-	 * 
-	 * @throws NullPointerException
-	 *             if no field component with the specified name was found in
-	 *             this field.
+	 * @return the {@link FieldComponent} with the specified name or
+	 *         {@code null} if no such field was found.
 	 */
-	<K extends Component, T extends FieldComponent<K>> T getField(String name);
+	<K extends Component, T extends FieldComponent<K>> T findField(String name);
 
 }

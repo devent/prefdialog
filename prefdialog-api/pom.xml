@@ -10,9 +10,9 @@
 	</parent>
 
 	<artifactId>prefdialog-api</artifactId>
-	<version>3.0-SNAPSHOT</version>
 	<name>Preferences Dialog :: API</name>
 	<description>Preferences dialog public application interface.</description>
+	<url>https://www.anr-institute.com/projects/projects/prefdialog-public</url>
 	<inceptionYear>2013</inceptionYear>
 
 	<properties>
@@ -34,4 +34,5 @@
 			<artifactId>resources-texts</artifactId>
 		</dependency>
 	</dependencies>
+
 </project>
