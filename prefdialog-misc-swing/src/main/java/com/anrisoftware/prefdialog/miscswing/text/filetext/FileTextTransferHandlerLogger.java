@@ -18,13 +18,11 @@
  */
 package com.anrisoftware.prefdialog.miscswing.text.filetext;
 
-import static java.lang.String.format;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-import com.anrisoftware.globalpom.log.AbstractSerializedLogger;
+import com.anrisoftware.globalpom.log.AbstractLogger;
 
 /**
  * Log messages for the file text transfer handler.
@@ -32,24 +30,26 @@ import com.anrisoftware.globalpom.log.AbstractSerializedLogger;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
  */
-class FileTextTransferHandlerLogger extends AbstractSerializedLogger {
+class FileTextTransferHandlerLogger extends AbstractLogger {
+
+	private static final String IMPORT_FILE = "Import file '{}' in {}.";
+	private static final String INVALID_URI_SYNTAX = "Invalid URI syntax: %s.";
+	private static final String ERROR_IMPORTING = "Error while importing data: %s.";
 
 	FileTextTransferHandlerLogger() {
 		super(FileTextTransferHandler.class);
 	}
 
 	void errorIO(Object handler, IOException e) {
-		String message = format("Error while importing data: %s.", handler);
-		logException(message, e);
+		logException(e, ERROR_IMPORTING, handler);
 	}
 
 	void errorNotValidURISyntax(Object handler, URISyntaxException e) {
-		String message = format("Invalid URI syntax: %s.", handler);
-		logException(message, e);
+		logException(e, INVALID_URI_SYNTAX, handler);
 	}
 
 	void importFile(Object handler, File file) {
-		log.debug("Import file '{}' in {}.", file, handler);
+		log.debug(IMPORT_FILE, file, handler);
 	}
 
 }

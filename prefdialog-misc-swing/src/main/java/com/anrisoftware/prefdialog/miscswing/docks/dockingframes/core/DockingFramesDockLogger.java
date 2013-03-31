@@ -15,6 +15,17 @@ import com.anrisoftware.globalpom.log.AbstractLogger;
  */
 class DockingFramesDockLogger extends AbstractLogger {
 
+	private static final String LAYOUT_LOADED = "Layout '{}' loaded from file {} for {}.";
+	private static final String LOAD_ERROR_MESSAGE = "Load layout '%s' error.";
+	private static final String LOAD_ERROR = "Load layout '%s' error for %s.";
+	private static final String LOAD_INTERRUPED_MESSAGE = "Load layout '%s' interruped.";
+	private static final String LOAD_INTERRUPED = "Load layout '%s' interruped for %s.";
+	private static final String LAYOUT_SAVED = "Layout '{}' saved in file {} for {}.";
+	private static final String SAVE_ERROR_MESSAGE = "Save layout '%s' error.";
+	private static final String SAVE_ERROR = "Save layout '%s' error for %s.";
+	private static final String SAVE_INTERRUPED_MESSAGE = "Save layout '%s' interruped.";
+	private static final String SAVE_INTERRUPED = "Save layout '%s' interruped for %s.";
+
 	/**
 	 * Create logger for {@link DockingFramesDock}.
 	 */
@@ -23,47 +34,35 @@ class DockingFramesDockLogger extends AbstractLogger {
 	}
 
 	IOException saveLayoutInterrupted(DockingFramesDock dock, String name) {
-		IOException ex = new IOException(format(
-				"Save layout '%s' interruped for %s.", name, dock));
-		logException(format("Save layout '%s' interruped.", name, dock), ex);
-		return ex;
+		return logException(
+				new IOException(format(SAVE_INTERRUPED, name, dock)),
+				SAVE_INTERRUPED_MESSAGE, name);
 	}
 
 	IOException saveLayoutError(DockingFramesDock dock, String name,
 			Throwable cause) {
-		IOException ex = new IOException(format(
-				"Save layout '%s' error for %s.", name, dock), cause);
-		logException(format("Save layout '%s' error.", name), ex);
-		return ex;
+		return logException(new IOException(format(SAVE_ERROR, name, dock),
+				cause), SAVE_ERROR_MESSAGE, name);
 	}
 
 	void layoutSaved(DockingFramesDock dock, String name, File file) {
-		if (log.isDebugEnabled()) {
-			log.debug("Layout '{}' saved in file {} for {}.", new Object[] {
-					name, file, dock });
-		}
+		log.debug(LAYOUT_SAVED, name, file, dock);
 	}
 
 	IOException loadLayoutInterrupted(DockingFramesDock dock, String name) {
-		IOException ex = new IOException(format(
-				"Load layout '%s' interruped for %s.", name, dock));
-		logException(format("Load layout '%s' interruped.", name, dock), ex);
-		return ex;
+		return logException(
+				new IOException(format(LOAD_INTERRUPED, name, dock)),
+				LOAD_INTERRUPED_MESSAGE, name);
 	}
 
 	IOException loadLayoutError(DockingFramesDock dock, String name,
 			Throwable cause) {
-		IOException ex = new IOException(format(
-				"Load layout '%s' error for %s.", name, dock), cause);
-		logException(format("Load layout '%s' error.", name), ex);
-		return ex;
+		return logException(new IOException(format(LOAD_ERROR, name, dock),
+				cause), LOAD_ERROR_MESSAGE, name);
 	}
 
 	void layoutLoaded(DockingFramesDock dock, String name, File file) {
-		if (log.isDebugEnabled()) {
-			log.debug("Layout '{}' loaded from file {} for {}.", new Object[] {
-					name, file, dock });
-		}
+		log.debug(LAYOUT_LOADED, name, file, dock);
 	}
 
 }
