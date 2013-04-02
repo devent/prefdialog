@@ -77,7 +77,7 @@ public abstract class AbstractTitleField<ComponentType extends Component, Contai
 		container.removeAll();
 		container.setLayout(createLayout());
 		container.add(titleLabel, "0, 0");
-		container.add(getComponent(), "0, 1");
+		container.add(getContainerComponent(), "0, 1");
 	}
 
 	private TableLayout createLayout() {

@@ -18,8 +18,6 @@
  */
 package com.anrisoftware.prefdialog.core
 
-import java.lang.reflect.Field
-
 import javax.inject.Inject
 import javax.swing.JComponent
 import javax.swing.JPanel
@@ -34,13 +32,16 @@ import com.google.inject.assistedinject.Assisted
  */
 class MockTitleField extends AbstractTitleField<JPanel, JComponent> {
 
+	/**
+	 * @see AbstractTitleField#AbstractTitleField(java.awt.Component, java.awt.Container, Object, String)
+	 */
 	@Inject
 	MockTitleField(
 	@Assisted JComponent component,
 	@Assisted JPanel container,
 	@Assisted Object parentObject,
-	@Assisted Field field) {
-		super(component, container, parentObject, field)
+	@Assisted String fieldName) {
+		super(component, container, parentObject, fieldName)
 	}
 }
 

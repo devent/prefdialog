@@ -52,15 +52,7 @@ class ContainerFieldTest extends FieldTestUtils {
 
 		assertField field,
 		name: containerName,
-		title: preferenceField,
-		showTitle: true,
-		toolTip: null,
-		readOnly: false,
-		width: -1d,
-		titlePosition: TEXT_ONLY,
-		icon: { },
-		iconSize: SMALL,
-		locale: Locale.getDefault()
+		title: preferenceField
 		new TestFrameUtil(title, container).withFixture({FrameFixture fixture ->
 			fixture.label preferenceField requireEnabled()
 			fixture.panel containerName requireEnabled()
@@ -79,14 +71,7 @@ class ContainerFieldTest extends FieldTestUtils {
 		assertField field,
 		name: containerName,
 		title: preferenceField,
-		showTitle: true,
-		toolTip: null,
-		readOnly: false,
-		width: 200d,
-		titlePosition: TEXT_ONLY,
-		icon: { },
-		iconSize: SMALL,
-		locale: Locale.getDefault()
+		width: 200.0d
 		new TestFrameUtil(title, container).withFixture({FrameFixture fixture ->
 			fixture.label preferenceField requireEnabled()
 			fixture.panel containerName requireEnabled()
@@ -106,14 +91,7 @@ class ContainerFieldTest extends FieldTestUtils {
 		assertField field,
 		name: containerName,
 		title: preferenceField,
-		showTitle: true,
-		toolTip: null,
-		readOnly: false,
-		width: -1.0d,
-		titlePosition: TEXT_ONLY,
-		icon: { },
-		iconSize: SMALL,
-		locale: Locale.getDefault()
+		width: -1.0d
 		new TestFrameUtil(title, container).withFixture({FrameFixture fixture ->
 			fixture.label preferenceField requireEnabled()
 			fixture.panel containerName requireEnabled()
@@ -132,14 +110,7 @@ class ContainerFieldTest extends FieldTestUtils {
 		assertField field,
 		name: containerName,
 		title: preferenceField,
-		showTitle: true,
-		toolTip: null,
-		readOnly: false,
-		width: -2.0d,
-		titlePosition: TEXT_ONLY,
-		icon: { },
-		iconSize: SMALL,
-		locale: Locale.getDefault()
+		width: -2.0d
 		new TestFrameUtil(title, container).withFixture({FrameFixture fixture ->
 			fixture.label preferenceField requireEnabled()
 			fixture.panel containerName requireEnabled()

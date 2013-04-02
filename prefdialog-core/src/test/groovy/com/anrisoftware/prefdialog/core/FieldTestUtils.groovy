@@ -18,6 +18,9 @@
  */
 package com.anrisoftware.prefdialog.core
 
+import static com.anrisoftware.prefdialog.annotations.TextPosition.*
+import static com.anrisoftware.resources.images.api.IconSize.*
+
 import javax.swing.BorderFactory
 import javax.swing.JLabel
 import javax.swing.JPanel
@@ -72,16 +75,27 @@ class FieldTestUtils {
 	}
 
 	static assertField(Map attributes, FieldComponent field) {
-		assert field.name == attributes.name
-		assert field.title == attributes.title
-		assert field.showTitle == attributes.showTitle
-		assert field.toolTipText == attributes.toolTip
-		assert field.titlePosition == attributes.titlePosition
-		assert field.enabled == !attributes.readOnly
-		assert field.width == attributes.width
-		attributes.icon(field.icon)
-		assert field.iconSize == attributes.iconSize
-		assert field.locale == attributes.locale
+		Map map = [
+			showTitle: true,
+			toolTip: null,
+			titlePosition: TEXT_ONLY,
+			readOnly: false,
+			width: -1.0d,
+			icon: { },
+			iconSize: SMALL,
+			locale: Locale.getDefault()
+		]
+		map.putAll attributes
+		assert field.name == map.name
+		assert field.title == map.title
+		assert field.showTitle == map.showTitle
+		assert field.toolTipText == map.toolTip
+		assert field.titlePosition == map.titlePosition
+		assert field.enabled == !map.readOnly
+		assert field.width == map.width
+		map.icon(field.icon)
+		assert field.iconSize == map.iconSize
+		assert field.locale == map.locale
 	}
 
 	static JLabel createLabel() {

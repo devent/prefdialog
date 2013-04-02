@@ -55,15 +55,7 @@ class FieldComponentTest {
 
 		assertField field,
 		name: preferenceField,
-		title: preferenceField,
-		showTitle: true,
-		toolTip: null,
-		readOnly: false,
-		width: -1d,
-		titlePosition: TEXT_ONLY,
-		icon: { },
-		iconSize: SMALL,
-		locale: Locale.getDefault()
+		title: preferenceField
 		new TestFrameUtil(title, component).withFixture({FrameFixture fixture ->
 			fixture.label preferenceField requireEnabled()
 			assert fixture.label(preferenceField).target.getName() == preferenceField
@@ -77,15 +69,7 @@ class FieldComponentTest {
 		def field = factory.create(component, preferences, preferenceField)
 		assertField field,
 		name: preferenceField,
-		title: "Test Field",
-		showTitle: true,
-		toolTip: null,
-		readOnly: false,
-		width: -1d,
-		titlePosition: TEXT_ONLY,
-		icon: { },
-		iconSize: SMALL,
-		locale: Locale.getDefault()
+		title: "Test Field"
 		new TestFrameUtil(title, component).withFixture({FrameFixture fixture ->
 			fixture.label preferenceField requireEnabled()
 			assert fixture.label(preferenceField).target.getName() == preferenceField
@@ -101,15 +85,7 @@ class FieldComponentTest {
 
 		assertField field,
 		name: preferenceField,
-		title: "Test Field Eng",
-		showTitle: true,
-		toolTip: null,
-		readOnly: false,
-		width: -1d,
-		titlePosition: TEXT_ONLY,
-		icon: { },
-		iconSize: SMALL,
-		locale: Locale.getDefault()
+		title: "Test Field Eng"
 		new TestFrameUtil(title, component).withFixture({FrameFixture fixture ->
 			fixture.label preferenceField requireEnabled()
 			assert fixture.label(preferenceField).target.getName() == preferenceField
@@ -125,15 +101,7 @@ class FieldComponentTest {
 
 		assertField field,
 		name: preferenceField,
-		title: "Test Field Eng",
-		showTitle: true,
-		toolTip: null,
-		readOnly: false,
-		width: -1d,
-		titlePosition: TEXT_ONLY,
-		icon: { },
-		iconSize: SMALL,
-		locale: Locale.getDefault()
+		title: "Test Field Eng"
 		new TestFrameUtil(title, component).withFixture({FrameFixture fixture ->
 			fixture.label preferenceField requireEnabled()
 			assert fixture.label(preferenceField).target.getName() == preferenceField
@@ -153,13 +121,6 @@ class FieldComponentTest {
 		assertField field,
 		name: preferenceField,
 		title: "Test Field Deu",
-		showTitle: true,
-		toolTip: null,
-		readOnly: false,
-		width: -1d,
-		titlePosition: TEXT_ONLY,
-		icon: { },
-		iconSize: SMALL,
 		locale: Locale.GERMAN
 		new TestFrameUtil(title, component).withFixture({FrameFixture fixture ->
 			fixture.label preferenceField requireEnabled()
@@ -176,15 +137,7 @@ class FieldComponentTest {
 		shouldFailWith(MissingResourceException) { field.setTexts(texts) }
 		assertField field,
 		name: preferenceField,
-		title: "missing_test_field",
-		showTitle: true,
-		toolTip: null,
-		readOnly: false,
-		width: -1d,
-		titlePosition: TEXT_ONLY,
-		icon: { },
-		iconSize: SMALL,
-		locale: Locale.getDefault()
+		title: "missing_test_field"
 	}
 
 	@Test
@@ -196,14 +149,7 @@ class FieldComponentTest {
 		assertField field,
 		name: preferenceField,
 		title: preferenceField,
-		showTitle: true,
-		toolTip: null,
-		readOnly: true,
-		width: -1d,
-		titlePosition: TEXT_ONLY,
-		icon: { },
-		iconSize: SMALL,
-		locale: Locale.getDefault()
+		readOnly: true
 		new TestFrameUtil(title, component).withFixture({FrameFixture fixture ->
 			fixture.label preferenceField requireDisabled()
 			assert fixture.label(preferenceField).target.getName() == preferenceField
@@ -219,14 +165,7 @@ class FieldComponentTest {
 		assertField field,
 		name: preferenceField,
 		title: preferenceField,
-		showTitle: true,
-		toolTip: "Tool Tip",
-		readOnly: false,
-		width: -1d,
-		titlePosition: TEXT_ONLY,
-		icon: { },
-		iconSize: SMALL,
-		locale: Locale.getDefault()
+		toolTip: "Tool Tip"
 		new TestFrameUtil(title, component).withFixture({FrameFixture fixture ->
 			fixture.label preferenceField requireEnabled()
 			fixture.label preferenceField requireToolTip("Tool Tip")
@@ -244,14 +183,7 @@ class FieldComponentTest {
 		assertField field,
 		name: preferenceField,
 		title: "Test Field Eng",
-		showTitle: true,
-		toolTip: "Tool Tip Eng",
-		readOnly: false,
-		width: -1d,
-		titlePosition: TEXT_ONLY,
-		icon: { },
-		iconSize: SMALL,
-		locale: Locale.getDefault()
+		toolTip: "Tool Tip Eng"
 		new TestFrameUtil(title, component).withFixture({FrameFixture fixture ->
 			fixture.label preferenceField requireEnabled()
 			fixture.label preferenceField requireToolTip("Tool Tip Eng")
@@ -269,14 +201,7 @@ class FieldComponentTest {
 		assertField field,
 		name: preferenceField,
 		title: "Test Field Eng",
-		showTitle: true,
-		toolTip: "Tool Tip Eng",
-		readOnly: false,
-		width: -1d,
-		titlePosition: TEXT_ONLY,
-		icon: { },
-		iconSize: SMALL,
-		locale: Locale.getDefault()
+		toolTip: "Tool Tip Eng"
 		new TestFrameUtil(title, component).withFixture({FrameFixture fixture ->
 			fixture.label preferenceField requireEnabled()
 			fixture.label preferenceField requireToolTip("Tool Tip Eng")
@@ -297,14 +222,8 @@ class FieldComponentTest {
 		assertField field,
 		name: preferenceField,
 		title: preferenceField,
-		showTitle: true,
-		toolTip: null,
-		readOnly: false,
-		width: -1d,
-		titlePosition: TEXT_ONLY,
 		icon: { Icon icon -> assert icon.iconWidth == 16 },
-		iconSize: SMALL,
-		locale: Locale.getDefault()
+		iconSize: SMALL
 		new TestFrameUtil(title, component).withFixture({FrameFixture fixture ->
 			component.icon = field.icon
 			fixture.label preferenceField requireEnabled()
@@ -322,14 +241,8 @@ class FieldComponentTest {
 		assertField field,
 		name: preferenceField,
 		title: preferenceField,
-		showTitle: true,
-		toolTip: null,
-		readOnly: false,
-		width: -1d,
-		titlePosition: TEXT_ONLY,
 		icon: { Icon icon -> assert icon.iconWidth == 16 },
-		iconSize: SMALL,
-		locale: Locale.getDefault()
+		iconSize: SMALL
 
 		new TestFrameUtil(title, component).withFixture({FrameFixture fixture ->
 			component.icon = field.icon
@@ -365,14 +278,8 @@ class FieldComponentTest {
 		assertField field,
 		name: preferenceField,
 		title: preferenceField,
-		showTitle: true,
-		toolTip: null,
-		readOnly: false,
-		width: -1d,
-		titlePosition: TEXT_ONLY,
 		icon: { Icon icon -> assert icon.iconWidth == 16 },
-		iconSize: SMALL,
-		locale: Locale.getDefault()
+		iconSize: SMALL
 
 		new TestFrameUtil(title, component).withFixture({FrameFixture fixture ->
 			component.icon = field.icon
