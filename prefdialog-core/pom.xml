@@ -10,9 +10,10 @@
 	</parent>
 
 	<artifactId>prefdialog-core</artifactId>
-	<version>3.0-SNAPSHOT</version>
 	<name>Preferences Dialog :: Core</name>
 	<description>Abstract implementations of fields.</description>
+	<url>https://www.anr-institute.com/projects/projects/prefdialog-core</url>
+	<inceptionYear>2012</inceptionYear>
 
 	<issueManagement>
 		<system>Redmine</system>
@@ -25,6 +26,13 @@
 		<dependency>
 			<groupId>com.anrisoftware.globalpom</groupId>
 			<artifactId>globalpom-groovytestutils</artifactId>
+		</dependency>
+
+		<!-- own modules dependencies -->
+		<dependency>
+			<groupId>com.anrisoftware.prefdialog</groupId>
+			<artifactId>prefdialog-api</artifactId>
+			<version>3.0-SNAPSHOT</version>
 		</dependency>
 
 		<!-- compile dependencies -->
@@ -46,10 +54,6 @@
 		</dependency>
 		<dependency>
 			<groupId>com.anrisoftware.resources</groupId>
-			<artifactId>resources-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.anrisoftware.resources</groupId>
 			<artifactId>resources-images</artifactId>
 		</dependency>
 		<dependency>
@@ -57,20 +61,8 @@
 			<artifactId>resources-texts</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.anrisoftware.resources</groupId>
-			<artifactId>resources-binary</artifactId>
-		</dependency>
-
-		<!-- prefdialog modules -->
-		<dependency>
-			<groupId>com.anrisoftware.prefdialog</groupId>
-			<artifactId>prefdialog-reflection</artifactId>
-			<version>2.2-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>com.anrisoftware.prefdialog</groupId>
-			<artifactId>prefdialog-api</artifactId>
-			<version>3.0-SNAPSHOT</version>
+			<groupId>com.anrisoftware.globalpom</groupId>
+			<artifactId>globalpom-utils</artifactId>
 		</dependency>
 	</dependencies>
 </project>

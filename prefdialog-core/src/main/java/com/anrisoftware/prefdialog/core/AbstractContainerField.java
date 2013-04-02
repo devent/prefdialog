@@ -25,7 +25,6 @@ import info.clearthought.layout.TableLayoutConstants;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.LayoutManager;
-import java.lang.reflect.Field;
 
 /**
  * Put the field in a container. The container will use a {@link TableLayout} to
@@ -34,6 +33,17 @@ import java.lang.reflect.Field;
  * If set a different {@link LayoutManager} then a {@link TableLayout} with
  * {@link #setLayout(LayoutManager)} then the method {@link #setWidth(Number)}
  * must be adapted to this layout.
+ * <p>
+ * Example:
+ * 
+ * <pre>
+ * class TextField extends AbstractContainerField&lt;JTextField, JPanel&gt; {
+ * 
+ * 	public TextField(JPanel panel, Object parentObject, Field field) {
+ * 		super(new JTextField(), panel, parentObject, field);
+ * 	}
+ * }
+ * </pre>
  * 
  * @param <ComponentType>
  *            the type of the component that is added to this container. Must be
@@ -46,12 +56,14 @@ import java.lang.reflect.Field;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
  */
+@SuppressWarnings("serial")
 public abstract class AbstractContainerField<ComponentType extends Component, ContainerType extends Container>
 		extends AbstractFieldComponent<ContainerType> {
 
 	/**
-	 * The postfix of the container name. The {@link #setName(String)} method
-	 * sets the name of this container to "name-container".
+	 * The post-fix of the container name. The name of the container will be set
+	 * to <code>&lt;name&gt;-{@value #CONTAINER_NAME}</code>, with &lt;name&gt;
+	 * being the name of the component.
 	 */
 	public static final String CONTAINER_NAME = "container";
 
@@ -62,21 +74,15 @@ public abstract class AbstractContainerField<ComponentType extends Component, Co
 	/**
 	 * Sets the component and the container of this field.
 	 * 
-	 * @param component
-	 *            the {@link ComponentType} of this field.
-	 * 
 	 * @param container
-	 *            the {@link ContainerType} of this field.
+	 *            the {@link Container} of this field.
 	 * 
-	 * @param parentObject
-	 *            the parent object of this field.
-	 * 
-	 * @param field
-	 *            the {@link Field}.
+	 * @see AbstractFieldComponent#AbstractFieldComponent(Component, Object,
+	 *      String)
 	 */
 	protected AbstractContainerField(ComponentType component,
-			ContainerType container, Object parentObject, Field field) {
-		super(container, parentObject, field);
+			ContainerType container, Object parentObject, String fieldName) {
+		super(container, parentObject, fieldName);
 		this.component = component;
 		this.layout = createLayout();
 		setup();
@@ -99,20 +105,20 @@ public abstract class AbstractContainerField<ComponentType extends Component, Co
 	}
 
 	/**
-	 * Returns the container to be added in the container of the preferences.
+	 * Returns the container.
 	 * 
-	 * @return the {@link ContainerType} container.
+	 * @return the {@link Container} container.
 	 */
 	public ContainerType getContainer() {
-		return getAWTComponent();
+		return getComponent();
 	}
 
 	/**
 	 * Returns the component in this container.
 	 * 
-	 * @return the {@link ComponentType}.
+	 * @return the {@link Component}.
 	 */
-	public ComponentType getComponent() {
+	public ComponentType getContainerComponent() {
 		return component;
 	}
 
@@ -126,6 +132,7 @@ public abstract class AbstractContainerField<ComponentType extends Component, Co
 		this.layout = layout;
 		Container container = getContainer();
 		container.setLayout(layout);
+		container.repaint();
 	}
 
 	/**
@@ -151,15 +158,20 @@ public abstract class AbstractContainerField<ComponentType extends Component, Co
 	 */
 	@Override
 	public void setWidth(Number width) {
-		Container container = getContainer();
-		TableLayout tableLayout = (TableLayout) layout;
-		tableLayout.setColumn(0, width.doubleValue());
-		tableLayout.layoutContainer(container);
-		container.repaint();
+		super.setWidth(width);
+		if (layout instanceof TableLayout) {
+			Container container = getContainer();
+			TableLayout tableLayout = (TableLayout) layout;
+			tableLayout.setColumn(0, width.doubleValue());
+			tableLayout.layoutContainer(container);
+			container.repaint();
+		}
 	}
 
 	/**
-	 * Sets the name of this container to "name-{@value #CONTAINER_NAME}".
+	 * Sets the name of this container to
+	 * <code>&lt;name&gt;-{@value #CONTAINER_NAME}</code>, with &lt;name&gt;
+	 * being the name of the component.
 	 */
 	@Override
 	public void setName(String name) {

@@ -51,7 +51,7 @@ public @interface FieldComponent {
 
 	/**
 	 * The title of the field. The title is shown above of the group and should
-	 * contain a description.
+	 * contain a description. Defaults to empty string.
 	 * <p>
 	 * The title can also be a resource name that is queried in the supplied
 	 * texts resource.
@@ -67,18 +67,13 @@ public @interface FieldComponent {
 	boolean showTitle() default true;
 
 	/**
-	 * The tool-tip text for the field.
+	 * The tool-tip text for the field. Set to empty string to disable the
+	 * tool-tip. Defaults to empty string.
 	 * <p>
 	 * The tool-tip can also be a resource name that is queried in the supplied
 	 * texts resource.
 	 */
 	String toolTip() default "";
-
-	/**
-	 * If the tool-tip of the field should be shown or not. Defaults to
-	 * {@code true} which means the tool-tip should be shown.
-	 */
-	boolean showToolTip() default true;
 
 	/**
 	 * If this field should be read-only. If read-only is set then the user can
@@ -102,18 +97,13 @@ public @interface FieldComponent {
 	TextPosition titlePosition() default TextPosition.TEXT_ONLY;
 
 	/**
-	 * The resource name of the icon or empty if no icon should be set. The
-	 * resource name is queried in the supplied images resource.
+	 * The resource name of the icon or empty string if no icon should be set.
+	 * The resource name is queried in the supplied images resource. Default to
+	 * empty string.
 	 * 
 	 * @see Images
 	 */
 	String icon() default "";
-
-	/**
-	 * If the icon of the field should be shown or not. Defaults to
-	 * {@code false} which means the icon should not be shown.
-	 */
-	boolean showIcon() default false;
 
 	/**
 	 * The size of the icon. Defaults to {@link IconSize#SMALL}.

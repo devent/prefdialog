@@ -18,13 +18,10 @@
  */
 package com.anrisoftware.prefdialog.core
 
-import org.junit.Before
-
-import com.anrisoftware.globalpom.utils.TestFrameUtil
-import com.anrisoftware.prefdialog.reflection.annotations.AnnotationsModule
-import com.anrisoftware.prefdialog.reflection.beans.BeansModule
-import com.anrisoftware.resources.binary.binaries.BinariesResourcesModule
-import com.anrisoftware.resources.binary.maps.BinariesDefaultMapsModule
+import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule
+import com.anrisoftware.globalpom.reflection.beans.BeansModule
+import com.anrisoftware.globalpom.utils.TestUtils
+import com.anrisoftware.prefdialog.fields.FieldComponent
 import com.anrisoftware.resources.images.api.Images
 import com.anrisoftware.resources.images.api.ImagesFactory
 import com.anrisoftware.resources.images.images.ImagesResourcesModule
@@ -32,9 +29,7 @@ import com.anrisoftware.resources.images.maps.ResourcesImagesMapsModule
 import com.anrisoftware.resources.images.scaling.ResourcesSmoothScalingModule
 import com.anrisoftware.resources.texts.api.Texts
 import com.anrisoftware.resources.texts.api.TextsFactory
-import com.anrisoftware.resources.texts.maps.TextsDefaultMapsModule
-import com.anrisoftware.resources.texts.texts.TextsResourcesCharsetModule
-import com.anrisoftware.resources.texts.texts.TextsResourcesModule
+import com.anrisoftware.resources.texts.defaults.TextsResourcesDefaultModule
 import com.google.inject.Guice
 import com.google.inject.Injector
 
@@ -45,48 +40,42 @@ import com.google.inject.Injector
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
  */
-class FieldTestUtils extends TestFrameUtil {
+class FieldTestUtils {
 
-	Injector injector
-
-	MockFieldComponentFactory fieldComponentFactory
-
-	MockContainerFieldFactory containerFieldFactory
-
-	MockTitleFieldFactory titleFieldFactory
-
-	Preferences preferences
-
-	@Before
-	void beforeTest() {
-		injector = createInjector()
-		fieldComponentFactory = injector.getInstance MockFieldComponentFactory
-		containerFieldFactory = injector.getInstance MockContainerFieldFactory
-		titleFieldFactory = injector.getInstance MockTitleFieldFactory
-		preferences = new Preferences()
+	static {
+		TestUtils.toStringStyle
 	}
 
-	Injector createInjector() {
+	static Injector createInjector() {
 		Guice.createInjector new MockModule(), new AnnotationsModule(), new BeansModule()
 	}
 
-	Texts createTextsResource() {
+	static Texts createTextsResource(Injector injector) {
 		Injector childInjector = injector.createChildInjector(
-						new TextsResourcesModule(),
-						new TextsDefaultMapsModule(),
-						new TextsResourcesCharsetModule(),
-						new BinariesResourcesModule(),
-						new BinariesDefaultMapsModule())
+				new TextsResourcesDefaultModule())
 		TextsFactory factory = childInjector.getInstance TextsFactory
 		factory.create "Texts"
 	}
 
-	Images createImagesResource() {
+	static Images createImagesResource(Injector injector) {
 		Injector childInjector = injector.createChildInjector(
-						new ImagesResourcesModule(),
-						new ResourcesImagesMapsModule(),
-						new ResourcesSmoothScalingModule())
+				new ImagesResourcesModule(),
+				new ResourcesImagesMapsModule(),
+				new ResourcesSmoothScalingModule())
 		ImagesFactory factory = childInjector.getInstance ImagesFactory
 		factory.create "Icons"
+	}
+
+	static assertField(Map attributes, FieldComponent field) {
+		assert field.name == attributes.name
+		assert field.title == attributes.title
+		assert field.showTitle == attributes.showTitle
+		assert field.toolTipText == attributes.toolTip
+		assert field.titlePosition == attributes.titlePosition
+		assert field.enabled == !attributes.readOnly
+		assert field.width == attributes.width
+		assert field.icon == attributes.icon
+		assert field.iconSize == attributes.iconSize
+		assert field.locale == attributes.locale
 	}
 }

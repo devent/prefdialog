@@ -21,6 +21,7 @@ package com.anrisoftware.prefdialog.core;
 import static java.lang.String.format;
 import static org.apache.commons.lang3.Validate.notNull;
 
+import java.beans.PropertyVetoException;
 import java.util.Locale;
 
 import javax.swing.Icon;
@@ -48,31 +49,35 @@ class AbstractFieldComponentLogger extends AbstractLogger {
 	}
 
 	void nameSet(AbstractFieldComponent<?> field, String name) {
-		log.trace("Set name to ``{}'' for field {}.", name, field);
+		log.debug("Set name to ``{}'' for field {}.", name, field);
 	}
 
 	void titleSet(AbstractFieldComponent<?> field, String title) {
-		log.trace("Set title to ``{}'' for field {}.", title, field);
+		log.debug("Set title to ``{}'' for field {}.", title, field);
 	}
 
 	void showTitleSet(AbstractFieldComponent<?> field, boolean show) {
-		log.trace("Set show title to {} for field {}.", show, field);
+		log.debug("Set show title to {} for field {}.", show, field);
 	}
 
 	void valueSet(AbstractFieldComponent<?> field, Object value) {
-		log.trace("Set value to {} for field {}.", value, field);
+		log.debug("Set value to {} for field {}.", value, field);
 	}
 
 	void enabledSet(AbstractFieldComponent<?> field, boolean enabled) {
-		log.trace("Set enabled to {} for field {}.", enabled, field);
+		log.debug("Set enabled to {} for field {}.", enabled, field);
 	}
 
 	void widthSet(AbstractFieldComponent<?> field, Number width) {
-		log.trace("Set width to {} for field {}.", width, field);
+		log.debug("Set width to {} for field {}.", width, field);
+	}
+
+	void showToolTipSet(AbstractFieldComponent<?> field, boolean show) {
+		log.debug("Set show tool-tip to {} for {}.", show, field);
 	}
 
 	void inputIsValid(AbstractFieldComponent<?> field, boolean valid) {
-		log.trace("Input is valid {} for field {}.", valid, field);
+		log.debug("Input is valid {} for field {}.", valid, field);
 	}
 
 	NullPointerException noChildFieldFound(AbstractFieldComponent<?> field,
@@ -94,10 +99,6 @@ class AbstractFieldComponentLogger extends AbstractLogger {
 
 	void checkWidth(AbstractFieldComponent<?> field, Number width) {
 		notNull(width, "The width of the field %s cannot be null.", field);
-	}
-
-	void checkValue(AbstractFieldComponent<?> field, Object value) {
-		notNull(value, "The value of the field %s cannot be null.", field);
 	}
 
 	void titleResourceMissing(AbstractFieldComponent<?> field, String title) {
@@ -127,26 +128,33 @@ class AbstractFieldComponentLogger extends AbstractLogger {
 	}
 
 	void localeSet(AbstractFieldComponent<?> field, Locale locale) {
-		log.trace("Set locale to {} for field {}.", locale, field);
+		log.debug("Set locale to {} for field {}.", locale, field);
 	}
 
 	void titlePositionSet(AbstractFieldComponent<?> field, TextPosition position) {
-		log.trace("Set title position to {} for field {}.", position, field);
+		log.debug("Set title position to {} for field {}.", position, field);
 	}
 
 	void iconSizeSet(AbstractFieldComponent<?> field, IconSize size) {
-		log.trace("Set icon size to {} for field {}.", size, field);
+		log.debug("Set icon size to {} for field {}.", size, field);
 	}
 
 	void iconResourceSet(AbstractFieldComponent<?> field, String name) {
-		log.trace("Set icon resource to ``{}'' for field {}.", name, field);
+		log.debug("Set icon resource to ``{}'' for field {}.", name, field);
 	}
 
 	void iconSet(AbstractFieldComponent<?> field, Icon icon) {
-		log.trace("Set icon {} for field {}.", icon, field);
+		log.debug("Set icon {} for field {}.", icon, field);
 	}
 
 	void applyInputs(AbstractFieldComponent<?> field) {
-		log.trace("Apply input for field {}.", field);
+		log.debug("Apply input for field {}.", field);
+	}
+
+	IllegalArgumentException errorSetupValue(AbstractFieldComponent<?> field,
+			PropertyVetoException e, Object value) {
+		return logException(
+				new IllegalArgumentException("Error setup value", e),
+				"Error setup value '%s' for %s.", value, field);
 	}
 }

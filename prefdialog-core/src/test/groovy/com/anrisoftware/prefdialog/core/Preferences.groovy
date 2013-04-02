@@ -29,35 +29,35 @@ import com.anrisoftware.prefdialog.annotations.TextField
  */
 class Preferences {
 
-	public static final preferencesTextField = Preferences.class.getDeclaredField("textField")
+	public static final preferencesTextField = "textField"
 
-	public static final preferencesTextFieldWithTitleDisabled = Preferences.class.getDeclaredField("textFieldWithTitleDisabled")
+	public static final preferencesTextFieldWithTitleDisabled = "textFieldWithTitleDisabled"
 
-	public static final preferencesTextFieldWithTitle = Preferences.class.getDeclaredField("textFieldWithTitle")
+	public static final preferencesTextFieldWithTitle = "textFieldWithTitle"
 
-	public static final preferencesTextFieldWithTitleResource = Preferences.class.getDeclaredField("textFieldWithTitleResource")
+	public static final preferencesTextFieldWithTitleResource = "textFieldWithTitleResource"
 
-	public static final preferencesTextFieldWithTitleResourceDe = Preferences.class.getDeclaredField("textFieldWithTitleResourceDe")
+	public static final preferencesTextFieldWithTitleResourceDe = "textFieldWithTitleResourceDe"
 
-	public static final preferencesTextFieldWithTitleMissingResource = Preferences.class.getDeclaredField("textFieldWithTitleMissingResource")
+	public static final preferencesTextFieldWithTitleMissingResource = "textFieldWithTitleMissingResource"
 
-	public static final preferencesTextFieldReadOnly = Preferences.class.getDeclaredField("textFieldReadOnly")
+	public static final preferencesTextFieldReadOnly = "textFieldReadOnly"
 
-	public static final preferencesTextFieldWithToolTip = Preferences.class.getDeclaredField("textFieldWithToolTip")
+	public static final preferencesTextFieldWithToolTip = "textFieldWithToolTip"
 
-	public static final preferencesTextFieldWithToolTipResource = Preferences.class.getDeclaredField("textFieldWithToolTipResource")
+	public static final preferencesTextFieldWithToolTipResource = "textFieldWithToolTipResource"
 
-	public static final preferencesTextFieldWithIconResource = Preferences.class.getDeclaredField("textFieldWithIconResource")
+	public static final preferencesTextFieldWithIconResource = "textFieldWithIconResource"
 
-	public static final preferencesTextFieldFixedWidth = Preferences.class.getDeclaredField("textFieldFixedWidth")
+	public static final preferencesTextFieldFixedWidth = "textFieldFixedWidth"
 
-	public static final preferencesTextFieldFillWidth = Preferences.class.getDeclaredField("textFieldFillWidth")
+	public static final preferencesTextFieldFillWidth = "textFieldFillWidth"
 
-	public static final preferencesTextFieldPreferredWidth = Preferences.class.getDeclaredField("textFieldPreferredWidth")
+	public static final preferencesTextFieldPreferredWidth = "textFieldPreferredWidth"
 
 	@FieldComponent
 	@TextField
-	String textField
+	public String textField
 
 	@FieldComponent(showTitle = false)
 	@TextField

@@ -18,8 +18,6 @@
  */
 package com.anrisoftware.prefdialog.core
 
-import java.lang.reflect.Field
-
 import javax.inject.Inject
 import javax.swing.JComponent
 
@@ -33,12 +31,15 @@ import com.google.inject.assistedinject.Assisted
  */
 class MockFieldComponent extends AbstractFieldComponent<JComponent> {
 
+	/**
+	 * @see AbstractFieldComponent#AbstractFieldComponent(java.awt.Component, Object, String)
+	 */
 	@Inject
 	MockFieldComponent(
 	@Assisted JComponent component,
 	@Assisted Object parentObject,
-	@Assisted Field field) {
-		super(component, parentObject, field)
+	@Assisted String fieldName) {
+		super(component, parentObject, fieldName)
 	}
 }
 

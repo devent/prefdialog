@@ -18,8 +18,6 @@
  */
 package com.anrisoftware.prefdialog.core
 
-import java.lang.reflect.Field
-
 import javax.swing.JComponent
 
 /**
@@ -31,7 +29,11 @@ import javax.swing.JComponent
  */
 interface MockFieldComponentFactory {
 
-	MockFieldComponent create(
-	JComponent component, Object parentObject, Field field)
+	/**
+	 * @see AbstractFieldComponent#AbstractFieldComponent(java.awt.Component, Object, String)
+	 * 
+	 * @return the {@link MockFieldComponent}
+	 */
+	MockFieldComponent create(JComponent component, Object parentObject, String fieldName)
 }
 

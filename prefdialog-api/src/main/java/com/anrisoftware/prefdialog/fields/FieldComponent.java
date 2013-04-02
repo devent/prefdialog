@@ -43,45 +43,16 @@ import com.anrisoftware.resources.texts.api.Texts;
 public interface FieldComponent<ComponentType extends Component> {
 
 	/**
-	 * Sets the texts resource.
-	 * 
-	 * @param texts
-	 *            the {@link Texts} resource.
-	 */
-	void setTexts(Texts texts);
-
-	/**
-	 * Returns the texts resource.
-	 * 
-	 * @return the {@link Texts} resource.
-	 */
-	Texts getTexts();
-
-	/**
-	 * Sets the images resource.
-	 * 
-	 * @param images
-	 *            the {@link Images} resources.
-	 * 
-	 * @throws ResourcesException
-	 *             if the icon resource is not available.
-	 * 
-	 * @throws MissingResourceException
-	 *             if the icon resource could not be found.
-	 */
-	void setImages(Images images);
-
-	/**
 	 * Sets the name the field. The name should be a unique ID of the field
 	 * inside the container.
 	 * 
-	 * @param newName
+	 * @param name
 	 *            the name.
 	 * 
 	 * @throws NullPointerException
 	 *             if the new name is {@code null}.
 	 */
-	void setName(String newName);
+	void setName(String name);
 
 	/**
 	 * Returns the name the field.
@@ -91,8 +62,8 @@ public interface FieldComponent<ComponentType extends Component> {
 	String getName();
 
 	/**
-	 * Sets the title of the field. The title is visible to the user and do not
-	 * have to be unique.
+	 * Sets the title of the field. The title can also be a resource name that
+	 * is queried in the supplied texts resource.
 	 * 
 	 * @param title
 	 *            the title.
@@ -102,7 +73,7 @@ public interface FieldComponent<ComponentType extends Component> {
 	/**
 	 * Returns the title of the field.
 	 * 
-	 * @return the title of the field or {@code null} for no title.
+	 * @return the title of the field or {@code null} for no title was set.
 	 */
 	String getTitle();
 
@@ -124,25 +95,44 @@ public interface FieldComponent<ComponentType extends Component> {
 	boolean isShowTitle();
 
 	/**
-	 * Sets the value of the field.
+	 * Set the text of the tool-tip for the component. The tool-tip can also be
+	 * a resource name that is queried in the supplied texts resource.
 	 * 
-	 * @param value
-	 *            the value {@link Object}.
-	 * 
-	 * @throws NullPointerException
-	 *             if the new value is {@code null}.
-	 * 
-	 * @throws PropertyVetoException
-	 *             if the user input is not valid.
+	 * @param text
+	 *            the text, empty string or {@code null} if the tool-tip should
+	 *            be disabled.
 	 */
-	void setValue(Object value) throws PropertyVetoException;
+	void setToolTipText(String text);
 
 	/**
-	 * Returns the value of the field.
+	 * Returns the text of the tool-tip for the component.
 	 * 
-	 * @return the value {@link Object}.
+	 * @return the tool-tip text or {@code null} if no tool-tip text was set.
 	 */
-	Object getValue();
+	String getToolTipText();
+
+	/**
+	 * Show or hide the tool-tip for the component.
+	 * 
+	 * @param {@code true} to show the tool-tip, {@code false} to hide the
+	 *        tool-tip.
+	 */
+	void setShowToolTip(boolean show);
+
+	/**
+	 * Sets the position of the title text and icon.
+	 * 
+	 * @param position
+	 *            the {@link TextPosition}.
+	 */
+	void setTitlePosition(TextPosition position);
+
+	/**
+	 * Returns the position of the title text and icon.
+	 * 
+	 * @return the {@link TextPosition}.
+	 */
+	TextPosition getTitlePosition();
 
 	/**
 	 * Sets if the field is enabled or not. Read-only fields should be disabled
@@ -181,76 +171,6 @@ public interface FieldComponent<ComponentType extends Component> {
 	Number getWidth();
 
 	/**
-	 * Set the text of the tool-tip for the component.
-	 * 
-	 * @param text
-	 *            the text or {@code null} if the tool-tip should be disabled.
-	 */
-	void setToolTipText(String text);
-
-	/**
-	 * Show or hide the tool-tip for the component.
-	 * 
-	 * @param {@code true} to show the tool-tip, {@code false} to hide the
-	 *        tool-tip.
-	 */
-	void setShowToolTip(boolean show);
-
-	/**
-	 * Sets the locale of the field.
-	 * <p>
-	 * If a texts resource is set then the title, tool-tip text and icon are
-	 * retrieved with the new locale.
-	 * 
-	 * @param locale
-	 *            the {@link Locale}.
-	 */
-	void setLocale(Locale locale);
-
-	/**
-	 * Returns the locale of the field.
-	 * 
-	 * @return the {@link Locale}.
-	 */
-	Locale getLocale();
-
-	/**
-	 * Sets the position of the title text and icon.
-	 * 
-	 * @param position
-	 *            the {@link TextPosition}.
-	 */
-	void setTitlePosition(TextPosition position);
-
-	/**
-	 * Returns the position of the title text and icon.
-	 * 
-	 * @return the {@link TextPosition}.
-	 */
-	TextPosition getTextPosition();
-
-	/**
-	 * Sets the size of the icon.
-	 * 
-	 * @param size
-	 *            the {@link IconSize}.
-	 * 
-	 * @throws ResourcesException
-	 *             if the icon resource is not available.
-	 * 
-	 * @throws MissingResourceException
-	 *             if the icon resource could not be found.
-	 */
-	void setIconSize(IconSize size);
-
-	/**
-	 * Returns the size of the icon.
-	 * 
-	 * @return the {@link IconSize}.
-	 */
-	IconSize getIconSize();
-
-	/**
 	 * Sets the resource for the icon. The resource is loaded from the specified
 	 * images resources.
 	 * 
@@ -282,6 +202,102 @@ public interface FieldComponent<ComponentType extends Component> {
 	 * @return the {@link Icon}
 	 */
 	Icon getIcon();
+
+	/**
+	 * Sets the size of the icon.
+	 * 
+	 * @param size
+	 *            the {@link IconSize}.
+	 * 
+	 * @throws ResourcesException
+	 *             if the icon resource is not available.
+	 * 
+	 * @throws MissingResourceException
+	 *             if the icon resource could not be found.
+	 */
+	void setIconSize(IconSize size);
+
+	/**
+	 * Returns the size of the icon.
+	 * 
+	 * @return the {@link IconSize}.
+	 */
+	IconSize getIconSize();
+
+	/**
+	 * Sets the locale of the field.
+	 * <p>
+	 * If a texts resource is set then the title, tool-tip text and icon are
+	 * retrieved with the new locale.
+	 * 
+	 * @param locale
+	 *            the {@link Locale}.
+	 */
+	void setLocale(Locale locale);
+
+	/**
+	 * Returns the locale of the field.
+	 * 
+	 * @return the {@link Locale}.
+	 */
+	Locale getLocale();
+
+	/**
+	 * Sets the value of the field.
+	 * 
+	 * @param value
+	 *            the value {@link Object}.
+	 * 
+	 * @throws PropertyVetoException
+	 *             if the user input is not valid.
+	 */
+	void setValue(Object value) throws PropertyVetoException;
+
+	/**
+	 * Returns the value of the field.
+	 * 
+	 * @return the value {@link Object}.
+	 */
+	Object getValue();
+
+	/**
+	 * Sets the texts resource.
+	 * 
+	 * @param texts
+	 *            the {@link Texts} resource.
+	 * 
+	 * @throws MissingResourceException
+	 *             if the title or tool-tip resource could not be found.
+	 */
+	void setTexts(Texts texts);
+
+	/**
+	 * Returns the texts resource.
+	 * 
+	 * @return the {@link Texts} resource.
+	 */
+	Texts getTexts();
+
+	/**
+	 * Sets the images resource.
+	 * 
+	 * @param images
+	 *            the {@link Images} resources.
+	 * 
+	 * @throws ResourcesException
+	 *             if the icon resource is not available.
+	 * 
+	 * @throws MissingResourceException
+	 *             if the icon resource could not be found.
+	 */
+	void setImages(Images images);
+
+	/**
+	 * Returns the images resource.
+	 * 
+	 * @return the {@link Images} resource.
+	 */
+	Images getImages();
 
 	/**
 	 * Tests if the current input for the field is valid.

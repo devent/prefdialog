@@ -21,14 +21,13 @@ package com.anrisoftware.prefdialog.core;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyVetoException;
-import java.lang.reflect.Field;
+import java.io.Serializable;
+import java.lang.reflect.AccessibleObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.MissingResourceException;
 
 import javax.inject.Inject;
 import javax.swing.Icon;
@@ -36,20 +35,22 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.ToolTipManager;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccess;
+import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccessFactory;
+import com.anrisoftware.globalpom.reflection.beans.BeanAccess;
+import com.anrisoftware.globalpom.reflection.beans.BeanAccessFactory;
+import com.anrisoftware.globalpom.reflection.beans.BeanFactory;
 import com.anrisoftware.prefdialog.annotations.TextPosition;
 import com.anrisoftware.prefdialog.fields.FieldComponent;
-import com.anrisoftware.prefdialog.reflection.annotations.AnnotationAccess;
-import com.anrisoftware.prefdialog.reflection.beans.BeanAccess;
-import com.anrisoftware.prefdialog.reflection.beans.BeanFactory;
 import com.anrisoftware.resources.images.api.IconSize;
 import com.anrisoftware.resources.images.api.Images;
 import com.anrisoftware.resources.texts.api.Texts;
 
 /**
- * Sets the component and sets the component name, width, and if the component
- * is enabled or disabled. Sets the common fields for the field component:
+ * Sets the component and sets the enumerated attributes of the component.
  * <p>
  * For the tool-tip to be set the component of this field must be of class
  * {@link JComponent}.
@@ -57,14 +58,16 @@ import com.anrisoftware.resources.texts.api.Texts;
  * <ul>
  * <li>name</li>
  * <li>title</li>
- * <li>width</li>
- * <li>value</li>
- * <li>read-only flag</li>
+ * <li>show title flag</li>
  * <li>tool-tip</li>
+ * <li>read-only flag</li>
+ * <li>width</li>
  * <li>title position</li>
  * <li>icon</li>
+ * <li>show icon flag</li>
  * <li>icon size</li>
  * <li>locale</li>
+ * <li>value</li>
  * </ul>
  * 
  * @param <ComponentType>
@@ -74,8 +77,9 @@ import com.anrisoftware.resources.texts.api.Texts;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
  */
+@SuppressWarnings("serial")
 public abstract class AbstractFieldComponent<ComponentType extends Component>
-		implements FieldComponent<ComponentType> {
+		implements FieldComponent<ComponentType>, Serializable {
 
 	private static final Class<com.anrisoftware.prefdialog.annotations.FieldComponent> FIELD_COMPONENT_ANNOTATION_CLASS = com.anrisoftware.prefdialog.annotations.FieldComponent.class;
 
@@ -83,37 +87,55 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
 	private static final String SHOW_TITLE_ELEMENT = "showTitle";
 
-	private static final String WIDTH_ELEMENT = "width";
+	private static final String TOOLTIP_ELEMENT = "toolTip";
 
 	private static final String READ_ONLY_ELEMENT = "readOnly";
 
-	private static final String TOOL_TIP_ELEMENT = "toolTip";
-
-	private static final String LOCALE_ELEMENT = "locale";
+	private static final String WIDTH_ELEMENT = "width";
 
 	private static final String TITLE_POSITION_ELEMENT = "titlePosition";
 
-	private static final String ICON_SIZE_ELEMENT = "iconSize";
-
 	private static final String ICON_ELEMENT = "icon";
 
-	private final ComponentType component;
+	private static final String ICON_SIZE_ELEMENT = "iconSize";
+
+	private static final String LOCALE_ELEMENT = "locale";
+
+	private AbstractFieldComponentLogger log;
 
 	private final Object parentObject;
 
-	private final Field field;
+	private final String fieldName;
 
 	private final List<FieldComponent<?>> childFields;
 
-	private AbstractFieldComponentLogger log;
+	private final ComponentType component;
+
+	private String titleResource;
 
 	private String title;
 
 	private boolean showTitle;
 
-	private String titleResource;
-
 	private String toolTipResource;
+
+	private String toolTip;
+
+	private boolean showToolTip;
+
+	private boolean readOnly;
+
+	private Number width;
+
+	private TextPosition titlePosition;
+
+	private String iconResource;
+
+	private Icon icon;
+
+	private IconSize iconSize;
+
+	private Locale locale;
 
 	private AnnotationAccess annotationAccess;
 
@@ -123,156 +145,70 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
 	private Texts texts;
 
-	private String toolTip;
-
-	private TextPosition titlePosition;
-
-	private IconSize iconSize;
-
 	private Images images;
 
-	private Icon icon;
-
-	private String iconResource;
+	private Object value;
 
 	private Object oldValue;
+
+	private String name;
 
 	/**
 	 * Sets the component of this field.
 	 * 
 	 * @param component
-	 *            the {@link ComponentType} of this field.
+	 *            the {@link Component}.
 	 * 
 	 * @param parentObject
 	 *            the parent object of this field.
 	 * 
-	 * @param field
-	 *            the {@link Field}.
+	 * @param fieldName
+	 *            the name of the field in the parent object.
 	 */
 	protected AbstractFieldComponent(ComponentType component,
-			Object parentObject, Field field) {
+			Object parentObject, String fieldName) {
 		this.component = component;
 		this.parentObject = parentObject;
-		this.field = field;
+		this.fieldName = fieldName;
 		this.childFields = new ArrayList<FieldComponent<?>>();
 	}
 
-	@Override
-	public AbstractFieldComponent<ComponentType> createField() {
-		setupLocale();
-		setupName();
-		afterName();
-		setupTitle();
-		setupShowTitle();
-		setupValue();
-		setupWidth();
-		setupReadOnly();
-		setupToolTip();
-		setupTitlePosition();
-		setupIconSize();
-		setupIcon();
-		return this;
-	}
-
 	/**
-	 * Create the field after the name was set.
-	 */
-	protected void afterName() {
-	}
-
-	private void setupIcon() {
-		String icon = annotationAccess.getValue(
-				FIELD_COMPONENT_ANNOTATION_CLASS, field, ICON_ELEMENT);
-		setIcon(icon);
-	}
-
-	private void setupIconSize() {
-		IconSize size = annotationAccess.getValue(
-				FIELD_COMPONENT_ANNOTATION_CLASS, field, ICON_SIZE_ELEMENT);
-		setIconSize(size);
-	}
-
-	private void setupTitlePosition() {
-		TextPosition position = annotationAccess
-				.getValue(FIELD_COMPONENT_ANNOTATION_CLASS, field,
-						TITLE_POSITION_ELEMENT);
-		setTitlePosition(position);
-	}
-
-	private void setupLocale() {
-		String localeName = annotationAccess.getValue(
-				FIELD_COMPONENT_ANNOTATION_CLASS, field, LOCALE_ELEMENT);
-		Locale locale = isEmpty(localeName) ? Locale.getDefault() : new Locale(
-				localeName);
-		setLocale(locale);
-	}
-
-	private void setupName() {
-		String name = field.getName();
-		setName(name);
-	}
-
-	private void setupTitle() {
-		String title = annotationAccess.getValue(
-				FIELD_COMPONENT_ANNOTATION_CLASS, field, TITLE_ELEMENT);
-		title = isEmpty(title) ? field.getName() : title;
-		setTitle(title);
-	}
-
-	private void setupShowTitle() {
-		boolean show = annotationAccess.getValue(
-				FIELD_COMPONENT_ANNOTATION_CLASS, field, SHOW_TITLE_ELEMENT);
-		setShowTitle(show);
-	}
-
-	private void setupValue() {
-		Object value = beanAccess.getValue(field, parentObject);
-		if (value == null) {
-			value = beanFactory.createBean(field.getType());
-		}
-		setValue(value);
-	}
-
-	private void setupWidth() {
-		double width = annotationAccess.getValue(
-				FIELD_COMPONENT_ANNOTATION_CLASS, field, WIDTH_ELEMENT);
-		setWidth(width);
-	}
-
-	private void setupReadOnly() {
-		boolean readOnly = annotationAccess.getValue(
-				FIELD_COMPONENT_ANNOTATION_CLASS, field, READ_ONLY_ELEMENT);
-		setEnabled(!readOnly);
-	}
-
-	private void setupToolTip() {
-		String text = annotationAccess.getValue(
-				FIELD_COMPONENT_ANNOTATION_CLASS, field, TOOL_TIP_ELEMENT);
-		if (!isEmpty(text)) {
-			setToolTipText(text);
-		}
-	}
-
-	/**
-	 * Injects the logger for this field component.
+	 * Injects the bean and annotation access.
+	 * 
+	 * @param beanAccessFactory
+	 *            the {@link BeanAccessFactory} to access beans.
+	 * 
+	 * @param beanFactory
+	 *            the {@link BeanFactory} to create beans.
+	 * 
+	 * @param annotationAccessFactory
+	 *            the {@link AnnotationAccessFactory} to access annotations.
 	 * 
 	 * @param logger
-	 *            the {@link AbstractFieldComponentLogger}.
+	 *            the {@link AbstractFieldComponentLogger} for logging messages.
 	 */
 	@Inject
-	void setAbstractFieldComponentLogger(AbstractFieldComponentLogger logger) {
+	void setBeanAccessFactory(BeanAccessFactory beanAccessFactory,
+			BeanFactory beanFactory,
+			AnnotationAccessFactory annotationAccessFactory,
+			AbstractFieldComponentLogger logger) {
+		this.beanAccess = createBeanAccess(beanAccessFactory);
+		this.annotationAccess = createAnnotationAccess(annotationAccessFactory);
+		this.beanFactory = beanFactory;
 		this.log = logger;
+		setupField();
+		setupValue();
 	}
 
-	/**
-	 * Injects the annotation access to access the elements of an annotation.
-	 * 
-	 * @param annotationAccess
-	 *            the {@link AnnotationAccess}.
-	 */
-	@Inject
-	void setAnnotationAccess(AnnotationAccess annotationAccess) {
-		this.annotationAccess = annotationAccess;
+	private AnnotationAccess createAnnotationAccess(
+			AnnotationAccessFactory annotationAccessFactory) {
+		return annotationAccessFactory.create(FIELD_COMPONENT_ANNOTATION_CLASS,
+				beanAccess.getGettterObject());
+	}
+
+	private BeanAccess createBeanAccess(BeanAccessFactory beanAccessFactory) {
+		return beanAccessFactory.create(fieldName, parentObject);
 	}
 
 	/**
@@ -285,34 +221,12 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	}
 
 	/**
-	 * Injects the bean access to access the fields of a object.
-	 * 
-	 * @param beanAccess
-	 *            the {@link BeanAccess}.
-	 */
-	@Inject
-	void setBeanAccess(BeanAccess beanAccess) {
-		this.beanAccess = beanAccess;
-	}
-
-	/**
 	 * Returns the bean access to access the fields of a object.
 	 * 
 	 * @return the {@link BeanAccess}.
 	 */
 	protected BeanAccess getBeanAccess() {
 		return beanAccess;
-	}
-
-	/**
-	 * Injects the bean factory to create beans.
-	 * 
-	 * @param beanFactory
-	 *            the {@link BeanFactory}.
-	 */
-	@Inject
-	void setBeanFactory(BeanFactory beanFactory) {
-		this.beanFactory = beanFactory;
 	}
 
 	/**
@@ -324,82 +238,93 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 		return beanFactory;
 	}
 
+	private void setupField() {
+		setupName();
+		setupTitle();
+		setupShowTitle();
+		setupToolTip();
+		setupReadOnly();
+		setupWidth();
+		setupTitlePosition();
+		setupIcon();
+		setupIconSize();
+		setupLocale();
+		setupValue();
+	}
+
+	private void setupName() {
+		String name = fieldName;
+		setName(name);
+	}
+
+	private void setupTitle() {
+		String title = annotationAccess.getValue(TITLE_ELEMENT);
+		title = isEmpty(title) ? fieldName : title;
+		setTitle(title);
+	}
+
+	private void setupShowTitle() {
+		boolean show = annotationAccess.getValue(SHOW_TITLE_ELEMENT);
+		setShowTitle(show);
+	}
+
+	private void setupToolTip() {
+		String text = annotationAccess.getValue(TOOLTIP_ELEMENT);
+		setToolTipText(text);
+	}
+
+	private void setupReadOnly() {
+		boolean readOnly = annotationAccess.getValue(READ_ONLY_ELEMENT);
+		setEnabled(!readOnly);
+	}
+
+	private void setupWidth() {
+		double width = annotationAccess.getValue(WIDTH_ELEMENT);
+		setWidth(width);
+	}
+
+	private void setupTitlePosition() {
+		TextPosition position = annotationAccess
+				.getValue(TITLE_POSITION_ELEMENT);
+		setTitlePosition(position);
+	}
+
+	private void setupIcon() {
+		String name = annotationAccess.getValue(ICON_ELEMENT);
+		setIconResource(name);
+	}
+
+	private void setupIconSize() {
+		IconSize size = annotationAccess.getValue(ICON_SIZE_ELEMENT);
+		setIconSize(size);
+	}
+
+	private void setupLocale() {
+		String localeName = annotationAccess.getValue(LOCALE_ELEMENT);
+		Locale locale = isEmpty(localeName) ? Locale.getDefault() : new Locale(
+				localeName);
+		setLocale(locale);
+	}
+
+	private void setupValue() {
+		Object value = beanAccess.getValue();
+		if (value == null) {
+			value = beanFactory.create(beanAccess.getType());
+		}
+		try {
+			setValue(value);
+		} catch (PropertyVetoException e) {
+			throw log.errorSetupValue(this, e, value);
+		}
+	}
+
 	/**
-	 * Returns the field of this component.
+	 * Returns the field or getter method of this component.
 	 * 
-	 * @return the {@link Field}.
+	 * @return the {@link AccessibleObject}.
 	 */
-	protected Field getField() {
-		return field;
-	}
-
-	@Override
-	public AbstractFieldComponent<ComponentType> withImagesResource(
-			Images images) {
-		setImages(images);
-		return this;
-	}
-
-	@Override
-	public void setImages(Images images) {
-		log.checkImagesResource(this, images);
-		this.images = images;
-		updateIconResources();
-	}
-
-	private void updateIconResources() {
-		if (isEmpty(iconResource) || images == null) {
-			return;
-		}
-		icon = new ImageIcon(images.getResource(iconResource, getLocale(),
-				iconSize).getImage());
-	}
-
-	@Override
-	public AbstractFieldComponent<ComponentType> withTextsResource(Texts texts) {
-		setTexts(texts);
-		return this;
-	}
-
-	@Override
-	public void setTexts(Texts texts) {
-		log.checkTextsResource(this, texts);
-		this.texts = texts;
-		updateTextsResources();
-	}
-
-	@Override
-	public Texts getTexts() {
-		return texts;
-	}
-
-	private void updateTextsResources() {
-		updateTitleResource();
-		updateToolTipResource();
-	}
-
-	private void updateToolTipResource() {
-		if (isEmpty(toolTipResource) || texts == null) {
-			return;
-		}
-		try {
-			toolTip = texts.getResource(toolTipResource, getLocale()).getText();
-			setupToolTipText();
-		} catch (MissingResourceException e) {
-			log.toolTipResourceMissing(this, toolTipResource);
-		}
-	}
-
-	private void updateTitleResource() {
-		if (isEmpty(titleResource) || texts == null) {
-			return;
-		}
-		try {
-			title = texts.getResource(titleResource, getLocale()).getText();
-		} catch (MissingResourceException e) {
-			title = titleResource;
-			log.titleResourceMissing(this, titleResource);
-		}
+	public AccessibleObject getAccessibleObject() {
+		return beanAccess.getGettterObject();
 	}
 
 	/**
@@ -412,23 +337,24 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	}
 
 	@Override
-	public void setName(String newName) {
-		log.checkName(this, newName);
-		component.setName(newName);
-		log.nameSet(this, newName);
+	public void setName(String name) {
+		log.checkName(this, name);
+		this.name = name;
+		component.setName(name);
+		log.nameSet(this, name);
 	}
 
 	@Override
 	public String getName() {
-		return component.getName();
+		return name;
 	}
 
 	@Override
-	public void setTitle(String newTitle) {
-		titleResource = newTitle;
-		title = newTitle;
+	public void setTitle(String title) {
+		titleResource = title;
+		this.title = title;
 		updateTitleResource();
-		log.titleSet(this, newTitle);
+		log.titleSet(this, title);
 	}
 
 	@Override
@@ -448,64 +374,8 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	}
 
 	@Override
-	public void setValue(Object newValue) {
-		if (oldValue == newValue) {
-			return;
-		}
-		log.checkValue(this, newValue);
-		beanAccess.setValue(newValue, field, parentObject);
-		oldValue = newValue;
-		log.valueSet(this, newValue);
-	}
-
-	@Override
-	public Object getValue() {
-		Object value = beanAccess.getValue(field, parentObject);
-		oldValue = value;
-		return value;
-	}
-
-	@Override
-	public void setEnabled(boolean enabled) {
-		component.setEnabled(enabled);
-		log.enabledSet(this, enabled);
-	}
-
-	@Override
-	public boolean isEnabled() {
-		return component.isEnabled();
-	}
-
-	@Override
-	public void setWidth(Number newWidth) {
-		log.checkWidth(this, newWidth);
-		Dimension d = component.getPreferredSize();
-		d.width = newWidth.intValue();
-		component.setPreferredSize(new Dimension(d));
-		log.widthSet(this, newWidth);
-	}
-
-	@Override
-	public Number getWidth() {
-		return component.getWidth();
-	}
-
-	@Override
-	public void setLocale(Locale newLocale) {
-		log.checkLocale(this, newLocale);
-		component.setLocale(newLocale);
-		updateTextsResources();
-		updateIconResources();
-		log.localeSet(this, newLocale);
-	}
-
-	@Override
-	public Locale getLocale() {
-		return component.getLocale();
-	}
-
-	@Override
 	public void setToolTipText(String text) {
+		text = StringUtils.isEmpty(text) ? null : text;
 		toolTipResource = text;
 		toolTip = text;
 		updateToolTipResource();
@@ -520,12 +390,19 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	}
 
 	@Override
+	public String getToolTipText() {
+		return toolTip;
+	}
+
+	@Override
 	public void setShowToolTip(boolean show) {
-		if (show) {
+		if (show && !showToolTip) {
 			showToolTip();
-		} else {
+		} else if (!show && showToolTip) {
 			hideToolTip();
 		}
+		this.showToolTip = show;
+		log.showToolTipSet(this, show);
 	}
 
 	private void showToolTip() {
@@ -553,14 +430,61 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	}
 
 	@Override
-	public void setTitlePosition(TextPosition newPosition) {
-		titlePosition = newPosition;
-		log.titlePositionSet(this, titlePosition);
+	public void setEnabled(boolean enabled) {
+		component.setEnabled(enabled);
+		this.readOnly = !enabled;
+		log.enabledSet(this, enabled);
 	}
 
 	@Override
-	public TextPosition getTextPosition() {
+	public boolean isEnabled() {
+		return !readOnly;
+	}
+
+	@Override
+	public void setWidth(Number width) {
+		log.checkWidth(this, width);
+		this.width = width;
+		log.widthSet(this, width);
+	}
+
+	@Override
+	public Number getWidth() {
+		return width;
+	}
+
+	@Override
+	public void setTitlePosition(TextPosition position) {
+		this.titlePosition = position;
+		log.titlePositionSet(this, position);
+	}
+
+	@Override
+	public TextPosition getTitlePosition() {
 		return titlePosition;
+	}
+
+	@Override
+	public void setIconResource(String name) {
+		this.iconResource = name;
+		if (isEmpty(iconResource)) {
+			icon = null;
+		} else {
+			updateIconResources();
+		}
+		log.iconResourceSet(this, name);
+	}
+
+	@Override
+	public void setIcon(Icon icon) {
+		iconResource = null;
+		this.icon = icon;
+		log.iconSet(this, icon);
+	}
+
+	@Override
+	public Icon getIcon() {
+		return icon;
 	}
 
 	@Override
@@ -576,26 +500,87 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	}
 
 	@Override
-	public void setIcon(String newIconResource) {
-		iconResource = newIconResource;
-		if (isEmpty(iconResource)) {
-			icon = null;
-		} else {
-			updateIconResources();
+	public void setLocale(Locale locale) {
+		log.checkLocale(this, locale);
+		component.setLocale(locale);
+		updateTextsResources();
+		updateIconResources();
+		this.locale = locale;
+		log.localeSet(this, locale);
+	}
+
+	@Override
+	public Locale getLocale() {
+		return locale;
+	}
+
+	@Override
+	public void setValue(Object value) throws PropertyVetoException {
+		if (oldValue == value) {
+			return;
 		}
-		log.iconResourceSet(this, newIconResource);
+		this.value = value;
+		beanAccess.setValue(value);
+		oldValue = value;
+		this.value = value;
+		log.valueSet(this, value);
 	}
 
 	@Override
-	public void setIcon(Icon newIcon) {
-		iconResource = null;
-		icon = newIcon;
-		log.iconSet(this, newIcon);
+	public Object getValue() {
+		return value;
 	}
 
 	@Override
-	public Icon getIcon() {
-		return icon;
+	public void setImages(Images images) {
+		log.checkImagesResource(this, images);
+		this.images = images;
+		updateIconResources();
+	}
+
+	@Override
+	public Images getImages() {
+		return images;
+	}
+
+	private void updateIconResources() {
+		if (isEmpty(iconResource) || images == null) {
+			return;
+		}
+		icon = new ImageIcon(images.getResource(iconResource, getLocale(),
+				iconSize).getImage());
+	}
+
+	@Override
+	public void setTexts(Texts texts) {
+		log.checkTextsResource(this, texts);
+		this.texts = texts;
+		updateTextsResources();
+	}
+
+	@Override
+	public Texts getTexts() {
+		return texts;
+	}
+
+	private void updateTextsResources() {
+		updateTitleResource();
+		updateToolTipResource();
+	}
+
+	private void updateToolTipResource() {
+		if (isEmpty(toolTipResource) || texts == null) {
+			return;
+		}
+		toolTip = texts.getResource(toolTipResource, getLocale()).getText();
+		setupToolTipText();
+	}
+
+	private void updateTitleResource() {
+		if (isEmpty(titleResource) || texts == null) {
+			return;
+		}
+		title = texts.getResource(titleResource, getLocale()).getText();
 	}
 
 	/**
@@ -628,6 +613,8 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 		for (FieldComponent<?> component : childFields) {
 			component.applyInput();
 		}
+		this.oldValue = value;
+		this.value = beanAccess.getValue();
 		log.applyInputs(this);
 	}
 
@@ -636,10 +623,12 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 		for (FieldComponent<?> component : childFields) {
 			component.restoreInput();
 		}
+		this.oldValue = value;
+		this.value = beanAccess.getValue();
 	}
 
 	@Override
-	public ComponentType getAWTComponent() {
+	public ComponentType getComponent() {
 		return component;
 	}
 
@@ -650,21 +639,23 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	}
 
 	@Override
-	public <R extends Component, T extends FieldComponent<R>> T getField(
+	public <R extends Component, T extends FieldComponent<R>> T findField(
 			String name) {
 		if (getName().equals(name)) {
-			@SuppressWarnings("unchecked")
-			T field = (T) this;
-			return field;
+			return asField(this);
 		}
 		for (FieldComponent<?> component : childFields) {
 			if (component.getName().equals(name)) {
-				@SuppressWarnings("unchecked")
-				T field = (T) component;
-				return field;
+				return asField(component);
 			}
 		}
 		throw log.noChildFieldFound(this, name);
+	}
+
+	@SuppressWarnings("unchecked")
+	private <R extends Component, T extends FieldComponent<R>> T asField(
+			FieldComponent<?> component) {
+		return (T) component;
 	}
 
 	@Override

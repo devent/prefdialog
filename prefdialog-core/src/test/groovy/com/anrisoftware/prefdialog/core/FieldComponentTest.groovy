@@ -18,13 +18,27 @@
  */
 package com.anrisoftware.prefdialog.core
 
+
+import static com.anrisoftware.globalpom.utils.TestUtils.*
+import static com.anrisoftware.prefdialog.annotations.TextPosition.*
+import static com.anrisoftware.prefdialog.core.FieldTestUtils.*
 import static com.anrisoftware.prefdialog.core.Preferences.*
+import static com.anrisoftware.resources.images.api.IconSize.*
+
+import java.awt.Component
 
 import javax.swing.JLabel
 
+import org.fest.swing.fixture.FrameFixture
+import org.junit.Before
+import org.junit.BeforeClass
 import org.junit.Test
 
+import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.resources.images.api.IconSize
+import com.anrisoftware.resources.images.api.Images
+import com.anrisoftware.resources.texts.api.Texts
+import com.google.inject.Injector
 
 /**
  * Test the {@link AbstractFieldComponent}.
@@ -32,19 +46,28 @@ import com.anrisoftware.resources.images.api.IconSize
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
  */
-class FieldComponentTest extends FieldTestUtils {
-
-	def title = "Field Component Test"
+class FieldComponentTest {
 
 	@Test
 	void "show text field"() {
-		def component = new JLabel("Label")
+		def title = "FieldComponentTest :: show text field"
 		def preferenceField = preferencesTextField
-		def field = fieldComponentFactory.create(component, preferences, preferenceField).createField()
-		assertStringContent field.title, "textField"
-		beginPanelFrame title, component, {
-			fixture.label(preferenceField.name).requireEnabled()
-		}
+		def field = fieldComponentFactory.create(component, preferences, preferenceField)
+		assertField field,
+		name: preferenceField,
+		title: preferenceField,
+		showTitle: true,
+		toolTip: null,
+		readOnly: false,
+		width: -1d,
+		titlePosition: TEXT_ONLY,
+		icon: null,
+		iconSize: SMALL,
+		locale: Locale.getDefault()
+		new TestFrameUtil(title, component).withFixture({FrameFixture fixture ->
+			fixture.label preferenceField requireEnabled()
+			assert fixture.label(preferenceField).target.getName() == preferenceField
+		})
 	}
 
 	@Test
@@ -64,8 +87,8 @@ class FieldComponentTest extends FieldTestUtils {
 		def component = new JLabel("Label")
 		def preferenceField = preferencesTextFieldWithTitleResource
 		def field = fieldComponentFactory.create(
-						component, preferences, preferenceField).createField().
-						withTextsResource(texts)
+				component, preferences, preferenceField).createField().
+				withTextsResource(texts)
 		assertStringContent field.title, "Test Field Eng"
 		beginPanelFrame title, component, {
 			fixture.label(preferenceField.name).requireEnabled()
@@ -78,8 +101,8 @@ class FieldComponentTest extends FieldTestUtils {
 		def component = new JLabel("Label")
 		def preferenceField = preferencesTextFieldWithTitleResource
 		def field = fieldComponentFactory.create(
-						component, preferences, preferenceField).createField().
-						withTextsResource(texts)
+				component, preferences, preferenceField).createField().
+				withTextsResource(texts)
 		assertStringContent field.title, "Test Field Eng"
 		beginPanelFrame title, component, {
 			fixture.label(preferenceField.name).requireEnabled()
@@ -95,8 +118,8 @@ class FieldComponentTest extends FieldTestUtils {
 		def component = new JLabel("Label")
 		def preferenceField = preferencesTextFieldWithTitleResourceDe
 		def field = fieldComponentFactory.create(
-						component, preferences, preferenceField).createField().
-						withTextsResource(texts)
+				component, preferences, preferenceField).createField().
+				withTextsResource(texts)
 		assertStringContent field.title, "Test Field Deu"
 		beginPanelFrame title, component, {
 			fixture.label(preferenceField.name).requireEnabled()
@@ -109,8 +132,8 @@ class FieldComponentTest extends FieldTestUtils {
 		def component = new JLabel("Label")
 		def preferenceField = preferencesTextFieldWithTitleMissingResource
 		def field = fieldComponentFactory.create(
-						component, preferences, preferenceField).createField().
-						withTextsResource(texts)
+				component, preferences, preferenceField).createField().
+				withTextsResource(texts)
 		assertStringContent field.title, "missing_test_field"
 		beginPanelFrame title, component, {
 			fixture.label(preferenceField.name).requireEnabled()
@@ -144,8 +167,8 @@ class FieldComponentTest extends FieldTestUtils {
 		def component = new JLabel("Label")
 		def preferenceField = preferencesTextFieldWithToolTipResource
 		def field = fieldComponentFactory.create(
-						component, preferences, preferenceField).createField().
-						withTextsResource(texts)
+				component, preferences, preferenceField).createField().
+				withTextsResource(texts)
 		beginPanelFrame title, component, {
 			fixture.label(preferenceField.name).requireToolTip("Tool Tip Eng")
 		}, { field.setShowToolTip(true) }, { field.setShowToolTip(false) }
@@ -157,8 +180,8 @@ class FieldComponentTest extends FieldTestUtils {
 		def component = new JLabel("Label")
 		def preferenceField = preferencesTextFieldWithToolTipResource
 		def field = fieldComponentFactory.create(
-						component, preferences, preferenceField).createField().
-						withTextsResource(texts)
+				component, preferences, preferenceField).createField().
+				withTextsResource(texts)
 		beginPanelFrame title, component, {
 			fixture.label(preferenceField.name).requireToolTip("Tool Tip Eng")
 		}, { field.setShowToolTip(true) }, { field.setShowToolTip(false) }, {
@@ -174,8 +197,8 @@ class FieldComponentTest extends FieldTestUtils {
 		def component = new JLabel("Label")
 		def preferenceField = preferencesTextFieldWithIconResource
 		def field = fieldComponentFactory.create(
-						component, preferences, preferenceField).createField().
-						withImagesResource(images)
+				component, preferences, preferenceField).createField().
+				withImagesResource(images)
 		assert field.icon != null
 		beginPanelFrame title, component, {
 			fixture.label(preferenceField.name).requireEnabled()
@@ -188,8 +211,8 @@ class FieldComponentTest extends FieldTestUtils {
 		def component = new JLabel("Label")
 		def preferenceField = preferencesTextFieldWithIconResource
 		def field = fieldComponentFactory.create(
-						component, preferences, preferenceField).createField().
-						withImagesResource(images)
+				component, preferences, preferenceField).createField().
+				withImagesResource(images)
 		assert field.icon != null
 		component.icon = field.icon
 		beginPanelFrame title, component, {
@@ -215,8 +238,8 @@ class FieldComponentTest extends FieldTestUtils {
 		def component = new JLabel("Label")
 		def preferenceField = preferencesTextFieldWithIconResource
 		def field = fieldComponentFactory.create(
-						component, preferences, preferenceField).createField().
-						withImagesResource(images)
+				component, preferences, preferenceField).createField().
+				withImagesResource(images)
 		assert field.icon != null
 		component.icon = field.icon
 		beginPanelFrame title, component, {
@@ -226,5 +249,37 @@ class FieldComponentTest extends FieldTestUtils {
 			assert field.icon != null
 			component.icon = field.icon
 		}
+	}
+
+	static Injector injector
+
+	static MockFieldComponentFactory fieldComponentFactory
+
+	static MockContainerFieldFactory containerFieldFactory
+
+	static MockTitleFieldFactory titleFieldFactory
+
+	static Texts texts
+
+	static Images images
+
+	Preferences preferences
+
+	Component component
+
+	@BeforeClass
+	static void setupFactories() {
+		injector = createInjector()
+		fieldComponentFactory = injector.getInstance MockFieldComponentFactory
+		containerFieldFactory = injector.getInstance MockContainerFieldFactory
+		titleFieldFactory = injector.getInstance MockTitleFieldFactory
+		texts = createTextsResource(injector)
+		images = createImagesResource(injector)
+	}
+
+	@Before
+	void setupPreferences() {
+		preferences = new Preferences()
+		component = new JLabel()
 	}
 }
