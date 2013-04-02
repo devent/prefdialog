@@ -61,49 +61,49 @@ class Preferences {
 
 	@FieldComponent(showTitle = false)
 	@TextField
-	String textFieldWithTitleDisabled
+	public String textFieldWithTitleDisabled
 
 	@FieldComponent(title = "Test Field")
 	@TextField
-	String textFieldWithTitle
+	public String textFieldWithTitle
 
 	@FieldComponent(title = "test_field")
 	@TextField
-	String textFieldWithTitleResource
+	public String textFieldWithTitleResource
 
 	@FieldComponent(title = "test_field", locale = "de")
 	@TextField
-	String textFieldWithTitleResourceDe
+	public String textFieldWithTitleResourceDe
 
 	@FieldComponent(title = "missing_test_field")
 	@TextField
-	String textFieldWithTitleMissingResource
+	public String textFieldWithTitleMissingResource
 
 	@FieldComponent(readOnly = true)
 	@TextField
-	String textFieldReadOnly
+	public String textFieldReadOnly
 
 	@FieldComponent(toolTip = "Tool Tip")
 	@TextField
-	String textFieldWithToolTip
+	public String textFieldWithToolTip
 
-	@FieldComponent(toolTip = "tool_tip")
+	@FieldComponent(title = "test_field", toolTip = "tool_tip")
 	@TextField
-	String textFieldWithToolTipResource
+	public String textFieldWithToolTipResource
 
 	@FieldComponent(icon = "test_field_icon")
 	@TextField
-	String textFieldWithIconResource
+	public String textFieldWithIconResource
 
 	@FieldComponent(width = 200d)
 	@TextField
-	String textFieldFixedWidth
+	public String textFieldFixedWidth
 
 	@FieldComponent(width = -1.0d)
 	@TextField
-	String textFieldFillWidth
+	public String textFieldFillWidth
 
 	@FieldComponent(width = -2.0d)
 	@TextField
-	String textFieldPreferredWidth
+	public String textFieldPreferredWidth
 }

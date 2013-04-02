@@ -27,7 +27,7 @@ import static com.anrisoftware.resources.images.api.IconSize.*
 
 import java.awt.Component
 
-import javax.swing.JLabel
+import javax.swing.Icon
 
 import org.fest.swing.fixture.FrameFixture
 import org.junit.Before
@@ -61,7 +61,7 @@ class FieldComponentTest {
 		readOnly: false,
 		width: -1d,
 		titlePosition: TEXT_ONLY,
-		icon: null,
+		icon: { },
 		iconSize: SMALL,
 		locale: Locale.getDefault()
 		new TestFrameUtil(title, component).withFixture({FrameFixture fixture ->
@@ -71,184 +71,318 @@ class FieldComponentTest {
 	}
 
 	@Test
-	void "show text field with title"() {
-		def component = new JLabel("Label")
+	void "with title"() {
+		def title = "FieldComponentTest :: with title"
 		def preferenceField = preferencesTextFieldWithTitle
-		def field = fieldComponentFactory.create(component, preferences, preferenceField).createField()
-		assertStringContent field.title, "Test Field"
-		beginPanelFrame title, component, {
-			fixture.label(preferenceField.name).requireEnabled()
-		}
+		def field = fieldComponentFactory.create(component, preferences, preferenceField)
+		assertField field,
+		name: preferenceField,
+		title: "Test Field",
+		showTitle: true,
+		toolTip: null,
+		readOnly: false,
+		width: -1d,
+		titlePosition: TEXT_ONLY,
+		icon: { },
+		iconSize: SMALL,
+		locale: Locale.getDefault()
+		new TestFrameUtil(title, component).withFixture({FrameFixture fixture ->
+			fixture.label preferenceField requireEnabled()
+			assert fixture.label(preferenceField).target.getName() == preferenceField
+		})
 	}
 
 	@Test
-	void "show text field with title resource"() {
-		def texts = createTextsResource()
-		def component = new JLabel("Label")
+	void "with title resource"() {
+		def title = "FieldComponentTest :: with title resource"
 		def preferenceField = preferencesTextFieldWithTitleResource
-		def field = fieldComponentFactory.create(
-				component, preferences, preferenceField).createField().
-				withTextsResource(texts)
-		assertStringContent field.title, "Test Field Eng"
-		beginPanelFrame title, component, {
-			fixture.label(preferenceField.name).requireEnabled()
-		}
+		def field = fieldComponentFactory.create(component, preferences, preferenceField)
+		field.setTexts(texts)
+
+		assertField field,
+		name: preferenceField,
+		title: "Test Field Eng",
+		showTitle: true,
+		toolTip: null,
+		readOnly: false,
+		width: -1d,
+		titlePosition: TEXT_ONLY,
+		icon: { },
+		iconSize: SMALL,
+		locale: Locale.getDefault()
+		new TestFrameUtil(title, component).withFixture({FrameFixture fixture ->
+			fixture.label preferenceField requireEnabled()
+			assert fixture.label(preferenceField).target.getName() == preferenceField
+		})
 	}
 
 	@Test
-	void "show text field with title resource change locale"() {
-		def texts = createTextsResource()
-		def component = new JLabel("Label")
+	void "with title resource change locale"() {
+		def title = "FieldComponentTest :: with title resource change locale"
 		def preferenceField = preferencesTextFieldWithTitleResource
-		def field = fieldComponentFactory.create(
-				component, preferences, preferenceField).createField().
-				withTextsResource(texts)
-		assertStringContent field.title, "Test Field Eng"
-		beginPanelFrame title, component, {
-			fixture.label(preferenceField.name).requireEnabled()
+		def field = fieldComponentFactory.create(component, preferences, preferenceField)
+		field.setTexts(texts)
+
+		assertField field,
+		name: preferenceField,
+		title: "Test Field Eng",
+		showTitle: true,
+		toolTip: null,
+		readOnly: false,
+		width: -1d,
+		titlePosition: TEXT_ONLY,
+		icon: { },
+		iconSize: SMALL,
+		locale: Locale.getDefault()
+		new TestFrameUtil(title, component).withFixture({FrameFixture fixture ->
+			fixture.label preferenceField requireEnabled()
+			assert fixture.label(preferenceField).target.getName() == preferenceField
 		}, {
-			field.locale = Locale.GERMAN
-			assertStringContent field.title, "Test Field Deu"
-		}
+			field.setLocale Locale.GERMAN
+			assert field.title == "Test Field Deu"
+		})
 	}
 
 	@Test
-	void "show text field with title resource de"() {
-		def texts = createTextsResource()
-		def component = new JLabel("Label")
+	void "with title resource de"() {
+		def title = "FieldComponentTest :: with title resource de"
 		def preferenceField = preferencesTextFieldWithTitleResourceDe
-		def field = fieldComponentFactory.create(
-				component, preferences, preferenceField).createField().
-				withTextsResource(texts)
-		assertStringContent field.title, "Test Field Deu"
-		beginPanelFrame title, component, {
-			fixture.label(preferenceField.name).requireEnabled()
-		}
+		def field = fieldComponentFactory.create(component, preferences, preferenceField)
+		field.setTexts(texts)
+
+		assertField field,
+		name: preferenceField,
+		title: "Test Field Deu",
+		showTitle: true,
+		toolTip: null,
+		readOnly: false,
+		width: -1d,
+		titlePosition: TEXT_ONLY,
+		icon: { },
+		iconSize: SMALL,
+		locale: Locale.GERMAN
+		new TestFrameUtil(title, component).withFixture({FrameFixture fixture ->
+			fixture.label preferenceField requireEnabled()
+			assert fixture.label(preferenceField).target.getName() == preferenceField
+		})
 	}
 
 	@Test
-	void "show text field with title missing resource"() {
-		def texts = createTextsResource()
-		def component = new JLabel("Label")
+	void "with title missing resource"() {
+		def title = "FieldComponentTest :: with title missing resource"
 		def preferenceField = preferencesTextFieldWithTitleMissingResource
-		def field = fieldComponentFactory.create(
-				component, preferences, preferenceField).createField().
-				withTextsResource(texts)
-		assertStringContent field.title, "missing_test_field"
-		beginPanelFrame title, component, {
-			fixture.label(preferenceField.name).requireEnabled()
-		}
+		def field = fieldComponentFactory.create(component, preferences, preferenceField)
+
+		shouldFailWith(MissingResourceException) { field.setTexts(texts) }
+		assertField field,
+		name: preferenceField,
+		title: "missing_test_field",
+		showTitle: true,
+		toolTip: null,
+		readOnly: false,
+		width: -1d,
+		titlePosition: TEXT_ONLY,
+		icon: { },
+		iconSize: SMALL,
+		locale: Locale.getDefault()
 	}
 
 	@Test
-	void "show text field read-only"() {
-		def component = new JLabel("Label")
+	void "read-only"() {
+		def title = "FieldComponentTest :: read-only"
 		def preferenceField = preferencesTextFieldReadOnly
-		def field = fieldComponentFactory.create(component, preferences, preferenceField).createField()
-		assert field.enabled == false
-		beginPanelFrame title, component, {
-			fixture.label(preferenceField.name).requireDisabled()
-		}
+		def field = fieldComponentFactory.create(component, preferences, preferenceField)
+
+		assertField field,
+		name: preferenceField,
+		title: preferenceField,
+		showTitle: true,
+		toolTip: null,
+		readOnly: true,
+		width: -1d,
+		titlePosition: TEXT_ONLY,
+		icon: { },
+		iconSize: SMALL,
+		locale: Locale.getDefault()
+		new TestFrameUtil(title, component).withFixture({FrameFixture fixture ->
+			fixture.label preferenceField requireDisabled()
+			assert fixture.label(preferenceField).target.getName() == preferenceField
+		})
 	}
 
 	@Test
-	void "show text field with tool-tip"() {
-		def component = new JLabel("Label")
+	void "with tool-tip"() {
+		def title = "FieldComponentTest :: with tool-tip"
 		def preferenceField = preferencesTextFieldWithToolTip
-		def field = fieldComponentFactory.create(component, preferences, preferenceField).createField()
-		beginPanelFrame title, component, {
-			fixture.label(preferenceField.name).requireToolTip("Tool Tip")
-		}, { field.setShowToolTip(true) }, { field.setShowToolTip(false) }
+		def field = fieldComponentFactory.create(component, preferences, preferenceField)
+
+		assertField field,
+		name: preferenceField,
+		title: preferenceField,
+		showTitle: true,
+		toolTip: "Tool Tip",
+		readOnly: false,
+		width: -1d,
+		titlePosition: TEXT_ONLY,
+		icon: { },
+		iconSize: SMALL,
+		locale: Locale.getDefault()
+		new TestFrameUtil(title, component).withFixture({FrameFixture fixture ->
+			fixture.label preferenceField requireEnabled()
+			fixture.label preferenceField requireToolTip("Tool Tip")
+			assert fixture.label(preferenceField).target.getName() == preferenceField
+		})
 	}
 
 	@Test
-	void "show text field with tool-tip resource"() {
-		def texts = createTextsResource()
-		def component = new JLabel("Label")
+	void "with tool-tip resource"() {
+		def title = "FieldComponentTest :: with tool-tip resource"
 		def preferenceField = preferencesTextFieldWithToolTipResource
-		def field = fieldComponentFactory.create(
-				component, preferences, preferenceField).createField().
-				withTextsResource(texts)
-		beginPanelFrame title, component, {
-			fixture.label(preferenceField.name).requireToolTip("Tool Tip Eng")
-		}, { field.setShowToolTip(true) }, { field.setShowToolTip(false) }
+		def field = fieldComponentFactory.create(component, preferences, preferenceField)
+		field.setTexts(texts)
+
+		assertField field,
+		name: preferenceField,
+		title: "Test Field Eng",
+		showTitle: true,
+		toolTip: "Tool Tip Eng",
+		readOnly: false,
+		width: -1d,
+		titlePosition: TEXT_ONLY,
+		icon: { },
+		iconSize: SMALL,
+		locale: Locale.getDefault()
+		new TestFrameUtil(title, component).withFixture({FrameFixture fixture ->
+			fixture.label preferenceField requireEnabled()
+			fixture.label preferenceField requireToolTip("Tool Tip Eng")
+			assert fixture.label(preferenceField).target.getName() == preferenceField
+		})
 	}
 
 	@Test
-	void "show text field with tool-tip resource change locale"() {
-		def texts = createTextsResource()
-		def component = new JLabel("Label")
+	void "with tool-tip resource change locale"() {
+		def title = "FieldComponentTest :: with tool-tip resource change locale"
 		def preferenceField = preferencesTextFieldWithToolTipResource
-		def field = fieldComponentFactory.create(
-				component, preferences, preferenceField).createField().
-				withTextsResource(texts)
-		beginPanelFrame title, component, {
-			fixture.label(preferenceField.name).requireToolTip("Tool Tip Eng")
-		}, { field.setShowToolTip(true) }, { field.setShowToolTip(false) }, {
-			field.locale = Locale.GERMAN
-			fixture.label(preferenceField.name).requireToolTip("Tool Tip Deu")
-			field.setShowToolTip(true)
-		}, { field.setShowToolTip(false) }
+		def field = fieldComponentFactory.create(component, preferences, preferenceField)
+		field.setTexts(texts)
+
+		assertField field,
+		name: preferenceField,
+		title: "Test Field Eng",
+		showTitle: true,
+		toolTip: "Tool Tip Eng",
+		readOnly: false,
+		width: -1d,
+		titlePosition: TEXT_ONLY,
+		icon: { },
+		iconSize: SMALL,
+		locale: Locale.getDefault()
+		new TestFrameUtil(title, component).withFixture({FrameFixture fixture ->
+			fixture.label preferenceField requireEnabled()
+			fixture.label preferenceField requireToolTip("Tool Tip Eng")
+			assert fixture.label(preferenceField).target.getName() == preferenceField
+		}, { FrameFixture fixture ->
+			field.setLocale Locale.GERMAN
+			fixture.label preferenceField requireToolTip("Tool Tip Deu")
+		})
 	}
 
 	@Test
-	void "show text field with icon resource"() {
-		def images = createImagesResource()
-		def component = new JLabel("Label")
+	void "with icon resource"() {
+		def title = "FieldComponentTest :: with icon resource"
 		def preferenceField = preferencesTextFieldWithIconResource
-		def field = fieldComponentFactory.create(
-				component, preferences, preferenceField).createField().
-				withImagesResource(images)
-		assert field.icon != null
-		beginPanelFrame title, component, {
-			fixture.label(preferenceField.name).requireEnabled()
-		}
+		def field = fieldComponentFactory.create(component, preferences, preferenceField)
+		field.setImages(images)
+
+		assertField field,
+		name: preferenceField,
+		title: preferenceField,
+		showTitle: true,
+		toolTip: null,
+		readOnly: false,
+		width: -1d,
+		titlePosition: TEXT_ONLY,
+		icon: { Icon icon -> assert icon.iconWidth == 16 },
+		iconSize: SMALL,
+		locale: Locale.getDefault()
+		new TestFrameUtil(title, component).withFixture({FrameFixture fixture ->
+			component.icon = field.icon
+			fixture.label preferenceField requireEnabled()
+			assert fixture.label(preferenceField).target.getName() == preferenceField
+		})
 	}
 
 	@Test
-	void "show text field with icon resource change icon size"() {
-		def images = createImagesResource()
-		def component = new JLabel("Label")
+	void "with icon resource change icon size"() {
+		def title = "FieldComponentTest :: with icon resource change icon size"
 		def preferenceField = preferencesTextFieldWithIconResource
-		def field = fieldComponentFactory.create(
-				component, preferences, preferenceField).createField().
-				withImagesResource(images)
-		assert field.icon != null
-		component.icon = field.icon
-		beginPanelFrame title, component, {
-			fixture.label(preferenceField.name).requireEnabled()
-		}, {
-			field.iconSize = IconSize.HUGE
+		def field = fieldComponentFactory.create(component, preferences, preferenceField)
+		field.setImages(images)
+
+		assertField field,
+		name: preferenceField,
+		title: preferenceField,
+		showTitle: true,
+		toolTip: null,
+		readOnly: false,
+		width: -1d,
+		titlePosition: TEXT_ONLY,
+		icon: { Icon icon -> assert icon.iconWidth == 16 },
+		iconSize: SMALL,
+		locale: Locale.getDefault()
+
+		new TestFrameUtil(title, component).withFixture({FrameFixture fixture ->
 			component.icon = field.icon
+			fixture.label preferenceField requireEnabled()
+			assert fixture.label(preferenceField).target.getName() == preferenceField
 		}, {
-			field.iconSize = IconSize.LARGE
+			field.setIconSize HUGE
 			component.icon = field.icon
+			assert field.icon.iconWidth == 48
 		}, {
-			field.iconSize = IconSize.MEDIUM
+			field.setIconSize LARGE
 			component.icon = field.icon
+			assert field.icon.iconWidth == 32
 		}, {
-			field.iconSize = IconSize.SMALL
+			field.setIconSize MEDIUM
 			component.icon = field.icon
-		}
+			assert field.icon.iconWidth == 22
+		}, {
+			field.setIconSize SMALL
+			component.icon = field.icon
+			assert field.icon.iconWidth == 16
+		})
 	}
 
 	@Test
-	void "show text field with icon resource change locale"() {
-		def images = createImagesResource()
-		def component = new JLabel("Label")
+	void "with icon resource change locale"() {
+		def title = "FieldComponentTest :: with icon resource change locale"
 		def preferenceField = preferencesTextFieldWithIconResource
-		def field = fieldComponentFactory.create(
-				component, preferences, preferenceField).createField().
-				withImagesResource(images)
-		assert field.icon != null
-		component.icon = field.icon
-		beginPanelFrame title, component, {
-			fixture.label(preferenceField.name).requireEnabled()
-		}, {
-			field.locale = Locale.GERMAN
-			assert field.icon != null
+		def field = fieldComponentFactory.create(component, preferences, preferenceField)
+		field.setImages(images)
+
+
+		assertField field,
+		name: preferenceField,
+		title: preferenceField,
+		showTitle: true,
+		toolTip: null,
+		readOnly: false,
+		width: -1d,
+		titlePosition: TEXT_ONLY,
+		icon: { Icon icon -> assert icon.iconWidth == 16 },
+		iconSize: SMALL,
+		locale: Locale.getDefault()
+
+		new TestFrameUtil(title, component).withFixture({FrameFixture fixture ->
 			component.icon = field.icon
-		}
+			fixture.label preferenceField requireEnabled()
+			assert fixture.label(preferenceField).target.getName() == preferenceField
+		}, {
+			field.setLocale Locale.GERMAN
+			component.icon = field.icon
+			assert field.icon.iconWidth == 16
+		})
 	}
 
 	static Injector injector
@@ -280,6 +414,6 @@ class FieldComponentTest {
 	@Before
 	void setupPreferences() {
 		preferences = new Preferences()
-		component = new JLabel()
+		component = createLabel()
 	}
 }

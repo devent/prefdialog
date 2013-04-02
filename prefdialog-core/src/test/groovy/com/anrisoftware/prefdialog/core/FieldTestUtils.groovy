@@ -18,6 +18,10 @@
  */
 package com.anrisoftware.prefdialog.core
 
+import javax.swing.BorderFactory
+import javax.swing.JLabel
+import javax.swing.JTextField
+
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule
 import com.anrisoftware.globalpom.reflection.beans.BeansModule
 import com.anrisoftware.globalpom.utils.TestUtils
@@ -74,8 +78,19 @@ class FieldTestUtils {
 		assert field.titlePosition == attributes.titlePosition
 		assert field.enabled == !attributes.readOnly
 		assert field.width == attributes.width
-		assert field.icon == attributes.icon
+		attributes.icon(field.icon)
 		assert field.iconSize == attributes.iconSize
 		assert field.locale == attributes.locale
+	}
+
+	static JLabel createLabel() {
+		def label = new JLabel()
+		label.setBorder BorderFactory.createEtchedBorder()
+		return label
+	}
+
+	static createTextField() {
+		def field = new JTextField()
+		return field
 	}
 }
