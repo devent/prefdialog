@@ -18,8 +18,6 @@
  */
 package com.anrisoftware.prefdialog.core
 
-import java.lang.reflect.Field
-
 import javax.swing.JComponent
 import javax.swing.JPanel
 
@@ -32,7 +30,12 @@ import javax.swing.JPanel
  */
 interface MockContainerFieldFactory {
 
+	/**
+	 * @see AbstractContainerField#AbstractContainerField(java.awt.Component, java.awt.Container, Object, String)
+	 * 
+	 * @return the {@link MockContainerField}.
+	 */
 	MockContainerField create(
-	JComponent component, JPanel container, Object parentObject, Field field)
+	JComponent component, JPanel container, Object parentObject, String fieldName)
 }
 

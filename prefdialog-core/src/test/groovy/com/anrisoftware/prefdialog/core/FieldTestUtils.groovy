@@ -20,6 +20,7 @@ package com.anrisoftware.prefdialog.core
 
 import javax.swing.BorderFactory
 import javax.swing.JLabel
+import javax.swing.JPanel
 import javax.swing.JTextField
 
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule
@@ -92,5 +93,11 @@ class FieldTestUtils {
 	static createTextField() {
 		def field = new JTextField()
 		return field
+	}
+
+	static JPanel createContainer() {
+		def panel = new JPanel()
+		panel.setBorder BorderFactory.createEtchedBorder()
+		return panel
 	}
 }

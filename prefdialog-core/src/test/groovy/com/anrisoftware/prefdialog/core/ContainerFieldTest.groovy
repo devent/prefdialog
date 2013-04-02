@@ -18,73 +18,162 @@
  */
 package com.anrisoftware.prefdialog.core
 
+import static com.anrisoftware.prefdialog.annotations.TextPosition.*
 import static com.anrisoftware.prefdialog.core.AbstractContainerField.*
 import static com.anrisoftware.prefdialog.core.Preferences.*
+import static com.anrisoftware.resources.images.api.IconSize.*
 
-import javax.swing.JLabel
-import javax.swing.JPanel
-import javax.swing.JTextField
+import java.awt.Component
 
+import org.fest.swing.fixture.FrameFixture
+import org.junit.Before
+import org.junit.BeforeClass
 import org.junit.Test
 
+import com.anrisoftware.globalpom.utils.TestFrameUtil
+import com.anrisoftware.resources.images.api.Images
+import com.anrisoftware.resources.texts.api.Texts
+import com.google.inject.Injector
+
 /**
- * Test the {@link AbstractContainerField}.
+ * Test the container field.
  *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
  */
 class ContainerFieldTest extends FieldTestUtils {
 
-	def title = "Container Field Test"
-
 	@Test
 	void "show text field"() {
-		def container = new JPanel()
-		def component = new JLabel("Label")
+		def title = "ContainerFieldTest :: show text field"
 		def preferenceField = preferencesTextField
-		def field = containerFieldFactory.create(
-						component, container, preferences, preferenceField).
-						createField()
-		assertStringContent field.title, "textField"
-		beginPanelFrame title, container, {
-			fixture.panel("${preferenceField.name}-$CONTAINER_NAME").requireEnabled()
-			fixture.label(preferenceField.name).requireEnabled()
-		}
+		def containerName = "${preferenceField}-$CONTAINER_NAME"
+		def field = factory.create(component, container, preferences, preferenceField)
+
+		assertField field,
+		name: containerName,
+		title: preferenceField,
+		showTitle: true,
+		toolTip: null,
+		readOnly: false,
+		width: -1d,
+		titlePosition: TEXT_ONLY,
+		icon: { },
+		iconSize: SMALL,
+		locale: Locale.getDefault()
+		new TestFrameUtil(title, container).withFixture({FrameFixture fixture ->
+			fixture.label preferenceField requireEnabled()
+			fixture.panel containerName requireEnabled()
+			assert fixture.label(preferenceField).target.getName() == preferenceField
+			assert fixture.panel(containerName).target.getName() == containerName
+		})
 	}
 
 	@Test
-	void "show text field fixed width"() {
-		def container = new JPanel()
-		def component = new JTextField()
+	void "fixed width"() {
+		def title = "ContainerFieldTest :: fixed width"
 		def preferenceField = preferencesTextFieldFixedWidth
-		def field = containerFieldFactory.create(component, container, preferences, preferenceField).createField()
-		beginPanelFrame title, container, {
-			fixture.panel("${preferenceField.name}-$CONTAINER_NAME").requireEnabled()
-			fixture.textBox(preferenceField.name).requireEnabled()
-		}
+		def containerName = "${preferenceField}-$CONTAINER_NAME"
+		def field = factory.create(component, container, preferences, preferenceField)
+
+		assertField field,
+		name: containerName,
+		title: preferenceField,
+		showTitle: true,
+		toolTip: null,
+		readOnly: false,
+		width: 200d,
+		titlePosition: TEXT_ONLY,
+		icon: { },
+		iconSize: SMALL,
+		locale: Locale.getDefault()
+		new TestFrameUtil(title, container).withFixture({FrameFixture fixture ->
+			fixture.label preferenceField requireEnabled()
+			fixture.panel containerName requireEnabled()
+			assert fixture.label(preferenceField).target.getSize().width == 200
+			assert fixture.label(preferenceField).target.getName() == preferenceField
+			assert fixture.panel(containerName).target.getName() == containerName
+		})
 	}
 
 	@Test
-	void "show text field fill width"() {
-		def container = new JPanel()
-		def component = new JTextField()
+	void "fill width"() {
+		def title = "ContainerFieldTest :: fill width"
 		def preferenceField = preferencesTextFieldFillWidth
-		def field = containerFieldFactory.create(component, container, preferences, preferenceField).createField()
-		beginPanelFrame title, container, {
-			fixture.panel("${preferenceField.name}-$CONTAINER_NAME").requireEnabled()
-			fixture.textBox(preferenceField.name).requireEnabled()
-		}
+		def containerName = "${preferenceField}-$CONTAINER_NAME"
+		def field = factory.create(component, container, preferences, preferenceField)
+
+		assertField field,
+		name: containerName,
+		title: preferenceField,
+		showTitle: true,
+		toolTip: null,
+		readOnly: false,
+		width: -1.0d,
+		titlePosition: TEXT_ONLY,
+		icon: { },
+		iconSize: SMALL,
+		locale: Locale.getDefault()
+		new TestFrameUtil(title, container).withFixture({FrameFixture fixture ->
+			fixture.label preferenceField requireEnabled()
+			fixture.panel containerName requireEnabled()
+			assert fixture.label(preferenceField).target.getName() == preferenceField
+			assert fixture.panel(containerName).target.getName() == containerName
+		})
 	}
 
 	@Test
-	void "show text field preffered width"() {
-		def container = new JPanel()
-		def component = new JTextField()
+	void "preffered width"() {
+		def title = "ContainerFieldTest :: preffered width"
 		def preferenceField = preferencesTextFieldPreferredWidth
-		def field = containerFieldFactory.create(component, container, preferences, preferenceField).createField()
-		beginPanelFrame title, container, {
-			fixture.panel("${preferenceField.name}-$CONTAINER_NAME").requireEnabled()
-			fixture.textBox(preferenceField.name).requireEnabled()
-		}
+		def containerName = "${preferenceField}-$CONTAINER_NAME"
+		def field = factory.create(component, container, preferences, preferenceField)
+
+		assertField field,
+		name: containerName,
+		title: preferenceField,
+		showTitle: true,
+		toolTip: null,
+		readOnly: false,
+		width: -2.0d,
+		titlePosition: TEXT_ONLY,
+		icon: { },
+		iconSize: SMALL,
+		locale: Locale.getDefault()
+		new TestFrameUtil(title, container).withFixture({FrameFixture fixture ->
+			fixture.label preferenceField requireEnabled()
+			fixture.panel containerName requireEnabled()
+			assert fixture.label(preferenceField).target.getName() == preferenceField
+			assert fixture.panel(containerName).target.getName() == containerName
+		})
+	}
+
+	static Injector injector
+
+	static MockContainerFieldFactory factory
+
+	static Texts texts
+
+	static Images images
+
+	Preferences preferences
+
+	Component component
+
+	Component container
+
+	@BeforeClass
+	static void setupFactories() {
+		injector = createInjector()
+		factory = injector.getInstance MockContainerFieldFactory
+		texts = createTextsResource(injector)
+		images = createImagesResource(injector)
+	}
+
+	@Before
+	void setupPreferences() {
+		preferences = new Preferences()
+		component = createLabel()
+		container = createContainer()
 	}
 }

@@ -18,7 +18,6 @@
  */
 package com.anrisoftware.prefdialog.core
 
-
 import static com.anrisoftware.globalpom.utils.TestUtils.*
 import static com.anrisoftware.prefdialog.annotations.TextPosition.*
 import static com.anrisoftware.prefdialog.core.FieldTestUtils.*
@@ -41,7 +40,7 @@ import com.anrisoftware.resources.texts.api.Texts
 import com.google.inject.Injector
 
 /**
- * Test the {@link AbstractFieldComponent}.
+ * Test the field component.
  *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
@@ -52,7 +51,8 @@ class FieldComponentTest {
 	void "show text field"() {
 		def title = "FieldComponentTest :: show text field"
 		def preferenceField = preferencesTextField
-		def field = fieldComponentFactory.create(component, preferences, preferenceField)
+		def field = factory.create(component, preferences, preferenceField)
+
 		assertField field,
 		name: preferenceField,
 		title: preferenceField,
@@ -74,7 +74,7 @@ class FieldComponentTest {
 	void "with title"() {
 		def title = "FieldComponentTest :: with title"
 		def preferenceField = preferencesTextFieldWithTitle
-		def field = fieldComponentFactory.create(component, preferences, preferenceField)
+		def field = factory.create(component, preferences, preferenceField)
 		assertField field,
 		name: preferenceField,
 		title: "Test Field",
@@ -96,7 +96,7 @@ class FieldComponentTest {
 	void "with title resource"() {
 		def title = "FieldComponentTest :: with title resource"
 		def preferenceField = preferencesTextFieldWithTitleResource
-		def field = fieldComponentFactory.create(component, preferences, preferenceField)
+		def field = factory.create(component, preferences, preferenceField)
 		field.setTexts(texts)
 
 		assertField field,
@@ -120,7 +120,7 @@ class FieldComponentTest {
 	void "with title resource change locale"() {
 		def title = "FieldComponentTest :: with title resource change locale"
 		def preferenceField = preferencesTextFieldWithTitleResource
-		def field = fieldComponentFactory.create(component, preferences, preferenceField)
+		def field = factory.create(component, preferences, preferenceField)
 		field.setTexts(texts)
 
 		assertField field,
@@ -147,7 +147,7 @@ class FieldComponentTest {
 	void "with title resource de"() {
 		def title = "FieldComponentTest :: with title resource de"
 		def preferenceField = preferencesTextFieldWithTitleResourceDe
-		def field = fieldComponentFactory.create(component, preferences, preferenceField)
+		def field = factory.create(component, preferences, preferenceField)
 		field.setTexts(texts)
 
 		assertField field,
@@ -171,7 +171,7 @@ class FieldComponentTest {
 	void "with title missing resource"() {
 		def title = "FieldComponentTest :: with title missing resource"
 		def preferenceField = preferencesTextFieldWithTitleMissingResource
-		def field = fieldComponentFactory.create(component, preferences, preferenceField)
+		def field = factory.create(component, preferences, preferenceField)
 
 		shouldFailWith(MissingResourceException) { field.setTexts(texts) }
 		assertField field,
@@ -191,7 +191,7 @@ class FieldComponentTest {
 	void "read-only"() {
 		def title = "FieldComponentTest :: read-only"
 		def preferenceField = preferencesTextFieldReadOnly
-		def field = fieldComponentFactory.create(component, preferences, preferenceField)
+		def field = factory.create(component, preferences, preferenceField)
 
 		assertField field,
 		name: preferenceField,
@@ -214,7 +214,7 @@ class FieldComponentTest {
 	void "with tool-tip"() {
 		def title = "FieldComponentTest :: with tool-tip"
 		def preferenceField = preferencesTextFieldWithToolTip
-		def field = fieldComponentFactory.create(component, preferences, preferenceField)
+		def field = factory.create(component, preferences, preferenceField)
 
 		assertField field,
 		name: preferenceField,
@@ -238,7 +238,7 @@ class FieldComponentTest {
 	void "with tool-tip resource"() {
 		def title = "FieldComponentTest :: with tool-tip resource"
 		def preferenceField = preferencesTextFieldWithToolTipResource
-		def field = fieldComponentFactory.create(component, preferences, preferenceField)
+		def field = factory.create(component, preferences, preferenceField)
 		field.setTexts(texts)
 
 		assertField field,
@@ -263,7 +263,7 @@ class FieldComponentTest {
 	void "with tool-tip resource change locale"() {
 		def title = "FieldComponentTest :: with tool-tip resource change locale"
 		def preferenceField = preferencesTextFieldWithToolTipResource
-		def field = fieldComponentFactory.create(component, preferences, preferenceField)
+		def field = factory.create(component, preferences, preferenceField)
 		field.setTexts(texts)
 
 		assertField field,
@@ -291,7 +291,7 @@ class FieldComponentTest {
 	void "with icon resource"() {
 		def title = "FieldComponentTest :: with icon resource"
 		def preferenceField = preferencesTextFieldWithIconResource
-		def field = fieldComponentFactory.create(component, preferences, preferenceField)
+		def field = factory.create(component, preferences, preferenceField)
 		field.setImages(images)
 
 		assertField field,
@@ -316,7 +316,7 @@ class FieldComponentTest {
 	void "with icon resource change icon size"() {
 		def title = "FieldComponentTest :: with icon resource change icon size"
 		def preferenceField = preferencesTextFieldWithIconResource
-		def field = fieldComponentFactory.create(component, preferences, preferenceField)
+		def field = factory.create(component, preferences, preferenceField)
 		field.setImages(images)
 
 		assertField field,
@@ -358,7 +358,7 @@ class FieldComponentTest {
 	void "with icon resource change locale"() {
 		def title = "FieldComponentTest :: with icon resource change locale"
 		def preferenceField = preferencesTextFieldWithIconResource
-		def field = fieldComponentFactory.create(component, preferences, preferenceField)
+		def field = factory.create(component, preferences, preferenceField)
 		field.setImages(images)
 
 
@@ -387,11 +387,7 @@ class FieldComponentTest {
 
 	static Injector injector
 
-	static MockFieldComponentFactory fieldComponentFactory
-
-	static MockContainerFieldFactory containerFieldFactory
-
-	static MockTitleFieldFactory titleFieldFactory
+	static MockFieldComponentFactory factory
 
 	static Texts texts
 
@@ -404,9 +400,7 @@ class FieldComponentTest {
 	@BeforeClass
 	static void setupFactories() {
 		injector = createInjector()
-		fieldComponentFactory = injector.getInstance MockFieldComponentFactory
-		containerFieldFactory = injector.getInstance MockContainerFieldFactory
-		titleFieldFactory = injector.getInstance MockTitleFieldFactory
+		factory = injector.getInstance MockFieldComponentFactory
 		texts = createTextsResource(injector)
 		images = createImagesResource(injector)
 	}
