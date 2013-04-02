@@ -502,10 +502,10 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	@Override
 	public void setLocale(Locale locale) {
 		log.checkLocale(this, locale);
+		this.locale = locale;
 		component.setLocale(locale);
 		updateTextsResources();
 		updateIconResources();
-		this.locale = locale;
 		log.localeSet(this, locale);
 	}
 
