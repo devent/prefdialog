@@ -27,9 +27,13 @@ import com.anrisoftware.prefdialog.annotations.HorizontalAlignment;
  * Logging messages for {@link ButtonGroupField}.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 2.2
+ * @since 3.0
  */
 class ButtonGroupFieldLogger extends AbstractLogger {
+
+	private static final String SET_HORIZONTAL_ALIGNMENT = "Set the horizontal alignment {} in {}.";
+
+	private static final String VALUE_NOT_ARRAY_ITERABLE = "Value '%s' is not an array or iterable of actions.";
 
 	/**
 	 * Creates logger for {@link ButtonGroupField}.
@@ -39,15 +43,12 @@ class ButtonGroupFieldLogger extends AbstractLogger {
 	}
 
 	IllegalArgumentException valueNotList(Object value) {
-		IllegalArgumentException ex = new IllegalArgumentException(format(
-				"The value %s is not an array or list of actions.", value));
-		log.error(ex.getLocalizedMessage());
-		return ex;
+		String message = format(VALUE_NOT_ARRAY_ITERABLE, value);
+		return logException(new IllegalArgumentException(message), message);
 	}
 
 	void horizontalAlignmentSet(ButtonGroupField field,
 			HorizontalAlignment alignment) {
-		log.trace("Set the horizontal alignment to {} in the button group {}.",
-				alignment, field);
+		log.debug(SET_HORIZONTAL_ALIGNMENT, alignment, field);
 	}
 }

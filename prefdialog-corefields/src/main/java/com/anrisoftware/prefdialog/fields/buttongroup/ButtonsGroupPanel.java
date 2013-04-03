@@ -18,7 +18,7 @@
  */
 package com.anrisoftware.prefdialog.fields.buttongroup;
 
-import static com.anrisoftware.prefdialog.fields.buttongroup.ButtonGroupPluginModule.BUTTONS_GROUP_PANEL_NAME;
+import static com.anrisoftware.prefdialog.fields.buttongroup.ButtonGroupService.BUTTONS_GROUP_PANEL_NAME;
 import static info.clearthought.layout.TableLayoutConstants.FILL;
 import static info.clearthought.layout.TableLayoutConstants.PREFERRED;
 import static java.lang.String.format;
@@ -35,10 +35,10 @@ import com.anrisoftware.prefdialog.annotations.HorizontalAlignment;
  * Panel that aligns the buttons to the left, right or middle.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 2.2
+ * @since 3.0
  */
 @SuppressWarnings("serial")
-public class ButtonsGroupPanel extends JPanel {
+class ButtonsGroupPanel extends JPanel {
 
 	private final TableLayout layout;
 

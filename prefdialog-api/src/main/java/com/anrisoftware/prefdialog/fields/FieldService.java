@@ -18,7 +18,11 @@ public interface FieldService {
 	/**
 	 * Returns the field factory.
 	 * 
+	 * @param parent
+	 *            the optional parent {@link Object}.
+	 * 
 	 * @return the {@link FieldFactory}.
 	 */
-	FieldFactory getFactory();
+	FieldFactory getFactory(Object... parent);
+
 }

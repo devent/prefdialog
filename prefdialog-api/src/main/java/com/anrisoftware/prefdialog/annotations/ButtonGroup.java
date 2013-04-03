@@ -19,6 +19,7 @@
 package com.anrisoftware.prefdialog.annotations;
 
 import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import java.lang.annotation.Retention;
@@ -28,8 +29,8 @@ import javax.swing.Action;
 
 /**
  * <p>
- * Field with a group of buttons. The initial field must be set to an array or
- * an {@link Iterable} that contains the {@link Action} for each button.
+ * Field with a group of buttons. The value must be set to an array or an
+ * {@link Iterable} that contains the {@link Action} for each button.
  * </p>
  * Example:
  * 
@@ -43,10 +44,24 @@ import javax.swing.Action;
  * private Iterable&lt;Action&gt; buttons = ...;
  * </pre>
  * 
+ * <pre>
+ * &#064;FieldComponent
+ * &#064;ButtonGroup
+ * public Action[] getButtons() {
+ *   return new Action[] { ... };
+ * }
+ * 
+ * &#064;FieldComponent
+ * &#064;ButtonGroup
+ * public Iterable&lt;Action&gt; getButtons() {
+ *   return list;
+ * }
+ * </pre>
+ * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
  */
-@Target(FIELD)
+@Target({ FIELD, METHOD })
 @Retention(RUNTIME)
 public @interface ButtonGroup {
 

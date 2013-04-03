@@ -18,12 +18,24 @@
  */
 package com.anrisoftware.prefdialog.fields.buttongroup
 
+
+import static com.anrisoftware.prefdialog.core.FieldTestUtils.*
+import static com.anrisoftware.prefdialog.fields.buttongroup.ButtonGroupBean.*
+import static com.anrisoftware.prefdialog.fields.buttongroup.ButtonGroupService.*
+
+import java.awt.Container
+
 import javax.swing.JPanel
 
+import org.fest.swing.fixture.FrameFixture
 import org.junit.Before
+import org.junit.BeforeClass
 import org.junit.Test
 
-import com.anrisoftware.prefdialog.core.FieldTestUtils
+import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule
+import com.anrisoftware.globalpom.reflection.beans.BeansModule
+import com.anrisoftware.globalpom.utils.TestFrameUtil
+import com.google.inject.Guice
 import com.google.inject.Injector
 
 /**
@@ -32,70 +44,98 @@ import com.google.inject.Injector
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 2.2
  */
-class ButtonGroupTest extends FieldTestUtils {
+class ButtonGroupTest {
 
-	static final title = "Button Group Test"
+	@Test
+	void "with defaults"() {
+		def title = "ButtonGroupTest :: with defaults"
+		def fieldName = BUTTONS
+		def buttons = [
+			"$fieldName-0-$BUTTON_NAME",
+			"$fieldName-1-$BUTTON_NAME"
+		]
+		def field = factory.create(bean, fieldName)
+		new TestFrameUtil(title, field.component).withFixture({FrameFixture fixture ->
+			fixture.button buttons[0] click()
+			assert bean.button1Called == true
+		}, {FrameFixture fixture ->
+			fixture.button buttons[1] click()
+			assert bean.button2Called == true
+		})
+	}
 
-	ButtonGroupFieldFactory factory
+	@Test
+	void "with horizontal alignment middle"() {
+		def title = "ButtonGroupTest :: with horizontal alignment middle"
+		def fieldName = BUTTONS_MIDDLE
+		def buttons = [
+			"$fieldName-0-$BUTTON_NAME",
+			"$fieldName-1-$BUTTON_NAME"
+		]
+		def field = factory.create(bean, fieldName)
+		new TestFrameUtil(title, field.component).withFixture({FrameFixture fixture ->
+			fixture.button buttons[0] click()
+			assert bean.button1Called == true
+		}, {FrameFixture fixture ->
+			fixture.button buttons[1] click()
+			assert bean.button2Called == true
+		})
+	}
+
+	@Test
+	void "with horizontal alignment left"() {
+		def title = "ButtonGroupTest :: with horizontal alignment left"
+		def fieldName = BUTTONS_LEFT
+		def buttons = [
+			"$fieldName-0-$BUTTON_NAME",
+			"$fieldName-1-$BUTTON_NAME"
+		]
+		def field = factory.create(bean, fieldName)
+		new TestFrameUtil(title, field.component).withFixture({FrameFixture fixture ->
+			fixture.button buttons[0] click()
+			assert bean.button1Called == true
+		}, {FrameFixture fixture ->
+			fixture.button buttons[1] click()
+			assert bean.button2Called == true
+		})
+	}
+
+	@Test
+	void "with horizontal alignment right"() {
+		def title = "ButtonGroupTest :: with horizontal alignment right"
+		def fieldName = BUTTONS_RIGHT
+		def buttons = [
+			"$fieldName-0-$BUTTON_NAME",
+			"$fieldName-1-$BUTTON_NAME"
+		]
+		def field = factory.create(bean, fieldName)
+		new TestFrameUtil(title, field.component).withFixture({FrameFixture fixture ->
+			fixture.button buttons[0] click()
+			assert bean.button1Called == true
+		}, {FrameFixture fixture ->
+			fixture.button buttons[1] click()
+			assert bean.button2Called == true
+		})
+	}
+
+	static Injector injector
+
+	static ButtonGroupFieldFactory factory
 
 	ButtonGroupBean bean
 
-	@Before
-	void beforeTest() {
-		super.beforeTest()
+	Container container
+
+	@BeforeClass
+	static void setupFactories() {
+		injector = Guice.createInjector(
+				new AnnotationsModule(), new BeansModule(), new ButtonGroupModule())
 		factory = injector.getInstance ButtonGroupFieldFactory
 	}
 
-	Injector createInjector() {
-		def parent = super.createInjector()
-		parent.createChildInjector new ButtonGroupModule()
-	}
-
-	@Test
-	void "button group field with horizontal alignment right"() {
-		def bean = new ButtonGroupBean()
-		def field = ButtonGroupBean.BUTTONS_FIELD
-		def fieldName = ButtonGroupBean.BUTTONS
-		def container = new JPanel()
-		factory.create(container, bean, field).createField()
-		beginPanelFrame title, container, {
-			fixture.button("$fieldName-0-button").click()
-			assert bean.button1Called
-		}, {
-			fixture.button("$fieldName-1-button").click()
-			assert bean.button2Called
-		}
-	}
-
-	@Test
-	void "button group field with horizontal alignment middle"() {
-		def bean = new ButtonGroupAlignmentMiddleBean()
-		def field = ButtonGroupAlignmentMiddleBean.BUTTONS_FIELD
-		def fieldName = ButtonGroupAlignmentMiddleBean.BUTTONS
-		def container = new JPanel()
-		factory.create(container, bean, field).createField()
-		beginPanelFrame title, container, {
-			fixture.button("$fieldName-0-button").click()
-			assert bean.button1Called
-		}, {
-			fixture.button("$fieldName-1-button").click()
-			assert bean.button2Called
-		}
-	}
-
-	@Test
-	void "button group field with horizontal alignment left"() {
-		def bean = new ButtonGroupAlignmentLeftBean()
-		def field = ButtonGroupAlignmentLeftBean.BUTTONS_FIELD
-		def fieldName = ButtonGroupAlignmentLeftBean.BUTTONS
-		def container = new JPanel()
-		factory.create(container, bean, field).createField()
-		beginPanelFrame title, container, {
-			fixture.button("$fieldName-0-button").click()
-			assert bean.button1Called
-		}, {
-			fixture.button("$fieldName-1-button").click()
-			assert bean.button2Called
-		}
+	@Before
+	void setupBean() {
+		bean = new ButtonGroupBean()
+		container = new JPanel()
 	}
 }

@@ -81,7 +81,7 @@ import com.anrisoftware.resources.texts.api.Texts;
 public abstract class AbstractFieldComponent<ComponentType extends Component>
 		implements FieldComponent<ComponentType>, Serializable {
 
-	private static final Class<com.anrisoftware.prefdialog.annotations.FieldComponent> FIELD_COMPONENT_ANNOTATION_CLASS = com.anrisoftware.prefdialog.annotations.FieldComponent.class;
+	private static final Class<com.anrisoftware.prefdialog.annotations.FieldComponent> ANNOTATION_CLASS = com.anrisoftware.prefdialog.annotations.FieldComponent.class;
 
 	private static final String TITLE_ELEMENT = "title";
 
@@ -198,12 +198,11 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 		this.beanFactory = beanFactory;
 		this.log = logger;
 		setupField();
-		setupValue();
 	}
 
 	private AnnotationAccess createAnnotationAccess(
 			AnnotationAccessFactory annotationAccessFactory) {
-		return annotationAccessFactory.create(FIELD_COMPONENT_ANNOTATION_CLASS,
+		return annotationAccessFactory.create(ANNOTATION_CLASS,
 				beanAccess.getGettterObject());
 	}
 

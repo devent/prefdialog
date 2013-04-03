@@ -105,6 +105,11 @@
 				<artifactId>kryo</artifactId>
 				<version>2.20</version>
 			</dependency>
+			<dependency>
+				<groupId>com.anrisoftware.propertiesutils</groupId>
+				<artifactId>propertiesutils-swingproperties</artifactId>
+				<version>1.2</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 

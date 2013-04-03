@@ -18,19 +18,18 @@
  */
 package com.anrisoftware.prefdialog.core
 
-import org.junit.Before
-
+import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule
+import com.anrisoftware.globalpom.reflection.beans.BeansModule
 import com.anrisoftware.globalpom.utils.TestFrameUtil
-import com.anrisoftware.resources.binary.binaries.BinariesResourcesModule
-import com.anrisoftware.resources.binary.maps.BinariesDefaultMapsModule
+import com.anrisoftware.globalpom.utils.TestUtils
 import com.anrisoftware.resources.images.api.Images
 import com.anrisoftware.resources.images.api.ImagesFactory
+import com.anrisoftware.resources.images.images.ImagesResourcesModule
 import com.anrisoftware.resources.images.maps.ResourcesImagesMapsModule
 import com.anrisoftware.resources.images.scaling.ResourcesSmoothScalingModule
 import com.anrisoftware.resources.texts.api.Texts
 import com.anrisoftware.resources.texts.api.TextsFactory
-import com.anrisoftware.resources.texts.maps.TextsDefaultMapsModule
-import com.anrisoftware.resources.texts.texts.TextsResourcesModule
+import com.anrisoftware.resources.texts.defaults.TextsResourcesDefaultModule
 import com.google.inject.Guice
 import com.google.inject.Injector
 
@@ -43,30 +42,26 @@ import com.google.inject.Injector
  */
 class FieldTestUtils extends TestFrameUtil {
 
-	Injector injector
-
-	@Before
-	void beforeTest() {
-		injector = createInjector()
+	static {
+		TestUtils.toStringStyle
 	}
 
-	Injector createInjector() {
-		Guice.createInjector()
+	static Injector createInjector() {
+		Guice.createInjector new MockModule(), new AnnotationsModule(), new BeansModule()
 	}
 
-	Texts createTextsResource() {
-		Injector childInjector = injector.createChildInjector new TextsResourcesModule(),
-						new TextsDefaultMapsModule(),
-						new BinariesResourcesModule(), new BinariesDefaultMapsModule(),
-						new ResourcesTextsCharsetModule()
+	static Texts createTextsResource(Injector injector) {
+		Injector childInjector = injector.createChildInjector(
+				new TextsResourcesDefaultModule())
 		TextsFactory factory = childInjector.getInstance TextsFactory
 		factory.create "Texts"
 	}
 
-	Images createImagesResource() {
-		Injector childInjector = injector.createChildInjector new ResourcesImagesModule(),
-						new ResourcesImagesMapsModule(),
-						new ResourcesSmoothScalingModule()
+	static Images createImagesResource(Injector injector) {
+		Injector childInjector = injector.createChildInjector(
+				new ImagesResourcesModule(),
+				new ResourcesImagesMapsModule(),
+				new ResourcesSmoothScalingModule())
 		ImagesFactory factory = childInjector.getInstance ImagesFactory
 		factory.create "Icons"
 	}

@@ -2,9 +2,6 @@ package com.anrisoftware.prefdialog.fields;
 
 import java.awt.Component;
 
-import com.anrisoftware.resources.images.api.Images;
-import com.anrisoftware.resources.texts.api.Texts;
-
 /**
  * Factory to create a new field component.
  * 
@@ -14,42 +11,18 @@ import com.anrisoftware.resources.texts.api.Texts;
 public interface FieldFactory {
 
 	/**
-	 * Creates a new field component for the specified bean object.
+	 * Creates a new field component.
 	 * 
-	 * @param bean
-	 *            the {@link Object}.
+	 * 
+	 * @param parentObject
+	 *            the parent object of this field.
+	 * 
+	 * @param fieldName
+	 *            the name of the field in the parent object.
 	 * 
 	 * @return the {@link FieldComponent}.
 	 */
-	FieldComponent<? extends Component> create(Object bean);
+	FieldComponent<? extends Component> create(Object parentObject,
+			String fieldName);
 
-	/**
-	 * Creates a new field component for the specified bean object.
-	 * 
-	 * @param bean
-	 *            the {@link Object}.
-	 * 
-	 * @param texts
-	 *            the {@link Texts} resources.
-	 * 
-	 * @return the {@link FieldComponent}.
-	 */
-	FieldComponent<? extends Component> create(Object bean, Texts texts);
-
-	/**
-	 * Creates a new field component for the specified bean object.
-	 * 
-	 * @param bean
-	 *            the {@link Object}.
-	 * 
-	 * @param texts
-	 *            the {@link Texts} resources.
-	 * 
-	 * @param images
-	 *            the {@link Images} resources.
-	 * 
-	 * @return the {@link FieldComponent}.
-	 */
-	FieldComponent<? extends Component> create(Object bean, Texts texts,
-			Images images);
 }

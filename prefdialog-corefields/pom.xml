@@ -11,7 +11,6 @@
 	</parent>
 
 	<artifactId>prefdialog-corefields</artifactId>
-	<version>2.2-SNAPSHOT</version>
 	<name>Prefdialog :: Core Fields</name>
 
 	<dependencies>
@@ -27,35 +26,35 @@
 		<dependency>
 			<groupId>com.anrisoftware.prefdialog</groupId>
 			<artifactId>prefdialog-core</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>3.0-SNAPSHOT</version>
 		</dependency>
 
-        <!-- compile dependencies -->
-        <dependency>
-            <groupId>com.kenai.nbpwr</groupId>
-            <artifactId>javax-annotation</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.anrisoftware.resources</groupId>
-            <artifactId>resources-images</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.anrisoftware.resources</groupId>
-            <artifactId>resources-texts</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.anrisoftware.resources</groupId>
-            <artifactId>resources-binary</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.inject.extensions</groupId>
-            <artifactId>guice-multibindings</artifactId>
-        </dependency>
-        <dependency>
-        	<groupId>com.anrisoftware.propertiesutils</groupId>
-        	<artifactId>propertiesutils-swingproperties</artifactId>
-        	<version>1.0</version>
-        </dependency>
+		<!-- compile dependencies -->
+		<dependency>
+			<groupId>com.anrisoftware.resources</groupId>
+			<artifactId>resources-images</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.anrisoftware.resources</groupId>
+			<artifactId>resources-texts</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.inject.extensions</groupId>
+			<artifactId>guice-multibindings</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.anrisoftware.propertiesutils</groupId>
+			<artifactId>propertiesutils-swingproperties</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.anrisoftware.globalpom</groupId>
+			<artifactId>globalpom-utils</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mangosdk</groupId>
+			<artifactId>spi</artifactId>
+			<optional>true</optional>
+		</dependency>
 	</dependencies>
 
 </project>

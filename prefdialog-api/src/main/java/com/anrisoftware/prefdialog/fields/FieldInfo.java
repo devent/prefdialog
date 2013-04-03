@@ -13,7 +13,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-public abstract class FieldInfo {
+public class FieldInfo {
 
 	private static final String ANNOTATION = "annotation";
 
@@ -25,7 +25,7 @@ public abstract class FieldInfo {
 	 * @param annotationType
 	 *            the {@link Class} type.
 	 */
-	protected FieldInfo(Class<? extends Annotation> annotationType) {
+	public FieldInfo(Class<? extends Annotation> annotationType) {
 		this.annotationType = annotationType;
 	}
 

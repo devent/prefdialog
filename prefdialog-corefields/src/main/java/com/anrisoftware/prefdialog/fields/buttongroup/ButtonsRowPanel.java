@@ -18,8 +18,8 @@
  */
 package com.anrisoftware.prefdialog.fields.buttongroup;
 
-import static com.anrisoftware.prefdialog.fields.buttongroup.ButtonGroupPluginModule.BUTTONS_ROW_NAME;
-import static com.anrisoftware.prefdialog.fields.buttongroup.ButtonGroupPluginModule.BUTTON_NAME;
+import static com.anrisoftware.prefdialog.fields.buttongroup.ButtonGroupService.BUTTONS_ROW_NAME;
+import static com.anrisoftware.prefdialog.fields.buttongroup.ButtonGroupService.BUTTON_NAME;
 import static info.clearthought.layout.TableLayoutConstants.PREFERRED;
 import static java.lang.String.format;
 import static org.apache.commons.lang3.Validate.notNull;
@@ -39,10 +39,10 @@ import javax.swing.event.ListDataListener;
  * Panel that aligns the buttons in a row.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 2.2
+ * @since 3.0
  */
 @SuppressWarnings("serial")
-public class ButtonsRowPanel extends JPanel {
+class ButtonsRowPanel extends JPanel {
 
 	private TableLayout layout;
 
@@ -52,7 +52,7 @@ public class ButtonsRowPanel extends JPanel {
 
 	private final List<JButton> buttons;
 
-	private ListModel model;
+	private ListModel<Action> model;
 
 	/**
 	 * Create the {@link JPanel} and sets a one-row {@link TableLayout}.
@@ -102,7 +102,7 @@ public class ButtonsRowPanel extends JPanel {
 	private void addInterval(int index0, int index1) {
 		for (int i = index0; i < index1; i++) {
 			layout.insertColumn(i, PREFERRED);
-			JButton button = new JButton((Action) model.getElementAt(i));
+			JButton button = new JButton(model.getElementAt(i));
 			add(button, format("%d, 0", i));
 			buttons.add(button);
 		}
@@ -114,7 +114,7 @@ public class ButtonsRowPanel extends JPanel {
 		for (int i = index0; i < index1; i++) {
 			JButton button = buttons.get(i);
 			remove(button);
-			button = new JButton((Action) model.getElementAt(i));
+			button = new JButton(model.getElementAt(i));
 			add(button, format("%d, 0", i));
 			buttons.set(i, button);
 		}
@@ -136,7 +136,7 @@ public class ButtonsRowPanel extends JPanel {
 	 * @throws NullPointerException
 	 *             if the specified model is {@code null}.
 	 */
-	public void setModel(ListModel newModel) {
+	public void setModel(ListModel<Action> newModel) {
 		notNull(newModel, "The model cannot be null.");
 		if (model == newModel) {
 			return;
@@ -144,7 +144,7 @@ public class ButtonsRowPanel extends JPanel {
 		replaceModel(newModel);
 	}
 
-	private void replaceModel(ListModel newModel) {
+	private void replaceModel(ListModel<Action> newModel) {
 		if (model != null) {
 			model.removeListDataListener(actionsListener);
 			int oldSize = model.getSize();
@@ -172,8 +172,6 @@ public class ButtonsRowPanel extends JPanel {
 
 	/**
 	 * Returns the button in this buttons row panel with the specified index.
-	 * There are always was much buttons and in the same order as the with
-	 * {@link #setModel(ListModel)} set model.
 	 * 
 	 * @param index
 	 *            the index.

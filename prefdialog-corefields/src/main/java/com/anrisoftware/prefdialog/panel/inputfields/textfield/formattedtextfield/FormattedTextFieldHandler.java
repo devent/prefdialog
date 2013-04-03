@@ -89,7 +89,7 @@ class FormattedTextFieldHandler extends AbstractTextFieldHandler {
 	}
 
 	private String getDefaultValidatorText() {
-		return validatorTexts.get(getField().getType());
+		return validatorTexts.get(getField().getFieldType());
 	}
 
 }
