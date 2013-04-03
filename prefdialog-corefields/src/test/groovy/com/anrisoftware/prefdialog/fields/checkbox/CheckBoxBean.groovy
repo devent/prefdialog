@@ -18,65 +18,51 @@
  */
 package com.anrisoftware.prefdialog.fields.checkbox
 
-import org.apache.commons.lang3.reflect.FieldUtils
-
-import com.anrisoftware.prefdialog.annotations.Checkbox
+import com.anrisoftware.prefdialog.annotations.CheckBox
 import com.anrisoftware.prefdialog.annotations.FieldComponent
 
 /**
  * Bean with check-box fields.
  *
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 2.2
+ * @since 3.0
  */
-class CheckboxBean {
+class CheckBoxBean {
 
 	static final NULL_VALUE = "nullValue"
 
-	static final NULL_VALUE_FIELD = FieldUtils.getField(CheckboxBean, NULL_VALUE, true)
-
 	static final NO_TEXT = "noText"
-
-	static final NO_TEXT_FIELD = FieldUtils.getField(CheckboxBean, NO_TEXT, true)
 
 	static final WITH_TEXT = "withText"
 
-	static final WITH_TEXT_FIELD = FieldUtils.getField(CheckboxBean, WITH_TEXT, true)
-
 	static final WITH_TEXT_RESOURCE = "withTextResource"
-
-	static final WITH_TEXT_RESOURCE_FIELD = FieldUtils.getField(CheckboxBean, WITH_TEXT_RESOURCE, true)
 
 	static final NOT_SHOW_TEXT = "notShowText"
 
-	static final NOT_SHOW_TEXT_FIELD = FieldUtils.getField(CheckboxBean, NOT_SHOW_TEXT, true)
-
 	static final READ_ONLY = "readOnly"
 
-	static final READ_ONLY_FIELD = FieldUtils.getField(CheckboxBean, READ_ONLY, true)
+	@FieldComponent
+	@CheckBox
+	public Boolean nullValue
 
 	@FieldComponent
-	@Checkbox
-	Boolean nullValue
+	@CheckBox
+	public boolean noText
 
 	@FieldComponent
-	@Checkbox
-	boolean noText
+	@CheckBox(text = "Checkbox Text")
+	public boolean withText
+
+	@FieldComponent(title = "checkbox_with_text_resource_title")
+	@CheckBox(text = "checkbox_with_text_resource_text")
+	public boolean withTextResource
 
 	@FieldComponent
-	@Checkbox(text = "Checkbox Text")
-	boolean withText
-
-	@FieldComponent
-	@Checkbox(text = "checkbox_with_text_resource")
-	boolean withTextResource
-
-	@FieldComponent
-	@Checkbox(showText = false)
-	boolean notShowText
+	@CheckBox(showText = false)
+	public boolean notShowText
 
 	@FieldComponent(readOnly = true)
-	@Checkbox
-	boolean readOnly
+	@CheckBox
+	public boolean readOnly
 }
 

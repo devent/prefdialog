@@ -32,17 +32,23 @@ import javax.swing.Action;
  * Field with a group of buttons. The value must be set to an array or an
  * {@link Iterable} that contains the {@link Action} for each button.
  * </p>
- * Example:
+ * Examples: a) array of actions field
  * 
  * <pre>
  * &#064;FieldComponent
  * &#064;ButtonGroup
- * private Action[] buttons = { ... };
+ * public Action[] buttons = { ... };
+ * </pre>
  * 
+ * b) collection of actions field
+ * 
+ * <pre>
  * &#064;FieldComponent
  * &#064;ButtonGroup
- * private Iterable&lt;Action&gt; buttons = ...;
+ * public Iterable&lt;Action&gt; buttons = ...;
  * </pre>
+ * 
+ * c) array of actions method
  * 
  * <pre>
  * &#064;FieldComponent
@@ -50,11 +56,15 @@ import javax.swing.Action;
  * public Action[] getButtons() {
  *   return new Action[] { ... };
  * }
+ * </pre>
  * 
+ * d) collection of actions method
+ * 
+ * <pre>
  * &#064;FieldComponent
  * &#064;ButtonGroup
  * public Iterable&lt;Action&gt; getButtons() {
- *   return list;
+ * 	return list;
  * }
  * </pre>
  * 

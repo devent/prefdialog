@@ -335,6 +335,15 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 		return parentObject;
 	}
 
+	/**
+	 * Returns the field name.
+	 * 
+	 * @return the {@link String} field name.
+	 */
+	protected String getFieldName() {
+		return fieldName;
+	}
+
 	@Override
 	public void setName(String name) {
 		log.checkName(this, name);
@@ -568,18 +577,43 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	}
 
 	private void updateToolTipResource() {
-		if (isEmpty(toolTipResource) || texts == null) {
-			return;
+		if (haveTextResource(toolTipResource)) {
+			toolTip = getTextResource(toolTipResource);
+			setupToolTipText();
 		}
-		toolTip = texts.getResource(toolTipResource, getLocale()).getText();
-		setupToolTipText();
 	}
 
 	private void updateTitleResource() {
-		if (isEmpty(titleResource) || texts == null) {
-			return;
+		if (haveTextResource(titleResource)) {
+			title = getTextResource(titleResource);
 		}
-		title = texts.getResource(titleResource, getLocale()).getText();
+	}
+
+	/**
+	 * Tests if the text resource is available.
+	 * 
+	 * @param name
+	 *            the {@link String} name of the text resource.
+	 * 
+	 * @return {@code true} if the name is not {@code null} or empty and the
+	 *         texts resources are available, {@code false} otherwise.
+	 */
+	protected boolean haveTextResource(String name) {
+		return !isEmpty(name) && texts != null;
+	}
+
+	/**
+	 * Returns the text resource with the specified name and the current locale.
+	 * 
+	 * @param name
+	 *            the {@link String} resource name.
+	 * 
+	 * @return the {@link String} text resource.
+	 * 
+	 * @see #getLocale()
+	 */
+	protected String getTextResource(String name) {
+		return texts.getResource(name, getLocale()).getText();
 	}
 
 	/**

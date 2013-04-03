@@ -15,8 +15,6 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccess;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccessFactory;
-import com.anrisoftware.globalpom.reflection.beans.BeanAccessFactory;
-import com.anrisoftware.globalpom.reflection.beans.BeanFactory;
 import com.anrisoftware.prefdialog.annotations.ButtonGroup;
 import com.anrisoftware.prefdialog.annotations.HorizontalAlignment;
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
@@ -41,7 +39,7 @@ public class ButtonGroupField extends AbstractTitleField<Container, Container> {
 
 	private final ButtonsRowPanel buttonsRowPanel;
 
-	private AnnotationAccess buttonGroupAnnotation;
+	private AnnotationAccess fieldAnnotation;
 
 	/**
 	 * @see ButtonGroupFieldFactory#create(java.awt.Component, Object, String)
@@ -63,16 +61,14 @@ public class ButtonGroupField extends AbstractTitleField<Container, Container> {
 	}
 
 	@Inject
-	void setBeanAccessFactory(BeanAccessFactory beanAccessFactory,
-			BeanFactory beanFactory,
-			AnnotationAccessFactory annotationAccessFactory) {
-		this.buttonGroupAnnotation = annotationAccessFactory.create(
-				ANNOTATION_CLASS, getAccessibleObject());
+	void setBeanAccessFactory(AnnotationAccessFactory annotationAccessFactory) {
+		this.fieldAnnotation = annotationAccessFactory.create(ANNOTATION_CLASS,
+				getAccessibleObject());
 		setupHorizontalAlignment();
 	}
 
 	private void setupHorizontalAlignment() {
-		HorizontalAlignment alignment = buttonGroupAnnotation
+		HorizontalAlignment alignment = fieldAnnotation
 				.getValue(HORIZONTAL_ALIGNMENT_ELEMENT);
 		setHorizontalAlignment(alignment);
 	}

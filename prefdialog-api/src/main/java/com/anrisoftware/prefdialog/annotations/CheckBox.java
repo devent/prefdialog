@@ -19,42 +19,61 @@
 package com.anrisoftware.prefdialog.annotations;
 
 import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import com.anrisoftware.resources.texts.api.Texts;
+
 /**
  * Check box field. A check box field can only be checked or unchecked. The
  * value of field must be set.
  * <p>
- * Example with text set to the field name.
+ * Examples: a) text as field name
  * 
  * <pre>
  * &#064;FieldComponent
  * &#064;Checkbox
- * private boolean isImportant;
+ * public boolean isImportant;
  * </pre>
  * 
- * Example with text set to the field name but is not visible.
+ * b) not visible text
  * 
  * <pre>
  * &#064;FieldComponent
  * &#064;Checkbox(showText = false)
- * private boolean isImportant;
+ * public boolean isImportant;
  * </pre>
  * 
- * Example with text set.
+ * c) text set
  * 
  * <pre>
  * &#064;FieldComponent
  * &#064;Checkbox(text = &quot;Is Important&quot;)
- * private boolean isImportant;
+ * public boolean isImportant;
+ * </pre>
+ * 
+ * c) with getter and setter
+ * 
+ * <pre>
+ * private boolean important;
+ * 
+ * public void setImportant(boolean important) {
+ * 	this.important = important;
+ * }
+ * 
+ * &#064;FieldComponent
+ * &#064;Checkbox(text = &quot;Is Important&quot;)
+ * public boolean isImportant() {
+ * 	return important;
+ * }
  * </pre>
  */
-@Target(FIELD)
+@Target({ FIELD, METHOD })
 @Retention(RUNTIME)
-public @interface Checkbox {
+public @interface CheckBox {
 
 	/**
 	 * The text of the check-box. Defaults to the empty string which means the

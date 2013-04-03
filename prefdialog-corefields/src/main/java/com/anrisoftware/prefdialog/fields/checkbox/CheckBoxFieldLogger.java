@@ -18,25 +18,40 @@
  */
 package com.anrisoftware.prefdialog.fields.checkbox;
 
-import static com.google.inject.multibindings.Multibinder.newSetBinder;
+import static org.apache.commons.lang3.Validate.isInstanceOf;
 
-import com.anrisoftware.prefdialog.fields.FieldPlugin;
-import com.google.inject.AbstractModule;
-import com.google.inject.multibindings.Multibinder;
+import com.anrisoftware.globalpom.log.AbstractLogger;
 
 /**
- * Binds the check box field plug-in.
+ * Logging messages for {@link CheckBoxField}.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 2.2
+ * @since 3.0
  */
-public class CheckboxPluginModule extends AbstractModule {
+class CheckBoxFieldLogger extends AbstractLogger {
 
-	@Override
-	protected void configure() {
-		Multibinder<FieldPlugin> binder;
-		binder = newSetBinder(binder(), FieldPlugin.class);
-		binder.addBinding().to(CheckboxFieldPlugin.class);
+	private static final String SET_SHOW_TEXT = "Set show text {} to field {}.";
+
+	private static final String SET_TEXT = "Set text '{}' to field {}.";
+
+	private static final String VALUE_NOT_BOOLEAN = "Value '%s' is not boolean value for %s.";
+
+	/**
+	 * Creates logger for {@link CheckBoxField}.
+	 */
+	CheckBoxFieldLogger() {
+		super(CheckBoxField.class);
 	}
 
+	void checkValue(CheckBoxField field, Object value) {
+		isInstanceOf(Boolean.class, value, VALUE_NOT_BOOLEAN, value, field);
+	}
+
+	void textSet(CheckBoxField field, String text) {
+		log.debug(SET_TEXT, text, field);
+	}
+
+	void showTextSet(CheckBoxField field, boolean show) {
+		log.debug(SET_SHOW_TEXT, show, field);
+	}
 }

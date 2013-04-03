@@ -16,12 +16,12 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-corefields. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.fields.buttongroup
+package com.anrisoftware.prefdialog.fields.checkbox
 
 import static com.anrisoftware.prefdialog.core.AbstractTitleField.*
 import static com.anrisoftware.prefdialog.core.FieldTestUtils.*
-import static com.anrisoftware.prefdialog.fields.buttongroup.ButtonGroupBean.*
-import static com.anrisoftware.prefdialog.fields.buttongroup.ButtonGroupService.*
+import static com.anrisoftware.prefdialog.fields.checkbox.CheckBoxBean.*
+import static com.anrisoftware.prefdialog.fields.checkbox.CheckBoxService.*
 
 import java.awt.Container
 
@@ -38,26 +38,26 @@ import com.google.inject.Guice
 import com.google.inject.Injector
 
 /**
- * Test the button group field as a service.
+ * Test the check box field as a service.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-class ButtonGroupServiceTest {
+class CheckBoxServiceTest {
 
 	@Test
 	void "with defaults"() {
-		def title = "ButtonGroupServiceTest :: with defaults"
-		def fieldName = BUTTONS
+		def title = "CheckBoxServiceTest :: with defaults"
+		def fieldName = NO_TEXT
 		def field = factory.create(container, bean, fieldName)
 		new TestFrameUtil(title, container).withFixture({})
 	}
 
 	static Injector injector
 
-	static ButtonGroupFieldFactory factory
+	static CheckBoxFieldFactory factory
 
-	ButtonGroupBean bean
+	CheckBoxBean bean
 
 	Container container
 
@@ -69,7 +69,7 @@ class ButtonGroupServiceTest {
 
 	@Before
 	void setupBean() {
-		bean = new ButtonGroupBean()
+		bean = new CheckBoxBean()
 		container = new JPanel()
 	}
 }

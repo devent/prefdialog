@@ -27,7 +27,7 @@ import org.junit.Before
 import org.junit.Test
 
 import com.anrisoftware.prefdialog.core.FieldTestUtils
-import com.anrisoftware.prefdialog.fields.checkbox.CheckboxFieldFactory
+import com.anrisoftware.prefdialog.fields.checkbox.CheckBoxFieldFactory
 import com.google.inject.Injector
 
 /**
@@ -42,7 +42,7 @@ class ChildTest extends FieldTestUtils {
 
 	ChildFieldFactory factory
 
-	CheckboxFieldFactory checkboxFactory
+	CheckBoxFieldFactory checkboxFactory
 
 	ChildBean bean
 

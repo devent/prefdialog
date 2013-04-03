@@ -20,7 +20,7 @@ package com.anrisoftware.prefdialog.fields.child
 
 import org.apache.commons.lang3.reflect.FieldUtils
 
-import com.anrisoftware.prefdialog.annotations.Checkbox
+import com.anrisoftware.prefdialog.annotations.CheckBox
 import com.anrisoftware.prefdialog.annotations.FieldComponent
 
 /**
@@ -34,7 +34,7 @@ class ChildBean {
 	static class ChildSubBean {
 
 		@FieldComponent
-		@Checkbox
+		@CheckBox
 		boolean checkbox
 	}
 
@@ -45,7 +45,7 @@ class ChildBean {
 	static final NULL_VALUE_FIELD = FieldUtils.getField(ChildBean, NULL_VALUE, true)
 
 	@FieldComponent
-	@Checkbox
+	@CheckBox
 	ChildSubBean nullValue
 }
 

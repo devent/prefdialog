@@ -20,28 +20,19 @@ package com.anrisoftware.prefdialog.fields.checkbox;
 
 import java.awt.Container;
 
-import com.anrisoftware.prefdialog.fields.FieldComponent;
-import com.anrisoftware.prefdialog.reflection.annotations.AnnotationsModule;
-import com.anrisoftware.prefdialog.reflection.beans.BeansModule;
-import com.google.inject.AbstractModule;
-import com.google.inject.TypeLiteral;
-import com.google.inject.assistedinject.FactoryModuleBuilder;
+import javax.swing.JCheckBox;
+
+import com.anrisoftware.prefdialog.fields.FieldFactory;
 
 /**
- * Binds the button group field factory.
+ * Factory to create a new check box field. A check box field can only be
+ * checked or unchecked.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 2.2
+ * @since 3.0
  */
-class CheckboxModule extends AbstractModule {
+public interface CheckBoxFieldFactory extends FieldFactory<Container> {
 
-	@Override
-	protected void configure() {
-		install(new AnnotationsModule());
-		install(new BeansModule());
-		install(new FactoryModuleBuilder().implement(
-				new TypeLiteral<FieldComponent<Container>>() {
-				}, CheckboxField.class).build(CheckboxFieldFactory.class));
-	}
-
+	CheckBoxField create(JCheckBox checkBox, Container container,
+			Object parentObject, String fieldName);
 }

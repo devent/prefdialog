@@ -23,61 +23,104 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
 import java.awt.Container;
 import java.beans.PropertyVetoException;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
 import java.util.Locale;
-import java.util.MissingResourceException;
 
 import javax.inject.Inject;
 import javax.swing.JCheckBox;
 
-import com.anrisoftware.prefdialog.annotations.Checkbox;
+import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccess;
+import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccessFactory;
+import com.anrisoftware.prefdialog.annotations.CheckBox;
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
 import com.anrisoftware.resources.texts.api.Texts;
 import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
 
 /**
  * Check box field. A check box field can only be checked or unchecked.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 2.2
+ * @since 3.0
  */
-public class CheckboxField extends AbstractTitleField<JCheckBox, Container> {
+@SuppressWarnings("serial")
+public class CheckBoxField extends AbstractTitleField<JCheckBox, Container> {
 
-	private static final Class<? extends Annotation> ANNOTATION_CLASS = Checkbox.class;
+	private static final Class<? extends Annotation> ANNOTATION_CLASS = CheckBox.class;
 
 	private static final String TEXT_ELEMENT = "text";
 
 	private static final String SHOW_TEXT_ELEMENT = "showText";
 
-	private final CheckboxFieldLogger log;
+	private final CheckBoxFieldLogger log;
+
+	private final JCheckBox checkBox;
 
 	private String textResource;
+
+	private String text;
 
 	private boolean showText;
 
 	private boolean adjusting;
 
-	@Inject
-	CheckboxField(CheckboxFieldLogger logger, @Assisted Container container,
-			@Assisted Object parentObject, @Assisted Field field) {
-		super(new JCheckBox(), container, parentObject, field);
+	private AnnotationAccess fieldAnnotation;
+
+	/**
+	 * @see CheckBoxFieldFactory#create(Container, Object, String)
+	 */
+	@AssistedInject
+	CheckBoxField(CheckBoxFieldLogger logger, @Assisted Container container,
+			@Assisted Object parentObject, @Assisted String fieldName) {
+		this(logger, new JCheckBox(), container, parentObject, fieldName);
+	}
+
+	/**
+	 * @see CheckBoxFieldFactory#create(JCheckBox, Container, Object, String)
+	 */
+	@AssistedInject
+	CheckBoxField(CheckBoxFieldLogger logger, @Assisted JCheckBox checkBox,
+			@Assisted Container container, @Assisted Object parentObject,
+			@Assisted String fieldName) {
+		super(checkBox, container, parentObject, fieldName);
+		this.checkBox = checkBox;
 		this.log = logger;
 		this.adjusting = false;
 	}
 
-	@Override
-	public CheckboxField createField() {
-		super.createField();
+	@Inject
+	void setBeanAccessFactory(AnnotationAccessFactory annotationAccessFactory) {
+		this.fieldAnnotation = annotationAccessFactory.create(ANNOTATION_CLASS,
+				getAccessibleObject());
 		setupText();
 		setupShowText();
-		return this;
 	}
 
 	private void setupText() {
-		String text = getAnnotationAccess().getValue(ANNOTATION_CLASS,
-				getField(), TEXT_ELEMENT);
-		text = isEmpty(text) ? getField().getName() : text;
+		String text = fieldAnnotation.getValue(TEXT_ELEMENT);
+		text = isEmpty(text) ? getFieldName() : text;
 		setText(text);
+	}
+
+	private void setupShowText() {
+		boolean show = fieldAnnotation.getValue(SHOW_TEXT_ELEMENT);
+		setShowText(show);
+	}
+
+	/**
+	 * Sets the text of the check-box. Defaults to the empty string which means
+	 * the field name is used as the text.
+	 * <p>
+	 * The text can also be a resource name that is queried in the supplied
+	 * texts resource.
+	 * 
+	 * @param text
+	 *            the text.
+	 */
+	public void setText(String text) {
+		textResource = text;
+		this.text = text;
+		updateTextResource();
+		log.textSet(this, text);
 	}
 
 	@Override
@@ -90,41 +133,15 @@ public class CheckboxField extends AbstractTitleField<JCheckBox, Container> {
 		updateTextResource();
 	}
 
-	/**
-	 * Sets the text of the check-box. Defaults to the empty string which means
-	 * the field name is used as the text.
-	 * <p>
-	 * The text can also be a resource name that is queried in the supplied
-	 * texts resource.
-	 * 
-	 * @param newText
-	 *            the text.
-	 */
-	public void setText(String newText) {
-		textResource = newText;
-		getComponent().setText(newText);
-		updateTextResource();
-		log.textSet(this, newText);
-	}
-
 	private void updateTextResource() {
-		if (!showText) {
-			getComponent().setText("");
-			return;
+		if (haveTextResource(textResource)) {
+			text = getTextResource(textResource);
+		}
+		if (showText) {
+			checkBox.setText(text);
 		} else {
-			getComponent().setText(textResource);
+			checkBox.setText("");
 		}
-		if (isEmpty(textResource) || getTexts() == null) {
-			return;
-		}
-		String text;
-		try {
-			text = getTexts().getResource(textResource, getLocale()).getText();
-		} catch (MissingResourceException e) {
-			text = textResource;
-			log.textResourceMissing(this, textResource);
-		}
-		getComponent().setText(text);
 	}
 
 	/**
@@ -133,13 +150,7 @@ public class CheckboxField extends AbstractTitleField<JCheckBox, Container> {
 	 * @return the text.
 	 */
 	public String getText() {
-		return getComponent().getText();
-	}
-
-	private void setupShowText() {
-		boolean show = getAnnotationAccess().getValue(ANNOTATION_CLASS,
-				getField(), SHOW_TEXT_ELEMENT);
-		setShowText(show);
+		return text;
 	}
 
 	/**
@@ -150,7 +161,7 @@ public class CheckboxField extends AbstractTitleField<JCheckBox, Container> {
 	 *            {@code true} for show the text or {@code false} to not show.
 	 */
 	public void setShowText(boolean show) {
-		showText = show;
+		this.showText = show;
 		updateTextResource();
 		log.showTextSet(this, show);
 	}
@@ -167,19 +178,22 @@ public class CheckboxField extends AbstractTitleField<JCheckBox, Container> {
 	/**
 	 * Sets the boolean value for the check-box.
 	 * 
-	 * @param newValue
+	 * @param value
 	 *            the new boolean value. {@code true} for a checked check-box
 	 *            and {@code false} for unchecked.
+	 * 
+	 * @throws PropertyVetoException
+	 *             if the user input is not valid.
 	 * 
 	 * @throws IllegalArgumentException
 	 *             if the value is not a boolean value.
 	 */
 	@Override
-	public void setValue(Object newValue) {
-		super.setValue(newValue);
-		log.checkValue(this, newValue);
+	public void setValue(Object value) throws PropertyVetoException {
+		super.setValue(value);
+		log.checkValue(this, value);
 		if (!adjusting) {
-			getComponent().setSelected((Boolean) newValue);
+			checkBox.setSelected((Boolean) value);
 		}
 	}
 
@@ -193,13 +207,13 @@ public class CheckboxField extends AbstractTitleField<JCheckBox, Container> {
 	public void applyInput() throws PropertyVetoException {
 		super.applyInput();
 		adjusting = true;
-		setValue(getComponent().isSelected());
+		setValue(checkBox.isSelected());
 		adjusting = false;
 	}
 
 	@Override
 	public void restoreInput() {
 		super.restoreInput();
-		getComponent().setSelected((Boolean) getValue());
+		checkBox.setSelected((Boolean) getValue());
 	}
 }

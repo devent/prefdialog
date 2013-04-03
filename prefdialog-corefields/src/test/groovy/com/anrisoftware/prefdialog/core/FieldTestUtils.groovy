@@ -20,8 +20,8 @@ package com.anrisoftware.prefdialog.core
 
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule
 import com.anrisoftware.globalpom.reflection.beans.BeansModule
-import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.globalpom.utils.TestUtils
+import com.anrisoftware.prefdialog.fields.FieldService
 import com.anrisoftware.resources.images.api.Images
 import com.anrisoftware.resources.images.api.ImagesFactory
 import com.anrisoftware.resources.images.images.ImagesResourcesModule
@@ -38,9 +38,9 @@ import com.google.inject.Injector
  * and images resource.
  *
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 2.2
+ * @since 3.0
  */
-class FieldTestUtils extends TestFrameUtil {
+class FieldTestUtils {
 
 	static {
 		TestUtils.toStringStyle
@@ -64,5 +64,9 @@ class FieldTestUtils extends TestFrameUtil {
 				new ResourcesSmoothScalingModule())
 		ImagesFactory factory = childInjector.getInstance ImagesFactory
 		factory.create "Icons"
+	}
+
+	static def findService(def info) {
+		ServiceLoader.load(FieldService).find { it.info == info }
 	}
 }

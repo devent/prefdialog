@@ -19,31 +19,27 @@
 package com.anrisoftware.prefdialog.fields.checkbox;
 
 import java.awt.Container;
-import java.lang.reflect.Field;
+
+import com.anrisoftware.prefdialog.fields.FieldComponent;
+import com.anrisoftware.prefdialog.fields.FieldFactory;
+import com.google.inject.AbstractModule;
+import com.google.inject.TypeLiteral;
+import com.google.inject.assistedinject.FactoryModuleBuilder;
 
 /**
- * Factory to create a new check box field. A check box field can only be
- * checked or unchecked.
+ * Binds the check box field factory.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 2.2
+ * @since 3.0
  */
-interface CheckboxFieldFactory {
+class CheckBoxModule extends AbstractModule {
 
-	/**
-	 * Creates a new check box field for the specified field of the preference
-	 * bean object.
-	 * 
-	 * @param container
-	 *            the {@link Container} for the check box field.
-	 * 
-	 * @param bean
-	 *            the preference bean {@link Object} where the field is defined.
-	 * 
-	 * @param field
-	 *            the {@link Field}.
-	 * 
-	 * @return the {@link CheckboxField}.
-	 */
-	CheckboxField create(Container container, Object bean, Field field);
+	@Override
+	protected void configure() {
+		install(new FactoryModuleBuilder().implement(
+				new TypeLiteral<FieldComponent<Container>>() {
+				}, CheckBoxField.class).build(CheckBoxFieldFactory.class));
+		bind(FieldFactory.class).to(CheckBoxFieldFactory.class);
+	}
+
 }
