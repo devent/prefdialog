@@ -235,6 +235,37 @@ class TitleFieldTest extends FieldTestUtils {
 		}, { field.setLocale Locale.GERMAN })
 	}
 
+	@Test
+	void "with icon resource change title position"() {
+		def title = "TitleFieldTest :: with icon resource title position"
+		def preferenceField = preferencesTextFieldWithIconResource
+		def containerName = "${preferenceField}-$CONTAINER_NAME"
+		def titleName = "${preferenceField}-$TITLE_NAME"
+		def field = factory.create(component, container, preferences, preferenceField)
+		field.setImages images
+
+		assertField field,
+		name: containerName,
+		title: preferenceField,
+		icon: { Icon icon -> assert icon.iconWidth == 16 },
+		iconSize: SMALL
+		new TestFrameUtil(title, container).withFixture({FrameFixture fixture ->
+			assertEnabled fixture, preferenceField, containerName, titleName
+			assertNames fixture, preferenceField, containerName, titleName
+		}, { //
+			field.setTitlePosition ICON_ONLY },
+		{ //
+			field.setTitlePosition TEXT_ONLY },
+		{ //
+			field.setTitlePosition TEXT_ALONGSIDE_ICON },
+		{ //
+			field.setTitlePosition TEXT_UNDER_ICON },
+		{
+			//
+		}
+		)
+	}
+
 	static Injector injector
 
 	static MockTitleFieldFactory factory

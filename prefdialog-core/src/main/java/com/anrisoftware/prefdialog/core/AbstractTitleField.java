@@ -29,7 +29,9 @@ import java.awt.Container;
 import java.util.Locale;
 
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
+import com.anrisoftware.prefdialog.annotations.TextPosition;
 import com.anrisoftware.resources.images.api.IconSize;
 import com.anrisoftware.resources.images.api.Images;
 import com.anrisoftware.resources.texts.api.Texts;
@@ -90,41 +92,6 @@ public abstract class AbstractTitleField<ComponentType extends Component, Contai
 		titleLabel.setLabelFor(getContainerComponent());
 	}
 
-	@Override
-	public void setTexts(Texts texts) {
-		super.setTexts(texts);
-		updateTextsResources();
-	}
-
-	private void updateTextsResources() {
-		updateTitleResource();
-	}
-
-	private void updateTitleResource() {
-		if (isShowTitle()) {
-			titleLabel.setText(appendColumn(getTitle()));
-		} else {
-			titleLabel.setText(null);
-		}
-	}
-
-	private String appendColumn(String text) {
-		if (!isEmpty(text) && !text.endsWith(":")) {
-			text = text + ":";
-		}
-		return text;
-	}
-
-	@Override
-	public void setImages(Images images) {
-		super.setImages(images);
-		updateIconResource();
-	}
-
-	private void updateIconResource() {
-		titleLabel.setIcon(getIcon());
-	}
-
 	/**
 	 * Sets the name of the title label to
 	 * <code>&lt;name&gt;-{@value #TITLE_NAME}</code>, with &lt;name&gt; being
@@ -146,6 +113,38 @@ public abstract class AbstractTitleField<ComponentType extends Component, Contai
 	}
 
 	@Override
+	public void setTitlePosition(TextPosition position) {
+		super.setTitlePosition(position);
+		switch (position) {
+		case ICON_ONLY:
+			titleLabel.setText(null);
+			break;
+		case TEXT_ALONGSIDE_ICON:
+			updateTitleResource();
+			updateIconResource();
+			titleLabel.setVerticalTextPosition(SwingConstants.CENTER);
+			break;
+		case TEXT_ONLY:
+			updateTitleResource();
+			titleLabel.setIcon(null);
+			break;
+		case TEXT_UNDER_ICON:
+			updateIconResource();
+			updateTitleResource();
+			titleLabel.setVerticalTextPosition(SwingConstants.BOTTOM);
+			break;
+		default:
+			break;
+		}
+	}
+
+	@Override
+	public void setIconSize(IconSize size) {
+		super.setIconSize(size);
+		updateIconResource();
+	}
+
+	@Override
 	public void setLocale(Locale locale) {
 		super.setLocale(locale);
 		updateTextsResources();
@@ -153,9 +152,42 @@ public abstract class AbstractTitleField<ComponentType extends Component, Contai
 	}
 
 	@Override
-	public void setIconSize(IconSize size) {
-		super.setIconSize(size);
+	public void setImages(Images images) {
+		super.setImages(images);
 		updateIconResource();
+	}
+
+	private void updateIconResource() {
+		titleLabel.setIcon(getIcon());
+	}
+
+	@Override
+	public void setTexts(Texts texts) {
+		super.setTexts(texts);
+		updateTextsResources();
+	}
+
+	private void updateTextsResources() {
+		updateTitleResource();
+	}
+
+	private void updateTitleResource() {
+		if (isShowTitle()) {
+			titleLabel.setText(getTitleLabelText());
+		} else {
+			titleLabel.setText(null);
+		}
+	}
+
+	public String getTitleLabelText() {
+		return appendColumn(getTitle());
+	}
+
+	private String appendColumn(String text) {
+		if (!isEmpty(text) && !text.endsWith(":")) {
+			text = text + ":";
+		}
+		return text;
 	}
 
 	/**
