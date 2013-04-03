@@ -8,7 +8,7 @@ import com.anrisoftware.prefdialog.annotations.HorizontalAlignment
  * Button group with default attributes.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 2.2
+ * @since 3.0
  */
 class ButtonGroupBean {
 

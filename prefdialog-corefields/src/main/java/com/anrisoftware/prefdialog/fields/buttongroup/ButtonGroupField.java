@@ -10,7 +10,6 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.swing.AbstractListModel;
 import javax.swing.Action;
-import javax.swing.JPanel;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -30,8 +29,7 @@ import com.google.inject.assistedinject.Assisted;
  * @since 3.0
  */
 @SuppressWarnings("serial")
-public class ButtonGroupField extends
-		AbstractTitleField<ButtonsGroupPanel, Container> {
+public class ButtonGroupField extends AbstractTitleField<Container, Container> {
 
 	private static final String HORIZONTAL_ALIGNMENT_ELEMENT = "horizontalAlignment";
 
@@ -46,14 +44,14 @@ public class ButtonGroupField extends
 	private AnnotationAccess buttonGroupAnnotation;
 
 	/**
-	 * @see ButtonGroupFieldFactory#create(Object, String)
+	 * @see ButtonGroupFieldFactory#create(java.awt.Component, Object, String)
 	 */
 	@Inject
 	ButtonGroupField(ButtonGroupFieldLogger logger,
 			ButtonsGroupPanel buttonsGroupPanel,
-			ButtonsRowPanel buttonsRowPanel, @Assisted Object parentObject,
-			@Assisted String fieldName) {
-		super(buttonsGroupPanel, new JPanel(), parentObject, fieldName);
+			ButtonsRowPanel buttonsRowPanel, @Assisted Container container,
+			@Assisted Object parentObject, @Assisted String fieldName) {
+		super(buttonsGroupPanel, container, parentObject, fieldName);
 		this.log = logger;
 		this.buttonsGroupPanel = buttonsGroupPanel;
 		this.buttonsRowPanel = buttonsRowPanel;

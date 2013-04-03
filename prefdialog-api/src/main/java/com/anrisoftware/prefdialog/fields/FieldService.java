@@ -1,5 +1,7 @@
 package com.anrisoftware.prefdialog.fields;
 
+import java.awt.Component;
+
 /**
  * Makes the field factory available as a service.
  * 
@@ -23,6 +25,6 @@ public interface FieldService {
 	 * 
 	 * @return the {@link FieldFactory}.
 	 */
-	FieldFactory getFactory(Object... parent);
+	FieldFactory<? extends Component> getFactory(Object... parent);
 
 }

@@ -18,9 +18,10 @@
  */
 package com.anrisoftware.prefdialog.fields.buttongroup;
 
-import java.awt.Component;
+import java.awt.Container;
 
 import com.anrisoftware.prefdialog.fields.FieldComponent;
+import com.anrisoftware.prefdialog.fields.FieldFactory;
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
@@ -36,8 +37,9 @@ class ButtonGroupModule extends AbstractModule {
 	@Override
 	protected void configure() {
 		install(new FactoryModuleBuilder().implement(
-				new TypeLiteral<FieldComponent<? extends Component>>() {
+				new TypeLiteral<FieldComponent<Container>>() {
 				}, ButtonGroupField.class).build(ButtonGroupFieldFactory.class));
+		bind(FieldFactory.class).to(ButtonGroupFieldFactory.class);
 	}
 
 }

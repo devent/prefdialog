@@ -8,11 +8,13 @@ import java.awt.Component;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-public interface FieldFactory {
+public interface FieldFactory<T extends Component> {
 
 	/**
 	 * Creates a new field component.
 	 * 
+	 * @param component
+	 *            the {@link Component} of the field.
 	 * 
 	 * @param parentObject
 	 *            the parent object of this field.
@@ -22,7 +24,6 @@ public interface FieldFactory {
 	 * 
 	 * @return the {@link FieldComponent}.
 	 */
-	FieldComponent<? extends Component> create(Object parentObject,
-			String fieldName);
+	FieldComponent<T> create(T component, Object parentObject, String fieldName);
 
 }

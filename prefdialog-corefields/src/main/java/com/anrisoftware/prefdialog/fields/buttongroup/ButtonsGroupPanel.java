@@ -49,7 +49,7 @@ class ButtonsGroupPanel extends JPanel {
 	ButtonsGroupPanel() {
 		this.layout = createLayout();
 		this.horizontalAlignment = HorizontalAlignment.RIGHT;
-		setup();
+		setupPanel();
 	}
 
 	private TableLayout createLayout() {
@@ -60,7 +60,7 @@ class ButtonsGroupPanel extends JPanel {
 		return layout;
 	}
 
-	private void setup() {
+	private void setupPanel() {
 		setLayout(layout);
 	}
 

@@ -8,7 +8,7 @@ import javax.swing.AbstractAction
  * Calls the callback.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 2.2
+ * @since 3.0
  */
 class ButtonAction extends AbstractAction {
 

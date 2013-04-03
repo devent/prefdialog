@@ -20,6 +20,8 @@ package com.anrisoftware.prefdialog.fields.buttongroup;
 
 import static java.util.Arrays.asList;
 
+import java.awt.Component;
+
 import org.mangosdk.spi.ProviderFor;
 
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule;
@@ -85,8 +87,9 @@ public class ButtonGroupService implements FieldService {
 		return INFO;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public FieldFactory getFactory(Object... parent) {
+	public FieldFactory<? extends Component> getFactory(Object... parent) {
 		return createInjector(parent.length > 0 ? (Injector) parent[0] : null)
 				.getInstance(FieldFactory.class);
 	}
