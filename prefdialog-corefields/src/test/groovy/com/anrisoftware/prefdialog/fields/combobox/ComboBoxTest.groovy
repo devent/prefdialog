@@ -63,6 +63,22 @@ class ComboBoxTest extends FieldTestUtils {
 	}
 
 	@Test
+	void "restore input"() {
+		def title = "ComboBoxTest :: restore input"
+		def fieldName = ARRAY_ELEMENTS
+		def field = factory.create(container, bean, fieldName)
+
+		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+			fixture.comboBox fieldName selectItem 0
+			field.applyInput()
+			fixture.comboBox fieldName selectItem 2
+			field.restoreInput()
+			fixture.comboBox fieldName requireSelection "One"
+			assert bean."$fieldName" == "One"
+		})
+	}
+
+	@Test
 	void "array elements with second value selected"() {
 		def title = "ComboBoxTest :: array elements with second value selected"
 		def fieldName = ARRAY_ELEMENTS_SECOND
