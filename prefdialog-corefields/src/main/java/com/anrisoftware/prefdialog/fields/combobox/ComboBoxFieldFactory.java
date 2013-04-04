@@ -19,31 +19,30 @@
 package com.anrisoftware.prefdialog.fields.combobox;
 
 import java.awt.Container;
-import java.lang.reflect.Field;
+
+import javax.swing.JComboBox;
+
+import com.anrisoftware.prefdialog.fields.FieldFactory;
 
 /**
  * Factory to create a new combo box field. A combo box field can only be
  * checked or unchecked.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 2.2
+ * @since 3.0
  */
-interface ComboBoxFieldFactory {
+public interface ComboBoxFieldFactory extends FieldFactory<Container> {
 
 	/**
-	 * Creates a new combo box field for the specified field of the preference
-	 * bean object.
+	 * Sets the check box component for the field.
 	 * 
-	 * @param container
-	 *            the {@link Container} for the combo box field.
+	 * @param comboBox
+	 *            the {@link JComboBox} component.
 	 * 
-	 * @param bean
-	 *            the preference bean {@link Object} where the field is defined.
+	 * @return the {@link ComboBoxField}
 	 * 
-	 * @param field
-	 *            the {@link Field}.
-	 * 
-	 * @return the {@link ComboBoxField}.
+	 * @see FieldFactory#create(java.awt.Component, Object, String)
 	 */
-	ComboBoxField create(Container container, Object bean, Field field);
+	ComboBoxField create(JComboBox<?> comboBox, Container container,
+			Object parentObject, String fieldName);
 }

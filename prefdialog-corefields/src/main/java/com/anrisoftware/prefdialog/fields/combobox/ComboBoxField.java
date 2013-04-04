@@ -23,8 +23,8 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
 import java.awt.Container;
 import java.beans.PropertyVetoException;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Vector;
 
 import javax.inject.Inject;
 import javax.swing.ComboBoxModel;
@@ -32,20 +32,24 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComboBox;
 import javax.swing.ListCellRenderer;
-import javax.swing.MutableComboBoxModel;
 
+import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccess;
+import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccessFactory;
+import com.anrisoftware.globalpom.reflection.beans.BeanAccess;
+import com.anrisoftware.globalpom.reflection.beans.BeanAccessFactory;
 import com.anrisoftware.prefdialog.annotations.ComboBox;
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
 import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
 
 /**
  * Combo box field. A combo box field offers multiple items in a drop-down list.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 2.2
+ * @since 3.0
  */
-@SuppressWarnings("rawtypes")
-public class ComboBoxField extends AbstractTitleField<JComboBox, Container> {
+@SuppressWarnings("serial")
+public class ComboBoxField extends AbstractTitleField<JComboBox<?>, Container> {
 
 	private static final String EDITABLE_ELEMENT = "editable";
 
@@ -63,62 +67,84 @@ public class ComboBoxField extends AbstractTitleField<JComboBox, Container> {
 
 	private final ComboBoxFieldLogger log;
 
+	private final JComboBox<?> comboBox;
+
 	private boolean adjusting;
 
-	@Inject
+	private AnnotationAccess fieldAnnotation;
+
+	private BeanAccessFactory beanAccessFactory;
+
+	/**
+	 * @see ComboBoxFieldFactory#create(Container, Object, String)
+	 */
+	@AssistedInject
 	ComboBoxField(ComboBoxFieldLogger logger, @Assisted Container container,
-			@Assisted Object parentObject, @Assisted Field field) {
-		super(new JComboBox(), container, parentObject, field);
+			@Assisted Object parentObject, @Assisted String fieldName) {
+		this(logger, new JComboBox<Object>(), container, parentObject,
+				fieldName);
+	}
+
+	/**
+	 * @see ComboBoxFieldFactory#create(JComboBox, Container, Object, String)
+	 */
+	@AssistedInject
+	ComboBoxField(ComboBoxFieldLogger logger, @Assisted JComboBox<?> comboBox,
+			@Assisted Container container, @Assisted Object parentObject,
+			@Assisted String fieldName) {
+		super(comboBox, container, parentObject, fieldName);
 		this.log = logger;
+		this.comboBox = comboBox;
 		this.adjusting = false;
 	}
 
-	@Override
-	protected void afterName() {
+	@Inject
+	void setBeanAccessFactory(AnnotationAccessFactory annotationAccessFactory,
+			BeanAccessFactory beanAccessFactory) {
+		this.fieldAnnotation = annotationAccessFactory.create(ANNOTATION_CLASS,
+				getAccessibleObject());
+		this.beanAccessFactory = beanAccessFactory;
 		setupModel();
 		setupModelClass();
 		setupRenderer();
 		setupRendererClass();
 		setupElements();
 		setupEditable();
-		super.afterName();
 	}
 
 	private void setupEditable() {
-		boolean editable = getAnnotationAccess().getValue(ANNOTATION_CLASS,
-				getField(), EDITABLE_ELEMENT);
+		boolean editable = fieldAnnotation.getValue(EDITABLE_ELEMENT);
 		setEditable(editable);
 	}
 
 	private void setupRendererClass() {
-		Class<? extends ListCellRenderer> type = getAnnotationAccess()
-				.getValue(ANNOTATION_CLASS, getField(), RENDERER_CLASS_ELEMENT);
+		Class<? extends ListCellRenderer<?>> type = fieldAnnotation
+				.getValue(RENDERER_CLASS_ELEMENT);
 		if (type != DefaultListCellRenderer.class) {
 			setRendererFromClass(type);
 		}
 	}
 
-	private void setRendererFromClass(Class<? extends ListCellRenderer> type) {
-		ListCellRenderer renderer = getBeanFactory().createBean(type);
+	private void setRendererFromClass(Class<? extends ListCellRenderer<?>> type) {
+		ListCellRenderer<?> renderer = getBeanFactory().create(type);
 		setRenderer(renderer);
 	}
 
 	private void setupModelClass() {
-		Class<? extends ComboBoxModel> type = getAnnotationAccess().getValue(
-				ANNOTATION_CLASS, getField(), MODEL_CLASS_ELEMENT);
+		Class<? extends ComboBoxModel<?>> type = fieldAnnotation
+				.getValue(MODEL_CLASS_ELEMENT);
 		if (type != DefaultComboBoxModel.class) {
 			setModelFromClass(type);
 		}
 	}
 
-	private void setModelFromClass(Class<? extends ComboBoxModel> type) {
-		ComboBoxModel model = getBeanFactory().createBean(type);
+	private void setModelFromClass(Class<? extends ComboBoxModel<?>> type) {
+		ComboBoxModel<?> model = getBeanFactory().create(type);
 		setModel(model);
 	}
 
 	private void setupModel() {
-		String fieldName = getAnnotationAccess().getValue(ANNOTATION_CLASS,
-				getField(), MODEL_ELEMENT);
+		String fieldName = fieldAnnotation.getValue(MODEL_ELEMENT);
 		if (!isEmpty(fieldName)) {
 			setModelFromField(fieldName);
 		}
@@ -126,28 +152,27 @@ public class ComboBoxField extends AbstractTitleField<JComboBox, Container> {
 
 	private void setModelFromField(String fieldName) {
 		Object parent = getParentObject();
-		ComboBoxModel value = getBeanAccess().getValue(fieldName, parent);
-		value = value == null ? createModelFromField(fieldName) : value;
+		BeanAccess access = beanAccessFactory.create(fieldName, parent);
+		ComboBoxModel<?> value = access.getValue();
+		value = value == null ? createModelFromField(access) : value;
 		setModel(value);
 	}
 
-	private ComboBoxModel createModelFromField(String fieldName) {
-		Object parent = getParentObject();
-		Field field = getBeanAccess().getField(fieldName, parent);
-		Class<? extends ComboBoxModel> type = getComboBoxModelType(field);
-		ComboBoxModel model = getBeanFactory().createBean(type);
-		getBeanAccess().setValue(model, field, parent);
-		return model;
-	}
-
 	@SuppressWarnings("unchecked")
-	private Class<? extends ComboBoxModel> getComboBoxModelType(Field field) {
-		return (Class<? extends ComboBoxModel>) field.getType();
+	private ComboBoxModel<?> createModelFromField(BeanAccess access) {
+		Class<? extends ComboBoxModel<?>> type;
+		type = (Class<? extends ComboBoxModel<?>>) access.getType();
+		ComboBoxModel<?> model = getBeanFactory().create(type);
+		try {
+			access.setValue(model);
+			return model;
+		} catch (PropertyVetoException e) {
+			throw log.errorSetModel(this, e);
+		}
 	}
 
 	private void setupRenderer() {
-		String fieldName = getAnnotationAccess().getValue(ANNOTATION_CLASS,
-				getField(), RENDERER_ELEMENT);
+		String fieldName = fieldAnnotation.getValue(RENDERER_ELEMENT);
 		if (!isEmpty(fieldName)) {
 			setRendererFromField(fieldName);
 		}
@@ -155,41 +180,40 @@ public class ComboBoxField extends AbstractTitleField<JComboBox, Container> {
 
 	private void setRendererFromField(String fieldName) {
 		Object parent = getParentObject();
-		ListCellRenderer value = getBeanAccess().getValue(fieldName, parent);
-		value = value == null ? createRendererFromField(fieldName) : value;
+		BeanAccess access = beanAccessFactory.create(fieldName, parent);
+		ListCellRenderer<?> value = access.getValue();
+		value = value == null ? createRendererFromField(access) : value;
 		setRenderer(value);
 	}
 
-	private ListCellRenderer createRendererFromField(String fieldName) {
-		Object parent = getParentObject();
-		Field field = getBeanAccess().getField(fieldName, parent);
-		Class<? extends ListCellRenderer> type = getComboBoxRendererType(field);
-		ListCellRenderer renderer = getBeanFactory().createBean(type);
-		getBeanAccess().setValue(renderer, field, parent);
-		return renderer;
-	}
-
 	@SuppressWarnings("unchecked")
-	private Class<? extends ListCellRenderer> getComboBoxRendererType(
-			Field field) {
-		return (Class<? extends ListCellRenderer>) field.getType();
+	private ListCellRenderer<?> createRendererFromField(BeanAccess access) {
+		Class<? extends ListCellRenderer<?>> type;
+		type = (Class<? extends ListCellRenderer<?>>) access.getType();
+		ListCellRenderer<?> renderer = getBeanFactory().create(type);
+		try {
+			access.setValue(renderer);
+			return renderer;
+		} catch (PropertyVetoException e) {
+			throw log.errorSetRenderer(this, e);
+		}
 	}
 
 	private void setupElements() {
-		String elementsFieldName = getAnnotationAccess().getValue(
-				ANNOTATION_CLASS, getField(), ELEMENTS_ELEMENT);
-		if (isEmpty(elementsFieldName)) {
+		String fieldName = fieldAnnotation.getValue(ELEMENTS_ELEMENT);
+		if (isEmpty(fieldName)) {
 			return;
 		}
 		Object parent = getParentObject();
-		Object value = getBeanAccess().getValue(elementsFieldName, parent);
+		BeanAccess access = beanAccessFactory.create(fieldName, parent);
+		Object value = access.getValue();
 		setElements(value);
 	}
 
 	@Override
 	public void applyInput() throws PropertyVetoException {
 		super.applyInput();
-		Object value = getComponent().getModel().getSelectedItem();
+		Object value = comboBox.getModel().getSelectedItem();
 		adjusting = true;
 		setValue(value);
 		adjusting = false;
@@ -198,14 +222,14 @@ public class ComboBoxField extends AbstractTitleField<JComboBox, Container> {
 	@Override
 	public void restoreInput() {
 		super.restoreInput();
-		getComponent().setSelectedItem(getValue());
+		comboBox.setSelectedItem(getValue());
 	}
 
 	@Override
-	public void setValue(Object newValue) {
-		super.setValue(newValue);
+	public void setValue(Object value) throws PropertyVetoException {
+		super.setValue(value);
 		if (!adjusting) {
-			getComponent().setSelectedItem(newValue);
+			comboBox.setSelectedItem(value);
 		}
 	}
 
@@ -218,10 +242,10 @@ public class ComboBoxField extends AbstractTitleField<JComboBox, Container> {
 	 * @throws NullPointerException
 	 *             if the specified model is {@code null}.
 	 */
-	@SuppressWarnings("unchecked")
-	public void setModel(ComboBoxModel model) {
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void setModel(ComboBoxModel<?> model) {
 		log.checkModel(this, model);
-		getComponent().setModel(model);
+		comboBox.setModel((ComboBoxModel) model);
 		log.modelSet(this, model);
 	}
 
@@ -230,8 +254,8 @@ public class ComboBoxField extends AbstractTitleField<JComboBox, Container> {
 	 * 
 	 * @return the {@link ComboBoxModel}.
 	 */
-	public ComboBoxModel getModel() {
-		return getComponent().getModel();
+	public ComboBoxModel<?> getModel() {
+		return comboBox.getModel();
 	}
 
 	/**
@@ -243,10 +267,10 @@ public class ComboBoxField extends AbstractTitleField<JComboBox, Container> {
 	 * @throws NullPointerException
 	 *             if the specified renderer is {@code null}.
 	 */
-	@SuppressWarnings("unchecked")
-	public void setRenderer(ListCellRenderer renderer) {
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void setRenderer(ListCellRenderer<?> renderer) {
 		log.checkRenderer(this, renderer);
-		getComponent().setRenderer(renderer);
+		comboBox.setRenderer((ListCellRenderer) renderer);
 		log.rendererSet(this, renderer);
 	}
 
@@ -255,36 +279,30 @@ public class ComboBoxField extends AbstractTitleField<JComboBox, Container> {
 	 * 
 	 * @return the {@link ListCellRenderer}.
 	 */
-	public ListCellRenderer getRenderer() {
-		return getComponent().getRenderer();
+	public ListCellRenderer<?> getRenderer() {
+		return comboBox.getRenderer();
 	}
 
 	/**
 	 * Sets the specified elements for this combo box fields.
 	 * 
-	 * @param newElements
+	 * @param elements
 	 *            the elements to set.
 	 * 
 	 * @throws NullPointerException
 	 *             if the specified elements are {@code null}.
 	 * 
 	 * @throws IllegalArgumentException
-	 *             if the elements type is not of array or {@link List}.
-	 * 
-	 * @throws ClassCastException
-	 *             if the current model is not of type
-	 *             {@link MutableComboBoxModel}.
+	 *             if the elements type is not of array or {@link Iterable}.
 	 */
-	public void setElements(Object newElements) {
-		log.checkElements(this, newElements);
-		if (newElements.getClass().isArray()) {
-			setElements((Object[]) newElements);
-		} else if (newElements instanceof List) {
-			@SuppressWarnings("unchecked")
-			List<Object> list = (List<Object>) newElements;
-			setElements(list);
+	public void setElements(Object elements) {
+		log.checkElements(this, elements);
+		if (elements.getClass().isArray()) {
+			setElements((Object[]) elements);
+		} else if (elements instanceof Iterable) {
+			setElements(elements);
 		} else {
-			throw log.unsupportedType(this, newElements);
+			throw log.unsupportedType(this, elements);
 		}
 	}
 
@@ -296,46 +314,57 @@ public class ComboBoxField extends AbstractTitleField<JComboBox, Container> {
 	 * 
 	 * @throws NullPointerException
 	 *             if the specified elements are {@code null}.
-	 * 
-	 * @throws ClassCastException
-	 *             if the current model is not of type
-	 *             {@link MutableComboBoxModel}.
 	 */
-	@SuppressWarnings("unchecked")
-	public void setElements(Object[] newElements) {
-		log.checkElements(this, newElements);
-		MutableComboBoxModel model = (MutableComboBoxModel) getModel();
-		for (Object item : newElements) {
-			model.addElement(item);
-		}
-		log.elementsSet(this, newElements);
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void setElements(Object[] elements) {
+		log.checkElements(this, elements);
+		comboBox.setModel(new DefaultComboBoxModel(elements));
+		log.elementsSet(this, elements);
 	}
 
 	/**
 	 * Sets the specified elements for this combo box fields.
 	 * 
-	 * @param newElements
+	 * @param elements
 	 *            the {@link List} elements to set.
 	 * 
 	 * @throws NullPointerException
 	 *             if the specified elements are {@code null}.
-	 * 
-	 * @throws ClassCastException
-	 *             if the current model is not of type
-	 *             {@link MutableComboBoxModel}.
 	 */
-	@SuppressWarnings("unchecked")
-	public void setElements(List<Object> newElements) {
-		log.checkElements(this, newElements);
-		MutableComboBoxModel model = (MutableComboBoxModel) getModel();
-		for (Object item : newElements) {
-			model.addElement(item);
-		}
-		log.elementsSet(this, newElements);
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void setElements(Iterable<?> elements) {
+		log.checkElements(this, elements);
+		comboBox.setModel(new DefaultComboBoxModel(asList(elements)));
+		log.elementsSet(this, elements);
 	}
 
+	private Vector<Object> asList(Iterable<?> elements) {
+		Vector<Object> list = new Vector<Object>();
+		for (Object object : elements) {
+			list.add(object);
+		}
+		return list;
+	}
+
+	/**
+	 * Sets if the field should be editable.
+	 * 
+	 * @param editable
+	 *            {@code true} if the combo box should be editable or
+	 *            {@code false} if not.
+	 */
 	public void setEditable(boolean editable) {
-		getComponent().setEditable(editable);
+		comboBox.setEditable(editable);
+	}
+
+	/**
+	 * Returns if the field should is editable.
+	 * 
+	 * @return {@code true} if the combo box is editable or {@code false} if
+	 *         not.
+	 */
+	public boolean isEditable() {
+		return comboBox.isEditable();
 	}
 
 }

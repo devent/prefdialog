@@ -21,18 +21,34 @@ package com.anrisoftware.prefdialog.fields.combobox;
 import static java.lang.String.format;
 import static org.apache.commons.lang3.Validate.notNull;
 
+import java.beans.PropertyVetoException;
+
 import javax.swing.ComboBoxModel;
 import javax.swing.ListCellRenderer;
 
 import com.anrisoftware.globalpom.log.AbstractLogger;
+import com.anrisoftware.globalpom.reflection.exceptions.ReflectionError;
 
 /**
  * Logging messages for {@link ComboBoxField}.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 2.2
+ * @since 3.0
  */
 class ComboBoxFieldLogger extends AbstractLogger {
+
+	private static final String FIELD = "field";
+	private static final String SET_ELEMENTS = "Set elements {} for {}.";
+	private static final String TYPE_NOT_SUPPORTED = "Type %s not supported for %s";
+	private static final String ELEMENTS_NULL = "Elements cannot be null for %s.";
+	private static final String SET_RENDERER = "Set renderer {} to {}.";
+	private static final String RENDERER_NULL = "Renderer cannot be null for %s.";
+	private static final String SET_MODEL = "Set model {} to {}.";
+	private static final String MODEL_NULL = "Model cannot be null for %s.";
+	private static final String ERROR_SET_CUSTOM_RENDERER_MESSAGE = "Error set custom renderer for %s";
+	private static final String ERROR_SET_CUSTOM_RENDERER = "Error set custom renderer";
+	private static final String ERROR_SET_CUSTOM_MODEL_MESSAGE = "Error set custom model for %s";
+	private static final String ERROR_SET_CUSTOM_MODEL = "Error set custom model";
 
 	/**
 	 * Creates logger for {@link ComboBoxField}.
@@ -41,46 +57,50 @@ class ComboBoxFieldLogger extends AbstractLogger {
 		super(ComboBoxField.class);
 	}
 
-	void checkModel(ComboBoxField field,
-			@SuppressWarnings("rawtypes") ComboBoxModel model) {
-		notNull(model, "The model cannot be null for the combo box field %s.",
-				field);
+	void checkModel(ComboBoxField field, ComboBoxModel<?> model) {
+		notNull(model, MODEL_NULL, field);
 	}
 
-	void modelSet(ComboBoxField field,
-			@SuppressWarnings("rawtypes") ComboBoxModel model) {
-		log.trace("Set model {} to the combo box field {}.", model, field);
+	void modelSet(ComboBoxField field, ComboBoxModel<?> model) {
+		log.debug(SET_MODEL, model, field);
 	}
 
 	IllegalArgumentException unsupportedType(ComboBoxField field,
 			Object elements) {
-		IllegalArgumentException ex = new IllegalArgumentException(
-				format("The type %s is not supported as elements of the combo box field %s",
-						elements.getClass(), field));
-		log.error(ex.getLocalizedMessage());
-		return ex;
+		return logException(
+				new IllegalArgumentException(format(TYPE_NOT_SUPPORTED,
+						elements.getClass(), field)), TYPE_NOT_SUPPORTED,
+				elements.getClass(), field.getName());
 	}
 
 	void checkElements(ComboBoxField field, Object elements) {
-		notNull(elements,
-				"The elements cannot be null for the combo box field %s.",
-				field);
+		notNull(elements, ELEMENTS_NULL, field);
 	}
 
 	void elementsSet(ComboBoxField field, Object elements) {
-		log.trace("Set elements {} for the combo box field {}.", elements,
-				field);
+		log.debug(SET_ELEMENTS, elements, field);
 	}
 
-	void checkRenderer(ComboBoxField field,
-			@SuppressWarnings("rawtypes") ListCellRenderer renderer) {
-		notNull(renderer,
-				"The renderer cannot be null for the combo box field %s.",
-				field);
+	void checkRenderer(ComboBoxField field, ListCellRenderer<?> renderer) {
+		notNull(renderer, RENDERER_NULL, field);
 	}
 
-	void rendererSet(ComboBoxField field,
-			@SuppressWarnings("rawtypes") ListCellRenderer renderer) {
-		log.trace("Set renderer {} to the combo box field {}.", renderer, field);
+	void rendererSet(ComboBoxField field, ListCellRenderer<?> renderer) {
+		log.debug(SET_RENDERER, renderer, field);
+	}
+
+	ReflectionError errorSetModel(ComboBoxField field, PropertyVetoException e) {
+		return logException(
+				new ReflectionError(ERROR_SET_CUSTOM_MODEL, e).addContextValue(
+						FIELD, field), ERROR_SET_CUSTOM_MODEL_MESSAGE,
+				field.getName());
+	}
+
+	ReflectionError errorSetRenderer(ComboBoxField field,
+			PropertyVetoException e) {
+		return logException(
+				new ReflectionError(ERROR_SET_CUSTOM_RENDERER, e).addContextValue(
+						FIELD, field), ERROR_SET_CUSTOM_RENDERER_MESSAGE,
+				field.getName());
 	}
 }

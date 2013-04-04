@@ -21,8 +21,7 @@ package com.anrisoftware.prefdialog.fields.combobox;
 import java.awt.Container;
 
 import com.anrisoftware.prefdialog.fields.FieldComponent;
-import com.anrisoftware.prefdialog.reflection.annotations.AnnotationsModule;
-import com.anrisoftware.prefdialog.reflection.beans.BeansModule;
+import com.anrisoftware.prefdialog.fields.FieldFactory;
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
@@ -31,17 +30,16 @@ import com.google.inject.assistedinject.FactoryModuleBuilder;
  * Binds the combo box field factory.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 2.2
+ * @since 3.0
  */
 class ComboBoxModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
-		install(new AnnotationsModule());
-		install(new BeansModule());
 		install(new FactoryModuleBuilder().implement(
 				new TypeLiteral<FieldComponent<Container>>() {
 				}, ComboBoxField.class).build(ComboBoxFieldFactory.class));
+		bind(FieldFactory.class).to(ComboBoxFieldFactory.class);
 	}
 
 }

@@ -18,264 +18,216 @@
  */
 package com.anrisoftware.prefdialog.fields.combobox
 
-import static com.anrisoftware.prefdialog.fields.buttongroup.ButtonGroupPluginModule.*
 import static com.anrisoftware.prefdialog.fields.combobox.ComboBoxBean.*
 
+import java.awt.Container
 import java.awt.event.KeyEvent
 
 import javax.swing.JPanel
 
+import org.fest.swing.fixture.FrameFixture
 import org.junit.Before
+import org.junit.BeforeClass
 import org.junit.Test
 
+import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule
+import com.anrisoftware.globalpom.reflection.beans.BeansModule
+import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.prefdialog.core.FieldTestUtils
+import com.google.inject.Guice
 import com.google.inject.Injector
 
 /**
  * Test the {@link ComboBoxField}.
  *
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 2.2
+ * @since 3.0
  */
 class ComboBoxTest extends FieldTestUtils {
 
-	static final title = "Combo Box Test"
-
-	ComboBoxFieldFactory factory
-
-	ComboBoxBean bean
-
-	JPanel container
-
-	@Before
-	void createFactory() {
-		factory = injector.getInstance ComboBoxFieldFactory
-		bean = new ComboBoxBean()
-		container = new JPanel()
-	}
-
-	Injector createInjector() {
-		super.createInjector().createChildInjector new ComboBoxModule()
-	}
-
 	@Test
 	void "array elements with null value"() {
-		def field = factory.create(container, bean, ARRAY_ELEMENTS_FIELD)
-						.createField()
-		def comboBox
-		beginPanelFrame title, container, {
-			comboBox = fixture.comboBox(ARRAY_ELEMENTS)
-		}, {
-			comboBox.requireSelection("One")
-			comboBox.selectItem(1)
-			comboBox.requireSelection("Two")
-			comboBox.selectItem(2)
-			comboBox.requireSelection("Three")
-		}
-	}
+		def title = "ComboBoxTest :: array elements with null value"
+		def fieldName = ARRAY_ELEMENTS
+		def field = factory.create(container, bean, fieldName)
 
-	@Test
-	void "array elements with null value apply input"() {
-		def field = factory.create(container, bean, ARRAY_ELEMENTS_FIELD)
-						.createField()
-		def comboBox
-		beginPanelFrame title, container, {
-			comboBox = fixture.comboBox(ARRAY_ELEMENTS)
-		}, {
+		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+			fixture.comboBox fieldName requireSelection "One"
+			fixture.comboBox fieldName selectItem 1
 			field.applyInput()
-			assert bean."${ComboBoxBean.ARRAY_ELEMENTS}" == "One"
-		}, {
-			comboBox.selectItem(1)
+			assert bean."$fieldName" == "Two"
+			fixture.comboBox fieldName selectItem 2
 			field.applyInput()
-			assert bean."${ComboBoxBean.ARRAY_ELEMENTS}" == "Two"
-		}, {
-			comboBox.selectItem(2)
-			field.applyInput()
-			assert bean."${ComboBoxBean.ARRAY_ELEMENTS}" == "Three"
-		}
-	}
-
-	@Test
-	void "array elements with null value restore input"() {
-		def field = factory.create(container, bean, ARRAY_ELEMENTS_FIELD)
-						.createField()
-		def comboBox
-		beginPanelFrame title, container, {
-			comboBox = fixture.comboBox(ARRAY_ELEMENTS)
-		}, {
-			field.applyInput()
-			assert bean."${ComboBoxBean.ARRAY_ELEMENTS}" == "One"
-		}, {
-			comboBox.selectItem(1)
-			field.restoreInput()
-			comboBox.requireSelection("One")
-			assert bean."${ComboBoxBean.ARRAY_ELEMENTS}" == "One"
-		}, {
-			comboBox.selectItem(2)
-			field.restoreInput()
-			comboBox.requireSelection("One")
-			assert bean."${ComboBoxBean.ARRAY_ELEMENTS}" == "One"
-		}
+			assert bean."$fieldName" == "Three"
+		})
 	}
 
 	@Test
 	void "array elements with second value selected"() {
-		factory.create(container, bean, ARRAY_ELEMENTS_SECOND_FIELD).createField()
-		def field
-		beginPanelFrame title, container, {
-			field = fixture.comboBox(ARRAY_ELEMENTS_SECOND)
-		}, {
-			field.requireSelection("Two")
-			field.selectItem(0)
-			field.requireSelection("One")
-			field.selectItem(2)
-			field.requireSelection("Three")
-		}
-	}
+		def title = "ComboBoxTest :: array elements with second value selected"
+		def fieldName = ARRAY_ELEMENTS_SECOND
+		def field = factory.create(container, bean, fieldName)
 
-	@Test
-	void "array elements with second value selected restore input"() {
-		def field = factory.create(container, bean, ARRAY_ELEMENTS_SECOND_FIELD).
-						createField()
-		def comboBox
-		beginPanelFrame title, container, {
-			comboBox = fixture.comboBox(ARRAY_ELEMENTS_SECOND)
-		}, {
-			comboBox.requireSelection("Two")
-			assert bean."${ComboBoxBean.ARRAY_ELEMENTS_SECOND}" == "Two"
-		}, {
-			comboBox.selectItem(0)
-			field.restoreInput()
-			comboBox.requireSelection("Two")
-			assert bean."${ComboBoxBean.ARRAY_ELEMENTS_SECOND}" == "Two"
-		}, {
-			comboBox.selectItem(2)
-			field.restoreInput()
-			comboBox.requireSelection("Two")
-			assert bean."${ComboBoxBean.ARRAY_ELEMENTS_SECOND}" == "Two"
-		}
+		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+			fixture.comboBox fieldName requireSelection "Two"
+		})
 	}
 
 	@Test
 	void "list elements with null value"() {
-		factory.create(container, bean, LIST_ELEMENTS_FIELD).createField()
-		def field
-		beginPanelFrame title, container, {
-			field = fixture.comboBox(LIST_ELEMENTS)
-		}, {
-			field.requireSelection("One")
-			field.selectItem(1)
-			field.requireSelection("Two")
-			field.selectItem(2)
-			field.requireSelection("Three")
-		}
+		def title = "ComboBoxTest :: list elements with null value"
+		def fieldName = LIST_ELEMENTS
+		def field = factory.create(container, bean, fieldName)
+
+		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+			fixture.comboBox fieldName requireSelection "One"
+			fixture.comboBox fieldName selectItem 1
+			field.applyInput()
+			assert bean."$fieldName" == "Two"
+			fixture.comboBox fieldName selectItem 2
+			field.applyInput()
+			assert bean."$fieldName" == "Three"
+		})
 	}
 
 	@Test
 	void "custom model field"() {
-		factory.create(container, bean, CUSTOM_MODEL_FIELD_FIELD).createField()
-		def field
-		beginPanelFrame title, container, {
-			field = fixture.comboBox(CUSTOM_MODEL_FIELD)
-		}, {
-			field.requireSelection("Eins")
-			field.selectItem(1)
-			field.requireSelection("Zwei")
-			field.selectItem(2)
-			field.requireSelection("Drei")
-		}
+		def title = "ComboBoxTest :: custom model field"
+		def fieldName = CUSTOM_MODEL_FIELD
+		def field = factory.create(container, bean, fieldName)
+
+		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+			fixture.comboBox fieldName requireSelection "Eins"
+			fixture.comboBox fieldName selectItem 1
+			field.applyInput()
+			assert bean."$fieldName" == "Zwei"
+			fixture.comboBox fieldName selectItem 2
+			field.applyInput()
+			assert bean."$fieldName" == "Drei"
+		})
 	}
 
 	@Test
 	void "custom model field null"() {
-		factory.create(container, bean, CUSTOM_MODEL_FIELD_NULL_FIELD).createField()
-		def field
-		beginPanelFrame title, container, {
-			field = fixture.comboBox(CUSTOM_MODEL_FIELD_NULL)
-			assert bean.modelFieldNull != null
-		}, {
-			field.requireSelection("Eins")
-			field.selectItem(1)
-			field.requireSelection("Zwei")
-			field.selectItem(2)
-			field.requireSelection("Drei")
-		}
+		def title = "ComboBoxTest :: custom model field null"
+		def fieldName = CUSTOM_MODEL_FIELD_NULL
+		def field = factory.create(container, bean, fieldName)
+
+		assert bean.modelFieldNull != null
+		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+			fixture.comboBox fieldName requireSelection "Eins"
+			fixture.comboBox fieldName selectItem 1
+			field.applyInput()
+			assert bean."$fieldName" == "Zwei"
+			fixture.comboBox fieldName selectItem 2
+			field.applyInput()
+			assert bean."$fieldName" == "Drei"
+		})
 	}
 
 	@Test
 	void "custom renderer field"() {
-		factory.create(container, bean, CUSTOM_RENDERER_FIELD_FIELD).createField()
-		def field
-		beginPanelFrame title, container, {
-			field = fixture.comboBox(CUSTOM_RENDERER_FIELD)
-		}, {
-			field.requireSelection("ONE")
-			field.selectItem(1)
-			field.requireSelection("TWO")
-			field.selectItem(2)
-			field.requireSelection("THREE")
-		}
+		def title = "ComboBoxTest :: custom renderer field"
+		def fieldName = CUSTOM_RENDERER_FIELD
+		def field = factory.create(container, bean, fieldName)
+
+		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+			fixture.comboBox fieldName requireSelection "ONE"
+			fixture.comboBox fieldName selectItem 1
+			field.applyInput()
+			assert bean."$fieldName" == "TWO"
+			fixture.comboBox fieldName selectItem 2
+			field.applyInput()
+			assert bean."$fieldName" == "THREE"
+		})
 	}
 
 	@Test
 	void "custom renderer field null"() {
-		factory.create(container, bean, CUSTOM_RENDERER_FIELD_NULL_FIELD).createField()
-		def field
-		beginPanelFrame title, container, {
-			field = fixture.comboBox(CUSTOM_RENDERER_FIELD_NULL)
-			assert bean.rendererFieldNull != null
-		}, {
-			field.requireSelection("ONE")
-			field.selectItem(1)
-			field.requireSelection("TWO")
-			field.selectItem(2)
-			field.requireSelection("THREE")
-		}
+		def title = "ComboBoxTest :: custom renderer field null"
+		def fieldName = CUSTOM_RENDERER_FIELD_NULL
+		def field = factory.create(container, bean, fieldName)
+
+		assert bean.rendererFieldNull != null
+		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+			fixture.comboBox fieldName requireSelection "ONE"
+			fixture.comboBox fieldName selectItem 1
+			field.applyInput()
+			assert bean."$fieldName" == "TWO"
+			fixture.comboBox fieldName selectItem 2
+			field.applyInput()
+			assert bean."$fieldName" == "THREE"
+		})
 	}
 
 	@Test
 	void "custom model class"() {
-		factory.create(container, bean, CUSTOM_MODEL_CLASS_FIELD).createField()
-		def field
-		beginPanelFrame title, container, {
-			field = fixture.comboBox(CUSTOM_MODEL_CLASS)
-		}, {
-			field.requireSelection("Eins")
-			field.selectItem(1)
-			field.requireSelection("Zwei")
-			field.selectItem(2)
-			field.requireSelection("Drei")
-		}
+		def title = "ComboBoxTest :: custom model class"
+		def fieldName = CUSTOM_MODEL_CLASS
+		def field = factory.create(container, bean, fieldName)
+
+		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+			fixture.comboBox fieldName requireSelection "Eins"
+			fixture.comboBox fieldName selectItem 1
+			field.applyInput()
+			assert bean."$fieldName" == "Zwei"
+			fixture.comboBox fieldName selectItem 2
+			field.applyInput()
+			assert bean."$fieldName" == "Drei"
+		})
 	}
 
 	@Test
 	void "custom renderer class"() {
-		factory.create(container, bean, CUSTOM_RENDERER_CLASS_FIELD).createField()
-		def field
-		beginPanelFrame title, container, {
-			field = fixture.comboBox(CUSTOM_RENDERER_CLASS)
-		}, {
-			field.requireSelection("ONE")
-			field.selectItem(1)
-			field.requireSelection("TWO")
-			field.selectItem(2)
-			field.requireSelection("THREE")
-		}
+		def title = "ComboBoxTest :: custom renderer class"
+		def fieldName = CUSTOM_RENDERER_CLASS
+		def field = factory.create(container, bean, fieldName)
+
+		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+			fixture.comboBox fieldName requireSelection "ONE"
+			fixture.comboBox fieldName selectItem 1
+			field.applyInput()
+			assert bean."$fieldName" == "TWO"
+			fixture.comboBox fieldName selectItem 2
+			field.applyInput()
+			assert bean."$fieldName" == "THREE"
+		})
 	}
 
 	@Test
-	void "editable combo box apply input"() {
-		def field = factory.create(container, bean, EDITABLE_FIELD).createField()
-		def comboBox
+	void "editable"() {
+		def title = "ComboBoxTest :: editable"
+		def fieldName = EDITABLE
+		def field = factory.create(container, bean, fieldName)
 		def text = "Zwei"
-		beginPanelFrame title, container, {
-			comboBox = fixture.comboBox(EDITABLE)
-		}, {
-			comboBox.enterText text
-			comboBox.pressAndReleaseKeys KeyEvent.VK_ENTER
+
+		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+			fixture.comboBox fieldName replaceText text
+			fixture.comboBox fieldName pressAndReleaseKeys KeyEvent.VK_ENTER
 			field.applyInput()
-			comboBox.requireSelection(text)
-			assert bean."${ComboBoxBean.EDITABLE}" == text
-		}
+			fixture.comboBox fieldName requireSelection text
+			assert bean."$fieldName" == text
+		})
+	}
+
+	static Injector injector
+
+	static ComboBoxFieldFactory factory
+
+	ComboBoxBean bean
+
+	Container container
+
+	@BeforeClass
+	static void setupFactories() {
+		injector = Guice.createInjector(
+				new AnnotationsModule(), new BeansModule(), new ComboBoxModule())
+		factory = injector.getInstance ComboBoxFieldFactory
+	}
+
+	@Before
+	void setupBean() {
+		bean = new ComboBoxBean()
+		container = new JPanel()
 	}
 }
