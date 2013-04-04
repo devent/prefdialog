@@ -19,6 +19,7 @@
 package com.anrisoftware.prefdialog.annotations;
 
 import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import java.lang.annotation.Retention;
@@ -28,21 +29,32 @@ import java.lang.annotation.Target;
  * Panel that contains other fields. The child field needs either to the default
  * constructor available or be set to an instance.
  * <p>
- * Example:
+ * Examples: a) instantiated by the default constructor
  * 
  * <pre>
- * // is instantiated by the default constructor
  * &#064;FieldComponent
  * &#064;Child
- * private ChildPreferences childPreferences;
+ * public ChildPreferences childPreferences;
+ * </pre>
  * 
- * // is manually instantiated
+ * b) manually instantiated
+ * 
+ * <pre>
  * &#064;FieldComponent
  * &#064;Child
- * private ChildPreferences childPreferences = new ...;
+ * public ChildPreferences childPreferences = new ...;
+ * </pre>
+ * 
+ * c) returned by method
+ * 
+ * <pre>
+ * &#064;FieldComponent
+ * &#064;Child
+ * public ChildPreferences getChildPreferences() {
+ * }
  * </pre>
  */
-@Target(FIELD)
+@Target({ FIELD, METHOD })
 @Retention(RUNTIME)
 public @interface Child {
 }

@@ -19,15 +19,23 @@
 package com.anrisoftware.prefdialog.fields.child
 
 import static com.anrisoftware.prefdialog.fields.child.ChildBean.*
-import static com.anrisoftware.prefdialog.fields.child.ChildPluginModule.*
+import static com.anrisoftware.prefdialog.fields.child.ChildService.*
+
+import java.awt.Container
 
 import javax.swing.JPanel
 
+import org.fest.swing.fixture.FrameFixture
 import org.junit.Before
+import org.junit.BeforeClass
 import org.junit.Test
 
-import com.anrisoftware.prefdialog.core.FieldTestUtils
+import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule
+import com.anrisoftware.globalpom.reflection.beans.BeansModule
+import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.prefdialog.fields.checkbox.CheckBoxFieldFactory
+import com.anrisoftware.prefdialog.fields.checkbox.CheckBoxModule
+import com.google.inject.Guice
 import com.google.inject.Injector
 
 /**
@@ -36,51 +44,74 @@ import com.google.inject.Injector
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 2.2
  */
-class ChildTest extends FieldTestUtils {
+class ChildTest {
 
-	static final title = "Child Panel Test"
+	@Test
+	void "null value"() {
+		def title = "ChildTest :: null value"
+		def fieldName = NULL_VALUE
+		def separatorName = "$fieldName-$TITLE_SEPARATOR_NAME"
+		def scrollName = "$fieldName-$CHILDREN_SCROLL_NAME"
+		def field = factory.create(container, bean, fieldName)
+		def checkBoxFieldName = CHECKBOX
+		def checkBox = checkBoxfactory.create(new JPanel(), bean.nullValue, checkBoxFieldName)
 
-	ChildFieldFactory factory
+		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+			field.addField checkBox
+			fixture.panel fieldName requireVisible()
+			fixture.scrollPane scrollName requireVisible()
+			fixture.checkBox checkBoxFieldName requireVisible()
+		})
+	}
 
-	CheckBoxFieldFactory checkboxFactory
+	@Test
+	void "with no title"() {
+		def title = "ChildTest :: with no title"
+		def fieldName = NO_TITLE
+		def separatorName = "$fieldName-$TITLE_SEPARATOR_NAME"
+		def scrollName = "$fieldName-$CHILDREN_SCROLL_NAME"
+		def field = factory.create(container, bean, fieldName)
+		def checkBoxFieldName = CHECKBOX
+		def checkBox = checkBoxfactory.create(new JPanel(), bean.noTitle, checkBoxFieldName)
+
+		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+			field.addField checkBox
+			fixture.panel fieldName requireVisible()
+			fixture.scrollPane scrollName requireVisible()
+			fixture.checkBox checkBoxFieldName requireVisible()
+		})
+	}
+
+	static Injector injector
+
+	static ChildFieldFactory factory
+
+	static CheckBoxFieldFactory checkBoxfactory
 
 	ChildBean bean
 
-	JPanel container
+	Container container
+
+	@BeforeClass
+	static void setupFactories() {
+		injector = Guice.createInjector(new AnnotationsModule(), new BeansModule())
+		factory = createChildFieldFactory injector
+		checkBoxfactory = createCheckBoxFieldFactory injector
+	}
+
+	static ChildFieldFactory createChildFieldFactory(Injector injector) {
+		injector.createChildInjector(new ChildModule()).getInstance(
+				ChildFieldFactory)
+	}
+
+	static CheckBoxFieldFactory createCheckBoxFieldFactory(Injector injector) {
+		injector.createChildInjector(new CheckBoxModule()).getInstance(
+				CheckBoxFieldFactory)
+	}
 
 	@Before
-	void beforeTest() {
-		super.beforeTest()
-		factory = injector.getInstance ChildFieldFactory
+	void setupBean() {
 		bean = new ChildBean()
 		container = new JPanel()
-	}
-
-	Injector createInjector() {
-		def parent = super.createInjector()
-		parent.createChildInjector new ChildModule()
-	}
-
-	@Test
-	void "child null value"() {
-		factory.create(container, bean, NULL_VALUE_FIELD).createField()
-		def panel
-		beginPanelFrame title, container, {
-			panel = fixture.panel(NULL_VALUE)
-			panel.requireVisible()
-		}
-	}
-
-	@Test
-	void "child null value with added field"() {
-		factory.create(container, bean, NULL_VALUE_FIELD).createField()
-		def panel
-		def scrollPane
-		beginPanelFrame title, container, {
-			panel = fixture.panel(NULL_VALUE)
-			panel.requireVisible()
-			scrollPane = fixture.scrollPane("$NULL_VALUE-$CHILDREN_SCROLL_NAME")
-			scrollPane.requireVisible()
-		}
 	}
 }

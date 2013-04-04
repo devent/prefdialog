@@ -19,19 +19,26 @@
 package com.anrisoftware.prefdialog.fields.child;
 
 import com.anrisoftware.globalpom.log.AbstractLogger;
+import com.anrisoftware.prefdialog.fields.FieldComponent;
 
 /**
  * Logging messages for {@link ChildField}.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 2.2
+ * @since 3.0
  */
 class ChildFieldLogger extends AbstractLogger {
+
+	private static final String ADD_CHILD_FIELD = "Add child field {} to {}.";
 
 	/**
 	 * Creates logger for {@link ChildField}.
 	 */
 	ChildFieldLogger() {
 		super(ChildField.class);
+	}
+
+	void addChildField(ChildField field, FieldComponent<?> f) {
+		log.debug(ADD_CHILD_FIELD, f, field);
 	}
 }

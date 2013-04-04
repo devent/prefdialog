@@ -19,31 +19,30 @@
 package com.anrisoftware.prefdialog.fields.child;
 
 import java.awt.Container;
-import java.lang.reflect.Field;
+
+import javax.swing.JPanel;
+
+import com.anrisoftware.prefdialog.fields.FieldFactory;
 
 /**
  * Factory to create a new child panel field. The child panel is a panel that
  * contains other fields.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 2.2
+ * @since 3.0
  */
-interface ChildFieldFactory {
+public interface ChildFieldFactory extends FieldFactory<Container> {
 
 	/**
-	 * Creates a new child panel field for the specified field of the preference
-	 * bean object.
+	 * Sets the panel component for the field.
 	 * 
-	 * @param container
-	 *            the {@link Container} for the child field.
+	 * @param panel
+	 *            the {@link JPanel} component.
 	 * 
-	 * @param bean
-	 *            the preference bean {@link Object} where the field is defined.
+	 * @return the {@link ChildField}
 	 * 
-	 * @param field
-	 *            the {@link Field}.
-	 * 
-	 * @return the {@link ChildField}.
+	 * @see FieldFactory#create(java.awt.Component, Object, String)
 	 */
-	ChildField create(Container container, Object bean, Field field);
+	ChildField create(JPanel panel, Container container, Object parentObject,
+			String fieldName);
 }

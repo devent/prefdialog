@@ -18,8 +18,8 @@
  */
 package com.anrisoftware.prefdialog.fields.child;
 
-import static com.anrisoftware.prefdialog.fields.child.ChildPluginModule.CHILDREN_SCROLL_NAME;
-import static com.anrisoftware.prefdialog.fields.child.ChildPluginModule.TITLE_SEPARATOR_NAME;
+import static com.anrisoftware.prefdialog.fields.child.ChildService.CHILDREN_SCROLL_NAME;
+import static com.anrisoftware.prefdialog.fields.child.ChildService.TITLE_SEPARATOR_NAME;
 import static info.clearthought.layout.TableLayoutConstants.FILL;
 import static info.clearthought.layout.TableLayoutConstants.PREFERRED;
 import static java.lang.String.format;
@@ -29,30 +29,29 @@ import info.clearthought.layout.TableLayout;
 
 import java.awt.Container;
 import java.awt.Font;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
 
-import javax.inject.Inject;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 
-import com.anrisoftware.prefdialog.annotations.Child;
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
 import com.anrisoftware.prefdialog.fields.FieldComponent;
 import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
 
 /**
  * Child panel field. The child panel is a panel that contains other fields.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 2.2
+ * @since 3.0
  */
+@SuppressWarnings("serial")
 public class ChildField extends AbstractTitleField<JPanel, Container> {
 
-	private static final Class<? extends Annotation> ANNOTATION_CLASS = Child.class;
-
 	private final ChildFieldLogger log;
+
+	private final JPanel panel;
 
 	private final TableLayout layout;
 
@@ -62,14 +61,31 @@ public class ChildField extends AbstractTitleField<JPanel, Container> {
 
 	private TableLayout childrenPanelLayout;
 
-	@Inject
+	private boolean titleSeparatorShow;
+
+	/**
+	 * @see ChildFieldFactory#create(Container, Object, String)
+	 */
+	@AssistedInject
 	ChildField(ChildFieldLogger logger, @Assisted Container container,
-			@Assisted Object parentObject, @Assisted Field field) {
-		super(new JPanel(), container, parentObject, field);
+			@Assisted Object parentObject, @Assisted String fieldName) {
+		this(logger, new JPanel(), container, parentObject, fieldName);
+	}
+
+	/**
+	 * @see ChildFieldFactory#create(JPanel, Container, Object, String)
+	 */
+	@AssistedInject
+	ChildField(ChildFieldLogger logger, @Assisted JPanel panel,
+			@Assisted Container container, @Assisted Object parentObject,
+			@Assisted String fieldName) {
+		super(panel, container, parentObject, fieldName);
 		this.log = logger;
 		this.layout = createLayout();
+		this.panel = panel;
 		this.separator = new JSeparator(HORIZONTAL);
 		this.scrollPane = new JScrollPane();
+		this.titleSeparatorShow = true;
 		setup();
 	}
 
@@ -99,15 +115,15 @@ public class ChildField extends AbstractTitleField<JPanel, Container> {
 	}
 
 	private void setupScrollPane() {
-		scrollPane.setViewportView(getComponent());
+		scrollPane.setViewportView(panel);
 		scrollPane.setBorder(createEmptyBorder(0, 0, 0, 0));
 	}
 
 	private void setupChildLabel() {
-		Font font = getTitleLabel().getFont();
-		getTitleLabel().setFont(
-				new Font(font.getFamily(), font.getStyle() | Font.BOLD, font
-						.getSize()));
+		JLabel label = getTitleLabel();
+		Font font = label.getFont();
+		label.setFont(new Font(font.getFamily(), font.getStyle() | Font.BOLD,
+				font.getSize()));
 	}
 
 	private void setupChildrenPanel() {
@@ -116,37 +132,44 @@ public class ChildField extends AbstractTitleField<JPanel, Container> {
 		childrenPanelLayout = new TableLayout(col, row);
 		childrenPanelLayout.setHGap(5);
 		childrenPanelLayout.setVGap(5);
-		getComponent().setLayout(childrenPanelLayout);
-		getComponent().setBorder(createEmptyBorder(0, 6, 0, 6));
+		panel.setLayout(childrenPanelLayout);
+		panel.setBorder(createEmptyBorder(0, 6, 0, 6));
 	}
 
 	@Override
 	public void setName(String name) {
+		super.setName(name);
 		scrollPane.setName(format("%s-%s", name, CHILDREN_SCROLL_NAME));
 		separator.setName(format("%s-%s", name, TITLE_SEPARATOR_NAME));
-		super.setName(name);
 	}
 
 	@Override
 	public void setShowTitle(boolean show) {
-		if (!show) {
-			removeTitleSeparator();
-		} else {
-			insertTitleSeparator();
-		}
 		super.setShowTitle(show);
+		if (titleSeparatorShow == show) {
+			return;
+		}
+		if (show) {
+			insertTitleSeparator();
+		} else {
+			removeTitleSeparator();
+		}
 	}
 
 	private void insertTitleSeparator() {
 		Container panel = getContainer();
-		panel.remove(separator);
-		layout.deleteRow(1);
+		layout.insertRow(1, PREFERRED);
+		panel.add(separator, "0, 1");
+		getComponent().revalidate();
+		titleSeparatorShow = true;
 	}
 
 	private void removeTitleSeparator() {
 		Container panel = getContainer();
-		layout.insertRow(1, PREFERRED);
 		panel.remove(separator);
+		layout.deleteRow(1);
+		getComponent().revalidate();
+		titleSeparatorShow = false;
 	}
 
 	@Override
@@ -158,8 +181,9 @@ public class ChildField extends AbstractTitleField<JPanel, Container> {
 	private void addToChildrenPanel(FieldComponent<?> field) {
 		int rows = childrenPanelLayout.getNumRow();
 		childrenPanelLayout.insertRow(rows, TableLayout.PREFERRED);
-		// layout.layoutContainer(getPanel());
-		// getPanel().repaint();
-		getComponent().add(field.getAWTComponent(), format("0, %d", rows));
+		layout.layoutContainer(panel);
+		panel.add(field.getComponent(), format("0, %d", rows));
+		getComponent().revalidate();
+		log.addChildField(this, field);
 	}
 }

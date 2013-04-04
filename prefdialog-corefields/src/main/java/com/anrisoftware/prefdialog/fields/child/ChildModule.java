@@ -21,27 +21,25 @@ package com.anrisoftware.prefdialog.fields.child;
 import java.awt.Container;
 
 import com.anrisoftware.prefdialog.fields.FieldComponent;
-import com.anrisoftware.prefdialog.reflection.annotations.AnnotationsModule;
-import com.anrisoftware.prefdialog.reflection.beans.BeansModule;
+import com.anrisoftware.prefdialog.fields.FieldFactory;
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 
 /**
- * Binds the child panel field factory.
+ * Binds the child field factory.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 2.2
+ * @since 3.0
  */
 class ChildModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
-		install(new AnnotationsModule());
-		install(new BeansModule());
 		install(new FactoryModuleBuilder().implement(
 				new TypeLiteral<FieldComponent<Container>>() {
 				}, ChildField.class).build(ChildFieldFactory.class));
+		bind(FieldFactory.class).to(ChildFieldFactory.class);
 	}
 
 }
