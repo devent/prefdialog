@@ -135,10 +135,12 @@ class ComboBoxTest extends FieldTestUtils {
 			fixture.comboBox fieldName requireSelection "ONE"
 			fixture.comboBox fieldName selectItem 1
 			field.applyInput()
-			assert bean."$fieldName" == "TWO"
+			fixture.comboBox fieldName requireSelection "TWO"
+			assert bean."$fieldName" == "Two"
 			fixture.comboBox fieldName selectItem 2
 			field.applyInput()
-			assert bean."$fieldName" == "THREE"
+			fixture.comboBox fieldName requireSelection "THREE"
+			assert bean."$fieldName" == "Three"
 		})
 	}
 
@@ -153,10 +155,12 @@ class ComboBoxTest extends FieldTestUtils {
 			fixture.comboBox fieldName requireSelection "ONE"
 			fixture.comboBox fieldName selectItem 1
 			field.applyInput()
-			assert bean."$fieldName" == "TWO"
+			fixture.comboBox fieldName requireSelection "TWO"
+			assert bean."$fieldName" == "Two"
 			fixture.comboBox fieldName selectItem 2
 			field.applyInput()
-			assert bean."$fieldName" == "THREE"
+			fixture.comboBox fieldName requireSelection "THREE"
+			assert bean."$fieldName" == "Three"
 		})
 	}
 
@@ -187,10 +191,12 @@ class ComboBoxTest extends FieldTestUtils {
 			fixture.comboBox fieldName requireSelection "ONE"
 			fixture.comboBox fieldName selectItem 1
 			field.applyInput()
-			assert bean."$fieldName" == "TWO"
+			fixture.comboBox fieldName requireSelection "TWO"
+			assert bean."$fieldName" == "Two"
 			fixture.comboBox fieldName selectItem 2
 			field.applyInput()
-			assert bean."$fieldName" == "THREE"
+			fixture.comboBox fieldName requireSelection "THREE"
+			assert bean."$fieldName" == "Three"
 		})
 	}
 

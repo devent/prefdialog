@@ -110,6 +110,7 @@ public class ComboBoxField extends AbstractTitleField<JComboBox<?>, Container> {
 		setupRendererClass();
 		setupElements();
 		setupEditable();
+		comboBox.setSelectedItem(getValue());
 	}
 
 	private void setupEditable() {
@@ -300,7 +301,7 @@ public class ComboBoxField extends AbstractTitleField<JComboBox<?>, Container> {
 		if (elements.getClass().isArray()) {
 			setElements((Object[]) elements);
 		} else if (elements instanceof Iterable) {
-			setElements(elements);
+			setElements((Iterable<?>) elements);
 		} else {
 			throw log.unsupportedType(this, elements);
 		}
