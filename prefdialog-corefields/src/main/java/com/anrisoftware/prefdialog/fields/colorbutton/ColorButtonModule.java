@@ -21,8 +21,7 @@ package com.anrisoftware.prefdialog.fields.colorbutton;
 import java.awt.Container;
 
 import com.anrisoftware.prefdialog.fields.FieldComponent;
-import com.anrisoftware.prefdialog.reflection.annotations.AnnotationsModule;
-import com.anrisoftware.prefdialog.reflection.beans.BeansModule;
+import com.anrisoftware.prefdialog.fields.FieldFactory;
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
@@ -31,17 +30,16 @@ import com.google.inject.assistedinject.FactoryModuleBuilder;
  * Binds the color button field factory.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 2.2
+ * @since 3.0
  */
 class ColorButtonModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
-		install(new AnnotationsModule());
-		install(new BeansModule());
 		install(new FactoryModuleBuilder().implement(
 				new TypeLiteral<FieldComponent<Container>>() {
 				}, ColorButtonField.class).build(ColorButtonFieldFactory.class));
+		bind(FieldFactory.class).to(ColorButtonFieldFactory.class);
 	}
 
 }

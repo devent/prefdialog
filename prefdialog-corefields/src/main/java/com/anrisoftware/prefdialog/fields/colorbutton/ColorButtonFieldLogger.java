@@ -29,9 +29,12 @@ import com.anrisoftware.prefdialog.annotations.HorizontalAlignment;
  * Logging messages for {@link ColorButtonField}.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 2.2
+ * @since 3.0
  */
 class ColorButtonFieldLogger extends AbstractLogger {
+
+	private static final String SET_HORIZONTAL_ALIGNMENT = "Set horizontal alignment {} for {}.";
+	private static final String VALUE_MUST_TYPE = "Value '%s' must be of type %s in %s.";
 
 	/**
 	 * Creates logger for {@link ColorButtonField}.
@@ -42,15 +45,11 @@ class ColorButtonFieldLogger extends AbstractLogger {
 
 	void horizontalAlignmentSet(ColorButtonField field,
 			HorizontalAlignment alignment) {
-		log.trace("Set the horizontal alignment to {} in the button group {}.",
-				alignment, field);
+		log.debug(SET_HORIZONTAL_ALIGNMENT, alignment, field);
 	}
 
-	void checkValueIsColor(ColorButtonField field, Object newValue) {
-		isInstanceOf(
-				Color.class,
-				newValue,
-				"The value %s must be of type %s in the color button field %s.",
-				newValue, Color.class, field);
+	void checkValueIsColor(ColorButtonField field, Object value) {
+		isInstanceOf(Color.class, value, VALUE_MUST_TYPE, value, Color.class,
+				field);
 	}
 }

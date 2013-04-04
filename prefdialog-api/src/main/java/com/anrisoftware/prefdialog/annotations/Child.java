@@ -53,6 +53,9 @@ import java.lang.annotation.Target;
  * public ChildPreferences getChildPreferences() {
  * }
  * </pre>
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 1.0
  */
 @Target({ FIELD, METHOD })
 @Retention(RUNTIME)

@@ -20,8 +20,6 @@ package com.anrisoftware.prefdialog.fields.colorbutton
 
 import java.awt.Color
 
-import org.apache.commons.lang3.reflect.FieldUtils
-
 import com.anrisoftware.prefdialog.annotations.ColorButton
 import com.anrisoftware.prefdialog.annotations.FieldComponent
 import com.anrisoftware.prefdialog.annotations.HorizontalAlignment
@@ -30,48 +28,38 @@ import com.anrisoftware.prefdialog.annotations.HorizontalAlignment
  * Bean with color button fields.
  *
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 2.2
+ * @since 3.0
  */
 class ColorButtonBean {
 
 	static final COLOR_NULL_VALUE = "colorNullValue"
 
-	static final COLOR_NULL_VALUE_FIELD = FieldUtils.getField(ColorButtonBean, COLOR_NULL_VALUE, true)
-
 	static final COLOR_BLACK = "colorBlack"
-
-	static final COLOR_BLACK_FIELD = FieldUtils.getField(ColorButtonBean, COLOR_BLACK, true)
 
 	static final COLOR_RIGHT = "colorRight"
 
-	static final COLOR_RIGHT_FIELD = FieldUtils.getField(ColorButtonBean, COLOR_RIGHT, true)
-
 	static final COLOR_MIDDLE = "colorMiddle"
-
-	static final COLOR_MIDDLE_FIELD = FieldUtils.getField(ColorButtonBean, COLOR_MIDDLE, true)
 
 	static final COLOR_LEFT = "colorLeft"
 
-	static final COLOR_LEFT_FIELD = FieldUtils.getField(ColorButtonBean, COLOR_LEFT, true)
+	@FieldComponent
+	@ColorButton
+	public Color colorNullValue
 
 	@FieldComponent
 	@ColorButton
-	Color colorNullValue
-
-	@FieldComponent
-	@ColorButton
-	Color colorBlack = Color.BLACK
+	public Color colorBlack = Color.BLACK
 
 	@FieldComponent
 	@ColorButton(horizontalAlignment = HorizontalAlignment.RIGHT)
-	Color colorRight = Color.BLACK
+	public Color colorRight = Color.BLACK
 
 	@FieldComponent
 	@ColorButton(horizontalAlignment = HorizontalAlignment.MIDDLE)
-	Color colorMiddle = Color.BLACK
+	public Color colorMiddle = Color.BLACK
 
 	@FieldComponent
 	@ColorButton(horizontalAlignment = HorizontalAlignment.LEFT)
-	Color colorLeft = Color.BLACK
+	public Color colorLeft = Color.BLACK
 }
 

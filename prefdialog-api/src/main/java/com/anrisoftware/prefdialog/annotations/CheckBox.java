@@ -70,6 +70,9 @@ import com.anrisoftware.resources.texts.api.Texts;
  * 	return important;
  * }
  * </pre>
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 1.0
  */
 @Target({ FIELD, METHOD })
 @Retention(RUNTIME)

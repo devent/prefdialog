@@ -42,7 +42,7 @@ import javax.swing.event.ListDataListener;
  * @since 3.0
  */
 @SuppressWarnings("serial")
-class ButtonsRowPanel extends JPanel {
+public class ButtonsRowPanel extends JPanel {
 
 	private TableLayout layout;
 

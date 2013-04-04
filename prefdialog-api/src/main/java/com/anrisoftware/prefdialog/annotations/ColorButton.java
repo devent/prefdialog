@@ -19,6 +19,7 @@
 package com.anrisoftware.prefdialog.annotations;
 
 import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import java.lang.annotation.Retention;
@@ -33,10 +34,13 @@ import java.lang.annotation.Target;
  * <pre>
  * &#064;FieldComponent
  * &#064;ColorButton
- * private Color color = Color.BLACK;
+ * public Color color = Color.BLACK;
  * </pre>
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 1.0
  */
-@Target(FIELD)
+@Target({ FIELD, METHOD })
 @Retention(RUNTIME)
 public @interface ColorButton {
 

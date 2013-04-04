@@ -19,30 +19,14 @@
 package com.anrisoftware.prefdialog.fields.colorbutton;
 
 import java.awt.Container;
-import java.lang.reflect.Field;
+
+import com.anrisoftware.prefdialog.fields.FieldFactory;
 
 /**
  * Factory to create a new color button field. Button to select a color value.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 2.2
+ * @since 3.0
  */
-interface ColorButtonFieldFactory {
-
-	/**
-	 * Creates a new child color button for the specified field of the
-	 * preference bean object.
-	 * 
-	 * @param container
-	 *            the {@link Container} for the color button field.
-	 * 
-	 * @param bean
-	 *            the preference bean {@link Object} where the field is defined.
-	 * 
-	 * @param field
-	 *            the {@link Field}.
-	 * 
-	 * @return the {@link ColorButtonField}.
-	 */
-	ColorButtonField create(Container container, Object bean, Field field);
+interface ColorButtonFieldFactory extends FieldFactory<Container> {
 }

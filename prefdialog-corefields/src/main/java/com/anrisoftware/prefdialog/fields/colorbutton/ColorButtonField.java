@@ -27,12 +27,14 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
 
 import javax.inject.Inject;
+import javax.swing.Action;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 
+import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccess;
+import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccessFactory;
 import com.anrisoftware.prefdialog.annotations.ColorButton;
 import com.anrisoftware.prefdialog.annotations.HorizontalAlignment;
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
@@ -44,8 +46,9 @@ import com.google.inject.assistedinject.Assisted;
  * Color button field. Button to select a color value.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 2.2
+ * @since 3.0
  */
+@SuppressWarnings("serial")
 public class ColorButtonField extends
 		AbstractTitleField<ButtonsGroupPanel, Container> {
 
@@ -57,90 +60,136 @@ public class ColorButtonField extends
 
 	private final ButtonsRowPanel buttonsRowPanel;
 
-	@SuppressWarnings("rawtypes")
-	private final DefaultListModel rowModel;
+	private final DefaultListModel<Action> rowModel;
 
 	private final SelectColorAction selectColorAction;
 
 	private JButton colorButton;
 
+	private final ButtonsGroupPanel buttonsGroupPanel;
+
+	private AnnotationAccess fieldAnnotation;
+
+	private final PropertyChangeListener colorListener;
+
+	/**
+	 * @see ColorButtonFieldFactory#create(Container, Object, String)
+	 */
 	@Inject
 	ColorButtonField(ColorButtonFieldLogger logger,
-			ButtonsGroupPanel buttonsPanel, ButtonsRowPanel buttonsRowPanel,
+			ButtonsGroupPanel buttonsGroupPanel,
+			ButtonsRowPanel buttonsRowPanel,
 			SelectColorAction selectColorAction, @Assisted Container container,
-			@Assisted Object parentObject, @Assisted Field field) {
-		super(buttonsPanel, container, parentObject, field);
+			@Assisted Object parentObject, @Assisted String fieldName) {
+		super(buttonsGroupPanel, container, parentObject, fieldName);
 		this.log = logger;
+		this.buttonsGroupPanel = buttonsGroupPanel;
 		this.buttonsRowPanel = buttonsRowPanel;
-		this.rowModel = new DefaultListModel();
+		this.rowModel = new DefaultListModel<Action>();
 		this.selectColorAction = selectColorAction;
+		this.colorListener = new PropertyChangeListener() {
+
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				if (evt.getPropertyName() == COLOR_PROPERTY) {
+					setupColorValue((Color) evt.getNewValue());
+				}
+			}
+		};
 		setup();
 	}
 
 	private void setup() {
-		selectColorAction
-				.addPropertyChangeListener(new PropertyChangeListener() {
-
-					@Override
-					public void propertyChange(PropertyChangeEvent evt) {
-						if (evt.getPropertyName() == COLOR_PROPERTY) {
-							setupColorValue((Color) evt.getNewValue());
-						}
-					}
-				});
-		getComponent().setButtonsRowPanel(buttonsRowPanel);
+		selectColorAction.addPropertyChangeListener(colorListener);
+		buttonsGroupPanel.setButtonsRowPanel(buttonsRowPanel);
 		rowModel.addElement(selectColorAction);
 		buttonsRowPanel.setModel(rowModel);
 		colorButton = buttonsRowPanel.getButton(0);
 	}
 
-	@Override
-	public ColorButtonField createField() {
-		super.createField();
+	@Inject
+	void setBeanAccessFactory(AnnotationAccessFactory annotationAccessFactory) {
+		this.fieldAnnotation = annotationAccessFactory.create(ANNOTATION_CLASS,
+				getAccessibleObject());
 		setupHorizontalAlignment();
-		return this;
 	}
 
 	private void setupHorizontalAlignment() {
-		HorizontalAlignment alignment = getAnnotationAccess().getValue(
-				ANNOTATION_CLASS, getField(), HORIZONTAL_ALIGNMENT_ELEMENT);
+		HorizontalAlignment alignment = fieldAnnotation
+				.getValue(HORIZONTAL_ALIGNMENT_ELEMENT);
 		setHorizontalAlignment(alignment);
 	}
 
 	@Override
-	public void applyInput() throws PropertyVetoException {
-		super.applyInput();
-		setValue(selectColorAction.getColor());
+	public void setName(String name) {
+		super.setName(name);
+		getComponent().setName(name);
+		buttonsRowPanel.setName(name);
 	}
 
 	@Override
-	public void restoreInput() {
-		super.restoreInput();
-		setValue(getValue());
+	public void setTitle(String newTitle) {
+		super.setTitle(newTitle);
+		selectColorAction.setTitle(getTitle());
+	}
+
+	/**
+	 * Sets the horizontal alignment of the color button.
+	 * 
+	 * @param alignment
+	 *            the {@link HorizontalAlignment}.
+	 */
+	public void setHorizontalAlignment(HorizontalAlignment alignment) {
+		buttonsGroupPanel.setHorizontalAlignment(alignment);
+		log.horizontalAlignmentSet(this, alignment);
+	}
+
+	/**
+	 * Returns the horizontal alignment of the color button.
+	 * 
+	 * @return the {@link HorizontalAlignment}.
+	 */
+	public HorizontalAlignment getHorizontalAlignment() {
+		return buttonsGroupPanel.getHorizontalAlignment();
 	}
 
 	/**
 	 * Sets the color value of this color button.
+	 * 
+	 * @throws PropertyVetoException
+	 *             if the user input is not valid.
 	 * 
 	 * @throws IllegalArgumentException
 	 *             if the value is not of type {@link Color}.
 	 */
 	@Override
-	public void setValue(Object newValue) {
-		super.setValue(newValue);
-		log.checkValueIsColor(this, newValue);
-		setupColorValue((Color) newValue);
+	public void setValue(Object value) throws PropertyVetoException {
+		super.setValue(value);
+		log.checkValueIsColor(this, value);
+		setupColorValue((Color) value);
 	}
 
 	/**
 	 * Sets the color value of this color button.
 	 * 
-	 * @param newColor
+	 * @param color
 	 *            the {@link Color} value.
+	 * 
+	 * @throws PropertyVetoException
+	 *             if the user input is not valid.
 	 */
-	public void setValue(Color newColor) {
-		super.setValue(newColor);
-		setupColorValue(newColor);
+	public void setValue(Color color) throws PropertyVetoException {
+		super.setValue(color);
+		setupColorValue(color);
+	}
+
+	/**
+	 * Returns the color value.
+	 * 
+	 * @return the {@link Color}.
+	 */
+	public Color getColor() {
+		return (Color) getValue();
 	}
 
 	private void setupColorValue(Color newColor) {
@@ -168,35 +217,15 @@ public class ColorButtonField extends
 	}
 
 	@Override
-	public void setName(String name) {
-		super.setName(name);
-		getComponent().setName(name);
-		buttonsRowPanel.setName(name);
+	public void applyInput() throws PropertyVetoException {
+		super.applyInput();
+		setValue(selectColorAction.getColor());
 	}
 
 	@Override
-	public void setTitle(String newTitle) {
-		super.setTitle(newTitle);
-		selectColorAction.setTitle(getTitle());
+	public void restoreInput() {
+		super.restoreInput();
+		setupColorValue(getColor());
 	}
 
-	/**
-	 * Sets the horizontal alignment of the color button.
-	 * 
-	 * @param alignment
-	 *            the {@link HorizontalAlignment}.
-	 */
-	public void setHorizontalAlignment(HorizontalAlignment alignment) {
-		getComponent().setHorizontalAlignment(alignment);
-		log.horizontalAlignmentSet(this, alignment);
-	}
-
-	/**
-	 * Returns the horizontal alignment of the color button.
-	 * 
-	 * @return the {@link HorizontalAlignment}.
-	 */
-	public HorizontalAlignment getHorizontalAlignment() {
-		return getComponent().getHorizontalAlignment();
-	}
 }

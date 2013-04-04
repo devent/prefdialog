@@ -38,7 +38,7 @@ import com.anrisoftware.prefdialog.annotations.HorizontalAlignment;
  * @since 3.0
  */
 @SuppressWarnings("serial")
-class ButtonsGroupPanel extends JPanel {
+public class ButtonsGroupPanel extends JPanel {
 
 	private final TableLayout layout;
 

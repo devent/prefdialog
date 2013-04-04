@@ -18,7 +18,6 @@
  */
 package com.anrisoftware.prefdialog.fields.buttongroup
 
-
 import static com.anrisoftware.prefdialog.core.AbstractTitleField.*
 import static com.anrisoftware.prefdialog.core.FieldTestUtils.*
 import static com.anrisoftware.prefdialog.fields.buttongroup.ButtonGroupBean.*

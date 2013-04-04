@@ -18,135 +18,154 @@
  */
 package com.anrisoftware.prefdialog.fields.colorbutton
 
-import static com.anrisoftware.prefdialog.fields.buttongroup.ButtonGroupPluginModule.*
+import static com.anrisoftware.globalpom.utils.TestUtils.*
+import static com.anrisoftware.prefdialog.core.FieldTestUtils.*
+import static com.anrisoftware.prefdialog.fields.buttongroup.ButtonGroupService.*
 import static com.anrisoftware.prefdialog.fields.colorbutton.ColorButtonBean.*
 import groovy.util.logging.Slf4j
 
 import java.awt.Color
+import java.awt.Container
+import java.awt.event.KeyEvent
 
 import javax.swing.JPanel
 
+import org.fest.swing.fixture.FrameFixture
 import org.junit.Before
+import org.junit.BeforeClass
 import org.junit.Test
 
+import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule
+import com.anrisoftware.globalpom.reflection.beans.BeansModule
+import com.anrisoftware.globalpom.reflection.exceptions.ReflectionError
+import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.prefdialog.core.FieldTestUtils
-import com.anrisoftware.prefdialog.reflection.exceptions.ReflectionError
+import com.google.inject.Guice
 import com.google.inject.Injector
 
 /**
  * Test the {@link ColorButtonField}.
  *
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 2.2
+ * @since 3.0
  */
 @Slf4j
 class ColorButtonTest extends FieldTestUtils {
 
-	static final title = "Color Button Test"
-
-	ColorButtonFieldFactory factory
-
-	ColorButtonBean bean
-
-	JPanel container
-
-	static int dialogNumber = 0
-
-	@Before
-	void createFactory() {
-		factory = injector.getInstance ColorButtonFieldFactory
-		bean = new ColorButtonBean()
-		container = new JPanel()
-	}
-
-	Injector createInjector() {
-		super.createInjector().createChildInjector new ColorButtonModule()
-	}
-
 	@Test
-	void "color button with null value"() {
+	void "with null value"() {
+		def fieldName = COLOR_NULL_VALUE
 		shouldFailWith(ReflectionError) {
-			factory.create(container, bean, COLOR_NULL_VALUE_FIELD).createField()
+			def field = factory.create(container, bean, fieldName)
 		}
 	}
 
 	@Test
 	void "apply user input"() {
-		def field = factory.create(container, bean, COLOR_BLACK_FIELD).
-						createField()
-		def button
-		def dialog
-		beginPanelFrame title, container, {
-			button = fixture.button("$COLOR_BLACK-0-$BUTTON_NAME")
-		}, {
-			button.click()
-			dialog = fixture.dialog("dialog${dialogNumber++}")
-			log.info "Choose the color ${Color.WHITE} and close the dialog..."
-			Thread.sleep 10 * 1000
-		}, {
+		def title = "ColorButtonTest :: apply user input"
+		def fieldName = COLOR_BLACK
+		def field = factory.create(container, bean, fieldName)
+		def buttonName = "$fieldName-0-$BUTTON_NAME"
+
+		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+			fixture.button buttonName click()
+			fixture.dialog().pressAndReleaseKeys KeyEvent.VK_ENTER
 			field.applyInput()
-			assert bean.colorBlack == Color.WHITE
-		}
+		}, { FrameFixture fixture ->
+			assert bean.colorBlack == Color.BLACK
+		})
 	}
 
 	@Test
 	void "restore user input"() {
-		def field = factory.create(container, bean, COLOR_BLACK_FIELD).
-						createField()
-		def button
-		def dialog
-		beginPanelFrame title, container, {
-			button = fixture.button("$COLOR_BLACK-0-$BUTTON_NAME")
-		}, {
-			button.click()
-			dialog = fixture.dialog("dialog${dialogNumber++}")
-			log.info "Choose any color and close the dialog..."
-			Thread.sleep 10 * 1000
-		}, {
+		def title = "ColorButtonTest :: restore user input"
+		def fieldName = COLOR_BLACK
+		def field = factory.create(container, bean, fieldName)
+		def buttonName = "$fieldName-0-$BUTTON_NAME"
+
+		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+			fixture.button buttonName click()
+			fixture.dialog().pressAndReleaseKeys KeyEvent.VK_ENTER
 			field.restoreInput()
-			button.requireText("#000000")
+		}, { FrameFixture fixture ->
 			assert bean.colorBlack == Color.BLACK
-		}
+		})
 	}
 
 	@Test
-	void "black color"() {
-		factory.create(container, bean, COLOR_BLACK_FIELD).createField()
-		def button
-		def dialog
-		beginPanelFrame title, container, {
-			button = fixture.button("$COLOR_BLACK-0-$BUTTON_NAME")
-			button.requireText("#000000")
-		}, {
-			button.click()
-			dialog = fixture.dialog("dialog${dialogNumber++}")
-		}, { dialog.close() }
+	void "with right alignment"() {
+		def title = "ColorButtonTest :: with right alignment"
+		def fieldName = COLOR_RIGHT
+		def field = factory.create(container, bean, fieldName)
+		def buttonName = "$fieldName-0-$BUTTON_NAME"
+
+		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+			fixture.button buttonName click()
+			fixture.dialog().pressAndReleaseKeys KeyEvent.VK_ENTER
+			field.applyInput()
+		}, { FrameFixture fixture ->
+			assert bean.colorBlack == Color.BLACK
+		})
 	}
 
 	@Test
-	void "right alignment"() {
-		factory.create(container, bean, COLOR_RIGHT_FIELD).createField()
-		beginPanelFrame title, container, {
-		}
+	void "with center alignment"() {
+		def title = "ColorButtonTest :: with center alignment"
+		def fieldName = COLOR_MIDDLE
+		def field = factory.create(container, bean, fieldName)
+		def buttonName = "$fieldName-0-$BUTTON_NAME"
+
+		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+			fixture.button buttonName click()
+			fixture.dialog().pressAndReleaseKeys KeyEvent.VK_ENTER
+			field.applyInput()
+		}, { FrameFixture fixture ->
+			assert bean.colorBlack == Color.BLACK
+		})
 	}
 
 	@Test
-	void "middle alignment"() {
-		factory.create(container, bean, COLOR_MIDDLE_FIELD).createField()
-		beginPanelFrame title, container, {
-		}
+	void "with left alignment"() {
+		def title = "ColorButtonTest :: with left alignment"
+		def fieldName = COLOR_LEFT
+		def field = factory.create(container, bean, fieldName)
+		def buttonName = "$fieldName-0-$BUTTON_NAME"
+
+		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+			fixture.button buttonName click()
+			fixture.dialog().pressAndReleaseKeys KeyEvent.VK_ENTER
+			field.applyInput()
+		}, { FrameFixture fixture ->
+			assert bean.colorBlack == Color.BLACK
+		})
 	}
 
-	@Test
-	void "left alignment"() {
-		factory.create(container, bean, COLOR_LEFT_FIELD).createField()
-		beginPanelFrame title, container, {
-		}
+	//@Test(timeout = 60000l)
+	void "manually"() {
+		def title = "ColorButtonTest :: manually"
+		def fieldName = COLOR_BLACK
+		def field = factory.create(container, bean, fieldName)
+		new TestFrameUtil(title, container).withFixture({ Thread.sleep 60*1000 })
 	}
 
-	//@Test
-	void "black color manually"() {
-		factory.create(container, bean, COLOR_BLACK_FIELD).createField()
-		beginPanelFrame title, container, { Thread.sleep 60 * 1000 }
+	static Injector injector
+
+	static ColorButtonFieldFactory factory
+
+	ColorButtonBean bean
+
+	Container container
+
+	@BeforeClass
+	static void setupFactories() {
+		injector = Guice.createInjector(
+				new AnnotationsModule(), new BeansModule(), new ColorButtonModule())
+		factory = injector.getInstance ColorButtonFieldFactory
+	}
+
+	@Before
+	void setupBean() {
+		bean = new ColorButtonBean()
+		container = new JPanel()
 	}
 }

@@ -11,7 +11,7 @@ import javax.swing.JColorChooser;
  * Opens a color chooser dialog upon action.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 2.2
+ * @since 3.0
  */
 @SuppressWarnings("serial")
 class SelectColorAction extends AbstractAction {
