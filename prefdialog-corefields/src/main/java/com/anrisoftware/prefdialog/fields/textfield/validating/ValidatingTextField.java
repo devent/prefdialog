@@ -20,13 +20,17 @@ package com.anrisoftware.prefdialog.fields.textfield.validating;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.MouseEvent;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
 import java.beans.VetoableChangeSupport;
 
 import javax.swing.JTextField;
+import javax.swing.ToolTipManager;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
@@ -88,6 +92,12 @@ public class ValidatingTextField<TextFieldType extends JTextComponent> {
 
 	private boolean valueValid;
 
+	private String oldToolTipText;
+
+	private boolean oldToolTipTextSet;
+
+	private String invalidText;
+
 	/**
 	 * Sets the {@link JTextField} for with the input will be validated.
 	 */
@@ -97,6 +107,9 @@ public class ValidatingTextField<TextFieldType extends JTextComponent> {
 		this.oldBorder = field.getBorder();
 		this.highlighBorder = new LineBorder(Color.red, 1, false);
 		this.valueValid = true;
+		this.invalidText = field.getToolTipText();
+		this.oldToolTipText = null;
+		this.oldToolTipTextSet = false;
 		setupTextField();
 		setupListeners();
 	}
@@ -126,10 +139,26 @@ public class ValidatingTextField<TextFieldType extends JTextComponent> {
 		field.addFocusListener(new FocusAdapter() {
 
 			@Override
+			public void focusGained(FocusEvent e) {
+				validateInput();
+			}
+
+			@Override
 			public void focusLost(FocusEvent e) {
 				restoreValueIfInvalid();
 			}
 
+		});
+		field.addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentResized(ComponentEvent e) {
+				validateInput();
+			}
+
+			@Override
+			public void componentShown(ComponentEvent e) {
+				validateInput();
+			}
 		});
 	}
 
@@ -143,6 +172,7 @@ public class ValidatingTextField<TextFieldType extends JTextComponent> {
 			normalField();
 		} catch (PropertyVetoException e) {
 			this.valueValid = false;
+			this.invalidText = e.getLocalizedMessage();
 			highlighField();
 		}
 	}
@@ -158,10 +188,12 @@ public class ValidatingTextField<TextFieldType extends JTextComponent> {
 
 	private void highlighField() {
 		field.setBorder(highlighBorder);
+		setShowToolTip(true);
 	}
 
 	private void normalField() {
 		field.setBorder(oldBorder);
+		setShowToolTip(false);
 	}
 
 	/**
@@ -177,7 +209,6 @@ public class ValidatingTextField<TextFieldType extends JTextComponent> {
 	 * Sets the value to the field.
 	 */
 	public void setValue(Object value) {
-		validateInput();
 		this.value = value;
 		field.setText(ObjectUtils.toString(value));
 	}
@@ -199,6 +230,46 @@ public class ValidatingTextField<TextFieldType extends JTextComponent> {
 	 */
 	public boolean isValueValid() {
 		return valueValid;
+	}
+
+	public void setShowToolTip(boolean show) {
+		if (show) {
+			showToolTip();
+		} else if (!show) {
+			hideToolTip();
+		}
+	}
+
+	private void showToolTip() {
+		if (!oldToolTipTextSet) {
+			oldToolTipText = field.getToolTipText();
+			oldToolTipTextSet = true;
+		}
+		field.setToolTipText(invalidText);
+		int id = 0;
+		long when = 0;
+		int modifiers = 0;
+		int x = 0;
+		int y = 0;
+		int clickCount = 0;
+		ToolTipManager.sharedInstance().mouseMoved(
+				new MouseEvent(field, id, when, modifiers, x, y, clickCount,
+						false));
+	}
+
+	private void hideToolTip() {
+		field.setToolTipText(oldToolTipText);
+		oldToolTipText = null;
+		oldToolTipTextSet = false;
+		int id = 0;
+		long when = 0;
+		int modifiers = 0;
+		int x = 0;
+		int y = 0;
+		int clickCount = 0;
+		ToolTipManager.sharedInstance().mouseExited(
+				new MouseEvent(field, id, when, modifiers, x, y, clickCount,
+						false));
 	}
 
 	/**

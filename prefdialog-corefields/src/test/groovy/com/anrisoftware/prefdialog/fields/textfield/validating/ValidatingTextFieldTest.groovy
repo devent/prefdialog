@@ -81,7 +81,6 @@ class ValidatingTextFieldTest {
 		]
 
 		field.addVetoableChangeListener createVetoableChangeListener(validText)
-		field.setValue oldValue
 
 		new TestFrameUtil(title, panel).withFixture({ FrameFixture fixture ->
 			fixture.textBox fieldName enterText "invalid"
@@ -94,6 +93,28 @@ class ValidatingTextFieldTest {
 		})
 	}
 
+	@Test(timeout = 60000l)
+	void "manually"() {
+		def title = "ValidatingTextFieldTest :: manually"
+		def field = new ValidatingTextField(createTextField(fieldName))
+		def fieldB = createTextField("fieldB")
+		def panel = createPanel cols: [FILL], rows: [
+			FILL,
+			PREFERRED,
+			PREFERRED,
+			FILL
+		], fields: [
+			"0, 1": fieldB,
+			"0, 2": field.field
+		]
+
+		field.addVetoableChangeListener createVetoableChangeListener(validText)
+
+		new TestFrameUtil(title, panel).withFixture({ FrameFixture fixture ->
+			Thread.sleep 60 * 1000
+		})
+	}
+
 	static fieldName = "valid-text"
 
 	static validText = "validText"
@@ -101,7 +122,7 @@ class ValidatingTextFieldTest {
 	static VetoableChangeListener createVetoableChangeListener(def validValue) {
 		[vetoableChange: { ev ->
 				if (ev.newValue != validValue) {
-					throw new PropertyVetoException("", ev)
+					throw new PropertyVetoException("Value '$ev.newValue' not valid.", ev)
 				}
 			}] as VetoableChangeListener
 	}
