@@ -22,6 +22,7 @@ import static com.anrisoftware.prefdialog.fields.combobox.ComboBoxBean.*
 import static info.clearthought.layout.TableLayoutConstants.*
 import info.clearthought.layout.TableLayout
 
+import java.awt.event.KeyEvent
 import java.beans.PropertyVetoException
 import java.beans.VetoableChangeListener
 
@@ -50,17 +51,11 @@ class ValidatingTextFieldTest {
 		]
 
 		field.addVetoableChangeListener createVetoableChangeListener(validText)
-		field.setValue null
 
 		new TestFrameUtil(title, panel).withFixture({ FrameFixture fixture ->
-			validText.eachWithIndex { it, i ->
-				fixture.textBox().enterText it
-				if (i < validText.length() - 1) {
-					assert field.isValueValid() == false
-				} else {
-					assert field.isValueValid() == true
-				}
-			}
+			fixture.textBox().enterText validText
+			fixture.textBox fieldName pressAndReleaseKeys KeyEvent.VK_ENTER
+			assert field.isValueValid() == true
 		})
 	}
 
@@ -93,7 +88,7 @@ class ValidatingTextFieldTest {
 		})
 	}
 
-	@Test(timeout = 60000l)
+	//@Test(timeout = 60000l)
 	void "manually"() {
 		def title = "ValidatingTextFieldTest :: manually"
 		def field = new ValidatingTextField(createTextField(fieldName))

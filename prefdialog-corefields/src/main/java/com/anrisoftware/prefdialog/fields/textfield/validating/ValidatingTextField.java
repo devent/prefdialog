@@ -20,6 +20,8 @@ package com.anrisoftware.prefdialog.fields.textfield.validating;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.FocusAdapter;
@@ -33,8 +35,6 @@ import javax.swing.JTextField;
 import javax.swing.ToolTipManager;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.text.JTextComponent;
 
 import org.apache.commons.lang3.ObjectUtils;
@@ -120,22 +120,16 @@ public class ValidatingTextField<TextFieldType extends JTextComponent> {
 	}
 
 	private void setupListeners() {
-		field.getDocument().addDocumentListener(new DocumentListener() {
+		if (field instanceof JTextField) {
+			JTextField textField = (JTextField) field;
+			textField.addActionListener(new ActionListener() {
 
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				validateInput();
-			}
-
-			@Override
-			public void insertUpdate(DocumentEvent e) {
-				validateInput();
-			}
-
-			@Override
-			public void changedUpdate(DocumentEvent e) {
-			}
-		});
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					validateInput();
+				}
+			});
+		}
 		field.addFocusListener(new FocusAdapter() {
 
 			@Override
@@ -145,6 +139,7 @@ public class ValidatingTextField<TextFieldType extends JTextComponent> {
 
 			@Override
 			public void focusLost(FocusEvent e) {
+				validateInput();
 				restoreValueIfInvalid();
 			}
 
@@ -178,11 +173,8 @@ public class ValidatingTextField<TextFieldType extends JTextComponent> {
 	}
 
 	private void restoreValueIfInvalid() {
-		setValue(value);
-		if (valueValid) {
-			normalField();
-		} else {
-			highlighField();
+		if (!valueValid) {
+			setValue(value);
 		}
 	}
 
