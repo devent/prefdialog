@@ -201,8 +201,8 @@ public class ValidatingTextField<TextFieldType extends JTextComponent> {
 	 * Sets the value to the field.
 	 */
 	public void setValue(Object value) {
-		this.value = value;
 		field.setText(ObjectUtils.toString(value));
+		validateInput();
 	}
 
 	/**

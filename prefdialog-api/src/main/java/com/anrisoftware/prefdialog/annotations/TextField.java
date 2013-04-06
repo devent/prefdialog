@@ -19,6 +19,7 @@
 package com.anrisoftware.prefdialog.annotations;
 
 import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import java.lang.annotation.Retention;
@@ -33,13 +34,20 @@ import java.lang.annotation.Target;
  * <pre>
  * &#064;FieldComponent
  * &#064;TextField
- * private String text;
+ * public String text;
  * </pre>
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
  */
-@Target(FIELD)
+@Target({ FIELD, METHOD })
 @Retention(RUNTIME)
 public @interface TextField {
+
+	/**
+	 * If the field should be editable. Set to {@code true} if the text field
+	 * should be editable or {@code false} if not. Defaults to {@code true}.
+	 */
+	boolean editable() default true;
+
 }

@@ -19,7 +19,9 @@
 package com.anrisoftware.prefdialog.fields.textfield.text;
 
 import java.awt.Container;
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
+import java.beans.VetoableChangeListener;
 import java.lang.annotation.Annotation;
 
 import javax.inject.Inject;
@@ -51,7 +53,7 @@ public class TextField extends AbstractTitleField<JTextField, Container> {
 
 	private final ValidatingTextField<JTextField> validating;
 
-	private boolean adjusting;
+	private final VetoableChangeListener valueVetoListener;
 
 	private AnnotationAccess fieldAnnotation;
 
@@ -75,7 +77,21 @@ public class TextField extends AbstractTitleField<JTextField, Container> {
 		this.log = logger;
 		this.textField = textField;
 		this.validating = new ValidatingTextField<JTextField>(textField);
-		this.adjusting = false;
+		this.valueVetoListener = new VetoableChangeListener() {
+
+			@Override
+			public void vetoableChange(PropertyChangeEvent evt)
+					throws PropertyVetoException {
+				TextField.super.trySetValue(evt.getNewValue());
+				changeValue(evt.getNewValue());
+			}
+		};
+		setupValidating();
+	}
+
+	private void setupValidating() {
+		validating.addVetoableChangeListener(
+				ValidatingTextField.VALUE_PROPERTY, valueVetoListener);
 	}
 
 	@Inject
@@ -91,26 +107,8 @@ public class TextField extends AbstractTitleField<JTextField, Container> {
 	}
 
 	@Override
-	public void applyInput() throws PropertyVetoException {
-		super.applyInput();
-		Object value = validating.getValue();
-		adjusting = true;
-		setValue(value);
-		adjusting = false;
-	}
-
-	@Override
-	public void restoreInput() {
-		super.restoreInput();
-		validating.setValue(getValue());
-	}
-
-	@Override
-	public void setValue(Object value) throws PropertyVetoException {
-		super.setValue(value);
-		if (!adjusting) {
-			validating.setValue(value);
-		}
+	protected void trySetValue(Object value) throws PropertyVetoException {
+		validating.setValue(value);
 	}
 
 	/**
