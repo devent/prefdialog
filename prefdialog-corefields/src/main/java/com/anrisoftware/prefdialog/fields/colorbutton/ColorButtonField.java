@@ -78,7 +78,7 @@ public class ColorButtonField extends
 
 	private final VetoableChangeListener valueVetoListener;
 
-	private AbstractValidatingComponent<JComponent> validating;
+	private AbstractValidatingComponent<Color, JComponent> validating;
 
 	/**
 	 * @see ColorButtonFieldFactory#create(Container, Object, String)
@@ -95,17 +95,17 @@ public class ColorButtonField extends
 		this.buttonsRowPanel = buttonsRowPanel;
 		this.rowModel = new DefaultListModel<Action>();
 		this.selectColorAction = selectColorAction;
-		this.validating = new AbstractValidatingComponent<JComponent>(
+		this.validating = new AbstractValidatingComponent<Color, JComponent>(
 				buttonsGroupPanel) {
 
 			@Override
-			protected void setComponentValue(Object value) {
-				setupColorValue((Color) value);
+			protected void setComponentValue(Color value) {
+				setupColorValue(value);
 			}
 
 			@Override
-			protected Object getComponentValue() {
-				return ColorButtonField.this.getValue();
+			protected Color getComponentValue() {
+				return ColorButtonField.this.getColor();
 			}
 		};
 		this.colorListener = new PropertyChangeListener() {
@@ -113,7 +113,7 @@ public class ColorButtonField extends
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				if (evt.getPropertyName() == COLOR_PROPERTY) {
-					validating.setValue(evt.getNewValue());
+					validating.setValue((Color) evt.getNewValue());
 				}
 			}
 		};

@@ -1,5 +1,8 @@
 package com.anrisoftware.prefdialog.miscswing.components.validating;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.AbstractButton;
 
 /**
@@ -12,7 +15,9 @@ import javax.swing.AbstractButton;
  */
 @SuppressWarnings("serial")
 public class ValidatingButtonComponent<ComponentType extends AbstractButton>
-		extends AbstractValidatingComponent<ComponentType> {
+		extends AbstractValidatingComponent<Object, ComponentType> {
+
+	private final ActionListener actionListener;
 
 	/**
 	 * Sets the button component for with the input will be validated.
@@ -22,6 +27,19 @@ public class ValidatingButtonComponent<ComponentType extends AbstractButton>
 	 */
 	public ValidatingButtonComponent(ComponentType component) {
 		super(component);
+		this.actionListener = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				validateInput();
+			}
+		};
+		setupListeners();
+	}
+
+	private void setupListeners() {
+		AbstractButton component = getComponent();
+		component.addActionListener(actionListener);
 	}
 
 	@Override

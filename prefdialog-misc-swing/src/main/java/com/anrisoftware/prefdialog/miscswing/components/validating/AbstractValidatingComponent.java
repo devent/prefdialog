@@ -19,8 +19,6 @@
 package com.anrisoftware.prefdialog.miscswing.components.validating;
 
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.FocusAdapter;
@@ -31,9 +29,7 @@ import java.beans.VetoableChangeListener;
 import java.beans.VetoableChangeSupport;
 import java.io.Serializable;
 
-import javax.swing.AbstractButton;
 import javax.swing.JComponent;
-import javax.swing.JTextField;
 import javax.swing.ToolTipManager;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
@@ -65,6 +61,12 @@ import javax.swing.border.LineBorder;
  * panel.add(field.getField(), BorderLayout.CENTER);
  * </pre>
  * 
+ * @param <ValueType>
+ *            the type of the value.
+ * 
+ * @param <ComponentType>
+ *            the type of the {@link JComponent}.
+ * 
  * @see VetoableChangeListener
  * @see PropertyVetoException
  * 
@@ -72,7 +74,7 @@ import javax.swing.border.LineBorder;
  * @since 1.0
  */
 @SuppressWarnings("serial")
-public abstract class AbstractValidatingComponent<ComponentType extends JComponent>
+public abstract class AbstractValidatingComponent<ValueType, ComponentType extends JComponent>
 		implements Serializable {
 
 	/**
@@ -87,7 +89,7 @@ public abstract class AbstractValidatingComponent<ComponentType extends JCompone
 
 	private final Border highlighBorder;
 
-	private Object value;
+	private ValueType value;
 
 	private final ComponentType field;
 
@@ -98,8 +100,6 @@ public abstract class AbstractValidatingComponent<ComponentType extends JCompone
 	private boolean oldToolTipTextSet;
 
 	private String invalidText;
-
-	private final ActionListener actionListener;
 
 	/**
 	 * Sets the {@link JComponent} for with the input will be validated.
@@ -113,25 +113,10 @@ public abstract class AbstractValidatingComponent<ComponentType extends JCompone
 		this.invalidText = field.getToolTipText();
 		this.oldToolTipText = null;
 		this.oldToolTipTextSet = false;
-		this.actionListener = new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				validateInput();
-			}
-		};
 		setupListeners();
 	}
 
 	private void setupListeners() {
-		if (field instanceof JTextField) {
-			JTextField textField = (JTextField) field;
-			textField.addActionListener(actionListener);
-		}
-		if (field instanceof AbstractButton) {
-			AbstractButton button = (AbstractButton) field;
-			button.addActionListener(actionListener);
-		}
 		field.addFocusListener(new FocusAdapter() {
 
 			@Override
@@ -159,9 +144,12 @@ public abstract class AbstractValidatingComponent<ComponentType extends JCompone
 		});
 	}
 
-	private void validateInput() {
-		Object oldValue = value;
-		Object newValue = getValue();
+	/**
+	 * Validates the input.
+	 */
+	protected void validateInput() {
+		ValueType oldValue = value;
+		ValueType newValue = getValue();
 		try {
 			support.fireVetoableChange(VALUE_PROPERTY, oldValue, newValue);
 			this.value = newValue;
@@ -205,7 +193,7 @@ public abstract class AbstractValidatingComponent<ComponentType extends JCompone
 	 * @param value
 	 *            the {@link Object} value.
 	 */
-	public void setValue(Object value) {
+	public void setValue(ValueType value) {
 		setComponentValue(value);
 		validateInput();
 	}
@@ -216,14 +204,14 @@ public abstract class AbstractValidatingComponent<ComponentType extends JCompone
 	 * @param value
 	 *            the {@link Object} value.
 	 */
-	protected abstract void setComponentValue(Object value);
+	protected abstract void setComponentValue(ValueType value);
 
 	/**
 	 * Returns the value of the component.
 	 * 
 	 * @return the {@link Object} value.
 	 */
-	public Object getValue() {
+	public ValueType getValue() {
 		return getComponentValue();
 	}
 
@@ -232,7 +220,7 @@ public abstract class AbstractValidatingComponent<ComponentType extends JCompone
 	 * 
 	 * @return the {@link Object} value.
 	 */
-	protected abstract Object getComponentValue();
+	protected abstract ValueType getComponentValue();
 
 	/**
 	 * Returns if the current value is valid. The validity of the value is

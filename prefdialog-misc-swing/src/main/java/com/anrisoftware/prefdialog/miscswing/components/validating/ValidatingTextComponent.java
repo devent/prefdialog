@@ -1,5 +1,9 @@
 package com.anrisoftware.prefdialog.miscswing.components.validating;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JTextField;
 import javax.swing.text.JTextComponent;
 
 import org.apache.commons.lang3.ObjectUtils;
@@ -14,7 +18,9 @@ import org.apache.commons.lang3.ObjectUtils;
  */
 @SuppressWarnings("serial")
 public class ValidatingTextComponent<ComponentType extends JTextComponent>
-		extends AbstractValidatingComponent<ComponentType> {
+		extends AbstractValidatingComponent<Object, ComponentType> {
+
+	private final ActionListener actionListener;
 
 	/**
 	 * Sets the text component for with the input will be validated.
@@ -24,6 +30,22 @@ public class ValidatingTextComponent<ComponentType extends JTextComponent>
 	 */
 	public ValidatingTextComponent(ComponentType component) {
 		super(component);
+		this.actionListener = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				validateInput();
+			}
+		};
+		setupListeners();
+	}
+
+	private void setupListeners() {
+		JTextComponent component = getComponent();
+		if (component instanceof JTextField) {
+			JTextField textField = (JTextField) component;
+			textField.addActionListener(actionListener);
+		}
 	}
 
 	@Override
