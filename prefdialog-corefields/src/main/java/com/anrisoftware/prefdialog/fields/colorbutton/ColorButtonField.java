@@ -26,12 +26,14 @@ import java.awt.Container;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
+import java.beans.VetoableChangeListener;
 import java.lang.annotation.Annotation;
 
 import javax.inject.Inject;
 import javax.swing.Action;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccess;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccessFactory;
@@ -40,6 +42,8 @@ import com.anrisoftware.prefdialog.annotations.HorizontalAlignment;
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
 import com.anrisoftware.prefdialog.fields.buttongroup.ButtonsGroupPanel;
 import com.anrisoftware.prefdialog.fields.buttongroup.ButtonsRowPanel;
+import com.anrisoftware.prefdialog.miscswing.components.validating.AbstractValidatingComponent;
+import com.anrisoftware.prefdialog.miscswing.components.validating.ValidatingTextComponent;
 import com.google.inject.assistedinject.Assisted;
 
 /**
@@ -72,6 +76,10 @@ public class ColorButtonField extends
 
 	private final PropertyChangeListener colorListener;
 
+	private final VetoableChangeListener valueVetoListener;
+
+	private AbstractValidatingComponent<JComponent> validating;
+
 	/**
 	 * @see ColorButtonFieldFactory#create(Container, Object, String)
 	 */
@@ -87,13 +95,35 @@ public class ColorButtonField extends
 		this.buttonsRowPanel = buttonsRowPanel;
 		this.rowModel = new DefaultListModel<Action>();
 		this.selectColorAction = selectColorAction;
+		this.validating = new AbstractValidatingComponent<JComponent>(
+				buttonsGroupPanel) {
+
+			@Override
+			protected void setComponentValue(Object value) {
+				setupColorValue((Color) value);
+			}
+
+			@Override
+			protected Object getComponentValue() {
+				return ColorButtonField.this.getValue();
+			}
+		};
 		this.colorListener = new PropertyChangeListener() {
 
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				if (evt.getPropertyName() == COLOR_PROPERTY) {
-					setupColorValue((Color) evt.getNewValue());
+					validating.setValue(evt.getNewValue());
 				}
+			}
+		};
+		this.valueVetoListener = new VetoableChangeListener() {
+
+			@Override
+			public void vetoableChange(PropertyChangeEvent evt)
+					throws PropertyVetoException {
+				ColorButtonField.super.trySetValue(evt.getNewValue());
+				changeValue(evt.getNewValue());
 			}
 		};
 		setup();
@@ -105,6 +135,8 @@ public class ColorButtonField extends
 		rowModel.addElement(selectColorAction);
 		buttonsRowPanel.setModel(rowModel);
 		colorButton = buttonsRowPanel.getButton(0);
+		validating.addVetoableChangeListener(
+				ValidatingTextComponent.VALUE_PROPERTY, valueVetoListener);
 	}
 
 	@Inject
@@ -192,11 +224,11 @@ public class ColorButtonField extends
 		return (Color) getValue();
 	}
 
-	private void setupColorValue(Color newColor) {
-		selectColorAction.setColor(newColor);
-		colorButton.setBackground(newColor);
-		colorButton.setForeground(textColorContrastYIQ(newColor));
-		colorButton.setText(colorToString(newColor));
+	private void setupColorValue(Color color) {
+		selectColorAction.setColor(color);
+		colorButton.setBackground(color);
+		colorButton.setForeground(textColorContrastYIQ(color));
+		colorButton.setText(colorToString(color));
 	}
 
 	private String colorToString(Color color) {
@@ -214,18 +246,6 @@ public class ColorButtonField extends
 		int g = color.getGreen();
 		int yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
 		return (yiq >= 128) ? Color.BLACK : Color.WHITE;
-	}
-
-	@Override
-	public void applyInput() throws PropertyVetoException {
-		super.applyInput();
-		setValue(selectColorAction.getColor());
-	}
-
-	@Override
-	public void restoreInput() {
-		super.restoreInput();
-		setupColorValue(getColor());
 	}
 
 }

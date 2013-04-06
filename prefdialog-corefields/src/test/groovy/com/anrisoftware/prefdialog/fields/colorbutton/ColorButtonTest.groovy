@@ -70,7 +70,6 @@ class ColorButtonTest extends FieldTestUtils {
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
 			fixture.button buttonName click()
 			fixture.dialog().pressAndReleaseKeys KeyEvent.VK_ENTER
-			field.applyInput()
 		}, { FrameFixture fixture ->
 			assert bean.colorBlack == Color.BLACK
 		})
@@ -140,7 +139,7 @@ class ColorButtonTest extends FieldTestUtils {
 		})
 	}
 
-	//@Test(timeout = 60000l)
+	@Test(timeout = 60000l)
 	void "manually"() {
 		def title = "ColorButtonTest :: manually"
 		def fieldName = COLOR_BLACK

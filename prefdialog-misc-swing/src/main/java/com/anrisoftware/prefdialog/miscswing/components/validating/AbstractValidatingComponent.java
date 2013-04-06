@@ -19,7 +19,6 @@
 package com.anrisoftware.prefdialog.miscswing.components.validating;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
@@ -121,13 +120,7 @@ public abstract class AbstractValidatingComponent<ComponentType extends JCompone
 				validateInput();
 			}
 		};
-		setupTextField();
 		setupListeners();
-	}
-
-	private void setupTextField() {
-		int height = field.getPreferredSize().height;
-		field.setPreferredSize(new Dimension(200, height));
 	}
 
 	private void setupListeners() {
