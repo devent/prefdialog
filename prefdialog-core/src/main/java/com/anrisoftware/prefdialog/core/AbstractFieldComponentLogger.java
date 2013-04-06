@@ -76,8 +76,8 @@ class AbstractFieldComponentLogger extends AbstractLogger {
 		log.debug("Set show tool-tip to {} for {}.", show, field);
 	}
 
-	void inputIsValid(AbstractFieldComponent<?> field, boolean valid) {
-		log.debug("Input is valid {} for field {}.", valid, field);
+	void restoredInput(AbstractFieldComponent<?> field) {
+		log.debug("Restored input for {}.", field);
 	}
 
 	NullPointerException noChildFieldFound(AbstractFieldComponent<?> field,
@@ -145,10 +145,6 @@ class AbstractFieldComponentLogger extends AbstractLogger {
 
 	void iconSet(AbstractFieldComponent<?> field, Icon icon) {
 		log.debug("Set icon {} for field {}.", icon, field);
-	}
-
-	void applyInputs(AbstractFieldComponent<?> field) {
-		log.debug("Apply input for field {}.", field);
 	}
 
 	IllegalArgumentException errorSetupValue(AbstractFieldComponent<?> field,

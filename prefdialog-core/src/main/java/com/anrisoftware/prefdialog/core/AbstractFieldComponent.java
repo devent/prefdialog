@@ -524,14 +524,21 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
 	@Override
 	public void setValue(Object value) throws PropertyVetoException {
-		if (oldValue == value) {
+		if (this.value == value) {
 			return;
 		}
-		this.value = value;
-		beanAccess.setValue(value);
-		oldValue = value;
-		this.value = value;
+		trySetValue(value);
+		changeValue(value);
 		log.valueSet(this, value);
+	}
+
+	protected void changeValue(Object value) {
+		oldValue = this.value;
+		this.value = value;
+	}
+
+	protected void trySetValue(Object value) throws PropertyVetoException {
+		beanAccess.setValue(value);
 	}
 
 	@Override
@@ -616,48 +623,14 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 		return texts.getResource(name, getLocale()).getText();
 	}
 
-	/**
-	 * Tests for all child fields if their input is valid or not.
-	 */
 	@Override
-	public boolean isInputValid() {
-		boolean valid = true;
-		for (FieldComponent<?> component : childFields) {
-			if (!component.isInputValid()) {
-				valid = false;
-				break;
-			}
-		}
-		log.inputIsValid(this, valid);
-		return valid;
-	}
-
-	/**
-	 * Applies user inputs of all fields if the user input is valid for this
-	 * field.
-	 * 
-	 * @see #isInputValid()
-	 */
-	@Override
-	public void applyInput() throws PropertyVetoException {
-		if (!isInputValid()) {
-			return;
-		}
-		for (FieldComponent<?> component : childFields) {
-			component.applyInput();
-		}
-		this.oldValue = value;
-		this.value = beanAccess.getValue();
-		log.applyInputs(this);
-	}
-
-	@Override
-	public void restoreInput() {
+	public void restoreInput() throws PropertyVetoException {
 		for (FieldComponent<?> component : childFields) {
 			component.restoreInput();
 		}
-		this.oldValue = value;
-		this.value = beanAccess.getValue();
+		setValue(oldValue);
+		this.value = oldValue;
+		log.restoredInput(this);
 	}
 
 	@Override
