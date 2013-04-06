@@ -16,30 +16,28 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-corefields. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.fields.textfield.text;
+package com.anrisoftware.prefdialog.fields.textfield;
 
-import java.awt.Container;
-
-import com.anrisoftware.prefdialog.fields.FieldComponent;
-import com.anrisoftware.prefdialog.fields.FieldFactory;
-import com.google.inject.AbstractModule;
-import com.google.inject.TypeLiteral;
-import com.google.inject.assistedinject.FactoryModuleBuilder;
+import com.anrisoftware.globalpom.log.AbstractLogger;
 
 /**
- * Binds the text field factory.
+ * Logging messages for {@link TextField}.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-class TextFieldModule extends AbstractModule {
+class TextFieldLogger extends AbstractLogger {
 
-	@Override
-	protected void configure() {
-		install(new FactoryModuleBuilder().implement(
-				new TypeLiteral<FieldComponent<Container>>() {
-				}, TextField.class).build(TextFieldFactory.class));
-		bind(FieldFactory.class).to(TextFieldFactory.class);
+	private static final String SET_EDITABLE = "Set editable to {} for {}.";
+
+	/**
+	 * Creates logger for {@link TextField}.
+	 */
+	TextFieldLogger() {
+		super(TextField.class);
 	}
 
+	void editableSet(TextField field, boolean editable) {
+		log.debug(SET_EDITABLE, editable, field);
+	}
 }

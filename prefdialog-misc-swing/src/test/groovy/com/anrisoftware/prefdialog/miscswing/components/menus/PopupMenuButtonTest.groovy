@@ -1,4 +1,4 @@
-package com.anrisoftware.prefdialog.miscswing.menus
+package com.anrisoftware.prefdialog.miscswing.components.menus
 
 import javax.swing.JButton
 import javax.swing.JMenuItem
@@ -9,6 +9,7 @@ import org.junit.Test
 
 import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.globalpom.utils.TestUtils
+import com.anrisoftware.prefdialog.miscswing.components.menu.PopupMenuComponent;
 
 /**
  * Test the menu popup with a JButton.

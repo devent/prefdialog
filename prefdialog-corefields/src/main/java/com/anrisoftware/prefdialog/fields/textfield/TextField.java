@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-corefields. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.fields.textfield.text;
+package com.anrisoftware.prefdialog.fields.textfield;
 
 import java.awt.Container;
 import java.beans.PropertyChangeEvent;
@@ -30,7 +30,7 @@ import javax.swing.JTextField;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccess;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccessFactory;
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
-import com.anrisoftware.prefdialog.fields.textfield.validating.ValidatingTextField;
+import com.anrisoftware.prefdialog.miscswing.components.validating.ValidatingTextComponent;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 
@@ -51,7 +51,7 @@ public class TextField extends AbstractTitleField<JTextField, Container> {
 
 	private final JTextField textField;
 
-	private final ValidatingTextField<JTextField> validating;
+	private final ValidatingTextComponent<JTextField> validating;
 
 	private final VetoableChangeListener valueVetoListener;
 
@@ -76,7 +76,7 @@ public class TextField extends AbstractTitleField<JTextField, Container> {
 		super(textField, container, parentObject, fieldName);
 		this.log = logger;
 		this.textField = textField;
-		this.validating = new ValidatingTextField<JTextField>(textField);
+		this.validating = new ValidatingTextComponent<JTextField>(textField);
 		this.valueVetoListener = new VetoableChangeListener() {
 
 			@Override
@@ -91,7 +91,7 @@ public class TextField extends AbstractTitleField<JTextField, Container> {
 
 	private void setupValidating() {
 		validating.addVetoableChangeListener(
-				ValidatingTextField.VALUE_PROPERTY, valueVetoListener);
+				ValidatingTextComponent.VALUE_PROPERTY, valueVetoListener);
 	}
 
 	@Inject

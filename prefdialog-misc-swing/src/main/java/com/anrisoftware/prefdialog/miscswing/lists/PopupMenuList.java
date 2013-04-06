@@ -11,9 +11,9 @@ import javax.swing.JPopupMenu;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import com.anrisoftware.prefdialog.miscswing.menus.PopupMenuComponent;
-import com.anrisoftware.prefdialog.miscswing.menus.PopupMenuComponent.MouseFilter;
-import com.anrisoftware.prefdialog.miscswing.menus.PopupMenuComponent.PopupMenuPosition;
+import com.anrisoftware.prefdialog.miscswing.components.menu.PopupMenuComponent;
+import com.anrisoftware.prefdialog.miscswing.components.menu.PopupMenuComponent.MouseFilter;
+import com.anrisoftware.prefdialog.miscswing.components.menu.PopupMenuComponent.PopupMenuPosition;
 
 /**
  * Let the user click with the right mouse key on an list item and show a popup

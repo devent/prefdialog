@@ -16,13 +16,15 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-corefields. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.fields.textfield.text
+package com.anrisoftware.prefdialog.fields.textfield
 
-import com.anrisoftware.prefdialog.annotations.CheckBox
+import java.beans.PropertyVetoException
+
 import com.anrisoftware.prefdialog.annotations.FieldComponent
+import com.anrisoftware.prefdialog.annotations.TextField
 
 /**
- * Bean with check-box fields.
+ * Bean with text fields.
  *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
@@ -31,38 +33,41 @@ class TextFieldBean {
 
 	static final NULL_VALUE = "nullValue"
 
-	static final NO_TEXT = "noText"
+	static final INITIAL_VALUE = "initialValue"
 
-	static final WITH_TEXT = "withText"
+	static final NOT_EDITABLE = "notEditable"
 
-	static final WITH_TEXT_RESOURCE = "withTextResource"
+	static final VALIDATED = "validated"
 
-	static final NOT_SHOW_TEXT = "notShowText"
+	static final VALIDATED_VALID_VALUE = "valid"
 
-	static final READ_ONLY = "readOnly"
-
-	@FieldComponent
-	@CheckBox
-	public Boolean nullValue
+	static final VALIDATED_INVALID_VALUE = "not valid"
 
 	@FieldComponent
-	@CheckBox
-	public boolean noText
+	@TextField
+	public String nullValue
 
 	@FieldComponent
-	@CheckBox(text = "Checkbox Text")
-	public boolean withText
-
-	@FieldComponent(title = "checkbox_with_text_resource_title")
-	@CheckBox(text = "checkbox_with_text_resource_text")
-	public boolean withTextResource
+	@TextField
+	public String initialValue = "Text"
 
 	@FieldComponent
-	@CheckBox(showText = false)
-	public boolean notShowText
+	@TextField(editable = false)
+	public String notEditable = "Not Editable"
 
-	@FieldComponent(readOnly = true)
-	@CheckBox
-	public boolean readOnly
+	private String validated
+
+	public void setValidated(String text) {
+		if (text != VALIDATED_VALID_VALUE) {
+			throw new PropertyVetoException("Value '$text' not valid.", null)
+		}
+		this.validated = text
+	}
+
+	@FieldComponent
+	@TextField
+	public String getValidated() {
+		return validated
+	}
 }
 

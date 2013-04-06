@@ -1,4 +1,4 @@
-package com.anrisoftware.prefdialog.miscswing.menus;
+package com.anrisoftware.prefdialog.miscswing.components.menu;
 
 import java.awt.Component;
 import java.awt.Point;
@@ -20,12 +20,8 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
  */
+@SuppressWarnings("serial")
 public class PopupMenuComponent implements Serializable {
-
-	/**
-	 * @version 1.0
-	 */
-	private static final long serialVersionUID = 5022346586292642404L;
 
 	/**
 	 * Filters mouse events that are allowing to trigger the popup menu.

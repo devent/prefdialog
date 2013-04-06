@@ -16,9 +16,8 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-corefields. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.fields.textfield.validating
+package com.anrisoftware.prefdialog.miscswing.components.validating
 
-import static com.anrisoftware.prefdialog.fields.combobox.ComboBoxBean.*
 import static info.clearthought.layout.TableLayoutConstants.*
 import info.clearthought.layout.TableLayout
 
@@ -35,19 +34,19 @@ import org.junit.Test
 import com.anrisoftware.globalpom.utils.TestFrameUtil
 
 /**
- * Test the {@link ValidatingTextField}.
+ * Test the {@link ValidatingTextComponent}.
  *
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 3.0
+ * @since 1.0
  */
-class ValidatingTextFieldTest {
+class ValidatingTextComponentTest {
 
 	@Test
 	void "enter valid value"() {
-		def title = "ValidatingTextFieldTest :: enter valid value"
-		def field = new ValidatingTextField(createTextField(fieldName))
+		def title = "ValidatingTextComponentTest :: enter valid value"
+		def field = new ValidatingTextComponent(createTextField(fieldName))
 		def panel = createPanel cols: [FILL], rows: [FILL, PREFERRED, FILL], fields: [
-			"0, 1": field.field
+			"0, 1": field.component
 		]
 
 		field.addVetoableChangeListener createVetoableChangeListener(validText)
@@ -61,9 +60,9 @@ class ValidatingTextFieldTest {
 
 	@Test
 	void "restore invalid value"() {
-		def title = "ValidatingTextFieldTest :: restore invalid value"
+		def title = "ValidatingTextComponentTest :: restore invalid value"
 		def oldValue = ""
-		def field = new ValidatingTextField(createTextField(fieldName))
+		def field = new ValidatingTextComponent(createTextField(fieldName))
 		def fieldB = createTextField("fieldB")
 		def panel = createPanel cols: [FILL], rows: [
 			FILL,
@@ -72,7 +71,7 @@ class ValidatingTextFieldTest {
 			FILL
 		], fields: [
 			"0, 1": fieldB,
-			"0, 2": field.field
+			"0, 2": field.component
 		]
 
 		field.addVetoableChangeListener createVetoableChangeListener(validText)
@@ -90,8 +89,8 @@ class ValidatingTextFieldTest {
 
 	//@Test(timeout = 60000l)
 	void "manually"() {
-		def title = "ValidatingTextFieldTest :: manually"
-		def field = new ValidatingTextField(createTextField(fieldName))
+		def title = "ValidatingTextComponentTest :: manually"
+		def field = new ValidatingTextComponent(createTextField(fieldName))
 		def fieldB = createTextField("fieldB")
 		def panel = createPanel cols: [FILL], rows: [
 			FILL,
@@ -100,7 +99,7 @@ class ValidatingTextFieldTest {
 			FILL
 		], fields: [
 			"0, 1": fieldB,
-			"0, 2": field.field
+			"0, 2": field.component
 		]
 
 		field.addVetoableChangeListener createVetoableChangeListener(validText)
@@ -123,8 +122,9 @@ class ValidatingTextFieldTest {
 	}
 
 	static JPanel createPanel(def attributes) {
-		def panel = new JPanel(new TableLayout(
-				attributes.cols as double[], attributes.rows as double[]))
+		def cols = attributes.cols as double[]
+		def rows = attributes.rows as double[]
+		def panel = new JPanel(new TableLayout(cols, rows))
 		attributes.fields.each {
 			panel.add it.value, it.key
 		}

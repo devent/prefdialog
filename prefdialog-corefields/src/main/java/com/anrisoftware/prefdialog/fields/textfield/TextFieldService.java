@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-corefields. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.fields.textfield.text;
+package com.anrisoftware.prefdialog.fields.textfield;
 
 import static java.util.Arrays.asList;
 

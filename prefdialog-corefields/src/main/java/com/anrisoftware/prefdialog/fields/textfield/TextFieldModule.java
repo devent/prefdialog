@@ -16,32 +16,30 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-corefields. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.fields.textfield.text;
+package com.anrisoftware.prefdialog.fields.textfield;
 
 import java.awt.Container;
 
-import javax.swing.JTextField;
-
+import com.anrisoftware.prefdialog.fields.FieldComponent;
 import com.anrisoftware.prefdialog.fields.FieldFactory;
+import com.google.inject.AbstractModule;
+import com.google.inject.TypeLiteral;
+import com.google.inject.assistedinject.FactoryModuleBuilder;
 
 /**
- * Factory to create a new text field.
+ * Binds the text field factory.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-public interface TextFieldFactory extends FieldFactory<Container> {
+class TextFieldModule extends AbstractModule {
 
-	/**
-	 * Sets the text field for the field.
-	 * 
-	 * @param textField
-	 *            the {@link JTextField} text field.
-	 * 
-	 * @return the {@link TextField}
-	 * 
-	 * @see FieldFactory#create(java.awt.Component, Object, String)
-	 */
-	TextField create(JTextField textField, Container container,
-			Object parentObject, String fieldName);
+	@Override
+	protected void configure() {
+		install(new FactoryModuleBuilder().implement(
+				new TypeLiteral<FieldComponent<Container>>() {
+				}, TextField.class).build(TextFieldFactory.class));
+		bind(FieldFactory.class).to(TextFieldFactory.class);
+	}
+
 }

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.fields.textfield.validating;
+package com.anrisoftware.prefdialog.miscswing.components.validating;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -30,17 +30,17 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
 import java.beans.VetoableChangeSupport;
+import java.io.Serializable;
 
+import javax.swing.AbstractButton;
+import javax.swing.JComponent;
 import javax.swing.JTextField;
 import javax.swing.ToolTipManager;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
-import javax.swing.text.JTextComponent;
-
-import org.apache.commons.lang3.ObjectUtils;
 
 /**
- * Will test the input of a text field and show a tool-tip text if the input is
+ * Will test the input of a component and show a tool-tip text if the input is
  * not valid.
  * <p>
  * The validity of the value is determined by the vetoable property change
@@ -70,9 +70,11 @@ import org.apache.commons.lang3.ObjectUtils;
  * @see PropertyVetoException
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 3.0
+ * @since 1.0
  */
-public class ValidatingTextField<TextFieldType extends JTextComponent> {
+@SuppressWarnings("serial")
+public abstract class AbstractValidatingComponent<ComponentType extends JComponent>
+		implements Serializable {
 
 	/**
 	 * Property that the value of the field have been changed. Can be vetoed
@@ -88,7 +90,7 @@ public class ValidatingTextField<TextFieldType extends JTextComponent> {
 
 	private Object value;
 
-	private final TextFieldType field;
+	private final ComponentType field;
 
 	private boolean valueValid;
 
@@ -98,10 +100,12 @@ public class ValidatingTextField<TextFieldType extends JTextComponent> {
 
 	private String invalidText;
 
+	private final ActionListener actionListener;
+
 	/**
-	 * Sets the {@link JTextField} for with the input will be validated.
+	 * Sets the {@link JComponent} for with the input will be validated.
 	 */
-	public ValidatingTextField(TextFieldType field) {
+	public AbstractValidatingComponent(ComponentType field) {
 		this.field = field;
 		this.support = new VetoableChangeSupport(this);
 		this.oldBorder = field.getBorder();
@@ -110,6 +114,13 @@ public class ValidatingTextField<TextFieldType extends JTextComponent> {
 		this.invalidText = field.getToolTipText();
 		this.oldToolTipText = null;
 		this.oldToolTipTextSet = false;
+		this.actionListener = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				validateInput();
+			}
+		};
 		setupTextField();
 		setupListeners();
 	}
@@ -122,13 +133,11 @@ public class ValidatingTextField<TextFieldType extends JTextComponent> {
 	private void setupListeners() {
 		if (field instanceof JTextField) {
 			JTextField textField = (JTextField) field;
-			textField.addActionListener(new ActionListener() {
-
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					validateInput();
-				}
-			});
+			textField.addActionListener(actionListener);
+		}
+		if (field instanceof AbstractButton) {
+			AbstractButton button = (AbstractButton) field;
+			button.addActionListener(actionListener);
 		}
 		field.addFocusListener(new FocusAdapter() {
 
@@ -189,30 +198,48 @@ public class ValidatingTextField<TextFieldType extends JTextComponent> {
 	}
 
 	/**
-	 * Returns the text field that is tested.
+	 * Returns the text component that is tested.
 	 * 
-	 * @return the {@link JTextComponent}
+	 * @return the {@link JComponent}
 	 */
-	public TextFieldType getField() {
+	public ComponentType getComponent() {
 		return field;
 	}
 
 	/**
-	 * Sets the value to the field.
+	 * Sets the value to the component.
+	 * 
+	 * @param value
+	 *            the {@link Object} value.
 	 */
 	public void setValue(Object value) {
-		field.setText(ObjectUtils.toString(value));
+		setComponentValue(value);
 		validateInput();
 	}
 
 	/**
-	 * Returns the value of the field.
+	 * Sets the value to the component.
+	 * 
+	 * @param value
+	 *            the {@link Object} value.
+	 */
+	protected abstract void setComponentValue(Object value);
+
+	/**
+	 * Returns the value of the component.
 	 * 
 	 * @return the {@link Object} value.
 	 */
 	public Object getValue() {
-		return field.getText();
+		return getComponentValue();
 	}
+
+	/**
+	 * Returns the value of the component.
+	 * 
+	 * @return the {@link Object} value.
+	 */
+	protected abstract Object getComponentValue();
 
 	/**
 	 * Returns if the current value is valid. The validity of the value is
