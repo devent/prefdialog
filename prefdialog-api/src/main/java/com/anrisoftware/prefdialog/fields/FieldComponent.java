@@ -300,25 +300,12 @@ public interface FieldComponent<ComponentType extends Component> {
 	Images getImages();
 
 	/**
-	 * Tests if the current input for the field is valid.
-	 * 
-	 * @return {@code true} if the current input is valid or {@code false} if it
-	 *         is not valid.
-	 */
-	boolean isInputValid();
-
-	/**
-	 * Applies the user input of the field.
+	 * Restores the user input of this field.
 	 * 
 	 * @throws PropertyVetoException
-	 *             if the user input is not valid.
+	 *             if the old user input is not valid.
 	 */
-	void applyInput() throws PropertyVetoException;
-
-	/**
-	 * Restores the user input of this field.
-	 */
-	void restoreInput();
+	void restoreInput() throws PropertyVetoException;
 
 	/**
 	 * Returns the component to be added in the preferences container for this

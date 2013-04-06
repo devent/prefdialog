@@ -18,10 +18,13 @@
  */
 package com.anrisoftware.prefdialog.fields.combobox;
 
+import static com.anrisoftware.prefdialog.miscswing.components.validating.AbstractValidatingComponent.VALUE_PROPERTY;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 import java.awt.Container;
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
+import java.beans.VetoableChangeListener;
 import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.Vector;
@@ -39,6 +42,7 @@ import com.anrisoftware.globalpom.reflection.beans.BeanAccess;
 import com.anrisoftware.globalpom.reflection.beans.BeanAccessFactory;
 import com.anrisoftware.prefdialog.annotations.ComboBox;
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
+import com.anrisoftware.prefdialog.miscswing.components.validating.ValidatingComboBoxComponent;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 
@@ -69,7 +73,9 @@ public class ComboBoxField extends AbstractTitleField<JComboBox<?>, Container> {
 
 	private final JComboBox<?> comboBox;
 
-	private boolean adjusting;
+	private final ValidatingComboBoxComponent<Object, JComboBox<?>> validating;
+
+	private final VetoableChangeListener valueVetoListener;
 
 	private AnnotationAccess fieldAnnotation;
 
@@ -89,13 +95,29 @@ public class ComboBoxField extends AbstractTitleField<JComboBox<?>, Container> {
 	 * @see ComboBoxFieldFactory#create(JComboBox, Container, Object, String)
 	 */
 	@AssistedInject
-	ComboBoxField(ComboBoxFieldLogger logger, @Assisted JComboBox<?> comboBox,
+	ComboBoxField(ComboBoxFieldLogger logger,
+			@Assisted final JComboBox<?> comboBox,
 			@Assisted Container container, @Assisted Object parentObject,
 			@Assisted String fieldName) {
 		super(comboBox, container, parentObject, fieldName);
 		this.log = logger;
 		this.comboBox = comboBox;
-		this.adjusting = false;
+		this.validating = new ValidatingComboBoxComponent<Object, JComboBox<?>>(
+				comboBox);
+		this.valueVetoListener = new VetoableChangeListener() {
+
+			@Override
+			public void vetoableChange(PropertyChangeEvent evt)
+					throws PropertyVetoException {
+				ComboBoxField.super.trySetValue(evt.getNewValue());
+				changeValue(evt.getNewValue());
+			}
+		};
+		setupValidating();
+	}
+
+	private void setupValidating() {
+		validating.addVetoableChangeListener(VALUE_PROPERTY, valueVetoListener);
 	}
 
 	@Inject
@@ -212,26 +234,8 @@ public class ComboBoxField extends AbstractTitleField<JComboBox<?>, Container> {
 	}
 
 	@Override
-	public void applyInput() throws PropertyVetoException {
-		super.applyInput();
-		Object value = comboBox.getModel().getSelectedItem();
-		adjusting = true;
-		setValue(value);
-		adjusting = false;
-	}
-
-	@Override
-	public void restoreInput() {
-		super.restoreInput();
-		comboBox.setSelectedItem(getValue());
-	}
-
-	@Override
-	public void setValue(Object value) throws PropertyVetoException {
-		super.setValue(value);
-		if (!adjusting) {
-			comboBox.setSelectedItem(value);
-		}
+	protected void trySetValue(Object value) throws PropertyVetoException {
+		validating.setValue(value);
 	}
 
 	/**

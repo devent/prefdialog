@@ -54,10 +54,8 @@ class ComboBoxTest extends FieldTestUtils {
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
 			fixture.comboBox fieldName requireSelection "One"
 			fixture.comboBox fieldName selectItem 1
-			field.applyInput()
 			assert bean."$fieldName" == "Two"
 			fixture.comboBox fieldName selectItem 2
-			field.applyInput()
 			assert bean."$fieldName" == "Three"
 		})
 	}
@@ -70,7 +68,6 @@ class ComboBoxTest extends FieldTestUtils {
 
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
 			fixture.comboBox fieldName selectItem 0
-			field.applyInput()
 			fixture.comboBox fieldName selectItem 2
 			field.restoreInput()
 			fixture.comboBox fieldName requireSelection "One"
@@ -98,10 +95,8 @@ class ComboBoxTest extends FieldTestUtils {
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
 			fixture.comboBox fieldName requireSelection "One"
 			fixture.comboBox fieldName selectItem 1
-			field.applyInput()
 			assert bean."$fieldName" == "Two"
 			fixture.comboBox fieldName selectItem 2
-			field.applyInput()
 			assert bean."$fieldName" == "Three"
 		})
 	}
@@ -115,10 +110,8 @@ class ComboBoxTest extends FieldTestUtils {
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
 			fixture.comboBox fieldName requireSelection "Eins"
 			fixture.comboBox fieldName selectItem 1
-			field.applyInput()
 			assert bean."$fieldName" == "Zwei"
 			fixture.comboBox fieldName selectItem 2
-			field.applyInput()
 			assert bean."$fieldName" == "Drei"
 		})
 	}
@@ -133,10 +126,8 @@ class ComboBoxTest extends FieldTestUtils {
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
 			fixture.comboBox fieldName requireSelection "Eins"
 			fixture.comboBox fieldName selectItem 1
-			field.applyInput()
 			assert bean."$fieldName" == "Zwei"
 			fixture.comboBox fieldName selectItem 2
-			field.applyInput()
 			assert bean."$fieldName" == "Drei"
 		})
 	}
@@ -150,11 +141,9 @@ class ComboBoxTest extends FieldTestUtils {
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
 			fixture.comboBox fieldName requireSelection "ONE"
 			fixture.comboBox fieldName selectItem 1
-			field.applyInput()
 			fixture.comboBox fieldName requireSelection "TWO"
 			assert bean."$fieldName" == "Two"
 			fixture.comboBox fieldName selectItem 2
-			field.applyInput()
 			fixture.comboBox fieldName requireSelection "THREE"
 			assert bean."$fieldName" == "Three"
 		})
@@ -170,11 +159,9 @@ class ComboBoxTest extends FieldTestUtils {
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
 			fixture.comboBox fieldName requireSelection "ONE"
 			fixture.comboBox fieldName selectItem 1
-			field.applyInput()
 			fixture.comboBox fieldName requireSelection "TWO"
 			assert bean."$fieldName" == "Two"
 			fixture.comboBox fieldName selectItem 2
-			field.applyInput()
 			fixture.comboBox fieldName requireSelection "THREE"
 			assert bean."$fieldName" == "Three"
 		})
@@ -189,10 +176,8 @@ class ComboBoxTest extends FieldTestUtils {
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
 			fixture.comboBox fieldName requireSelection "Eins"
 			fixture.comboBox fieldName selectItem 1
-			field.applyInput()
 			assert bean."$fieldName" == "Zwei"
 			fixture.comboBox fieldName selectItem 2
-			field.applyInput()
 			assert bean."$fieldName" == "Drei"
 		})
 	}
@@ -206,11 +191,9 @@ class ComboBoxTest extends FieldTestUtils {
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
 			fixture.comboBox fieldName requireSelection "ONE"
 			fixture.comboBox fieldName selectItem 1
-			field.applyInput()
 			fixture.comboBox fieldName requireSelection "TWO"
 			assert bean."$fieldName" == "Two"
 			fixture.comboBox fieldName selectItem 2
-			field.applyInput()
 			fixture.comboBox fieldName requireSelection "THREE"
 			assert bean."$fieldName" == "Three"
 		})
@@ -226,7 +209,6 @@ class ComboBoxTest extends FieldTestUtils {
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
 			fixture.comboBox fieldName replaceText text
 			fixture.comboBox fieldName pressAndReleaseKeys KeyEvent.VK_ENTER
-			field.applyInput()
 			fixture.comboBox fieldName requireSelection text
 			assert bean."$fieldName" == text
 		})

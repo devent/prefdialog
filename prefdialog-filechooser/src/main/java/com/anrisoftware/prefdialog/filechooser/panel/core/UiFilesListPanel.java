@@ -25,8 +25,8 @@ import javax.swing.JToggleButton;
 import net.miginfocom.swing.MigLayout;
 
 import com.anrisoftware.prefdialog.filechooser.panel.api.ToolAction;
+import com.anrisoftware.prefdialog.miscswing.components.menu.PopupMenuComponent;
 import com.anrisoftware.prefdialog.miscswing.lists.RubberBandingList;
-import com.anrisoftware.prefdialog.miscswing.menus.PopupMenuComponent;
 
 @SuppressWarnings({ "serial" })
 final class UiFilesListPanel extends JPanel {
