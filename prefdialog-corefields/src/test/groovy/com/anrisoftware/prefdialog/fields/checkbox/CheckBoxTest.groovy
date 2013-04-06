@@ -65,11 +65,9 @@ class CheckBoxTest {
 			fixture.checkBox fieldName requireNotSelected()
 		}, { FrameFixture fixture ->
 			fixture.checkBox fieldName click()
-			field.applyInput()
 			assert bean.noText == true
 		}, { FrameFixture fixture ->
 			fixture.checkBox fieldName click()
-			field.applyInput()
 			assert bean.noText == false
 		})
 	}
@@ -167,6 +165,14 @@ class CheckBoxTest {
 			field.setEnabled false
 			fixture.checkBox fieldName requireDisabled()
 		})
+	}
+
+	//@Test(timeout = 60000l)
+	void "manually"() {
+		def title = "CheckBoxTest :: manually"
+		def fieldName = NO_TEXT
+		def field = factory.create(container, bean, fieldName)
+		new TestFrameUtil(title, container).withFixture({ Thread.sleep 60 * 1000l })
 	}
 
 	static Injector injector

@@ -55,6 +55,11 @@
 			<artifactId>spi</artifactId>
 			<optional>true</optional>
 		</dependency>
+		<dependency>
+			<groupId>com.anrisoftware.prefdialog</groupId>
+			<artifactId>prefdialog-misc-swing</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 </project>

@@ -21,7 +21,9 @@ package com.anrisoftware.prefdialog.fields.checkbox;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 import java.awt.Container;
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
+import java.beans.VetoableChangeListener;
 import java.lang.annotation.Annotation;
 import java.util.Locale;
 
@@ -32,6 +34,8 @@ import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccess;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccessFactory;
 import com.anrisoftware.prefdialog.annotations.CheckBox;
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
+import com.anrisoftware.prefdialog.miscswing.components.validating.ValidatingButtonComponent;
+import com.anrisoftware.prefdialog.miscswing.components.validating.ValidatingTextComponent;
 import com.anrisoftware.resources.texts.api.Texts;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
@@ -55,13 +59,15 @@ public class CheckBoxField extends AbstractTitleField<JCheckBox, Container> {
 
 	private final JCheckBox checkBox;
 
+	private final ValidatingButtonComponent<JCheckBox> validating;
+
+	private final VetoableChangeListener valueVetoListener;
+
 	private String textResource;
 
 	private String text;
 
 	private boolean showText;
-
-	private boolean adjusting;
 
 	private AnnotationAccess fieldAnnotation;
 
@@ -78,13 +84,28 @@ public class CheckBoxField extends AbstractTitleField<JCheckBox, Container> {
 	 * @see CheckBoxFieldFactory#create(JCheckBox, Container, Object, String)
 	 */
 	@AssistedInject
-	CheckBoxField(CheckBoxFieldLogger logger, @Assisted JCheckBox checkBox,
-			@Assisted Container container, @Assisted Object parentObject,
-			@Assisted String fieldName) {
+	CheckBoxField(CheckBoxFieldLogger logger,
+			@Assisted final JCheckBox checkBox, @Assisted Container container,
+			@Assisted Object parentObject, @Assisted String fieldName) {
 		super(checkBox, container, parentObject, fieldName);
 		this.checkBox = checkBox;
+		this.validating = new ValidatingButtonComponent<JCheckBox>(checkBox);
 		this.log = logger;
-		this.adjusting = false;
+		this.valueVetoListener = new VetoableChangeListener() {
+
+			@Override
+			public void vetoableChange(PropertyChangeEvent evt)
+					throws PropertyVetoException {
+				CheckBoxField.super.trySetValue(evt.getNewValue());
+				changeValue(evt.getNewValue());
+			}
+		};
+		setupValidating();
+	}
+
+	private void setupValidating() {
+		validating.addVetoableChangeListener(
+				ValidatingTextComponent.VALUE_PROPERTY, valueVetoListener);
 	}
 
 	@Inject
@@ -192,28 +213,13 @@ public class CheckBoxField extends AbstractTitleField<JCheckBox, Container> {
 	public void setValue(Object value) throws PropertyVetoException {
 		super.setValue(value);
 		log.checkValue(this, value);
-		if (!adjusting) {
-			checkBox.setSelected((Boolean) value);
-		}
+		validating.setValue(value);
 	}
 
 	@Override
-	public void setLocale(Locale newLocale) {
-		super.setLocale(newLocale);
+	public void setLocale(Locale locale) {
+		super.setLocale(locale);
 		updateTextsResources();
 	}
 
-	@Override
-	public void applyInput() throws PropertyVetoException {
-		super.applyInput();
-		adjusting = true;
-		setValue(checkBox.isSelected());
-		adjusting = false;
-	}
-
-	@Override
-	public void restoreInput() {
-		super.restoreInput();
-		checkBox.setSelected((Boolean) getValue());
-	}
 }
