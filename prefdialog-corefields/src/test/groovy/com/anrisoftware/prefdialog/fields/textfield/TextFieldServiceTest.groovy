@@ -20,8 +20,8 @@ package com.anrisoftware.prefdialog.fields.textfield
 
 import static com.anrisoftware.prefdialog.core.AbstractTitleField.*
 import static com.anrisoftware.prefdialog.core.FieldTestUtils.*
-import static com.anrisoftware.prefdialog.fields.checkbox.CheckBoxBean.*
-import static com.anrisoftware.prefdialog.fields.checkbox.CheckBoxService.*
+import static com.anrisoftware.prefdialog.fields.textfield.TextFieldBean.*
+import static com.anrisoftware.prefdialog.fields.textfield.TextFieldService.*
 
 import java.awt.Container
 
@@ -38,7 +38,7 @@ import com.google.inject.Guice
 import com.google.inject.Injector
 
 /**
- * Test the check box field as a service.
+ * Test the text field as a service.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
@@ -47,15 +47,15 @@ class TextFieldServiceTest {
 
 	@Test
 	void "with defaults"() {
-		def title = "CheckBoxServiceTest :: with defaults"
-		def fieldName = NO_TEXT
+		def title = "TextFieldServiceTest :: with defaults"
+		def fieldName = NULL_VALUE
 		def field = factory.create(container, bean, fieldName)
 		new TestFrameUtil(title, container).withFixture({})
 	}
 
 	static Injector injector
 
-	static CheckBoxFieldFactory factory
+	static TextFieldFactory factory
 
 	TextFieldBean bean
 
