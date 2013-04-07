@@ -18,10 +18,12 @@
  */
 package com.anrisoftware.prefdialog.miscswing.components.validating
 
+import static com.anrisoftware.prefdialog.miscswing.components.validating.AbstractValidatingComponent.*
 import static info.clearthought.layout.TableLayoutConstants.*
 import info.clearthought.layout.TableLayout
 
 import java.awt.event.KeyEvent
+import java.beans.PropertyChangeListener
 import java.beans.PropertyVetoException
 import java.beans.VetoableChangeListener
 import java.text.NumberFormat
@@ -99,6 +101,8 @@ class ValidatingFormattedTextComponentTest {
 		def title = "ValidatingFormattedTextComponentTest :: manually"
 		def parseError = "Invalid number"
 		def field = new ValidatingFormattedTextComponent(createNumberTextField(fieldName))
+		field.addPropertyChangeListener(SHOW_TOOL_TIP_PROEPRTY, { //
+			field.setInvalidText "Invalid value '${field.getValue()}'." } as PropertyChangeListener)
 		field.setParseErrorText parseError
 
 		def fieldB = createNumberTextField("fieldB")

@@ -15,8 +15,8 @@ import javax.swing.JFormattedTextField;
  * @since 1.0
  */
 @SuppressWarnings("serial")
-public class ValidatingFormattedTextComponent<ValueType, ComponentType extends JFormattedTextField>
-		extends AbstractValidatingComponent<ValueType, ComponentType> {
+public class ValidatingFormattedTextComponent<ComponentType extends JFormattedTextField>
+		extends AbstractValidatingComponent<Object, ComponentType> {
 
 	private final ActionListener actionListener;
 
@@ -62,14 +62,13 @@ public class ValidatingFormattedTextComponent<ValueType, ComponentType extends J
 	}
 
 	@Override
-	protected void setComponentValue(ValueType value) {
+	protected void setComponentValue(Object value) {
 		getComponent().setValue(value);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	protected ValueType getComponentValue() {
-		return (ValueType) getComponent().getValue();
+	protected Object getComponentValue() {
+		return getComponent().getValue();
 	}
 
 	/**

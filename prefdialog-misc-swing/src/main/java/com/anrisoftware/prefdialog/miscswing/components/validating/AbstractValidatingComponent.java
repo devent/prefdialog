@@ -24,6 +24,8 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
 import java.beans.VetoableChangeSupport;
@@ -78,12 +80,19 @@ public abstract class AbstractValidatingComponent<ValueType, ComponentType exten
 		implements Serializable {
 
 	/**
+	 * Property that the tool-tip of the component is shown.
+	 */
+	public static final String SHOW_TOOL_TIP_PROEPRTY = "showToolTip";
+
+	/**
 	 * Property that the value of the field have been changed. Can be vetoed
 	 * before the change takes place.
 	 */
 	public static final String VALUE_PROPERTY = "value";
 
 	private final VetoableChangeSupport support;
+
+	private final PropertyChangeSupport properties;
 
 	private final Border oldBorder;
 
@@ -105,6 +114,7 @@ public abstract class AbstractValidatingComponent<ValueType, ComponentType exten
 	 * Sets the {@link JComponent} for with the input will be validated.
 	 */
 	public AbstractValidatingComponent(ComponentType field) {
+		this.properties = new PropertyChangeSupport(this);
 		this.field = field;
 		this.support = new VetoableChangeSupport(this);
 		this.oldBorder = field.getBorder();
@@ -267,6 +277,7 @@ public abstract class AbstractValidatingComponent<ValueType, ComponentType exten
 	 *            to hide.
 	 */
 	public void setShowToolTip(boolean show) {
+		properties.firePropertyChange(SHOW_TOOL_TIP_PROEPRTY, null, show);
 		if (show) {
 			showToolTip();
 		} else if (!show) {
@@ -340,6 +351,42 @@ public abstract class AbstractValidatingComponent<ValueType, ComponentType exten
 	public void removeVetoableChangeListener(String propertyName,
 			VetoableChangeListener listener) {
 		support.removeVetoableChangeListener(propertyName, listener);
+	}
+
+	/**
+	 * @see PropertyChangeSupport#addPropertyChangeListener(PropertyChangeListener)
+	 * @see #SHOW_TOOL_TIP_PROEPRTY
+	 */
+	public void addPropertyChangeListener(PropertyChangeListener listener) {
+		properties.addPropertyChangeListener(listener);
+	}
+
+	/**
+	 * @see PropertyChangeSupport#removePropertyChangeListener(PropertyChangeListener)
+	 * @see #SHOW_TOOL_TIP_PROEPRTY
+	 */
+	public void removePropertyChangeListener(PropertyChangeListener listener) {
+		properties.removePropertyChangeListener(listener);
+	}
+
+	/**
+	 * @see PropertyChangeSupport#addPropertyChangeListener(String,
+	 *      PropertyChangeListener)
+	 * @see #SHOW_TOOL_TIP_PROEPRTY
+	 */
+	public void addPropertyChangeListener(String propertyName,
+			PropertyChangeListener listener) {
+		properties.addPropertyChangeListener(propertyName, listener);
+	}
+
+	/**
+	 * @see PropertyChangeSupport#removePropertyChangeListener(String,
+	 *      PropertyChangeListener)
+	 * @see #SHOW_TOOL_TIP_PROEPRTY
+	 */
+	public void removePropertyChangeListener(String propertyName,
+			PropertyChangeListener listener) {
+		properties.removePropertyChangeListener(propertyName, listener);
 	}
 
 }
