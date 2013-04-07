@@ -113,6 +113,7 @@ public abstract class AbstractValidatingComponent<ValueType, ComponentType exten
 		this.invalidText = field.getToolTipText();
 		this.oldToolTipText = null;
 		this.oldToolTipTextSet = false;
+		this.invalidText = null;
 		setupListeners();
 	}
 
@@ -153,12 +154,12 @@ public abstract class AbstractValidatingComponent<ValueType, ComponentType exten
 		try {
 			support.fireVetoableChange(VALUE_PROPERTY, oldValue, newValue);
 			this.value = newValue;
-			this.valueValid = true;
-			normalField();
+			setValueValid(true);
 		} catch (PropertyVetoException e) {
-			this.valueValid = false;
-			this.invalidText = e.getLocalizedMessage();
-			highlighField();
+			setValueValid(false);
+			if (invalidText == null) {
+				setInvalidText(e.getLocalizedMessage());
+			}
 		}
 	}
 
@@ -223,6 +224,22 @@ public abstract class AbstractValidatingComponent<ValueType, ComponentType exten
 	protected abstract ValueType getComponentValue();
 
 	/**
+	 * Set if the user input is valid.
+	 * 
+	 * @param valid
+	 *            set to {@code true} if the input is valid, or {@code false} if
+	 *            not.
+	 */
+	public void setValueValid(boolean valid) {
+		this.valueValid = valid;
+		if (valid) {
+			normalField();
+		} else {
+			highlighField();
+		}
+	}
+
+	/**
 	 * Returns if the current value is valid. The validity of the value is
 	 * determined by the change listeners.
 	 * 
@@ -232,6 +249,23 @@ public abstract class AbstractValidatingComponent<ValueType, ComponentType exten
 		return valueValid;
 	}
 
+	/**
+	 * Set the text that is shown if the user input is invalid.
+	 * 
+	 * @param text
+	 *            the {@link String} text.
+	 */
+	public void setInvalidText(String text) {
+		this.invalidText = text;
+	}
+
+	/**
+	 * Set if the tool-tip of the field should be shown.
+	 * 
+	 * @param show
+	 *            set to {@code true} to show the tool-tip or to {@code false}
+	 *            to hide.
+	 */
 	public void setShowToolTip(boolean show) {
 		if (show) {
 			showToolTip();
