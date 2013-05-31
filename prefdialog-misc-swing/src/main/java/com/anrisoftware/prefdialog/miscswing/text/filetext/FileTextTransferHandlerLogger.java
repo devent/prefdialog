@@ -20,9 +20,9 @@ package com.anrisoftware.prefdialog.miscswing.text.filetext;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 
 import com.anrisoftware.globalpom.log.AbstractLogger;
+import com.anrisoftware.globalpom.resources.ConvertException;
 
 /**
  * Log messages for the file text transfer handler.
@@ -44,7 +44,7 @@ class FileTextTransferHandlerLogger extends AbstractLogger {
 		logException(e, ERROR_IMPORTING, handler);
 	}
 
-	void errorNotValidURISyntax(Object handler, URISyntaxException e) {
+	void errorNotValidURISyntax(Object handler, ConvertException e) {
 		logException(e, INVALID_URI_SYNTAX, handler);
 	}
 

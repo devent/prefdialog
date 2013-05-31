@@ -24,7 +24,6 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 
 import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
@@ -32,6 +31,7 @@ import javax.swing.TransferHandler;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import com.anrisoftware.globalpom.resources.ConvertException;
 import com.anrisoftware.globalpom.resources.StringToURI;
 import com.google.inject.Inject;
 
@@ -89,7 +89,7 @@ class FileTextTransferHandler extends TransferHandler {
 		} catch (IOException e) {
 			log.errorIO(this, e);
 			return false;
-		} catch (URISyntaxException e) {
+		} catch (ConvertException e) {
 			log.errorNotValidURISyntax(this, e);
 			return false;
 		}
