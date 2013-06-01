@@ -9,13 +9,18 @@ import javax.swing.JPopupMenu
 import javax.swing.JScrollPane
 
 import org.fest.swing.fixture.FrameFixture
-import org.junit.Test
 
 import com.anrisoftware.globalpom.utils.TestFrameUtil
 
+/**
+ * @see PopupMenuList
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 1.0
+ */
 class PopupMenuListTest {
 
-	@Test
+	//@Test
 	void "manually"() {
 		String title = "PopupMenuListTest::manually"
 		def frame = createFrameWithList title
