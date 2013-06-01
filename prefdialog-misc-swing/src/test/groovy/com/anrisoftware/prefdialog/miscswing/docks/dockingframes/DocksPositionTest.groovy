@@ -52,9 +52,9 @@ class DocksPositionTest extends DocksTestBase {
 		withFrame(title, { //
 			dock.applyLayout defaultPerspective }
 		).withFixture( {
-			dock.addViewDock createViewDock(number++, NORTH)
+			dock.addViewDock createViewDock(number++, WEST)
 		}, {
-			dock.addViewDock createViewDock(number++, NORTH)
+			dock.addViewDock createViewDock(number++, WEST)
 		}, {
 			dock.addEditorDock createEditorDock(number++)
 		}, {
