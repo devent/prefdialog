@@ -51,13 +51,9 @@ public class PopupMenuList<E> {
 				});
 	}
 
+	@SuppressWarnings("serial")
 	private void setupPopup() {
 		popup.setMouseFilter(new MouseFilter() {
-
-			/**
-			 *
-			 */
-			private static final long serialVersionUID = 6715512934267416570L;
 
 			@Override
 			public boolean allow(MouseEvent e) {
@@ -69,11 +65,6 @@ public class PopupMenuList<E> {
 			}
 		});
 		popup.setPopupMenuPosition(new PopupMenuPosition() {
-
-			/**
-			 *
-			 */
-			private static final long serialVersionUID = -2459125573414393762L;
 
 			@Override
 			public Point getPosition(Component c, Point mouseLocation) {
