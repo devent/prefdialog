@@ -1,5 +1,7 @@
 package com.anrisoftware.prefdialog.miscswing.components.menu;
 
+import static org.apache.commons.lang3.Validate.notNull;
+
 import java.awt.Component;
 import java.awt.Point;
 import java.awt.event.FocusEvent;
@@ -15,7 +17,7 @@ import javax.swing.JPopupMenu;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
- * Decorates a component to open the popup menu if the user clicks on it.
+ * Decorates a component to open the pop-up menu if the user clicks on it.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
@@ -24,19 +26,27 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 public class PopupMenuComponent implements Serializable {
 
 	/**
-	 * Filters mouse events that are allowing to trigger the popup menu.
+	 * Filters mouse events that are allowing to trigger the pop-up menu.
 	 * 
 	 * @author Erwin Mueller, erwin.mueller@deventm.org
 	 * @since 1.0
 	 */
 	public static interface MouseFilter extends Serializable {
 
+		/**
+		 * Test if the mouse event should trigger the pop-up menu.
+		 * 
+		 * @param e
+		 *            the {@link MouseEvent}.
+		 * 
+		 * @return {@code true} to trigger the pop-up menu.
+		 */
 		boolean allow(MouseEvent e);
 
 	}
 
 	/**
-	 * Returns the position for the popup menu.
+	 * Returns the position for the pop-up menu.
 	 * 
 	 * @author Erwin Mueller, erwin.mueller@deventm.org
 	 * @since 1.0
@@ -44,7 +54,7 @@ public class PopupMenuComponent implements Serializable {
 	public static interface PopupMenuPosition extends Serializable {
 
 		/**
-		 * Returns the position for the popup menu relative to the specified
+		 * Returns the position for the pop-up menu relative to the specified
 		 * component.
 		 * 
 		 * @param c
@@ -53,7 +63,7 @@ public class PopupMenuComponent implements Serializable {
 		 * @param mouseLocation
 		 *            the {@link Point} location of the mouse.
 		 * 
-		 * @return the {@link Point} position of the popup menu.
+		 * @return the {@link Point} position of the pop-up menu.
 		 */
 		Point getPosition(Component c, Point mouseLocation);
 
@@ -61,14 +71,9 @@ public class PopupMenuComponent implements Serializable {
 
 	/**
 	 * The default mouse filter that allows all mouse events to trigger the
-	 * popup menu.
+	 * pop-up menu.
 	 */
 	public static final MouseFilter ALLOW_ALL_MOUSE_FILTER = new MouseFilter() {
-
-		/**
-		 * @version 1.0
-		 */
-		private static final long serialVersionUID = -748005930004905276L;
 
 		@Override
 		public boolean allow(MouseEvent e) {
@@ -81,17 +86,37 @@ public class PopupMenuComponent implements Serializable {
 	 */
 	public static final PopupMenuPosition DIRECT_UNDER_POSITION = new PopupMenuPosition() {
 
-		/**
-		 * @version 1.0
-		 */
-		private static final long serialVersionUID = 1209985974108811540L;
-
 		@Override
 		public Point getPosition(Component c, Point mouseLocation) {
 			return new Point(-1, c.getHeight());
 		}
 
 	};
+
+	/**
+	 * @see #decorate(JComponent, JPopupMenu)
+	 */
+	public static PopupMenuComponent createPopup(JComponent component,
+			JPopupMenu menu) {
+		return decorate(component, menu);
+	}
+
+	/**
+	 * Decorates the specified component to open the pop-up menu if the user
+	 * clicks on it.
+	 * 
+	 * @param component
+	 *            the {@link JComponent}.
+	 * 
+	 * @param menu
+	 *            the {@link JPopupMenu}.
+	 * 
+	 * @return the {@link PopupMenuComponent}.
+	 */
+	public static PopupMenuComponent decorate(JComponent component,
+			JPopupMenu menu) {
+		return new PopupMenuComponent(component, menu);
+	}
 
 	private transient FocusListener menuFocusListener;
 
@@ -110,16 +135,9 @@ public class PopupMenuComponent implements Serializable {
 	private PopupMenuPosition popupMenuPosition;
 
 	/**
-	 * Decorates the specified component to open the popup menu if the user
-	 * clicks on it.
-	 * 
-	 * @param component
-	 *            the {@link JComponent}.
-	 * 
-	 * @param menu
-	 *            the {@link JPopupMenu}.
+	 * @see #decorate(JComponent, JPopupMenu)
 	 */
-	public PopupMenuComponent(JComponent component, JPopupMenu menu) {
+	PopupMenuComponent(JComponent component, JPopupMenu menu) {
 		this.showPopup = true;
 		this.alreadyShowingPopup = false;
 		this.component = component;
@@ -191,7 +209,17 @@ public class PopupMenuComponent implements Serializable {
 		menu.requestFocus();
 	}
 
+	/**
+	 * Sets the component for which the pop-menu is shown.
+	 * 
+	 * @param component
+	 *            the {@link JComponent}.
+	 * 
+	 * @throws NullPointerException
+	 *             if the specified component is {@code null}.
+	 */
 	public void setComponent(JComponent component) {
+		notNull(component);
 		JComponent oldValue = this.component;
 		this.component = component;
 		if (oldValue != null) {
@@ -200,11 +228,26 @@ public class PopupMenuComponent implements Serializable {
 		component.addMouseListener(componentMouseListener);
 	}
 
+	/**
+	 * Returns the component for which the pop-menu is shown.
+	 * 
+	 * @return the {@link JComponent}.
+	 */
 	public JComponent getComponent() {
 		return component;
 	}
 
+	/**
+	 * Sets the pop-up menu.
+	 * 
+	 * @param menu
+	 *            the {@link JPopupMenu}.
+	 * 
+	 * @throws NullPointerException
+	 *             if the specified menu is {@code null}.
+	 */
 	public void setPopupMenu(JPopupMenu menu) {
+		notNull(component);
 		JPopupMenu oldValue = this.menu;
 		this.menu = menu;
 		if (oldValue != null) {
@@ -213,15 +256,40 @@ public class PopupMenuComponent implements Serializable {
 		menu.addFocusListener(menuFocusListener);
 	}
 
+	/**
+	 * Returns the pop-up menu.
+	 * 
+	 * @return the {@link JPopupMenu}.
+	 */
 	public JPopupMenu getMenu() {
 		return menu;
 	}
 
+	/**
+	 * Sets the mouse filter to decide if the pop-up menu should be triggered.
+	 * 
+	 * @param filter
+	 *            the {@link MouseFilter}.
+	 * 
+	 * @throws NullPointerException
+	 *             if the specified filter is {@code null}.
+	 */
 	public void setMouseFilter(MouseFilter filter) {
+		notNull(mouseFilter);
 		this.mouseFilter = filter;
 	}
 
+	/**
+	 * Sets to calculate the position of the pop-up menu.
+	 * 
+	 * @param position
+	 *            the {@link PopupMenuPosition}.
+	 * 
+	 * @throws NullPointerException
+	 *             if the specified position is {@code null}.
+	 */
 	public void setPopupMenuPosition(PopupMenuPosition position) {
+		notNull(position);
 		this.popupMenuPosition = position;
 	}
 

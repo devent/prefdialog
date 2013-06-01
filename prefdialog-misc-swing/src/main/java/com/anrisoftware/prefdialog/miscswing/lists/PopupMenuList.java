@@ -1,5 +1,6 @@
 package com.anrisoftware.prefdialog.miscswing.lists;
 
+import static com.anrisoftware.prefdialog.miscswing.components.menu.PopupMenuComponent.createPopup;
 import static javax.swing.SwingUtilities.isRightMouseButton;
 
 import java.awt.Component;
@@ -16,7 +17,7 @@ import com.anrisoftware.prefdialog.miscswing.components.menu.PopupMenuComponent.
 import com.anrisoftware.prefdialog.miscswing.components.menu.PopupMenuComponent.PopupMenuPosition;
 
 /**
- * Let the user click with the right mouse key on an list item and show a popup
+ * Let the user click with the right mouse key on an list item and show a pop-up
  * menu.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
@@ -24,15 +25,42 @@ import com.anrisoftware.prefdialog.miscswing.components.menu.PopupMenuComponent.
  */
 public class PopupMenuList<E> {
 
+	/**
+	 * @see #decorate(JList, JPopupMenu)
+	 */
+	public static <E> PopupMenuList<E> createPopupList(JList<E> component,
+			JPopupMenu menu) {
+		return decorate(component, menu);
+	}
+
+	/**
+	 * Decorates the specified list to open the pop-up menu if the user clicks
+	 * on an list item.
+	 * 
+	 * @param list
+	 *            the {@link JList}.
+	 * 
+	 * @param menu
+	 *            the {@link JPopupMenu}.
+	 * 
+	 * @return the {@link PopupMenuComponent}.
+	 */
+	public static <E> PopupMenuList<E> decorate(JList<E> list, JPopupMenu menu) {
+		return new PopupMenuList<E>(list, menu);
+	}
+
 	private final JList<E> list;
 
 	private final PopupMenuComponent popup;
 
 	protected int selectedIndex;
 
-	public PopupMenuList(JList<E> list, JPopupMenu menu) {
+	/**
+	 * @see #decorate(JList, JPopupMenu)
+	 */
+	PopupMenuList(JList<E> list, JPopupMenu menu) {
 		this.list = list;
-		this.popup = new PopupMenuComponent(list, menu);
+		this.popup = createPopup(list, menu);
 		setupPopup();
 		setupList();
 	}
@@ -73,6 +101,11 @@ public class PopupMenuList<E> {
 		});
 	}
 
+	/**
+	 * Returns the swing list.
+	 * 
+	 * @return the {@link JList}.
+	 */
 	public JList<E> getList() {
 		return list;
 	}
