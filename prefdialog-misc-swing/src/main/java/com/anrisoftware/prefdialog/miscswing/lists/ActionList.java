@@ -96,6 +96,15 @@ public class ActionList<E> {
 	}
 
 	/**
+	 * Returns the decorated list.
+	 * 
+	 * @return the {@link JList}.
+	 */
+	public JList<E> getList() {
+		return list;
+	}
+
+	/**
 	 * Sets the action command string that is returned in the action event.
 	 * 
 	 * @param command
