@@ -9,11 +9,17 @@ import org.junit.Test
 
 import com.anrisoftware.globalpom.utils.TestFrameUtil
 
+/**
+ * @see RubberBandingList
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 1.0
+ */
 class RubberBandingListTest {
 
 	@Test
-	void "show list"() {
-		String title = "RubberBandingListTest::show list"
+	void "manually"() {
+		String title = "$NAME::manually"
 		def panel = new JPanel()
 		def list = new RubberBandingList([
 			"Aaa",
@@ -40,4 +46,6 @@ class RubberBandingListTest {
 		panel.add new JScrollPane(list)
 		new TestFrameUtil(title, panel)
 	}
+
+	static final String NAME = RubberBandingListTest.class.simpleName
 }

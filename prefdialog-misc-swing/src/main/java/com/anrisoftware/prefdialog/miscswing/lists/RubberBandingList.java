@@ -18,8 +18,10 @@ import java.util.Vector;
 import javax.swing.JList;
 import javax.swing.ListModel;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 /**
- * Using rubber band selection in JList.
+ * Using rubber band selection in a swing list.
  * 
  * @author <a
  *         href=http://java-swing-tips.blogspot.de/2008/10/using-rubber-band-selection
@@ -166,5 +168,11 @@ public class RubberBandingList<E> extends JList<E> {
 		g.setComposite(ALPHA);
 		g.setPaint(selectionColor);
 		g.fill(rubberBand);
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).appendSuper(super.toString())
+				.toString();
 	}
 }
