@@ -12,6 +12,8 @@ import javax.swing.JPopupMenu;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import com.anrisoftware.prefdialog.miscswing.components.menu.PopupMenuComponent;
 import com.anrisoftware.prefdialog.miscswing.components.menu.PopupMenuComponent.MouseFilter;
 import com.anrisoftware.prefdialog.miscswing.components.menu.PopupMenuComponent.PopupMenuPosition;
@@ -28,9 +30,9 @@ public class PopupMenuList<E> {
 	/**
 	 * @see #decorate(JList, JPopupMenu)
 	 */
-	public static <E> PopupMenuList<E> createPopupList(JList<E> component,
+	public static <E> PopupMenuList<E> createPopupList(JList<E> list,
 			JPopupMenu menu) {
-		return decorate(component, menu);
+		return decorate(list, menu);
 	}
 
 	/**
@@ -108,5 +110,19 @@ public class PopupMenuList<E> {
 	 */
 	public JList<E> getList() {
 		return list;
+	}
+
+	/**
+	 * Returns the pop-up menu.
+	 * 
+	 * @return the {@link JPopupMenu}.
+	 */
+	public JPopupMenu getMenu() {
+		return popup.getMenu();
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).append(popup).toString();
 	}
 }
