@@ -4,8 +4,7 @@ import java.awt.BorderLayout
 
 import javax.swing.JPanel
 import javax.swing.JScrollPane
-
-import org.junit.Test
+import javax.swing.UIManager
 
 import com.anrisoftware.globalpom.utils.TestFrameUtil
 
@@ -17,8 +16,33 @@ import com.anrisoftware.globalpom.utils.TestFrameUtil
  */
 class RubberBandingListTest {
 
-	@Test
+	//@Test
 	void "manually"() {
+		String title = "$NAME::manually"
+		def panel = new JPanel()
+		def list = new RubberBandingList([
+			"Aaa",
+			"Bbb",
+			"Ccc",
+			"Aaa",
+			"Bbb",
+			"Ccc",
+			"Aaa",
+			"Bbb",
+			"Ccc",
+			"Aaa",
+			"Bbb",
+			"Ccc",
+			"Aaa",
+			"Bbb",
+			"Ccc"] as Object[])
+		def frame = createFrame title, list
+		frame.withFixture { Thread.sleep 60 * 1000 }
+	}
+
+	//@Test
+	void "manually GTK style"() {
+		UIManager.setLookAndFeel TestFrameUtil.GTK_LOOK_AND_FEEL
 		String title = "$NAME::manually"
 		def panel = new JPanel()
 		def list = new RubberBandingList([
