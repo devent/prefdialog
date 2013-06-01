@@ -13,11 +13,36 @@ import org.junit.Test
 
 import com.anrisoftware.globalpom.utils.TestFrameUtil
 
+/**
+ * @see ActionList
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 1.0
+ */
 class ActionListTest {
 
 	@Test
 	void "select with mouse"() {
-		String title = "ActionListTest::select with mouse"
+		String title = "$NAME::select with mouse"
+		String lastActionCommand = null
+		int actionCount = 0
+		String command = "action"
+		def frame = createFrameWithList title, command, { evt ->
+			lastActionCommand = evt.actionCommand
+			actionCount++
+		}
+		frame.withFixture { FrameFixture it ->
+			it.list().clickItem(0)
+			it.list().clickItem(1)
+			it.list().clickItem(2)
+		}
+		assert lastActionCommand == command
+		assert actionCount == 6
+	}
+
+	@Test
+	void "select same value with mouse"() {
+		String title = "$NAME::select same value with mouse"
 		String lastActionCommand = null
 		int actionCount = 0
 		String command = "action"
@@ -36,7 +61,7 @@ class ActionListTest {
 
 	@Test
 	void "select with mouse and use spacebar"() {
-		String title = "ActionListTest::select with mouse and use spacebar"
+		String title = "$NAME::select with mouse and use spacebar"
 		String lastActionCommand = null
 		int actionCount = 0
 		String command = "action"
@@ -49,12 +74,12 @@ class ActionListTest {
 			it.list().pressAndReleaseKeys(KeyEvent.VK_SPACE)
 		}
 		assert lastActionCommand == command
-		assert actionCount == 2
+		assert actionCount == 3
 	}
 
 	@Test
 	void "select with mouse and use enter"() {
-		String title = "ActionListTest::select with mouse and use enter"
+		String title = "$NAME::select with mouse and use enter"
 		String lastActionCommand = null
 		int actionCount = 0
 		String command = "action"
@@ -67,7 +92,7 @@ class ActionListTest {
 			it.list().pressAndReleaseKeys(KeyEvent.VK_ENTER)
 		}
 		assert lastActionCommand == command
-		assert actionCount == 2
+		assert actionCount == 3
 	}
 
 	TestFrameUtil createFrameWithList(def title, def command, def actionCallback) {
@@ -99,4 +124,6 @@ class ActionListTest {
 		panel.add new JScrollPane(list)
 		new TestFrameUtil(title, panel)
 	}
+
+	static final String NAME = ActionListTest.class.simpleName
 }
