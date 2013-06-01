@@ -115,7 +115,7 @@ public class ActionList<E> {
 	}
 
 	/**
-	 * Adds an old action listener.
+	 * Removes an old action listener.
 	 * 
 	 * @param l
 	 *            the {@link ActionListener}.
