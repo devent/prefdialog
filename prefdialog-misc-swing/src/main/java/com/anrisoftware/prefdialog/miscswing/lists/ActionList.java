@@ -17,12 +17,32 @@ import org.apache.commons.lang3.event.EventListenerSupport;
 
 /**
  * Decorates a swing list so that the added action listeners are informed if the
- * user select an item.
+ * user select an item. The action listeners can be informed multiple time with
+ * the same list item, so caution must be taken.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
  */
 public class ActionList<E> {
+
+	/**
+	 * @see #decorate(JList)
+	 */
+	public static <E> ActionList<E> createActionList(JList<E> list) {
+		return decorate(list);
+	}
+
+	/**
+	 * Create the action list from the specified list.
+	 * 
+	 * @param list
+	 *            the {@link JList}.
+	 * 
+	 * @return the new {@link ActionList}.
+	 */
+	public static <E> ActionList<E> decorate(JList<E> list) {
+		return new ActionList<E>(list);
+	}
 
 	private final EventListenerSupport<ActionListener> actionListeners;
 
@@ -30,7 +50,10 @@ public class ActionList<E> {
 
 	private String command;
 
-	public ActionList(JList<E> list) {
+	/**
+	 * @see #decorate(JList)
+	 */
+	ActionList(JList<E> list) {
 		this.actionListeners = new EventListenerSupport<ActionListener>(
 				ActionListener.class);
 		this.list = list;
@@ -43,10 +66,7 @@ public class ActionList<E> {
 
 					@Override
 					public void valueChanged(ListSelectionEvent e) {
-						if (e.getValueIsAdjusting()) {
-							return;
-						}
-						if (list.getSelectedValue() != null) {
+						if (!e.getValueIsAdjusting()) {
 							fireAction();
 						}
 					}
@@ -54,23 +74,17 @@ public class ActionList<E> {
 		list.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (list.getSelectedValue() != null) {
-					fireAction();
-				}
+				fireAction();
 			}
 		});
 		list.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.getExtendedKeyCode() == KeyEvent.VK_SPACE) {
-					if (list.getSelectedValue() != null) {
-						fireAction();
-					}
+					fireAction();
 				}
 				if (e.getExtendedKeyCode() == KeyEvent.VK_ENTER) {
-					if (list.getSelectedValue() != null) {
-						fireAction();
-					}
+					fireAction();
 				}
 			}
 		});
