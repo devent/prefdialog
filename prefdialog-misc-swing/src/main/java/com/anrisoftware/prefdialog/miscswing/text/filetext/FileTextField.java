@@ -30,7 +30,9 @@ import javax.swing.JFormattedTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.text.DefaultFormatterFactory;
 
+import com.google.inject.Guice;
 import com.google.inject.Inject;
+import com.google.inject.Injector;
 
 /**
  * Custom text field for a file. The {@link FontMetrics} in the paint method is
@@ -41,6 +43,43 @@ import com.google.inject.Inject;
  */
 @SuppressWarnings("serial")
 public class FileTextField extends JFormattedTextField {
+
+	private static final Injector INJECTOR = Guice.createInjector();
+
+	/**
+	 * @see #create()
+	 */
+	public static JFormattedTextField createFileTextField() {
+		return create();
+	}
+
+	/**
+	 * @see #create(File)
+	 */
+	public static JFormattedTextField createFileTextField(File file) {
+		return create(file);
+	}
+
+	/**
+	 * @see #create(File)
+	 */
+	public static JFormattedTextField create() {
+		return create(new File(""));
+	}
+
+	/**
+	 * Creates the file text field.
+	 * 
+	 * @param file
+	 *            the initial {@link File}.
+	 * 
+	 * @return the file text field {@link JFormattedTextField}.
+	 */
+	public static JFormattedTextField create(File file) {
+		FileTextField field = INJECTOR.getInstance(FileTextField.class);
+		field.setValue(file);
+		return field;
+	}
 
 	private final FileDisplayFormatter displayFormatter;
 

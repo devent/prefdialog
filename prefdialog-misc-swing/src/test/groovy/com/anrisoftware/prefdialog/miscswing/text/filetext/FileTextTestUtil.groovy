@@ -6,8 +6,13 @@ import javax.swing.JPanel
 import net.miginfocom.swing.MigLayout
 
 import com.anrisoftware.globalpom.utils.TestFrameUtil
-import com.google.inject.Guice
 
+/**
+ * Utilities to test the file text field.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 1.0
+ */
 class FileTextTestUtil {
 
 	public static final String FILE_FIELD_NAME = "file-field"
@@ -31,7 +36,7 @@ class FileTextTestUtil {
 	}
 
 	FileTextField createFileField() {
-		FileTextField field = Guice.createInjector().getInstance(FileTextField)
+		def field = FileTextField.create()
 		field.setName FILE_FIELD_NAME
 		return field
 	}
