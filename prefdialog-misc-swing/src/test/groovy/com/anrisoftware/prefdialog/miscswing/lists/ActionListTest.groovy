@@ -95,6 +95,17 @@ class ActionListTest {
 		assert actionCount == 3
 	}
 
+	//@Test
+	void "manually"() {
+		String title = "$NAME::manually"
+		String command = "action"
+		def frame = createFrameWithList title, command, { evt ->
+		}
+		frame.withFixture { FrameFixture it ->
+			Thread.sleep 60*1000
+		}
+	}
+
 	TestFrameUtil createFrameWithList(def title, def command, def actionCallback) {
 		def panel = new JPanel()
 		def list = new JList([
