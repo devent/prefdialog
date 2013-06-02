@@ -96,7 +96,7 @@ class ValidatingFormattedTextComponentTest {
 		})
 	}
 
-	@Test(timeout = 60000l)
+	//@Test
 	void "manually"() {
 		def title = "ValidatingFormattedTextComponentTest :: manually"
 		def parseError = "Invalid number"

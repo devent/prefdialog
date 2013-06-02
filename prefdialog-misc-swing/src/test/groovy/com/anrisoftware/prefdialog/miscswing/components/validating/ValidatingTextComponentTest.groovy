@@ -87,7 +87,7 @@ class ValidatingTextComponentTest {
 		})
 	}
 
-	//@Test(timeout = 60000l)
+	//@Test
 	void "manually"() {
 		def title = "ValidatingTextComponentTest :: manually"
 		def field = new ValidatingTextComponent(createTextField(fieldName))
