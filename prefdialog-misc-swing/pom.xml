@@ -28,6 +28,11 @@
 			<artifactId>miglayout-swing</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>tablelayout</groupId>
+			<artifactId>TableLayout</artifactId>
+			<scope>test</scope>
+		</dependency>
 
 		<!-- compile dependencies -->
 		<dependency>
@@ -53,10 +58,6 @@
 			<groupId>com.esotericsoftware.kryo</groupId>
 			<artifactId>kryo</artifactId>
 			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>tablelayout</groupId>
-			<artifactId>TableLayout</artifactId>
 		</dependency>
 	</dependencies>
 </project>
