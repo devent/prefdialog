@@ -27,7 +27,7 @@ import com.google.inject.TypeLiteral;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 
 /**
- * Binds the text field factory.
+ * Binds the formatted text field factory.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
@@ -38,7 +38,8 @@ class FormattedTextFieldModule extends AbstractModule {
 	protected void configure() {
 		install(new FactoryModuleBuilder().implement(
 				new TypeLiteral<FieldComponent<Container>>() {
-				}, FormattedTextField.class).build(FormattedTextFieldFactory.class));
+				}, FormattedTextField.class).build(
+				FormattedTextFieldFactory.class));
 		bind(FieldFactory.class).to(FormattedTextFieldFactory.class);
 	}
 

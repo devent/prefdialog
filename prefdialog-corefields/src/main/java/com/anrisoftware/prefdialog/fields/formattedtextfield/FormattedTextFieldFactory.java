@@ -20,12 +20,12 @@ package com.anrisoftware.prefdialog.fields.formattedtextfield;
 
 import java.awt.Container;
 
-import javax.swing.JTextField;
+import javax.swing.JFormattedTextField;
 
 import com.anrisoftware.prefdialog.fields.FieldFactory;
 
 /**
- * Factory to create a new text field.
+ * Factory to create a new formatted text field.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
@@ -36,12 +36,12 @@ public interface FormattedTextFieldFactory extends FieldFactory<Container> {
 	 * Sets the text field for the field.
 	 * 
 	 * @param textField
-	 *            the {@link JTextField} text field.
+	 *            the {@link JFormattedTextField} text field.
 	 * 
 	 * @return the {@link FormattedTextField}
 	 * 
 	 * @see FieldFactory#create(java.awt.Component, Object, String)
 	 */
-	FormattedTextField create(JTextField textField, Container container,
-			Object parentObject, String fieldName);
+	FormattedTextField create(JFormattedTextField textField,
+			Container container, Object parentObject, String fieldName);
 }

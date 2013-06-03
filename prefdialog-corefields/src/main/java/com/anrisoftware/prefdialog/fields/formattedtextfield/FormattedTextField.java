@@ -18,6 +18,8 @@
  */
 package com.anrisoftware.prefdialog.fields.formattedtextfield;
 
+import static com.anrisoftware.prefdialog.miscswing.components.validating.AbstractValidatingComponent.VALUE_PROPERTY;
+
 import java.awt.Container;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
@@ -25,33 +27,35 @@ import java.beans.VetoableChangeListener;
 import java.lang.annotation.Annotation;
 
 import javax.inject.Inject;
+import javax.swing.JFormattedTextField;
 import javax.swing.JTextField;
 
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccess;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccessFactory;
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
-import com.anrisoftware.prefdialog.miscswing.components.validating.ValidatingTextComponent;
+import com.anrisoftware.prefdialog.miscswing.components.validating.ValidatingFormattedTextComponent;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 
 /**
- * Simple text field.
+ * Formatted text field.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
 @SuppressWarnings("serial")
-public class FormattedTextField extends AbstractTitleField<JTextField, Container> {
+public class FormattedTextField extends
+		AbstractTitleField<JFormattedTextField, Container> {
 
 	private static final String EDITABLE_ELEMENT = "editable";
 
-	private static final Class<? extends Annotation> ANNOTATION_CLASS = com.anrisoftware.prefdialog.annotations.TextField.class;
+	private static final Class<? extends Annotation> ANNOTATION_CLASS = com.anrisoftware.prefdialog.annotations.FormattedTextField.class;
 
 	private final FormattedTextFieldLogger log;
 
 	private final JTextField textField;
 
-	private final ValidatingTextComponent<JTextField> validating;
+	private final ValidatingFormattedTextComponent<JFormattedTextField> validating;
 
 	private final VetoableChangeListener valueVetoListener;
 
@@ -61,22 +65,27 @@ public class FormattedTextField extends AbstractTitleField<JTextField, Container
 	 * @see FormattedTextFieldFactory#create(Container, Object, String)
 	 */
 	@AssistedInject
-	FormattedTextField(FormattedTextFieldLogger logger, @Assisted Container container,
-			@Assisted Object parentObject, @Assisted String fieldName) {
-		this(logger, new JTextField(), container, parentObject, fieldName);
+	FormattedTextField(FormattedTextFieldLogger logger,
+			@Assisted Container container, @Assisted Object parentObject,
+			@Assisted String fieldName) {
+		this(logger, new JFormattedTextField(), container, parentObject,
+				fieldName);
 	}
 
 	/**
-	 * @see FormattedTextFieldFactory#create(JTextField, Container, Object, String)
+	 * @see FormattedTextFieldFactory#create(JFormattedTextField, Container,
+	 *      Object, String)
 	 */
 	@AssistedInject
-	FormattedTextField(FormattedTextFieldLogger logger, @Assisted JTextField textField,
+	FormattedTextField(FormattedTextFieldLogger logger,
+			@Assisted JFormattedTextField textField,
 			@Assisted Container container, @Assisted Object parentObject,
 			@Assisted String fieldName) {
 		super(textField, container, parentObject, fieldName);
 		this.log = logger;
 		this.textField = textField;
-		this.validating = new ValidatingTextComponent<JTextField>(textField);
+		this.validating = new ValidatingFormattedTextComponent<JFormattedTextField>(
+				textField);
 		this.valueVetoListener = new VetoableChangeListener() {
 
 			@Override
@@ -90,8 +99,7 @@ public class FormattedTextField extends AbstractTitleField<JTextField, Container
 	}
 
 	private void setupValidating() {
-		validating.addVetoableChangeListener(
-				ValidatingTextComponent.VALUE_PROPERTY, valueVetoListener);
+		validating.addVetoableChangeListener(VALUE_PROPERTY, valueVetoListener);
 	}
 
 	@Inject

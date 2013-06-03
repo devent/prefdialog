@@ -26,7 +26,6 @@ import org.mangosdk.spi.ProviderFor;
 
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule;
 import com.anrisoftware.globalpom.reflection.beans.BeansModule;
-import com.anrisoftware.prefdialog.annotations.TextField;
 import com.anrisoftware.prefdialog.fields.FieldFactory;
 import com.anrisoftware.prefdialog.fields.FieldInfo;
 import com.anrisoftware.prefdialog.fields.FieldService;
@@ -35,7 +34,7 @@ import com.google.inject.Injector;
 import com.google.inject.Module;
 
 /**
- * Makes the text field available.
+ * Makes the formatted text field available.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
@@ -46,7 +45,8 @@ public class FormattedTextFieldService implements FieldService {
 	/**
 	 * The field information.
 	 */
-	public static final FieldInfo INFO = new FieldInfo(TextField.class);
+	public static final FieldInfo INFO = new FieldInfo(
+			com.anrisoftware.prefdialog.annotations.FormattedTextField.class);
 
 	private final Iterable<? extends Module> modules;
 

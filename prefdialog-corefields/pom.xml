@@ -11,7 +11,10 @@
 	</parent>
 
 	<artifactId>prefdialog-corefields</artifactId>
-	<name>Prefdialog :: Core Fields</name>
+	<name>Preferences Dialog :: Core Fields</name>
+	<description>Core fields.</description>
+	<url>https://www.anr-institute.com/projects/projects/prefdialog-corefields</url>
+	<inceptionYear>2013</inceptionYear>
 
 	<dependencies>
 
