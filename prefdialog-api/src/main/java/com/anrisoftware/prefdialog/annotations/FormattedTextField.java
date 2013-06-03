@@ -47,4 +47,11 @@ import java.lang.annotation.Target;
 @Target({ FIELD, METHOD })
 @Retention(RUNTIME)
 public @interface FormattedTextField {
+
+	/**
+	 * If the field should be editable. Set to {@code true} if the text field
+	 * should be editable or {@code false} if not. Defaults to {@code true}.
+	 */
+	boolean editable() default true;
+
 }
