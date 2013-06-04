@@ -532,11 +532,27 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 		log.valueSet(this, value);
 	}
 
+	/**
+	 * Sets the specified value as the new value without modifying the bean
+	 * object field.
+	 * 
+	 * @param value
+	 *            the {@link Object} value.
+	 */
 	protected void changeValue(Object value) {
 		oldValue = this.value;
 		this.value = value;
 	}
 
+	/**
+	 * Sets the value to the bean object field.
+	 * 
+	 * @param value
+	 *            the {@link Object} value.
+	 * 
+	 * @throws PropertyVetoException
+	 *             if the value is unacceptable by the bean.
+	 */
 	protected void trySetValue(Object value) throws PropertyVetoException {
 		beanAccess.setValue(value);
 	}
