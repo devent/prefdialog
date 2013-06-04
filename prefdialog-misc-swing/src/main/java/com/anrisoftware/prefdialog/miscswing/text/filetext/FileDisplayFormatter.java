@@ -74,6 +74,11 @@ class FileDisplayFormatter extends DefaultFormatter {
 		return file.getAbsolutePath();
 	}
 
+	@Override
+	public Object stringToValue(String string) throws ParseException {
+		return new File(absolutePath);
+	}
+
 	/**
 	 * Updates the new maximum width of the {@link JFormattedTextField}. It will
 	 * trim the path with the help of the previously set {@link FontMetrics}.
