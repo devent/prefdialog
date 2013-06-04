@@ -18,8 +18,11 @@
  */
 package com.anrisoftware.prefdialog.fields.filechooser
 
+import javax.swing.JFileChooser
+
 import com.anrisoftware.prefdialog.annotations.FieldComponent
 import com.anrisoftware.prefdialog.annotations.FileChooser
+import com.anrisoftware.prefdialog.annotations.FileChooserModel
 
 /**
  * Bean with file chooser fields.
@@ -31,14 +34,28 @@ class FileChooserBean {
 
 	static final NULL_VALUE = "nullValue"
 
+	static final NO_MODEL = "noModel"
+
 	static final INITIAL_VALUE = "initialValue"
 
 	@FieldComponent
-	@FileChooser
+	@FileChooser(model = "fileModel")
 	public File nullValue
 
 	@FieldComponent
 	@FileChooser
+	public File noModel = new File("aaa.txt")
+
+	@FieldComponent
+	@FileChooser(model = "fileModel")
 	public File initialValue = new File("aaa.txt")
+
+	public FileChooserModel fileModel = new OpenFileDialogModel()
+
+	FileChooserBean() {
+		def chooser = new JFileChooser()
+		chooser.setDialogType JFileChooser.OPEN_DIALOG
+		fileModel.setFileChooser chooser
+	}
 }
 

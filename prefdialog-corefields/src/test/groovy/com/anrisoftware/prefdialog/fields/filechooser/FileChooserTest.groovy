@@ -59,10 +59,19 @@ class FileChooserTest extends FieldTestUtils {
 	}
 
 	@Test
-	void "with null value"() {
-		def title = "$NAME :: with null value"
+	void "null value"() {
+		def title = "$NAME :: null value"
 		def fieldName = NULL_VALUE
 		shouldFailWith(ReflectionError) {
+			def field = factory.create(container, bean, fieldName)
+		}
+	}
+
+	@Test
+	void "no model"() {
+		def title = "$NAME :: no model"
+		def fieldName = NO_MODEL
+		shouldFailWith(IllegalArgumentException) {
 			def field = factory.create(container, bean, fieldName)
 		}
 	}

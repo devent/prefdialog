@@ -16,35 +16,26 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-corefields. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.fields.filechooser;
+package com.anrisoftware.prefdialog.classtask;
 
-import java.awt.Container;
-
-import com.anrisoftware.prefdialog.classtask.ClassTaskModule;
-import com.anrisoftware.prefdialog.fields.FieldComponent;
-import com.anrisoftware.prefdialog.fields.FieldFactory;
 import com.google.inject.AbstractModule;
-import com.google.inject.TypeLiteral;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 
 /**
- * Binds the file chooser field factory.
+ * Binds the class type factory.
  * 
- * @see FileChooserField
- * @see FileChooserFieldFactory
+ * @see ClassTask
+ * @see ClassTaskFactory
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-class FileChooserModule extends AbstractModule {
+public class ClassTaskModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
-		install(new FactoryModuleBuilder().implement(
-				new TypeLiteral<FieldComponent<Container>>() {
-				}, FileChooserField.class).build(FileChooserFieldFactory.class));
-		bind(FieldFactory.class).to(FileChooserFieldFactory.class);
-		install(new ClassTaskModule());
+		install(new FactoryModuleBuilder().implement(ClassTask.class,
+				ClassTask.class).build(ClassTaskFactory.class));
 	}
 
 }

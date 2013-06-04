@@ -18,21 +18,21 @@
  */
 package com.anrisoftware.prefdialog.fields.filechooser;
 
-import static java.lang.String.format;
 import static org.apache.commons.lang3.Validate.notNull;
 
-import javax.swing.ComboBoxModel;
-import javax.swing.ListCellRenderer;
-
 import com.anrisoftware.globalpom.log.AbstractLogger;
+import com.anrisoftware.prefdialog.annotations.FileChooserModel;
 
 /**
  * Logging messages for {@link FileChooserField}.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 2.2
+ * @since 3.0
  */
 class FileChooserFieldLogger extends AbstractLogger {
+
+	private static final String MODEL_SET = "File chooser model {} set for {}.";
+	private static final String MODEL_NULL = "File chooser model can not be null for field %s.";
 
 	/**
 	 * Creates logger for {@link FileChooserField}.
@@ -41,46 +41,15 @@ class FileChooserFieldLogger extends AbstractLogger {
 		super(FileChooserField.class);
 	}
 
-	void checkModel(FileChooserField field,
-			@SuppressWarnings("rawtypes") ComboBoxModel model) {
-		notNull(model, "The model cannot be null for the combo box field %s.",
-				field);
+	void checkModel(FileChooserField field, FileChooserModel model) {
+		notNull(model, MODEL_NULL, field);
 	}
 
-	void modelSet(FileChooserField field,
-			@SuppressWarnings("rawtypes") ComboBoxModel model) {
-		log.trace("Set model {} to the combo box field {}.", model, field);
-	}
-
-	IllegalArgumentException unsupportedType(FileChooserField field,
-			Object elements) {
-		IllegalArgumentException ex = new IllegalArgumentException(
-				format("The type %s is not supported as elements of the combo box field %s",
-						elements.getClass(), field));
-		log.error(ex.getLocalizedMessage());
-		return ex;
-	}
-
-	void checkElements(FileChooserField field, Object elements) {
-		notNull(elements,
-				"The elements cannot be null for the combo box field %s.",
-				field);
-	}
-
-	void elementsSet(FileChooserField field, Object elements) {
-		log.trace("Set elements {} for the combo box field {}.", elements,
-				field);
-	}
-
-	void checkRenderer(FileChooserField field,
-			@SuppressWarnings("rawtypes") ListCellRenderer renderer) {
-		notNull(renderer,
-				"The renderer cannot be null for the combo box field %s.",
-				field);
-	}
-
-	void rendererSet(FileChooserField field,
-			@SuppressWarnings("rawtypes") ListCellRenderer renderer) {
-		log.trace("Set renderer {} to the combo box field {}.", renderer, field);
+	void modelSet(FileChooserField field, FileChooserModel model) {
+		if (log.isDebugEnabled()) {
+			log.debug(MODEL_SET, model, field);
+		} else {
+			log.info(MODEL_SET, model, field.getName());
+		}
 	}
 }

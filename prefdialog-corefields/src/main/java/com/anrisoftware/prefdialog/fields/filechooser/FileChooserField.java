@@ -24,11 +24,17 @@ import java.awt.Container;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
+import java.io.File;
 import java.lang.annotation.Annotation;
 
 import javax.inject.Inject;
+import javax.swing.Action;
 
+import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccessFactory;
 import com.anrisoftware.prefdialog.annotations.FileChooser;
+import com.anrisoftware.prefdialog.annotations.FileChooserModel;
+import com.anrisoftware.prefdialog.classtask.ClassTask;
+import com.anrisoftware.prefdialog.classtask.ClassTaskFactory;
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
 import com.anrisoftware.prefdialog.miscswing.components.validating.ValidatingFormattedTextComponent;
 import com.anrisoftware.prefdialog.miscswing.text.filetext.FileTextField;
@@ -60,6 +66,8 @@ public class FileChooserField extends AbstractTitleField<UiPanel, Container> {
 
 	private static final Class<? extends Annotation> ANNOTATION_CLASS = FileChooser.class;
 
+	private static final String MODEL_ELEMENT = "model";
+
 	private final FileChooserFieldLogger log;
 
 	private final FileTextField fileTextField;
@@ -68,13 +76,25 @@ public class FileChooserField extends AbstractTitleField<UiPanel, Container> {
 
 	private final VetoableChangeListener valueVetoListener;
 
+	private final OpenFileDialogAction openFileDialogAction;
+
+	private final ClassTaskFactory classTaskFactory;
+
+	private FileChooserModel model;
+
+	private final VetoableChangeListener filePropertyListener;
+
 	@Inject
 	FileChooserField(FileChooserFieldLogger logger, UiPanel panel,
-			FileTextField fileTextField, @Assisted Container container,
+			FileTextField fileTextField,
+			OpenFileDialogAction openFileDialogAction,
+			ClassTaskFactory classTaskFactory, @Assisted Container container,
 			@Assisted Object parentObject, @Assisted String fieldName) {
 		super(panel, container, parentObject, fieldName);
 		this.log = logger;
 		this.fileTextField = fileTextField;
+		this.classTaskFactory = classTaskFactory;
+		this.openFileDialogAction = openFileDialogAction;
 		this.validating = new ValidatingFormattedTextComponent<FileTextField>(
 				fileTextField);
 		this.valueVetoListener = new VetoableChangeListener() {
@@ -83,7 +103,18 @@ public class FileChooserField extends AbstractTitleField<UiPanel, Container> {
 			public void vetoableChange(PropertyChangeEvent evt)
 					throws PropertyVetoException {
 				FileChooserField.super.trySetValue(evt.getNewValue());
+				if (model != null) {
+					model.setFile((File) evt.getNewValue());
+				}
 				changeValue(evt.getNewValue());
+			}
+		};
+		this.filePropertyListener = new VetoableChangeListener() {
+
+			@Override
+			public void vetoableChange(PropertyChangeEvent evt)
+					throws PropertyVetoException {
+				setValue(evt.getNewValue());
 			}
 		};
 		setupValidating();
@@ -96,10 +127,59 @@ public class FileChooserField extends AbstractTitleField<UiPanel, Container> {
 
 	private void setupPanel(UiPanel panel) {
 		panel.setFileField(fileTextField);
+		panel.getOpenFileChooser().addActionListener(openFileDialogAction);
+	}
+
+	@Inject
+	void setBeanAccessFactory(AnnotationAccessFactory annotationAccessFactory) {
+		setupModel();
+	}
+
+	private void setupModel() {
+		@SuppressWarnings("unchecked")
+		ClassTask<FileChooserModel> classTask = (ClassTask<FileChooserModel>) classTaskFactory
+				.create(MODEL_ELEMENT, ANNOTATION_CLASS, getAccessibleObject());
+		setModel(classTask.withParent(getParentObject()).build());
+	}
+
+	/**
+	 * Sets the file chooser model.
+	 * 
+	 * @param model
+	 *            the {@link FileChooserModel}.
+	 * 
+	 * @throws NullPointerException
+	 *             if the specified model is {@code null}.
+	 */
+	public void setModel(FileChooserModel model) {
+		log.checkModel(this, model);
+		FileChooserModel oldModel = this.model;
+		if (oldModel != null) {
+			oldModel.removeVetoableChangeListener(filePropertyListener);
+		}
+		this.model = model;
+		try {
+			model.setFile((File) getValue());
+		} catch (PropertyVetoException e) {
+		}
+		model.addVetoableChangeListener(filePropertyListener);
+		openFileDialogAction.setFileChooserModel(model);
+		log.modelSet(this, model);
 	}
 
 	@Override
 	protected void trySetValue(Object value) throws PropertyVetoException {
 		validating.setValue(value);
 	}
+
+	/**
+	 * Sets the open file chooser action.
+	 * 
+	 * @param action
+	 *            the {@link Action}.
+	 */
+	public void setOpenFileChooserAction(Action action) {
+		getContainerComponent().getOpenFileChooser().setAction(action);
+	}
+
 }

@@ -28,14 +28,24 @@ import com.anrisoftware.resources.images.api.IconSize;
 
 /**
  * Field to show and select a file. Opens a dialog to select the file. The
- * initial value can be set and is used as the initial selected file.
+ * initial value can be set and is used as the initial selected file. The model
+ * must be set and is used to open the file chooser dialog so that the user can
+ * select the file.
  * <p>
  * Example:
  * 
  * <pre>
  * &#064;FieldComponent
- * &#064;FileChooser
- * private File file = new File(&quot;.&quot;);
+ * &#064;FileChooser(modelClass = OpenDialogModel.class)
+ * public File file = new File(&quot;.&quot;);
+ * </pre>
+ * 
+ * <pre>
+ * &#064;FieldComponent
+ * &#064;FileChooser(model = &quot;dialogModel&quot;)
+ * public File file = new File(&quot;.&quot;);
+ * 
+ * public FileChooserModel dialogModel = new OpenDialogModel();
  * </pre>
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
@@ -77,4 +87,22 @@ public @interface FileChooser {
 	 */
 	IconSize buttonIconSize() default IconSize.SMALL;
 
+	/**
+	 * The name of the field name to use for the custom {@link FileChooserModel}
+	 * . Defaults to an empty name which means no field is set. Either the model
+	 * field or the model class must be set.
+	 * 
+	 * @since 3.0
+	 */
+	String model() default "";
+
+	/**
+	 * The custom {@link FileChooserModel} to use with this file chooser field.
+	 * The model must have the default constructor available for instantiation.
+	 * Either the model field or the model class must be set. Although the
+	 * attribute is an array only the first element is used.
+	 * 
+	 * @since 3.0
+	 */
+	Class<? extends FileChooserModel>[] modelClass() default {};
 }
