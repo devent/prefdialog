@@ -21,27 +21,28 @@ package com.anrisoftware.prefdialog.fields.filechooser;
 import java.awt.Container;
 
 import com.anrisoftware.prefdialog.fields.FieldComponent;
-import com.anrisoftware.prefdialog.reflection.annotations.AnnotationsModule;
-import com.anrisoftware.prefdialog.reflection.beans.BeansModule;
+import com.anrisoftware.prefdialog.fields.FieldFactory;
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 
 /**
- * Binds the combo box field factory.
+ * Binds the file chooser field factory.
+ * 
+ * @see FileChooserField
+ * @see FileChooserFieldFactory
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 2.2
+ * @since 3.0
  */
 class FileChooserModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
-		install(new AnnotationsModule());
-		install(new BeansModule());
 		install(new FactoryModuleBuilder().implement(
 				new TypeLiteral<FieldComponent<Container>>() {
 				}, FileChooserField.class).build(FileChooserFieldFactory.class));
+		bind(FieldFactory.class).to(FileChooserFieldFactory.class);
 	}
 
 }

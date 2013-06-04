@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.panel.inputfields.filechooser
+package com.anrisoftware.prefdialog.fields.filechooser
 
 import org.junit.Test
 
@@ -24,44 +24,40 @@ import com.anrisoftware.prefdialog.annotations.FileChooser
 import com.anrisoftware.prefdialog.panel.inputfields.FieldFixtureHandler
 import com.anrisoftware.prefdialog.panel.inputfields.api.FileChooserFieldHandlerFactory
 
-class FileChooserTextTest extends FieldFixtureHandler {
+class FileChooserIconsTest extends FieldFixtureHandler {
 
 	static factory = injector.getInstance(FileChooserFieldHandlerFactory)
 
-	static final String FILE_CUSTOM_TEXT = "fileCustomText"
+	static final String FILE_ICON_DEFAULT = "fileIconDefault"
 
-	static final String FILE_DEFAULT = "fileDefault"
-
-	static final String DEFAULT_TEXT = "Open…"
-
-	static final String CUSTOM_TEXT = "custom"
+	static final String FILE_ICON_CUSOM = "fileIconCusom"
 
 	static class General {
 
 		@FileChooser
-		File fileDefault = new File("")
+		File fileIconDefault = new File("")
 
-		@FileChooser(buttonText="custom")
-		File fileCustomText = new File("")
+		@FileChooser(icon="com/anrisoftware/prefdialog/panel/inputfields/filechooser/blackwhite/document-open-folder-%d.png")
+		File fileIconCusom = new File("")
 	}
 
 	@Test
-	void "default text"() {
-		runFieldFixture new General(), FILE_DEFAULT, factory, {
-			fixture.button("openfilebutton-$FILE_DEFAULT").requireText(DEFAULT_TEXT)
+	void "default icon size"() {
+		runFieldFixture new General(), FILE_ICON_DEFAULT, factory, {
+			assert fixture.button("openfilebutton-$FILE_ICON_DEFAULT").component().icon.iconWidth == 16
 		}
 	}
 
 	@Test
-	void "custom text"() {
-		runFieldFixture new General(), FILE_CUSTOM_TEXT, factory, {
-			fixture.button("openfilebutton-$FILE_CUSTOM_TEXT").requireText(CUSTOM_TEXT)
+	void "custom icon"() {
+		runFieldFixture new General(), FILE_ICON_CUSOM, factory, {
+			assert fixture.button("openfilebutton-$FILE_ICON_CUSOM").component().icon.iconWidth == 16
 		}
 	}
 
 	@Test
 	void testManual() {
-		runFieldFixture new General(), FILE_DEFAULT, factory, {
+		runFieldFixture new General(), FILE_ICON_CUSOM, factory, {
 			//Thread.sleep 60000
 		}
 	}

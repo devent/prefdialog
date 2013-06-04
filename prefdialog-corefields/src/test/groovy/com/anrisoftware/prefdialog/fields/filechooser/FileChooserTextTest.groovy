@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.panel.inputfields.filechooser
+package com.anrisoftware.prefdialog.fields.filechooser
 
 import org.junit.Test
 
@@ -24,47 +24,45 @@ import com.anrisoftware.prefdialog.annotations.FileChooser
 import com.anrisoftware.prefdialog.panel.inputfields.FieldFixtureHandler
 import com.anrisoftware.prefdialog.panel.inputfields.api.FileChooserFieldHandlerFactory
 
-class FileChooserTitleTest extends FieldFixtureHandler {
+class FileChooserTextTest extends FieldFixtureHandler {
 
 	static factory = injector.getInstance(FileChooserFieldHandlerFactory)
+
+	static final String FILE_CUSTOM_TEXT = "fileCustomText"
+
+	static final String FILE_DEFAULT = "fileDefault"
+
+	static final String DEFAULT_TEXT = "Open…"
+
+	static final String CUSTOM_TEXT = "custom"
 
 	static class General {
 
 		@FileChooser
-		File file1 = new File("")
+		File fileDefault = new File("")
 
-		@FileChooser(title="Save to file:")
-		File file2 = new File("")
-
-		@FileChooser(showTitle=false)
-		File file3 = new File("")
+		@FileChooser(buttonText="custom")
+		File fileCustomText = new File("")
 	}
 
 	@Test
-	void "default title"() {
-		runFieldFixture new General(), "file1", factory, {
-			assert fixture.label("titlelabel-file1").text() == "file1"
+	void "default text"() {
+		runFieldFixture new General(), FILE_DEFAULT, factory, {
+			fixture.button("openfilebutton-$FILE_DEFAULT").requireText(DEFAULT_TEXT)
 		}
 	}
 
 	@Test
-	void "custom title"() {
-		runFieldFixture new General(), "file2", factory, {
-			assert fixture.label("titlelabel-file2").text() == "Save to file:"
-		}
-	}
-
-	@Test
-	void "no title"() {
-		runFieldFixture new General(), "file3", factory, {
-			//assert fixture.label("label-file3").text() == "file3"
+	void "custom text"() {
+		runFieldFixture new General(), FILE_CUSTOM_TEXT, factory, {
+			fixture.button("openfilebutton-$FILE_CUSTOM_TEXT").requireText(CUSTOM_TEXT)
 		}
 	}
 
 	@Test
 	void testManual() {
-		runFieldFixture new General(), "file3", factory, {
-			//Thread.sleep(30000)
+		runFieldFixture new General(), FILE_DEFAULT, factory, {
+			//Thread.sleep 60000
 		}
 	}
 }

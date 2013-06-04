@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.panel.inputfields.filechooser
+package com.anrisoftware.prefdialog.fields.filechooser
 
 import org.junit.Test
 

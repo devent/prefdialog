@@ -19,31 +19,25 @@
 package com.anrisoftware.prefdialog.fields.filechooser;
 
 import java.awt.Container;
-import java.lang.reflect.Field;
+
+import com.anrisoftware.prefdialog.fields.FieldFactory;
 
 /**
- * Factory to create a new combo box field. A combo box field can only be
- * checked or unchecked.
+ * Factory to create a new file chooser field.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 2.2
+ * @since 3.0
  */
-interface FileChooserFieldFactory {
+public interface FileChooserFieldFactory extends FieldFactory<Container> {
 
 	/**
-	 * Creates a new combo box field for the specified field of the preference
-	 * bean object.
+	 * Sets the file chooser for the field.
 	 * 
-	 * @param container
-	 *            the {@link Container} for the combo box field.
+	 * @return the {@link FormattedTextField}
 	 * 
-	 * @param bean
-	 *            the preference bean {@link Object} where the field is defined.
-	 * 
-	 * @param field
-	 *            the {@link Field}.
-	 * 
-	 * @return the {@link FileChooserField}.
+	 * @see FieldFactory#create(java.awt.Component, Object, String)
 	 */
-	FileChooserField create(Container container, Object bean, Field field);
+	@Override
+	FileChooserField create(Container container, Object parentObject,
+			String fieldName);
 }

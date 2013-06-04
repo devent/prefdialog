@@ -18,58 +18,88 @@
  */
 package com.anrisoftware.prefdialog.fields.filechooser;
 
+import static com.anrisoftware.prefdialog.miscswing.components.validating.AbstractValidatingComponent.VALUE_PROPERTY;
+
 import java.awt.Container;
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
+import java.beans.VetoableChangeListener;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
 
 import javax.inject.Inject;
-import javax.swing.JPanel;
 
 import com.anrisoftware.prefdialog.annotations.FileChooser;
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
+import com.anrisoftware.prefdialog.miscswing.components.validating.ValidatingFormattedTextComponent;
+import com.anrisoftware.prefdialog.miscswing.text.filetext.FileTextField;
 import com.google.inject.assistedinject.Assisted;
 
 /**
  * Field to show and select a file. Opens a dialog to select the file.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 2.2
+ * @since 3.0
  */
-@SuppressWarnings("rawtypes")
-public class FileChooserField extends AbstractTitleField<JPanel, Container> {
+@SuppressWarnings("serial")
+public class FileChooserField extends AbstractTitleField<UiPanel, Container> {
+
+	/**
+	 * Suffix to the name of the file field panel.
+	 */
+	public static final String FILE_FIELD_PANEL_NAME = "fileFieldPanel";
+
+	/**
+	 * Suffix to the name of the file text field.
+	 */
+	public static final String FILE_FIELD_NAME = "fileField";
+
+	/**
+	 * Suffix to the name of the open file chooser button.
+	 */
+	public static final String OPEN_FILE_CHOOSER_NAME = "openFileChooser";
 
 	private static final Class<? extends Annotation> ANNOTATION_CLASS = FileChooser.class;
 
 	private final FileChooserFieldLogger log;
 
+	private final FileTextField fileTextField;
+
+	private final ValidatingFormattedTextComponent<FileTextField> validating;
+
+	private final VetoableChangeListener valueVetoListener;
+
 	@Inject
 	FileChooserField(FileChooserFieldLogger logger, UiPanel panel,
-			@Assisted Container container, @Assisted Object parentObject,
-			@Assisted Field field) {
-		super(((UiPanel) panel.run()).getPanel(), container, parentObject,
-				field);
+			FileTextField fileTextField, @Assisted Container container,
+			@Assisted Object parentObject, @Assisted String fieldName) {
+		super(panel, container, parentObject, fieldName);
 		this.log = logger;
+		this.fileTextField = fileTextField;
+		this.validating = new ValidatingFormattedTextComponent<FileTextField>(
+				fileTextField);
+		this.valueVetoListener = new VetoableChangeListener() {
+
+			@Override
+			public void vetoableChange(PropertyChangeEvent evt)
+					throws PropertyVetoException {
+				FileChooserField.super.trySetValue(evt.getNewValue());
+				changeValue(evt.getNewValue());
+			}
+		};
+		setupValidating();
+		setupPanel(panel);
+	}
+
+	private void setupValidating() {
+		validating.addVetoableChangeListener(VALUE_PROPERTY, valueVetoListener);
+	}
+
+	private void setupPanel(UiPanel panel) {
+		panel.setFileField(fileTextField);
 	}
 
 	@Override
-	protected void afterName() {
-		super.afterName();
+	protected void trySetValue(Object value) throws PropertyVetoException {
+		validating.setValue(value);
 	}
-
-	@Override
-	public void applyInput() throws PropertyVetoException {
-		super.applyInput();
-	}
-
-	@Override
-	public void restoreInput() {
-		super.restoreInput();
-	}
-
-	@Override
-	public void setValue(Object newValue) {
-		super.setValue(newValue);
-	}
-
 }

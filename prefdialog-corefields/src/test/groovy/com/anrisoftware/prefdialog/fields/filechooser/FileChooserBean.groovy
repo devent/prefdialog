@@ -16,27 +16,29 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-corefields. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.fields.filechooser;
+package com.anrisoftware.prefdialog.fields.filechooser
 
-import static com.google.inject.multibindings.Multibinder.newSetBinder;
-
-import com.anrisoftware.prefdialog.fields.FieldPlugin;
-import com.google.inject.AbstractModule;
-import com.google.inject.multibindings.Multibinder;
+import com.anrisoftware.prefdialog.annotations.FieldComponent
+import com.anrisoftware.prefdialog.annotations.FileChooser
 
 /**
- * Binds the combo box field plug-in.
- * 
+ * Bean with file chooser fields.
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 2.2
+ * @since 3.0
  */
-public class FileChooserPluginModule extends AbstractModule {
+class FileChooserBean {
 
-	@Override
-	protected void configure() {
-		Multibinder<FieldPlugin> binder;
-		binder = newSetBinder(binder(), FieldPlugin.class);
-		binder.addBinding().to(FileChooserFieldPlugin.class);
-	}
+	static final NULL_VALUE = "nullValue"
 
+	static final INITIAL_VALUE = "initialValue"
+
+	@FieldComponent
+	@FileChooser
+	public File nullValue
+
+	@FieldComponent
+	@FileChooser
+	public File initialValue = new File("aaa.txt")
 }
+
