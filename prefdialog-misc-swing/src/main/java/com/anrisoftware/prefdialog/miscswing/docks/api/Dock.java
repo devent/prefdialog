@@ -46,6 +46,8 @@ public interface Dock {
 
 	/**
 	 * Adds a dock in the outside of the working area.
+	 * <p>
+	 * The dock will be added in the AWT event thread.
 	 * 
 	 * @param dock
 	 *            the {@link ViewDockWindow}.
@@ -54,6 +56,8 @@ public interface Dock {
 
 	/**
 	 * Adds a dock in the working area.
+	 * <p>
+	 * The dock will be added in the AWT event thread.
 	 * 
 	 * @param dock
 	 *            the {@link EditorDockWindow}.
@@ -61,10 +65,12 @@ public interface Dock {
 	void addEditorDock(EditorDockWindow dock);
 
 	/**
-	 * Apply the perspective.
+	 * Apply the layout.
+	 * <p>
+	 * The layout will be applied in the AWT event thread.
 	 * 
 	 * @param layout
-	 *            the {@link LayoutTask} that apply to perspective.
+	 *            the {@link LayoutTask} that applies the layout.
 	 */
 	void applyLayout(LayoutTask layout);
 
