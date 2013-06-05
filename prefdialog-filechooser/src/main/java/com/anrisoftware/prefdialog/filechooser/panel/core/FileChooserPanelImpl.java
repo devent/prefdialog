@@ -327,7 +327,7 @@ class FileChooserPanelImpl implements FileChooserPanel {
 	}
 
 	private void setupPlaces() {
-		placesActionList = new ActionList<File>(placesPanel.placesList);
+		placesActionList = ActionList.decorate(placesPanel.placesList);
 		placesActionList.addActionListener(placesListener);
 		placesPanel.placesList.setModel(placesModel);
 		placesPanel.placesList.setCellRenderer(placesRenderer);

@@ -45,7 +45,7 @@ final class UiFilesListPanel extends JPanel {
 
 	final JScrollPane filesScrollPane;
 
-	final JList filesList;
+	final JList<File> filesList;
 
 	private final PopupMenuComponent optionsPopup;
 
@@ -83,7 +83,8 @@ final class UiFilesListPanel extends JPanel {
 		optionsButton.setBorderPainted(false);
 		toolButtonsPanel.add(optionsButton, "cell 2 0");
 		components.put(OPTIONS_BUTTON_NAME, optionsButton);
-		optionsPopup = new PopupMenuComponent(optionsButton, new JPopupMenu());
+		optionsPopup = PopupMenuComponent.decorate(optionsButton,
+				new JPopupMenu());
 
 		locationField = new JComboBox<File>();
 		locationField.setName(LOCATION_FIELD_NAME);
@@ -94,7 +95,7 @@ final class UiFilesListPanel extends JPanel {
 		filesScrollPane = new JScrollPane();
 		add(filesScrollPane, BorderLayout.CENTER);
 
-		filesList = new RubberBandingList();
+		filesList = new RubberBandingList<File>();
 		filesList.setName(FILES_LIST_NAME);
 		filesScrollPane.setViewportView(filesList);
 		components.put(FILES_LIST_NAME, filesList);

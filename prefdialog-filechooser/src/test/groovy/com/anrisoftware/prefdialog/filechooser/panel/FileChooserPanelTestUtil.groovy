@@ -75,7 +75,7 @@ class FileChooserPanelTestUtil {
 	}
 
 	static createFiles() {
-		parent = createTempDirectory()
+		parent = File.createTempDir()
 		dirs = [
 			new File(parent, "Aaa"),
 			new File(parent, "Bbb"),

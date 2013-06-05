@@ -28,7 +28,7 @@ class FileChooserPanelTest extends FileChooserPanelTestUtil {
 		}
 	}
 
-	//@Test
+	@Test
 	void "manually"() {
 		def title = "FileChooserPanelTest::manually"
 		def frame = createFrame(title)
