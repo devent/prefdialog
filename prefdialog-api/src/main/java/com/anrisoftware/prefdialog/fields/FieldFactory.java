@@ -5,16 +5,16 @@ import java.awt.Component;
 /**
  * Factory to create a new field component.
  * 
+ * @param <ComponentType>
+ *            the {@link Component} for this field.
+ * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-public interface FieldFactory<T extends Component> {
+public interface FieldFactory<ComponentType extends Component> {
 
 	/**
 	 * Creates a new field component.
-	 * 
-	 * @param component
-	 *            the {@link Component} of the field.
 	 * 
 	 * @param parentObject
 	 *            the parent object of this field.
@@ -24,6 +24,6 @@ public interface FieldFactory<T extends Component> {
 	 * 
 	 * @return the {@link FieldComponent}.
 	 */
-	FieldComponent<T> create(T component, Object parentObject, String fieldName);
+	FieldComponent<ComponentType> create(Object parentObject, String fieldName);
 
 }

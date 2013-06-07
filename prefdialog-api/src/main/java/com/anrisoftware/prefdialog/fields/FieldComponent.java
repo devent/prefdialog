@@ -308,8 +308,15 @@ public interface FieldComponent<ComponentType extends Component> {
 	void restoreInput() throws PropertyVetoException;
 
 	/**
-	 * Returns the component to be added in the preferences container for this
-	 * field.
+	 * Sets the Swing component of the field.
+	 * 
+	 * @param component
+	 *            the {@link Component}.
+	 */
+	void setComponent(ComponentType component);
+
+	/**
+	 * Returns the Swing component of the field.
 	 * 
 	 * @return the {@link Component}.
 	 */
