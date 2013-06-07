@@ -55,7 +55,7 @@ class PreferencesPanelServiceTest {
 
 	static Injector injector
 
-	static CheckBoxFieldFactory factory
+	static PreferencesPanelFactory factory
 
 	PreferencesPanelBean bean
 

@@ -21,10 +21,6 @@ package com.anrisoftware.prefdialog.panel
 import static com.anrisoftware.globalpom.utils.TestUtils.*
 import static com.anrisoftware.prefdialog.panel.PreferencesPanelBean.*
 
-import java.awt.Container
-
-import javax.swing.JPanel
-
 import org.fest.swing.fixture.FrameFixture
 import org.junit.Before
 import org.junit.BeforeClass
@@ -49,7 +45,8 @@ class PreferencesPanelTest {
 	void "panel with child"() {
 		def title = "$NAME :: panel with child"
 		def fieldName = CHILD
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
 			fixture.checkBox fieldName requireNotSelected()
@@ -66,7 +63,8 @@ class PreferencesPanelTest {
 	void "manually"() {
 		def title = "$NAME :: manually"
 		def fieldName = CHILD
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 		new TestFrameUtil(title, container).withFixture({
 			Thread.sleep 60 * 1000l
 			assert false : "Deactivate manually test"
@@ -81,8 +79,6 @@ class PreferencesPanelTest {
 
 	PreferencesPanelBean bean
 
-	Container container
-
 	@BeforeClass
 	static void setupFactories() {
 		TestUtils.toStringStyle
@@ -94,6 +90,5 @@ class PreferencesPanelTest {
 	@Before
 	void setupBean() {
 		bean = new PreferencesPanelBean()
-		container = new JPanel()
 	}
 }

@@ -18,6 +18,7 @@
  */
 package com.anrisoftware.prefdialog.panel;
 
+import java.awt.Component;
 import java.lang.annotation.Annotation;
 import java.util.ServiceLoader;
 
@@ -29,12 +30,12 @@ import com.anrisoftware.globalpom.reflection.annotations.AnnotationDiscovery;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationDiscoveryFactory;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationFilter;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationSetFilterFactory;
+import com.anrisoftware.prefdialog.annotations.Child;
 import com.anrisoftware.prefdialog.annotations.FieldAnnotation;
-import com.anrisoftware.prefdialog.annotations.FieldComponent;
 import com.anrisoftware.prefdialog.core.AbstractFieldComponent;
+import com.anrisoftware.prefdialog.fields.FieldComponent;
 import com.anrisoftware.prefdialog.fields.FieldService;
 import com.google.inject.assistedinject.Assisted;
-import com.google.inject.assistedinject.AssistedInject;
 
 /**
  * Panel that collects input fields from annotated bean.
@@ -51,15 +52,15 @@ public class PreferencesPanel extends AbstractFieldComponent<JPanel> {
 
 	private transient AnnotationDiscoveryFactory discoveryFactory;
 
-	private transient AnnotationSetFilterFactory filterFactory;
+	private AnnotationFilter filter;
 
 	/**
-	 * @see PreferencesPanelFactory#create(JPanel, Object, String)
+	 * @see PreferencesPanelFactory#create(Object, String)
 	 */
-	@AssistedInject
-	PreferencesPanel(PreferencesPanelLogger logger, @Assisted JPanel container,
+	@Inject
+	PreferencesPanel(PreferencesPanelLogger logger,
 			@Assisted Object parentObject, @Assisted String fieldName) {
-		super(container, parentObject, fieldName);
+		super(new JPanel(), parentObject, fieldName);
 		this.log = logger;
 	}
 
@@ -69,20 +70,28 @@ public class PreferencesPanel extends AbstractFieldComponent<JPanel> {
 			AnnotationSetFilterFactory filterFactory) {
 		this.loader = loader;
 		this.discoveryFactory = discoveryFactory;
-		this.filterFactory = filterFactory;
-		discoverFields();
+		this.filter = filterFactory
+				.create(com.anrisoftware.prefdialog.annotations.FieldComponent.class);
+		discoverFields(this, getParentObject());
 	}
 
-	private void discoverFields() {
-		AnnotationFilter filter = filterFactory.create(FieldComponent.class);
-		AnnotationDiscovery discovery = discoveryFactory.create(
-				getParentObject(), filter);
+	private void discoverFields(
+			FieldComponent<? extends Component> parentField, Object parentObject) {
+		AnnotationDiscovery discovery = createAnnotationDiscovery(parentObject);
 		for (AnnotationBean bean : discovery.call()) {
 			FieldService service = findService(bean);
-			String fieldName;
-			service.getFactory()
-					.create(component, getParentObject(), fieldName);
+			String fieldName = bean.getField().getName();
+			FieldComponent<? extends Component> field = service.getFactory()
+					.create(parentObject, fieldName);
+			parentField.addField(field);
+			if (service.getInfo().getAnnotationType().equals(Child.class)) {
+				discoverFields(field, bean.getValue());
+			}
 		}
+	}
+
+	private AnnotationDiscovery createAnnotationDiscovery(Object parentObject) {
+		return discoveryFactory.create(parentObject, filter);
 	}
 
 	private FieldService findService(AnnotationBean bean) {
