@@ -18,8 +18,6 @@
  */
 package com.anrisoftware.prefdialog.fields.combobox;
 
-import java.awt.Container;
-
 import javax.swing.JComboBox;
 
 import com.anrisoftware.prefdialog.fields.FieldFactory;
@@ -31,18 +29,6 @@ import com.anrisoftware.prefdialog.fields.FieldFactory;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-public interface ComboBoxFieldFactory extends FieldFactory<Container> {
+public interface ComboBoxFieldFactory extends FieldFactory<JComboBox<?>> {
 
-	/**
-	 * Sets the check box component for the field.
-	 * 
-	 * @param comboBox
-	 *            the {@link JComboBox} component.
-	 * 
-	 * @return the {@link ComboBoxField}
-	 * 
-	 * @see FieldFactory#create(java.awt.Component, Object, String)
-	 */
-	ComboBoxField create(JComboBox<?> comboBox, Container container,
-			Object parentObject, String fieldName);
 }

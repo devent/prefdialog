@@ -20,10 +20,7 @@ package com.anrisoftware.prefdialog.fields.combobox
 
 import static com.anrisoftware.prefdialog.fields.combobox.ComboBoxBean.*
 
-import java.awt.Container
 import java.awt.event.KeyEvent
-
-import javax.swing.JPanel
 
 import org.fest.swing.fixture.FrameFixture
 import org.junit.Before
@@ -49,7 +46,8 @@ class ComboBoxTest extends FieldTestUtils {
 	void "array elements with null value"() {
 		def title = "ComboBoxTest :: array elements with null value"
 		def fieldName = ARRAY_ELEMENTS
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
 			fixture.comboBox fieldName requireSelection "One"
@@ -64,7 +62,8 @@ class ComboBoxTest extends FieldTestUtils {
 	void "restore input"() {
 		def title = "ComboBoxTest :: restore input"
 		def fieldName = ARRAY_ELEMENTS
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
 			fixture.comboBox fieldName selectItem 0
@@ -79,7 +78,8 @@ class ComboBoxTest extends FieldTestUtils {
 	void "array elements with second value selected"() {
 		def title = "ComboBoxTest :: array elements with second value selected"
 		def fieldName = ARRAY_ELEMENTS_SECOND
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
 			fixture.comboBox fieldName requireSelection "Two"
@@ -90,7 +90,8 @@ class ComboBoxTest extends FieldTestUtils {
 	void "list elements with null value"() {
 		def title = "ComboBoxTest :: list elements with null value"
 		def fieldName = LIST_ELEMENTS
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
 			fixture.comboBox fieldName requireSelection "One"
@@ -105,7 +106,8 @@ class ComboBoxTest extends FieldTestUtils {
 	void "custom model field"() {
 		def title = "ComboBoxTest :: custom model field"
 		def fieldName = CUSTOM_MODEL_FIELD
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
 			fixture.comboBox fieldName requireSelection "Eins"
@@ -120,7 +122,8 @@ class ComboBoxTest extends FieldTestUtils {
 	void "custom model field null"() {
 		def title = "ComboBoxTest :: custom model field null"
 		def fieldName = CUSTOM_MODEL_FIELD_NULL
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 
 		assert bean.modelFieldNull != null
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
@@ -136,7 +139,8 @@ class ComboBoxTest extends FieldTestUtils {
 	void "custom renderer field"() {
 		def title = "ComboBoxTest :: custom renderer field"
 		def fieldName = CUSTOM_RENDERER_FIELD
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
 			fixture.comboBox fieldName requireSelection "ONE"
@@ -153,7 +157,8 @@ class ComboBoxTest extends FieldTestUtils {
 	void "custom renderer field null"() {
 		def title = "ComboBoxTest :: custom renderer field null"
 		def fieldName = CUSTOM_RENDERER_FIELD_NULL
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 
 		assert bean.rendererFieldNull != null
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
@@ -171,7 +176,8 @@ class ComboBoxTest extends FieldTestUtils {
 	void "custom model class"() {
 		def title = "ComboBoxTest :: custom model class"
 		def fieldName = CUSTOM_MODEL_CLASS
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
 			fixture.comboBox fieldName requireSelection "Eins"
@@ -186,7 +192,8 @@ class ComboBoxTest extends FieldTestUtils {
 	void "custom renderer class"() {
 		def title = "ComboBoxTest :: custom renderer class"
 		def fieldName = CUSTOM_RENDERER_CLASS
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
 			fixture.comboBox fieldName requireSelection "ONE"
@@ -203,7 +210,8 @@ class ComboBoxTest extends FieldTestUtils {
 	void "editable"() {
 		def title = "ComboBoxTest :: editable"
 		def fieldName = EDITABLE
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 		def text = "Zwei"
 
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
@@ -220,8 +228,6 @@ class ComboBoxTest extends FieldTestUtils {
 
 	ComboBoxBean bean
 
-	Container container
-
 	@BeforeClass
 	static void setupFactories() {
 		injector = Guice.createInjector(
@@ -232,6 +238,5 @@ class ComboBoxTest extends FieldTestUtils {
 	@Before
 	void setupBean() {
 		bean = new ComboBoxBean()
-		container = new JPanel()
 	}
 }

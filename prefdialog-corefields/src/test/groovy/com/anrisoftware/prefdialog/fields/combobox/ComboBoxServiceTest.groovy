@@ -23,10 +23,6 @@ import static com.anrisoftware.prefdialog.core.FieldTestUtils.*
 import static com.anrisoftware.prefdialog.fields.combobox.ComboBoxBean.*
 import static com.anrisoftware.prefdialog.fields.combobox.ComboBoxService.*
 
-import java.awt.Container
-
-import javax.swing.JPanel
-
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
@@ -49,7 +45,8 @@ class ComboBoxServiceTest {
 	void "with defaults"() {
 		def title = "ComboBoxServiceTest :: with defaults"
 		def fieldName = ARRAY_ELEMENTS
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 		new TestFrameUtil(title, container).withFixture({})
 	}
 
@@ -58,8 +55,6 @@ class ComboBoxServiceTest {
 	static ComboBoxFieldFactory factory
 
 	ComboBoxBean bean
-
-	Container container
 
 	@BeforeClass
 	static void setupFactories() {
@@ -70,6 +65,5 @@ class ComboBoxServiceTest {
 	@Before
 	void setupBean() {
 		bean = new ComboBoxBean()
-		container = new JPanel()
 	}
 }

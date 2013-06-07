@@ -18,7 +18,7 @@
  */
 package com.anrisoftware.prefdialog.fields.combobox;
 
-import java.awt.Container;
+import javax.swing.JComboBox;
 
 import com.anrisoftware.prefdialog.fields.FieldComponent;
 import com.anrisoftware.prefdialog.fields.FieldFactory;
@@ -37,7 +37,7 @@ class ComboBoxModule extends AbstractModule {
 	@Override
 	protected void configure() {
 		install(new FactoryModuleBuilder().implement(
-				new TypeLiteral<FieldComponent<Container>>() {
+				new TypeLiteral<FieldComponent<JComboBox<?>>>() {
 				}, ComboBoxField.class).build(ComboBoxFieldFactory.class));
 		bind(FieldFactory.class).to(ComboBoxFieldFactory.class);
 	}
