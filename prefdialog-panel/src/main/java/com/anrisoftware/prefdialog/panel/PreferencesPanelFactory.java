@@ -18,43 +18,17 @@
  */
 package com.anrisoftware.prefdialog.panel;
 
-import java.lang.reflect.Field;
+import javax.swing.JPanel;
 
-import com.anrisoftware.prefdialog.swingutils.AbstractSwingLogger;
+import com.anrisoftware.prefdialog.fields.FieldFactory;
 
 /**
- * Logging messages for {@link ChildFieldWorker}.
+ * Factory to create a new check box field. A check box field can only be
+ * checked or unchecked.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 2.1
+ * @since 3.0
  */
-class ChildFieldWorkerLogger extends AbstractSwingLogger {
-
-	/**
-	 * Creates a new logger for {@link ChildFieldWorker}.
-	 */
-	ChildFieldWorkerLogger() {
-		super(ChildFieldWorker.class);
-	}
-
-	void fieldHandlerAdded(Object fieldHandler) {
-		log.debug("Add new field handler {}.", fieldHandler);
-	}
-
-	void discoveredChildAnnotationForPanel(String panelName, Object value) {
-		log.debug(
-				"Discovered child annotation for the panel ``{}'' in ``{}''.",
-				panelName, value);
-	}
-
-	void creatingNewChild(Field field, Object value) {
-		log.debug(
-				"Creating a new child field handler for the field {} with the value ``{}''.",
-				field, value);
-	}
-
-	void setupNewGroup(Object handler) {
-		log.debug("Setup new group field handler {}.", handler);
-	}
+public interface PreferencesPanelFactory extends FieldFactory<JPanel> {
 
 }
