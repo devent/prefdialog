@@ -39,6 +39,9 @@ public class ClassTask<ClassType> implements Builder<ClassType> {
 
 	private Object parent;
 
+	/**
+	 * @see ClassTaskFactory#create(String, Class, AccessibleObject)
+	 */
 	@Inject
 	ClassTask(AnnotationAccessFactory annotationAccessFactory,
 			BeanAccessFactory beanAccessFactory, BeanFactory beanFactory,
