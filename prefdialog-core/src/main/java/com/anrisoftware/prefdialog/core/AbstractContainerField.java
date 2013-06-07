@@ -67,7 +67,7 @@ public abstract class AbstractContainerField<ComponentType extends Component, Co
 	 */
 	public static final String CONTAINER_NAME = "container";
 
-	private final ComponentType component;
+	private ComponentType component;
 
 	private LayoutManager layout;
 
@@ -102,24 +102,6 @@ public abstract class AbstractContainerField<ComponentType extends Component, Co
 		Container container = getContainer();
 		container.setLayout(layout);
 		container.add(component, "0, 0");
-	}
-
-	/**
-	 * Returns the container.
-	 * 
-	 * @return the {@link Container} container.
-	 */
-	public ContainerType getContainer() {
-		return getComponent();
-	}
-
-	/**
-	 * Returns the component in this container.
-	 * 
-	 * @return the {@link Component}.
-	 */
-	public ComponentType getContainerComponent() {
-		return component;
 	}
 
 	/**
@@ -187,6 +169,59 @@ public abstract class AbstractContainerField<ComponentType extends Component, Co
 	public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
 		component.setEnabled(enabled);
+	}
+
+	@Override
+	public void setComponent(ContainerType component) {
+		super.setComponent(component);
+		Container container = getContainer();
+		container.setLayout(layout);
+		container.add(component, "0, 0");
+	}
+
+	/**
+	 * Sets the container.
+	 * 
+	 * @param container
+	 *            the {@link Container}.
+	 */
+	public void setContainer(ContainerType container) {
+		setComponent(container);
+	}
+
+	/**
+	 * Returns the container.
+	 * 
+	 * @return the {@link Container} container.
+	 */
+	public ContainerType getContainer() {
+		return getComponent();
+	}
+
+	/**
+	 * Returns the component in this container.
+	 * 
+	 * @return the {@link Component}.
+	 */
+	public void setContainerComponent(ComponentType component) {
+		ComponentType old = this.component;
+		Container container = getContainer();
+		if (old != null) {
+			container.remove(component);
+		}
+		this.component = component;
+		container.add(component, "0, 0");
+		setName(getName());
+		setEnabled(isEnabled());
+	}
+
+	/**
+	 * Returns the component in this container.
+	 * 
+	 * @return the {@link Component}.
+	 */
+	public ComponentType getContainerComponent() {
+		return component;
 	}
 
 }

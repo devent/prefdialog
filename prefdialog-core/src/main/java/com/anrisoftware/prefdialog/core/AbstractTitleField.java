@@ -58,6 +58,8 @@ public abstract class AbstractTitleField<ComponentType extends Component, Contai
 
 	private final JLabel titleLabel;
 
+	private final TableLayout layout;
+
 	/**
 	 * @see AbstractContainerField#AbstractContainerField(Component, Container,
 	 *      Object, String)
@@ -66,6 +68,7 @@ public abstract class AbstractTitleField<ComponentType extends Component, Contai
 			ContainerType container, Object parentObject, String fieldName) {
 		super(component, container, parentObject, fieldName);
 		this.titleLabel = new JLabel("(title):");
+		this.layout = createLayout();
 		setup();
 	}
 
@@ -77,7 +80,7 @@ public abstract class AbstractTitleField<ComponentType extends Component, Contai
 	private void setupContainer() {
 		Container container = getContainer();
 		container.removeAll();
-		container.setLayout(createLayout());
+		container.setLayout(layout);
 		container.add(titleLabel, "0, 0");
 		container.add(getContainerComponent(), "0, 1");
 	}
@@ -197,5 +200,24 @@ public abstract class AbstractTitleField<ComponentType extends Component, Contai
 	 */
 	public JLabel getTitleLabel() {
 		return titleLabel;
+	}
+
+	@Override
+	public void setContainer(ContainerType container) {
+		super.setContainer(container);
+		container.removeAll();
+		container.setLayout(layout);
+		container.add(titleLabel, "0, 0");
+		container.add(getContainerComponent(), "0, 1");
+	}
+
+	@Override
+	public void setContainerComponent(ComponentType component) {
+		super.setContainerComponent(component);
+		ContainerType container = getContainer();
+		container.removeAll();
+		container.setLayout(layout);
+		container.add(titleLabel, "0, 0");
+		container.add(getContainerComponent(), "0, 1");
 	}
 }

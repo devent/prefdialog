@@ -109,7 +109,7 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
 	private final List<FieldComponent<?>> childFields;
 
-	private final ComponentType component;
+	private ComponentType component;
 
 	private String titleResource;
 
@@ -647,6 +647,16 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 		setValue(oldValue);
 		this.value = oldValue;
 		log.restoredInput(this);
+	}
+
+	@Override
+	public void setComponent(ComponentType component) {
+		log.checkComponent(this, component);
+		this.component = component;
+		setName(name);
+		setupToolTipText();
+		setEnabled(!readOnly);
+		setLocale(locale);
 	}
 
 	@Override
