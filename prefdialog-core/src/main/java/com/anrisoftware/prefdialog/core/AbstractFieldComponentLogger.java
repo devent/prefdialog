@@ -41,6 +41,31 @@ import com.anrisoftware.resources.texts.api.Texts;
  */
 class AbstractFieldComponentLogger extends AbstractLogger {
 
+	private static final String ERROR_SETUP_VALUE_MESSAGE = "Error setup value '%s' for %s.";
+	private static final String ERROR_SETUP_VALUE = "Error setup value";
+	private static final String ICON_SET = "Icon {} set for {}.";
+	private static final String ICON_RESOURCE_SET = "Icon resource '{}' set for {}.";
+	private static final String ICON_SIZE_SET = "Icon size {} set for {}.";
+	private static final String TITLE_POSITION_SET = "Title position {} set for {}.";
+	private static final String LOCALE_SET = "Locale {} set for {}.";
+	private static final String LOCALE_NULL = "Locale cannot be null.";
+	private static final String IMAGES_RESOURCE_NULL = "Images resource cannot be null.";
+	private static final String TEXTS_RESOURCE_NULL = "Texts resource cannot be null.";
+	private static final String NO_TOOL_TIP_RESOURCE = "No tool-tip resource '{}' found for {}.";
+	private static final String NO_TITLE_RESOURCE = "No title resource '{}' found for {}.";
+	private static final String WIDTH_NULL = "Width cannot be null.";
+	private static final String FIELD_NULL = "Field cannot be null.";
+	private static final String NAME_NULL = "Name cannot be null.";
+	private static final String NO_CHILD = "No child '%s' found for %s.";
+	private static final String RESTORED_INPUT = "Restored input for {}.";
+	private static final String SHOW_TOOL_TIP_SET = "Show tool-tip {} set for {}.";
+	private static final String WIDTH_SET = "Width {} set for {}.";
+	private static final String ENABLED_SET = "Enabled {} set for {}.";
+	private static final String VALUE_SET = "Value {} set for {}.";
+	private static final String SHOW_TITLE_SET = "Show title {} set for {}.";
+	private static final String TITLE_SET = "Title '{}' set for {}.";
+	private static final String NAME_SET = "Name '{}' set for {}.";
+
 	/**
 	 * Creates logger for {@link AbstractFieldComponent}.
 	 */
@@ -49,108 +74,100 @@ class AbstractFieldComponentLogger extends AbstractLogger {
 	}
 
 	void nameSet(AbstractFieldComponent<?> field, String name) {
-		log.debug("Set name to ``{}'' for field {}.", name, field);
+		log.debug(NAME_SET, name, field);
 	}
 
 	void titleSet(AbstractFieldComponent<?> field, String title) {
-		log.debug("Set title to ``{}'' for field {}.", title, field);
+		log.debug(TITLE_SET, title, field);
 	}
 
 	void showTitleSet(AbstractFieldComponent<?> field, boolean show) {
-		log.debug("Set show title to {} for field {}.", show, field);
+		log.debug(SHOW_TITLE_SET, show, field);
 	}
 
 	void valueSet(AbstractFieldComponent<?> field, Object value) {
-		log.debug("Set value to {} for field {}.", value, field);
+		log.debug(VALUE_SET, value, field);
 	}
 
 	void enabledSet(AbstractFieldComponent<?> field, boolean enabled) {
-		log.debug("Set enabled to {} for field {}.", enabled, field);
+		log.debug(ENABLED_SET, enabled, field);
 	}
 
 	void widthSet(AbstractFieldComponent<?> field, Number width) {
-		log.debug("Set width to {} for field {}.", width, field);
+		log.debug(WIDTH_SET, width, field);
 	}
 
 	void showToolTipSet(AbstractFieldComponent<?> field, boolean show) {
-		log.debug("Set show tool-tip to {} for {}.", show, field);
+		log.debug(SHOW_TOOL_TIP_SET, show, field);
 	}
 
 	void restoredInput(AbstractFieldComponent<?> field) {
-		log.debug("Restored input for {}.", field);
+		log.debug(RESTORED_INPUT, field);
 	}
 
 	NullPointerException noChildFieldFound(AbstractFieldComponent<?> field,
 			String name) {
-		NullPointerException ex = new NullPointerException(format(
-				"No child field with the name ``%s'' found in the field %s.",
-				name, field));
-		return ex;
+		return logException(
+				new NullPointerException(format(NO_CHILD, name, field)),
+				NO_CHILD, name, field);
 	}
 
 	void checkName(AbstractFieldComponent<?> field, String name) {
-		notNull(name, "The name of the field %s cannot be null.", field);
+		notNull(name, NAME_NULL);
 	}
 
 	void checkField(AbstractFieldComponent<?> field,
 			FieldComponent<?> childField) {
-		notNull(childField, "The child field %s cannot be null.", field);
+		notNull(childField, FIELD_NULL);
 	}
 
 	void checkWidth(AbstractFieldComponent<?> field, Number width) {
-		notNull(width, "The width of the field %s cannot be null.", field);
+		notNull(width, WIDTH_NULL);
 	}
 
 	void titleResourceMissing(AbstractFieldComponent<?> field, String title) {
-		log.warn(
-				"Could not find the title resource ``{}'' using it as the literal title for field {}.",
-				title, field);
+		log.warn(NO_TITLE_RESOURCE, title, field);
 	}
 
 	void toolTipResourceMissing(AbstractFieldComponent<?> field, String text) {
-		log.warn(
-				"Could not find the tool-tip resource ``{}'' using it as the literal tool-tip for field {}.",
-				text, field);
+		log.warn(NO_TOOL_TIP_RESOURCE, text, field);
 	}
 
 	void checkTextsResource(AbstractFieldComponent<?> field, Texts texts) {
-		notNull(texts, "The texts resource for the field %s cannot be null.",
-				field);
+		notNull(texts, TEXTS_RESOURCE_NULL);
 	}
 
 	void checkImagesResource(AbstractFieldComponent<?> field, Images images) {
-		notNull(images, "The images resource for the field %s cannot be null.",
-				field);
+		notNull(images, IMAGES_RESOURCE_NULL);
 	}
 
 	void checkLocale(AbstractFieldComponent<?> field, Locale locale) {
-		notNull(locale, "The locale for the field %s cannot be null.", field);
+		notNull(locale, LOCALE_NULL);
 	}
 
 	void localeSet(AbstractFieldComponent<?> field, Locale locale) {
-		log.debug("Set locale to {} for field {}.", locale, field);
+		log.debug(LOCALE_SET, locale, field);
 	}
 
 	void titlePositionSet(AbstractFieldComponent<?> field, TextPosition position) {
-		log.debug("Set title position to {} for field {}.", position, field);
+		log.debug(TITLE_POSITION_SET, position, field);
 	}
 
 	void iconSizeSet(AbstractFieldComponent<?> field, IconSize size) {
-		log.debug("Set icon size to {} for field {}.", size, field);
+		log.debug(ICON_SIZE_SET, size, field);
 	}
 
 	void iconResourceSet(AbstractFieldComponent<?> field, String name) {
-		log.debug("Set icon resource to ``{}'' for field {}.", name, field);
+		log.debug(ICON_RESOURCE_SET, name, field);
 	}
 
 	void iconSet(AbstractFieldComponent<?> field, Icon icon) {
-		log.debug("Set icon {} for field {}.", icon, field);
+		log.debug(ICON_SET, icon, field);
 	}
 
 	IllegalArgumentException errorSetupValue(AbstractFieldComponent<?> field,
 			PropertyVetoException e, Object value) {
-		return logException(
-				new IllegalArgumentException("Error setup value", e),
-				"Error setup value '%s' for %s.", value, field);
+		return logException(new IllegalArgumentException(ERROR_SETUP_VALUE, e),
+				ERROR_SETUP_VALUE_MESSAGE, value, field);
 	}
 }
