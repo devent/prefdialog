@@ -18,6 +18,7 @@
  */
 package com.anrisoftware.prefdialog.panel;
 
+import java.lang.annotation.Annotation;
 import java.util.ServiceLoader;
 
 import javax.inject.Inject;
@@ -28,6 +29,7 @@ import com.anrisoftware.globalpom.reflection.annotations.AnnotationDiscovery;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationDiscoveryFactory;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationFilter;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationSetFilterFactory;
+import com.anrisoftware.prefdialog.annotations.FieldAnnotation;
 import com.anrisoftware.prefdialog.annotations.FieldComponent;
 import com.anrisoftware.prefdialog.core.AbstractFieldComponent;
 import com.anrisoftware.prefdialog.fields.FieldService;
@@ -76,8 +78,31 @@ public class PreferencesPanel extends AbstractFieldComponent<JPanel> {
 		AnnotationDiscovery discovery = discoveryFactory.create(
 				getParentObject(), filter);
 		for (AnnotationBean bean : discovery.call()) {
-			System.out.println(bean);// TODO println
+			FieldService service = findService(bean);
+			String fieldName;
+			service.getFactory()
+					.create(component, getParentObject(), fieldName);
 		}
+	}
+
+	private FieldService findService(AnnotationBean bean) {
+		Annotation fieldAnnotation = findFieldAnnotation(bean);
+		for (FieldService service : loader) {
+			if (service.getInfo().getAnnotationType()
+					.equals(fieldAnnotation.annotationType())) {
+				return service;
+			}
+		}
+		throw log.noFieldServiceFound(this, bean);
+	}
+
+	private Annotation findFieldAnnotation(AnnotationBean bean) {
+		for (Annotation a : bean.getMember().getAnnotations()) {
+			if (a.annotationType().isAnnotationPresent(FieldAnnotation.class)) {
+				return a;
+			}
+		}
+		throw log.noFieldAnnotationFound(this, bean);
 	}
 
 }

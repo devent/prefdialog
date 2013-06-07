@@ -18,9 +18,9 @@
  */
 package com.anrisoftware.prefdialog.panel;
 
-import static org.apache.commons.lang3.Validate.isInstanceOf;
-
 import com.anrisoftware.globalpom.log.AbstractLogger;
+import com.anrisoftware.globalpom.reflection.annotations.AnnotationBean;
+import com.anrisoftware.globalpom.reflection.exceptions.ReflectionError;
 
 /**
  * Logging messages for {@link PreferencesPanel}.
@@ -30,11 +30,12 @@ import com.anrisoftware.globalpom.log.AbstractLogger;
  */
 class PreferencesPanelLogger extends AbstractLogger {
 
-	private static final String SET_SHOW_TEXT = "Set show text {} to field {}.";
-
-	private static final String SET_TEXT = "Set text '{}' to field {}.";
-
-	private static final String VALUE_NOT_BOOLEAN = "Value '%s' is not boolean value for %s.";
+	private static final String BEAN = "bean";
+	private static final String PANEL = "panel";
+	private static final String NO_FIELD_ANNOTATION_MESSAGE = "No field annotation found in %s.";
+	private static final String NO_FIELD_ANNOTATION = "No field annotation found";
+	private static final String NO_SERVICE = "No field service found";
+	private static final String NO_SERVICE_MESSAGE = "No field service found for %s.";
 
 	/**
 	 * Creates logger for {@link PreferencesPanel}.
@@ -43,15 +44,17 @@ class PreferencesPanelLogger extends AbstractLogger {
 		super(PreferencesPanel.class);
 	}
 
-	void checkValue(PreferencesPanel field, Object value) {
-		isInstanceOf(Boolean.class, value, VALUE_NOT_BOOLEAN, value, field);
+	ReflectionError noFieldAnnotationFound(PreferencesPanel panel,
+			AnnotationBean bean) {
+		return logException(new ReflectionError(NO_FIELD_ANNOTATION)
+				.addContextValue(PANEL, panel).addContextValue(BEAN, bean),
+				NO_FIELD_ANNOTATION_MESSAGE, bean);
 	}
 
-	void textSet(PreferencesPanel field, String text) {
-		log.debug(SET_TEXT, text, field);
-	}
-
-	void showTextSet(PreferencesPanel field, boolean show) {
-		log.debug(SET_SHOW_TEXT, show, field);
+	ReflectionError noFieldServiceFound(PreferencesPanel panel,
+			AnnotationBean bean) {
+		return logException(
+				new ReflectionError(NO_SERVICE).addContextValue(PANEL, panel)
+						.addContextValue(BEAN, bean), NO_SERVICE_MESSAGE, bean);
 	}
 }

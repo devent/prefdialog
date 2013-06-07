@@ -29,13 +29,14 @@
 			<artifactId>globalpom-groovytestutils</artifactId>
 			<scope>test</scope>
 		</dependency>
-
-		<!-- own modules dependencies -->
 		<dependency>
 			<groupId>com.anrisoftware.prefdialog</groupId>
 			<artifactId>prefdialog-corefields</artifactId>
 			<version>3.0-SNAPSHOT</version>
+			<scope>test</scope>
 		</dependency>
+
+		<!-- own modules dependencies -->
 		<dependency>
 			<groupId>com.anrisoftware.prefdialog</groupId>
 			<artifactId>prefdialog-api</artifactId>
