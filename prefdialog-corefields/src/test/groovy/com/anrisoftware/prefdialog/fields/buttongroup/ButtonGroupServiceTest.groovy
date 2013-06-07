@@ -49,8 +49,8 @@ class ButtonGroupServiceTest {
 	void "with defaults"() {
 		def title = "ButtonGroupServiceTest :: with defaults"
 		def fieldName = BUTTONS
-		def field = factory.create(container, bean, fieldName)
-		new TestFrameUtil(title, container).withFixture({})
+		def field = factory.create(bean, fieldName)
+		new TestFrameUtil(title, field.AWTComponent).withFixture({})
 	}
 
 	static Injector injector

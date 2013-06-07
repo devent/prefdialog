@@ -27,7 +27,7 @@ import com.google.inject.assistedinject.Assisted;
  * @since 3.0
  */
 @SuppressWarnings("serial")
-public class ButtonGroupField extends AbstractTitleField<Container, Container> {
+public class ButtonGroupField extends AbstractTitleField<Container> {
 
 	private static final String HORIZONTAL_ALIGNMENT_ELEMENT = "horizontalAlignment";
 
@@ -42,14 +42,14 @@ public class ButtonGroupField extends AbstractTitleField<Container, Container> {
 	private AnnotationAccess fieldAnnotation;
 
 	/**
-	 * @see ButtonGroupFieldFactory#create(java.awt.Component, Object, String)
+	 * @see ButtonGroupFieldFactory#create(Object, String)
 	 */
 	@Inject
 	ButtonGroupField(ButtonGroupFieldLogger logger,
 			ButtonsGroupPanel buttonsGroupPanel,
-			ButtonsRowPanel buttonsRowPanel, @Assisted Container container,
-			@Assisted Object parentObject, @Assisted String fieldName) {
-		super(buttonsGroupPanel, container, parentObject, fieldName);
+			ButtonsRowPanel buttonsRowPanel, @Assisted Object parentObject,
+			@Assisted String fieldName) {
+		super(buttonsGroupPanel, parentObject, fieldName);
 		this.log = logger;
 		this.buttonsGroupPanel = buttonsGroupPanel;
 		this.buttonsRowPanel = buttonsRowPanel;

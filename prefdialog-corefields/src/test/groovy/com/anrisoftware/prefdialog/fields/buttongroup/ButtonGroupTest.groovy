@@ -23,10 +23,6 @@ import static com.anrisoftware.prefdialog.core.FieldTestUtils.*
 import static com.anrisoftware.prefdialog.fields.buttongroup.ButtonGroupBean.*
 import static com.anrisoftware.prefdialog.fields.buttongroup.ButtonGroupService.*
 
-import java.awt.Container
-
-import javax.swing.JPanel
-
 import org.fest.swing.fixture.FrameFixture
 import org.junit.Before
 import org.junit.BeforeClass
@@ -55,7 +51,8 @@ class ButtonGroupTest {
 			"$fieldName-0-$BUTTON_NAME",
 			"$fieldName-1-$BUTTON_NAME"
 		]
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
 			fixture.label titleName requireText "$fieldName:"
 		}, { FrameFixture fixture ->
@@ -75,7 +72,8 @@ class ButtonGroupTest {
 			"$fieldName-0-$BUTTON_NAME",
 			"$fieldName-1-$BUTTON_NAME"
 		]
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 		new TestFrameUtil(title, container).withFixture({FrameFixture fixture ->
 			fixture.button buttons[0] click()
 			assert bean.button1Called == true
@@ -93,7 +91,8 @@ class ButtonGroupTest {
 			"$fieldName-0-$BUTTON_NAME",
 			"$fieldName-1-$BUTTON_NAME"
 		]
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 		new TestFrameUtil(title, container).withFixture({FrameFixture fixture ->
 			fixture.button buttons[0] click()
 			assert bean.button1Called == true
@@ -111,7 +110,8 @@ class ButtonGroupTest {
 			"$fieldName-0-$BUTTON_NAME",
 			"$fieldName-1-$BUTTON_NAME"
 		]
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 		new TestFrameUtil(title, container).withFixture({FrameFixture fixture ->
 			fixture.button buttons[0] click()
 			assert bean.button1Called == true
@@ -127,8 +127,6 @@ class ButtonGroupTest {
 
 	ButtonGroupBean bean
 
-	Container container
-
 	@BeforeClass
 	static void setupFactories() {
 		injector = Guice.createInjector(
@@ -139,6 +137,5 @@ class ButtonGroupTest {
 	@Before
 	void setupBean() {
 		bean = new ButtonGroupBean()
-		container = new JPanel()
 	}
 }
