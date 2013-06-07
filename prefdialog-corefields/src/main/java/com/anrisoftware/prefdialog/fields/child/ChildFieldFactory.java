@@ -18,8 +18,6 @@
  */
 package com.anrisoftware.prefdialog.fields.child;
 
-import java.awt.Container;
-
 import javax.swing.JPanel;
 
 import com.anrisoftware.prefdialog.fields.FieldFactory;
@@ -31,18 +29,6 @@ import com.anrisoftware.prefdialog.fields.FieldFactory;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-public interface ChildFieldFactory extends FieldFactory<Container> {
+public interface ChildFieldFactory extends FieldFactory<JPanel> {
 
-	/**
-	 * Sets the panel component for the field.
-	 * 
-	 * @param panel
-	 *            the {@link JPanel} component.
-	 * 
-	 * @return the {@link ChildField}
-	 * 
-	 * @see FieldFactory#create(java.awt.Component, Object, String)
-	 */
-	ChildField create(JPanel panel, Container container, Object parentObject,
-			String fieldName);
 }

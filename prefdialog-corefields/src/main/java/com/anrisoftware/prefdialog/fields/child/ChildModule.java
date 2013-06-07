@@ -18,7 +18,7 @@
  */
 package com.anrisoftware.prefdialog.fields.child;
 
-import java.awt.Container;
+import javax.swing.JPanel;
 
 import com.anrisoftware.prefdialog.fields.FieldComponent;
 import com.anrisoftware.prefdialog.fields.FieldFactory;
@@ -37,7 +37,7 @@ class ChildModule extends AbstractModule {
 	@Override
 	protected void configure() {
 		install(new FactoryModuleBuilder().implement(
-				new TypeLiteral<FieldComponent<Container>>() {
+				new TypeLiteral<FieldComponent<JPanel>>() {
 				}, ChildField.class).build(ChildFieldFactory.class));
 		bind(FieldFactory.class).to(ChildFieldFactory.class);
 	}

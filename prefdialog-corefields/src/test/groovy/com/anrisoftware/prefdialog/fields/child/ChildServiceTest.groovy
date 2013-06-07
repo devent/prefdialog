@@ -23,10 +23,6 @@ import static com.anrisoftware.prefdialog.core.FieldTestUtils.*
 import static com.anrisoftware.prefdialog.fields.child.ChildBean.*
 import static com.anrisoftware.prefdialog.fields.child.ChildService.*
 
-import java.awt.Container
-
-import javax.swing.JPanel
-
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
@@ -49,7 +45,8 @@ class ChildServiceTest {
 	void "with defaults"() {
 		def title = "ChildServiceTest :: with defaults"
 		def fieldName = NULL_VALUE
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 		new TestFrameUtil(title, container).withFixture({})
 	}
 
@@ -58,8 +55,6 @@ class ChildServiceTest {
 	static ChildFieldFactory factory
 
 	ChildBean bean
-
-	Container container
 
 	@BeforeClass
 	static void setupFactories() {
@@ -70,6 +65,5 @@ class ChildServiceTest {
 	@Before
 	void setupBean() {
 		bean = new ChildBean()
-		container = new JPanel()
 	}
 }

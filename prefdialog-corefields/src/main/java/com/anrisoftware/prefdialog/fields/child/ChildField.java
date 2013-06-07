@@ -47,11 +47,9 @@ import com.google.inject.assistedinject.AssistedInject;
  * @since 3.0
  */
 @SuppressWarnings("serial")
-public class ChildField extends AbstractTitleField<JPanel, Container> {
+public class ChildField extends AbstractTitleField<JPanel> {
 
 	private final ChildFieldLogger log;
-
-	private final JPanel panel;
 
 	private final TableLayout layout;
 
@@ -64,25 +62,14 @@ public class ChildField extends AbstractTitleField<JPanel, Container> {
 	private boolean titleSeparatorShow;
 
 	/**
-	 * @see ChildFieldFactory#create(Container, Object, String)
+	 * @see ChildFieldFactory#create(Object, String)
 	 */
 	@AssistedInject
-	ChildField(ChildFieldLogger logger, @Assisted Container container,
-			@Assisted Object parentObject, @Assisted String fieldName) {
-		this(logger, new JPanel(), container, parentObject, fieldName);
-	}
-
-	/**
-	 * @see ChildFieldFactory#create(JPanel, Container, Object, String)
-	 */
-	@AssistedInject
-	ChildField(ChildFieldLogger logger, @Assisted JPanel panel,
-			@Assisted Container container, @Assisted Object parentObject,
+	ChildField(ChildFieldLogger logger, @Assisted Object parentObject,
 			@Assisted String fieldName) {
-		super(panel, container, parentObject, fieldName);
+		super(new JPanel(), parentObject, fieldName);
 		this.log = logger;
 		this.layout = createLayout();
-		this.panel = panel;
 		this.separator = new JSeparator(HORIZONTAL);
 		this.scrollPane = new JScrollPane();
 		this.titleSeparatorShow = true;
@@ -115,7 +102,7 @@ public class ChildField extends AbstractTitleField<JPanel, Container> {
 	}
 
 	private void setupScrollPane() {
-		scrollPane.setViewportView(panel);
+		scrollPane.setViewportView(getComponent());
 		scrollPane.setBorder(createEmptyBorder(0, 0, 0, 0));
 	}
 
@@ -127,6 +114,7 @@ public class ChildField extends AbstractTitleField<JPanel, Container> {
 	}
 
 	private void setupChildrenPanel() {
+		JPanel panel = getComponent();
 		double[] col = { FILL };
 		double[] row = {};
 		childrenPanelLayout = new TableLayout(col, row);
@@ -179,6 +167,7 @@ public class ChildField extends AbstractTitleField<JPanel, Container> {
 	}
 
 	private void addToChildrenPanel(FieldComponent<?> field) {
+		JPanel panel = getComponent();
 		int rows = childrenPanelLayout.getNumRow();
 		childrenPanelLayout.insertRow(rows, TableLayout.PREFERRED);
 		layout.layoutContainer(panel);

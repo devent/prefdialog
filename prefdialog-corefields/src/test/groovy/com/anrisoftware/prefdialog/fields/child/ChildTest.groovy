@@ -21,10 +21,6 @@ package com.anrisoftware.prefdialog.fields.child
 import static com.anrisoftware.prefdialog.fields.child.ChildBean.*
 import static com.anrisoftware.prefdialog.fields.child.ChildService.*
 
-import java.awt.Container
-
-import javax.swing.JPanel
-
 import org.fest.swing.fixture.FrameFixture
 import org.junit.Before
 import org.junit.BeforeClass
@@ -52,9 +48,10 @@ class ChildTest {
 		def fieldName = NULL_VALUE
 		def separatorName = "$fieldName-$TITLE_SEPARATOR_NAME"
 		def scrollName = "$fieldName-$CHILDREN_SCROLL_NAME"
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 		def checkBoxFieldName = CHECKBOX
-		def checkBox = checkBoxfactory.create(new JPanel(), bean.nullValue, checkBoxFieldName)
+		def checkBox = checkBoxfactory.create(bean.nullValue, checkBoxFieldName)
 
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
 			field.addField checkBox
@@ -70,9 +67,10 @@ class ChildTest {
 		def fieldName = NO_TITLE
 		def separatorName = "$fieldName-$TITLE_SEPARATOR_NAME"
 		def scrollName = "$fieldName-$CHILDREN_SCROLL_NAME"
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 		def checkBoxFieldName = CHECKBOX
-		def checkBox = checkBoxfactory.create(new JPanel(), bean.noTitle, checkBoxFieldName)
+		def checkBox = checkBoxfactory.create(bean.noTitle, checkBoxFieldName)
 
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
 			field.addField checkBox
@@ -86,7 +84,8 @@ class ChildTest {
 	void "manually"() {
 		def title = "ChildTest :: manually"
 		def fieldName = NULL_VALUE
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
 			Thread.sleep 60*1000
 			assert false : "Deactivate manually test."
@@ -100,8 +99,6 @@ class ChildTest {
 	static CheckBoxFieldFactory checkBoxfactory
 
 	ChildBean bean
-
-	Container container
 
 	@BeforeClass
 	static void setupFactories() {
@@ -123,6 +120,5 @@ class ChildTest {
 	@Before
 	void setupBean() {
 		bean = new ChildBean()
-		container = new JPanel()
 	}
 }
