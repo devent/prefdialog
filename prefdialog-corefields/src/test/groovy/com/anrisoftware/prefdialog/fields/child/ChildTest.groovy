@@ -82,6 +82,17 @@ class ChildTest {
 		})
 	}
 
+	//@Test
+	void "manually"() {
+		def title = "ChildTest :: manually"
+		def fieldName = NULL_VALUE
+		def field = factory.create(container, bean, fieldName)
+		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+			Thread.sleep 60*1000
+			assert false : "Deactivate manually test."
+		})
+	}
+
 	static Injector injector
 
 	static ChildFieldFactory factory
