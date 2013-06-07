@@ -323,6 +323,15 @@ public interface FieldComponent<ComponentType extends Component> {
 	ComponentType getComponent();
 
 	/**
+	 * Returns the Swing component of the field to be added in a container.
+	 * 
+	 * @return the {@link Component}.
+	 * 
+	 * @since 3.0
+	 */
+	Component getAWTComponent();
+
+	/**
 	 * Add a new child field component to this field.
 	 * 
 	 * @param field
