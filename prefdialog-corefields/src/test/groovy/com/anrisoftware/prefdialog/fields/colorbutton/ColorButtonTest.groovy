@@ -25,10 +25,7 @@ import static com.anrisoftware.prefdialog.fields.colorbutton.ColorButtonBean.*
 import groovy.util.logging.Slf4j
 
 import java.awt.Color
-import java.awt.Container
 import java.awt.event.KeyEvent
-
-import javax.swing.JPanel
 
 import org.fest.swing.fixture.FrameFixture
 import org.junit.Before
@@ -56,7 +53,7 @@ class ColorButtonTest extends FieldTestUtils {
 	void "with null value"() {
 		def fieldName = COLOR_NULL_VALUE
 		shouldFailWith(ReflectionError) {
-			def field = factory.create(container, bean, fieldName)
+			def field = factory.create(bean, fieldName)
 		}
 	}
 
@@ -64,7 +61,8 @@ class ColorButtonTest extends FieldTestUtils {
 	void "apply user input"() {
 		def title = "ColorButtonTest :: apply user input"
 		def fieldName = COLOR_BLACK
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 		def buttonName = "$fieldName-0-$BUTTON_NAME"
 
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
@@ -79,7 +77,8 @@ class ColorButtonTest extends FieldTestUtils {
 	void "restore user input"() {
 		def title = "ColorButtonTest :: restore user input"
 		def fieldName = COLOR_BLACK
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 		def buttonName = "$fieldName-0-$BUTTON_NAME"
 
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
@@ -95,56 +94,45 @@ class ColorButtonTest extends FieldTestUtils {
 	void "with right alignment"() {
 		def title = "ColorButtonTest :: with right alignment"
 		def fieldName = COLOR_RIGHT
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 		def buttonName = "$fieldName-0-$BUTTON_NAME"
 
-		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
-			fixture.button buttonName click()
-			fixture.dialog().pressAndReleaseKeys KeyEvent.VK_ENTER
-			field.applyInput()
-		}, { FrameFixture fixture ->
-			assert bean.colorBlack == Color.BLACK
-		})
+		new TestFrameUtil(title, container).withFixture({ })
 	}
 
 	@Test
 	void "with center alignment"() {
 		def title = "ColorButtonTest :: with center alignment"
 		def fieldName = COLOR_MIDDLE
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 		def buttonName = "$fieldName-0-$BUTTON_NAME"
 
-		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
-			fixture.button buttonName click()
-			fixture.dialog().pressAndReleaseKeys KeyEvent.VK_ENTER
-			field.applyInput()
-		}, { FrameFixture fixture ->
-			assert bean.colorBlack == Color.BLACK
-		})
+		new TestFrameUtil(title, container).withFixture({ })
 	}
 
 	@Test
 	void "with left alignment"() {
 		def title = "ColorButtonTest :: with left alignment"
 		def fieldName = COLOR_LEFT
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 		def buttonName = "$fieldName-0-$BUTTON_NAME"
 
-		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
-			fixture.button buttonName click()
-			fixture.dialog().pressAndReleaseKeys KeyEvent.VK_ENTER
-			field.applyInput()
-		}, { FrameFixture fixture ->
-			assert bean.colorBlack == Color.BLACK
-		})
+		new TestFrameUtil(title, container).withFixture({ })
 	}
 
-	@Test(timeout = 60000l)
+	//@Test
 	void "manually"() {
 		def title = "ColorButtonTest :: manually"
 		def fieldName = COLOR_BLACK
-		def field = factory.create(container, bean, fieldName)
-		new TestFrameUtil(title, container).withFixture({ Thread.sleep 60*1000 })
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
+		new TestFrameUtil(title, container).withFixture({
+			Thread.sleep 60*1000
+			assert false : "Deactivate manually test."
+		})
 	}
 
 	static Injector injector
@@ -152,8 +140,6 @@ class ColorButtonTest extends FieldTestUtils {
 	static ColorButtonFieldFactory factory
 
 	ColorButtonBean bean
-
-	Container container
 
 	@BeforeClass
 	static void setupFactories() {
@@ -165,6 +151,5 @@ class ColorButtonTest extends FieldTestUtils {
 	@Before
 	void setupBean() {
 		bean = new ColorButtonBean()
-		container = new JPanel()
 	}
 }

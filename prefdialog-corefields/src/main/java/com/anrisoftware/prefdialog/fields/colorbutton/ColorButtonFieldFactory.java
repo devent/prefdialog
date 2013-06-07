@@ -18,7 +18,7 @@
  */
 package com.anrisoftware.prefdialog.fields.colorbutton;
 
-import java.awt.Container;
+import javax.swing.JPanel;
 
 import com.anrisoftware.prefdialog.fields.FieldFactory;
 
@@ -28,5 +28,5 @@ import com.anrisoftware.prefdialog.fields.FieldFactory;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-interface ColorButtonFieldFactory extends FieldFactory<Container> {
+interface ColorButtonFieldFactory extends FieldFactory<JPanel> {
 }

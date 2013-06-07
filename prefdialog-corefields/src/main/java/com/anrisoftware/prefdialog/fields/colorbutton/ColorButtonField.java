@@ -22,7 +22,6 @@ import static com.anrisoftware.prefdialog.fields.colorbutton.SelectColorAction.C
 import static java.lang.String.format;
 
 import java.awt.Color;
-import java.awt.Container;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
@@ -34,6 +33,7 @@ import javax.swing.Action;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccess;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccessFactory;
@@ -53,8 +53,7 @@ import com.google.inject.assistedinject.Assisted;
  * @since 3.0
  */
 @SuppressWarnings("serial")
-public class ColorButtonField extends
-		AbstractTitleField<ButtonsGroupPanel, Container> {
+public class ColorButtonField extends AbstractTitleField<JPanel> {
 
 	private static final String HORIZONTAL_ALIGNMENT_ELEMENT = "horizontalAlignment";
 
@@ -81,15 +80,15 @@ public class ColorButtonField extends
 	private AbstractValidatingComponent<Color, JComponent> validating;
 
 	/**
-	 * @see ColorButtonFieldFactory#create(Container, Object, String)
+	 * @see ColorButtonFieldFactory#create(Object, String)
 	 */
 	@Inject
 	ColorButtonField(ColorButtonFieldLogger logger,
 			ButtonsGroupPanel buttonsGroupPanel,
 			ButtonsRowPanel buttonsRowPanel,
-			SelectColorAction selectColorAction, @Assisted Container container,
-			@Assisted Object parentObject, @Assisted String fieldName) {
-		super(buttonsGroupPanel, container, parentObject, fieldName);
+			SelectColorAction selectColorAction, @Assisted Object parentObject,
+			@Assisted String fieldName) {
+		super(buttonsGroupPanel, parentObject, fieldName);
 		this.log = logger;
 		this.buttonsGroupPanel = buttonsGroupPanel;
 		this.buttonsRowPanel = buttonsRowPanel;

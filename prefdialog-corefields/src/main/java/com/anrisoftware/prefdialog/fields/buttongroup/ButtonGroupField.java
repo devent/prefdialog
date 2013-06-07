@@ -1,6 +1,5 @@
 package com.anrisoftware.prefdialog.fields.buttongroup;
 
-import java.awt.Container;
 import java.beans.PropertyVetoException;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -10,6 +9,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.swing.AbstractListModel;
 import javax.swing.Action;
+import javax.swing.JPanel;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -27,7 +27,7 @@ import com.google.inject.assistedinject.Assisted;
  * @since 3.0
  */
 @SuppressWarnings("serial")
-public class ButtonGroupField extends AbstractTitleField<Container> {
+public class ButtonGroupField extends AbstractTitleField<JPanel> {
 
 	private static final String HORIZONTAL_ALIGNMENT_ELEMENT = "horizontalAlignment";
 

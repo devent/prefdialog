@@ -23,10 +23,6 @@ import static com.anrisoftware.prefdialog.core.FieldTestUtils.*
 import static com.anrisoftware.prefdialog.fields.colorbutton.ColorButtonBean.*
 import static com.anrisoftware.prefdialog.fields.colorbutton.ColorButtonService.*
 
-import java.awt.Container
-
-import javax.swing.JPanel
-
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
@@ -49,7 +45,8 @@ class ColorButtonServiceTest {
 	void "with defaults"() {
 		def title = "ColorButtonServiceTest :: with defaults"
 		def fieldName = COLOR_BLACK
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 		new TestFrameUtil(title, container).withFixture({})
 	}
 
@@ -58,8 +55,6 @@ class ColorButtonServiceTest {
 	static ColorButtonFieldFactory factory
 
 	ColorButtonBean bean
-
-	Container container
 
 	@BeforeClass
 	static void setupFactories() {
@@ -70,6 +65,5 @@ class ColorButtonServiceTest {
 	@Before
 	void setupBean() {
 		bean = new ColorButtonBean()
-		container = new JPanel()
 	}
 }
