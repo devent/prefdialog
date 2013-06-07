@@ -18,7 +18,6 @@
  */
 package com.anrisoftware.prefdialog.fields.textfield;
 
-import java.awt.Container;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
@@ -32,7 +31,6 @@ import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccessFactory
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
 import com.anrisoftware.prefdialog.miscswing.components.validating.ValidatingTextComponent;
 import com.google.inject.assistedinject.Assisted;
-import com.google.inject.assistedinject.AssistedInject;
 
 /**
  * Simple text field.
@@ -41,15 +39,13 @@ import com.google.inject.assistedinject.AssistedInject;
  * @since 3.0
  */
 @SuppressWarnings("serial")
-public class TextField extends AbstractTitleField<JTextField, Container> {
+public class TextField extends AbstractTitleField<JTextField> {
 
 	private static final String EDITABLE_ELEMENT = "editable";
 
 	private static final Class<? extends Annotation> ANNOTATION_CLASS = com.anrisoftware.prefdialog.annotations.TextField.class;
 
 	private final TextFieldLogger log;
-
-	private final JTextField textField;
 
 	private final ValidatingTextComponent<JTextField> validating;
 
@@ -58,25 +54,15 @@ public class TextField extends AbstractTitleField<JTextField, Container> {
 	private AnnotationAccess fieldAnnotation;
 
 	/**
-	 * @see TextFieldFactory#create(Container, Object, String)
+	 * @see TextFieldFactory#create(Object, String)
 	 */
-	@AssistedInject
-	TextField(TextFieldLogger logger, @Assisted Container container,
-			@Assisted Object parentObject, @Assisted String fieldName) {
-		this(logger, new JTextField(), container, parentObject, fieldName);
-	}
-
-	/**
-	 * @see TextFieldFactory#create(JTextField, Container, Object, String)
-	 */
-	@AssistedInject
-	TextField(TextFieldLogger logger, @Assisted JTextField textField,
-			@Assisted Container container, @Assisted Object parentObject,
+	@Inject
+	TextField(TextFieldLogger logger, @Assisted Object parentObject,
 			@Assisted String fieldName) {
-		super(textField, container, parentObject, fieldName);
+		super(new JTextField(), parentObject, fieldName);
 		this.log = logger;
-		this.textField = textField;
-		this.validating = new ValidatingTextComponent<JTextField>(textField);
+		this.validating = new ValidatingTextComponent<JTextField>(
+				getComponent());
 		this.valueVetoListener = new VetoableChangeListener() {
 
 			@Override
@@ -119,7 +105,7 @@ public class TextField extends AbstractTitleField<JTextField, Container> {
 	 *            {@code false} if not.
 	 */
 	public void setEditable(boolean editable) {
-		textField.setEditable(editable);
+		getComponent().setEditable(editable);
 		log.editableSet(this, editable);
 	}
 
@@ -130,7 +116,7 @@ public class TextField extends AbstractTitleField<JTextField, Container> {
 	 *         not.
 	 */
 	public boolean isEditable() {
-		return textField.isEditable();
+		return getComponent().isEditable();
 	}
 
 }

@@ -18,7 +18,7 @@
  */
 package com.anrisoftware.prefdialog.fields.textfield;
 
-import java.awt.Container;
+import javax.swing.JTextField;
 
 import com.anrisoftware.prefdialog.fields.FieldComponent;
 import com.anrisoftware.prefdialog.fields.FieldFactory;
@@ -37,7 +37,7 @@ class TextFieldModule extends AbstractModule {
 	@Override
 	protected void configure() {
 		install(new FactoryModuleBuilder().implement(
-				new TypeLiteral<FieldComponent<Container>>() {
+				new TypeLiteral<FieldComponent<JTextField>>() {
 				}, TextField.class).build(TextFieldFactory.class));
 		bind(FieldFactory.class).to(TextFieldFactory.class);
 	}

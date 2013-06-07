@@ -22,10 +22,7 @@ import static com.anrisoftware.globalpom.utils.TestUtils.*
 import static com.anrisoftware.prefdialog.core.FieldTestUtils.*
 import static com.anrisoftware.prefdialog.fields.textfield.TextFieldBean.*
 
-import java.awt.Container
 import java.awt.event.KeyEvent
-
-import javax.swing.JPanel
 
 import org.fest.swing.fixture.FrameFixture
 import org.junit.Before
@@ -51,7 +48,8 @@ class TextFieldTest {
 	void "null value"() {
 		def title = "TextFieldTest :: null value"
 		def fieldName = NULL_VALUE
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 		def text = "Text A"
 		def textB = "Text B"
 
@@ -76,7 +74,8 @@ class TextFieldTest {
 	void "with initial value"() {
 		def title = "TextFieldTest :: with initial value"
 		def fieldName = INITIAL_VALUE
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
 			fixture.textBox fieldName requireVisible()
@@ -88,7 +87,8 @@ class TextFieldTest {
 	void "not editable"() {
 		def title = "TextFieldTest :: not editable"
 		def fieldName = NOT_EDITABLE
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
 			fixture.textBox fieldName requireVisible()
@@ -107,7 +107,8 @@ class TextFieldTest {
 	void "validated"() {
 		def title = "TextFieldTest :: validated"
 		def fieldName = VALIDATED
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
 			fixture.textBox fieldName requireVisible()
@@ -134,8 +135,6 @@ class TextFieldTest {
 
 	TextFieldBean bean
 
-	Container container
-
 	@BeforeClass
 	static void setupFactories() {
 		injector = Guice.createInjector(
@@ -147,6 +146,5 @@ class TextFieldTest {
 	@Before
 	void setupBean() {
 		bean = new TextFieldBean()
-		container = new JPanel()
 	}
 }

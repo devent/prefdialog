@@ -23,10 +23,6 @@ import static com.anrisoftware.prefdialog.core.FieldTestUtils.*
 import static com.anrisoftware.prefdialog.fields.textfield.TextFieldBean.*
 import static com.anrisoftware.prefdialog.fields.textfield.TextFieldService.*
 
-import java.awt.Container
-
-import javax.swing.JPanel
-
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
@@ -49,7 +45,8 @@ class TextFieldServiceTest {
 	void "with defaults"() {
 		def title = "TextFieldServiceTest :: with defaults"
 		def fieldName = NULL_VALUE
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 		new TestFrameUtil(title, container).withFixture({})
 	}
 
@@ -58,8 +55,6 @@ class TextFieldServiceTest {
 	static TextFieldFactory factory
 
 	TextFieldBean bean
-
-	Container container
 
 	@BeforeClass
 	static void setupFactories() {
@@ -70,6 +65,5 @@ class TextFieldServiceTest {
 	@Before
 	void setupBean() {
 		bean = new TextFieldBean()
-		container = new JPanel()
 	}
 }

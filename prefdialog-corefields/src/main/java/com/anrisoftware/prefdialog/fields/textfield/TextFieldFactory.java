@@ -18,8 +18,6 @@
  */
 package com.anrisoftware.prefdialog.fields.textfield;
 
-import java.awt.Container;
-
 import javax.swing.JTextField;
 
 import com.anrisoftware.prefdialog.fields.FieldFactory;
@@ -30,18 +28,6 @@ import com.anrisoftware.prefdialog.fields.FieldFactory;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-public interface TextFieldFactory extends FieldFactory<Container> {
+public interface TextFieldFactory extends FieldFactory<JTextField> {
 
-	/**
-	 * Sets the text field for the field.
-	 * 
-	 * @param textField
-	 *            the {@link JTextField} text field.
-	 * 
-	 * @return the {@link TextField}
-	 * 
-	 * @see FieldFactory#create(java.awt.Component, Object, String)
-	 */
-	TextField create(JTextField textField, Container container,
-			Object parentObject, String fieldName);
 }
