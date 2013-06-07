@@ -19,7 +19,6 @@
 package com.anrisoftware.prefdialog.core
 
 import javax.swing.JComponent
-import javax.swing.JPanel
 
 /**
  * Factory to create a new abstract container field. Is used so Guice can
@@ -31,11 +30,12 @@ import javax.swing.JPanel
 interface MockContainerFieldFactory {
 
 	/**
-	 * @see AbstractContainerField#AbstractContainerField(java.awt.Component, java.awt.Container, Object, String)
+	 * @see AbstractContainerField#AbstractContainerField(java.awt.Component, Object, String)
 	 * 
 	 * @return the {@link MockContainerField}.
+	 * 
+	 * @since 3.0
 	 */
-	MockContainerField create(
-	JComponent component, JPanel container, Object parentObject, String fieldName)
+	MockContainerField create(JComponent component, Object parentObject, String fieldName)
 }
 

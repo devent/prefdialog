@@ -51,14 +51,15 @@ class TitleFieldTest extends FieldTestUtils {
 	void "show text field"() {
 		def title = "TitleFieldTest :: show text field"
 		def preferenceField = preferencesTextField
+		def name = preferenceField
 		def containerName = "${preferenceField}-$CONTAINER_NAME"
 		def titleName = "${preferenceField}-$TITLE_NAME"
-		def field = factory.create(component, container, preferences, preferenceField)
+		def field = factory.create(component, preferences, preferenceField)
 
 		assertField field,
-		name: containerName,
+		name: name,
 		title: preferenceField
-		new TestFrameUtil(title, container).withFixture({FrameFixture fixture ->
+		new TestFrameUtil(title, field.AWTComponent).withFixture({FrameFixture fixture ->
 			assertEnabled fixture, preferenceField, containerName, titleName
 			assertNames fixture, preferenceField, containerName, titleName
 			fixture.label titleName requireText("textField:")
@@ -69,15 +70,16 @@ class TitleFieldTest extends FieldTestUtils {
 	void "with title disabled"() {
 		def title = "TitleFieldTest :: with title disabled"
 		def preferenceField = preferencesTextFieldWithTitleDisabled
+		def name = preferenceField
 		def containerName = "${preferenceField}-$CONTAINER_NAME"
 		def titleName = "${preferenceField}-$TITLE_NAME"
-		def field = factory.create(component, container, preferences, preferenceField)
+		def field = factory.create(component, preferences, preferenceField)
 
 		assertField field,
-		name: containerName,
+		name: name,
 		title: preferenceField,
 		showTitle: false
-		new TestFrameUtil(title, container).withFixture({FrameFixture fixture ->
+		new TestFrameUtil(title, field.AWTComponent).withFixture({FrameFixture fixture ->
 			assertEnabled fixture, preferenceField, containerName, titleName
 			assertNames fixture, preferenceField, containerName, titleName
 			fixture.label titleName requireText(null)
@@ -88,14 +90,15 @@ class TitleFieldTest extends FieldTestUtils {
 	void "with title"() {
 		def title = "TitleFieldTest :: with title"
 		def preferenceField = preferencesTextFieldWithTitle
+		def name = preferenceField
 		def containerName = "${preferenceField}-$CONTAINER_NAME"
 		def titleName = "${preferenceField}-$TITLE_NAME"
-		def field = factory.create(component, container, preferences, preferenceField)
+		def field = factory.create(component, preferences, preferenceField)
 
 		assertField field,
-		name: containerName,
+		name: name,
 		title: "Test Field"
-		new TestFrameUtil(title, container).withFixture({FrameFixture fixture ->
+		new TestFrameUtil(title, field.AWTComponent).withFixture({FrameFixture fixture ->
 			assertEnabled fixture, preferenceField, containerName, titleName
 			assertNames fixture, preferenceField, containerName, titleName
 			fixture.label titleName requireText("Test Field:")
@@ -106,15 +109,16 @@ class TitleFieldTest extends FieldTestUtils {
 	void "with title resource"() {
 		def title = "TitleFieldTest :: with title resource"
 		def preferenceField = preferencesTextFieldWithTitleResource
+		def name = preferenceField
 		def containerName = "${preferenceField}-$CONTAINER_NAME"
 		def titleName = "${preferenceField}-$TITLE_NAME"
-		def field = factory.create(component, container, preferences, preferenceField)
+		def field = factory.create(component, preferences, preferenceField)
 		field.setTexts texts
 
 		assertField field,
-		name: containerName,
+		name: name,
 		title: "Test Field Eng"
-		new TestFrameUtil(title, container).withFixture({FrameFixture fixture ->
+		new TestFrameUtil(title, field.AWTComponent).withFixture({FrameFixture fixture ->
 			assertEnabled fixture, preferenceField, containerName, titleName
 			assertNames fixture, preferenceField, containerName, titleName
 			fixture.label titleName requireText("Test Field Eng:")
@@ -125,15 +129,16 @@ class TitleFieldTest extends FieldTestUtils {
 	void "with title resource change locale"() {
 		def title = "TitleFieldTest :: with title resource change locale"
 		def preferenceField = preferencesTextFieldWithTitleResource
+		def name = preferenceField
 		def containerName = "${preferenceField}-$CONTAINER_NAME"
 		def titleName = "${preferenceField}-$TITLE_NAME"
-		def field = factory.create(component, container, preferences, preferenceField)
+		def field = factory.create(component, preferences, preferenceField)
 		field.setTexts texts
 
 		assertField field,
-		name: containerName,
+		name: name,
 		title: "Test Field Eng"
-		new TestFrameUtil(title, container).withFixture({FrameFixture fixture ->
+		new TestFrameUtil(title, field.AWTComponent).withFixture({FrameFixture fixture ->
 			assertEnabled fixture, preferenceField, containerName, titleName
 			assertNames fixture, preferenceField, containerName, titleName
 			fixture.label titleName requireText("Test Field Eng:")
@@ -147,13 +152,14 @@ class TitleFieldTest extends FieldTestUtils {
 	void "with title missing resource"() {
 		def title = "TitleFieldTest :: with title missing resource"
 		def preferenceField = preferencesTextFieldWithTitleMissingResource
+		def name = preferenceField
 		def containerName = "${preferenceField}-$CONTAINER_NAME"
 		def titleName = "${preferenceField}-$TITLE_NAME"
-		def field = factory.create(component, container, preferences, preferenceField)
+		def field = factory.create(component, preferences, preferenceField)
 
 		shouldFailWith(MissingResourceException) { field.setTexts texts }
 		assertField field,
-		name: containerName,
+		name: name,
 		title: "missing_test_field"
 	}
 
@@ -161,15 +167,16 @@ class TitleFieldTest extends FieldTestUtils {
 	void "read-only"() {
 		def title = "TitleFieldTest :: read-only"
 		def preferenceField = preferencesTextFieldReadOnly
+		def name = preferenceField
 		def containerName = "${preferenceField}-$CONTAINER_NAME"
 		def titleName = "${preferenceField}-$TITLE_NAME"
-		def field = factory.create(component, container, preferences, preferenceField)
+		def field = factory.create(component, preferences, preferenceField)
 
 		assertField field,
-		name: containerName,
+		name: name,
 		title: preferenceField,
 		readOnly: true
-		new TestFrameUtil(title, container).withFixture({FrameFixture fixture ->
+		new TestFrameUtil(title, field.AWTComponent).withFixture({FrameFixture fixture ->
 			assertDisabled fixture, preferenceField, containerName, titleName
 			assertNames fixture, preferenceField, containerName, titleName
 		})
@@ -179,17 +186,18 @@ class TitleFieldTest extends FieldTestUtils {
 	void "with icon resource"() {
 		def title = "TitleFieldTest :: with icon resource"
 		def preferenceField = preferencesTextFieldWithIconResource
+		def name = preferenceField
 		def containerName = "${preferenceField}-$CONTAINER_NAME"
 		def titleName = "${preferenceField}-$TITLE_NAME"
-		def field = factory.create(component, container, preferences, preferenceField)
+		def field = factory.create(component, preferences, preferenceField)
 		field.setImages images
 
 		assertField field,
-		name: containerName,
+		name: name,
 		title: preferenceField,
 		icon: { Icon icon -> assert icon.iconWidth == 16 },
 		iconSize: SMALL
-		new TestFrameUtil(title, container).withFixture({FrameFixture fixture ->
+		new TestFrameUtil(title, field.AWTComponent).withFixture({FrameFixture fixture ->
 			assertEnabled fixture, preferenceField, containerName, titleName
 			assertNames fixture, preferenceField, containerName, titleName
 		})
@@ -199,17 +207,18 @@ class TitleFieldTest extends FieldTestUtils {
 	void "with icon resource change icon size"() {
 		def title = "TitleFieldTest :: with icon resource change icon size"
 		def preferenceField = preferencesTextFieldWithIconResource
+		def name = preferenceField
 		def containerName = "${preferenceField}-$CONTAINER_NAME"
 		def titleName = "${preferenceField}-$TITLE_NAME"
-		def field = factory.create(component, container, preferences, preferenceField)
+		def field = factory.create(component, preferences, preferenceField)
 		field.setImages images
 
 		assertField field,
-		name: containerName,
+		name: name,
 		title: preferenceField,
 		icon: { Icon icon -> assert icon.iconWidth == 16 },
 		iconSize: SMALL
-		new TestFrameUtil(title, container).withFixture({FrameFixture fixture ->
+		new TestFrameUtil(title, field.AWTComponent).withFixture({FrameFixture fixture ->
 			assertEnabled fixture, preferenceField, containerName, titleName
 			assertNames fixture, preferenceField, containerName, titleName
 		}, { field.setIconSize HUGE }, { field.setIconSize LARGE }, { field.setIconSize MEDIUM }, { field.setIconSize SMALL })
@@ -219,17 +228,18 @@ class TitleFieldTest extends FieldTestUtils {
 	void "with icon resource change locale"() {
 		def title = "TitleFieldTest :: with icon resource change locale"
 		def preferenceField = preferencesTextFieldWithIconResource
+		def name = preferenceField
 		def containerName = "${preferenceField}-$CONTAINER_NAME"
 		def titleName = "${preferenceField}-$TITLE_NAME"
-		def field = factory.create(component, container, preferences, preferenceField)
+		def field = factory.create(component, preferences, preferenceField)
 		field.setImages images
 
 		assertField field,
-		name: containerName,
+		name: name,
 		title: preferenceField,
 		icon: { Icon icon -> assert icon.iconWidth == 16 },
 		iconSize: SMALL
-		new TestFrameUtil(title, container).withFixture({FrameFixture fixture ->
+		new TestFrameUtil(title, field.AWTComponent).withFixture({FrameFixture fixture ->
 			assertEnabled fixture, preferenceField, containerName, titleName
 			assertNames fixture, preferenceField, containerName, titleName
 		}, { field.setLocale Locale.GERMAN })
@@ -239,17 +249,18 @@ class TitleFieldTest extends FieldTestUtils {
 	void "with icon resource change title position"() {
 		def title = "TitleFieldTest :: with icon resource title position"
 		def preferenceField = preferencesTextFieldWithIconResource
+		def name = preferenceField
 		def containerName = "${preferenceField}-$CONTAINER_NAME"
 		def titleName = "${preferenceField}-$TITLE_NAME"
-		def field = factory.create(component, container, preferences, preferenceField)
+		def field = factory.create(component, preferences, preferenceField)
 		field.setImages images
 
 		assertField field,
-		name: containerName,
+		name: name,
 		title: preferenceField,
 		icon: { Icon icon -> assert icon.iconWidth == 16 },
 		iconSize: SMALL
-		new TestFrameUtil(title, container).withFixture({FrameFixture fixture ->
+		new TestFrameUtil(title, field.AWTComponent).withFixture({FrameFixture fixture ->
 			assertEnabled fixture, preferenceField, containerName, titleName
 			assertNames fixture, preferenceField, containerName, titleName
 		}, { //

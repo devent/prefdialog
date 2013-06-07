@@ -665,6 +665,11 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	}
 
 	@Override
+	public Component getAWTComponent() {
+		return component;
+	}
+
+	@Override
 	public void addField(FieldComponent<?> field) {
 		log.checkField(this, field);
 		childFields.add(field);

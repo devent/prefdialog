@@ -48,12 +48,14 @@ class ContainerFieldTest extends FieldTestUtils {
 		def title = "ContainerFieldTest :: show text field"
 		def preferenceField = preferencesTextField
 		def containerName = "${preferenceField}-$CONTAINER_NAME"
-		def field = factory.create(component, container, preferences, preferenceField)
+		def name = preferenceField
+		def field = factory.create(component, preferences, preferenceField)
+		field.setContainer container
 
 		assertField field,
-		name: containerName,
+		name: name,
 		title: preferenceField
-		new TestFrameUtil(title, container).withFixture({FrameFixture fixture ->
+		new TestFrameUtil(title, field.AWTComponent).withFixture({FrameFixture fixture ->
 			fixture.label preferenceField requireEnabled()
 			fixture.panel containerName requireEnabled()
 			assert fixture.label(preferenceField).target.getName() == preferenceField
@@ -66,13 +68,14 @@ class ContainerFieldTest extends FieldTestUtils {
 		def title = "ContainerFieldTest :: fixed width"
 		def preferenceField = preferencesTextFieldFixedWidth
 		def containerName = "${preferenceField}-$CONTAINER_NAME"
-		def field = factory.create(component, container, preferences, preferenceField)
+		def name = preferenceField
+		def field = factory.create(component, preferences, preferenceField)
 
 		assertField field,
-		name: containerName,
+		name: name,
 		title: preferenceField,
 		width: 200.0d
-		new TestFrameUtil(title, container).withFixture({FrameFixture fixture ->
+		new TestFrameUtil(title, field.AWTComponent).withFixture({FrameFixture fixture ->
 			fixture.label preferenceField requireEnabled()
 			fixture.panel containerName requireEnabled()
 			assert fixture.label(preferenceField).target.getSize().width == 200
@@ -86,13 +89,14 @@ class ContainerFieldTest extends FieldTestUtils {
 		def title = "ContainerFieldTest :: fill width"
 		def preferenceField = preferencesTextFieldFillWidth
 		def containerName = "${preferenceField}-$CONTAINER_NAME"
-		def field = factory.create(component, container, preferences, preferenceField)
+		def name = preferenceField
+		def field = factory.create(component, preferences, preferenceField)
 
 		assertField field,
-		name: containerName,
+		name: name,
 		title: preferenceField,
 		width: -1.0d
-		new TestFrameUtil(title, container).withFixture({FrameFixture fixture ->
+		new TestFrameUtil(title, field.AWTComponent).withFixture({FrameFixture fixture ->
 			fixture.label preferenceField requireEnabled()
 			fixture.panel containerName requireEnabled()
 			assert fixture.label(preferenceField).target.getName() == preferenceField
@@ -101,17 +105,18 @@ class ContainerFieldTest extends FieldTestUtils {
 	}
 
 	@Test
-	void "preffered width"() {
-		def title = "ContainerFieldTest :: preffered width"
+	void "preferred width"() {
+		def title = "ContainerFieldTest :: preferred width"
 		def preferenceField = preferencesTextFieldPreferredWidth
 		def containerName = "${preferenceField}-$CONTAINER_NAME"
-		def field = factory.create(component, container, preferences, preferenceField)
+		def name = preferenceField
+		def field = factory.create(component, preferences, preferenceField)
 
 		assertField field,
-		name: containerName,
+		name: name,
 		title: preferenceField,
 		width: -2.0d
-		new TestFrameUtil(title, container).withFixture({FrameFixture fixture ->
+		new TestFrameUtil(title, field.AWTComponent).withFixture({FrameFixture fixture ->
 			fixture.label preferenceField requireEnabled()
 			fixture.panel containerName requireEnabled()
 			assert fixture.label(preferenceField).target.getName() == preferenceField

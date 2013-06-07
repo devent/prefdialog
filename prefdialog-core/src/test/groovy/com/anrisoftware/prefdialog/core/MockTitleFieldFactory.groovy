@@ -19,7 +19,6 @@
 package com.anrisoftware.prefdialog.core
 
 import javax.swing.JComponent
-import javax.swing.JPanel
 
 /**
  * Factory to create a new abstract title field. Is used so Guice can
@@ -31,11 +30,12 @@ import javax.swing.JPanel
 interface MockTitleFieldFactory {
 
 	/**
-	 * @see AbstractTitleField#AbstractTitleField(java.awt.Component, java.awt.Container, Object, String)
+	 * @see AbstractTitleField#AbstractTitleField(java.awt.Component, Object, String)
 	 * 
 	 * @return the {@link MockTitleField}.
+	 * 
+	 * @since 3.0
 	 */
-	MockTitleField create(
-	JComponent component, JPanel container, Object parentObject, String fieldName)
+	MockTitleField create(JComponent component, Object parentObject, String fieldName)
 }
 

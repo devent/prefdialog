@@ -29,6 +29,7 @@ import java.awt.Container;
 import java.util.Locale;
 
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import com.anrisoftware.prefdialog.annotations.TextPosition;
@@ -46,8 +47,8 @@ import com.anrisoftware.resources.texts.api.Texts;
  * @since 1.0
  */
 @SuppressWarnings("serial")
-public abstract class AbstractTitleField<ComponentType extends Component, ContainerType extends Container>
-		extends AbstractContainerField<ComponentType, ContainerType> {
+public abstract class AbstractTitleField<ComponentType extends Component>
+		extends AbstractContainerField<ComponentType> {
 
 	/**
 	 * The post-fix of the title label name. The name of the title label will be
@@ -61,12 +62,12 @@ public abstract class AbstractTitleField<ComponentType extends Component, Contai
 	private final TableLayout layout;
 
 	/**
-	 * @see AbstractContainerField#AbstractContainerField(Component, Container,
-	 *      Object, String)
+	 * @see AbstractContainerField#AbstractContainerField(Component, Object,
+	 *      String)
 	 */
-	protected AbstractTitleField(ComponentType component,
-			ContainerType container, Object parentObject, String fieldName) {
-		super(component, container, parentObject, fieldName);
+	protected AbstractTitleField(ComponentType component, Object parentObject,
+			String fieldName) {
+		super(component, parentObject, fieldName);
 		this.titleLabel = new JLabel("(title):");
 		this.layout = createLayout();
 		setup();
@@ -82,7 +83,7 @@ public abstract class AbstractTitleField<ComponentType extends Component, Contai
 		container.removeAll();
 		container.setLayout(layout);
 		container.add(titleLabel, "0, 0");
-		container.add(getContainerComponent(), "0, 1");
+		container.add(getComponent(), "0, 1");
 	}
 
 	private TableLayout createLayout() {
@@ -92,7 +93,7 @@ public abstract class AbstractTitleField<ComponentType extends Component, Contai
 	}
 
 	private void setupTitleLabel() {
-		titleLabel.setLabelFor(getContainerComponent());
+		titleLabel.setLabelFor(getComponent());
 	}
 
 	/**
@@ -203,21 +204,15 @@ public abstract class AbstractTitleField<ComponentType extends Component, Contai
 	}
 
 	@Override
-	public void setContainer(ContainerType container) {
+	public void setContainer(JPanel container) {
 		super.setContainer(container);
-		container.removeAll();
-		container.setLayout(layout);
-		container.add(titleLabel, "0, 0");
-		container.add(getContainerComponent(), "0, 1");
+		setupContainer();
 	}
 
 	@Override
-	public void setContainerComponent(ComponentType component) {
-		super.setContainerComponent(component);
-		ContainerType container = getContainer();
-		container.removeAll();
-		container.setLayout(layout);
-		container.add(titleLabel, "0, 0");
-		container.add(getContainerComponent(), "0, 1");
+	public void setComponent(ComponentType component) {
+		super.setComponent(component);
+		setupContainer();
 	}
+
 }

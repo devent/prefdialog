@@ -20,7 +20,6 @@ package com.anrisoftware.prefdialog.core
 
 import javax.inject.Inject
 import javax.swing.JComponent
-import javax.swing.JPanel
 
 import com.google.inject.assistedinject.Assisted
 
@@ -30,18 +29,19 @@ import com.google.inject.assistedinject.Assisted
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
  */
-class MockContainerField extends AbstractContainerField<JPanel, JComponent> {
+class MockContainerField extends AbstractContainerField<JComponent> {
 
 	/**
-	 * @see AbstractContainerField#AbstractContainerField(java.awt.Component, java.awt.Container, Object, String)
+	 * @see AbstractContainerField#AbstractContainerField(java.awt.Component, Object, String)
+	 * 
+	 * @since 3.0
 	 */
 	@Inject
 	MockContainerField(
 	@Assisted JComponent component,
-	@Assisted JPanel container,
 	@Assisted Object parentObject,
 	@Assisted String fieldName) {
-		super(component, container, parentObject, fieldName)
+		super(component, parentObject, fieldName)
 	}
 }
 

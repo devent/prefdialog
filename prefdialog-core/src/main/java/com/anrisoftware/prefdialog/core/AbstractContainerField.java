@@ -26,6 +26,8 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.LayoutManager;
 
+import javax.swing.JPanel;
+
 /**
  * Put the field in a container. The container will use a {@link TableLayout} to
  * dynamically set the width.
@@ -37,10 +39,10 @@ import java.awt.LayoutManager;
  * Example:
  * 
  * <pre>
- * class TextField extends AbstractContainerField&lt;JTextField, JPanel&gt; {
+ * class TextField extends AbstractContainerField&lt;JTextField&gt; {
  * 
- * 	public TextField(JPanel panel, Object parentObject, Field field) {
- * 		super(new JTextField(), panel, parentObject, field);
+ * 	public TextField(Object parentObject, Field field) {
+ * 		super(new JTextField(), parentObject, field);
  * 	}
  * }
  * </pre>
@@ -49,16 +51,12 @@ import java.awt.LayoutManager;
  *            the type of the component that is added to this container. Must be
  *            of class {@link Component}.
  * 
- * @param <ContainerType>
- *            the type of the container of this field. Must be of class
- *            {@link Container}.
- * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
  */
 @SuppressWarnings("serial")
-public abstract class AbstractContainerField<ComponentType extends Component, ContainerType extends Container>
-		extends AbstractFieldComponent<ContainerType> {
+public abstract class AbstractContainerField<ComponentType extends Component>
+		extends AbstractFieldComponent<ComponentType> {
 
 	/**
 	 * The post-fix of the container name. The name of the container will be set
@@ -67,23 +65,18 @@ public abstract class AbstractContainerField<ComponentType extends Component, Co
 	 */
 	public static final String CONTAINER_NAME = "container";
 
-	private ComponentType component;
-
 	private LayoutManager layout;
 
+	private JPanel container;
+
 	/**
-	 * Sets the component and the container of this field.
-	 * 
-	 * @param container
-	 *            the {@link Container} of this field.
-	 * 
 	 * @see AbstractFieldComponent#AbstractFieldComponent(Component, Object,
 	 *      String)
 	 */
 	protected AbstractContainerField(ComponentType component,
-			ContainerType container, Object parentObject, String fieldName) {
-		super(container, parentObject, fieldName);
-		this.component = component;
+			Object parentObject, String fieldName) {
+		super(component, parentObject, fieldName);
+		this.container = new JPanel();
 		this.layout = createLayout();
 		setup();
 	}
@@ -101,7 +94,7 @@ public abstract class AbstractContainerField<ComponentType extends Component, Co
 	private void setupContainer() {
 		Container container = getContainer();
 		container.setLayout(layout);
-		container.add(component, "0, 0");
+		container.add(getComponent(), "0, 0");
 	}
 
 	/**
@@ -113,7 +106,9 @@ public abstract class AbstractContainerField<ComponentType extends Component, Co
 	public void setLayout(LayoutManager layout) {
 		this.layout = layout;
 		Container container = getContainer();
+		container.removeAll();
 		container.setLayout(layout);
+		container.add(getComponent(), "0, 0");
 		container.repaint();
 	}
 
@@ -157,8 +152,8 @@ public abstract class AbstractContainerField<ComponentType extends Component, Co
 	 */
 	@Override
 	public void setName(String name) {
-		super.setName(format("%s-%s", name, CONTAINER_NAME));
-		component.setName(name);
+		super.setName(name);
+		container.setName(format("%s-%s", name, CONTAINER_NAME));
 	}
 
 	/**
@@ -168,14 +163,17 @@ public abstract class AbstractContainerField<ComponentType extends Component, Co
 	@Override
 	public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
-		component.setEnabled(enabled);
+		container.setEnabled(enabled);
 	}
 
 	@Override
-	public void setComponent(ContainerType component) {
-		super.setComponent(component);
+	public void setComponent(ComponentType component) {
 		Container container = getContainer();
-		container.setLayout(layout);
+		ComponentType old = getComponent();
+		if (old != null) {
+			container.remove(old);
+		}
+		super.setComponent(component);
 		container.add(component, "0, 0");
 	}
 
@@ -184,44 +182,34 @@ public abstract class AbstractContainerField<ComponentType extends Component, Co
 	 * 
 	 * @param container
 	 *            the {@link Container}.
+	 * 
+	 * @since 3.0
 	 */
-	public void setContainer(ContainerType container) {
-		setComponent(container);
+	public void setContainer(JPanel container) {
+		JPanel old = this.container;
+		if (old != null) {
+			old.remove(getComponent());
+		}
+		this.container = container;
+		setName(getName());
+		setEnabled(isEnabled());
+		setLayout(layout);
+		setWidth(getWidth());
 	}
 
 	/**
 	 * Returns the container.
 	 * 
 	 * @return the {@link Container} container.
-	 */
-	public ContainerType getContainer() {
-		return getComponent();
-	}
-
-	/**
-	 * Returns the component in this container.
 	 * 
-	 * @return the {@link Component}.
+	 * @since 3.0
 	 */
-	public void setContainerComponent(ComponentType component) {
-		ComponentType old = this.component;
-		Container container = getContainer();
-		if (old != null) {
-			container.remove(component);
-		}
-		this.component = component;
-		container.add(component, "0, 0");
-		setName(getName());
-		setEnabled(isEnabled());
+	public JPanel getContainer() {
+		return container;
 	}
 
-	/**
-	 * Returns the component in this container.
-	 * 
-	 * @return the {@link Component}.
-	 */
-	public ComponentType getContainerComponent() {
-		return component;
+	@Override
+	public Component getAWTComponent() {
+		return getContainer();
 	}
-
 }

@@ -30,18 +30,19 @@ import com.google.inject.assistedinject.Assisted
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
  */
-class MockTitleField extends AbstractTitleField<JPanel, JComponent> {
+class MockTitleField extends AbstractTitleField<JComponent> {
 
 	/**
-	 * @see AbstractTitleField#AbstractTitleField(java.awt.Component, java.awt.Container, Object, String)
+	 * @see AbstractTitleField#AbstractTitleField(java.awt.Component, Object, String)
+	 * 
+	 * @since 3.0
 	 */
 	@Inject
 	MockTitleField(
 	@Assisted JComponent component,
-	@Assisted JPanel container,
 	@Assisted Object parentObject,
 	@Assisted String fieldName) {
-		super(component, container, parentObject, fieldName)
+		super(component, parentObject, fieldName)
 	}
 }
 

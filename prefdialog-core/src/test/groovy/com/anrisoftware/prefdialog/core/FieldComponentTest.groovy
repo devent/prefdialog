@@ -56,7 +56,7 @@ class FieldComponentTest {
 		assertField field,
 		name: preferenceField,
 		title: preferenceField
-		new TestFrameUtil(title, component).withFixture({FrameFixture fixture ->
+		new TestFrameUtil(title, field.AWTComponent).withFixture({FrameFixture fixture ->
 			fixture.label preferenceField requireEnabled()
 			assert fixture.label(preferenceField).target.getName() == preferenceField
 		})
@@ -70,7 +70,7 @@ class FieldComponentTest {
 		assertField field,
 		name: preferenceField,
 		title: "Test Field"
-		new TestFrameUtil(title, component).withFixture({FrameFixture fixture ->
+		new TestFrameUtil(title, field.AWTComponent).withFixture({FrameFixture fixture ->
 			fixture.label preferenceField requireEnabled()
 			assert fixture.label(preferenceField).target.getName() == preferenceField
 		})
@@ -86,7 +86,7 @@ class FieldComponentTest {
 		assertField field,
 		name: preferenceField,
 		title: "Test Field Eng"
-		new TestFrameUtil(title, component).withFixture({FrameFixture fixture ->
+		new TestFrameUtil(title, field.AWTComponent).withFixture({FrameFixture fixture ->
 			fixture.label preferenceField requireEnabled()
 			assert fixture.label(preferenceField).target.getName() == preferenceField
 		})
@@ -102,7 +102,7 @@ class FieldComponentTest {
 		assertField field,
 		name: preferenceField,
 		title: "Test Field Eng"
-		new TestFrameUtil(title, component).withFixture({FrameFixture fixture ->
+		new TestFrameUtil(title, field.AWTComponent).withFixture({FrameFixture fixture ->
 			fixture.label preferenceField requireEnabled()
 			assert fixture.label(preferenceField).target.getName() == preferenceField
 		}, {
@@ -122,7 +122,7 @@ class FieldComponentTest {
 		name: preferenceField,
 		title: "Test Field Deu",
 		locale: Locale.GERMAN
-		new TestFrameUtil(title, component).withFixture({FrameFixture fixture ->
+		new TestFrameUtil(title, field.AWTComponent).withFixture({FrameFixture fixture ->
 			fixture.label preferenceField requireEnabled()
 			assert fixture.label(preferenceField).target.getName() == preferenceField
 		})
@@ -150,7 +150,7 @@ class FieldComponentTest {
 		name: preferenceField,
 		title: preferenceField,
 		readOnly: true
-		new TestFrameUtil(title, component).withFixture({FrameFixture fixture ->
+		new TestFrameUtil(title, field.AWTComponent).withFixture({FrameFixture fixture ->
 			fixture.label preferenceField requireDisabled()
 			assert fixture.label(preferenceField).target.getName() == preferenceField
 		})
@@ -166,7 +166,7 @@ class FieldComponentTest {
 		name: preferenceField,
 		title: preferenceField,
 		toolTip: "Tool Tip"
-		new TestFrameUtil(title, component).withFixture({FrameFixture fixture ->
+		new TestFrameUtil(title, field.AWTComponent).withFixture({FrameFixture fixture ->
 			fixture.label preferenceField requireEnabled()
 			fixture.label preferenceField requireToolTip("Tool Tip")
 			assert fixture.label(preferenceField).target.getName() == preferenceField
@@ -184,7 +184,7 @@ class FieldComponentTest {
 		name: preferenceField,
 		title: "Test Field Eng",
 		toolTip: "Tool Tip Eng"
-		new TestFrameUtil(title, component).withFixture({FrameFixture fixture ->
+		new TestFrameUtil(title, field.AWTComponent).withFixture({FrameFixture fixture ->
 			fixture.label preferenceField requireEnabled()
 			fixture.label preferenceField requireToolTip("Tool Tip Eng")
 			assert fixture.label(preferenceField).target.getName() == preferenceField
@@ -202,7 +202,7 @@ class FieldComponentTest {
 		name: preferenceField,
 		title: "Test Field Eng",
 		toolTip: "Tool Tip Eng"
-		new TestFrameUtil(title, component).withFixture({FrameFixture fixture ->
+		new TestFrameUtil(title, field.AWTComponent).withFixture({FrameFixture fixture ->
 			fixture.label preferenceField requireEnabled()
 			fixture.label preferenceField requireToolTip("Tool Tip Eng")
 			assert fixture.label(preferenceField).target.getName() == preferenceField
@@ -224,7 +224,7 @@ class FieldComponentTest {
 		title: preferenceField,
 		icon: { Icon icon -> assert icon.iconWidth == 16 },
 		iconSize: SMALL
-		new TestFrameUtil(title, component).withFixture({FrameFixture fixture ->
+		new TestFrameUtil(title, field.AWTComponent).withFixture({FrameFixture fixture ->
 			component.icon = field.icon
 			fixture.label preferenceField requireEnabled()
 			assert fixture.label(preferenceField).target.getName() == preferenceField
@@ -244,7 +244,7 @@ class FieldComponentTest {
 		icon: { Icon icon -> assert icon.iconWidth == 16 },
 		iconSize: SMALL
 
-		new TestFrameUtil(title, component).withFixture({FrameFixture fixture ->
+		new TestFrameUtil(title, field.AWTComponent).withFixture({FrameFixture fixture ->
 			component.icon = field.icon
 			fixture.label preferenceField requireEnabled()
 			assert fixture.label(preferenceField).target.getName() == preferenceField
@@ -281,7 +281,7 @@ class FieldComponentTest {
 		icon: { Icon icon -> assert icon.iconWidth == 16 },
 		iconSize: SMALL
 
-		new TestFrameUtil(title, component).withFixture({FrameFixture fixture ->
+		new TestFrameUtil(title, field.AWTComponent).withFixture({FrameFixture fixture ->
 			component.icon = field.icon
 			fixture.label preferenceField requireEnabled()
 			assert fixture.label(preferenceField).target.getName() == preferenceField
