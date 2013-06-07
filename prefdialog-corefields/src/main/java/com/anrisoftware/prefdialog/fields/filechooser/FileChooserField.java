@@ -20,7 +20,6 @@ package com.anrisoftware.prefdialog.fields.filechooser;
 
 import static com.anrisoftware.prefdialog.miscswing.components.validating.AbstractValidatingComponent.VALUE_PROPERTY;
 
-import java.awt.Container;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
@@ -29,6 +28,7 @@ import java.lang.annotation.Annotation;
 
 import javax.inject.Inject;
 import javax.swing.Action;
+import javax.swing.JPanel;
 
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccessFactory;
 import com.anrisoftware.prefdialog.annotations.FileChooser;
@@ -47,7 +47,7 @@ import com.google.inject.assistedinject.Assisted;
  * @since 3.0
  */
 @SuppressWarnings("serial")
-public class FileChooserField extends AbstractTitleField<UiPanel, Container> {
+public class FileChooserField extends AbstractTitleField<JPanel> {
 
 	/**
 	 * Suffix to the name of the file field panel.
@@ -84,13 +84,19 @@ public class FileChooserField extends AbstractTitleField<UiPanel, Container> {
 
 	private final VetoableChangeListener filePropertyListener;
 
+	private final UiPanel panel;
+
+	/**
+	 * @see FileChooserFieldFactory#create(Object, String)
+	 */
 	@Inject
 	FileChooserField(FileChooserFieldLogger logger, UiPanel panel,
 			FileTextField fileTextField,
 			OpenFileDialogAction openFileDialogAction,
-			ClassTaskFactory classTaskFactory, @Assisted Container container,
-			@Assisted Object parentObject, @Assisted String fieldName) {
-		super(panel, container, parentObject, fieldName);
+			ClassTaskFactory classTaskFactory, @Assisted Object parentObject,
+			@Assisted String fieldName) {
+		super(panel, parentObject, fieldName);
+		this.panel = panel;
 		this.log = logger;
 		this.fileTextField = fileTextField;
 		this.classTaskFactory = classTaskFactory;
@@ -179,7 +185,7 @@ public class FileChooserField extends AbstractTitleField<UiPanel, Container> {
 	 *            the {@link Action}.
 	 */
 	public void setOpenFileChooserAction(Action action) {
-		getContainerComponent().getOpenFileChooser().setAction(action);
+		panel.getOpenFileChooser().setAction(action);
 	}
 
 }

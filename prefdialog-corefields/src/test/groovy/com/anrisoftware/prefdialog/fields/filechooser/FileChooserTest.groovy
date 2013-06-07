@@ -23,10 +23,6 @@ import static com.anrisoftware.prefdialog.fields.filechooser.FileChooserBean.*
 import static com.anrisoftware.prefdialog.fields.filechooser.FileChooserField.*
 import static java.util.regex.Pattern.compile
 
-import java.awt.Container
-
-import javax.swing.JPanel
-
 import org.fest.swing.fixture.FrameFixture
 import org.junit.Before
 import org.junit.BeforeClass
@@ -52,9 +48,11 @@ class FileChooserTest extends FieldTestUtils {
 	void "manually"() {
 		def title = "$NAME :: manually"
 		def fieldName = INITIAL_VALUE
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
 			Thread.sleep 60*1000
+			assert false : "Deactivate manually test."
 		})
 	}
 
@@ -63,7 +61,7 @@ class FileChooserTest extends FieldTestUtils {
 		def title = "$NAME :: null value"
 		def fieldName = NULL_VALUE
 		shouldFailWith(ReflectionError) {
-			def field = factory.create(container, bean, fieldName)
+			def field = factory.create(bean, fieldName)
 		}
 	}
 
@@ -72,7 +70,7 @@ class FileChooserTest extends FieldTestUtils {
 		def title = "$NAME :: no model"
 		def fieldName = NO_MODEL
 		shouldFailWith(IllegalArgumentException) {
-			def field = factory.create(container, bean, fieldName)
+			def field = factory.create(bean, fieldName)
 		}
 	}
 
@@ -80,7 +78,8 @@ class FileChooserTest extends FieldTestUtils {
 	void "with initial value"() {
 		def title = "$NAME :: with initial value"
 		def fieldName = INITIAL_VALUE
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
 			fixture.textBox "$fieldName-$FILE_FIELD_NAME" requireText compile(/.*aaa.txt/)
@@ -91,7 +90,8 @@ class FileChooserTest extends FieldTestUtils {
 	void "restore input"() {
 		def title = "$NAME :: restore input"
 		def fieldName = INITIAL_VALUE
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 		def tmpfileA = File.createTempFile("$NAME", null)
 		def tmpfileB = File.createTempFile("$NAME", null)
 		def fileField
@@ -120,8 +120,6 @@ class FileChooserTest extends FieldTestUtils {
 
 	FileChooserBean bean
 
-	Container container
-
 	@BeforeClass
 	static void setupFactories() {
 		injector = Guice.createInjector(
@@ -132,6 +130,5 @@ class FileChooserTest extends FieldTestUtils {
 	@Before
 	void setupBean() {
 		bean = new FileChooserBean()
-		container = new JPanel()
 	}
 }

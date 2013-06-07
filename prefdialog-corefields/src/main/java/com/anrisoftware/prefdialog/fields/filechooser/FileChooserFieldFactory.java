@@ -18,7 +18,7 @@
  */
 package com.anrisoftware.prefdialog.fields.filechooser;
 
-import java.awt.Container;
+import javax.swing.JPanel;
 
 import com.anrisoftware.prefdialog.fields.FieldFactory;
 
@@ -28,16 +28,6 @@ import com.anrisoftware.prefdialog.fields.FieldFactory;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-public interface FileChooserFieldFactory extends FieldFactory<Container> {
+public interface FileChooserFieldFactory extends FieldFactory<JPanel> {
 
-	/**
-	 * Sets the file chooser for the field.
-	 * 
-	 * @return the {@link FormattedTextField}
-	 * 
-	 * @see FieldFactory#create(java.awt.Component, Object, String)
-	 */
-	@Override
-	FileChooserField create(Container container, Object parentObject,
-			String fieldName);
 }

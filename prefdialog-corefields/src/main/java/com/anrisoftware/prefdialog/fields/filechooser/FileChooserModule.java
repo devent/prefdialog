@@ -18,7 +18,7 @@
  */
 package com.anrisoftware.prefdialog.fields.filechooser;
 
-import java.awt.Container;
+import javax.swing.JPanel;
 
 import com.anrisoftware.prefdialog.classtask.ClassTaskModule;
 import com.anrisoftware.prefdialog.fields.FieldComponent;
@@ -41,7 +41,7 @@ class FileChooserModule extends AbstractModule {
 	@Override
 	protected void configure() {
 		install(new FactoryModuleBuilder().implement(
-				new TypeLiteral<FieldComponent<Container>>() {
+				new TypeLiteral<FieldComponent<JPanel>>() {
 				}, FileChooserField.class).build(FileChooserFieldFactory.class));
 		bind(FieldFactory.class).to(FileChooserFieldFactory.class);
 		install(new ClassTaskModule());
