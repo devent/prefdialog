@@ -23,10 +23,6 @@ import static com.anrisoftware.prefdialog.core.FieldTestUtils.*
 import static com.anrisoftware.prefdialog.fields.formattedtextfield.FormattedTextFieldBean.*
 import static com.anrisoftware.prefdialog.fields.formattedtextfield.FormattedTextFieldService.*
 
-import java.awt.Container
-
-import javax.swing.JPanel
-
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
@@ -49,7 +45,8 @@ class FormattedTextFieldServiceTest {
 	void "with defaults"() {
 		def title = "$NAME :: with defaults"
 		def fieldName = NULL_VALUE
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 		new TestFrameUtil(title, container).withFixture({})
 	}
 
@@ -61,8 +58,6 @@ class FormattedTextFieldServiceTest {
 
 	FormattedTextFieldBean bean
 
-	Container container
-
 	@BeforeClass
 	static void setupFactories() {
 		injector = Guice.createInjector(new AnnotationsModule(), new BeansModule())
@@ -72,6 +67,5 @@ class FormattedTextFieldServiceTest {
 	@Before
 	void setupBean() {
 		bean = new FormattedTextFieldBean()
-		container = new JPanel()
 	}
 }

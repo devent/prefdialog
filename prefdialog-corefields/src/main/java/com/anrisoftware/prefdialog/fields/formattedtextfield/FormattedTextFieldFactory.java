@@ -18,8 +18,6 @@
  */
 package com.anrisoftware.prefdialog.fields.formattedtextfield;
 
-import java.awt.Container;
-
 import javax.swing.JFormattedTextField;
 
 import com.anrisoftware.prefdialog.fields.FieldFactory;
@@ -30,18 +28,7 @@ import com.anrisoftware.prefdialog.fields.FieldFactory;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-public interface FormattedTextFieldFactory extends FieldFactory<Container> {
+public interface FormattedTextFieldFactory extends
+		FieldFactory<JFormattedTextField> {
 
-	/**
-	 * Sets the text field for the field.
-	 * 
-	 * @param textField
-	 *            the {@link JFormattedTextField} text field.
-	 * 
-	 * @return the {@link FormattedTextField}
-	 * 
-	 * @see FieldFactory#create(java.awt.Component, Object, String)
-	 */
-	FormattedTextField create(JFormattedTextField textField,
-			Container container, Object parentObject, String fieldName);
 }

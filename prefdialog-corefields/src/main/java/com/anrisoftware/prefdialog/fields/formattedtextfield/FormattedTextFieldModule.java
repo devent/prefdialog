@@ -18,7 +18,7 @@
  */
 package com.anrisoftware.prefdialog.fields.formattedtextfield;
 
-import java.awt.Container;
+import javax.swing.JFormattedTextField;
 
 import com.anrisoftware.prefdialog.fields.FieldComponent;
 import com.anrisoftware.prefdialog.fields.FieldFactory;
@@ -37,7 +37,7 @@ class FormattedTextFieldModule extends AbstractModule {
 	@Override
 	protected void configure() {
 		install(new FactoryModuleBuilder().implement(
-				new TypeLiteral<FieldComponent<Container>>() {
+				new TypeLiteral<FieldComponent<JFormattedTextField>>() {
 				}, FormattedTextField.class).build(
 				FormattedTextFieldFactory.class));
 		bind(FieldFactory.class).to(FormattedTextFieldFactory.class);

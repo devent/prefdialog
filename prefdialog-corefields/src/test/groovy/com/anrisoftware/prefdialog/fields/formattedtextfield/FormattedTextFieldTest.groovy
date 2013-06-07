@@ -22,10 +22,7 @@ import static com.anrisoftware.globalpom.utils.TestUtils.*
 import static com.anrisoftware.prefdialog.core.FieldTestUtils.*
 import static com.anrisoftware.prefdialog.fields.formattedtextfield.FormattedTextFieldBean.*
 
-import java.awt.Container
 import java.awt.event.KeyEvent
-
-import javax.swing.JPanel
 
 import org.fest.swing.fixture.FrameFixture
 import org.junit.Before
@@ -51,7 +48,8 @@ class FormattedTextFieldTest {
 	void "null value"() {
 		def title = "$NAME :: null value string"
 		def fieldName = NULL_VALUE
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 		def text = "Text A"
 		def textB = "Text B"
 
@@ -76,7 +74,8 @@ class FormattedTextFieldTest {
 	void "with initial value"() {
 		def title = "$NAME :: with initial value"
 		def fieldName = INITIAL_VALUE
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
 			fixture.textBox fieldName requireVisible()
@@ -88,7 +87,8 @@ class FormattedTextFieldTest {
 	void "not editable"() {
 		def title = "$NAME :: not editable"
 		def fieldName = NOT_EDITABLE
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
 			fixture.textBox fieldName requireVisible()
@@ -107,7 +107,8 @@ class FormattedTextFieldTest {
 	void "validated"() {
 		def title = "$NAME :: validated"
 		def fieldName = VALIDATED
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
 			fixture.textBox fieldName requireVisible()
@@ -136,8 +137,6 @@ class FormattedTextFieldTest {
 
 	FormattedTextFieldBean bean
 
-	Container container
-
 	@BeforeClass
 	static void setupFactories() {
 		injector = Guice.createInjector(
@@ -149,6 +148,5 @@ class FormattedTextFieldTest {
 	@Before
 	void setupBean() {
 		bean = new FormattedTextFieldBean()
-		container = new JPanel()
 	}
 }
