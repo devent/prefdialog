@@ -22,10 +22,6 @@ import static com.anrisoftware.globalpom.utils.TestUtils.*
 import static com.anrisoftware.prefdialog.core.FieldTestUtils.*
 import static com.anrisoftware.prefdialog.fields.checkbox.CheckBoxBean.*
 
-import java.awt.Container
-
-import javax.swing.JPanel
-
 import org.fest.swing.fixture.FrameFixture
 import org.junit.Before
 import org.junit.BeforeClass
@@ -51,7 +47,7 @@ class CheckBoxTest {
 	void "null value"() {
 		def fieldName = NULL_VALUE
 		shouldFailWith(ReflectionError) {
-			def field = factory.create(container, bean, fieldName)
+			def field = factory.create(bean, fieldName)
 		}
 	}
 
@@ -59,7 +55,8 @@ class CheckBoxTest {
 	void "apply user input"() {
 		def title = "CheckBoxTest :: apply user input"
 		def fieldName = NO_TEXT
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
 			fixture.checkBox fieldName requireNotSelected()
@@ -76,7 +73,8 @@ class CheckBoxTest {
 	void "restore user input"() {
 		def title = "CheckBoxTest :: restore user input"
 		def fieldName = NO_TEXT
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
 			fixture.checkBox fieldName requireNotSelected()
@@ -97,7 +95,8 @@ class CheckBoxTest {
 	void "no text"() {
 		def title = "CheckBoxTest :: no text"
 		def fieldName = NO_TEXT
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
 			fixture.checkBox fieldName requireText(NO_TEXT)
@@ -108,7 +107,8 @@ class CheckBoxTest {
 	void "with text"() {
 		def title = "CheckBoxTest :: with text"
 		def fieldName = WITH_TEXT
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
 			fixture.checkBox fieldName requireText("Checkbox Text")
@@ -119,7 +119,8 @@ class CheckBoxTest {
 	void "with text resource"() {
 		def title = "CheckBoxTest :: with text resource"
 		def fieldName = WITH_TEXT_RESOURCE
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 		field.setTexts texts
 
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
@@ -137,7 +138,8 @@ class CheckBoxTest {
 	void "not showing text"() {
 		def title = "CheckBoxTest :: not showing text"
 		def fieldName = NOT_SHOW_TEXT
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
 			fixture.checkBox fieldName requireText("")
@@ -154,7 +156,8 @@ class CheckBoxTest {
 	void "read only"() {
 		def title = "CheckBoxTest :: read only"
 		def fieldName = READ_ONLY
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
 			fixture.checkBox fieldName requireDisabled()
@@ -171,8 +174,12 @@ class CheckBoxTest {
 	void "manually"() {
 		def title = "CheckBoxTest :: manually"
 		def fieldName = NO_TEXT
-		def field = factory.create(container, bean, fieldName)
-		new TestFrameUtil(title, container).withFixture({ Thread.sleep 60 * 1000l })
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
+		new TestFrameUtil(title, container).withFixture({
+			Thread.sleep 60 * 1000l
+			assert false : "Deactivate manually test"
+		})
 	}
 
 	static Injector injector
@@ -182,8 +189,6 @@ class CheckBoxTest {
 	static Texts texts
 
 	CheckBoxBean bean
-
-	Container container
 
 	@BeforeClass
 	static void setupFactories() {
@@ -196,6 +201,5 @@ class CheckBoxTest {
 	@Before
 	void setupBean() {
 		bean = new CheckBoxBean()
-		container = new JPanel()
 	}
 }

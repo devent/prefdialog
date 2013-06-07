@@ -20,7 +20,6 @@ package com.anrisoftware.prefdialog.fields.checkbox;
 
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
-import java.awt.Container;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
@@ -38,7 +37,6 @@ import com.anrisoftware.prefdialog.miscswing.components.validating.ValidatingBut
 import com.anrisoftware.prefdialog.miscswing.components.validating.ValidatingTextComponent;
 import com.anrisoftware.resources.texts.api.Texts;
 import com.google.inject.assistedinject.Assisted;
-import com.google.inject.assistedinject.AssistedInject;
 
 /**
  * Check box field. A check box field can only be checked or unchecked.
@@ -47,7 +45,7 @@ import com.google.inject.assistedinject.AssistedInject;
  * @since 3.0
  */
 @SuppressWarnings("serial")
-public class CheckBoxField extends AbstractTitleField<JCheckBox, Container> {
+public class CheckBoxField extends AbstractTitleField<JCheckBox> {
 
 	private static final Class<? extends Annotation> ANNOTATION_CLASS = CheckBox.class;
 
@@ -56,8 +54,6 @@ public class CheckBoxField extends AbstractTitleField<JCheckBox, Container> {
 	private static final String SHOW_TEXT_ELEMENT = "showText";
 
 	private final CheckBoxFieldLogger log;
-
-	private final JCheckBox checkBox;
 
 	private final ValidatingButtonComponent<JCheckBox> validating;
 
@@ -72,23 +68,13 @@ public class CheckBoxField extends AbstractTitleField<JCheckBox, Container> {
 	private AnnotationAccess fieldAnnotation;
 
 	/**
-	 * @see CheckBoxFieldFactory#create(Container, Object, String)
+	 * @see CheckBoxFieldFactory#create(Object, String)
 	 */
-	@AssistedInject
-	CheckBoxField(CheckBoxFieldLogger logger, @Assisted Container container,
-			@Assisted Object parentObject, @Assisted String fieldName) {
-		this(logger, new JCheckBox(), container, parentObject, fieldName);
-	}
-
-	/**
-	 * @see CheckBoxFieldFactory#create(JCheckBox, Container, Object, String)
-	 */
-	@AssistedInject
-	CheckBoxField(CheckBoxFieldLogger logger,
-			@Assisted final JCheckBox checkBox, @Assisted Container container,
-			@Assisted Object parentObject, @Assisted String fieldName) {
-		super(checkBox, container, parentObject, fieldName);
-		this.checkBox = checkBox;
+	@Inject
+	CheckBoxField(CheckBoxFieldLogger logger, @Assisted Object parentObject,
+			@Assisted String fieldName) {
+		super(new JCheckBox(), parentObject, fieldName);
+		JCheckBox checkBox = getComponent();
 		this.validating = new ValidatingButtonComponent<JCheckBox>(checkBox);
 		this.log = logger;
 		this.valueVetoListener = new VetoableChangeListener() {
@@ -159,9 +145,9 @@ public class CheckBoxField extends AbstractTitleField<JCheckBox, Container> {
 			text = getTextResource(textResource);
 		}
 		if (showText) {
-			checkBox.setText(text);
+			getComponent().setText(text);
 		} else {
-			checkBox.setText("");
+			getComponent().setText("");
 		}
 	}
 

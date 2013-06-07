@@ -18,8 +18,6 @@
  */
 package com.anrisoftware.prefdialog.fields.checkbox;
 
-import java.awt.Container;
-
 import javax.swing.JCheckBox;
 
 import com.anrisoftware.prefdialog.fields.FieldFactory;
@@ -31,18 +29,6 @@ import com.anrisoftware.prefdialog.fields.FieldFactory;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-public interface CheckBoxFieldFactory extends FieldFactory<Container> {
+public interface CheckBoxFieldFactory extends FieldFactory<JCheckBox> {
 
-	/**
-	 * Sets the check box component for the field.
-	 * 
-	 * @param checkBox
-	 *            the {@link JCheckBox} component.
-	 * 
-	 * @return the {@link CheckBoxField}
-	 * 
-	 * @see FieldFactory#create(java.awt.Component, Object, String)
-	 */
-	CheckBoxField create(JCheckBox checkBox, Container container,
-			Object parentObject, String fieldName);
 }

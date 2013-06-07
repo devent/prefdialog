@@ -18,7 +18,7 @@
  */
 package com.anrisoftware.prefdialog.fields.checkbox;
 
-import java.awt.Container;
+import javax.swing.JCheckBox;
 
 import com.anrisoftware.prefdialog.fields.FieldComponent;
 import com.anrisoftware.prefdialog.fields.FieldFactory;
@@ -37,7 +37,7 @@ class CheckBoxModule extends AbstractModule {
 	@Override
 	protected void configure() {
 		install(new FactoryModuleBuilder().implement(
-				new TypeLiteral<FieldComponent<Container>>() {
+				new TypeLiteral<FieldComponent<JCheckBox>>() {
 				}, CheckBoxField.class).build(CheckBoxFieldFactory.class));
 		bind(FieldFactory.class).to(CheckBoxFieldFactory.class);
 	}

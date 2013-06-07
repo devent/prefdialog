@@ -23,10 +23,6 @@ import static com.anrisoftware.prefdialog.core.FieldTestUtils.*
 import static com.anrisoftware.prefdialog.fields.checkbox.CheckBoxBean.*
 import static com.anrisoftware.prefdialog.fields.checkbox.CheckBoxService.*
 
-import java.awt.Container
-
-import javax.swing.JPanel
-
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
@@ -49,7 +45,8 @@ class CheckBoxServiceTest {
 	void "with defaults"() {
 		def title = "CheckBoxServiceTest :: with defaults"
 		def fieldName = NO_TEXT
-		def field = factory.create(container, bean, fieldName)
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 		new TestFrameUtil(title, container).withFixture({})
 	}
 
@@ -58,8 +55,6 @@ class CheckBoxServiceTest {
 	static CheckBoxFieldFactory factory
 
 	CheckBoxBean bean
-
-	Container container
 
 	@BeforeClass
 	static void setupFactories() {
@@ -70,6 +65,5 @@ class CheckBoxServiceTest {
 	@Before
 	void setupBean() {
 		bean = new CheckBoxBean()
-		container = new JPanel()
 	}
 }
