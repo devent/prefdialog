@@ -93,7 +93,7 @@ public class ChildField extends AbstractTitleField<JPanel> {
 	}
 
 	private void setupPanel() {
-		Container panel = getContainer();
+		JPanel panel = getContainer();
 		panel.removeAll();
 		panel.setLayout(layout);
 		panel.add(getTitleLabel(), "0, 0");
@@ -171,7 +171,7 @@ public class ChildField extends AbstractTitleField<JPanel> {
 		int rows = childrenPanelLayout.getNumRow();
 		childrenPanelLayout.insertRow(rows, TableLayout.PREFERRED);
 		layout.layoutContainer(panel);
-		panel.add(field.getComponent(), format("0, %d", rows));
+		panel.add(field.getAWTComponent(), format("0, %d", rows));
 		getComponent().revalidate();
 		log.addChildField(this, field);
 	}
