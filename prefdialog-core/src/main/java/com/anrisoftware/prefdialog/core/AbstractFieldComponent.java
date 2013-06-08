@@ -679,7 +679,9 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 		setName(name);
 		setupToolTipText();
 		setEnabled(!readOnly);
-		setLocale(locale);
+		if (locale != null) {
+			setLocale(locale);
+		}
 	}
 
 	@Override
