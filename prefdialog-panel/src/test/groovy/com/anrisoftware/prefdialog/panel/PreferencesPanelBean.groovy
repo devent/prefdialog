@@ -32,12 +32,27 @@ class PreferencesPanelBean {
 
 	public static final String CHILD = "child"
 
+	static class ChildBean {
+
+		@FieldComponent
+		@TextField
+		public String childName
+
+		@FieldComponent
+		@TextField
+		public String childTitle
+	}
+
 	@FieldComponent
 	@Child
-	public String child
+	public ChildBean child
 
 	@FieldComponent
 	@TextField
 	public String name
+
+	@FieldComponent
+	@TextField
+	public String title
 }
 

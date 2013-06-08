@@ -18,12 +18,16 @@
  */
 package com.anrisoftware.prefdialog.panel;
 
+import static java.lang.String.format;
+import info.clearthought.layout.TableLayout;
+
 import java.awt.Component;
 import java.lang.annotation.Annotation;
 import java.util.ServiceLoader;
 
 import javax.inject.Inject;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationBean;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationDiscovery;
@@ -54,6 +58,10 @@ public class PreferencesPanel extends AbstractFieldComponent<JPanel> {
 
 	private AnnotationFilter filter;
 
+	private final TableLayout layout;
+
+	private final JScrollPane scrollPane;
+
 	/**
 	 * @see PreferencesPanelFactory#create(Object, String)
 	 */
@@ -62,6 +70,24 @@ public class PreferencesPanel extends AbstractFieldComponent<JPanel> {
 			@Assisted Object parentObject, @Assisted String fieldName) {
 		super(new JPanel(), parentObject, fieldName);
 		this.log = logger;
+		this.layout = createLayout();
+		this.scrollPane = new JScrollPane(getComponent());
+		setupLayout();
+		setupScrollPane();
+	}
+
+	private void setupScrollPane() {
+		scrollPane.setBorder(null);
+	}
+
+	private TableLayout createLayout() {
+		double[] col = { TableLayout.FILL };
+		double[] row = {};
+		return new TableLayout(col, row);
+	}
+
+	private void setupLayout() {
+		getComponent().setLayout(layout);
 	}
 
 	@Inject
@@ -114,4 +140,17 @@ public class PreferencesPanel extends AbstractFieldComponent<JPanel> {
 		throw log.noFieldAnnotationFound(this, bean);
 	}
 
+	@Override
+	public void addField(FieldComponent<?> field) {
+		super.addField(field);
+		int rows = layout.getNumRow();
+		layout.insertRow(rows, TableLayout.PREFERRED);
+		layout.invalidateLayout(getComponent());
+		getComponent().add(field.getAWTComponent(), format("%d,%d", 0, rows));
+	}
+
+	@Override
+	public Component getAWTComponent() {
+		return scrollPane;
+	}
 }
