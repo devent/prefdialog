@@ -89,7 +89,7 @@ public @interface FieldComponent {
 	 * a percentage or some special constant. Default is set to the TableLayout
 	 * preferred size constant.
 	 */
-	double width() default -1.0;
+	double width() default -2.0;
 
 	/**
 	 * The position of the title of the field. Default is
