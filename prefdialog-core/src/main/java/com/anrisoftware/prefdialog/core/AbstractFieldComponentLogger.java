@@ -55,6 +55,7 @@ class AbstractFieldComponentLogger extends AbstractLogger {
 	private static final String TEXTS_RESOURCE_NULL = "Texts resource cannot be null.";
 	private static final String NO_TOOL_TIP_RESOURCE = "No tool-tip resource '{}' found for {}.";
 	private static final String NO_TITLE_RESOURCE = "No title resource '{}' found for {}.";
+	private static final String HEIGHT_NULL = "Height cannot be null.";
 	private static final String WIDTH_NULL = "Width cannot be null.";
 	private static final String FIELD_NULL = "Field cannot be null.";
 	private static final String NAME_NULL = "Name cannot be null.";
@@ -62,6 +63,7 @@ class AbstractFieldComponentLogger extends AbstractLogger {
 	private static final String RESTORED_INPUT = "Restored input for {}.";
 	private static final String SHOW_TOOL_TIP_SET = "Show tool-tip {} set for {}.";
 	private static final String WIDTH_SET = "Width {} set for {}.";
+	private static final String HEIGHT_SET = "Height {} set for {}.";
 	private static final String ENABLED_SET = "Enabled {} set for {}.";
 	private static final String VALUE_SET = "Value {} set for {}.";
 	private static final String SHOW_TITLE_SET = "Show title {} set for {}.";
@@ -99,6 +101,10 @@ class AbstractFieldComponentLogger extends AbstractLogger {
 		log.debug(WIDTH_SET, width, field);
 	}
 
+	void heightSet(AbstractFieldComponent<?> field, Number height) {
+		log.debug(HEIGHT_SET, height, field);
+	}
+
 	void showToolTipSet(AbstractFieldComponent<?> field, boolean show) {
 		log.debug(SHOW_TOOL_TIP_SET, show, field);
 	}
@@ -125,6 +131,10 @@ class AbstractFieldComponentLogger extends AbstractLogger {
 
 	void checkWidth(AbstractFieldComponent<?> field, Number width) {
 		notNull(width, WIDTH_NULL);
+	}
+
+	void checkHeight(AbstractFieldComponent<?> field, Number height) {
+		notNull(height, HEIGHT_NULL);
 	}
 
 	void titleResourceMissing(AbstractFieldComponent<?> field, String title) {

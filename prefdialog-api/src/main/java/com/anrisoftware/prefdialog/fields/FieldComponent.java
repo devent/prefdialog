@@ -171,6 +171,26 @@ public interface FieldComponent<ComponentType extends Component> {
 	Number getWidth();
 
 	/**
+	 * Sets the physical height of the field inside the container. The height
+	 * can be in pixels, a percentage or some special constant.
+	 * 
+	 * @param height
+	 *            the height {@link Number}.
+	 * 
+	 * @throws NullPointerException
+	 *             if the new height is {@code null}.
+	 */
+	void setHeight(Number height);
+
+	/**
+	 * Returns the physical height of the field inside the container. The height
+	 * can be in pixels, a percentage or some special constant.
+	 * 
+	 * @return the {@link Number} height.
+	 */
+	Number getHeight();
+
+	/**
 	 * Sets the resource for the icon. The resource is loaded from the specified
 	 * images resources.
 	 * 

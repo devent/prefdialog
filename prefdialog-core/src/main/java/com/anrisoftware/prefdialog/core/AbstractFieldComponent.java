@@ -62,6 +62,7 @@ import com.anrisoftware.resources.texts.api.Texts;
  * <li>tool-tip</li>
  * <li>read-only flag</li>
  * <li>width</li>
+ * <li>height</li>
  * <li>title position</li>
  * <li>icon</li>
  * <li>show icon flag</li>
@@ -92,6 +93,8 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	private static final String READ_ONLY_ELEMENT = "readOnly";
 
 	private static final String WIDTH_ELEMENT = "width";
+
+	private static final String HEIGHT_ELEMENT = "height";
 
 	private static final String TITLE_POSITION_ELEMENT = "titlePosition";
 
@@ -126,6 +129,8 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	private boolean readOnly;
 
 	private Number width;
+
+	private Number height;
 
 	private TextPosition titlePosition;
 
@@ -244,6 +249,7 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 		setupToolTip();
 		setupReadOnly();
 		setupWidth();
+		setupHeight();
 		setupTitlePosition();
 		setupIcon();
 		setupIconSize();
@@ -280,6 +286,11 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	private void setupWidth() {
 		double width = annotationAccess.getValue(WIDTH_ELEMENT);
 		setWidth(width);
+	}
+
+	private void setupHeight() {
+		double height = annotationAccess.getValue(HEIGHT_ELEMENT);
+		setHeight(height);
 	}
 
 	private void setupTitlePosition() {
@@ -459,6 +470,18 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	@Override
 	public Number getWidth() {
 		return width;
+	}
+
+	@Override
+	public void setHeight(Number height) {
+		log.checkHeight(this, height);
+		this.height = height;
+		log.heightSet(this, height);
+	}
+
+	@Override
+	public Number getHeight() {
+		return height;
 	}
 
 	@Override

@@ -92,6 +92,15 @@ public @interface FieldComponent {
 	double width() default -2.0;
 
 	/**
+	 * The height of the field inside the container. The height can be in
+	 * pixels, a percentage or some special constant. Default is set to the
+	 * TableLayout preferred size constant.
+	 * 
+	 * @since 3.0
+	 */
+	double height() default -2.0;
+
+	/**
 	 * The position of the title of the field. Default is
 	 * {@link TextPosition#TEXT_ONLY}.
 	 * 
