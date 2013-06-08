@@ -21,6 +21,7 @@ package com.anrisoftware.prefdialog.fields.spacer
 import static com.anrisoftware.globalpom.utils.TestUtils.*
 import static com.anrisoftware.prefdialog.core.FieldTestUtils.*
 import static com.anrisoftware.prefdialog.fields.spacer.SpacerBean.*
+import static com.anrisoftware.prefdialog.fields.spacer.SpacerFixture.*
 
 import org.fest.swing.fixture.FrameFixture
 import org.junit.Before
@@ -50,12 +51,33 @@ class SpacerTest {
 		def title = "$NAME :: default spacer"
 		def fieldName = SPACER
 		def childField = childFactory.create(bean, CHILD_BEAN)
+		def childBean = bean.childBeanWithDefaultSpacer
 		def container = childField.getAWTComponent()
-		childField.addField textFactory.create(bean.childBean, TOP)
-		childField.addField spacerFactory.create(bean.childBean, fieldName)
-		childField.addField textFactory.create(bean.childBean, BOTTOM)
+		childField.addField textFactory.create(childBean, TOP)
+		childField.addField spacerFactory.create(childBean, fieldName)
+		childField.addField textFactory.create(childBean, BOTTOM)
 
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+			def spacer = spacerFixture(fixture, fieldName)
+			assert spacer.target.visible
+		})
+	}
+
+	@Test
+	void "fixed spacer"() {
+		def title = "$NAME :: fixed spacer"
+		def fieldName = SPACER
+		def childField = childFactory.create(bean, CHILD_BEAN_FIXED_SPACER)
+		def childBean = bean.childBeanWithFixedSpacer
+		def container = childField.getAWTComponent()
+		childField.addField textFactory.create(childBean, TOP)
+		childField.addField spacerFactory.create(childBean, fieldName)
+		childField.addField textFactory.create(childBean, BOTTOM)
+
+		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+			def spacer = spacerFixture(fixture, fieldName)
+			assert spacer.target.visible
+			assert spacer.target.height == 100
 		})
 	}
 
@@ -65,9 +87,10 @@ class SpacerTest {
 		def fieldName = SPACER
 		def childField = childFactory.create(bean, CHILD_BEAN)
 		def container = childField.getAWTComponent()
-		childField.addField textFactory.create(bean.childBean, TOP)
-		childField.addField spacerFactory.create(bean.childBean, fieldName)
-		childField.addField textFactory.create(bean.childBean, BOTTOM)
+		def childBean = bean.childBeanWithDefaultSpacer
+		childField.addField textFactory.create(childBean, TOP)
+		childField.addField spacerFactory.create(childBean, fieldName)
+		childField.addField textFactory.create(childBean, BOTTOM)
 
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
 			Thread.sleep 60 * 1000l

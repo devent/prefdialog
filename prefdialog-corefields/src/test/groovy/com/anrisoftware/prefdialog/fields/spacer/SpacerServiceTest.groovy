@@ -20,8 +20,8 @@ package com.anrisoftware.prefdialog.fields.spacer
 
 import static com.anrisoftware.prefdialog.core.AbstractTitleField.*
 import static com.anrisoftware.prefdialog.core.FieldTestUtils.*
-import static com.anrisoftware.prefdialog.fields.checkbox.CheckBoxBean.*
-import static com.anrisoftware.prefdialog.fields.checkbox.CheckBoxService.*
+import static com.anrisoftware.prefdialog.fields.spacer.SpacerBean.*
+import static com.anrisoftware.prefdialog.fields.spacer.SpacerService.*
 
 import org.junit.Before
 import org.junit.BeforeClass
@@ -34,7 +34,7 @@ import com.google.inject.Guice
 import com.google.inject.Injector
 
 /**
- * Test the check box field as a service.
+ * @see SpacerService
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
@@ -43,16 +43,19 @@ class SpacerServiceTest {
 
 	@Test
 	void "with defaults"() {
-		def title = "CheckBoxServiceTest :: with defaults"
-		def fieldName = NO_TEXT
-		def field = factory.create(bean, fieldName)
+		def title = "$NAME :: with defaults"
+		def fieldName = SPACER
+		bean.childBeanWithDefaultSpacer = new SpacerBean.ChildBeanWithDefaultSpacer()
+		def field = factory.create(bean.childBeanWithDefaultSpacer, fieldName)
 		def container = field.getAWTComponent()
 		new TestFrameUtil(title, container).withFixture({})
 	}
 
+	static final String NAME = SpacerServiceTest.class.simpleName
+
 	static Injector injector
 
-	static CheckBoxFieldFactory factory
+	static SpacerFieldFactory factory
 
 	SpacerBean bean
 

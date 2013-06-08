@@ -30,7 +30,9 @@ import com.anrisoftware.prefdialog.annotations.TextField
  */
 class SpacerBean {
 
-	static final CHILD_BEAN = "childBean"
+	static final CHILD_BEAN = "childBeanWithDefaultSpacer"
+
+	static final CHILD_BEAN_FIXED_SPACER = "childBeanWithFixedSpacer"
 
 	static final SPACER = "spacer"
 
@@ -38,7 +40,7 @@ class SpacerBean {
 
 	static final BOTTOM = "bottom"
 
-	static class ChildBean {
+	static class ChildBeanWithDefaultSpacer {
 
 		@FieldComponent
 		@TextField
@@ -53,8 +55,27 @@ class SpacerBean {
 		public String bottom
 	}
 
+	static class ChildBeanWithFixedSpacer {
+
+		@FieldComponent
+		@TextField
+		public String top
+
+		@FieldComponent(height = 100d)
+		@Spacer
+		public String spacer
+
+		@FieldComponent
+		@TextField
+		public String bottom
+	}
+
 	@FieldComponent
 	@Child
-	public ChildBean childBean
+	public ChildBeanWithDefaultSpacer childBeanWithDefaultSpacer
+
+	@FieldComponent
+	@Child
+	public ChildBeanWithFixedSpacer childBeanWithFixedSpacer
 }
 

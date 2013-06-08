@@ -21,12 +21,10 @@ package com.anrisoftware.prefdialog.fields.spacer;
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Component;
-import java.lang.annotation.Annotation;
 
 import javax.inject.Inject;
 import javax.swing.Box;
 
-import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccess;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccessFactory;
 import com.anrisoftware.prefdialog.core.AbstractFieldComponent;
 import com.google.inject.assistedinject.Assisted;
@@ -42,12 +40,6 @@ import com.google.inject.assistedinject.Assisted;
 @SuppressWarnings("serial")
 public class SpacerField extends AbstractFieldComponent<Component> {
 
-	private static final Class<? extends Annotation> ANNOTATION_CLASS = Spacer.class;
-
-	private final SpacerFieldLogger log;
-
-	private AnnotationAccess fieldAnnotation;
-
 	/**
 	 * @see SpacerFieldFactory#create(Object, String)
 	 */
@@ -55,14 +47,19 @@ public class SpacerField extends AbstractFieldComponent<Component> {
 	SpacerField(SpacerFieldLogger logger, @Assisted Object parentObject,
 			@Assisted String fieldName) {
 		super(Box.createVerticalGlue(), parentObject, fieldName);
-		this.log = logger;
 	}
 
 	@Inject
 	void setBeanAccessFactory(AnnotationAccessFactory annotationAccessFactory) {
-		this.fieldAnnotation = annotationAccessFactory.create(ANNOTATION_CLASS,
-				getAccessibleObject());
-		setHeight(TableLayout.FILL);
+		setupHeight();
 	}
 
+	private void setupHeight() {
+		int height = getHeight().intValue();
+		if (height < 0) {
+			setHeight(TableLayout.FILL);
+		} else {
+			setComponent(Box.createVerticalStrut(height));
+		}
+	}
 }
