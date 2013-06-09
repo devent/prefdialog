@@ -21,6 +21,14 @@ import com.google.inject.assistedinject.Assisted;
 
 /**
  * Creates an instance from an annotation attribute.
+ * <p>
+ * If the parent object have a field that the attribute name references then the
+ * field's value is returned. If the field have no instance, the instance is
+ * created with the default constructor and the field is set. If the attribute
+ * name is set to a class type, the class type is instantiated and returned.
+ * <p>
+ * The attribute is suffixed with "Class" so that it reference the class type
+ * that should be instantiated.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
