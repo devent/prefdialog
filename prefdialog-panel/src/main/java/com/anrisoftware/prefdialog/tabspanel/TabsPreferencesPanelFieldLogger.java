@@ -1,0 +1,66 @@
+/*
+ * Copyright 2012 Erwin Müller <erwin.mueller@deventm.org>
+ * 
+ * This file is part of prefdialog-corefields.
+ * 
+ * prefdialog-corefields is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
+ * 
+ * prefdialog-corefields is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with prefdialog-corefields. If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.anrisoftware.prefdialog.tabspanel;
+
+import com.anrisoftware.globalpom.log.AbstractLogger;
+import com.anrisoftware.globalpom.reflection.annotations.AnnotationBean;
+import com.anrisoftware.globalpom.reflection.exceptions.ReflectionError;
+
+/**
+ * Logging messages for {@link TabsPreferencesPanelField}.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 3.0
+ */
+class TabsPreferencesPanelFieldLogger extends AbstractLogger {
+
+	private static final String ANNOTATION = "annotation";
+	private static final String BEAN = "bean";
+	private static final String PANEL = "panel";
+	private static final String NO_FIELD_ANNOTATION_MESSAGE = "No field annotation found in %s.";
+	private static final String NO_FIELD_ANNOTATION = "No field annotation found";
+	private static final String NO_PREFERENCE_PANEL_SERVICE = "No preference panel service found";
+	private static final String NO_PREFERENCE_PANEL_SERVICE_MESSAGE = "No preference panel service found for %s.";
+	private static final String VETOED_VALUE = "Vetoed value to tab index %d for %s.";
+
+	/**
+	 * Creates logger for {@link TabsPreferencesPanelField}.
+	 */
+	TabsPreferencesPanelFieldLogger() {
+		super(TabsPreferencesPanelField.class);
+	}
+
+	ReflectionError noFieldAnnotationFound(TabsPreferencesPanelField panel,
+			AnnotationBean bean) {
+		return logException(new ReflectionError(NO_FIELD_ANNOTATION)
+				.addContextValue(PANEL, panel).addContextValue(BEAN, bean),
+				NO_FIELD_ANNOTATION_MESSAGE, bean);
+	}
+
+	ReflectionError noPreferencePanelService(TabsPreferencesPanelField panel,
+			Class<?> a) {
+		return logException(new ReflectionError(NO_PREFERENCE_PANEL_SERVICE)
+				.addContextValue(PANEL, panel).addContextValue(ANNOTATION, a),
+				NO_PREFERENCE_PANEL_SERVICE_MESSAGE, a);
+	}
+
+	void valueVetoed(TabsPreferencesPanelField field, int index) {
+		log.debug(VETOED_VALUE, index, field);
+	}
+}
