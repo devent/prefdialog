@@ -250,7 +250,7 @@ public class ComboBoxField extends AbstractTitleField<JComboBox<?>> {
 	/**
 	 * Sets the specified renderer for the combo box field.
 	 * 
-	 * @param model
+	 * @param renderer
 	 *            the {@link ListCellRenderer}.
 	 * 
 	 * @throws NullPointerException
