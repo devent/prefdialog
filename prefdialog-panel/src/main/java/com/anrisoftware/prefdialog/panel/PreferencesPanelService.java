@@ -26,7 +26,6 @@ import org.mangosdk.spi.ProviderFor;
 
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule;
 import com.anrisoftware.globalpom.reflection.beans.BeansModule;
-import com.anrisoftware.prefdialog.annotations.CheckBox;
 import com.anrisoftware.prefdialog.fields.FieldFactory;
 import com.anrisoftware.prefdialog.fields.FieldInfo;
 import com.anrisoftware.prefdialog.fields.FieldService;
@@ -46,7 +45,7 @@ public class PreferencesPanelService implements FieldService {
 	/**
 	 * The field information.
 	 */
-	public static final FieldInfo INFO = new FieldInfo(CheckBox.class);
+	public static final FieldInfo INFO = new FieldInfo(PreferencesPanel.class);
 
 	private final Iterable<? extends Module> modules;
 

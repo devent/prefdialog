@@ -29,6 +29,6 @@ import com.anrisoftware.prefdialog.fields.FieldFactory;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-public interface PreferencesPanelFactory extends FieldFactory<JPanel> {
+public interface PreferencesPanelFieldFactory extends FieldFactory<JPanel> {
 
 }

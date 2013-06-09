@@ -20,12 +20,8 @@ package com.anrisoftware.prefdialog.panel
 
 import static com.anrisoftware.prefdialog.core.AbstractTitleField.*
 import static com.anrisoftware.prefdialog.core.FieldTestUtils.*
-import static com.anrisoftware.prefdialog.fields.checkbox.CheckBoxBean.*
-import static com.anrisoftware.prefdialog.fields.checkbox.CheckBoxService.*
-
-import java.awt.Container
-
-import javax.swing.JPanel
+import static com.anrisoftware.prefdialog.panel.PreferencesPanelBean.*
+import static com.anrisoftware.prefdialog.panel.PreferencesPanelService.*
 
 import org.junit.Before
 import org.junit.BeforeClass
@@ -47,19 +43,20 @@ class PreferencesPanelServiceTest {
 
 	@Test
 	void "with defaults"() {
-		def title = "CheckBoxServiceTest :: with defaults"
-		def fieldName = NO_TEXT
-		def field = factory.create(container, bean, fieldName)
+		def title = "$NAME :: with defaults"
+		def fieldName = CHILD
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
 		new TestFrameUtil(title, container).withFixture({})
 	}
 
+	static final String NAME = PreferencesPanelServiceTest.class.simpleName
+
 	static Injector injector
 
-	static PreferencesPanelFactory factory
+	static PreferencesPanelFieldFactory factory
 
 	PreferencesPanelBean bean
-
-	Container container
 
 	@BeforeClass
 	static void setupFactories() {
@@ -70,6 +67,5 @@ class PreferencesPanelServiceTest {
 	@Before
 	void setupBean() {
 		bean = new PreferencesPanelBean()
-		container = new JPanel()
 	}
 }

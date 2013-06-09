@@ -23,12 +23,12 @@ import com.anrisoftware.globalpom.reflection.annotations.AnnotationBean;
 import com.anrisoftware.globalpom.reflection.exceptions.ReflectionError;
 
 /**
- * Logging messages for {@link PreferencesPanel}.
+ * Logging messages for {@link PreferencesPanelField}.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-class PreferencesPanelLogger extends AbstractLogger {
+class PreferencesPanelFieldLogger extends AbstractLogger {
 
 	private static final String BEAN = "bean";
 	private static final String PANEL = "panel";
@@ -38,20 +38,20 @@ class PreferencesPanelLogger extends AbstractLogger {
 	private static final String NO_SERVICE_MESSAGE = "No field service found for %s.";
 
 	/**
-	 * Creates logger for {@link PreferencesPanel}.
+	 * Creates logger for {@link PreferencesPanelField}.
 	 */
-	PreferencesPanelLogger() {
-		super(PreferencesPanel.class);
+	PreferencesPanelFieldLogger() {
+		super(PreferencesPanelField.class);
 	}
 
-	ReflectionError noFieldAnnotationFound(PreferencesPanel panel,
+	ReflectionError noFieldAnnotationFound(PreferencesPanelField panel,
 			AnnotationBean bean) {
 		return logException(new ReflectionError(NO_FIELD_ANNOTATION)
 				.addContextValue(PANEL, panel).addContextValue(BEAN, bean),
 				NO_FIELD_ANNOTATION_MESSAGE, bean);
 	}
 
-	ReflectionError noFieldServiceFound(PreferencesPanel panel,
+	ReflectionError noFieldServiceFound(PreferencesPanelField panel,
 			AnnotationBean bean) {
 		return logException(
 				new ReflectionError(NO_SERVICE).addContextValue(PANEL, panel)

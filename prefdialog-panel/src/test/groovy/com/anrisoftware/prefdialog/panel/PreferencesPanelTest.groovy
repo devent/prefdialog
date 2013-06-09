@@ -66,7 +66,7 @@ class PreferencesPanelTest {
 
 	static Injector injector
 
-	static PreferencesPanelFactory factory
+	static PreferencesPanelFieldFactory factory
 
 	static final String NAME = PreferencesPanelTest.class.simpleName
 
@@ -77,7 +77,7 @@ class PreferencesPanelTest {
 		TestUtils.toStringStyle
 		injector = Guice.createInjector(
 				new AnnotationsModule(), new BeansModule(), new PreferencesPanelModule())
-		factory = injector.getInstance PreferencesPanelFactory
+		factory = injector.getInstance PreferencesPanelFieldFactory
 	}
 
 	@Before
