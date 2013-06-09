@@ -49,17 +49,10 @@ class PreferencesPanelTest {
 		def container = field.getAWTComponent()
 
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
-			fixture.checkBox fieldName requireNotSelected()
-		}, { FrameFixture fixture ->
-			fixture.checkBox fieldName click()
-			assert bean.noText == true
-		}, { FrameFixture fixture ->
-			fixture.checkBox fieldName click()
-			assert bean.noText == false
 		})
 	}
 
-	@Test
+	//@Test
 	void "manually"() {
 		def title = "$NAME :: manually"
 		def fieldName = CHILD
