@@ -721,6 +721,11 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	}
 
 	@Override
+	public FieldComponent<?> getField(int index) {
+		return childFields.get(index);
+	}
+
+	@Override
 	public String toString() {
 		return new ToStringBuilder(this).append("name", getName()).toString();
 	}

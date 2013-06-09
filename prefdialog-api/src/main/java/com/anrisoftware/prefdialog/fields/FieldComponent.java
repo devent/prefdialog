@@ -380,4 +380,15 @@ public interface FieldComponent<ComponentType extends Component> {
 	 */
 	<K extends Component, T extends FieldComponent<K>> T findField(String name);
 
+	/**
+	 * Returns the field component that was added to this field with the
+	 * specified index.
+	 * 
+	 * @param index
+	 *            the index.
+	 *            
+	 * @return the {@link FieldComponent}.
+	 */
+	FieldComponent<?> getField(int index);
+
 }
