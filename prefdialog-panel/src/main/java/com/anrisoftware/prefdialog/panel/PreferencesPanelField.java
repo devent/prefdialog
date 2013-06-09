@@ -42,13 +42,15 @@ import com.anrisoftware.prefdialog.fields.FieldService;
 import com.google.inject.assistedinject.Assisted;
 
 /**
- * Panel that collects input fields from annotated bean.
+ * Panel that put the child field and its fields in one panel.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
 @SuppressWarnings("serial")
 public class PreferencesPanelField extends AbstractFieldComponent<JPanel> {
+
+	private static final Class<Child> CHILD_FIELD_ANNOTATION = Child.class;
 
 	private final PreferencesPanelFieldLogger log;
 
@@ -61,6 +63,8 @@ public class PreferencesPanelField extends AbstractFieldComponent<JPanel> {
 	private final TableLayout layout;
 
 	private final JScrollPane scrollPane;
+
+	private FieldComponent<?> childField;
 
 	/**
 	 * @see PreferencesPanelFieldFactory#create(Object, String)
@@ -98,19 +102,27 @@ public class PreferencesPanelField extends AbstractFieldComponent<JPanel> {
 		this.discoveryFactory = discoveryFactory;
 		this.filter = filterFactory
 				.create(com.anrisoftware.prefdialog.annotations.FieldComponent.class);
-		discoverFields(this, getParentObject());
+		childField = createChildPanel();
+		addField(childField);
+		discoverFields(childField, getValue());
+	}
+
+	private FieldComponent<?> createChildPanel() {
+		return findService(CHILD_FIELD_ANNOTATION).getFactory().create(
+				getParentObject(), getFieldName());
 	}
 
 	private void discoverFields(
-			FieldComponent<? extends Component> parentField, Object parentObject) {
-		AnnotationDiscovery discovery = createAnnotationDiscovery(parentObject);
+			FieldComponent<? extends Component> parentField, Object object) {
+		AnnotationDiscovery discovery = createAnnotationDiscovery(object);
 		for (AnnotationBean bean : discovery.call()) {
-			FieldService service = findService(bean);
+			FieldService service = findAnnotationService(bean);
 			String fieldName = bean.getField().getName();
 			FieldComponent<? extends Component> field = service.getFactory()
-					.create(parentObject, fieldName);
+					.create(object, fieldName);
 			parentField.addField(field);
-			if (service.getInfo().getAnnotationType().equals(Child.class)) {
+			if (service.getInfo().getAnnotationType()
+					.equals(CHILD_FIELD_ANNOTATION)) {
 				discoverFields(field, bean.getValue());
 			}
 		}
@@ -120,15 +132,18 @@ public class PreferencesPanelField extends AbstractFieldComponent<JPanel> {
 		return discoveryFactory.create(parentObject, filter);
 	}
 
-	private FieldService findService(AnnotationBean bean) {
+	private FieldService findAnnotationService(AnnotationBean bean) {
 		Annotation fieldAnnotation = findFieldAnnotation(bean);
+		return findService(fieldAnnotation.annotationType());
+	}
+
+	private FieldService findService(Class<? extends Annotation> type) {
 		for (FieldService service : loader) {
-			if (service.getInfo().getAnnotationType()
-					.equals(fieldAnnotation.annotationType())) {
+			if (service.getInfo().getAnnotationType().equals(type)) {
 				return service;
 			}
 		}
-		throw log.noFieldServiceFound(this, bean);
+		throw log.noFieldServiceFound(this, type);
 	}
 
 	private Annotation findFieldAnnotation(AnnotationBean bean) {

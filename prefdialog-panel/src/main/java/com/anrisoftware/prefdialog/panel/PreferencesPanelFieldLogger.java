@@ -18,6 +18,8 @@
  */
 package com.anrisoftware.prefdialog.panel;
 
+import java.lang.annotation.Annotation;
+
 import com.anrisoftware.globalpom.log.AbstractLogger;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationBean;
 import com.anrisoftware.globalpom.reflection.exceptions.ReflectionError;
@@ -30,6 +32,7 @@ import com.anrisoftware.globalpom.reflection.exceptions.ReflectionError;
  */
 class PreferencesPanelFieldLogger extends AbstractLogger {
 
+	private static final String TYPE = "type";
 	private static final String BEAN = "bean";
 	private static final String PANEL = "panel";
 	private static final String NO_FIELD_ANNOTATION_MESSAGE = "No field annotation found in %s.";
@@ -52,9 +55,9 @@ class PreferencesPanelFieldLogger extends AbstractLogger {
 	}
 
 	ReflectionError noFieldServiceFound(PreferencesPanelField panel,
-			AnnotationBean bean) {
+			Class<? extends Annotation> type) {
 		return logException(
 				new ReflectionError(NO_SERVICE).addContextValue(PANEL, panel)
-						.addContextValue(BEAN, bean), NO_SERVICE_MESSAGE, bean);
+						.addContextValue(TYPE, type), NO_SERVICE_MESSAGE, type);
 	}
 }
