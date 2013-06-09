@@ -32,6 +32,10 @@ class TabsPreferencesPanelBean {
 
 	public static final String NULL_VALUE = "nullValue"
 
+	public static final String RENDERER_FIELD = "rendererField"
+
+	public static final String RENDERER_CLASS_FIELD = "rendererClassField"
+
 	public static final String CHILD_A = "childA"
 
 	public static final String CHILD_B = "childB"
@@ -61,6 +65,16 @@ class TabsPreferencesPanelBean {
 	@FieldComponent
 	@TabsPreferencesPanel
 	public Object nullValue
+
+	@FieldComponent
+	@TabsPreferencesPanel(renderer = "customRenderer")
+	public Object rendererField
+
+	public CustomTabsRenderer customRenderer
+
+	@FieldComponent
+	@TabsPreferencesPanel(rendererClass = CustomTabsRenderer)
+	public Object rendererClassField
 
 	@FieldComponent
 	@Child

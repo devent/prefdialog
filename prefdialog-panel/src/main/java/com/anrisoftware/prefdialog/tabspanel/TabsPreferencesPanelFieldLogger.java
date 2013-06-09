@@ -18,6 +18,8 @@
  */
 package com.anrisoftware.prefdialog.tabspanel;
 
+import static org.apache.commons.lang3.Validate.notNull;
+
 import com.anrisoftware.globalpom.log.AbstractLogger;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationBean;
 import com.anrisoftware.globalpom.reflection.exceptions.ReflectionError;
@@ -38,6 +40,8 @@ class TabsPreferencesPanelFieldLogger extends AbstractLogger {
 	private static final String NO_PREFERENCE_PANEL_SERVICE = "No preference panel service found";
 	private static final String NO_PREFERENCE_PANEL_SERVICE_MESSAGE = "No preference panel service found for %s.";
 	private static final String VETOED_VALUE = "Vetoed value to tab index %d for %s.";
+	private static final String SET_RENDERER = "Set renderer {} to {}.";
+	private static final String RENDERER_NULL = "Renderer cannot be null for %s.";
 
 	/**
 	 * Creates logger for {@link TabsPreferencesPanelField}.
@@ -60,7 +64,17 @@ class TabsPreferencesPanelFieldLogger extends AbstractLogger {
 				NO_PREFERENCE_PANEL_SERVICE_MESSAGE, a);
 	}
 
-	void valueVetoed(TabsPreferencesPanelField field, int index) {
-		log.debug(VETOED_VALUE, index, field);
+	void valueVetoed(TabsPreferencesPanelField panel, int index) {
+		log.debug(VETOED_VALUE, index, panel);
 	}
+
+	void checkRenderer(TabsPreferencesPanelField panel,
+			TabsRenderer renderer) {
+		notNull(renderer, RENDERER_NULL, panel);
+	}
+
+	void rendererSet(TabsPreferencesPanelField panel, TabsRenderer renderer) {
+		log.debug(SET_RENDERER, renderer, panel);
+	}
+
 }

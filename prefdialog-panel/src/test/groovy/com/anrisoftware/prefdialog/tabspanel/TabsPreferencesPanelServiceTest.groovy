@@ -20,21 +20,17 @@ package com.anrisoftware.prefdialog.tabspanel
 
 import static com.anrisoftware.prefdialog.core.AbstractTitleField.*
 import static com.anrisoftware.prefdialog.core.FieldTestUtils.*
-import static com.anrisoftware.prefdialog.panel.PreferencesPanelBean.*
-import static com.anrisoftware.prefdialog.panel.PreferencesPanelService.*
+import static com.anrisoftware.prefdialog.tabspanel.TabsPreferencesPanelBean.*
+import static com.anrisoftware.prefdialog.tabspanel.TabsPreferencesPanelService.*
 
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 
-import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule
-import com.anrisoftware.globalpom.reflection.beans.BeansModule
 import com.anrisoftware.globalpom.utils.TestFrameUtil
-import com.google.inject.Guice
-import com.google.inject.Injector
 
 /**
- * Test the check box field as a service.
+ * @see TabsPreferencesPanelService
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
@@ -44,7 +40,7 @@ class TabsPreferencesPanelServiceTest {
 	@Test
 	void "with defaults"() {
 		def title = "$NAME :: with defaults"
-		def fieldName = CHILD
+		def fieldName = NULL_VALUE
 		def field = factory.create(bean, fieldName)
 		def container = field.getAWTComponent()
 		new TestFrameUtil(title, container).withFixture({})
@@ -52,16 +48,13 @@ class TabsPreferencesPanelServiceTest {
 
 	static final String NAME = TabsPreferencesPanelServiceTest.class.simpleName
 
-	static Injector injector
-
-	static PreferencesPanelFieldFactory factory
+	static TabsPreferencesPanelFieldFactory factory
 
 	TabsPreferencesPanelBean bean
 
 	@BeforeClass
 	static void setupFactories() {
-		injector = Guice.createInjector(new AnnotationsModule(), new BeansModule())
-		factory = findService(INFO).getFactory(injector)
+		factory = findService(INFO).getFactory()
 	}
 
 	@Before

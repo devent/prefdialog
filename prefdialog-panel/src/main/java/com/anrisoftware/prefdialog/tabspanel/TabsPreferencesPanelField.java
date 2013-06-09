@@ -20,9 +20,11 @@ package com.anrisoftware.prefdialog.tabspanel;
 
 import java.awt.Component;
 import java.beans.PropertyVetoException;
+import java.lang.annotation.Annotation;
 import java.util.ServiceLoader;
 
 import javax.inject.Inject;
+import javax.swing.Icon;
 import javax.swing.JTabbedPane;
 import javax.swing.SingleSelectionModel;
 import javax.swing.event.ChangeEvent;
@@ -34,6 +36,7 @@ import com.anrisoftware.globalpom.reflection.annotations.AnnotationDiscoveryFact
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationFilter;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationSetFilterFactory;
 import com.anrisoftware.prefdialog.annotations.Child;
+import com.anrisoftware.prefdialog.classtask.ClassTaskFactory;
 import com.anrisoftware.prefdialog.core.AbstractFieldComponent;
 import com.anrisoftware.prefdialog.fields.FieldComponent;
 import com.anrisoftware.prefdialog.fields.FieldService;
@@ -53,17 +56,17 @@ public class TabsPreferencesPanelField extends
 
 	private static final Class<PreferencesPanel> PREFERENCE_PANEL_ANNOTATION = PreferencesPanel.class;
 
+	private static final String RENDERER_ATTRIBUTE = "renderer";
+
+	private static final Class<? extends Annotation> ANNOTATION_CLASS = TabsPreferencesPanel.class;
+
 	private final TabsPreferencesPanelFieldLogger log;
-
-	private transient ServiceLoader<FieldService> loader;
-
-	private transient AnnotationFilter childFilter;
-
-	private transient AnnotationDiscoveryFactory discoveryFactory;
 
 	private transient Object selectedField;
 
 	private transient ChangeListener changeListener;
+
+	private TabsRenderer renderer;
 
 	/**
 	 * @see TabsPreferencesPanelFieldFactory#create(Object, String)
@@ -94,31 +97,49 @@ public class TabsPreferencesPanelField extends
 		updateValue(field);
 	}
 
+	private void updateValue(FieldComponent<?> field) {
+		try {
+			setValue(field.getValue());
+		} catch (PropertyVetoException e) {
+			log.valueVetoed(this, 0);
+		}
+	}
+
 	@Inject
 	void setFieldsServiceLoader(ServiceLoader<FieldService> loader,
 			AnnotationDiscoveryFactory discoveryFactory,
-			AnnotationSetFilterFactory filterFactory) {
-		this.loader = loader;
-		this.discoveryFactory = discoveryFactory;
-		this.childFilter = filterFactory.create(Child.class);
-		discoverChildren();
+			AnnotationSetFilterFactory filterFactory,
+			ClassTaskFactory classTaskFactory) {
+		setupRenderer(classTaskFactory);
+		discoverChildren(loader, discoveryFactory, filterFactory);
 	}
 
-	private void discoverChildren() {
-		FieldService service = getPreferencePanelService();
-		for (AnnotationBean bean : createChildDiscovery().call()) {
-			String fieldName = bean.getField().getName();
-			FieldComponent<? extends Component> field = service.getFactory()
-					.create(getParentObject(), fieldName);
+	private void discoverChildren(ServiceLoader<FieldService> loader,
+			AnnotationDiscoveryFactory discoveryFactory,
+			AnnotationSetFilterFactory filterFactory) {
+		AnnotationFilter filter = filterFactory.create(Child.class);
+		FieldService service = getPreferencePanelService(loader);
+		for (AnnotationBean bean : createChildDiscovery(discoveryFactory,
+				filter).call()) {
+			FieldComponent<? extends Component> field = loadField(service, bean);
 			addField(field);
 		}
 	}
 
-	private AnnotationDiscovery createChildDiscovery() {
+	private FieldComponent<? extends Component> loadField(FieldService service,
+			AnnotationBean bean) {
+		String fieldName = bean.getField().getName();
+		return service.getFactory().create(getParentObject(), fieldName);
+	}
+
+	private AnnotationDiscovery createChildDiscovery(
+			AnnotationDiscoveryFactory discoveryFactory,
+			AnnotationFilter childFilter) {
 		return discoveryFactory.create(getParentObject(), childFilter);
 	}
 
-	private FieldService getPreferencePanelService() {
+	private FieldService getPreferencePanelService(
+			ServiceLoader<FieldService> loader) {
 		for (FieldService service : loader) {
 			if (isPreferencePanelService(service)) {
 				return service;
@@ -130,6 +151,47 @@ public class TabsPreferencesPanelField extends
 	private boolean isPreferencePanelService(FieldService service) {
 		return service.getInfo().getAnnotationType()
 				.equals(PREFERENCE_PANEL_ANNOTATION);
+	}
+
+	private void setupRenderer(ClassTaskFactory classTaskFactory) {
+		TabsRenderer renderer = (TabsRenderer) classTaskFactory
+				.create(RENDERER_ATTRIBUTE, ANNOTATION_CLASS,
+						getAccessibleObject()).withParent(getParentObject())
+				.build();
+		setRenderer(renderer);
+	}
+
+	/**
+	 * Sets the specified renderer for the tabs group.
+	 * 
+	 * @param renderer
+	 *            the {@link TabsRenderer}.
+	 * 
+	 * @throws NullPointerException
+	 *             if the specified model is {@code null}.
+	 */
+	public void setRenderer(TabsRenderer renderer) {
+		log.checkRenderer(this, renderer);
+		this.renderer = renderer;
+		if (renderer instanceof DefaultTabsRenderer) {
+			setupDefaultRenderer((DefaultTabsRenderer) renderer);
+
+		}
+		log.rendererSet(this, renderer);
+	}
+
+	private void setupDefaultRenderer(DefaultTabsRenderer renderer) {
+		renderer.setImages(getImages());
+		renderer.setTexts(getTexts());
+	}
+
+	/**
+	 * Returns the renderer for the tabs group.
+	 * 
+	 * @return the {@link TabsRenderer}.
+	 */
+	public TabsRenderer getRenderer() {
+		return renderer;
 	}
 
 	@Override
@@ -153,14 +215,17 @@ public class TabsPreferencesPanelField extends
 			selectedField = field;
 			updateValue(field);
 		}
-		getComponent().addTab(field.getTitle(), field.getAWTComponent());
+		JTabbedPane pane = getComponent();
+		int index = pane.getTabCount();
+		String title = title(field, index);
+		String tip = renderer.getTip(index);
+		Icon icon = renderer.getIcon(index);
+		pane.addTab(title, icon, field.getAWTComponent(), tip);
 	}
 
-	private void updateValue(FieldComponent<?> field) {
-		try {
-			setValue(field.getValue());
-		} catch (PropertyVetoException e) {
-			log.valueVetoed(this, 0);
-		}
+	private String title(FieldComponent<?> field, int index) {
+		String title = renderer.getTitle(index);
+		return title == null ? field.getTitle() : title;
 	}
+
 }

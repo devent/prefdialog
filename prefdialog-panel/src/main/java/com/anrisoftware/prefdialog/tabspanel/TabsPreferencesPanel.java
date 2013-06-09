@@ -61,13 +61,15 @@ import com.anrisoftware.prefdialog.annotations.FieldAnnotation;
  * }
  * 
  * &#064;FieldComponent
- * &#064;Child
  * &#064;TabsPreferencesPanel
+ * public Object panelTab
+ * 	
+ * &#064;FieldComponent
+ * &#064;Child
  * public ChildABean childA
  * 
  * &#064;FieldComponent
  * &#064;Child
- * &#064;TabsPreferencesPanel
  * public ChildBBean childB
  * </pre>
  * 
@@ -78,6 +80,10 @@ import com.anrisoftware.prefdialog.annotations.FieldAnnotation;
  * 
  * <pre>
  * &#064;FieldComponent
+ * &#064;TabsPreferencesPanel(renderer = "customRenderer")
+ * public Object panelTab
+ * 	
+ * &#064;FieldComponent
  * &#064;Child
  * public ChildABean childA
  * 
@@ -85,7 +91,7 @@ import com.anrisoftware.prefdialog.annotations.FieldAnnotation;
  * &#064;Child
  * public ChildBBean childB
  * 
- * public TabsGroupRenderer customRenderer;
+ * public TabsRenderer customRenderer;
  * </pre>
  * 
  * c) sets the custom renderer class. The custom renderer must have a public
@@ -93,8 +99,16 @@ import com.anrisoftware.prefdialog.annotations.FieldAnnotation;
  * 
  * <pre>
  * &#064;FieldComponent
- * &#064;TabsGroup(rendererClass = CustomTabsGroupRenderer.class)
- * public Object group;
+ * &#064;TabsPreferencesPanel(rendererClass = CustomTabsRenderer.class)
+ * public Object panelTab
+ * 	
+ * &#064;FieldComponent
+ * &#064;Child
+ * public ChildABean childA
+ * 
+ * &#064;FieldComponent
+ * &#064;Child
+ * public ChildBBean childB
  * </pre>
  * 
  * 
@@ -106,4 +120,19 @@ import com.anrisoftware.prefdialog.annotations.FieldAnnotation;
 @FieldAnnotation
 @Documented
 public @interface TabsPreferencesPanel {
+
+	/**
+	 * The name of the field name to use for the custom {@link TabsRenderer}.
+	 * The renderer will return the title, tool-tip text and the icon for each
+	 * tab. Defaults to an empty name which means no field is set.
+	 */
+	String renderer() default "";
+
+	/**
+	 * The custom {@link TabsRenderer} to use with this tabs group. The renderer
+	 * will return the title, tool-tip text and the icon for each tab. The
+	 * renderer must have the default constructor available for instantiation.
+	 * Defaults to the {@link DefaultTabsRenderer}.
+	 */
+	Class<? extends TabsRenderer>[] rendererClass() default DefaultTabsRenderer.class;
 }

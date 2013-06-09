@@ -30,11 +30,12 @@ import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule
 import com.anrisoftware.globalpom.reflection.beans.BeansModule
 import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.globalpom.utils.TestUtils
+import com.anrisoftware.prefdialog.classtask.ClassTaskModule
 import com.google.inject.Guice
 import com.google.inject.Injector
 
 /**
- * Test the {@link PreferencesPanel}.
+ * @see TabsPreferencesPanelField
  *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
@@ -61,10 +62,51 @@ class TabsPreferencesPanelTest {
 		})
 	}
 
+	@Test
+	void "renderer field"() {
+		def title = "$NAME :: renderer field"
+		def fieldName = RENDERER_FIELD
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
+		def tabbedPane
+
+		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+			assert bean.customRenderer != null
+			tabbedPane = fixture.tabbedPane fieldName
+			tabbedPane.target.getTitleAt(0) == "Custom A"
+			tabbedPane.target.getTitleAt(1) == "Custom B"
+		}, { FrameFixture fixture ->
+			tabbedPane.selectTab(1)
+			assert field.getValue() == bean.childB
+			tabbedPane.selectTab(0)
+			assert field.getValue() == bean.childA
+		})
+	}
+
+	@Test
+	void "renderer class field"() {
+		def title = "$NAME :: renderer class field"
+		def fieldName = RENDERER_CLASS_FIELD
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
+		def tabbedPane
+
+		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+			tabbedPane = fixture.tabbedPane fieldName
+			tabbedPane.target.getTitleAt(0) == "Custom A"
+			tabbedPane.target.getTitleAt(1) == "Custom B"
+		}, { FrameFixture fixture ->
+			tabbedPane.selectTab(1)
+			assert field.getValue() == bean.childB
+			tabbedPane.selectTab(0)
+			assert field.getValue() == bean.childA
+		})
+	}
+
 	//@Test
 	void "manually"() {
 		def title = "$NAME :: manually"
-		def fieldName = CHILD
+		def fieldName = NULL_VALUE
 		def field = factory.create(bean, fieldName)
 		def container = field.getAWTComponent()
 		new TestFrameUtil(title, container).withFixture({
@@ -85,7 +127,8 @@ class TabsPreferencesPanelTest {
 	static void setupFactories() {
 		TestUtils.toStringStyle
 		injector = Guice.createInjector(
-				new AnnotationsModule(), new BeansModule(), new TabsPreferencesPanelModule())
+				new AnnotationsModule(), new BeansModule(), new ClassTaskModule(),
+				new TabsPreferencesPanelModule())
 		factory = injector.getInstance TabsPreferencesPanelFieldFactory
 	}
 

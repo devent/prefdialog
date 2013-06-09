@@ -3,6 +3,7 @@ package com.anrisoftware.prefdialog.tabspanel;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -20,7 +21,7 @@ import com.anrisoftware.resources.texts.api.Texts;
  * @since 3.0
  */
 @SuppressWarnings("serial")
-public class DefaultTabsGroupRenderer implements TabsGroupRenderer,
+public class DefaultTabsRenderer implements TabsRenderer,
 		Serializable {
 
 	private Texts texts;
@@ -38,6 +39,13 @@ public class DefaultTabsGroupRenderer implements TabsGroupRenderer,
 	private Images images;
 
 	private IconSize iconSize;
+
+	public DefaultTabsRenderer() {
+		this.titles = new ArrayList<String>(0);
+		this.tips = new ArrayList<String>(0);
+		this.icons = new ArrayList<Icon>(0);
+		this.iconResources = new ArrayList<String>(0);
+	}
 
 	/**
 	 * Sets the texts resource.

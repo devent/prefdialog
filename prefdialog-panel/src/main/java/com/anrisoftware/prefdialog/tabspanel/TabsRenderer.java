@@ -8,7 +8,7 @@ import javax.swing.Icon;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-public interface TabsGroupRenderer {
+public interface TabsRenderer {
 
 	/**
 	 * Returns the title of the tab with the specified index.

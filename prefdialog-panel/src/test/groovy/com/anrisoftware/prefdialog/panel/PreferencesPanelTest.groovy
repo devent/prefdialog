@@ -76,7 +76,8 @@ class PreferencesPanelTest {
 	static void setupFactories() {
 		TestUtils.toStringStyle
 		injector = Guice.createInjector(
-				new AnnotationsModule(), new BeansModule(), new PreferencesPanelModule())
+				new AnnotationsModule(), new BeansModule(),
+				new PreferencesPanelModule())
 		factory = injector.getInstance PreferencesPanelFieldFactory
 	}
 
