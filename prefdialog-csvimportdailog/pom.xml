@@ -1,0 +1,24 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.anrisoftware.prefdialog</groupId>
+		<artifactId>prefdialog-parent</artifactId>
+		<version>3.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>prefdialog-csvimportdailog</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<name>Abgui :: CSV Import Dialog</name>
+	<description>Dialog to import formatted text data in a comma separated format. The comma can also be a tab, space, semicolon or any other character.</description>
+	<inceptionYear>2013</inceptionYear>
+	<url>https://www.anr-institute.com/projects/projects/prefdialog-csvimportdailog</url>
+
+	<issueManagement>
+		<system>Redmine</system>
+		<url>https://www.anr-institute.com/projects/projects/prefdialog-csvimportdailog</url>
+	</issueManagement>
+
+</project>
