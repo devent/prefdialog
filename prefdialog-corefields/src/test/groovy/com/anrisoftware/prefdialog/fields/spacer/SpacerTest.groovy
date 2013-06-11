@@ -81,7 +81,7 @@ class SpacerTest {
 		})
 	}
 
-	@Test
+	//@Test
 	void "manually"() {
 		def title = "$NAME :: manually"
 		def fieldName = SPACER
