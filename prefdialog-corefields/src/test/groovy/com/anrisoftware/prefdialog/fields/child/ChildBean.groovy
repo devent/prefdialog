@@ -25,7 +25,7 @@ import com.anrisoftware.prefdialog.annotations.FieldComponent
  * Bean with check-box fields.
  *
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 2.2
+ * @since 3.0
  */
 class ChildBean {
 

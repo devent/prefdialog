@@ -35,19 +35,18 @@ import com.google.inject.Guice
 import com.google.inject.Injector
 
 /**
- * Test the {@link ChildField}.
+ * @see ChildField
  *
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 2.2
+ * @since 3.0
  */
 class ChildTest {
 
 	@Test
-	void "null value"() {
-		def title = "ChildTest :: null value"
+	void "title"() {
+		def title = "$NAME :: title"
 		def fieldName = NULL_VALUE
 		def separatorName = "$fieldName-$TITLE_SEPARATOR_NAME"
-		def scrollName = "$fieldName-$CHILDREN_SCROLL_NAME"
 		def field = factory.create(bean, fieldName)
 		def container = field.getAWTComponent()
 		def checkBoxFieldName = CHECKBOX
@@ -56,17 +55,15 @@ class ChildTest {
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
 			field.addField checkBox
 			fixture.panel fieldName requireVisible()
-			fixture.scrollPane scrollName requireVisible()
 			fixture.checkBox checkBoxFieldName requireVisible()
 		})
 	}
 
 	@Test
-	void "with no title"() {
-		def title = "ChildTest :: with no title"
+	void "no title"() {
+		def title = "ChildTest :: no title"
 		def fieldName = NO_TITLE
 		def separatorName = "$fieldName-$TITLE_SEPARATOR_NAME"
-		def scrollName = "$fieldName-$CHILDREN_SCROLL_NAME"
 		def field = factory.create(bean, fieldName)
 		def container = field.getAWTComponent()
 		def checkBoxFieldName = CHECKBOX
@@ -75,14 +72,13 @@ class ChildTest {
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
 			field.addField checkBox
 			fixture.panel fieldName requireVisible()
-			fixture.scrollPane scrollName requireVisible()
 			fixture.checkBox checkBoxFieldName requireVisible()
 		})
 	}
 
 	//@Test
 	void "manually"() {
-		def title = "ChildTest :: manually"
+		def title = "$NAME :: manually"
 		def fieldName = NULL_VALUE
 		def field = factory.create(bean, fieldName)
 		def container = field.getAWTComponent()
@@ -91,6 +87,8 @@ class ChildTest {
 			assert false : "Deactivate manually test."
 		})
 	}
+
+	static final String NAME = ChildTest.class.simpleName
 
 	static Injector injector
 

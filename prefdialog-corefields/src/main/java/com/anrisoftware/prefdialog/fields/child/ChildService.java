@@ -44,13 +44,6 @@ import com.google.inject.Module;
 public class ChildService implements FieldService {
 
 	/**
-	 * The name post-fix of the children scroll pane. The scroll pane will have
-	 * the name <code>&lt;name&gt;-{@value #CHILDREN_SCROLL_NAME}</code>, with
-	 * <code>&lt;name&gt;</code> the name of the field.
-	 */
-	public static final String CHILDREN_SCROLL_NAME = "childrenScroll";
-
-	/**
 	 * The name post-fix of the title separator. The separator will have the
 	 * name <code>&lt;name&gt;-{@value #TITLE_SEPARATOR_NAME}</code>, with
 	 * <code>&lt;name&gt;</code> the name of the field.

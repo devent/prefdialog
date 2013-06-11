@@ -18,7 +18,6 @@
  */
 package com.anrisoftware.prefdialog.fields.child;
 
-import static com.anrisoftware.prefdialog.fields.child.ChildService.CHILDREN_SCROLL_NAME;
 import static com.anrisoftware.prefdialog.fields.child.ChildService.TITLE_SEPARATOR_NAME;
 import static info.clearthought.layout.TableLayoutConstants.FILL;
 import static info.clearthought.layout.TableLayoutConstants.PREFERRED;
@@ -32,7 +31,6 @@ import java.awt.Font;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
@@ -55,8 +53,6 @@ public class ChildField extends AbstractTitleField<JPanel> {
 
 	private final JSeparator separator;
 
-	private final JScrollPane scrollPane;
-
 	private TableLayout childrenPanelLayout;
 
 	private boolean titleSeparatorShow;
@@ -71,7 +67,6 @@ public class ChildField extends AbstractTitleField<JPanel> {
 		this.log = logger;
 		this.layout = createLayout();
 		this.separator = new JSeparator(HORIZONTAL);
-		this.scrollPane = new JScrollPane();
 		this.titleSeparatorShow = true;
 		setup();
 	}
@@ -87,7 +82,6 @@ public class ChildField extends AbstractTitleField<JPanel> {
 
 	private void setup() {
 		setupPanel();
-		setupScrollPane();
 		setupChildLabel();
 		setupChildrenPanel();
 	}
@@ -98,12 +92,7 @@ public class ChildField extends AbstractTitleField<JPanel> {
 		panel.setLayout(layout);
 		panel.add(getTitleLabel(), "0, 0");
 		panel.add(separator, "0, 1");
-		panel.add(scrollPane, "0, 2");
-	}
-
-	private void setupScrollPane() {
-		scrollPane.setViewportView(getComponent());
-		scrollPane.setBorder(createEmptyBorder(0, 0, 0, 0));
+		panel.add(getComponent(), "0, 2");
 	}
 
 	private void setupChildLabel() {
@@ -127,7 +116,6 @@ public class ChildField extends AbstractTitleField<JPanel> {
 	@Override
 	public void setName(String name) {
 		super.setName(name);
-		scrollPane.setName(format("%s-%s", name, CHILDREN_SCROLL_NAME));
 		separator.setName(format("%s-%s", name, TITLE_SEPARATOR_NAME));
 	}
 
