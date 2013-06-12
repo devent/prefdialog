@@ -10,27 +10,33 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
 
 import javax.inject.Inject;
 import javax.swing.JFrame;
 import javax.swing.SwingWorker;
+import javax.swing.event.ChangeListener;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.event.EventListenerSupport;
 
 import bibliothek.gui.dock.common.CControl;
 import bibliothek.gui.dock.common.CWorkingArea;
+import bibliothek.gui.dock.common.MultipleCDockable;
+import bibliothek.gui.dock.common.event.CDockableLocationEvent;
+import bibliothek.gui.dock.common.event.CDockableLocationListener;
+import bibliothek.gui.dock.common.event.CFocusListener;
+import bibliothek.gui.dock.common.intern.CDockable;
 import bibliothek.gui.dock.common.theme.ThemeMap;
 
 import com.anrisoftware.prefdialog.miscswing.docks.api.Dock;
 import com.anrisoftware.prefdialog.miscswing.docks.api.EditorDockWindow;
+import com.anrisoftware.prefdialog.miscswing.docks.api.FocusChangedEvent;
 import com.anrisoftware.prefdialog.miscswing.docks.api.LayoutListener;
 import com.anrisoftware.prefdialog.miscswing.docks.api.LayoutTask;
+import com.anrisoftware.prefdialog.miscswing.docks.api.ShowingChangedEvent;
 import com.anrisoftware.prefdialog.miscswing.docks.api.ViewDockWindow;
 import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.layoutloader.LoadLayoutWorkerFactory;
 import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.layoutsaver.SaveLayoutWorkerFactory;
@@ -43,19 +49,25 @@ public class DockingFramesDock implements Dock {
 
 	private final SaveLayoutWorkerFactory saveFactory;
 
-	private final EventListenerSupport<LayoutListener> listeners;
+	private final EventListenerSupport<LayoutListener> layoutListeners;
 
 	private final Map<String, ViewDockWindow> viewDocks;
 
-	private final List<EditorDockWindow> editorDocks;
+	private final Map<MultipleCDockable, EditorDockWindow> editorDocks;
 
 	private final LoadLayoutWorkerFactory loadFactory;
+
+	private final EventListenerSupport<ChangeListener> changeListeners;
 
 	private CControl control;
 
 	private CWorkingArea workingArea;
 
 	private DockingFramesLayoutTask currentLayout;
+
+	private final CDockableLocationListener editorsLocationListener;
+
+	private final CFocusListener editorsFocusListener;
 
 	@Inject
 	DockingFramesDock(DockingFramesDockLogger logger,
@@ -64,10 +76,51 @@ public class DockingFramesDock implements Dock {
 		this.log = logger;
 		this.saveFactory = saveFactory;
 		this.loadFactory = loadFactory;
-		this.listeners = new EventListenerSupport<LayoutListener>(
+		this.layoutListeners = new EventListenerSupport<LayoutListener>(
 				LayoutListener.class);
 		this.viewDocks = new ConcurrentHashMap<String, ViewDockWindow>();
-		this.editorDocks = new CopyOnWriteArrayList<EditorDockWindow>();
+		this.editorDocks = new ConcurrentHashMap<MultipleCDockable, EditorDockWindow>();
+		this.changeListeners = new EventListenerSupport<ChangeListener>(
+				ChangeListener.class);
+		this.editorsLocationListener = new CDockableLocationListener() {
+
+			@Override
+			public void changed(CDockableLocationEvent event) {
+				if (event.isShowingChanged()) {
+					fireEditorDockShowingChanged(event);
+				}
+			}
+		};
+		this.editorsFocusListener = new CFocusListener() {
+
+			@Override
+			public void focusLost(CDockable dockable) {
+				fireEditorDockFocusLost(dockable);
+			}
+
+			@Override
+			public void focusGained(CDockable dockable) {
+				fireEditorDockFocusGained(dockable);
+			}
+		};
+	}
+
+	protected void fireEditorDockFocusGained(CDockable dockable) {
+		EditorDockWindow editor = editorDocks.get(dockable);
+		changeListeners.fire()
+				.stateChanged(new FocusChangedEvent(editor, true));
+	}
+
+	protected void fireEditorDockFocusLost(CDockable dockable) {
+		EditorDockWindow editor = editorDocks.get(dockable);
+		changeListeners.fire().stateChanged(
+				new FocusChangedEvent(editor, false));
+	}
+
+	private void fireEditorDockShowingChanged(CDockableLocationEvent event) {
+		EditorDockWindow editor = editorDocks.get(event.getDockable());
+		changeListeners.fire().stateChanged(
+				new ShowingChangedEvent(editor, event.getNewShowing()));
 	}
 
 	@Override
@@ -91,8 +144,10 @@ public class DockingFramesDock implements Dock {
 
 	@Override
 	public void addEditorDock(EditorDockWindow dock) {
-		editorDocks.add(dock);
-		currentLayout.addEditor(workingArea, dock);
+		MultipleCDockable dockable = currentLayout.addEditor(workingArea, dock);
+		editorDocks.put(dockable, dock);
+		dockable.addCDockableLocationListener(editorsLocationListener);
+		dockable.addFocusListener(editorsFocusListener);
 	}
 
 	/**
@@ -119,7 +174,7 @@ public class DockingFramesDock implements Dock {
 			throws IOException {
 		try {
 			SwingWorker<OutputStream, OutputStream> worker = saveFactory
-					.create(listeners, this, name, control, stream);
+					.create(layoutListeners, this, name, control, stream);
 			worker.execute();
 			worker.get();
 		} catch (InterruptedException e) {
@@ -142,7 +197,7 @@ public class DockingFramesDock implements Dock {
 			throws IOException {
 		try {
 			SwingWorker<InputStream, InputStream> worker = loadFactory.create(
-					listeners, this, name, control, stream);
+					layoutListeners, this, name, control, stream);
 			worker.execute();
 			worker.get();
 		} catch (InterruptedException e) {
@@ -185,12 +240,22 @@ public class DockingFramesDock implements Dock {
 
 	@Override
 	public void addLayoutListener(LayoutListener listener) {
-		listeners.addListener(listener);
+		layoutListeners.addListener(listener);
 	}
 
 	@Override
 	public void removeLayoutListener(LayoutListener listener) {
-		listeners.removeListener(listener);
+		layoutListeners.removeListener(listener);
+	}
+
+	@Override
+	public void addStateChangedListener(ChangeListener listener) {
+		changeListeners.addListener(listener);
+	}
+
+	@Override
+	public void removeStateChangedListener(ChangeListener listener) {
+		changeListeners.removeListener(listener);
 	}
 
 	@Override

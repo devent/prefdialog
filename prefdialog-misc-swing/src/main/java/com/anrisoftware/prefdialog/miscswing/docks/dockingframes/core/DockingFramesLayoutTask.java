@@ -5,6 +5,7 @@ import java.util.Map;
 
 import bibliothek.gui.dock.common.CControl;
 import bibliothek.gui.dock.common.CWorkingArea;
+import bibliothek.gui.dock.common.MultipleCDockable;
 
 import com.anrisoftware.prefdialog.miscswing.docks.api.EditorDockWindow;
 import com.anrisoftware.prefdialog.miscswing.docks.api.LayoutTask;
@@ -34,7 +35,7 @@ public interface DockingFramesLayoutTask extends LayoutTask, Serializable {
 	void setupLayout(CControl control, CWorkingArea workingArea,
 			Map<String, ViewDockWindow> docks);
 
-	void addEditor(CWorkingArea workingArea, EditorDockWindow dock);
+	MultipleCDockable addEditor(CWorkingArea workingArea, EditorDockWindow dock);
 
 	void addView(CControl control, ViewDockWindow dock);
 }

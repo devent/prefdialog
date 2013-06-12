@@ -8,6 +8,11 @@ import java.awt.Component;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
+
+import javax.inject.Inject;
 
 import bibliothek.gui.dock.common.CControl;
 import bibliothek.gui.dock.common.CGrid;
@@ -16,6 +21,7 @@ import bibliothek.gui.dock.common.CLocation;
 import bibliothek.gui.dock.common.CWorkingArea;
 import bibliothek.gui.dock.common.DefaultMultipleCDockable;
 import bibliothek.gui.dock.common.DefaultSingleCDockable;
+import bibliothek.gui.dock.common.MultipleCDockable;
 import bibliothek.gui.dock.common.intern.AbstractCDockable;
 import bibliothek.gui.dock.common.location.CFlapIndexLocation;
 
@@ -38,9 +44,13 @@ public class DefaultLayoutTask implements DockingFramesLayoutTask {
 
 	private transient PropertyChangeSupport propertySupport;
 
+	private final DefaultLayoutTaskLogger log;
+
 	private String name;
 
-	public DefaultLayoutTask() {
+	@Inject
+	DefaultLayoutTask(DefaultLayoutTaskLogger logger) {
+		this.log = logger;
 		readResolve();
 	}
 
@@ -233,24 +243,36 @@ public class DefaultLayoutTask implements DockingFramesLayoutTask {
 	}
 
 	@Override
-	public void addEditor(final CWorkingArea workingArea,
+	public MultipleCDockable addEditor(final CWorkingArea workingArea,
 			final EditorDockWindow dock) {
-		invokeLater(new Runnable() {
+		FutureTask<MultipleCDockable> task = new FutureTask<MultipleCDockable>(
+				new Callable<MultipleCDockable>() {
 
-			@Override
-			public void run() {
-				addEditorInAWT(workingArea, dock);
-			}
-
-		});
+					@Override
+					public MultipleCDockable call() throws Exception {
+						return addEditorInAWT(workingArea, dock);
+					}
+				});
+		invokeLater(task);
+		try {
+			return task.get();
+		} catch (InterruptedException e) {
+			log.addEditorInterrupted(this, e, dock);
+			return null;
+		} catch (ExecutionException e) {
+			log.addEditorError(this, e.getCause(), dock);
+			return null;
+		}
 	}
 
-	private void addEditorInAWT(CWorkingArea workingArea, EditorDockWindow dock) {
+	private MultipleCDockable addEditorInAWT(CWorkingArea workingArea,
+			EditorDockWindow dock) {
 		DefaultMultipleCDockable dockable = createMultipleDock(dock);
 		DockPosition position = dock.getPosition();
 		setupDefaultMinizedLocation(dockable, position);
 		workingArea.show(dockable);
 		dockable.toFront();
+		return dockable;
 	}
 
 	private DefaultMultipleCDockable createMultipleDock(DockWindow dock) {

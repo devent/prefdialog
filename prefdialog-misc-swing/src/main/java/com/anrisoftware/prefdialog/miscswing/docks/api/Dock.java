@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import javax.swing.JFrame;
+import javax.swing.event.ChangeListener;
 
 /**
  * Layouts the child windows inside and outside the working area.
@@ -161,4 +162,19 @@ public interface Dock {
 	 */
 	void removeLayoutListener(LayoutListener listener);
 
+	/**
+	 * Adds a new listener that is informed of changes of the docks.
+	 * 
+	 * @param listener
+	 *            the {@link ChangeListener}.
+	 */
+	void addStateChangedListener(ChangeListener listener);
+
+	/**
+	 * Removes the listener that was informed of changes of the docks.
+	 * 
+	 * @param listener
+	 *            the {@link ChangeListener}.
+	 */
+	void removeStateChangedListener(ChangeListener listener);
 }
