@@ -9,7 +9,6 @@ import java.beans.PropertyChangeListener;
 import javax.inject.Inject;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableModel;
 
 import com.google.inject.assistedinject.Assisted;
 
@@ -22,13 +21,13 @@ public class SpreadsheetTableModel extends AbstractTableModel {
 
 	private final PropertyChangeListener maximumListener;
 
-	private final TableModel model;
+	private final SpreadsheetModel model;
 
 	private ViewRange range;
 
 	@Inject
 	SpreadsheetTableModel(SpreadsheetTableModelLogger logger,
-			@Assisted TableModel model, @Assisted ViewRange range) {
+			@Assisted SpreadsheetModel model, @Assisted ViewRange range) {
 		this.log = logger;
 		this.model = model;
 		this.offsetListener = new PropertyChangeListener() {
@@ -104,27 +103,42 @@ public class SpreadsheetTableModel extends AbstractTableModel {
 
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		return model.isCellEditable(rowIndex, columnIndex);
+		int index = getOffset() + rowIndex;
+		if (index >= model.getRowCount()) {
+			return model.isColumnEditable(columnIndex);
+		}
+		return model.isCellEditable(index, columnIndex);
 	}
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		return model.getValueAt(getOffset() + rowIndex, columnIndex);
+		int index = getOffset() + rowIndex;
+		if (index >= model.getRowCount()) {
+			return model.getColumnValue(rowIndex, columnIndex);
+		}
+		return model.getValueAt(index, columnIndex);
 	}
 
 	@Override
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-		model.setValueAt(aValue, getOffset() + rowIndex, columnIndex);
+		int index = getOffset() + rowIndex;
+		int difference = index - model.getRowCount() + 1;
+		if (difference > 0) {
+			model.addRows(difference);
+		}
+		model.setValueAt(aValue, index, columnIndex);
 	}
 
 	@Override
 	public void addTableModelListener(TableModelListener l) {
 		model.addTableModelListener(l);
+		super.addTableModelListener(l);
 	}
 
 	@Override
 	public void removeTableModelListener(TableModelListener l) {
 		model.removeTableModelListener(l);
+		super.removeTableModelListener(l);
 	}
 
 }

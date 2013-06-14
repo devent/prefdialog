@@ -14,7 +14,7 @@ public class SpreadsheetTable {
 
 	@Inject
 	SpreadsheetTable(SpreadsheetTableModelFactory modelFactory,
-			@Assisted JTable table, @Assisted TableModel model,
+			@Assisted JTable table, @Assisted SpreadsheetModel model,
 			@Assisted ViewRange range) {
 		this.table = table;
 		this.model = modelFactory.create(model, range);
