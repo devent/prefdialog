@@ -114,7 +114,7 @@ public class SpreadsheetTableModel extends AbstractTableModel {
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		int index = getOffset() + rowIndex;
 		if (index >= model.getRowCount()) {
-			return model.getColumnValue(rowIndex, columnIndex);
+			return model.getColumnValue(index, columnIndex);
 		}
 		return model.getValueAt(index, columnIndex);
 	}

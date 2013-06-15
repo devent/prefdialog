@@ -25,7 +25,7 @@ class SpreadsheetTableTest {
 	void "manually"() {
 		def title = "$NAME::manually"
 		def table = new JTable()
-		def range = new ViewRange()
+		def range = new ViewRange(40)
 		def model = new NumbersModel(3, 20)
 		def spreadsheet = factory.create(table, model, range)
 		new TestFrameUtil(title, createTablePanel(table)).withFixture({

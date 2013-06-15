@@ -26,19 +26,23 @@ public class ViewRange {
 	}
 
 	public void setOffset(int offset) {
+		int oldValue = this.offset;
 		this.offset = offset;
+		propertySupport.firePropertyChange(OFFSET_PROPERTY, oldValue, offset);
 	}
 
 	public int getOffset() {
 		return offset;
 	}
 
-	public int getMaximum() {
-		return maximum;
+	public void setMaximum(int maximum) {
+		int oldValue = this.maximum;
+		this.maximum = maximum;
+		propertySupport.firePropertyChange(MAXIMUM_PROPERTY, oldValue, maximum);
 	}
 
-	public void setMaximum(int maximum) {
-		this.maximum = maximum;
+	public int getMaximum() {
+		return maximum;
 	}
 
 	/**
