@@ -28,13 +28,16 @@ public class SpreadsheetTable {
 
 	private boolean ancestorAdded;
 
+	private final TableBindings tableBindings;
+
 	@Inject
 	SpreadsheetTable(SpreadsheetTableModelFactory modelFactory,
-			@Assisted JTable table, @Assisted SpreadsheetModel model,
-			@Assisted ViewRange range) {
+			TableBindings tableBindings, @Assisted JTable table,
+			@Assisted SpreadsheetModel model, @Assisted ViewRange range) {
 		this.table = table;
 		this.ancestorAdded = false;
 		this.model = modelFactory.create(model, range);
+		this.tableBindings = tableBindings;
 		this.selectionListener = new ListSelectionListener() {
 
 			@Override
@@ -106,6 +109,7 @@ public class SpreadsheetTable {
 		table.getSelectionModel().addListSelectionListener(selectionListener);
 		table.addAncestorListener(ancestorListener);
 		table.addHierarchyBoundsListener(boundsListener);
+		tableBindings.bindTable(table);
 	}
 
 	public JTable getTable() {
