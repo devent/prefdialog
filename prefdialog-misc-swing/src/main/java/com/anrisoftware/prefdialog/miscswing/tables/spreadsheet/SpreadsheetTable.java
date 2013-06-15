@@ -1,7 +1,13 @@
 package com.anrisoftware.prefdialog.miscswing.tables.spreadsheet;
 
+import java.awt.Rectangle;
+import java.awt.event.HierarchyBoundsListener;
+import java.awt.event.HierarchyEvent;
+
 import javax.inject.Inject;
 import javax.swing.JTable;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableModel;
@@ -14,13 +20,20 @@ public class SpreadsheetTable {
 
 	private final SpreadsheetTableModel model;
 
-	private ListSelectionListener selectionListener;
+	private final ListSelectionListener selectionListener;
+
+	private final AncestorListener ancestorListener;
+
+	private final HierarchyBoundsListener boundsListener;
+
+	private boolean ancestorAdded;
 
 	@Inject
 	SpreadsheetTable(SpreadsheetTableModelFactory modelFactory,
 			@Assisted JTable table, @Assisted SpreadsheetModel model,
 			@Assisted ViewRange range) {
 		this.table = table;
+		this.ancestorAdded = false;
 		this.model = modelFactory.create(model, range);
 		this.selectionListener = new ListSelectionListener() {
 
@@ -30,6 +43,38 @@ public class SpreadsheetTable {
 					return;
 				}
 				updateOffset();
+			}
+		};
+		this.ancestorListener = new AncestorListener() {
+
+			@Override
+			public void ancestorRemoved(AncestorEvent event) {
+			}
+
+			@Override
+			public void ancestorMoved(AncestorEvent event) {
+			}
+
+			@Override
+			public void ancestorAdded(AncestorEvent event) {
+				ancestorAdded = true;
+			}
+		};
+		this.boundsListener = new HierarchyBoundsListener() {
+
+			@Override
+			public void ancestorResized(HierarchyEvent e) {
+				if (!ancestorAdded) {
+					return;
+				}
+				Rectangle r = getTable().getVisibleRect();
+				if (r.getSize().equals(getTable().getSize())) {
+					setMaximum(getMaximum() + getExtendAmount());
+				}
+			}
+
+			@Override
+			public void ancestorMoved(HierarchyEvent e) {
 			}
 		};
 		setupTable();
@@ -59,6 +104,8 @@ public class SpreadsheetTable {
 	private void setupTable() {
 		table.setModel(model);
 		table.getSelectionModel().addListSelectionListener(selectionListener);
+		table.addAncestorListener(ancestorListener);
+		table.addHierarchyBoundsListener(boundsListener);
 	}
 
 	public JTable getTable() {
@@ -91,6 +138,14 @@ public class SpreadsheetTable {
 
 	public int getMaximum() {
 		return model.getMaximum();
+	}
+
+	public void setExtendAmount(int amount) {
+		model.getViewRange().setExtendAmount(amount);
+	}
+
+	public int getExtendAmount() {
+		return model.getViewRange().getExtendAmount();
 	}
 
 }

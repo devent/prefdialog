@@ -15,6 +15,8 @@ public class ViewRange {
 
 	private int maximum;
 
+	private int extendAmount;
+
 	public ViewRange() {
 		this((int) Math.pow(2, 15));
 	}
@@ -23,6 +25,7 @@ public class ViewRange {
 		this.propertySupport = new PropertyChangeSupport(this);
 		this.offset = 0;
 		this.maximum = maximum;
+		this.extendAmount = maximum;
 	}
 
 	public void setOffset(int offset) {
@@ -43,6 +46,14 @@ public class ViewRange {
 
 	public int getMaximum() {
 		return maximum;
+	}
+
+	public void setExtendAmount(int ammount) {
+		this.extendAmount = ammount;
+	}
+
+	public int getExtendAmount() {
+		return extendAmount;
 	}
 
 	/**
