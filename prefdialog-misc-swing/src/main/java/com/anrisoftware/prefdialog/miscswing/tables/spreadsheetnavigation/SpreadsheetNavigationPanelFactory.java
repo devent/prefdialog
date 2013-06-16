@@ -19,24 +19,20 @@ public interface SpreadsheetNavigationPanelFactory {
 	 * @param container
 	 *            the {@link JPanel} parent container.
 	 * 
+	 * @param table
+	 *            the {@link SpreadsheetTable}.
+	 * 
 	 * @param pane
 	 *            the {@link JScrollPane} scroll pane for the spreadsheet table.
 	 * 
-	 * @param table
-	 *            the {@link SpreadsheetTable}.
-	 * 
 	 * @return the {@link SpreadsheetNavigationPanel}.
 	 */
-	SpreadsheetNavigationPanel create(JPanel container, JScrollPane pane,
-			SpreadsheetTable table);
+	SpreadsheetNavigationPanel create(JPanel container, SpreadsheetTable table,
+			JScrollPane pane);
 
 	/**
-	 * Creates the navigation panel.
-	 * 
-	 * @param table
-	 *            the {@link SpreadsheetTable}.
-	 * 
-	 * @return the {@link SpreadsheetNavigationPanel}.
+	 * @see #create(JPanel, SpreadsheetTable, JScrollPane)
 	 */
-	SpreadsheetNavigationPanel create(SpreadsheetTable table);
+	SpreadsheetNavigationPanel create(JPanel container, SpreadsheetTable table);
+
 }

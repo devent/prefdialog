@@ -7,7 +7,6 @@ import javax.swing.JScrollPane
 import javax.swing.JTable
 
 import org.junit.BeforeClass
-import org.junit.Test
 
 import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.google.inject.Guice
@@ -21,7 +20,7 @@ import com.google.inject.Injector
  */
 class SpreadsheetTableTest {
 
-	@Test
+	//@Test
 	void "manually"() {
 		def title = "$NAME::manually"
 		def table = new JTable()

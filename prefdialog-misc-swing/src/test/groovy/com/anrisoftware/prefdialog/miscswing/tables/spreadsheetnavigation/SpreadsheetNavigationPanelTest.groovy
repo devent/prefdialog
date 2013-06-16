@@ -1,11 +1,9 @@
 package com.anrisoftware.prefdialog.miscswing.tables.spreadsheetnavigation
 
 import javax.swing.JPanel
-import javax.swing.JScrollPane
 import javax.swing.JTable
 
 import org.junit.BeforeClass
-import org.junit.Test
 
 import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.prefdialog.miscswing.tables.spreadsheet.NumbersModel
@@ -23,14 +21,14 @@ import com.google.inject.Injector
  */
 class SpreadsheetNavigationPanelTest {
 
-	@Test
+	//@Test
 	void "manually"() {
 		def title = "$NAME::manually"
 		def table = new JTable()
 		def range = new ViewRange(40)
 		def model = new NumbersModel(3, 20)
 		def spreadsheet = tableFactory.create(table, model, range)
-		def pane = paneFactory.create(new JPanel(), new JScrollPane(), spreadsheet)
+		def pane = paneFactory.create(new JPanel(), spreadsheet)
 
 		new TestFrameUtil(title, pane.container).withFixture({
 			Thread.sleep 60*1000

@@ -38,24 +38,32 @@ import com.google.inject.assistedinject.AssistedInject;
  */
 public class SpreadsheetNavigationPanel {
 
+	private static SpreadsheetNavigationPanelFactory factory;
+
 	/**
-	 * @see SpreadsheetNavigationPanelFactory#create(JPanel, JScrollPane,
-	 *      SpreadsheetTable)
+	 * @see SpreadsheetNavigationPanelFactory#create(JPanel, SpreadsheetTable,
+	 *      JScrollPane)
 	 */
 	public static SpreadsheetNavigationPanel decorate(JPanel container,
-			JScrollPane pane, SpreadsheetTable table) {
-		Injector injector = createInjector(new SpreadsheetNavigationPanelModule());
-		return injector.getInstance(SpreadsheetNavigationPanelFactory.class)
-				.create(container, pane, table);
+			SpreadsheetTable table, JScrollPane pane) {
+		return getFactory().create(container, table, pane);
 	}
 
 	/**
-	 * @see SpreadsheetNavigationPanelFactory#create(SpreadsheetTable)
+	 * @see SpreadsheetNavigationPanelFactory#create(JPanel, SpreadsheetTable)
 	 */
-	public static SpreadsheetNavigationPanel decorate(SpreadsheetTable table) {
-		Injector injector = createInjector(new SpreadsheetNavigationPanelModule());
-		return injector.getInstance(SpreadsheetNavigationPanelFactory.class)
-				.create(table);
+	public static SpreadsheetNavigationPanel decorate(JPanel container,
+			SpreadsheetTable table) {
+		return getFactory().create(container, table);
+	}
+
+	private static SpreadsheetNavigationPanelFactory getFactory() {
+		if (factory == null) {
+			Injector injector = createInjector(new SpreadsheetNavigationPanelModule());
+			factory = injector
+					.getInstance(SpreadsheetNavigationPanelFactory.class);
+		}
+		return factory;
 	}
 
 	private final JScrollPane scrollPane;
@@ -79,22 +87,22 @@ public class SpreadsheetNavigationPanel {
 	private int startColumnIndex;
 
 	/**
-	 * @see SpreadsheetNavigationPanelFactory#create(SpreadsheetTable)
+	 * @see SpreadsheetNavigationPanelFactory#create(JPanel, SpreadsheetTable)
 	 */
 	@AssistedInject
 	SpreadsheetNavigationPanel(UiDataPanel dataPanel,
-			@Assisted SpreadsheetTable table) {
-		this(dataPanel, new JPanel(), new JScrollPane(), table);
+			@Assisted JPanel container, @Assisted SpreadsheetTable table) {
+		this(dataPanel, container, table, new JScrollPane());
 	}
 
 	/**
-	 * @see SpreadsheetNavigationPanelFactory#create(JPanel, JScrollPane,
-	 *      SpreadsheetTable)
+	 * @see SpreadsheetNavigationPanelFactory#create(JPanel, SpreadsheetTable,
+	 *      JScrollPane)
 	 */
 	@AssistedInject
 	SpreadsheetNavigationPanel(UiDataPanel dataPanel,
-			@Assisted JPanel container, @Assisted JScrollPane pane,
-			@Assisted SpreadsheetTable table) {
+			@Assisted JPanel container, @Assisted SpreadsheetTable table,
+			@Assisted JScrollPane pane) {
 		this.container = container;
 		this.scrollPane = pane;
 		this.dataPanel = dataPanel;

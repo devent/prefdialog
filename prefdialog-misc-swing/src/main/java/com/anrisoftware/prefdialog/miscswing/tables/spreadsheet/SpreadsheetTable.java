@@ -1,19 +1,53 @@
 package com.anrisoftware.prefdialog.miscswing.tables.spreadsheet;
 
+import static com.google.inject.Guice.createInjector;
+
 import java.awt.Rectangle;
 import java.awt.event.HierarchyBoundsListener;
 import java.awt.event.HierarchyEvent;
 
-import javax.inject.Inject;
 import javax.swing.JTable;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import com.google.inject.Injector;
 import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
 
+/**
+ * Spreadsheet like table.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 1.0
+ */
 public class SpreadsheetTable {
+
+	private static SpreadsheetTableFactory factory;
+
+	/**
+	 * @see SpreadsheetTableFactory#create(JTable, SpreadsheetModel)
+	 */
+	public static SpreadsheetTable decorate(JTable table, SpreadsheetModel model) {
+		return getFactory().create(table, model);
+	}
+
+	/**
+	 * @see SpreadsheetTableFactory#create(JTable, SpreadsheetModel, ViewRange)
+	 */
+	public static SpreadsheetTable decorate(JTable table,
+			SpreadsheetModel model, ViewRange range) {
+		return getFactory().create(table, model, range);
+	}
+
+	private static SpreadsheetTableFactory getFactory() {
+		if (factory == null) {
+			Injector injector = createInjector(new SpreadsheetTableModule());
+			factory = injector.getInstance(SpreadsheetTableFactory.class);
+		}
+		return factory;
+	}
 
 	private final JTable table;
 
@@ -29,7 +63,20 @@ public class SpreadsheetTable {
 
 	private final TableBindings tableBindings;
 
-	@Inject
+	/**
+	 * @see SpreadsheetTableFactory#create(JTable, SpreadsheetModel)
+	 */
+	@AssistedInject
+	SpreadsheetTable(SpreadsheetTableModelFactory modelFactory,
+			TableBindings tableBindings, @Assisted JTable table,
+			@Assisted SpreadsheetModel model) {
+		this(modelFactory, tableBindings, new JTable(), model, new ViewRange());
+	}
+
+	/**
+	 * @see SpreadsheetTableFactory#create(JTable, SpreadsheetModel, ViewRange)
+	 */
+	@AssistedInject
 	SpreadsheetTable(SpreadsheetTableModelFactory modelFactory,
 			TableBindings tableBindings, @Assisted JTable table,
 			@Assisted SpreadsheetModel model, @Assisted ViewRange range) {
