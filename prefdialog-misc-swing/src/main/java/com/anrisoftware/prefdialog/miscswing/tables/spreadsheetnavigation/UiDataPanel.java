@@ -3,6 +3,7 @@ package com.anrisoftware.prefdialog.miscswing.tables.spreadsheetnavigation;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 
 import net.miginfocom.swing.MigLayout;
@@ -36,6 +37,7 @@ class UiDataPanel extends JPanel {
 				"0[grow][10%][][10%][][10%][][10%]0", "0[]0"));
 
 		currentColumnField = new JFormattedTextField();
+		currentColumnField.setHorizontalAlignment(SwingConstants.TRAILING);
 		currentColumnField.setName("currentColumnField");
 		currentColumnField.setText("0");
 		add(currentColumnField, "cell 1 0,growx");
@@ -60,6 +62,7 @@ class UiDataPanel extends JPanel {
 		add(separatorLabel, "cell 4 0,alignx trailing");
 
 		currentRowField = new JFormattedTextField();
+		currentRowField.setHorizontalAlignment(SwingConstants.TRAILING);
 		currentRowField.setName("currentRowField");
 		currentRowField.setText("0");
 		add(currentRowField, "cell 5 0,growx");
