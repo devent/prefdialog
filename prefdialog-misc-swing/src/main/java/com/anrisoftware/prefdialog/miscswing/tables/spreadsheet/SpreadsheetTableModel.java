@@ -13,6 +13,12 @@ import javax.swing.table.TableModel;
 
 import com.google.inject.assistedinject.Assisted;
 
+/**
+ * Shows the user a view range of the data.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 1.0
+ */
 @SuppressWarnings("serial")
 public class SpreadsheetTableModel extends AbstractTableModel {
 
@@ -26,6 +32,9 @@ public class SpreadsheetTableModel extends AbstractTableModel {
 
 	private ViewRange range;
 
+	/**
+	 * @see SpreadsheetTableModelFactory#create(SpreadsheetModel, ViewRange)
+	 */
 	@Inject
 	SpreadsheetTableModel(SpreadsheetTableModelLogger logger,
 			@Assisted SpreadsheetModel model, @Assisted ViewRange range) {
@@ -97,7 +106,7 @@ public class SpreadsheetTableModel extends AbstractTableModel {
 	/**
 	 * Returns the offset of the view.
 	 * 
-	 * @return the offset.
+	 * @return the offset index.
 	 */
 	public int getOffset() {
 		return range.getOffset();

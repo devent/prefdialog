@@ -158,42 +158,98 @@ public class SpreadsheetTable {
 		tableBindings.bindTable(table);
 	}
 
+	/**
+	 * Returns the decorated table.
+	 * 
+	 * @return the {@link JTable}.
+	 */
 	public JTable getTable() {
 		return table;
 	}
 
+	/**
+	 * Returns the spreadsheet table model.
+	 * 
+	 * @return the {@link SpreadsheetTableModel}.
+	 */
 	public SpreadsheetTableModel getModel() {
 		return model;
 	}
 
+	/**
+	 * Sets the view range for the model.
+	 * 
+	 * @param range
+	 *            the {@link ViewRange}.
+	 */
 	public void setViewRange(ViewRange range) {
 		model.setViewRange(range);
 	}
 
+	/**
+	 * Returns the view range for the model.
+	 * 
+	 * @return the {@link ViewRange}.
+	 */
 	public ViewRange getViewRange() {
 		return model.getViewRange();
 	}
 
+	/**
+	 * Sets the offset of the view.
+	 * 
+	 * @param offset
+	 *            the offset index.
+	 */
 	public void setOffset(int offset) {
 		model.getViewRange().setOffset(offset);
 	}
 
+	/**
+	 * Returns the offset of the view.
+	 * 
+	 * @return the offset index.
+	 */
 	public int getOffset() {
 		return model.getOffset();
 	}
 
+	/**
+	 * Sets the maximum of the view.
+	 * 
+	 * @param maximum
+	 *            the maximum rows.
+	 */
 	public void setMaximum(int maximum) {
 		model.getViewRange().setMaximum(maximum);
 	}
 
+	/**
+	 * Returns the maximum of the view.
+	 * 
+	 * @return the maximum.
+	 */
 	public int getMaximum() {
 		return model.getMaximum();
 	}
 
+	/**
+	 * Sets how much the view should be extended if the user selects over the
+	 * maximum of the view.
+	 * 
+	 * @param amount
+	 *            the amount to extend.
+	 */
 	public void setExtendAmount(int amount) {
 		model.getViewRange().setExtendAmount(amount);
 	}
 
+	/**
+	 * Returns how much the view should be extended if the user selects over the
+	 * maximum of the view.
+	 * 
+	 * @return the amount to extend.
+	 */
 	public int getExtendAmount() {
 		return model.getViewRange().getExtendAmount();
 	}

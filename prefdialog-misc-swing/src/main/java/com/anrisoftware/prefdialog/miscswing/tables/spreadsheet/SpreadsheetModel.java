@@ -2,6 +2,13 @@ package com.anrisoftware.prefdialog.miscswing.tables.spreadsheet;
 
 import javax.swing.table.TableModel;
 
+/**
+ * Extends the table model to get information about columns and rows that are
+ * not actually in the model.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 1.0
+ */
 public interface SpreadsheetModel extends TableModel {
 
 	/**
