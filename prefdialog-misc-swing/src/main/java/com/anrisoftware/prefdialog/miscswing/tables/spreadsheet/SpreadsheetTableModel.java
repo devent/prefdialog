@@ -9,6 +9,7 @@ import java.beans.PropertyChangeListener;
 import javax.inject.Inject;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableModel;
 
 import com.google.inject.assistedinject.Assisted;
 
@@ -53,6 +54,12 @@ public class SpreadsheetTableModel extends AbstractTableModel {
 		setViewRange(range);
 	}
 
+	/**
+	 * Sets the view range for the model.
+	 * 
+	 * @param range
+	 *            the {@link ViewRange}.
+	 */
 	public void setViewRange(ViewRange range) {
 		log.checkViewRange(range);
 		removeOldRange(this.range);
@@ -69,14 +76,38 @@ public class SpreadsheetTableModel extends AbstractTableModel {
 		}
 	}
 
+	/**
+	 * Returns the view range for the model.
+	 * 
+	 * @return the {@link ViewRange}.
+	 */
 	public ViewRange getViewRange() {
 		return range;
 	}
 
+	/**
+	 * Returns the underlying model.
+	 * 
+	 * @return the {@link TableModel}.
+	 */
+	public TableModel getModel() {
+		return model;
+	}
+
+	/**
+	 * Returns the offset of the view.
+	 * 
+	 * @return the offset.
+	 */
 	public int getOffset() {
 		return range.getOffset();
 	}
 
+	/**
+	 * Returns the maximum of the view.
+	 * 
+	 * @return the maximum.
+	 */
 	public int getMaximum() {
 		return range.getMaximum();
 	}

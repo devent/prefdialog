@@ -48,7 +48,7 @@ class NumbersModel extends AbstractTableModel implements SpreadsheetModel {
 	@Override
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
 		data[columnIndex][rowIndex] = aValue
-		println data[columnIndex][rowIndex]
+		fireTableCellUpdated(rowIndex, columnIndex)
 	}
 
 	@Override

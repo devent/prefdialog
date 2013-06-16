@@ -10,7 +10,6 @@ import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.TableModel;
 
 import com.google.inject.assistedinject.Assisted;
 
@@ -116,7 +115,7 @@ public class SpreadsheetTable {
 		return table;
 	}
 
-	public TableModel getModel() {
+	public SpreadsheetTableModel getModel() {
 		return model;
 	}
 
