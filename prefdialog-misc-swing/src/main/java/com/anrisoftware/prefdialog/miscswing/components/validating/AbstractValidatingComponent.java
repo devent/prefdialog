@@ -173,7 +173,7 @@ public abstract class AbstractValidatingComponent<ValueType, ComponentType exten
 		}
 	}
 
-	private void restoreValueIfInvalid() {
+	protected void restoreValueIfInvalid() {
 		if (!valueValid) {
 			setValue(value);
 		}
