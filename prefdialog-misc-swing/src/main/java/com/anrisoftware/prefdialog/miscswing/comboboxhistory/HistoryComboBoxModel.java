@@ -1,9 +1,11 @@
 package com.anrisoftware.prefdialog.miscswing.comboboxhistory;
 
 import static com.google.inject.Guice.createInjector;
+import static java.util.Collections.synchronizedSet;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.swing.MutableComboBoxModel;
@@ -19,11 +21,11 @@ public class HistoryComboBoxModel<E> implements MutableComboBoxModel<E>,
 	private static HistoryComboBoxModelFactory factory;
 
 	/**
-	 * @see HistoryComboBoxModelFactory#create(MutableComboBoxModel)
+	 * @see HistoryComboBoxModelFactory#create(MutableComboBoxModel, Set)
 	 */
 	@SuppressWarnings("unchecked")
 	public static <E> HistoryComboBoxModel<E> decorate(
-			MutableComboBoxModel<E> model, List<E> defaultItems) {
+			MutableComboBoxModel<E> model, Set<E> defaultItems) {
 		return (HistoryComboBoxModel<E>) getFactory().create(model,
 				defaultItems);
 	}
@@ -41,20 +43,27 @@ public class HistoryComboBoxModel<E> implements MutableComboBoxModel<E>,
 
 	private final MutableComboBoxModel<E> model;
 
-	private final List<E> defaultItems;
+	private final Set<E> defaultItems;
+
+	private final Set<E> items;
 
 	private int maximum;
 
+	/**
+	 * @see HistoryComboBoxModelFactory#create(MutableComboBoxModel, Set)
+	 */
 	@Inject
 	HistoryComboBoxModel(@Assisted MutableComboBoxModel<E> model,
-			@Assisted List<E> defaultItems) {
+			@Assisted Set<E> defaultItems) {
 		this.maximum = 5;
 		this.model = model;
 		this.defaultItems = defaultItems;
+		this.items = synchronizedSet(new HashSet<E>());
 		insertDefaultItems();
 	}
 
 	private void insertDefaultItems() {
+		items.addAll(defaultItems);
 		for (E item : defaultItems) {
 			model.addElement(item);
 		}
@@ -73,17 +82,20 @@ public class HistoryComboBoxModel<E> implements MutableComboBoxModel<E>,
 
 	@Override
 	public void addElement(E item) {
-		if (defaultItems.contains(item)) {
+		if (items.contains(item)) {
 			setSelectedItem(item);
 		} else {
 			removeCustomElementFromEnd();
 			model.insertElementAt(item, 0);
+			items.add(item);
 		}
 	}
 
 	private void removeCustomElementFromEnd() {
 		if (getCustomItemsSize() == maximum) {
-			model.removeElementAt(getLastItemIndex());
+			E item = getElementAt(getLastItemIndex());
+			items.remove(item);
+			model.removeElement(item);
 		}
 	}
 
@@ -91,6 +103,7 @@ public class HistoryComboBoxModel<E> implements MutableComboBoxModel<E>,
 	public void removeElement(Object obj) {
 		if (!defaultItems.contains(obj)) {
 			model.removeElement(obj);
+			items.remove(obj);
 		}
 	}
 
@@ -130,10 +143,11 @@ public class HistoryComboBoxModel<E> implements MutableComboBoxModel<E>,
 
 	@Override
 	public void insertElementAt(E item, int index) {
-		if (defaultItems.contains(getElementAt(index))) {
+		if (items.contains(getElementAt(index))) {
 			model.setSelectedItem(item);
 		} else {
 			model.insertElementAt(item, index);
+			items.add(item);
 		}
 	}
 
@@ -149,8 +163,10 @@ public class HistoryComboBoxModel<E> implements MutableComboBoxModel<E>,
 
 	@Override
 	public void removeElementAt(int index) {
-		if (!defaultItems.contains(getElementAt(index))) {
-			model.removeElementAt(index);
+		E item = getElementAt(index);
+		if (!items.contains(item)) {
+			model.removeElement(item);
+			items.remove(item);
 		}
 	}
 

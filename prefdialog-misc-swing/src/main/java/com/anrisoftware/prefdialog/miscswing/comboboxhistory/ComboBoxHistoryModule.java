@@ -10,6 +10,8 @@ public class ComboBoxHistoryModule extends AbstractModule {
 		install(new FactoryModuleBuilder().implement(
 				HistoryComboBoxModel.class, HistoryComboBoxModel.class).build(
 				HistoryComboBoxModelFactory.class));
+		install(new FactoryModuleBuilder().implement(HistoryComboBox.class,
+				HistoryComboBox.class).build(HistoryComboBoxFactory.class));
 	}
 
 }

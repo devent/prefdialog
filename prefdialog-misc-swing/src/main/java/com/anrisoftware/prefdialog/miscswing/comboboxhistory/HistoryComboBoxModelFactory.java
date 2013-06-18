@@ -1,11 +1,11 @@
 package com.anrisoftware.prefdialog.miscswing.comboboxhistory;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.swing.MutableComboBoxModel;
 
 public interface HistoryComboBoxModelFactory {
 
 	HistoryComboBoxModel<?> create(MutableComboBoxModel<?> model,
-			List<?> defaultItems);
+			Set<?> defaultItems);
 }
