@@ -386,9 +386,15 @@ public interface FieldComponent<ComponentType extends Component> {
 	 * 
 	 * @param index
 	 *            the index.
-	 *            
+	 * 
 	 * @return the {@link FieldComponent}.
 	 */
 	FieldComponent<?> getField(int index);
 
+	/**
+	 * Returns the count of field components that were added to this field.
+	 * 
+	 * @return the count of fields.
+	 */
+	int getFieldsCount();
 }

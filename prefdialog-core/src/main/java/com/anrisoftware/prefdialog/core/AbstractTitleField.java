@@ -51,9 +51,8 @@ public abstract class AbstractTitleField<ComponentType extends Component>
 		extends AbstractContainerField<ComponentType> {
 
 	/**
-	 * The post-fix of the title label name. The name of the title label will be
-	 * set to <code>&lt;name&gt;-{@value #TITLE_NAME}</code>, with &lt;name&gt;
-	 * being the name of the component.
+	 * Suffix for the title label for the field. The name of the title label
+	 * will be {@code <name>-title}, {@code <name>} is the name of the field.
 	 */
 	public static final String TITLE_NAME = "title";
 

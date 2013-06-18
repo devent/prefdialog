@@ -726,6 +726,11 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	}
 
 	@Override
+	public int getFieldsCount() {
+		return childFields.size();
+	}
+
+	@Override
 	public String toString() {
 		return new ToStringBuilder(this).append("name", getName()).toString();
 	}

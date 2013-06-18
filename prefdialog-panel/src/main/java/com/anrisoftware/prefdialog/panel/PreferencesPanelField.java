@@ -50,6 +50,13 @@ import com.google.inject.assistedinject.Assisted;
 @SuppressWarnings("serial")
 public class PreferencesPanelField extends AbstractFieldComponent<JPanel> {
 
+	/**
+	 * Suffix for the preference panel that contains the input fields. The name
+	 * of the preference panel will be {@code <name>-panel}, {@code <name>} is
+	 * the name of the field.
+	 */
+	public static final String PANEL_SUFFIX = "panel";
+
 	private static final Class<Child> CHILD_FIELD_ANNOTATION = Child.class;
 
 	private final PreferencesPanelFieldLogger log;
@@ -167,5 +174,11 @@ public class PreferencesPanelField extends AbstractFieldComponent<JPanel> {
 	@Override
 	public Component getAWTComponent() {
 		return scrollPane;
+	}
+
+	@Override
+	public void setName(String name) {
+		super.setName(name);
+		getComponent().setName(format("%s-%s", name, PANEL_SUFFIX));
 	}
 }

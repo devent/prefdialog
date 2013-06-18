@@ -59,9 +59,9 @@ public abstract class AbstractContainerField<ComponentType extends Component>
 		extends AbstractFieldComponent<ComponentType> {
 
 	/**
-	 * The post-fix of the container name. The name of the container will be set
-	 * to <code>&lt;name&gt;-{@value #CONTAINER_NAME}</code>, with &lt;name&gt;
-	 * being the name of the component.
+	 * Suffix for the container panel that contains the input field. The name of
+	 * the panel will be {@code <name>-container}, {@code <name>} is the name of
+	 * the field.
 	 */
 	public static final String CONTAINER_NAME = "container";
 
