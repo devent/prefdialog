@@ -47,6 +47,8 @@ public class ClassTask<ClassType> implements Builder<ClassType> {
 
 	private Object parent;
 
+	private ClassType defaultValue;
+
 	/**
 	 * @see ClassTaskFactory#create(String, Class, AccessibleObject)
 	 */
@@ -65,6 +67,11 @@ public class ClassTask<ClassType> implements Builder<ClassType> {
 
 	public ClassTask<ClassType> withParent(Object parent) {
 		this.parent = parent;
+		return this;
+	}
+
+	public ClassTask<ClassType> withDefault(ClassType defaultValue) {
+		this.defaultValue = defaultValue;
 		return this;
 	}
 
@@ -105,6 +112,9 @@ public class ClassTask<ClassType> implements Builder<ClassType> {
 	private ClassType createModelClass() {
 		Class<? extends FileChooserModel>[] type = fieldAnnotation
 				.getValue(attributeName + "Class");
+		if (type.length < 1 && defaultValue != null) {
+			return defaultValue;
+		}
 		isTrue(type.length > 0, ONE_CLASS_TYPE_SET, attributeName);
 		return (ClassType) beanFactory.create(type[0]);
 	}
