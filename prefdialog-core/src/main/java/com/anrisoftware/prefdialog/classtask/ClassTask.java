@@ -65,11 +65,28 @@ public class ClassTask<ClassType> implements Builder<ClassType> {
 		this.attributeName = attributeName;
 	}
 
+	/**
+	 * Sets the parent where the field can be found.
+	 * 
+	 * @param parent
+	 *            the parent {@link Object}.
+	 * 
+	 * @return this {@link ClassTask}.
+	 */
 	public ClassTask<ClassType> withParent(Object parent) {
 		this.parent = parent;
 		return this;
 	}
 
+	/**
+	 * Sets the default value that is returned if neither the object field nor
+	 * the object class is set in the annotation.
+	 * 
+	 * @param defaultValue
+	 *            the default value {@link Object}.
+	 * 
+	 * @return this {@link ClassTask}.
+	 */
 	public ClassTask<ClassType> withDefault(ClassType defaultValue) {
 		this.defaultValue = defaultValue;
 		return this;
