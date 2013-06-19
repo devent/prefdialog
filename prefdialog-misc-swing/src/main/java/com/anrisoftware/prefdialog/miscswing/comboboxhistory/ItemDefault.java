@@ -13,7 +13,7 @@ import com.google.inject.assistedinject.Assisted;
  * @since 1.0
  */
 @SuppressWarnings("serial")
-class ItemDefault implements Serializable {
+public class ItemDefault implements Serializable {
 
 	private final Object item;
 
