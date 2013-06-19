@@ -52,8 +52,16 @@ public class HistoryComboBoxModel implements MutableComboBoxModel, Serializable 
 		this.model = model;
 		this.itemDefaultFactory = itemDefaultFactory;
 		this.defaultItems = createDefaultItems(defaultItems);
-		this.items = synchronizedSet(new HashSet());
+		this.items = synchronizedSet(fromModel(model));
 		insertDefaultItems();
+	}
+
+	private Set<Object> fromModel(MutableComboBoxModel model) {
+		Set<Object> set = new HashSet<Object>(model.getSize());
+		for (int i = 0; i < model.getSize(); i++) {
+			set.add(model.getElementAt(i));
+		}
+		return set;
 	}
 
 	private Set<Object> createDefaultItems(Set items) {
