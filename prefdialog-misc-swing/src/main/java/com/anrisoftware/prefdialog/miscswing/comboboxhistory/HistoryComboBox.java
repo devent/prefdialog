@@ -2,29 +2,84 @@ package com.anrisoftware.prefdialog.miscswing.comboboxhistory;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashSet;
 import java.util.Set;
 
-import javax.inject.Inject;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComboBox;
+import javax.swing.ListCellRenderer;
 import javax.swing.MutableComboBoxModel;
 
 import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
 
-public class HistoryComboBox<E> {
+/**
+ * Decorate a combo box as the history combo box. That is a combo box that
+ * retains a history of added items in the model.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 1.0
+ */
+@SuppressWarnings({ "rawtypes", "unchecked" })
+public class HistoryComboBox {
 
-	private final JComboBox<E> comboBox;
+	private final JComboBox comboBox;
 
-	private final HistoryComboBoxModel<E> model;
+	private final HistoryComboBoxModel model;
 
 	private final ActionListener actionListener;
 
-	@Inject
+	private final ListCellRenderer renderer;
+
+	/**
+	 * @see HistoryComboBoxFactory#create(JComboBox)
+	 */
+	@AssistedInject
 	HistoryComboBox(HistoryComboBoxModelFactory modelFactory,
-			@Assisted JComboBox<E> comboBox,
-			@Assisted MutableComboBoxModel<E> model,
-			@Assisted Set<E> defaultItems) {
+			ItemsDefaultComboBoxRendererFactory rendererFactory,
+			@Assisted JComboBox comboBox) {
+		this(modelFactory, rendererFactory, comboBox,
+				new DefaultComboBoxModel(), new DefaultListCellRenderer(),
+				new HashSet());
+	}
+
+	/**
+	 * @see HistoryComboBoxFactory#create(JComboBox, Set)
+	 */
+	@AssistedInject
+	HistoryComboBox(HistoryComboBoxModelFactory modelFactory,
+			ItemsDefaultComboBoxRendererFactory rendererFactory,
+			@Assisted JComboBox comboBox, @Assisted Set defaultItems) {
+		this(modelFactory, rendererFactory, comboBox,
+				new DefaultComboBoxModel(), new DefaultListCellRenderer(),
+				defaultItems);
+	}
+
+	/**
+	 * @see HistoryComboBoxFactory#create(JComboBox, MutableComboBoxModel, Set)
+	 */
+	@AssistedInject
+	HistoryComboBox(HistoryComboBoxModelFactory modelFactory,
+			ItemsDefaultComboBoxRendererFactory rendererFactory,
+			@Assisted JComboBox comboBox, @Assisted MutableComboBoxModel model,
+			@Assisted Set defaultItems) {
+		this(modelFactory, rendererFactory, comboBox, model,
+				new DefaultListCellRenderer(), defaultItems);
+	}
+
+	/**
+	 * @see HistoryComboBoxFactory#create(JComboBox, MutableComboBoxModel,
+	 *      ListCellRenderer, Set)
+	 */
+	@AssistedInject
+	HistoryComboBox(HistoryComboBoxModelFactory modelFactory,
+			ItemsDefaultComboBoxRendererFactory rendererFactory,
+			@Assisted JComboBox comboBox, @Assisted MutableComboBoxModel model,
+			@Assisted ListCellRenderer renderer, @Assisted Set defaultItems) {
 		this.comboBox = comboBox;
-		this.model = createModel(modelFactory, model, defaultItems);
+		this.model = modelFactory.create(model, defaultItems);
+		this.renderer = rendererFactory.create(renderer);
 		this.actionListener = new ActionListener() {
 
 			@Override
@@ -35,21 +90,22 @@ public class HistoryComboBox<E> {
 		setupComboBox();
 	}
 
-	@SuppressWarnings("unchecked")
 	private void addItem() {
-		model.addElement((E) comboBox.getSelectedItem());
-	}
-
-	@SuppressWarnings("unchecked")
-	private HistoryComboBoxModel<E> createModel(
-			HistoryComboBoxModelFactory modelFactory,
-			MutableComboBoxModel<E> model, Set<E> defaultItems) {
-		return (HistoryComboBoxModel<E>) modelFactory.create(model,
-				defaultItems);
+		model.addElement(comboBox.getSelectedItem());
 	}
 
 	private void setupComboBox() {
 		comboBox.setModel(model);
+		comboBox.setRenderer(renderer);
 		comboBox.addActionListener(actionListener);
+	}
+
+	/**
+	 * Returns the decorated combo box.
+	 * 
+	 * @return the {@link JComboBox}.
+	 */
+	public JComboBox getComboBox() {
+		return comboBox;
 	}
 }
