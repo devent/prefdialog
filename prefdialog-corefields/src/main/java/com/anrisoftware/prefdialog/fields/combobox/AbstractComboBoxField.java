@@ -72,7 +72,7 @@ public abstract class AbstractComboBoxField extends
 		setupValidating();
 	}
 
-	private void changeVetoableValue(PropertyChangeEvent evt)
+	protected void changeVetoableValue(PropertyChangeEvent evt)
 			throws PropertyVetoException {
 		super.trySetValue(evt.getNewValue());
 		changeValue(evt.getNewValue());

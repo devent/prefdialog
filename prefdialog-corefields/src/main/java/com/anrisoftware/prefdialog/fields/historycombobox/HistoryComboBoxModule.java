@@ -16,35 +16,36 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-corefields. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.fields.combobox;
+package com.anrisoftware.prefdialog.fields.historycombobox;
 
-import java.lang.annotation.Annotation;
+import javax.swing.JComboBox;
 
-import com.anrisoftware.prefdialog.annotations.ComboBox;
-import com.google.inject.assistedinject.Assisted;
-import com.google.inject.assistedinject.AssistedInject;
+import com.anrisoftware.prefdialog.fields.FieldComponent;
+import com.anrisoftware.prefdialog.fields.FieldFactory;
+import com.google.inject.AbstractModule;
+import com.google.inject.TypeLiteral;
+import com.google.inject.assistedinject.FactoryModuleBuilder;
 
 /**
- * Combo box field. A combo box field offers multiple items in a drop-down list.
+ * Binds the combo box field with history factory.
+ * 
+ * @see FieldComponent
+ * @see HistoryComboBox
+ * @see HistoryComboBoxField
+ * @see HistoryComboBoxFactory
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-@SuppressWarnings("serial")
-public class ComboBoxField extends AbstractComboBoxField {
-
-	private static final Class<? extends Annotation> ANNOTATION_CLASS = ComboBox.class;
-
-	/**
-	 * @see ComboBoxFieldFactory#create(Object, String)
-	 */
-	@AssistedInject
-	ComboBoxField(@Assisted Object parentObject, @Assisted String fieldName) {
-		super(parentObject, fieldName);
-	}
+class HistoryComboBoxModule extends AbstractModule {
 
 	@Override
-	public Class<? extends Annotation> getAnnotationClass() {
-		return ANNOTATION_CLASS;
+	protected void configure() {
+		install(new FactoryModuleBuilder().implement(
+				new TypeLiteral<FieldComponent<JComboBox<?>>>() {
+				}, HistoryComboBoxField.class).build(
+				HistoryComboBoxFactory.class));
+		bind(FieldFactory.class).to(HistoryComboBoxFactory.class);
 	}
+
 }
