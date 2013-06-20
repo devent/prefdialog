@@ -133,23 +133,23 @@ public @interface ComboBox {
 	String model() default "";
 
 	/**
+	 * The custom {@link ComboBoxModel} to use with this combo box. The model
+	 * must have the default constructor available for instantiation. Defaults
+	 * to the {@link DefaultComboBoxModel}.
+	 */
+	@SuppressWarnings("rawtypes")
+	Class<? extends ComboBoxModel>[] modelClass() default {};
+
+	/**
 	 * The name of the field name to use for the custom {@link ListCellRenderer}
 	 * . Defaults to an empty name which means no field is set.
 	 */
 	String renderer() default "";
 
 	/**
-	 * The custom {@link ComboBoxModel} to use with this combo box. The model
-	 * must have the default constructor available for instantiation. Defaults
-	 * to the {@link DefaultComboBoxModel}.
-	 */
-	@SuppressWarnings("rawtypes")
-	Class<? extends ComboBoxModel> modelClass() default DefaultComboBoxModel.class;
-
-	/**
 	 * The custom {@link ListCellRenderer} to use with this combo box. The
 	 * renderer must have the default constructor available for instantiation.
 	 * Defaults to the {@link DefaultListCellRenderer}.
 	 */
-	Class<? extends ListCellRenderer<?>> rendererClass() default DefaultListCellRenderer.class;
+	Class<? extends ListCellRenderer<?>>[] rendererClass() default {};
 }

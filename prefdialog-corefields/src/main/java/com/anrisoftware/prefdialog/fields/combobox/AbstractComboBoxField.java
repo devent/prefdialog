@@ -13,10 +13,11 @@ import java.util.Vector;
 import javax.inject.Inject;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComboBox;
 import javax.swing.ListCellRenderer;
 
+import com.anrisoftware.globalpom.reflection.annotationclass.AnnotationClass;
+import com.anrisoftware.globalpom.reflection.annotationclass.AnnotationClassFactory;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccess;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccessFactory;
 import com.anrisoftware.globalpom.reflection.beans.BeanAccess;
@@ -36,10 +37,6 @@ public abstract class AbstractComboBoxField extends
 
 	private static final String EDITABLE_ELEMENT = "editable";
 
-	private static final String RENDERER_CLASS_ELEMENT = "rendererClass";
-
-	private static final String MODEL_CLASS_ELEMENT = "modelClass";
-
 	private static final String RENDERER_ELEMENT = "renderer";
 
 	private static final String MODEL_ELEMENT = "model";
@@ -52,9 +49,11 @@ public abstract class AbstractComboBoxField extends
 
 	private final VetoableChangeListener valueVetoListener;
 
-	private AnnotationAccess fieldAnnotation;
+	private transient AnnotationAccess fieldAnnotation;
 
-	private BeanAccessFactory beanAccessFactory;
+	private transient AnnotationClass<?> annotationClass;
+
+	private transient BeanAccessFactory beanAccessFactory;
 
 	protected AbstractComboBoxField(Object parentObject, String fieldName) {
 		super(new JComboBox<Object>(), parentObject, fieldName);
@@ -98,18 +97,22 @@ public abstract class AbstractComboBoxField extends
 	 */
 	protected abstract Class<? extends Annotation> getAnnotationClass();
 
+	/**
+	 * Reads the attributes of the annotation and setups the field.
+	 */
 	@Inject
 	void setupField(AbstractComboBoxFieldLogger logger,
 			AnnotationAccessFactory annotationAccessFactory,
+			AnnotationClassFactory classFactory,
 			BeanAccessFactory beanAccessFactory) {
 		this.log = logger;
+		this.annotationClass = classFactory.create(getParentObject(),
+				getAnnotationClass(), getAccessibleObject());
 		this.fieldAnnotation = annotationAccessFactory.create(
 				getAnnotationClass(), getAccessibleObject());
 		this.beanAccessFactory = beanAccessFactory;
 		setupModel();
-		setupModelClass();
 		setupRenderer();
-		setupRendererClass();
 		setupElements();
 		setupEditable();
 		getComponent().setSelectedItem(getValue());
@@ -120,85 +123,19 @@ public abstract class AbstractComboBoxField extends
 		setEditable(editable);
 	}
 
-	private void setupRendererClass() {
-		Class<? extends ListCellRenderer<?>> type = fieldAnnotation
-				.getValue(RENDERER_CLASS_ELEMENT);
-		if (type != DefaultListCellRenderer.class) {
-			setRendererFromClass(type);
-		}
-	}
-
-	private void setRendererFromClass(Class<? extends ListCellRenderer<?>> type) {
-		ListCellRenderer<?> renderer = getBeanFactory().create(type);
-		setRenderer(renderer);
-	}
-
-	private void setupModelClass() {
-		Class<? extends ComboBoxModel<?>> type = fieldAnnotation
-				.getValue(MODEL_CLASS_ELEMENT);
-		if (type != DefaultComboBoxModel.class) {
-			setModelFromClass(type);
-		}
-	}
-
-	private void setModelFromClass(Class<? extends ComboBoxModel<?>> type) {
-		ComboBoxModel<?> model = getBeanFactory().create(type);
-		setModel(model);
-	}
-
 	private void setupModel() {
-		String fieldName = fieldAnnotation.getValue(MODEL_ELEMENT);
-		if (!isEmpty(fieldName)) {
-			setModelFromField(fieldName);
-		}
-	}
-
-	private void setModelFromField(String fieldName) {
-		Object parent = getParentObject();
-		BeanAccess access = beanAccessFactory.create(fieldName, parent);
-		ComboBoxModel<?> value = access.getValue();
-		value = value == null ? createModelFromField(access) : value;
-		setModel(value);
-	}
-
-	@SuppressWarnings("unchecked")
-	private ComboBoxModel<?> createModelFromField(BeanAccess access) {
-		Class<? extends ComboBoxModel<?>> type;
-		type = (Class<? extends ComboBoxModel<?>>) access.getType();
-		ComboBoxModel<?> model = getBeanFactory().create(type);
-		try {
-			access.setValue(model);
-			return model;
-		} catch (PropertyVetoException e) {
-			throw log.errorSetModel(this, e);
+		ComboBoxModel<?> model = (ComboBoxModel<?>) annotationClass
+				.forAttribute(MODEL_ELEMENT).build();
+		if (model != null) {
+			setModel(model);
 		}
 	}
 
 	private void setupRenderer() {
-		String fieldName = fieldAnnotation.getValue(RENDERER_ELEMENT);
-		if (!isEmpty(fieldName)) {
-			setRendererFromField(fieldName);
-		}
-	}
-
-	private void setRendererFromField(String fieldName) {
-		Object parent = getParentObject();
-		BeanAccess access = beanAccessFactory.create(fieldName, parent);
-		ListCellRenderer<?> value = access.getValue();
-		value = value == null ? createRendererFromField(access) : value;
-		setRenderer(value);
-	}
-
-	@SuppressWarnings("unchecked")
-	private ListCellRenderer<?> createRendererFromField(BeanAccess access) {
-		Class<? extends ListCellRenderer<?>> type;
-		type = (Class<? extends ListCellRenderer<?>>) access.getType();
-		ListCellRenderer<?> renderer = getBeanFactory().create(type);
-		try {
-			access.setValue(renderer);
-			return renderer;
-		} catch (PropertyVetoException e) {
-			throw log.errorSetRenderer(this, e);
+		ListCellRenderer<?> renderer = (ListCellRenderer<?>) annotationClass
+				.forAttribute(RENDERER_ELEMENT).build();
+		if (renderer != null) {
+			setRenderer(renderer);
 		}
 	}
 
