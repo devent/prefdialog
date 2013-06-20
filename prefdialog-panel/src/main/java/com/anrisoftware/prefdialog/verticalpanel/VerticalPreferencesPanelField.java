@@ -27,6 +27,7 @@ import info.clearthought.layout.TableLayout;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.beans.PropertyVetoException;
+import java.lang.reflect.AccessibleObject;
 import java.util.ServiceLoader;
 
 import javax.inject.Inject;
@@ -38,12 +39,14 @@ import com.anrisoftware.globalpom.reflection.annotations.AnnotationDiscovery;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationDiscoveryFactory;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationFilter;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationSetFilterFactory;
+import com.anrisoftware.globalpom.reflection.beans.BeanField;
 import com.anrisoftware.prefdialog.annotations.Child;
 import com.anrisoftware.prefdialog.core.AbstractFieldComponent;
 import com.anrisoftware.prefdialog.fields.FieldComponent;
 import com.anrisoftware.prefdialog.fields.FieldService;
 import com.anrisoftware.prefdialog.panel.PreferencesPanel;
 import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
 
 /**
  * Vertical preferences panel. Each child is layout from top to bottom in one
@@ -76,10 +79,12 @@ public class VerticalPreferencesPanelField extends
 
 	private final JPanel childenPanel;
 
+	private transient BeanField beanField;
+
 	/**
 	 * @see VerticalPreferencesPanelFieldFactory#create(Object, String)
 	 */
-	@Inject
+	@AssistedInject
 	VerticalPreferencesPanelField(VerticalPreferencesPanelFieldLogger logger,
 			@Assisted Object parentObject, @Assisted String fieldName) {
 		super(new JPanel(), parentObject, fieldName);
@@ -113,7 +118,8 @@ public class VerticalPreferencesPanelField extends
 	@Inject
 	void setFieldsServiceLoader(ServiceLoader<FieldService> loader,
 			AnnotationDiscoveryFactory discoveryFactory,
-			AnnotationSetFilterFactory filterFactory) {
+			AnnotationSetFilterFactory filterFactory, BeanField beanField) {
+		this.beanField = beanField;
 		discoverChildren(loader, discoveryFactory, filterFactory);
 	}
 
@@ -131,7 +137,8 @@ public class VerticalPreferencesPanelField extends
 
 	private FieldComponent<? extends Component> loadField(FieldService service,
 			AnnotationBean bean) {
-		String fieldName = bean.getField().getName();
+		AccessibleObject field = bean.getMember();
+		String fieldName = beanField.toFieldName(field);
 		return service.getFactory().create(getParentObject(), fieldName);
 	}
 

@@ -34,6 +34,7 @@ import com.anrisoftware.globalpom.reflection.annotations.AnnotationDiscovery;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationDiscoveryFactory;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationFilter;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationSetFilterFactory;
+import com.anrisoftware.globalpom.reflection.beans.BeanField;
 import com.anrisoftware.prefdialog.annotations.Child;
 import com.anrisoftware.prefdialog.annotations.FieldAnnotation;
 import com.anrisoftware.prefdialog.core.AbstractFieldComponent;
@@ -65,7 +66,9 @@ public class PreferencesPanelField extends AbstractFieldComponent<JPanel> {
 
 	private transient AnnotationDiscoveryFactory discoveryFactory;
 
-	private AnnotationFilter filter;
+	private transient AnnotationFilter filter;
+
+	private transient BeanField beanField;
 
 	private final TableLayout layout;
 
@@ -104,11 +107,12 @@ public class PreferencesPanelField extends AbstractFieldComponent<JPanel> {
 	@Inject
 	void setFieldsServiceLoader(ServiceLoader<FieldService> loader,
 			AnnotationDiscoveryFactory discoveryFactory,
-			AnnotationSetFilterFactory filterFactory) {
+			AnnotationSetFilterFactory filterFactory, BeanField beanField) {
 		this.loader = loader;
 		this.discoveryFactory = discoveryFactory;
 		this.filter = filterFactory
 				.create(com.anrisoftware.prefdialog.annotations.FieldComponent.class);
+		this.beanField = beanField;
 		childField = createChildPanel();
 		addField(childField);
 		discoverFields(childField, getValue());
@@ -124,7 +128,7 @@ public class PreferencesPanelField extends AbstractFieldComponent<JPanel> {
 		AnnotationDiscovery discovery = createAnnotationDiscovery(object);
 		for (AnnotationBean bean : discovery.call()) {
 			FieldService service = findAnnotationService(bean);
-			String fieldName = bean.getField().getName();
+			String fieldName = beanField.toFieldName(bean.getMember());
 			FieldComponent<? extends Component> field = service.getFactory()
 					.create(object, fieldName);
 			parentField.addField(field);
