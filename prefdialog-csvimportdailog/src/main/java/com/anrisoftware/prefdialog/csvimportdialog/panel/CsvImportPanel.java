@@ -3,14 +3,17 @@ package com.anrisoftware.prefdialog.csvimportdialog.panel;
 import static java.awt.BorderLayout.CENTER;
 
 import java.awt.Component;
+import java.util.Properties;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.swing.JPanel;
 
+import com.anrisoftware.prefdialog.core.AbstractTitleField;
 import com.anrisoftware.prefdialog.fields.FieldComponent;
 import com.anrisoftware.prefdialog.fields.FieldFactory;
-import com.anrisoftware.resources.texts.api.Texts;
-import com.anrisoftware.resources.texts.api.TextsFactory;
+import com.anrisoftware.resources.texts.central.TextsResources;
+import com.anrisoftware.resources.texts.central.TextsResourcesFactory;
 import com.google.inject.assistedinject.Assisted;
 
 public class CsvImportPanel {
@@ -19,21 +22,49 @@ public class CsvImportPanel {
 
 	private final FieldComponent<JPanel> propertiesPanel;
 
-	private final Texts texts;
+	private final TextsResources texts;
+
+	private final CancelAction cancelAction;
+
+	private final ImportAction importAction;
 
 	@Inject
-	CsvImportPanel(TextsFactory texts, UiPanel panel,
-			FieldFactory<JPanel> panelFieldFactory, @Assisted Object properties) {
+	CsvImportPanel(
+			TextsResourcesFactory textsFactory,
+			@Named("CsvImportPanel-texts-properties") Properties textsProperties,
+			UiPanel panel, FieldFactory<JPanel> panelFieldFactory,
+			CancelAction cancelAction, ImportAction importAction,
+			@Assisted Object properties) {
 		this.panel = panel;
 		this.propertiesPanel = panelFieldFactory.create(properties,
 				"importPanel");
-		this.texts = texts.create(getClass().getSimpleName());
+		this.texts = textsFactory.create(textsProperties);
+		this.cancelAction = cancelAction;
+		this.importAction = importAction;
 		setupPanel();
+		setupActions();
+	}
+
+	private void setupActions() {
+		cancelAction.setTexts(texts);
+		importAction.setTexts(texts);
+		panel.getCancelButton().setAction(cancelAction);
+		panel.getImportButton().setAction(importAction);
 	}
 
 	private void setupPanel() {
-		propertiesPanel.setTexts(texts);
+		propertiesPanel.setTexts(texts.getTexts());
+		setupMnemomic("locale");
+		setupMnemomic("charset");
 		panel.add(propertiesPanel.getAWTComponent(), CENTER);
+	}
+
+	private void setupMnemomic(String name) {
+		AbstractTitleField<?> field = (AbstractTitleField<?>) propertiesPanel
+				.findField(name);
+		if (field != null) {
+			field.getTitleLabel().setDisplayedMnemonic(texts.getMnemonic(name));
+		}
 	}
 
 	public Component getAWTComponent() {

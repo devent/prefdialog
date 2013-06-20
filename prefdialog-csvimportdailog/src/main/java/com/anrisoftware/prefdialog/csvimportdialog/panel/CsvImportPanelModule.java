@@ -1,7 +1,13 @@
 package com.anrisoftware.prefdialog.csvimportdialog.panel;
 
+import static com.anrisoftware.resources.texts.central.TextsResources.ACTIONS_PROPERTY;
+import static com.anrisoftware.resources.texts.central.TextsResources.ACTION_MNEMONICS_PROPERTY;
+import static com.anrisoftware.resources.texts.central.TextsResources.TEXTS_PROPERTY;
+
+import java.util.Properties;
 import java.util.ServiceLoader;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.swing.JPanel;
 
@@ -34,5 +40,17 @@ public class CsvImportPanelModule extends AbstractModule {
 		addError("Could not find service for %s",
 				VERTICAL_PREFERENCES_PANEL_NAME);
 		return null;
+	}
+
+	@Provides
+	@Singleton
+	@Named("CsvImportPanel-texts-properties")
+	Properties getTextsProperties() {
+		Properties p = new Properties();
+		p.setProperty(TEXTS_PROPERTY, "CsvImportPanelTexts");
+		p.setProperty(ACTIONS_PROPERTY, "CsvImportPanelActions");
+		p.setProperty(ACTION_MNEMONICS_PROPERTY,
+				"CsvImportPanelActionMnemonics");
+		return p;
 	}
 }
