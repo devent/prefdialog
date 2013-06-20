@@ -87,7 +87,7 @@ public @interface HistoryComboBox {
 
 	/**
 	 * The field name of the field to use for the default items for the combo
-	 * box. The field can be an array or of type {@link Iterable}. The default
+	 * box. The field can be an array or of type {@link Collection}. The default
 	 * items can not be removed from the combo box. Defaults to an empty name
 	 * which means no field is set.
 	 */

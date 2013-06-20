@@ -8,8 +8,6 @@ import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.inject.Inject;
 import javax.swing.ComboBoxModel;
@@ -140,10 +138,12 @@ public class HistoryComboBoxField extends AbstractComboBoxField {
 		this.fieldAnnotation = annotationAccessFactory.create(
 				getAnnotationClass(), getAccessibleObject());
 		this.beanAccessFactory = beanAccessFactory;
+		Object oldValue = getValue();
 		setupDefaultItems();
 		setupHistory();
 		setupModel();
 		setupMaximum();
+		getComponent().setSelectedItem(oldValue);
 	}
 
 	private void setupDefaultItems() {
@@ -169,9 +169,9 @@ public class HistoryComboBoxField extends AbstractComboBoxField {
 	}
 
 	private void setupModel() {
-		Set<Object> defaultsSet = new HashSet<Object>(defaultItems);
 		MutableComboBoxModel<?> mutableModel = createMutableModel(getModel());
-		boxFactory.create(getComponent(), mutableModel, defaultsSet);
+		boxFactory.create(getComponent(), mutableModel, getRenderer(),
+				defaultItems);
 		getComponent().getModel().addListDataListener(historyListener);
 	}
 
@@ -227,7 +227,7 @@ public class HistoryComboBoxField extends AbstractComboBoxField {
 	 *             if the specified items are {@code null}.
 	 * 
 	 * @throws IllegalArgumentException
-	 *             if the items type is not of array or {@link Iterable}.
+	 *             if the items type is not of array or {@link Collection}.
 	 */
 	private void setDefaultItems(Object items) {
 		log.checkDefaultItems(this, items);
