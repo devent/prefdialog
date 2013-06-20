@@ -28,6 +28,7 @@ import java.lang.reflect.AccessibleObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.MissingResourceException;
 
 import javax.inject.Inject;
 import javax.swing.Icon;
@@ -590,6 +591,9 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 		log.checkImagesResource(this, images);
 		this.images = images;
 		updateIconResources();
+		for (FieldComponent<?> child : childFields) {
+			child.setImages(images);
+		}
 	}
 
 	@Override
@@ -610,6 +614,9 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 		log.checkTextsResource(this, texts);
 		this.texts = texts;
 		updateTextsResources();
+		for (FieldComponent<?> child : childFields) {
+			child.setTexts(texts);
+		}
 	}
 
 	@Override
@@ -659,7 +666,12 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	 * @see #getLocale()
 	 */
 	protected String getTextResource(String name) {
-		return texts.getResource(name, getLocale()).getText();
+		try {
+			return texts.getResource(name, getLocale()).getText();
+		} catch (MissingResourceException e) {
+			log.textResourceMissing(this, name);
+			return name;
+		}
 	}
 
 	@Override

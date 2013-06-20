@@ -53,8 +53,7 @@ class AbstractFieldComponentLogger extends AbstractLogger {
 	private static final String LOCALE_NULL = "Locale cannot be null.";
 	private static final String IMAGES_RESOURCE_NULL = "Images resource cannot be null.";
 	private static final String TEXTS_RESOURCE_NULL = "Texts resource cannot be null.";
-	private static final String NO_TOOL_TIP_RESOURCE = "No tool-tip resource '{}' found for {}.";
-	private static final String NO_TITLE_RESOURCE = "No title resource '{}' found for {}.";
+	private static final String NO_TEXT_RESOURCE = "Text resource '{}' not found for {}.";
 	private static final String HEIGHT_NULL = "Height cannot be null.";
 	private static final String WIDTH_NULL = "Width cannot be null.";
 	private static final String FIELD_NULL = "Field cannot be null.";
@@ -137,12 +136,8 @@ class AbstractFieldComponentLogger extends AbstractLogger {
 		notNull(height, HEIGHT_NULL);
 	}
 
-	void titleResourceMissing(AbstractFieldComponent<?> field, String title) {
-		log.warn(NO_TITLE_RESOURCE, title, field);
-	}
-
-	void toolTipResourceMissing(AbstractFieldComponent<?> field, String text) {
-		log.warn(NO_TOOL_TIP_RESOURCE, text, field);
+	void textResourceMissing(AbstractFieldComponent<?> field, String title) {
+		log.warn(NO_TEXT_RESOURCE, title, field);
 	}
 
 	void checkTextsResource(AbstractFieldComponent<?> field, Texts texts) {
