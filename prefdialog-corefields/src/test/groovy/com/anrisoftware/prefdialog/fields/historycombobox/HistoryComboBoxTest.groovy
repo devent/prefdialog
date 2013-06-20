@@ -18,7 +18,7 @@
  */
 package com.anrisoftware.prefdialog.fields.historycombobox
 
-import static com.anrisoftware.prefdialog.fields.historycombobox.ComboBoxBean.*
+import static com.anrisoftware.prefdialog.fields.historycombobox.HistoryComboBoxBean.*
 import static com.anrisoftware.prefdialog.fields.historycombobox.HistoryComboBoxService.*
 
 import java.awt.event.KeyEvent
@@ -143,13 +143,40 @@ class HistoryComboBoxTest extends FieldTestUtils {
 		})
 	}
 
+	@Test
+	void "elements, editable, maximum"() {
+		def title = "$NAME::elements, editable, maximum"
+		def fieldName = LIST_ELEMENTS_MAXIMUM
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
+		def fixbox
+
+		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+			fixbox = fixture.comboBox fieldName
+			fixbox.selectAllText()
+			fixbox.enterText "1"
+			fixbox.pressAndReleaseKeys KeyEvent.VK_ENTER
+			fixbox.selectAllText()
+			fixbox.enterText "2"
+			fixbox.pressAndReleaseKeys KeyEvent.VK_ENTER
+			fixbox.selectAllText()
+			fixbox.enterText "3"
+			fixbox.pressAndReleaseKeys KeyEvent.VK_ENTER
+		}, {
+			fixbox.selectItem 0
+			assert bean."$fieldName" == "3"
+			fixbox.selectItem 1
+			assert bean."$fieldName" == "2"
+		})
+	}
+
 	static final String NAME = HistoryComboBoxTest.class.simpleName
 
 	static Injector injector
 
 	static HistoryComboBoxFactory factory
 
-	ComboBoxBean bean
+	HistoryComboBoxBean bean
 
 	@BeforeClass
 	static void setupFactories() {
@@ -159,6 +186,6 @@ class HistoryComboBoxTest extends FieldTestUtils {
 
 	@Before
 	void setupBean() {
-		bean = new ComboBoxBean()
+		bean = new HistoryComboBoxBean()
 	}
 }

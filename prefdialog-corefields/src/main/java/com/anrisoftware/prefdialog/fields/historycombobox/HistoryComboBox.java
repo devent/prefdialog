@@ -94,6 +94,13 @@ public @interface HistoryComboBox {
 	String defaultItems() default "";
 
 	/**
+	 * Sets the maximum entries in the history, excluding the default items. If
+	 * the box contains more then the maximum entries then the last entry is
+	 * removed. Default to five entries.
+	 */
+	int maximumHistory() default 5;
+
+	/**
 	 * If the field should be editable. Set to {@code true} if the combo box
 	 * should be editable or {@code false} if not. Defaults to {@code false}.
 	 */

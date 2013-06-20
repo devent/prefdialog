@@ -1,6 +1,7 @@
 package com.anrisoftware.prefdialog.fields.historycombobox;
 
 import static java.lang.String.format;
+import static org.apache.commons.lang3.Validate.isTrue;
 import static org.apache.commons.lang3.Validate.notNull;
 
 import java.util.Collection;
@@ -18,6 +19,8 @@ import com.anrisoftware.globalpom.log.AbstractLogger;
 @Singleton
 class HistoryComboBoxFieldLogger extends AbstractLogger {
 
+	private static final String MAXIMUM_SET = "History maximum {} set for {}.";
+	private static final String MAXIMUM_NEGATIVE = "History maximum must not be negative for %s.";
 	private static final String HISTORY_SET = "History collection {} set for {}.";
 	private static final String HISTORY_NULL = "History collection can not be null for %s.";
 	private static final String ITEMS_NULL = "Default items cannot be null for %s.";
@@ -53,6 +56,14 @@ class HistoryComboBoxFieldLogger extends AbstractLogger {
 
 	void historySet(HistoryComboBoxField field, Collection<?> history) {
 		log.debug(HISTORY_SET, history, field);
+	}
+
+	void checkMaximum(HistoryComboBoxField field, int maximum) {
+		isTrue(maximum > -1, MAXIMUM_NEGATIVE, field);
+	}
+
+	void maximumSet(HistoryComboBoxField field, int maximum) {
+		log.debug(MAXIMUM_SET, maximum, field);
 	}
 
 }

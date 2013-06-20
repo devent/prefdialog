@@ -26,13 +26,15 @@ import com.anrisoftware.prefdialog.annotations.FieldComponent
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-class ComboBoxBean {
+class HistoryComboBoxBean {
 
 	static final LIST_ELEMENTS = "listElementsBoxNullValue"
 
 	static final LIST_ELEMENTS_DEFAULT_ITEMS = "listElementsDefaultItems"
 
 	static final LIST_ELEMENTS_HISTORY = "listElementsHistory"
+
+	static final LIST_ELEMENTS_MAXIMUM = "listElementsMaximum"
 
 	@FieldComponent
 	@HistoryComboBox(elements = "listElements", editable = true)
@@ -45,6 +47,10 @@ class ComboBoxBean {
 	@FieldComponent
 	@HistoryComboBox(elements = "listElements", editable = true, defaultItems = "defaultItems", history = "history")
 	public String listElementsHistory
+
+	@FieldComponent
+	@HistoryComboBox(elements = "listElements", editable = true, maximumHistory = 2)
+	public String listElementsMaximum
 
 	public List listElements = ["One", "Two", "Three"]
 

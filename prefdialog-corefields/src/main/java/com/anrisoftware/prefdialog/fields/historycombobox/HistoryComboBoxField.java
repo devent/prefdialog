@@ -25,6 +25,7 @@ import com.anrisoftware.globalpom.reflection.beans.BeanAccessFactory;
 import com.anrisoftware.prefdialog.fields.combobox.AbstractComboBoxField;
 import com.anrisoftware.prefdialog.fields.combobox.ComboBoxFieldFactory;
 import com.anrisoftware.prefdialog.miscswing.comboboxhistory.HistoryComboBoxFactory;
+import com.anrisoftware.prefdialog.miscswing.comboboxhistory.HistoryComboBoxModel;
 import com.anrisoftware.prefdialog.miscswing.comboboxhistory.ItemDefault;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
@@ -142,6 +143,7 @@ public class HistoryComboBoxField extends AbstractComboBoxField {
 		setupDefaultItems();
 		setupHistory();
 		setupModel();
+		setupMaximum();
 	}
 
 	private void setupDefaultItems() {
@@ -182,6 +184,11 @@ public class HistoryComboBoxField extends AbstractComboBoxField {
 			mutableModel.addElement(model.getElementAt(i));
 		}
 		return mutableModel;
+	}
+
+	private void setupMaximum() {
+		int maximum = fieldAnnotation.getValue("maximumHistory");
+		setMaximum(maximum);
 	}
 
 	/**
@@ -261,5 +268,31 @@ public class HistoryComboBoxField extends AbstractComboBoxField {
 		log.checkDefaultItems(this, items);
 		this.defaultItems = items;
 		log.defaultItemsSet(this, items);
+	}
+
+	/**
+	 * Sets the maximum entries in the history, excluding the default items. If
+	 * the box contains more then the maximum entries then the last entry is
+	 * removed.
+	 * 
+	 * @param maximum
+	 *            the maximum entries.
+	 * 
+	 * @throws IllegalArgumentException
+	 *             if the maximum is negative.
+	 */
+	public void setMaximum(int maximum) {
+		log.checkMaximum(this, maximum);
+		((HistoryComboBoxModel) getModel()).setMaximum(maximum);
+		log.maximumSet(this, maximum);
+	}
+
+	/**
+	 * Returns the maximum entries in the history, excluding the default items.
+	 * 
+	 * @return the maximum entries.
+	 */
+	public int getMaximum() {
+		return ((HistoryComboBoxModel) getModel()).getMaximum();
 	}
 }
