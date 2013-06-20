@@ -717,13 +717,25 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 			String name) {
 		if (getName().equals(name)) {
 			return asField(this);
+		} else {
+			return findFieldRecursive(name);
 		}
+	}
+
+	private <R extends Component, T extends FieldComponent<R>> T findFieldRecursive(
+			String name) {
+		T field = null;
 		for (FieldComponent<?> component : childFields) {
 			if (component.getName().equals(name)) {
-				return asField(component);
+				field = asField(component);
+			} else {
+				field = component.findField(name);
+			}
+			if (field != null) {
+				return field;
 			}
 		}
-		throw log.noChildFieldFound(this, name);
+		return field;
 	}
 
 	@SuppressWarnings("unchecked")

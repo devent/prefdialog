@@ -18,7 +18,6 @@
  */
 package com.anrisoftware.prefdialog.core;
 
-import static java.lang.String.format;
 import static org.apache.commons.lang3.Validate.notNull;
 
 import java.awt.Component;
@@ -58,7 +57,6 @@ class AbstractFieldComponentLogger extends AbstractLogger {
 	private static final String WIDTH_NULL = "Width cannot be null.";
 	private static final String FIELD_NULL = "Field cannot be null.";
 	private static final String NAME_NULL = "Name cannot be null.";
-	private static final String NO_CHILD = "No child '%s' found for %s.";
 	private static final String RESTORED_INPUT = "Restored input for {}.";
 	private static final String SHOW_TOOL_TIP_SET = "Show tool-tip {} set for {}.";
 	private static final String WIDTH_SET = "Width {} set for {}.";
@@ -110,13 +108,6 @@ class AbstractFieldComponentLogger extends AbstractLogger {
 
 	void restoredInput(AbstractFieldComponent<?> field) {
 		log.debug(RESTORED_INPUT, field);
-	}
-
-	NullPointerException noChildFieldFound(AbstractFieldComponent<?> field,
-			String name) {
-		return logException(
-				new NullPointerException(format(NO_CHILD, name, field)),
-				NO_CHILD, name, field);
 	}
 
 	void checkName(AbstractFieldComponent<?> field, String name) {
