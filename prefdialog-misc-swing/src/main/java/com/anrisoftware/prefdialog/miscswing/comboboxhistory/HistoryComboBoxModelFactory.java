@@ -1,6 +1,6 @@
 package com.anrisoftware.prefdialog.miscswing.comboboxhistory;
 
-import java.util.Set;
+import java.util.Collection;
 
 import javax.swing.MutableComboBoxModel;
 
@@ -19,11 +19,12 @@ public interface HistoryComboBoxModelFactory {
 	 *            the parent {@link MutableComboBoxModel}.
 	 * 
 	 * @param defaultItems
-	 *            {@link Set} of default items for the model. The default items
-	 *            can not be removed.
+	 *            {@link Collection} of default items for the model. The default
+	 *            items can not be removed.
 	 * 
 	 * @return the {@link HistoryComboBoxModel}
 	 */
 	@SuppressWarnings("rawtypes")
-	HistoryComboBoxModel create(MutableComboBoxModel model, Set defaultItems);
+	HistoryComboBoxModel create(MutableComboBoxModel model,
+			Collection defaultItems);
 }

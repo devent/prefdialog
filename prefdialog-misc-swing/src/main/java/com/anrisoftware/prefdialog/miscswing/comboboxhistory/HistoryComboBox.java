@@ -2,8 +2,8 @@ package com.anrisoftware.prefdialog.miscswing.comboboxhistory;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
@@ -41,42 +41,44 @@ public class HistoryComboBox {
 			@Assisted JComboBox comboBox) {
 		this(modelFactory, rendererFactory, comboBox,
 				new DefaultComboBoxModel(), new DefaultListCellRenderer(),
-				new HashSet());
+				new ArrayList(0));
 	}
 
 	/**
-	 * @see HistoryComboBoxFactory#create(JComboBox, Set)
+	 * @see HistoryComboBoxFactory#create(JComboBox, Collection)
 	 */
 	@AssistedInject
 	HistoryComboBox(HistoryComboBoxModelFactory modelFactory,
 			ItemsDefaultComboBoxRendererFactory rendererFactory,
-			@Assisted JComboBox comboBox, @Assisted Set defaultItems) {
+			@Assisted JComboBox comboBox, @Assisted Collection defaultItems) {
 		this(modelFactory, rendererFactory, comboBox,
 				new DefaultComboBoxModel(), new DefaultListCellRenderer(),
 				defaultItems);
 	}
 
 	/**
-	 * @see HistoryComboBoxFactory#create(JComboBox, MutableComboBoxModel, Set)
+	 * @see HistoryComboBoxFactory#create(JComboBox, MutableComboBoxModel,
+	 *      Collection)
 	 */
 	@AssistedInject
 	HistoryComboBox(HistoryComboBoxModelFactory modelFactory,
 			ItemsDefaultComboBoxRendererFactory rendererFactory,
 			@Assisted JComboBox comboBox, @Assisted MutableComboBoxModel model,
-			@Assisted Set defaultItems) {
+			@Assisted Collection defaultItems) {
 		this(modelFactory, rendererFactory, comboBox, model,
 				new DefaultListCellRenderer(), defaultItems);
 	}
 
 	/**
 	 * @see HistoryComboBoxFactory#create(JComboBox, MutableComboBoxModel,
-	 *      ListCellRenderer, Set)
+	 *      ListCellRenderer, Collection)
 	 */
 	@AssistedInject
 	HistoryComboBox(HistoryComboBoxModelFactory modelFactory,
 			ItemsDefaultComboBoxRendererFactory rendererFactory,
 			@Assisted JComboBox comboBox, @Assisted MutableComboBoxModel model,
-			@Assisted ListCellRenderer renderer, @Assisted Set defaultItems) {
+			@Assisted ListCellRenderer renderer,
+			@Assisted Collection defaultItems) {
 		this.comboBox = comboBox;
 		this.model = modelFactory.create(model, defaultItems);
 		this.renderer = rendererFactory.create(renderer);

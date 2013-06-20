@@ -1,6 +1,6 @@
 package com.anrisoftware.prefdialog.miscswing.comboboxhistory;
 
-import java.util.Set;
+import java.util.Collection;
 
 import javax.swing.JComboBox;
 import javax.swing.ListCellRenderer;
@@ -17,20 +17,23 @@ import javax.swing.MutableComboBoxModel;
 public interface HistoryComboBoxFactory {
 
 	/**
-	 * @see #create(JComboBox, MutableComboBoxModel, ListCellRenderer, Set)
+	 * @see #create(JComboBox, MutableComboBoxModel, ListCellRenderer,
+	 *      Collection)
 	 */
 	HistoryComboBox create(JComboBox comboBox);
 
 	/**
-	 * @see #create(JComboBox, MutableComboBoxModel, ListCellRenderer, Set)
+	 * @see #create(JComboBox, MutableComboBoxModel, ListCellRenderer,
+	 *      Collection)
 	 */
-	HistoryComboBox create(JComboBox comboBox, Set defaultItems);
+	HistoryComboBox create(JComboBox comboBox, Collection defaultItems);
 
 	/**
-	 * @see #create(JComboBox, MutableComboBoxModel, ListCellRenderer, Set)
+	 * @see #create(JComboBox, MutableComboBoxModel, ListCellRenderer,
+	 *      Collection)
 	 */
 	HistoryComboBox create(JComboBox comboBox, MutableComboBoxModel model,
-			Set defaultItems);
+			Collection defaultItems);
 
 	/**
 	 * Decorate the combo box as the history combo box.
@@ -45,11 +48,11 @@ public interface HistoryComboBoxFactory {
 	 *            the {@link ListCellRenderer} renderer.
 	 * 
 	 * @param defaultItems
-	 *            {@link Set} of default items for the model. The default items
-	 *            can not be removed.
+	 *            {@link Collection} of default items for the model. The default
+	 *            items can not be removed.
 	 * 
 	 * @return the {@link HistoryComboBox}.
 	 */
 	HistoryComboBox create(JComboBox comboBox, MutableComboBoxModel model,
-			ListCellRenderer renderer, Set defaultItems);
+			ListCellRenderer renderer, Collection defaultItems);
 }

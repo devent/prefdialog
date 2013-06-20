@@ -3,6 +3,7 @@ package com.anrisoftware.prefdialog.miscswing.comboboxhistory;
 import static java.util.Collections.synchronizedSet;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -43,17 +44,18 @@ public class HistoryComboBoxModel implements MutableComboBoxModel, Serializable 
 	private int maximum;
 
 	/**
-	 * @see HistoryComboBoxModelFactory#create(MutableComboBoxModel, Set)
+	 * @see HistoryComboBoxModelFactory#create(MutableComboBoxModel, Collection)
 	 */
 	@Inject
 	HistoryComboBoxModel(ItemDefaultFactory itemDefaultFactory,
-			@Assisted MutableComboBoxModel model, @Assisted Set defaultItems) {
+			@Assisted MutableComboBoxModel model,
+			@Assisted Collection defaultItems) {
 		this.maximum = 5;
 		this.model = model;
 		this.itemDefaultFactory = itemDefaultFactory;
 		this.defaultItems = createDefaultItems(defaultItems);
 		this.items = synchronizedSet(fromModel(model));
-		insertDefaultItems();
+		insertDefaultItems(defaultItems);
 		setSelectedItem(model.getSelectedItem());
 	}
 
@@ -65,7 +67,7 @@ public class HistoryComboBoxModel implements MutableComboBoxModel, Serializable 
 		return set;
 	}
 
-	private Set<Object> createDefaultItems(Set items) {
+	private Set<Object> createDefaultItems(Collection items) {
 		Set<Object> set = new HashSet<Object>();
 		for (Object item : items) {
 			set.add(itemDefaultFactory.create(item));
@@ -73,7 +75,7 @@ public class HistoryComboBoxModel implements MutableComboBoxModel, Serializable 
 		return set;
 	}
 
-	private void insertDefaultItems() {
+	private void insertDefaultItems(Collection defaultItems) {
 		items.addAll(defaultItems);
 		for (Object item : defaultItems) {
 			model.addElement(item);
