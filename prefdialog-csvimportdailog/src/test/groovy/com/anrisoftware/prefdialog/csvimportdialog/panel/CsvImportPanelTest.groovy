@@ -30,6 +30,7 @@ import org.junit.Test
 import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.prefdialog.csvimportdialog.model.CsvImportModuleModule
 import com.anrisoftware.prefdialog.csvimportdialog.model.CsvProperties
+import com.anrisoftware.resources.texts.defaults.TextsResourcesDefaultModule
 import com.google.inject.Guice
 import com.google.inject.Injector
 
@@ -63,7 +64,8 @@ class CsvImportPanelTest {
 	@BeforeClass
 	static void setupFactories() {
 		injector = Guice.createInjector(
-				new CsvImportPanelModule(), new CsvImportModuleModule())
+				new CsvImportPanelModule(), new CsvImportModuleModule(),
+				new TextsResourcesDefaultModule())
 		factory = injector.getInstance CsvImportPanelFactory
 	}
 
