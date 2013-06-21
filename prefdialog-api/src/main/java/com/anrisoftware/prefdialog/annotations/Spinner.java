@@ -19,6 +19,7 @@
 package com.anrisoftware.prefdialog.annotations;
 
 import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import static java.util.Calendar.DAY_OF_MONTH;
 
@@ -72,7 +73,7 @@ import javax.swing.SpinnerNumberModel;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
  */
-@Target(FIELD)
+@Target({ FIELD, METHOD })
 @Retention(RUNTIME)
 @FieldAnnotation
 @Documented
