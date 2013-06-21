@@ -22,6 +22,8 @@ import static com.anrisoftware.globalpom.utils.TestUtils.*
 import static com.anrisoftware.prefdialog.core.FieldTestUtils.*
 import static com.anrisoftware.prefdialog.fields.textfield.TextFieldBean.*
 
+import java.awt.Dimension
+
 import org.fest.swing.fixture.FrameFixture
 import org.junit.Before
 import org.junit.BeforeClass
@@ -48,7 +50,7 @@ class CsvImportPanelTest {
 		def title = "$NAME::manually"
 		def field = factory.create(properties)
 		def container = field.getAWTComponent()
-		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+		new TestFrameUtil(title, container, size).withFixture({ FrameFixture fixture ->
 			Thread.sleep 60*1000
 			assert false : "manually test"
 		})
@@ -59,6 +61,8 @@ class CsvImportPanelTest {
 	static Injector injector
 
 	static CsvImportPanelFactory factory
+
+	static size = new Dimension(400, 600)
 
 	CsvProperties properties
 

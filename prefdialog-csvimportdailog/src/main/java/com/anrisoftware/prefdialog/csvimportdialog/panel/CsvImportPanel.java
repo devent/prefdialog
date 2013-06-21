@@ -56,14 +56,20 @@ public class CsvImportPanel {
 		propertiesPanel.setTexts(texts.getTexts());
 		setupMnemomic("locale");
 		setupMnemomic("charset");
+		setupMnemomic("startRow");
 		panel.add(propertiesPanel.getAWTComponent(), CENTER);
 	}
 
 	private void setupMnemomic(String name) {
-		AbstractTitleField<?> field = (AbstractTitleField<?>) propertiesPanel
-				.findField(name);
-		if (field != null) {
-			field.getTitleLabel().setDisplayedMnemonic(texts.getMnemonic(name));
+		AbstractTitleField<?> field;
+		field = (AbstractTitleField<?>) propertiesPanel.findField(name);
+		if (field == null) {
+			return;
+		}
+		field.getTitleLabel().setDisplayedMnemonic(texts.getMnemonic(name));
+		int index = texts.getMnemonicIndex(name);
+		if (index != -1) {
+			field.getTitleLabel().setDisplayedMnemonicIndex(index);
 		}
 	}
 

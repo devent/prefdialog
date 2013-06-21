@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.anrisoftware.prefdialog.annotations.FieldComponent;
+import com.anrisoftware.prefdialog.annotations.Spinner;
 import com.anrisoftware.prefdialog.fields.historycombobox.HistoryComboBox;
 
 public class ImportProperties {
@@ -31,8 +32,13 @@ public class ImportProperties {
 
 	private final Collection<Locale> localeDefaults;
 
+	private int startRow;
+
+	private final StartRowModel startRowModel;
+
 	@Inject
 	ImportProperties(CharsetModel charsetModel, LocaleModel localeModel,
+			StartRowModel startRowModel,
 			@Named("charsetDefaults") Set<Charset> charsetDefaults,
 			@Named("localeDefaults") Collection<Locale> localeDefaults) {
 		this.charset = Charset.defaultCharset();
@@ -43,6 +49,8 @@ public class ImportProperties {
 		this.localeModel = localeModel;
 		this.localesHistory = new ArrayList<Locale>();
 		this.localeDefaults = localeDefaults;
+		this.startRow = (Integer) startRowModel.getValue();
+		this.startRowModel = startRowModel;
 	}
 
 	public void setCharset(Charset charset) {
@@ -87,5 +95,19 @@ public class ImportProperties {
 
 	public Collection<Locale> getLocaleDefaults() {
 		return localeDefaults;
+	}
+
+	@FieldComponent
+	@Spinner(model = "startRowModel")
+	public int getStartRow() {
+		return startRow;
+	}
+
+	public void setStartRow(int startRow) {
+		this.startRow = startRow;
+	}
+
+	public StartRowModel getStartRowModel() {
+		return startRowModel;
 	}
 }
