@@ -12,9 +12,13 @@ public class CsvProperties {
 
 	private final ImportProperties importProperties;
 
+	private final SeparatorProperties separatorProperties;
+
 	@Inject
-	CsvProperties(ImportProperties importProperties) {
+	CsvProperties(ImportProperties importProperties,
+			SeparatorProperties separatorProperties) {
 		this.importProperties = importProperties;
+		this.separatorProperties = separatorProperties;
 	}
 
 	public void setImportPanel(Object importPanel) {
@@ -32,4 +36,11 @@ public class CsvProperties {
 	public ImportProperties getImportProperties() {
 		return importProperties;
 	}
+
+	@FieldComponent
+	@Child
+	public SeparatorProperties getSeparatorProperties() {
+		return separatorProperties;
+	}
+
 }

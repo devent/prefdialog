@@ -28,8 +28,8 @@ public class CsvImportModuleModule extends AbstractModule {
 	@Provides
 	@Singleton
 	@Named("charsetDefaults")
-	Set<Charset> getCharsetDefaults() {
-		Set<Charset> list = new TreeSet<Charset>();
+	Collection<Charset> getCharsetDefaults() {
+		List<Charset> list = new ArrayList<Charset>();
 		list.add(Charsets.UTF_8);
 		list.add(Charsets.UTF_16);
 		list.add(Charsets.UTF_16BE);
@@ -53,5 +53,17 @@ public class CsvImportModuleModule extends AbstractModule {
 			}
 		});
 		return locales;
+	}
+
+	@Provides
+	@Singleton
+	@Named("seperatorCharDefaults")
+	Set<Character> getSeperatorCharDefaults() {
+		Set<Character> list = new TreeSet<Character>();
+		list.add('\t');
+		list.add(',');
+		list.add(';');
+		list.add(' ');
+		return list;
 	}
 }

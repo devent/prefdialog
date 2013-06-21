@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.anrisoftware.prefdialog.annotations.ComboBox;
 import com.anrisoftware.prefdialog.annotations.FieldComponent;
 import com.anrisoftware.prefdialog.annotations.Spinner;
 import com.anrisoftware.prefdialog.fields.historycombobox.HistoryComboBox;
@@ -20,15 +20,13 @@ public class ImportProperties {
 
 	private final CharsetModel charsetModel;
 
-	private final List<Charset> charsetsHistory;
+	private final Collection<Charset> charsetDefaults;
 
-	private final Set<Charset> charsetDefaults;
+	private final List<Charset> charsetsHistory;
 
 	private Locale locale;
 
 	private final LocaleModel localeModel;
-
-	private final List<Locale> localesHistory;
 
 	private final Collection<Locale> localeDefaults;
 
@@ -39,15 +37,14 @@ public class ImportProperties {
 	@Inject
 	ImportProperties(CharsetModel charsetModel, LocaleModel localeModel,
 			StartRowModel startRowModel,
-			@Named("charsetDefaults") Set<Charset> charsetDefaults,
+			@Named("charsetDefaults") Collection<Charset> charsetDefaults,
 			@Named("localeDefaults") Collection<Locale> localeDefaults) {
 		this.charset = Charset.defaultCharset();
 		this.charsetModel = charsetModel;
-		this.charsetsHistory = new ArrayList<Charset>();
 		this.charsetDefaults = charsetDefaults;
+		this.charsetsHistory = new ArrayList<Charset>();
 		this.locale = Locale.getDefault();
 		this.localeModel = localeModel;
-		this.localesHistory = new ArrayList<Locale>();
 		this.localeDefaults = localeDefaults;
 		this.startRow = (Integer) startRowModel.getValue();
 		this.startRowModel = startRowModel;
@@ -67,12 +64,12 @@ public class ImportProperties {
 		return charsetModel;
 	}
 
-	public List<Charset> getCharsetsHistory() {
-		return charsetsHistory;
+	public Collection<Charset> getCharsetDefaults() {
+		return charsetDefaults;
 	}
 
-	public Set<Charset> getCharsetDefaults() {
-		return charsetDefaults;
+	public List<Charset> getCharsetsHistory() {
+		return charsetsHistory;
 	}
 
 	public void setLocale(Locale locale) {
@@ -80,17 +77,13 @@ public class ImportProperties {
 	}
 
 	@FieldComponent
-	@HistoryComboBox(model = "localeModel", rendererClass = LocaleRenderer.class, history = "localesHistory", defaultItems = "localeDefaults")
+	@ComboBox(model = "localeModel", rendererClass = LocaleRenderer.class)
 	public Locale getLocale() {
 		return locale;
 	}
 
 	public LocaleModel getLocaleModel() {
 		return localeModel;
-	}
-
-	public List<Locale> getLocalesHistory() {
-		return localesHistory;
 	}
 
 	public Collection<Locale> getLocaleDefaults() {
