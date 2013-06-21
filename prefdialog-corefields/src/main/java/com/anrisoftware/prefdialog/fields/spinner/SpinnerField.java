@@ -41,7 +41,7 @@ import com.anrisoftware.globalpom.reflection.beans.BeanAccessFactory;
 import com.anrisoftware.prefdialog.annotations.Spinner;
 import com.anrisoftware.prefdialog.classtask.ClassTask;
 import com.anrisoftware.prefdialog.classtask.ClassTaskFactory;
-import com.anrisoftware.prefdialog.core.AbstractFieldComponent;
+import com.anrisoftware.prefdialog.core.AbstractTitleField;
 import com.anrisoftware.prefdialog.fields.spacer.Spacer;
 import com.anrisoftware.prefdialog.miscswing.components.validating.ValidatingSpinner;
 import com.google.inject.assistedinject.Assisted;
@@ -55,7 +55,7 @@ import com.google.inject.assistedinject.Assisted;
  * @since 3.0
  */
 @SuppressWarnings("serial")
-public class SpinnerField extends AbstractFieldComponent<JSpinner> {
+public class SpinnerField extends AbstractTitleField<JSpinner> {
 
 	private static final String STEP_SIZE_ATTRIBUTE = "stepSize";
 
