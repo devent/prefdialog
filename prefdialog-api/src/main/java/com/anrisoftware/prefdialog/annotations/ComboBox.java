@@ -26,9 +26,8 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.ListCellRenderer;
 
 /**
@@ -134,8 +133,7 @@ public @interface ComboBox {
 
 	/**
 	 * The custom {@link ComboBoxModel} to use with this combo box. The model
-	 * must have the default constructor available for instantiation. Defaults
-	 * to the {@link DefaultComboBoxModel}.
+	 * must have the default constructor available for instantiation.
 	 */
 	@SuppressWarnings("rawtypes")
 	Class<? extends ComboBoxModel>[] modelClass() default {};
@@ -149,7 +147,22 @@ public @interface ComboBox {
 	/**
 	 * The custom {@link ListCellRenderer} to use with this combo box. The
 	 * renderer must have the default constructor available for instantiation.
-	 * Defaults to the {@link DefaultListCellRenderer}.
 	 */
 	Class<? extends ListCellRenderer<?>>[] rendererClass() default {};
+
+	/**
+	 * The name of the field name to use for the custom {@link ComboBoxEditor}.
+	 * Defaults to an empty name which means no field is set.
+	 * 
+	 * @since 3.0
+	 */
+	String editor() default "";
+
+	/**
+	 * The custom {@link ComboBoxEditor} to use with this combo box. The editor
+	 * must have the default constructor available for instantiation.
+	 * 
+	 * @since 3.0
+	 */
+	Class<? extends ComboBoxEditor>[] editorClass() default {};
 }

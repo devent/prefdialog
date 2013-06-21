@@ -27,6 +27,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.Collection;
 
+import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
@@ -132,4 +133,16 @@ public @interface HistoryComboBox {
 	 * Defaults to the {@link DefaultListCellRenderer}.
 	 */
 	Class<? extends ListCellRenderer<?>>[] rendererClass() default {};
+
+	/**
+	 * The name of the field name to use for the custom {@link ComboBoxEditor}.
+	 * Defaults to an empty name which means no field is set.
+	 */
+	String editor() default "";
+
+	/**
+	 * The custom {@link ComboBoxEditor} to use with this combo box. The editor
+	 * must have the default constructor available for instantiation.
+	 */
+	Class<? extends ComboBoxEditor>[] editorClass() default {};
 }

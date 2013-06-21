@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.inject.Inject;
+import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
@@ -42,6 +43,8 @@ public abstract class AbstractComboBoxField extends
 	private static final String MODEL_ELEMENT = "model";
 
 	private static final String ELEMENTS_ELEMENT = "elements";
+
+	private static final String EDITOR_ELEMENT = "editor";
 
 	private AbstractComboBoxFieldLogger log;
 
@@ -91,6 +94,8 @@ public abstract class AbstractComboBoxField extends
 	 * <li>rendererClass</li>
 	 * <li>elements</li>
 	 * <li>editable</li>
+	 * <li>editor</li>
+	 * <li>editorClass</li>
 	 * </ul>
 	 * 
 	 * @return the {@link Class}.
@@ -115,7 +120,16 @@ public abstract class AbstractComboBoxField extends
 		setupRenderer();
 		setupElements();
 		setupEditable();
+		setupEditor();
 		getComponent().setSelectedItem(getValue());
+	}
+
+	private void setupEditor() {
+		ComboBoxEditor editor = (ComboBoxEditor) annotationClass.forAttribute(
+				EDITOR_ELEMENT).build();
+		if (editor != null) {
+			setEditor(editor);
+		}
 	}
 
 	private void setupEditable() {
@@ -203,6 +217,30 @@ public abstract class AbstractComboBoxField extends
 	 */
 	public ListCellRenderer<?> getRenderer() {
 		return getComponent().getRenderer();
+	}
+
+	/**
+	 * Sets the specified editor for the combo box field.
+	 * 
+	 * @param editor
+	 *            the {@link ComboBoxEditor}.
+	 * 
+	 * @throws NullPointerException
+	 *             if the specified editor is {@code null}.
+	 */
+	public void setEditor(ComboBoxEditor editor) {
+		log.checkEditor(this, editor);
+		getComponent().setEditor(editor);
+		log.editorSet(this, editor);
+	}
+
+	/**
+	 * Returns the editor of the combo box field.
+	 * 
+	 * @return the {@link ComboBoxEditor}.
+	 */
+	public ComboBoxEditor getEditor() {
+		return getComponent().getEditor();
 	}
 
 	/**

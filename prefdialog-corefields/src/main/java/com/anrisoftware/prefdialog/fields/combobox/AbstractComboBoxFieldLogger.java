@@ -23,6 +23,7 @@ import static org.apache.commons.lang3.Validate.notNull;
 
 import java.beans.PropertyVetoException;
 
+import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
 import javax.swing.ListCellRenderer;
 
@@ -38,17 +39,19 @@ import com.anrisoftware.globalpom.reflection.exceptions.ReflectionError;
 class AbstractComboBoxFieldLogger extends AbstractLogger {
 
 	private static final String FIELD = "field";
-	private static final String SET_ELEMENTS = "Set elements {} for {}.";
+	private static final String ELEMENTS_SET = "Elements {} set for {}.";
 	private static final String TYPE_NOT_SUPPORTED = "Type %s not supported for %s";
 	private static final String ELEMENTS_NULL = "Elements cannot be null for %s.";
-	private static final String SET_RENDERER = "Set renderer {} to {}.";
+	private static final String RENDERER_SET = "Combo box renderer {} set for {}.";
 	private static final String RENDERER_NULL = "Renderer cannot be null for %s.";
-	private static final String SET_MODEL = "Set model {} to {}.";
+	private static final String MODEL_SET = "Combo box model {} set for {}.";
 	private static final String MODEL_NULL = "Model cannot be null for %s.";
 	private static final String ERROR_SET_CUSTOM_RENDERER_MESSAGE = "Error set custom renderer for %s";
 	private static final String ERROR_SET_CUSTOM_RENDERER = "Error set custom renderer";
 	private static final String ERROR_SET_CUSTOM_MODEL_MESSAGE = "Error set custom model for %s";
 	private static final String ERROR_SET_CUSTOM_MODEL = "Error set custom model";
+	private static final String EDITOR_SET = "Combo box editor {} set for {}.";
+	private static final String EDITOR_NULL = "Combo box editor cannot be null for %s.";
 
 	/**
 	 * Creates logger for {@link AbstractComboBoxField}.
@@ -62,7 +65,7 @@ class AbstractComboBoxFieldLogger extends AbstractLogger {
 	}
 
 	void modelSet(AbstractComboBoxField field, ComboBoxModel<?> model) {
-		log.debug(SET_MODEL, model, field);
+		log.debug(MODEL_SET, model, field);
 	}
 
 	IllegalArgumentException unsupportedType(AbstractComboBoxField field,
@@ -78,7 +81,7 @@ class AbstractComboBoxFieldLogger extends AbstractLogger {
 	}
 
 	void elementsSet(AbstractComboBoxField field, Object elements) {
-		log.debug(SET_ELEMENTS, elements, field);
+		log.debug(ELEMENTS_SET, elements, field);
 	}
 
 	void checkRenderer(AbstractComboBoxField field, ListCellRenderer<?> renderer) {
@@ -86,7 +89,7 @@ class AbstractComboBoxFieldLogger extends AbstractLogger {
 	}
 
 	void rendererSet(AbstractComboBoxField field, ListCellRenderer<?> renderer) {
-		log.debug(SET_RENDERER, renderer, field);
+		log.debug(RENDERER_SET, renderer, field);
 	}
 
 	ReflectionError errorSetModel(AbstractComboBoxField field,
@@ -103,5 +106,13 @@ class AbstractComboBoxFieldLogger extends AbstractLogger {
 				new ReflectionError(ERROR_SET_CUSTOM_RENDERER, e).addContextValue(
 						FIELD, field), ERROR_SET_CUSTOM_RENDERER_MESSAGE,
 				field.getName());
+	}
+
+	void checkEditor(AbstractComboBoxField field, ComboBoxEditor editor) {
+		notNull(editor, EDITOR_NULL, field);
+	}
+
+	void editorSet(AbstractComboBoxField field, ComboBoxEditor editor) {
+		log.debug(EDITOR_SET, editor, field);
 	}
 }
