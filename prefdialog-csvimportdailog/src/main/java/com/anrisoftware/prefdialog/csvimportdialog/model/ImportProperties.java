@@ -28,8 +28,6 @@ public class ImportProperties {
 
 	private final LocaleModel localeModel;
 
-	private final Collection<Locale> localeDefaults;
-
 	private int startRow;
 
 	private final StartRowModel startRowModel;
@@ -37,15 +35,13 @@ public class ImportProperties {
 	@Inject
 	ImportProperties(CharsetModel charsetModel, LocaleModel localeModel,
 			StartRowModel startRowModel,
-			@Named("charsetDefaults") Collection<Charset> charsetDefaults,
-			@Named("localeDefaults") Collection<Locale> localeDefaults) {
+			@Named("charsetDefaults") Collection<Charset> charsetDefaults) {
 		this.charset = Charset.defaultCharset();
 		this.charsetModel = charsetModel;
 		this.charsetDefaults = charsetDefaults;
 		this.charsetsHistory = new ArrayList<Charset>();
 		this.locale = Locale.getDefault();
 		this.localeModel = localeModel;
-		this.localeDefaults = localeDefaults;
 		this.startRow = (Integer) startRowModel.getValue();
 		this.startRowModel = startRowModel;
 	}
@@ -84,10 +80,6 @@ public class ImportProperties {
 
 	public LocaleModel getLocaleModel() {
 		return localeModel;
-	}
-
-	public Collection<Locale> getLocaleDefaults() {
-		return localeDefaults;
 	}
 
 	@FieldComponent

@@ -2,12 +2,8 @@ package com.anrisoftware.prefdialog.csvimportdialog.model;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -37,22 +33,6 @@ public class CsvImportModuleModule extends AbstractModule {
 		list.add(Charsets.US_ASCII);
 		list.add(Charsets.ISO_8859_1);
 		return list;
-	}
-
-	@Provides
-	@Singleton
-	@Named("localeDefaults")
-	Collection<Locale> getLocaleDefaults() {
-		List<Locale> locales = new ArrayList<Locale>();
-		locales.addAll(Arrays.asList(Locale.getAvailableLocales()));
-		Collections.sort(locales, new Comparator<Locale>() {
-
-			@Override
-			public int compare(Locale o1, Locale o2) {
-				return o1.getDisplayName().compareTo(o2.getDisplayName());
-			}
-		});
-		return locales;
 	}
 
 	@Provides
