@@ -8,10 +8,10 @@ import javax.inject.Inject;
 import javax.swing.DefaultComboBoxModel;
 
 @SuppressWarnings("serial")
-public class SeperatorCharModel extends DefaultComboBoxModel<Character> {
+public class SeparatorCharModel extends DefaultComboBoxModel<Character> {
 
 	@Inject
-	SeperatorCharModel() {
+	SeparatorCharModel() {
 		super(new Vector<Character>(getSeperatorCharDefaults()));
 	}
 

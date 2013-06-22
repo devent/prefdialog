@@ -12,61 +12,61 @@ import com.anrisoftware.prefdialog.fields.historycombobox.HistoryComboBox;
 
 public class SeparatorProperties {
 
-	private Character seperatorChar;
+	private Character separatorChar;
 
-	private final SeperatorCharModel seperatorCharModel;
+	private final SeparatorCharModel separatorCharModel;
 
-	private final SeperatorCharRenderer seperatorCharRenderer;
+	private final SeparatorCharRenderer separatorCharRenderer;
 
-	private final SeperatorCharEditor seperatorCharEditor;
+	private final SeparatorCharEditor separatorCharEditor;
 
-	private Character customSeperatorChar;
+	private Character customSeparatorChar;
 
-	private final List<Character> customSeperatorCharsHistory;
+	private final List<Character> customSeparatorCharsHistory;
 
-	private final SeperatorCharEditor customSeperatorCharEditor;
+	private final SeparatorCharEditor customSeparatorCharEditor;
 
-	private final CustomSeperatorCharModel customSeperatorCharModel;
+	private final CustomSeparatorCharModel customSeparatorCharModel;
 
 	private boolean useCustomSeparator;
 
 	@Inject
-	SeparatorProperties(SeperatorCharModel seperatorCharModel,
-			SeperatorCharRenderer seperatorCharRenderer,
-			SeperatorCharEditor seperatorCharEditor,
-			SeperatorCharEditor customSeperatorCharEditor,
-			CustomSeperatorCharModel customSeperatorCharModel) {
-		this.seperatorChar = seperatorCharModel.getElementAt(0);
-		this.seperatorCharModel = seperatorCharModel;
-		this.seperatorCharRenderer = seperatorCharRenderer;
-		this.seperatorCharEditor = seperatorCharEditor;
-		this.customSeperatorChar = '\0';
-		this.customSeperatorCharsHistory = new ArrayList<Character>();
-		this.customSeperatorCharEditor = customSeperatorCharEditor;
-		this.customSeperatorCharModel = customSeperatorCharModel;
+	SeparatorProperties(SeparatorCharModel separatorCharModel,
+			SeparatorCharRenderer separatorCharRenderer,
+			SeparatorCharEditor separatorCharEditor,
+			SeparatorCharEditor customSeparatorCharEditor,
+			CustomSeparatorCharModel customSeparatorCharModel) {
+		this.separatorChar = separatorCharModel.getElementAt(0);
+		this.separatorCharModel = separatorCharModel;
+		this.separatorCharRenderer = separatorCharRenderer;
+		this.separatorCharEditor = separatorCharEditor;
+		this.customSeparatorChar = '\0';
+		this.customSeparatorCharsHistory = new ArrayList<Character>();
+		this.customSeparatorCharEditor = customSeparatorCharEditor;
+		this.customSeparatorCharModel = customSeparatorCharModel;
 		this.useCustomSeparator = false;
 	}
 
-	public void setSeperatorChar(Character seperatorChar) {
-		this.seperatorChar = seperatorChar;
+	public void setSeparatorChar(Character separatorChar) {
+		this.separatorChar = separatorChar;
 	}
 
 	@FieldComponent
-	@ComboBox(model = "seperatorCharModel", renderer = "seperatorCharRenderer", editor = "seperatorCharEditor")
-	public Character getSeperatorChar() {
-		return seperatorChar;
+	@ComboBox(model = "separatorCharModel", renderer = "separatorCharRenderer", editor = "separatorCharEditor")
+	public Character getSeparatorChar() {
+		return separatorChar;
 	}
 
-	public SeperatorCharModel getSeperatorCharModel() {
-		return seperatorCharModel;
+	public SeparatorCharModel getSeparatorCharModel() {
+		return separatorCharModel;
 	}
 
-	public SeperatorCharRenderer getSeperatorCharRenderer() {
-		return seperatorCharRenderer;
+	public SeparatorCharRenderer getSeparatorCharRenderer() {
+		return separatorCharRenderer;
 	}
 
-	public SeperatorCharEditor getSeperatorCharEditor() {
-		return seperatorCharEditor;
+	public SeparatorCharEditor getSeparatorCharEditor() {
+		return separatorCharEditor;
 	}
 
 	@FieldComponent(showTitle = false)
@@ -79,25 +79,25 @@ public class SeparatorProperties {
 		this.useCustomSeparator = useCustomSeparator;
 	}
 
-	@FieldComponent(showTitle = false)
-	@HistoryComboBox(editable = true, model = "customSeperatorCharModel", editor = "customSeperatorCharEditor", history = "customSeperatorCharsHistory")
-	public Character getCustomSeperatorChar() {
-		return customSeperatorChar;
+	@FieldComponent(showTitle = false, readOnly = true)
+	@HistoryComboBox(editable = true, model = "customSeparatorCharModel", editor = "customSeparatorCharEditor", history = "customSeparatorCharsHistory")
+	public Character getCustomSeparatorChar() {
+		return customSeparatorChar;
 	}
 
-	public void setCustomSeperatorChar(Character customSeperatorChar) {
-		this.customSeperatorChar = customSeperatorChar;
+	public void setCustomSeparatorChar(Character customSeparatorChar) {
+		this.customSeparatorChar = customSeparatorChar;
 	}
 
-	public SeperatorCharEditor getCustomSeperatorCharEditor() {
-		return customSeperatorCharEditor;
+	public SeparatorCharEditor getCustomSeparatorCharEditor() {
+		return customSeparatorCharEditor;
 	}
 
-	public List<Character> getCustomSeperatorCharsHistory() {
-		return customSeperatorCharsHistory;
+	public List<Character> getCustomSeparatorCharsHistory() {
+		return customSeparatorCharsHistory;
 	}
 
-	public CustomSeperatorCharModel getCustomSeperatorCharModel() {
-		return customSeperatorCharModel;
+	public CustomSeparatorCharModel getCustomSeparatorCharModel() {
+		return customSeparatorCharModel;
 	}
 }

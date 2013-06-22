@@ -3,7 +3,7 @@ package com.anrisoftware.prefdialog.csvimportdialog.model;
 import javax.swing.DefaultComboBoxModel;
 
 @SuppressWarnings("serial")
-public class CustomSeperatorCharModel extends DefaultComboBoxModel<Object> {
+public class CustomSeparatorCharModel extends DefaultComboBoxModel<Object> {
 
 	@Override
 	public void addElement(Object item) {

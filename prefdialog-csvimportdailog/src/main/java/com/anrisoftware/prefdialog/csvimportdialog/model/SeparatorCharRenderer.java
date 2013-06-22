@@ -14,12 +14,12 @@ import com.anrisoftware.resources.texts.api.Texts;
 import com.anrisoftware.resources.texts.api.TextsFactory;
 
 @SuppressWarnings("serial")
-public class SeperatorCharRenderer extends DefaultListCellRenderer {
+public class SeparatorCharRenderer extends DefaultListCellRenderer {
 
 	private final Texts texts;
 
 	@Inject
-	SeperatorCharRenderer(TextsFactory textsFactory) {
+	SeparatorCharRenderer(TextsFactory textsFactory) {
 		this.texts = textsFactory.create(getClass().getSimpleName());
 	}
 

@@ -6,11 +6,11 @@ import java.awt.event.ActionListener;
 import javax.swing.ComboBoxEditor;
 import javax.swing.JComboBox;
 
-public class SeperatorCharEditor implements ComboBoxEditor {
+public class SeparatorCharEditor implements ComboBoxEditor {
 
 	private final ComboBoxEditor editor;
 
-	SeperatorCharEditor() {
+	SeparatorCharEditor() {
 		this.editor = new JComboBox<Object>().getEditor();
 	}
 
