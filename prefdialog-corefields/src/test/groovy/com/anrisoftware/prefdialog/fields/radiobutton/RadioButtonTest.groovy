@@ -184,6 +184,66 @@ class RadioButtonTest {
 		})
 	}
 
+	@Test
+	void "with action listener added"() {
+		def title = "$NAME::with action listener added"
+		def fieldName = WITH_ACTION_LISTENER
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
+		def button
+
+		new TestFrameUtil(title, container).withFixture({ FrameFixture fix ->
+			button = fix.radioButton fieldName
+			button.click()
+			assert bean.actionListenerCalled == true
+		})
+	}
+
+	@Test
+	void "with action set"() {
+		def title = "$NAME::with action set"
+		def fieldName = WITH_ACTION
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
+		def button
+
+		new TestFrameUtil(title, container).withFixture({ FrameFixture fix ->
+			button = fix.radioButton fieldName
+			button.click()
+			assert bean.actionListenerCalled == true
+		})
+	}
+
+	@Test
+	void "with action listener class added"() {
+		def title = "$NAME::with action listener class added"
+		def fieldName = WITH_ACTION_LISTENER_CLASS
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
+		def button
+
+		new TestFrameUtil(title, container).withFixture({ FrameFixture fix ->
+			button = fix.radioButton fieldName
+			button.click()
+			assert button.target.getActionListeners()[0].actionCalled == true
+		})
+	}
+
+	@Test
+	void "with action class added"() {
+		def title = "$NAME::with action class added"
+		def fieldName = WITH_ACTION_CLASS
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
+		def button
+
+		new TestFrameUtil(title, container).withFixture({ FrameFixture fix ->
+			button = fix.radioButton fieldName
+			button.click()
+			assert field.getAction().actionCalled == true
+		})
+	}
+
 	//@Test
 	void "manually"() {
 		def title = "$NAME::manually"

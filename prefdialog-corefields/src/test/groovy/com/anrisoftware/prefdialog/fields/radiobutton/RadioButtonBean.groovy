@@ -18,6 +18,12 @@
  */
 package com.anrisoftware.prefdialog.fields.radiobutton
 
+import java.awt.event.ActionEvent
+import java.awt.event.ActionListener
+
+import javax.swing.AbstractAction
+import javax.swing.Action
+
 import com.anrisoftware.prefdialog.annotations.FieldComponent
 import com.anrisoftware.prefdialog.annotations.RadioButton
 
@@ -40,6 +46,14 @@ class RadioButtonBean {
 	static final NOT_SHOW_TEXT = "notShowText"
 
 	static final READ_ONLY = "readOnly"
+
+	static final WITH_ACTION_LISTENER = "withActionListener"
+
+	static final WITH_ACTION = "withAction"
+
+	static final WITH_ACTION_LISTENER_CLASS = "withActionListenerClass"
+
+	static final WITH_ACTION_CLASS = "withActionClass"
 
 	@FieldComponent
 	@RadioButton
@@ -64,5 +78,37 @@ class RadioButtonBean {
 	@FieldComponent(readOnly = true)
 	@RadioButton
 	public boolean readOnly
+
+	@FieldComponent
+	@RadioButton(action = "actionListener")
+	public boolean withActionListener
+
+	@FieldComponent
+	@RadioButton(action = "action")
+	public boolean withAction
+
+	@FieldComponent
+	@RadioButton(actionClass = CustomActionListener)
+	public boolean withActionListenerClass
+
+	@FieldComponent
+	@RadioButton(actionClass = CustomAction)
+	public boolean withActionClass
+
+	public ActionListener actionListener
+
+	public Action action
+
+	boolean actionListenerCalled = false
+
+	RadioButtonBean() {
+		this.actionListener = { actionListenerCalled = true } as ActionListener
+		this.action = new AbstractAction() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						actionListenerCalled = true
+					}
+				}
+	}
 }
 
