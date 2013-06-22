@@ -4,8 +4,6 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -35,15 +33,4 @@ public class CsvImportModuleModule extends AbstractModule {
 		return list;
 	}
 
-	@Provides
-	@Singleton
-	@Named("seperatorCharDefaults")
-	Set<Character> getSeperatorCharDefaults() {
-		Set<Character> list = new TreeSet<Character>();
-		list.add('\t');
-		list.add(',');
-		list.add(';');
-		list.add(' ');
-		return list;
-	}
 }
