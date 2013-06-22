@@ -9,7 +9,6 @@ import javax.inject.Inject;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
 
-import com.anrisoftware.prefdialog.miscswing.comboboxhistory.ItemDefault;
 import com.anrisoftware.resources.texts.api.Texts;
 import com.anrisoftware.resources.texts.api.TextsFactory;
 
@@ -28,11 +27,7 @@ public class SeparatorCharRenderer extends DefaultListCellRenderer {
 			int index, boolean isSelected, boolean cellHasFocus) {
 		super.getListCellRendererComponent(list, value, index, isSelected,
 				cellHasFocus);
-		if (value instanceof ItemDefault) {
-			setupCharacter((Character) ((ItemDefault) value).getItem());
-		} else {
-			setupCharacter((Character) value);
-		}
+		setupCharacter((Character) value);
 		return this;
 	}
 

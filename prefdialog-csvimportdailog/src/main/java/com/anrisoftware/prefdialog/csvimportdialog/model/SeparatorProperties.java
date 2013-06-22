@@ -7,6 +7,7 @@ import javax.inject.Inject;
 
 import com.anrisoftware.prefdialog.annotations.CheckBox;
 import com.anrisoftware.prefdialog.annotations.ComboBox;
+import com.anrisoftware.prefdialog.annotations.FieldButton;
 import com.anrisoftware.prefdialog.annotations.FieldComponent;
 import com.anrisoftware.prefdialog.fields.historycombobox.HistoryComboBox;
 
@@ -30,12 +31,15 @@ public class SeparatorProperties {
 
 	private boolean useCustomSeparator;
 
+	private final UseCustomSeparatorAction useCustomSeparatorAction;
+
 	@Inject
 	SeparatorProperties(SeparatorCharModel separatorCharModel,
 			SeparatorCharRenderer separatorCharRenderer,
 			SeparatorCharEditor separatorCharEditor,
 			SeparatorCharEditor customSeparatorCharEditor,
-			CustomSeparatorCharModel customSeparatorCharModel) {
+			CustomSeparatorCharModel customSeparatorCharModel,
+			UseCustomSeparatorAction useCustomSeparatorAction) {
 		this.separatorChar = separatorCharModel.getElementAt(0);
 		this.separatorCharModel = separatorCharModel;
 		this.separatorCharRenderer = separatorCharRenderer;
@@ -45,6 +49,7 @@ public class SeparatorProperties {
 		this.customSeparatorCharEditor = customSeparatorCharEditor;
 		this.customSeparatorCharModel = customSeparatorCharModel;
 		this.useCustomSeparator = false;
+		this.useCustomSeparatorAction = useCustomSeparatorAction;
 	}
 
 	public void setSeparatorChar(Character separatorChar) {
@@ -70,6 +75,7 @@ public class SeparatorProperties {
 	}
 
 	@FieldComponent(showTitle = false)
+	@FieldButton(action = "useCustomSeparatorAction")
 	@CheckBox
 	public boolean isUseCustomSeparator() {
 		return useCustomSeparator;
@@ -77,6 +83,10 @@ public class SeparatorProperties {
 
 	public void setUseCustomSeparator(boolean useCustomSeparator) {
 		this.useCustomSeparator = useCustomSeparator;
+	}
+
+	public UseCustomSeparatorAction getUseCustomSeparatorAction() {
+		return useCustomSeparatorAction;
 	}
 
 	@FieldComponent(showTitle = false, readOnly = true)
