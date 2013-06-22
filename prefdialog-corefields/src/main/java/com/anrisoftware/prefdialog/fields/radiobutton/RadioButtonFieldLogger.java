@@ -19,12 +19,6 @@
 package com.anrisoftware.prefdialog.fields.radiobutton;
 
 import static org.apache.commons.lang3.Validate.isInstanceOf;
-import static org.apache.commons.lang3.Validate.notNull;
-
-import java.awt.event.ActionListener;
-
-import javax.swing.Action;
-import javax.swing.ButtonGroup;
 
 import com.anrisoftware.globalpom.log.AbstractLogger;
 
@@ -36,14 +30,7 @@ import com.anrisoftware.globalpom.log.AbstractLogger;
  */
 class RadioButtonFieldLogger extends AbstractLogger {
 
-	private static final String ACTION_LISTENER_NULL = "Action listener cannot be null for %s.";
-	private static final String SHOW_TEXT_SET = "Show text {} set for {}.";
-	private static final String TEXT_SET = "Text '{}' set for {}.";
 	private static final String VALUE_NOT_BOOLEAN = "Value '%s' is not boolean value for %s.";
-	private static final String ACTION_ADDED = "Action listener {} add for {}.";
-	private static final String ACTION_SET = "Action {} set for {}.";
-	private static final String BUTTON_GROUP_NULL = "Button group cannot be null for %s.";
-	private static final String BUTTON_GROUP_SET = "Button group {} set for {}.";
 
 	/**
 	 * Creates logger for {@link RadioButtonField}.
@@ -54,37 +41,5 @@ class RadioButtonFieldLogger extends AbstractLogger {
 
 	void checkValue(RadioButtonField field, Object value) {
 		isInstanceOf(Boolean.class, value, VALUE_NOT_BOOLEAN, value, field);
-	}
-
-	void textSet(RadioButtonField field, String text) {
-		log.debug(TEXT_SET, text, field);
-	}
-
-	void showTextSet(RadioButtonField field, boolean show) {
-		log.debug(SHOW_TEXT_SET, show, field);
-	}
-
-	void checkActionListener(RadioButtonField field, ActionListener listener) {
-		notNull(listener, ACTION_LISTENER_NULL, field);
-	}
-
-	void actionAdded(RadioButtonField field, ActionListener listener) {
-		log.debug(ACTION_ADDED, listener, field);
-	}
-
-	void actionSet(RadioButtonField field, Action action) {
-		log.debug(ACTION_SET, action, field);
-	}
-
-	public void actionRemoved(RadioButtonField field, ActionListener listener) {
-		notNull(listener, ACTION_LISTENER_NULL, field);
-	}
-
-	void checkButtonGroup(RadioButtonField field, ButtonGroup group) {
-		notNull(group, BUTTON_GROUP_NULL, field);
-	}
-
-	void buttonGroupSet(RadioButtonField field, ButtonGroup group) {
-		log.debug(BUTTON_GROUP_SET, group, field);
 	}
 }

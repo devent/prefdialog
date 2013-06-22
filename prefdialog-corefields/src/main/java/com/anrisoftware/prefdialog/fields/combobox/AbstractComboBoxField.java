@@ -30,7 +30,7 @@ import com.anrisoftware.prefdialog.miscswing.components.validating.ValidatingCom
  * Implements the combo box field.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 1.0
+ * @since 3.0
  */
 @SuppressWarnings("serial")
 public abstract class AbstractComboBoxField extends

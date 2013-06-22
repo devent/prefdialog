@@ -26,37 +26,23 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import com.anrisoftware.resources.texts.api.Texts;
-
 /**
  * Check box field. A check box field can only be checked or unchecked. The
  * value of field must be set.
  * <p>
- * Examples: a) text as field name
+ * 
+ * <h2>Examples</h2>
+ * 
+ * Simple example.
  * 
  * <pre>
  * &#064;FieldComponent
- * &#064;Checkbox
- * public boolean isImportant;
+ * &#064;FieldButton
+ * &#064;ComboBox
+ * public boolean buttonField;
  * </pre>
  * 
- * b) not visible text
- * 
- * <pre>
- * &#064;FieldComponent
- * &#064;Checkbox(showText = false)
- * public boolean isImportant;
- * </pre>
- * 
- * c) text set
- * 
- * <pre>
- * &#064;FieldComponent
- * &#064;Checkbox(text = &quot;Is Important&quot;)
- * public boolean isImportant;
- * </pre>
- * 
- * c) with getter and setter
+ * With getter and setter.
  * 
  * <pre>
  * private boolean important;
@@ -66,7 +52,8 @@ import com.anrisoftware.resources.texts.api.Texts;
  * }
  * 
  * &#064;FieldComponent
- * &#064;Checkbox(text = &quot;Is Important&quot;)
+ * &#064;FieldButton
+ * &#064;ComboBox
  * public boolean isImportant() {
  * 	return important;
  * }
@@ -81,20 +68,4 @@ import com.anrisoftware.resources.texts.api.Texts;
 @Documented
 public @interface CheckBox {
 
-	/**
-	 * The text of the check-box. Defaults to the empty string which means the
-	 * field name is used as the text.
-	 * <p>
-	 * The text can also be a resource name that is queried in the supplied
-	 * texts resource.
-	 * 
-	 * @see Texts
-	 */
-	String text() default "";
-
-	/**
-	 * Sets if the text of the check-box should be visible or not. Defaults to
-	 * {@code true} which means that the text should be visible.
-	 */
-	boolean showText() default true;
 }

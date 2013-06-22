@@ -39,7 +39,10 @@ import com.anrisoftware.resources.texts.api.Texts;
 import com.google.inject.assistedinject.Assisted;
 
 /**
- * Check box field. A check box field can only be checked or unchecked.
+ * Check box field.
+ * 
+ * @see CheckBox
+ * @see CheckBoxFieldFactory
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
@@ -52,6 +55,8 @@ public class CheckBoxField extends AbstractTitleField<JCheckBox> {
 	private static final String TEXT_ELEMENT = "text";
 
 	private static final String SHOW_TEXT_ELEMENT = "showText";
+
+	private static final String ACTION_ELEMENT = "action";
 
 	private final CheckBoxFieldLogger log;
 
@@ -100,6 +105,7 @@ public class CheckBoxField extends AbstractTitleField<JCheckBox> {
 				getAccessibleObject());
 		setupText();
 		setupShowText();
+		setupAction();
 	}
 
 	private void setupText() {

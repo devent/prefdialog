@@ -25,6 +25,7 @@ import javax.swing.AbstractAction
 import javax.swing.Action
 import javax.swing.ButtonGroup
 
+import com.anrisoftware.prefdialog.annotations.FieldButton
 import com.anrisoftware.prefdialog.annotations.FieldComponent
 import com.anrisoftware.prefdialog.annotations.RadioButton
 
@@ -61,51 +62,63 @@ class RadioButtonBean {
 	static final GROUP_MEMBER_B = "groupMemberB"
 
 	@FieldComponent
+	@FieldButton
 	@RadioButton
 	public Boolean nullValue
 
 	@FieldComponent
+	@FieldButton
 	@RadioButton
 	public boolean noText
 
 	@FieldComponent
-	@RadioButton(text = "Radio Button Text")
+	@FieldButton(text = "Radio Button Text")
+	@RadioButton
 	public boolean withText
 
 	@FieldComponent(title = "radiobutton_with_text_resource_title")
-	@RadioButton(text = "radiobutton_with_text_resource_text")
+	@FieldButton(text = "radiobutton_with_text_resource_text")
+	@RadioButton
 	public boolean withTextResource
 
 	@FieldComponent
-	@RadioButton(showText = false)
+	@FieldButton(showText = false)
+	@RadioButton
 	public boolean notShowText
 
 	@FieldComponent(readOnly = true)
+	@FieldButton
 	@RadioButton
 	public boolean readOnly
 
 	@FieldComponent
-	@RadioButton(action = "actionListener")
+	@FieldButton(action = "actionListener")
+	@RadioButton
 	public boolean withActionListener
 
 	@FieldComponent
-	@RadioButton(action = "action")
+	@FieldButton(action = "action")
+	@RadioButton
 	public boolean withAction
 
 	@FieldComponent
-	@RadioButton(actionClass = CustomActionListener)
+	@FieldButton(actionClass = CustomActionListener)
+	@RadioButton
 	public boolean withActionListenerClass
 
 	@FieldComponent
-	@RadioButton(actionClass = CustomAction)
+	@FieldButton(actionClass = CustomAction)
+	@RadioButton
 	public boolean withActionClass
 
 	@FieldComponent
-	@RadioButton(group = "buttonGroup")
+	@FieldButton(group = "buttonGroup")
+	@RadioButton
 	public boolean groupMemberA
 
 	@FieldComponent
-	@RadioButton(group = "buttonGroup")
+	@FieldButton(group = "buttonGroup")
+	@RadioButton
 	public boolean groupMemberB
 
 	public ButtonGroup buttonGroup

@@ -31,11 +31,11 @@ import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 
+import com.anrisoftware.globalpom.reflection.exceptions.ReflectionError
 import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.resources.texts.api.Texts
 import com.google.inject.Guice
 import com.google.inject.Injector
-import com.google.inject.ProvisionException
 
 /**
  * @see RadioButton
@@ -49,7 +49,7 @@ class RadioButtonTest {
 	@Test
 	void "null value"() {
 		def fieldName = NULL_VALUE
-		shouldFailWith(ProvisionException) {
+		shouldFailWith(ReflectionError) {
 			def field = factory.create(bean, fieldName)
 		}
 	}
