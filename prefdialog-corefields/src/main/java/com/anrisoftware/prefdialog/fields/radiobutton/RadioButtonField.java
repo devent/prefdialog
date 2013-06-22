@@ -1,0 +1,286 @@
+/*
+ * Copyright 2012 Erwin Müller <erwin.mueller@deventm.org>
+ *
+ * This file is part of prefdialog-corefields.
+ *
+ * prefdialog-corefields is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
+ *
+ * prefdialog-corefields is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with prefdialog-corefields. If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.anrisoftware.prefdialog.fields.radiobutton;
+
+import static org.apache.commons.lang3.StringUtils.isEmpty;
+
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyVetoException;
+import java.beans.VetoableChangeListener;
+import java.lang.annotation.Annotation;
+import java.util.Locale;
+
+import javax.inject.Inject;
+import javax.swing.Action;
+import javax.swing.JRadioButton;
+
+import com.anrisoftware.globalpom.reflection.annotationclass.AnnotationClass;
+import com.anrisoftware.globalpom.reflection.annotationclass.AnnotationClassFactory;
+import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccess;
+import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccessFactory;
+import com.anrisoftware.prefdialog.annotations.RadioButton;
+import com.anrisoftware.prefdialog.core.AbstractTitleField;
+import com.anrisoftware.prefdialog.miscswing.components.validating.ValidatingButtonComponent;
+import com.anrisoftware.prefdialog.miscswing.components.validating.ValidatingTextComponent;
+import com.anrisoftware.resources.texts.api.Texts;
+import com.google.inject.assistedinject.Assisted;
+
+/**
+ * Radio button field.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 3.0
+ */
+@SuppressWarnings("serial")
+public class RadioButtonField extends AbstractTitleField<JRadioButton> {
+
+	private static final Class<? extends Annotation> ANNOTATION_CLASS = RadioButton.class;
+
+	private static final String ACTION_ELEMENT = "action";
+
+	private static final String TEXT_ELEMENT = "text";
+
+	private static final String SHOW_TEXT_ELEMENT = "showText";
+
+	private final RadioButtonFieldLogger log;
+
+	private final ValidatingButtonComponent<JRadioButton> validating;
+
+	private final VetoableChangeListener valueVetoListener;
+
+	private transient AnnotationAccess fieldAnnotation;
+
+	private transient AnnotationClass<?> annotationClass;
+
+	private String textResource;
+
+	private String text;
+
+	private boolean showText;
+
+	/**
+	 * @see RadioButtonFieldFactory#create(Object, String)
+	 */
+	@Inject
+	RadioButtonField(RadioButtonFieldLogger logger,
+			@Assisted Object parentObject, @Assisted String fieldName) {
+		super(new JRadioButton(), parentObject, fieldName);
+		this.validating = new ValidatingButtonComponent<JRadioButton>(
+				getComponent());
+		this.log = logger;
+		this.valueVetoListener = new VetoableChangeListener() {
+
+			@Override
+			public void vetoableChange(PropertyChangeEvent evt)
+					throws PropertyVetoException {
+				RadioButtonField.super.trySetValue(evt.getNewValue());
+				changeValue(evt.getNewValue());
+			}
+		};
+		setupValidating();
+	}
+
+	private void setupValidating() {
+		validating.addVetoableChangeListener(
+				ValidatingTextComponent.VALUE_PROPERTY, valueVetoListener);
+	}
+
+	@Inject
+	void setBeanAccessFactory(AnnotationAccessFactory annotationAccessFactory,
+			AnnotationClassFactory annotationClassFactory) {
+		this.fieldAnnotation = annotationAccessFactory.create(ANNOTATION_CLASS,
+				getAccessibleObject());
+		this.annotationClass = annotationClassFactory.create(getParentObject(),
+				ANNOTATION_CLASS, getAccessibleObject());
+		setupText();
+		setupShowText();
+		setupAction();
+	}
+
+	private void setupText() {
+		String text = fieldAnnotation.getValue(TEXT_ELEMENT);
+		text = isEmpty(text) ? getFieldName() : text;
+		setText(text);
+	}
+
+	private void setupShowText() {
+		boolean show = fieldAnnotation.getValue(SHOW_TEXT_ELEMENT);
+		setShowText(show);
+	}
+
+	private void setupAction() {
+		ActionListener action = (ActionListener) annotationClass.forAttribute(
+				ACTION_ELEMENT).build();
+		if (action == null) {
+			return;
+		}
+		if (action instanceof Action) {
+			setAction((Action) action);
+		} else {
+			addActionListener(action);
+		}
+	}
+
+	/**
+	 * Sets the text of the radio button. Defaults to the empty string which
+	 * means the field name is used as the text.
+	 * <p>
+	 * The text can also be a resource name that is queried in the supplied
+	 * texts resource.
+	 * 
+	 * @param text
+	 *            the text.
+	 */
+	public void setText(String text) {
+		textResource = text;
+		this.text = text;
+		updateTextResource();
+		log.textSet(this, text);
+	}
+
+	@Override
+	public void setTexts(Texts texts) {
+		super.setTexts(texts);
+		updateTextsResources();
+	}
+
+	private void updateTextsResources() {
+		updateTextResource();
+	}
+
+	private void updateTextResource() {
+		if (haveTextResource(textResource)) {
+			text = getTextResource(textResource);
+		}
+		if (showText) {
+			getComponent().setText(text);
+		} else {
+			getComponent().setText("");
+		}
+	}
+
+	/**
+	 * Returns the text of the radio button.
+	 * 
+	 * @return the text.
+	 */
+	public String getText() {
+		return text;
+	}
+
+	/**
+	 * Sets if the text of the radio button should be visible or not. Defaults
+	 * to {@code true} which means that the text should be visible.
+	 * 
+	 * @param show
+	 *            {@code true} for show the text or {@code false} to not show.
+	 */
+	public void setShowText(boolean show) {
+		this.showText = show;
+		updateTextResource();
+		log.showTextSet(this, show);
+	}
+
+	/**
+	 * Returns if the text is showing or not.
+	 * 
+	 * @return {@code true} for show the text or {@code false} to not show.
+	 */
+	public boolean getShowText() {
+		return showText;
+	}
+
+	/**
+	 * Adds the action listener to the radio button.
+	 * 
+	 * @param listener
+	 *            the {@link ActionListener}.
+	 * 
+	 * @throws NullPointerException
+	 *             if the specified listener is {@code null}.
+	 */
+	public void addActionListener(ActionListener listener) {
+		log.checkActionListener(this, listener);
+		getComponent().addActionListener(listener);
+		log.actionAdded(this, listener);
+	}
+
+	/**
+	 * Removed the action listener to the radio button.
+	 * 
+	 * @param listener
+	 *            the {@link ActionListener}.
+	 * 
+	 * @throws NullPointerException
+	 *             if the specified listener is {@code null}.
+	 */
+	public void removeActionListener(ActionListener listener) {
+		log.checkActionListener(this, listener);
+		getComponent().removeActionListener(listener);
+		log.actionRemoved(this, listener);
+	}
+
+	/**
+	 * Sets the action for the radio button.
+	 * 
+	 * @param action
+	 *            the {@link Action} or {@code null}.
+	 */
+	public void setAction(Action action) {
+		getComponent().setAction(action);
+		log.actionSet(this, action);
+	}
+
+	/**
+	 * Returns the action for the radio button.
+	 * 
+	 * @return the {@link Action} or {@code null}.
+	 */
+	public Action getAction() {
+		return getComponent().getAction();
+	}
+
+	/**
+	 * Sets the boolean value for the radio button.
+	 * 
+	 * @param value
+	 *            the new boolean value. {@code true} for a checked radio button
+	 *            and {@code false} for unchecked.
+	 * 
+	 * @throws PropertyVetoException
+	 *             if the user input is not valid.
+	 * 
+	 * @throws IllegalArgumentException
+	 *             if the value is not a boolean value.
+	 */
+	@Override
+	public void setValue(Object value) throws PropertyVetoException {
+		super.setValue(value);
+		log.checkValue(this, value);
+		validating.setValue(value);
+	}
+
+	@Override
+	public void setLocale(Locale locale) {
+		super.setLocale(locale);
+		updateTextsResources();
+	}
+
+}

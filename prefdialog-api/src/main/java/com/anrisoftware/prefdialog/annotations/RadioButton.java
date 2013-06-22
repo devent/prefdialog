@@ -19,40 +19,81 @@
 package com.anrisoftware.prefdialog.annotations;
 
 import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
+import java.awt.event.ActionListener;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import javax.swing.AbstractButton;
+import javax.swing.Action;
+
+import com.anrisoftware.resources.texts.api.Texts;
+
 /**
- * Field to select one value in a radio button group. The field can be set to an
- * enumeration then the enumerated values are used.
+ * Field for a radio button. Radio buttons are usually in a group so the user
+ * can chose one option for the group. For this single radio button an action
+ * can be assigned that is called when the user clicks on the button.
  * <p>
- * Example:
+ * <h2>Examples</h2>
  * 
  * <pre>
- * enum Colors {
- * 	BLACK, BLUE, RED
- * }
- * 
  * &#064;FieldComponent
  * &#064;RadioButton
- * private Colors colors;
+ * public boolean optionFoo;
  * </pre>
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
  */
-@Target(FIELD)
+@Target({ FIELD, METHOD })
 @Retention(RUNTIME)
 @FieldAnnotation
 @Documented
 public @interface RadioButton {
 
 	/**
-	 * How many columns should the group have. The radio buttons are distributed
-	 * evenly in the columns. Defaults to one column.
+	 * The text of the check-box. Defaults to the empty string which means the
+	 * field name is used as the text.
+	 * <p>
+	 * The text can also be a resource name that is queried in the supplied
+	 * texts resource.
+	 * 
+	 * @see Texts
+	 * 
+	 * @since 3.0
 	 */
-	int columns() default 1;
+	String text() default "";
+
+	/**
+	 * Sets if the text of the check-box should be visible or not. Defaults to
+	 * {@code true} which means that the text should be visible.
+	 * 
+	 * @since 3.0
+	 */
+	boolean showText() default true;
+
+	/**
+	 * The name of the field name to use for the custom button {@link Action} or
+	 * {@link ActionListener}. Defaults to an empty name which means no field is
+	 * set.
+	 * 
+	 * @since 3.0
+	 */
+	String action() default "";
+
+	/**
+	 * Sets the {@link Action} or {@link ActionListener} class for the button.
+	 * The custom action must have a public standard constructor available for
+	 * instantiation.
+	 * 
+	 * @see AbstractButton#addActionListener(ActionListener)
+	 * @see AbstractButton#setAction(Action)
+	 * 
+	 * @since 3.0
+	 */
+	Class<? extends ActionListener>[] actionClass() default {};
+
 }
