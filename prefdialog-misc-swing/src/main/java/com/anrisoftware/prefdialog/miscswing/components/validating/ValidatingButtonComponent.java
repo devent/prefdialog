@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.AbstractButton;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 /**
  * Test the input of a button component.
@@ -18,6 +20,8 @@ public class ValidatingButtonComponent<ComponentType extends AbstractButton>
 		extends AbstractValidatingComponent<Object, ComponentType> {
 
 	private final ActionListener actionListener;
+
+	private final ChangeListener changeListener;
 
 	/**
 	 * Sets the button component for with the input will be validated.
@@ -34,12 +38,20 @@ public class ValidatingButtonComponent<ComponentType extends AbstractButton>
 				validateInput();
 			}
 		};
+		this.changeListener = new ChangeListener() {
+
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				validateInput();
+			}
+		};
 		setupListeners();
 	}
 
 	private void setupListeners() {
 		AbstractButton component = getComponent();
 		component.addActionListener(actionListener);
+		component.addChangeListener(changeListener);
 	}
 
 	@Override
