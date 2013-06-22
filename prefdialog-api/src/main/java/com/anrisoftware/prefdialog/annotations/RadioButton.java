@@ -29,6 +29,7 @@ import java.lang.annotation.Target;
 
 import javax.swing.AbstractButton;
 import javax.swing.Action;
+import javax.swing.ButtonGroup;
 
 import com.anrisoftware.resources.texts.api.Texts;
 
@@ -95,5 +96,14 @@ public @interface RadioButton {
 	 * @since 3.0
 	 */
 	Class<? extends ActionListener>[] actionClass() default {};
+
+	/**
+	 * The name of the field name to use for the button group
+	 * {@link ButtonGroup} to put the radio buttons in a shared group. Defaults
+	 * to an empty name which means no field is set.
+	 * 
+	 * @since 3.0
+	 */
+	String group() default "";
 
 }

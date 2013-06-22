@@ -29,6 +29,7 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 import javax.swing.Action;
+import javax.swing.ButtonGroup;
 import javax.swing.JRadioButton;
 
 import com.anrisoftware.globalpom.reflection.annotationclass.AnnotationClass;
@@ -50,6 +51,8 @@ import com.google.inject.assistedinject.Assisted;
  */
 @SuppressWarnings("serial")
 public class RadioButtonField extends AbstractTitleField<JRadioButton> {
+
+	private static final String GROUP_ELEMENT = "group";
 
 	private static final Class<? extends Annotation> ANNOTATION_CLASS = RadioButton.class;
 
@@ -74,6 +77,8 @@ public class RadioButtonField extends AbstractTitleField<JRadioButton> {
 	private String text;
 
 	private boolean showText;
+
+	private ButtonGroup buttonGroup;
 
 	/**
 	 * @see RadioButtonFieldFactory#create(Object, String)
@@ -112,6 +117,7 @@ public class RadioButtonField extends AbstractTitleField<JRadioButton> {
 		setupText();
 		setupShowText();
 		setupAction();
+		setupGroup();
 	}
 
 	private void setupText() {
@@ -135,6 +141,14 @@ public class RadioButtonField extends AbstractTitleField<JRadioButton> {
 			setAction((Action) action);
 		} else {
 			addActionListener(action);
+		}
+	}
+
+	private void setupGroup() {
+		ButtonGroup group = (ButtonGroup) annotationClass.forAttribute(
+				GROUP_ELEMENT).build();
+		if (group != null) {
+			setButtonGroup(group);
 		}
 	}
 
@@ -255,6 +269,33 @@ public class RadioButtonField extends AbstractTitleField<JRadioButton> {
 	 */
 	public Action getAction() {
 		return getComponent().getAction();
+	}
+
+	/**
+	 * Sets the button group for this radio button. The button is added to the
+	 * specified group.
+	 * 
+	 * @param group
+	 *            the {@link ButtonGroup}.
+	 * 
+	 * @throws NullPointerException
+	 *             if the specified group is {@code null}.
+	 */
+	public void setButtonGroup(ButtonGroup group) {
+		log.checkButtonGroup(this, group);
+		this.buttonGroup = group;
+		group.add(getComponent());
+		log.buttonGroupSet(this, group);
+	}
+
+	/**
+	 * Returns the button group of this radio button.
+	 * 
+	 * @return the {@link ButtonGroup} or {@code null} if the button does not
+	 *         belong to any group.
+	 */
+	public ButtonGroup getButtonGroup() {
+		return buttonGroup;
 	}
 
 	/**

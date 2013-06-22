@@ -23,6 +23,7 @@ import java.awt.event.ActionListener
 
 import javax.swing.AbstractAction
 import javax.swing.Action
+import javax.swing.ButtonGroup
 
 import com.anrisoftware.prefdialog.annotations.FieldComponent
 import com.anrisoftware.prefdialog.annotations.RadioButton
@@ -54,6 +55,10 @@ class RadioButtonBean {
 	static final WITH_ACTION_LISTENER_CLASS = "withActionListenerClass"
 
 	static final WITH_ACTION_CLASS = "withActionClass"
+
+	static final GROUP_MEMBER_A = "groupMemberA"
+
+	static final GROUP_MEMBER_B = "groupMemberB"
 
 	@FieldComponent
 	@RadioButton
@@ -95,6 +100,16 @@ class RadioButtonBean {
 	@RadioButton(actionClass = CustomAction)
 	public boolean withActionClass
 
+	@FieldComponent
+	@RadioButton(group = "buttonGroup")
+	public boolean groupMemberA
+
+	@FieldComponent
+	@RadioButton(group = "buttonGroup")
+	public boolean groupMemberB
+
+	public ButtonGroup buttonGroup
+
 	public ActionListener actionListener
 
 	public Action action
@@ -109,6 +124,7 @@ class RadioButtonBean {
 						actionListenerCalled = true
 					}
 				}
+		this.buttonGroup = new ButtonGroup()
 	}
 }
 

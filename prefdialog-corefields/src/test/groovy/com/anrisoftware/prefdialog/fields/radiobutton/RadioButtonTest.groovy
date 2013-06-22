@@ -23,6 +23,9 @@ import static com.anrisoftware.prefdialog.core.FieldTestUtils.*
 import static com.anrisoftware.prefdialog.fields.radiobutton.RadioButtonBean.*
 import static com.anrisoftware.prefdialog.fields.radiobutton.RadioButtonService.*
 
+import javax.swing.BoxLayout
+import javax.swing.JPanel
+
 import org.fest.swing.fixture.FrameFixture
 import org.junit.Before
 import org.junit.BeforeClass
@@ -241,6 +244,36 @@ class RadioButtonTest {
 			button = fix.radioButton fieldName
 			button.click()
 			assert field.getAction().actionCalled == true
+		})
+	}
+
+	@Test
+	void "button group"() {
+		def title = "$NAME::button group"
+		def fieldA = factory.create(bean, GROUP_MEMBER_A)
+		def fieldB = factory.create(bean, GROUP_MEMBER_B)
+		def container = new JPanel()
+		container.setLayout new BoxLayout(container, BoxLayout.Y_AXIS)
+		container.add fieldA.getAWTComponent()
+		container.add fieldB.getAWTComponent()
+		def buttonA
+		def buttonB
+
+		new TestFrameUtil(title, container).withFixture({ FrameFixture fix ->
+			buttonA = fix.radioButton GROUP_MEMBER_A
+			buttonB = fix.radioButton GROUP_MEMBER_B
+		}, {
+			buttonA.click()
+			assert bean.groupMemberA == true
+			assert bean.groupMemberB == false
+		}, {
+			buttonB.click()
+			assert bean.groupMemberA == false
+			assert bean.groupMemberB == true
+		}, {
+			buttonA.click()
+			assert bean.groupMemberA == true
+			assert bean.groupMemberB == false
 		})
 	}
 

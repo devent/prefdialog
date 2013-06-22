@@ -24,6 +24,7 @@ import static org.apache.commons.lang3.Validate.notNull;
 import java.awt.event.ActionListener;
 
 import javax.swing.Action;
+import javax.swing.ButtonGroup;
 
 import com.anrisoftware.globalpom.log.AbstractLogger;
 
@@ -41,6 +42,8 @@ class RadioButtonFieldLogger extends AbstractLogger {
 	private static final String VALUE_NOT_BOOLEAN = "Value '%s' is not boolean value for %s.";
 	private static final String ACTION_ADDED = "Action listener {} add for {}.";
 	private static final String ACTION_SET = "Action {} set for {}.";
+	private static final String BUTTON_GROUP_NULL = "Button group cannot be null for %s.";
+	private static final String BUTTON_GROUP_SET = "Button group {} set for {}.";
 
 	/**
 	 * Creates logger for {@link RadioButtonField}.
@@ -75,5 +78,13 @@ class RadioButtonFieldLogger extends AbstractLogger {
 
 	public void actionRemoved(RadioButtonField field, ActionListener listener) {
 		notNull(listener, ACTION_LISTENER_NULL, field);
+	}
+
+	void checkButtonGroup(RadioButtonField field, ButtonGroup group) {
+		notNull(group, BUTTON_GROUP_NULL, field);
+	}
+
+	void buttonGroupSet(RadioButtonField field, ButtonGroup group) {
+		log.debug(BUTTON_GROUP_SET, group, field);
 	}
 }
