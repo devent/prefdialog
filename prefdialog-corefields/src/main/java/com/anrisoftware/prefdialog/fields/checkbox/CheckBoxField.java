@@ -18,24 +18,17 @@
  */
 package com.anrisoftware.prefdialog.fields.checkbox;
 
-import static org.apache.commons.lang3.StringUtils.isEmpty;
-
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
-import java.lang.annotation.Annotation;
-import java.util.Locale;
 
 import javax.inject.Inject;
 import javax.swing.JCheckBox;
 
-import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccess;
-import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccessFactory;
 import com.anrisoftware.prefdialog.annotations.CheckBox;
-import com.anrisoftware.prefdialog.core.AbstractTitleField;
+import com.anrisoftware.prefdialog.fields.fieldbutton.AbstractFieldButtonField;
 import com.anrisoftware.prefdialog.miscswing.components.validating.ValidatingButtonComponent;
 import com.anrisoftware.prefdialog.miscswing.components.validating.ValidatingTextComponent;
-import com.anrisoftware.resources.texts.api.Texts;
 import com.google.inject.assistedinject.Assisted;
 
 /**
@@ -48,29 +41,13 @@ import com.google.inject.assistedinject.Assisted;
  * @since 3.0
  */
 @SuppressWarnings("serial")
-public class CheckBoxField extends AbstractTitleField<JCheckBox> {
-
-	private static final Class<? extends Annotation> ANNOTATION_CLASS = CheckBox.class;
-
-	private static final String TEXT_ELEMENT = "text";
-
-	private static final String SHOW_TEXT_ELEMENT = "showText";
-
-	private static final String ACTION_ELEMENT = "action";
+public class CheckBoxField extends AbstractFieldButtonField<JCheckBox> {
 
 	private final CheckBoxFieldLogger log;
 
 	private final ValidatingButtonComponent<JCheckBox> validating;
 
 	private final VetoableChangeListener valueVetoListener;
-
-	private String textResource;
-
-	private String text;
-
-	private boolean showText;
-
-	private AnnotationAccess fieldAnnotation;
 
 	/**
 	 * @see CheckBoxFieldFactory#create(Object, String)
@@ -99,95 +76,6 @@ public class CheckBoxField extends AbstractTitleField<JCheckBox> {
 				ValidatingTextComponent.VALUE_PROPERTY, valueVetoListener);
 	}
 
-	@Inject
-	void setBeanAccessFactory(AnnotationAccessFactory annotationAccessFactory) {
-		this.fieldAnnotation = annotationAccessFactory.create(ANNOTATION_CLASS,
-				getAccessibleObject());
-		setupText();
-		setupShowText();
-		setupAction();
-	}
-
-	private void setupText() {
-		String text = fieldAnnotation.getValue(TEXT_ELEMENT);
-		text = isEmpty(text) ? getFieldName() : text;
-		setText(text);
-	}
-
-	private void setupShowText() {
-		boolean show = fieldAnnotation.getValue(SHOW_TEXT_ELEMENT);
-		setShowText(show);
-	}
-
-	/**
-	 * Sets the text of the check-box. Defaults to the empty string which means
-	 * the field name is used as the text.
-	 * <p>
-	 * The text can also be a resource name that is queried in the supplied
-	 * texts resource.
-	 * 
-	 * @param text
-	 *            the text.
-	 */
-	public void setText(String text) {
-		textResource = text;
-		this.text = text;
-		updateTextResource();
-		log.textSet(this, text);
-	}
-
-	@Override
-	public void setTexts(Texts texts) {
-		super.setTexts(texts);
-		updateTextsResources();
-	}
-
-	private void updateTextsResources() {
-		updateTextResource();
-	}
-
-	private void updateTextResource() {
-		if (haveTextResource(textResource)) {
-			text = getTextResource(textResource);
-		}
-		if (showText) {
-			getComponent().setText(text);
-		} else {
-			getComponent().setText("");
-		}
-	}
-
-	/**
-	 * Returns the text of the check-box.
-	 * 
-	 * @return the text.
-	 */
-	public String getText() {
-		return text;
-	}
-
-	/**
-	 * Sets if the text of the check-box should be visible or not. Defaults to
-	 * {@code true} which means that the text should be visible.
-	 * 
-	 * @param show
-	 *            {@code true} for show the text or {@code false} to not show.
-	 */
-	public void setShowText(boolean show) {
-		this.showText = show;
-		updateTextResource();
-		log.showTextSet(this, show);
-	}
-
-	/**
-	 * Returns if the text is showing or not.
-	 * 
-	 * @return {@code true} for show the text or {@code false} to not show.
-	 */
-	public boolean getShowText() {
-		return showText;
-	}
-
 	/**
 	 * Sets the boolean value for the check-box.
 	 * 
@@ -207,11 +95,4 @@ public class CheckBoxField extends AbstractTitleField<JCheckBox> {
 		log.checkValue(this, value);
 		validating.setValue(value);
 	}
-
-	@Override
-	public void setLocale(Locale locale) {
-		super.setLocale(locale);
-		updateTextsResources();
-	}
-
 }

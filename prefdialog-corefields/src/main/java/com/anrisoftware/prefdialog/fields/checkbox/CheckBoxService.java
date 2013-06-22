@@ -21,9 +21,11 @@ package com.anrisoftware.prefdialog.fields.checkbox;
 import static java.util.Arrays.asList;
 
 import java.awt.Component;
+import java.util.List;
 
 import org.mangosdk.spi.ProviderFor;
 
+import com.anrisoftware.globalpom.reflection.annotationclass.AnnotationClassModule;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule;
 import com.anrisoftware.globalpom.reflection.beans.BeansModule;
 import com.anrisoftware.prefdialog.annotations.CheckBox;
@@ -48,15 +50,11 @@ public class CheckBoxService implements FieldService {
 	 */
 	public static final FieldInfo INFO = new FieldInfo(CheckBox.class);
 
-	private final Iterable<? extends Module> modules;
+	private static final List<Module> modules = asList(new Module[] { new CheckBoxModule() });
 
-	private final Iterable<? extends Module> dependencies;
-
-	public CheckBoxService() {
-		this.modules = asList(new Module[] { new CheckBoxModule() });
-		this.dependencies = asList(new Module[] { new AnnotationsModule(),
-				new BeansModule() });
-	}
+	private static final List<Module> dependencies = asList(new Module[] {
+			new AnnotationsModule(), new BeansModule(),
+			new AnnotationClassModule() });
 
 	@Override
 	public FieldInfo getInfo() {

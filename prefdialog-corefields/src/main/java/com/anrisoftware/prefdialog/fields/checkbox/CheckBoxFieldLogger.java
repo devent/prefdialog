@@ -30,10 +30,6 @@ import com.anrisoftware.globalpom.log.AbstractLogger;
  */
 class CheckBoxFieldLogger extends AbstractLogger {
 
-	private static final String SET_SHOW_TEXT = "Set show text {} to field {}.";
-
-	private static final String SET_TEXT = "Set text '{}' to field {}.";
-
 	private static final String VALUE_NOT_BOOLEAN = "Value '%s' is not boolean value for %s.";
 
 	/**
@@ -45,13 +41,5 @@ class CheckBoxFieldLogger extends AbstractLogger {
 
 	void checkValue(CheckBoxField field, Object value) {
 		isInstanceOf(Boolean.class, value, VALUE_NOT_BOOLEAN, value, field);
-	}
-
-	void textSet(CheckBoxField field, String text) {
-		log.debug(SET_TEXT, text, field);
-	}
-
-	void showTextSet(CheckBoxField field, boolean show) {
-		log.debug(SET_SHOW_TEXT, show, field);
 	}
 }

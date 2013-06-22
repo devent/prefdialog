@@ -19,6 +19,7 @@
 package com.anrisoftware.prefdialog.fields.checkbox
 
 import com.anrisoftware.prefdialog.annotations.CheckBox
+import com.anrisoftware.prefdialog.annotations.FieldButton
 import com.anrisoftware.prefdialog.annotations.FieldComponent
 
 /**
@@ -42,26 +43,32 @@ class CheckBoxBean {
 	static final READ_ONLY = "readOnly"
 
 	@FieldComponent
+	@FieldButton
 	@CheckBox
 	public Boolean nullValue
 
 	@FieldComponent
+	@FieldButton
 	@CheckBox
 	public boolean noText
 
 	@FieldComponent
-	@CheckBox(text = "Checkbox Text")
+	@FieldButton(text = "Checkbox Text")
+	@CheckBox
 	public boolean withText
 
 	@FieldComponent(title = "checkbox_with_text_resource_title")
-	@CheckBox(text = "checkbox_with_text_resource_text")
+	@FieldButton(text = "checkbox_with_text_resource_text")
+	@CheckBox
 	public boolean withTextResource
 
 	@FieldComponent
-	@CheckBox(showText = false)
+	@FieldButton(showText = false)
+	@CheckBox
 	public boolean notShowText
 
 	@FieldComponent(readOnly = true)
+	@FieldButton
 	@CheckBox
 	public boolean readOnly
 }

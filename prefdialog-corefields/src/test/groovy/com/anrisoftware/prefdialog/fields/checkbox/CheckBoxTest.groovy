@@ -21,14 +21,13 @@ package com.anrisoftware.prefdialog.fields.checkbox
 import static com.anrisoftware.globalpom.utils.TestUtils.*
 import static com.anrisoftware.prefdialog.core.FieldTestUtils.*
 import static com.anrisoftware.prefdialog.fields.checkbox.CheckBoxBean.*
+import static com.anrisoftware.prefdialog.fields.checkbox.CheckBoxService.*
 
 import org.fest.swing.fixture.FrameFixture
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 
-import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule
-import com.anrisoftware.globalpom.reflection.beans.BeansModule
 import com.anrisoftware.globalpom.reflection.exceptions.ReflectionError
 import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.resources.texts.api.Texts
@@ -53,7 +52,7 @@ class CheckBoxTest {
 
 	@Test
 	void "apply user input"() {
-		def title = "CheckBoxTest :: apply user input"
+		def title = "$NAME::apply user input"
 		def fieldName = NO_TEXT
 		def field = factory.create(bean, fieldName)
 		def container = field.getAWTComponent()
@@ -71,7 +70,7 @@ class CheckBoxTest {
 
 	@Test
 	void "restore user input"() {
-		def title = "CheckBoxTest :: restore user input"
+		def title = "$NAME::restore user input"
 		def fieldName = NO_TEXT
 		def field = factory.create(bean, fieldName)
 		def container = field.getAWTComponent()
@@ -93,7 +92,7 @@ class CheckBoxTest {
 
 	@Test
 	void "no text"() {
-		def title = "CheckBoxTest :: no text"
+		def title = "$NAME::no text"
 		def fieldName = NO_TEXT
 		def field = factory.create(bean, fieldName)
 		def container = field.getAWTComponent()
@@ -105,7 +104,7 @@ class CheckBoxTest {
 
 	@Test
 	void "with text"() {
-		def title = "CheckBoxTest :: with text"
+		def title = "$NAME::with text"
 		def fieldName = WITH_TEXT
 		def field = factory.create(bean, fieldName)
 		def container = field.getAWTComponent()
@@ -117,7 +116,7 @@ class CheckBoxTest {
 
 	@Test
 	void "with text resource"() {
-		def title = "CheckBoxTest :: with text resource"
+		def title = "$NAME::with text resource"
 		def fieldName = WITH_TEXT_RESOURCE
 		def field = factory.create(bean, fieldName)
 		def container = field.getAWTComponent()
@@ -136,7 +135,7 @@ class CheckBoxTest {
 
 	@Test
 	void "not showing text"() {
-		def title = "CheckBoxTest :: not showing text"
+		def title = "$NAME::not showing text"
 		def fieldName = NOT_SHOW_TEXT
 		def field = factory.create(bean, fieldName)
 		def container = field.getAWTComponent()
@@ -154,7 +153,7 @@ class CheckBoxTest {
 
 	@Test
 	void "read only"() {
-		def title = "CheckBoxTest :: read only"
+		def title = "$NAME::read only"
 		def fieldName = READ_ONLY
 		def field = factory.create(bean, fieldName)
 		def container = field.getAWTComponent()
@@ -172,15 +171,17 @@ class CheckBoxTest {
 
 	//@Test(timeout = 60000l)
 	void "manually"() {
-		def title = "CheckBoxTest :: manually"
+		def title = "$NAME::manually"
 		def fieldName = NO_TEXT
 		def field = factory.create(bean, fieldName)
 		def container = field.getAWTComponent()
 		new TestFrameUtil(title, container).withFixture({
 			Thread.sleep 60 * 1000l
-			assert false : "Deactivate manually test"
+			assert false : "manually test"
 		})
 	}
+
+	static final String NAME = CheckBoxTest.class.simpleName
 
 	static Injector injector
 
@@ -192,8 +193,7 @@ class CheckBoxTest {
 
 	@BeforeClass
 	static void setupFactories() {
-		injector = Guice.createInjector(
-				new AnnotationsModule(), new BeansModule(), new CheckBoxModule())
+		injector = Guice.createInjector(dependencies).createChildInjector(modules)
 		factory = injector.getInstance CheckBoxFieldFactory
 		texts = createTextsResource(injector)
 	}

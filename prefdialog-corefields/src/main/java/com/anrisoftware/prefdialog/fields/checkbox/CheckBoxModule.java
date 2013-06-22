@@ -29,6 +29,9 @@ import com.google.inject.assistedinject.FactoryModuleBuilder;
 /**
  * Binds the check box field factory.
  * 
+ * @see CheckBoxField
+ * @see CheckBoxFieldFactory
+ * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */

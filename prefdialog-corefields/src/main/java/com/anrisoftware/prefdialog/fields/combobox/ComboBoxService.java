@@ -49,11 +49,11 @@ public class ComboBoxService implements FieldService {
 	 */
 	public static final FieldInfo INFO = new FieldInfo(ComboBox.class);
 
-	private static final Iterable<? extends Module> dependencies = asList(new Module[] {
+	private static final Iterable<Module> dependencies = asList(new Module[] {
 			new AnnotationsModule(), new BeansModule(),
 			new AnnotationClassModule() });
 
-	private static final Iterable<? extends Module> modules = asList(new Module[] { new ComboBoxModule() });
+	private static final Iterable<Module> modules = asList(new Module[] { new ComboBoxModule() });
 
 	@Override
 	public FieldInfo getInfo() {

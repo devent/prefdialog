@@ -42,15 +42,15 @@ import com.google.inject.Injector
 class CheckBoxServiceTest {
 
 	@Test
-	void "with defaults"() {
-		def title = "CheckBoxServiceTest :: with defaults"
+	void "service"() {
+		def title = "$NAME::service"
 		def fieldName = NO_TEXT
 		def field = factory.create(bean, fieldName)
 		def container = field.getAWTComponent()
 		new TestFrameUtil(title, container).withFixture({})
 	}
 
-	static Injector injector
+	static final String NAME = CheckBoxServiceTest.class.simpleName
 
 	static CheckBoxFieldFactory factory
 
@@ -58,8 +58,7 @@ class CheckBoxServiceTest {
 
 	@BeforeClass
 	static void setupFactories() {
-		injector = Guice.createInjector(new AnnotationsModule(), new BeansModule())
-		factory = findService(INFO).getFactory(injector)
+		factory = findService(INFO).getFactory()
 	}
 
 	@Before
