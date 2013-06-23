@@ -80,17 +80,14 @@ class HistoryComboBoxTest extends FieldTestUtils {
 			fixbox.enterText "1"
 			fixbox.pressAndReleaseKeys KeyEvent.VK_ENTER
 			assert bean."$fieldName" == "1"
-		}, {
 			fixbox.selectAllText()
 			fixbox.enterText "2"
 			fixbox.pressAndReleaseKeys KeyEvent.VK_ENTER
 			assert bean."$fieldName" == "2"
-		}, {
 			fixbox.selectAllText()
 			fixbox.enterText "3"
 			fixbox.pressAndReleaseKeys KeyEvent.VK_ENTER
 			assert bean."$fieldName" == "3"
-		}, {
 			fixbox.selectAllText()
 			fixbox.enterText "Default A"
 			fixbox.pressAndReleaseKeys KeyEvent.VK_ENTER
@@ -167,6 +164,18 @@ class HistoryComboBoxTest extends FieldTestUtils {
 			assert bean."$fieldName" == "3"
 			fixbox.selectItem 1
 			assert bean."$fieldName" == "2"
+		})
+	}
+
+	//@Test
+	void "manually"() {
+		def title = "$NAME::manually"
+		def fieldName = LIST_ELEMENTS
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
+		new TestFrameUtil(title, container).withFixture({
+			Thread.sleep 60*1000
+			assert false : "manually test"
 		})
 	}
 

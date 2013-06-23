@@ -1,6 +1,7 @@
 package com.anrisoftware.prefdialog.miscswing.comboboxhistory;
 
 import static java.util.Collections.synchronizedSet;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -101,6 +102,9 @@ public class HistoryComboBoxModel implements MutableComboBoxModel, Serializable 
 		if (items.contains(itemDefaultFactory.create(item))) {
 			setSelectedItem(item);
 		} else {
+			if (item instanceof String && isEmpty((String) item)) {
+				return;
+			}
 			removeCustomElementFromEnd();
 			model.insertElementAt(item, 0);
 			items.add(item);
@@ -163,6 +167,9 @@ public class HistoryComboBoxModel implements MutableComboBoxModel, Serializable 
 		if (items.contains(idxitem)) {
 			model.setSelectedItem(item);
 		} else {
+			if (item instanceof String && isEmpty((String) item)) {
+				return;
+			}
 			model.insertElementAt(item, index);
 			items.add(item);
 		}
