@@ -19,13 +19,11 @@ public class SeparatorProperties {
 
 	private final SeparatorCharRenderer separatorCharRenderer;
 
-	private final SeparatorCharEditor separatorCharEditor;
-
 	private Character customSeparatorChar;
 
 	private final List<Character> customSeparatorCharsHistory;
 
-	private final SeparatorCharEditor customSeparatorCharEditor;
+	private final CustomSeparatorCharEditor customSeparatorCharEditor;
 
 	private final CustomSeparatorCharModel customSeparatorCharModel;
 
@@ -36,14 +34,12 @@ public class SeparatorProperties {
 	@Inject
 	SeparatorProperties(SeparatorCharModel separatorCharModel,
 			SeparatorCharRenderer separatorCharRenderer,
-			SeparatorCharEditor separatorCharEditor,
-			SeparatorCharEditor customSeparatorCharEditor,
 			CustomSeparatorCharModel customSeparatorCharModel,
+			CustomSeparatorCharEditor customSeparatorCharEditor,
 			UseCustomSeparatorAction useCustomSeparatorAction) {
 		this.separatorChar = separatorCharModel.getElementAt(0);
 		this.separatorCharModel = separatorCharModel;
 		this.separatorCharRenderer = separatorCharRenderer;
-		this.separatorCharEditor = separatorCharEditor;
 		this.customSeparatorChar = '\0';
 		this.customSeparatorCharsHistory = new ArrayList<Character>();
 		this.customSeparatorCharEditor = customSeparatorCharEditor;
@@ -57,7 +53,7 @@ public class SeparatorProperties {
 	}
 
 	@FieldComponent
-	@ComboBox(model = "separatorCharModel", renderer = "separatorCharRenderer", editor = "separatorCharEditor")
+	@ComboBox(model = "separatorCharModel", renderer = "separatorCharRenderer")
 	public Character getSeparatorChar() {
 		return separatorChar;
 	}
@@ -68,10 +64,6 @@ public class SeparatorProperties {
 
 	public SeparatorCharRenderer getSeparatorCharRenderer() {
 		return separatorCharRenderer;
-	}
-
-	public SeparatorCharEditor getSeparatorCharEditor() {
-		return separatorCharEditor;
 	}
 
 	@FieldComponent(showTitle = false)
@@ -99,7 +91,7 @@ public class SeparatorProperties {
 		this.customSeparatorChar = customSeparatorChar;
 	}
 
-	public SeparatorCharEditor getCustomSeparatorCharEditor() {
+	public CustomSeparatorCharEditor getCustomSeparatorCharEditor() {
 		return customSeparatorCharEditor;
 	}
 

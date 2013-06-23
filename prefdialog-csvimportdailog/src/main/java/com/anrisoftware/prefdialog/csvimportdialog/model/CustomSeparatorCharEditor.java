@@ -6,11 +6,11 @@ import java.awt.event.ActionListener;
 import javax.swing.ComboBoxEditor;
 import javax.swing.JComboBox;
 
-public class SeparatorCharEditor implements ComboBoxEditor {
+public class CustomSeparatorCharEditor implements ComboBoxEditor {
 
 	private final ComboBoxEditor editor;
 
-	SeparatorCharEditor() {
+	CustomSeparatorCharEditor() {
 		this.editor = new JComboBox<Object>().getEditor();
 	}
 
@@ -20,8 +20,20 @@ public class SeparatorCharEditor implements ComboBoxEditor {
 	}
 
 	@Override
-	public void setItem(Object anObject) {
-		editor.setItem(anObject);
+	public void setItem(Object item) {
+		if (item instanceof Character) {
+			checkNullCharacter((Character) item);
+		} else {
+			editor.setItem(item);
+		}
+	}
+
+	private void checkNullCharacter(Character c) {
+		if (c.charValue() == '\0') {
+			editor.setItem(null);
+		} else {
+			editor.setItem(c);
+		}
 	}
 
 	@Override

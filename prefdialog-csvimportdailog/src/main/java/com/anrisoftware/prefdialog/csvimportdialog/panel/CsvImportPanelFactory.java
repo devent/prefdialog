@@ -1,6 +1,8 @@
 package com.anrisoftware.prefdialog.csvimportdialog.panel;
 
+import com.anrisoftware.prefdialog.csvimportdialog.model.CsvProperties;
+
 public interface CsvImportPanelFactory {
 
-	CsvImportPanel create(Object properties);
+	CsvImportPanel create(CsvProperties properties);
 }

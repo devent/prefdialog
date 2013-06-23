@@ -10,6 +10,7 @@ import javax.inject.Named;
 import javax.swing.JPanel;
 
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
+import com.anrisoftware.prefdialog.csvimportdialog.model.CsvProperties;
 import com.anrisoftware.prefdialog.fields.FieldComponent;
 import com.anrisoftware.prefdialog.fields.FieldFactory;
 import com.anrisoftware.resources.texts.central.TextsResources;
@@ -28,14 +29,17 @@ public class CsvImportPanel {
 
 	private final ImportAction importAction;
 
+	private final CsvProperties properties;
+
 	@Inject
 	CsvImportPanel(
 			TextsResourcesFactory textsFactory,
 			@Named("CsvImportPanel-texts-properties") Properties textsProperties,
 			UiPanel panel, FieldFactory<JPanel> panelFieldFactory,
 			CancelAction cancelAction, ImportAction importAction,
-			@Assisted Object properties) {
+			@Assisted CsvProperties properties) {
 		this.panel = panel;
+		this.properties = properties;
 		this.propertiesPanel = panelFieldFactory.create(properties,
 				"importPanel");
 		this.texts = textsFactory.create(textsProperties);
@@ -46,10 +50,21 @@ public class CsvImportPanel {
 	}
 
 	private void setupActions() {
+		properties
+				.getSeparatorProperties()
+				.getUseCustomSeparatorAction()
+				.setCustomSeparatorCharField(
+						propertiesPanel.findField("customSeparatorChar"));
+		properties
+				.getSeparatorProperties()
+				.getUseCustomSeparatorAction()
+				.setSeparatorCharField(
+						propertiesPanel.findField("separatorChar"));
 		cancelAction.setTexts(texts);
 		importAction.setTexts(texts);
 		panel.getCancelButton().setAction(cancelAction);
 		panel.getImportButton().setAction(importAction);
+
 	}
 
 	private void setupPanel() {

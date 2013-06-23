@@ -7,18 +7,23 @@ import com.anrisoftware.prefdialog.fields.FieldComponent;
 
 public class UseCustomSeparatorAction implements ActionListener {
 
-	private FieldComponent<?> field;
+	private FieldComponent<?> customSeparatorCharField;
 
-	public void setUseCustomSeparatorField(FieldComponent<?> field) {
-		this.field = field;
+	private FieldComponent<?> separatorCharField;
+
+	public void setCustomSeparatorCharField(FieldComponent<?> field) {
+		this.customSeparatorCharField = field;
+	}
+
+	public void setSeparatorCharField(FieldComponent<?> field) {
+		this.separatorCharField = field;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println("actionPerformed()"); // TODO println
-		// field.setEnabled(!field.isEnabled());
-		// TODO Auto-generated method stub
-
+		boolean enabled = customSeparatorCharField.isEnabled();
+		customSeparatorCharField.setEnabled(!enabled);
+		separatorCharField.setEnabled(enabled);
 	}
 
 }
