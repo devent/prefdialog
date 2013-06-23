@@ -34,8 +34,8 @@ import com.anrisoftware.resources.texts.api.Texts;
  * @since 3.0
  */
 @SuppressWarnings("serial")
-public abstract class AbstractComboBoxField extends
-		AbstractTitleField<JComboBox<?>> {
+public abstract class AbstractComboBoxField<ComponentType extends JComboBox<?>>
+		extends AbstractTitleField<ComponentType> {
 
 	private static final String EDITABLE_ELEMENT = "editable";
 
@@ -49,9 +49,11 @@ public abstract class AbstractComboBoxField extends
 
 	private AbstractComboBoxFieldLogger log;
 
-	private final ValidatingComboBoxComponent<Object, JComboBox<?>> validating;
+	private final ValidatingComboBoxComponent<Object, ComponentType> validating;
 
 	private final VetoableChangeListener valueVetoListener;
+
+	private final Class<? extends Annotation> annotationType;
 
 	private transient AnnotationAccess fieldAnnotation;
 
@@ -59,9 +61,29 @@ public abstract class AbstractComboBoxField extends
 
 	private transient BeanAccessFactory beanAccessFactory;
 
-	protected AbstractComboBoxField(Object parentObject, String fieldName) {
-		super(new JComboBox<Object>(), parentObject, fieldName);
-		this.validating = new ValidatingComboBoxComponent<Object, JComboBox<?>>(
+	/**
+	 * @see AbstractTitleField#AbstractTitleField(java.awt.Component, Object,
+	 *      String)
+	 * 
+	 * @param annotationType
+	 *            the annotation {@link Class} type of the specific combo box
+	 *            field. The annotation must have the following attributes:
+	 *            <ul>
+	 *            <li>model</li>
+	 *            <li>modelClass</li>
+	 *            <li>renderer</li>
+	 *            <li>rendererClass</li>
+	 *            <li>elements</li>
+	 *            <li>editable</li>
+	 *            <li>editor</li>
+	 *            <li>editorClass</li>
+	 *            </ul>
+	 */
+	protected AbstractComboBoxField(Class<? extends Annotation> annotationType,
+			ComponentType component, Object parentObject, String fieldName) {
+		super(component, parentObject, fieldName);
+		this.annotationType = annotationType;
+		this.validating = new ValidatingComboBoxComponent<Object, ComponentType>(
 				getComponent());
 		this.valueVetoListener = new VetoableChangeListener() {
 
@@ -87,24 +109,6 @@ public abstract class AbstractComboBoxField extends
 	}
 
 	/**
-	 * Returns the annotation class of the specific combo box field. The
-	 * annotation must have the following attributes:
-	 * <ul>
-	 * <li>model</li>
-	 * <li>modelClass</li>
-	 * <li>renderer</li>
-	 * <li>rendererClass</li>
-	 * <li>elements</li>
-	 * <li>editable</li>
-	 * <li>editor</li>
-	 * <li>editorClass</li>
-	 * </ul>
-	 * 
-	 * @return the {@link Class}.
-	 */
-	protected abstract Class<? extends Annotation> getAnnotationClass();
-
-	/**
 	 * Reads the attributes of the annotation and setups the field.
 	 */
 	@Inject
@@ -114,9 +118,9 @@ public abstract class AbstractComboBoxField extends
 			BeanAccessFactory beanAccessFactory) {
 		this.log = logger;
 		this.annotationClass = classFactory.create(getParentObject(),
-				getAnnotationClass(), getAccessibleObject());
-		this.fieldAnnotation = annotationAccessFactory.create(
-				getAnnotationClass(), getAccessibleObject());
+				annotationType, getAccessibleObject());
+		this.fieldAnnotation = annotationAccessFactory.create(annotationType,
+				getAccessibleObject());
 		this.beanAccessFactory = beanAccessFactory;
 		setupModel();
 		setupRenderer();

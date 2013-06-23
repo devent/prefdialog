@@ -31,7 +31,7 @@ import com.anrisoftware.globalpom.log.AbstractLogger;
 import com.anrisoftware.globalpom.reflection.exceptions.ReflectionError;
 
 /**
- * Logging messages for {@link AbstractComboBoxField}.
+ * Logging messages for {@link AbstractComboBoxField<?>}.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
@@ -54,21 +54,21 @@ class AbstractComboBoxFieldLogger extends AbstractLogger {
 	private static final String EDITOR_NULL = "Combo box editor cannot be null for %s.";
 
 	/**
-	 * Creates logger for {@link AbstractComboBoxField}.
+	 * Creates logger for {@link AbstractComboBoxField<?>}.
 	 */
 	AbstractComboBoxFieldLogger() {
 		super(AbstractComboBoxField.class);
 	}
 
-	void checkModel(AbstractComboBoxField field, ComboBoxModel<?> model) {
+	void checkModel(AbstractComboBoxField<?> field, ComboBoxModel<?> model) {
 		notNull(model, MODEL_NULL, field);
 	}
 
-	void modelSet(AbstractComboBoxField field, ComboBoxModel<?> model) {
+	void modelSet(AbstractComboBoxField<?> field, ComboBoxModel<?> model) {
 		log.debug(MODEL_SET, model, field);
 	}
 
-	IllegalArgumentException unsupportedType(AbstractComboBoxField field,
+	IllegalArgumentException unsupportedType(AbstractComboBoxField<?> field,
 			Object elements) {
 		return logException(
 				new IllegalArgumentException(format(TYPE_NOT_SUPPORTED,
@@ -76,23 +76,25 @@ class AbstractComboBoxFieldLogger extends AbstractLogger {
 				elements.getClass(), field.getName());
 	}
 
-	void checkElements(AbstractComboBoxField field, Object elements) {
+	void checkElements(AbstractComboBoxField<?> field, Object elements) {
 		notNull(elements, ELEMENTS_NULL, field);
 	}
 
-	void elementsSet(AbstractComboBoxField field, Object elements) {
+	void elementsSet(AbstractComboBoxField<?> field, Object elements) {
 		log.debug(ELEMENTS_SET, elements, field);
 	}
 
-	void checkRenderer(AbstractComboBoxField field, ListCellRenderer<?> renderer) {
+	void checkRenderer(AbstractComboBoxField<?> field,
+			ListCellRenderer<?> renderer) {
 		notNull(renderer, RENDERER_NULL, field);
 	}
 
-	void rendererSet(AbstractComboBoxField field, ListCellRenderer<?> renderer) {
+	void rendererSet(AbstractComboBoxField<?> field,
+			ListCellRenderer<?> renderer) {
 		log.debug(RENDERER_SET, renderer, field);
 	}
 
-	ReflectionError errorSetModel(AbstractComboBoxField field,
+	ReflectionError errorSetModel(AbstractComboBoxField<?> field,
 			PropertyVetoException e) {
 		return logException(
 				new ReflectionError(ERROR_SET_CUSTOM_MODEL, e).addContextValue(
@@ -100,7 +102,7 @@ class AbstractComboBoxFieldLogger extends AbstractLogger {
 				field.getName());
 	}
 
-	ReflectionError errorSetRenderer(AbstractComboBoxField field,
+	ReflectionError errorSetRenderer(AbstractComboBoxField<?> field,
 			PropertyVetoException e) {
 		return logException(
 				new ReflectionError(ERROR_SET_CUSTOM_RENDERER, e).addContextValue(
@@ -108,11 +110,11 @@ class AbstractComboBoxFieldLogger extends AbstractLogger {
 				field.getName());
 	}
 
-	void checkEditor(AbstractComboBoxField field, ComboBoxEditor editor) {
+	void checkEditor(AbstractComboBoxField<?> field, ComboBoxEditor editor) {
 		notNull(editor, EDITOR_NULL, field);
 	}
 
-	void editorSet(AbstractComboBoxField field, ComboBoxEditor editor) {
+	void editorSet(AbstractComboBoxField<?> field, ComboBoxEditor editor) {
 		log.debug(EDITOR_SET, editor, field);
 	}
 }

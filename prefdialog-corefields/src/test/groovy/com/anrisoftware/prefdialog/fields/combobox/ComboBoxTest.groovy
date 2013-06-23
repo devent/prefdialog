@@ -32,8 +32,10 @@ import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.prefdialog.core.FieldTestUtils
 import com.google.inject.Guice
 import com.google.inject.Injector
+
 /**
- * Test the {@link ComboBoxField}.
+ * @see ComboBoxBean
+ * @see ComboBoxField
  *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0

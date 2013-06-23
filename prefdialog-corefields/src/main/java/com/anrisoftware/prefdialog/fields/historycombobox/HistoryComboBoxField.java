@@ -12,6 +12,7 @@ import java.util.Collection;
 import javax.inject.Inject;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.MutableComboBoxModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
@@ -38,7 +39,7 @@ import com.google.inject.assistedinject.AssistedInject;
  * @since 3.0
  */
 @SuppressWarnings("serial")
-public class HistoryComboBoxField extends AbstractComboBoxField {
+public class HistoryComboBoxField extends AbstractComboBoxField<JComboBox<?>> {
 
 	private static final Class<? extends Annotation> ANNOTATION_CLASS = HistoryComboBox.class;
 
@@ -63,7 +64,8 @@ public class HistoryComboBoxField extends AbstractComboBoxField {
 	@AssistedInject
 	HistoryComboBoxField(HistoryComboBoxFactory historyComboBoxFactory,
 			@Assisted Object parentObject, @Assisted String fieldName) {
-		super(parentObject, fieldName);
+		super(ANNOTATION_CLASS, new JComboBox<Object>(), parentObject,
+				fieldName);
 		this.boxFactory = historyComboBoxFactory;
 		this.history = new ArrayList<Object>();
 		this.defaultItems = new ArrayList<Object>();
@@ -114,11 +116,6 @@ public class HistoryComboBoxField extends AbstractComboBoxField {
 	}
 
 	@Override
-	protected Class<? extends Annotation> getAnnotationClass() {
-		return ANNOTATION_CLASS;
-	}
-
-	@Override
 	protected void changeVetoableValue(PropertyChangeEvent evt)
 			throws PropertyVetoException {
 		Object newValue = evt.getNewValue();
@@ -135,8 +132,8 @@ public class HistoryComboBoxField extends AbstractComboBoxField {
 			AnnotationAccessFactory annotationAccessFactory,
 			BeanAccessFactory beanAccessFactory) {
 		this.log = logger;
-		this.fieldAnnotation = annotationAccessFactory.create(
-				getAnnotationClass(), getAccessibleObject());
+		this.fieldAnnotation = annotationAccessFactory.create(ANNOTATION_CLASS,
+				getAccessibleObject());
 		this.beanAccessFactory = beanAccessFactory;
 		Object oldValue = getValue();
 		setupDefaultItems();

@@ -20,6 +20,8 @@ package com.anrisoftware.prefdialog.fields.combobox;
 
 import java.lang.annotation.Annotation;
 
+import javax.swing.JComboBox;
+
 import com.anrisoftware.prefdialog.annotations.ComboBox;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
@@ -31,7 +33,7 @@ import com.google.inject.assistedinject.AssistedInject;
  * @since 3.0
  */
 @SuppressWarnings("serial")
-public class ComboBoxField extends AbstractComboBoxField {
+public class ComboBoxField extends AbstractComboBoxField<JComboBox<?>> {
 
 	private static final Class<? extends Annotation> ANNOTATION_CLASS = ComboBox.class;
 
@@ -40,11 +42,7 @@ public class ComboBoxField extends AbstractComboBoxField {
 	 */
 	@AssistedInject
 	ComboBoxField(@Assisted Object parentObject, @Assisted String fieldName) {
-		super(parentObject, fieldName);
-	}
-
-	@Override
-	public Class<? extends Annotation> getAnnotationClass() {
-		return ANNOTATION_CLASS;
+		super(ANNOTATION_CLASS, new JComboBox<Object>(), parentObject,
+				fieldName);
 	}
 }
