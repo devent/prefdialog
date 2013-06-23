@@ -21,6 +21,7 @@ package com.anrisoftware.prefdialog.core;
 import static org.apache.commons.lang3.Validate.notNull;
 
 import java.awt.Component;
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.util.Locale;
 
@@ -41,6 +42,7 @@ import com.anrisoftware.resources.texts.api.Texts;
  */
 class AbstractFieldComponentLogger extends AbstractLogger {
 
+	private static final String ERROR_SET_VALUE = "Error set value '%s' for %s.";
 	private static final String COMPONENT_NULL = "Component cannot be null.";
 	private static final String ERROR_SETUP_VALUE_MESSAGE = "Error setup value '%s' for %s.";
 	private static final String ERROR_SETUP_VALUE = "Error setup value";
@@ -171,5 +173,12 @@ class AbstractFieldComponentLogger extends AbstractLogger {
 
 	void checkComponent(AbstractFieldComponent<?> field, Component component) {
 		notNull(component, COMPONENT_NULL);
+	}
+
+	PropertyVetoException errorTrySetValue(AbstractFieldComponent<?> field,
+			Exception e, Object value, String property) {
+		return logException(new PropertyVetoException(e.getMessage(),
+				new PropertyChangeEvent(this, property, null, value)),
+				ERROR_SET_VALUE, value, field);
 	}
 }

@@ -43,6 +43,13 @@ import com.anrisoftware.resources.texts.api.Texts;
 public interface FieldComponent<ComponentType extends Component> {
 
 	/**
+	 * Value property.
+	 * 
+	 * @see #setValue(Object)
+	 */
+	public static final String VALUE_PROPERTY = "value";
+
+	/**
 	 * Sets the name the field. The name should be a unique ID of the field
 	 * inside the container.
 	 * 
@@ -110,6 +117,23 @@ public interface FieldComponent<ComponentType extends Component> {
 	 * @return the tool-tip text or {@code null} if no tool-tip text was set.
 	 */
 	String getToolTipText();
+
+	/**
+	 * Set the text that is shown if the user input is invalid. Defaults to
+	 * empty string. The text can also be a resource name that is queried in the
+	 * supplied texts resource.
+	 * 
+	 * @param text
+	 *            the text or the texts resource name.
+	 */
+	void setInvalidText(String text);
+
+	/**
+	 * Returns the text that is shown if the user input is invalid.
+	 * 
+	 * @return the text.
+	 */
+	String getInvalidText();
 
 	/**
 	 * Show or hide the tool-tip for the component.
@@ -397,4 +421,5 @@ public interface FieldComponent<ComponentType extends Component> {
 	 * @return the count of fields.
 	 */
 	int getFieldsCount();
+
 }

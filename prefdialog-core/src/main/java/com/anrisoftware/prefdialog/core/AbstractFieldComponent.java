@@ -61,6 +61,7 @@ import com.anrisoftware.resources.texts.api.Texts;
  * <li>title</li>
  * <li>show title flag</li>
  * <li>tool-tip</li>
+ * <li>invalidText</li>
  * <li>read-only flag</li>
  * <li>width</li>
  * <li>height</li>
@@ -105,6 +106,8 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
 	private static final String LOCALE_ELEMENT = "locale";
 
+	private static final String INVALID_TEXT_ELEMENT = "invalidText";
+
 	private AbstractFieldComponentLogger log;
 
 	private final Object parentObject;
@@ -124,6 +127,10 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	private String toolTipResource;
 
 	private String toolTip;
+
+	private String invalidTextResource;
+
+	private String invalidText;
 
 	private boolean showToolTip;
 
@@ -248,6 +255,7 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 		setupTitle();
 		setupShowTitle();
 		setupToolTip();
+		setupInvalidText();
 		setupReadOnly();
 		setupWidth();
 		setupHeight();
@@ -277,6 +285,11 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	private void setupToolTip() {
 		String text = annotationAccess.getValue(TOOLTIP_ELEMENT);
 		setToolTipText(text);
+	}
+
+	private void setupInvalidText() {
+		String text = annotationAccess.getValue(INVALID_TEXT_ELEMENT);
+		setInvalidText(text);
 	}
 
 	private void setupReadOnly() {
@@ -412,6 +425,19 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	@Override
 	public String getToolTipText() {
 		return toolTip;
+	}
+
+	@Override
+	public void setInvalidText(String text) {
+		text = StringUtils.isEmpty(text) ? null : text;
+		invalidTextResource = text;
+		invalidText = text;
+		updateInvalidTextResource();
+	}
+
+	@Override
+	public String getInvalidText() {
+		return invalidText;
 	}
 
 	@Override
@@ -578,7 +604,11 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	 *             if the value is unacceptable by the bean.
 	 */
 	protected void trySetValue(Object value) throws PropertyVetoException {
-		beanAccess.setValue(value);
+		try {
+			beanAccess.setValue(value);
+		} catch (Exception e) {
+			throw log.errorTrySetValue(this, e, value, VALUE_PROPERTY);
+		}
 	}
 
 	@Override
@@ -627,6 +657,7 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	private void updateTextsResources() {
 		updateTitleResource();
 		updateToolTipResource();
+		updateInvalidTextResource();
 	}
 
 	private void updateToolTipResource() {
@@ -639,6 +670,12 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	private void updateTitleResource() {
 		if (haveTextResource(titleResource)) {
 			title = getTextResource(titleResource);
+		}
+	}
+
+	private void updateInvalidTextResource() {
+		if (haveTextResource(invalidTextResource)) {
+			invalidText = getTextResource(invalidTextResource);
 		}
 	}
 

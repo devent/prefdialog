@@ -1,6 +1,5 @@
 package com.anrisoftware.prefdialog.fields.combobox;
 
-import static com.anrisoftware.prefdialog.miscswing.components.validating.AbstractValidatingComponent.VALUE_PROPERTY;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 import java.beans.PropertyChangeEvent;
@@ -24,7 +23,9 @@ import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccessFactory
 import com.anrisoftware.globalpom.reflection.beans.BeanAccess;
 import com.anrisoftware.globalpom.reflection.beans.BeanAccessFactory;
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
+import com.anrisoftware.prefdialog.miscswing.components.validating.AbstractValidatingComponent;
 import com.anrisoftware.prefdialog.miscswing.components.validating.ValidatingComboBoxComponent;
+import com.anrisoftware.resources.texts.api.Texts;
 
 /**
  * Implements the combo box field.
@@ -81,7 +82,8 @@ public abstract class AbstractComboBoxField extends
 	}
 
 	private void setupValidating() {
-		validating.addVetoableChangeListener(VALUE_PROPERTY, valueVetoListener);
+		validating.addVetoableChangeListener(
+				AbstractValidatingComponent.VALUE_PROPERTY, valueVetoListener);
 	}
 
 	/**
@@ -167,6 +169,18 @@ public abstract class AbstractComboBoxField extends
 	@Override
 	protected void trySetValue(Object value) throws PropertyVetoException {
 		validating.setValue(value);
+	}
+
+	@Override
+	public void setInvalidText(String text) {
+		super.setInvalidText(text);
+		validating.setInvalidText(getInvalidText());
+	}
+
+	@Override
+	public void setTexts(Texts texts) {
+		super.setTexts(texts);
+		validating.setInvalidText(getInvalidText());
 	}
 
 	/**

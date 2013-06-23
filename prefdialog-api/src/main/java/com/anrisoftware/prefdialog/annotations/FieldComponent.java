@@ -79,6 +79,17 @@ public @interface FieldComponent {
 	String toolTip() default "";
 
 	/**
+	 * Set the text that is shown if the user input is invalid. Defaults to
+	 * empty string.
+	 * <p>
+	 * The text can also be a resource name that is queried in the supplied
+	 * texts resource.
+	 * 
+	 * @since 3.0
+	 */
+	String invalidText() default "";
+
+	/**
 	 * If this field should be read-only. If read-only is set then the user can
 	 * not use buttons in the group. Defaults to {@code false}.
 	 */

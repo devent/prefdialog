@@ -24,6 +24,8 @@ public class ImportProperties {
 
 	private final List<Charset> charsetsHistory;
 
+	private final CharsetEditor charsetEditor;
+
 	private Locale locale;
 
 	private final LocaleModel localeModel;
@@ -33,13 +35,14 @@ public class ImportProperties {
 	private final StartRowModel startRowModel;
 
 	@Inject
-	ImportProperties(CharsetModel charsetModel, LocaleModel localeModel,
-			StartRowModel startRowModel,
-			@Named("charsetDefaults") Collection<Charset> charsetDefaults) {
+	ImportProperties(CharsetModel charsetModel, CharsetEditor charsetEditor,
+			@Named("charsetDefaults") Collection<Charset> charsetDefaults,
+			LocaleModel localeModel, StartRowModel startRowModel) {
 		this.charset = Charset.defaultCharset();
 		this.charsetModel = charsetModel;
 		this.charsetDefaults = charsetDefaults;
 		this.charsetsHistory = new ArrayList<Charset>();
+		this.charsetEditor = charsetEditor;
 		this.locale = Locale.getDefault();
 		this.localeModel = localeModel;
 		this.startRow = (Integer) startRowModel.getValue();
@@ -50,8 +53,8 @@ public class ImportProperties {
 		this.charset = charset;
 	}
 
-	@FieldComponent
-	@HistoryComboBox(model = "charsetModel", history = "charsetsHistory", defaultItems = "charsetDefaults")
+	@FieldComponent(invalidText = "charset_unknown")
+	@HistoryComboBox(editable = true, model = "charsetModel", editor = "charsetEditor", history = "charsetsHistory", defaultItems = "charsetDefaults")
 	public Charset getCharset() {
 		return charset;
 	}
@@ -66,6 +69,10 @@ public class ImportProperties {
 
 	public List<Charset> getCharsetsHistory() {
 		return charsetsHistory;
+	}
+
+	public CharsetEditor getCharsetEditor() {
+		return charsetEditor;
 	}
 
 	public void setLocale(Locale locale) {
