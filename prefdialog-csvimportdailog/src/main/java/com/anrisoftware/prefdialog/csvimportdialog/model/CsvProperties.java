@@ -31,13 +31,13 @@ public class CsvProperties {
 		return importPanel;
 	}
 
-	@FieldComponent
+	@FieldComponent(order = 0)
 	@Child
 	public ImportProperties getImportProperties() {
 		return importProperties;
 	}
 
-	@FieldComponent
+	@FieldComponent(order = 1)
 	@Child
 	public SeparatorProperties getSeparatorProperties() {
 		return separatorProperties;

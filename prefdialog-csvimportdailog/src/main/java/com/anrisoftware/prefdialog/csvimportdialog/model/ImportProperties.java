@@ -53,7 +53,7 @@ public class ImportProperties {
 		this.charset = charset;
 	}
 
-	@FieldComponent(invalidText = "charset_unknown")
+	@FieldComponent(order = 0, invalidText = "charset_unknown")
 	@HistoryComboBox(editable = true, model = "charsetModel", editor = "charsetEditor", history = "charsetsHistory", defaultItems = "charsetDefaults")
 	public Charset getCharset() {
 		return charset;
@@ -79,7 +79,7 @@ public class ImportProperties {
 		this.locale = locale;
 	}
 
-	@FieldComponent
+	@FieldComponent(order = 1)
 	@ComboBox(model = "localeModel", rendererClass = LocaleRenderer.class)
 	public Locale getLocale() {
 		return locale;
@@ -89,7 +89,7 @@ public class ImportProperties {
 		return localeModel;
 	}
 
-	@FieldComponent
+	@FieldComponent(order = 2)
 	@Spinner(model = "startRowModel")
 	public int getStartRow() {
 		return startRow;

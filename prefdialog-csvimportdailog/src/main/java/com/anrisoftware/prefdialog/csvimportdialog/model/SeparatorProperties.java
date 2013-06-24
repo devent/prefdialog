@@ -52,7 +52,7 @@ public class SeparatorProperties {
 		this.separatorChar = separatorChar;
 	}
 
-	@FieldComponent
+	@FieldComponent(order = 0)
 	@ComboBox(model = "separatorCharModel", renderer = "separatorCharRenderer")
 	public Character getSeparatorChar() {
 		return separatorChar;
@@ -66,7 +66,7 @@ public class SeparatorProperties {
 		return separatorCharRenderer;
 	}
 
-	@FieldComponent(showTitle = false)
+	@FieldComponent(order = 1, showTitle = false)
 	@FieldButton(action = "useCustomSeparatorAction")
 	@CheckBox
 	public boolean isUseCustomSeparator() {
@@ -81,7 +81,7 @@ public class SeparatorProperties {
 		return useCustomSeparatorAction;
 	}
 
-	@FieldComponent(showTitle = false, readOnly = true)
+	@FieldComponent(order = 2, showTitle = false, readOnly = true)
 	@HistoryComboBox(editable = true, model = "customSeparatorCharModel", editor = "customSeparatorCharEditor", history = "customSeparatorCharsHistory")
 	public Character getCustomSeparatorChar() {
 		return customSeparatorChar;
