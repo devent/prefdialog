@@ -40,6 +40,7 @@ import com.anrisoftware.prefdialog.annotations.FieldAnnotation;
 import com.anrisoftware.prefdialog.core.AbstractFieldComponent;
 import com.anrisoftware.prefdialog.fields.FieldComponent;
 import com.anrisoftware.prefdialog.fields.FieldService;
+import com.google.inject.Injector;
 import com.google.inject.assistedinject.Assisted;
 
 /**
@@ -113,28 +114,27 @@ public class PreferencesPanelField extends AbstractFieldComponent<JPanel> {
 		this.filter = filterFactory
 				.create(com.anrisoftware.prefdialog.annotations.FieldComponent.class);
 		this.beanField = beanField;
-		childField = createChildPanel();
+	}
+
+	public void createPanel(Injector injector) {
+		this.childField = findService(CHILD_FIELD_ANNOTATION).getFactory(
+				injector).create(getParentObject(), getFieldName());
 		addField(childField);
-		discoverFields(childField, getValue());
+		discoverFields(injector, getValue(), childField);
 	}
 
-	private FieldComponent<?> createChildPanel() {
-		return findService(CHILD_FIELD_ANNOTATION).getFactory().create(
-				getParentObject(), getFieldName());
-	}
-
-	private void discoverFields(
-			FieldComponent<? extends Component> parentField, Object object) {
+	private void discoverFields(Injector injector, Object object,
+			FieldComponent<? extends Component> parentField) {
 		AnnotationDiscovery discovery = createAnnotationDiscovery(object);
 		for (AnnotationBean bean : discovery.call()) {
 			FieldService service = findAnnotationService(bean);
 			String fieldName = beanField.toFieldName(bean.getMember());
-			FieldComponent<? extends Component> field = service.getFactory()
-					.create(object, fieldName);
+			FieldComponent<? extends Component> field = service.getFactory(
+					injector).create(object, fieldName);
 			parentField.addField(field);
 			if (service.getInfo().getAnnotationType()
 					.equals(CHILD_FIELD_ANNOTATION)) {
-				discoverFields(field, bean.getValue());
+				discoverFields(injector, bean.getValue(), field);
 			}
 		}
 	}

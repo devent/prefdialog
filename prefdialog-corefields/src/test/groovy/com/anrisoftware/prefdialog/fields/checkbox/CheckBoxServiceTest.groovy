@@ -27,11 +27,9 @@ import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 
-import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule
-import com.anrisoftware.globalpom.reflection.beans.BeansModule
 import com.anrisoftware.globalpom.utils.TestFrameUtil
+import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
 import com.google.inject.Guice
-import com.google.inject.Injector
 
 /**
  * Test the check box field as a service.
@@ -58,7 +56,8 @@ class CheckBoxServiceTest {
 
 	@BeforeClass
 	static void setupFactories() {
-		factory = findService(INFO).getFactory()
+		def injector = Guice.createInjector(new CoreFieldComponentModule())
+		factory = findService(INFO).getFactory(injector)
 	}
 
 	@Before

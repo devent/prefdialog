@@ -3,9 +3,7 @@ package com.anrisoftware.prefdialog.csvimportdialog.panel;
 import java.util.ServiceLoader;
 
 import javax.inject.Singleton;
-import javax.swing.JPanel;
 
-import com.anrisoftware.prefdialog.fields.FieldFactory;
 import com.anrisoftware.prefdialog.fields.FieldService;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
@@ -21,14 +19,13 @@ public class CsvImportPanelModule extends AbstractModule {
 				CsvImportPanel.class).build(CsvImportPanelFactory.class));
 	}
 
-	@SuppressWarnings("unchecked")
 	@Provides
 	@Singleton
-	FieldFactory<JPanel> getVerticalPreferencesPanelFieldFactory() {
+	FieldService getVerticalPreferencesPanelFieldFactory() {
 		for (FieldService service : ServiceLoader.load(FieldService.class)) {
 			if (service.getInfo().getAnnotationType().getSimpleName()
 					.equals(VERTICAL_PREFERENCES_PANEL_NAME)) {
-				return (FieldFactory<JPanel>) service.getFactory();
+				return service;
 			}
 		}
 		addError("Could not find service for %s",

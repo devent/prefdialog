@@ -31,11 +31,11 @@ import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 
-import com.anrisoftware.globalpom.mnemonic.MnemonicModule
 import com.anrisoftware.globalpom.utils.TestFrameUtil
+import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
 import com.anrisoftware.prefdialog.csvimportdialog.model.CsvImportModuleModule
 import com.anrisoftware.prefdialog.csvimportdialog.model.CsvProperties
-import com.anrisoftware.resources.texts.central.TextsCentralModule
+import com.anrisoftware.prefdialog.miscswing.comboboxhistory.ComboBoxHistoryModule
 import com.anrisoftware.resources.texts.defaults.TextsResourcesDefaultModule
 import com.google.inject.Guice
 import com.google.inject.Injector
@@ -52,6 +52,7 @@ class CsvImportPanelTest {
 	void "manually"() {
 		def title = "$NAME::manually"
 		def field = factory.create(new JPanel(), properties)
+		field.createPanel(injector)
 		def container = field.getAWTComponent()
 		new TestFrameUtil(title, container, size).withFixture({ FrameFixture fixture ->
 			Thread.sleep 60*1000
@@ -72,10 +73,12 @@ class CsvImportPanelTest {
 	@BeforeClass
 	static void setupFactories() {
 		injector = Guice.createInjector(
-				new CsvImportPanelModule(), new CsvImportModuleModule(),
-				new TextsResourcesDefaultModule(), new TextsCentralModule(),
-				new MnemonicModule())
-		factory = injector.getInstance CsvImportPanelFactory
+				new CoreFieldComponentModule(),
+				new CsvImportModuleModule(),
+				new TextsResourcesDefaultModule(),
+				new ComboBoxHistoryModule())
+		factory = injector.createChildInjector(
+				new CsvImportPanelModule()).getInstance(CsvImportPanelFactory)
 	}
 
 	@Before

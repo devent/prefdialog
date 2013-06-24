@@ -19,7 +19,6 @@
 package com.anrisoftware.prefdialog.fields.spinner
 
 import static com.anrisoftware.globalpom.utils.TestUtils.*
-import static com.anrisoftware.globalpom.utils.TestUtils.*
 import static com.anrisoftware.prefdialog.core.FieldTestUtils.*
 import static com.anrisoftware.prefdialog.fields.spinner.SpinnerBean.*
 
@@ -31,10 +30,8 @@ import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 
-import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule
-import com.anrisoftware.globalpom.reflection.beans.BeansModule
 import com.anrisoftware.globalpom.utils.TestFrameUtil
-import com.anrisoftware.prefdialog.classtask.ClassTaskModule
+import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
 import com.anrisoftware.resources.texts.api.Texts
 import com.google.inject.Guice
 import com.google.inject.Injector
@@ -229,9 +226,7 @@ class SpinnerTest {
 
 	@BeforeClass
 	static void setupFactories() {
-		injector = Guice.createInjector(
-				new AnnotationsModule(), new BeansModule(),
-				new SpinnerModule(), new ClassTaskModule())
+		injector = Guice.createInjector(new CoreFieldComponentModule(), new SpinnerModule())
 		factory = injector.getInstance SpinnerFieldFactory
 		texts = createTextsResource(injector)
 	}

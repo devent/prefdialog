@@ -21,7 +21,8 @@ package com.anrisoftware.prefdialog.tabspanel;
 import java.awt.Component;
 import java.beans.PropertyVetoException;
 import java.lang.annotation.Annotation;
-import java.util.ServiceLoader;
+import java.lang.reflect.AccessibleObject;
+import java.util.Collection;
 
 import javax.inject.Inject;
 import javax.swing.Icon;
@@ -30,17 +31,20 @@ import javax.swing.SingleSelectionModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import com.anrisoftware.globalpom.reflection.annotationclass.AnnotationClassFactory;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationBean;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationDiscovery;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationDiscoveryFactory;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationFilter;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationSetFilterFactory;
+import com.anrisoftware.globalpom.reflection.beans.BeanField;
 import com.anrisoftware.prefdialog.annotations.Child;
-import com.anrisoftware.prefdialog.classtask.ClassTaskFactory;
 import com.anrisoftware.prefdialog.core.AbstractFieldComponent;
 import com.anrisoftware.prefdialog.fields.FieldComponent;
 import com.anrisoftware.prefdialog.fields.FieldService;
 import com.anrisoftware.prefdialog.panel.PreferencesPanel;
+import com.anrisoftware.prefdialog.panel.PreferencesPanelField;
+import com.google.inject.Injector;
 import com.google.inject.assistedinject.Assisted;
 
 /**
@@ -62,11 +66,21 @@ public class TabsPreferencesPanelField extends
 
 	private final TabsPreferencesPanelFieldLogger log;
 
+	private TabsRenderer renderer;
+
 	private transient Object selectedField;
 
 	private transient ChangeListener changeListener;
 
-	private TabsRenderer renderer;
+	private transient AnnotationDiscoveryFactory discoveryFactory;
+
+	private transient AnnotationSetFilterFactory filterFactory;
+
+	private transient AnnotationClassFactory annotationClassFactory;
+
+	private transient BeanField beanField;
+
+	private FieldService preferencesPanelService;
 
 	/**
 	 * @see TabsPreferencesPanelFieldFactory#create(Object, String)
@@ -106,59 +120,56 @@ public class TabsPreferencesPanelField extends
 	}
 
 	@Inject
-	void setFieldsServiceLoader(ServiceLoader<FieldService> loader,
+	void setupTabsPreferencesPanelField(FieldService preferencesPanelService,
 			AnnotationDiscoveryFactory discoveryFactory,
 			AnnotationSetFilterFactory filterFactory,
-			ClassTaskFactory classTaskFactory) {
-		setupRenderer(classTaskFactory);
-		discoverChildren(loader, discoveryFactory, filterFactory);
+			AnnotationClassFactory annotationClassFactory, BeanField beanField) {
+		this.preferencesPanelService = preferencesPanelService;
+		this.discoveryFactory = discoveryFactory;
+		this.filterFactory = filterFactory;
+		this.annotationClassFactory = annotationClassFactory;
+		this.beanField = beanField;
+		setupRenderer();
 	}
 
-	private void discoverChildren(ServiceLoader<FieldService> loader,
-			AnnotationDiscoveryFactory discoveryFactory,
-			AnnotationSetFilterFactory filterFactory) {
+	private void setupRenderer() {
+		TabsRenderer renderer = (TabsRenderer) annotationClassFactory
+				.create(getParentObject(), ANNOTATION_CLASS,
+						getAccessibleObject()).forAttribute(RENDERER_ATTRIBUTE)
+				.build();
+		setRenderer(renderer);
+	}
+
+	public void createPanel(Injector injector) {
+		discoverChildren(injector);
+	}
+
+	private void discoverChildren(Injector injector) {
 		AnnotationFilter filter = filterFactory.create(Child.class);
-		FieldService service = getPreferencePanelService(loader);
-		for (AnnotationBean bean : createChildDiscovery(discoveryFactory,
-				filter).call()) {
-			FieldComponent<? extends Component> field = loadField(service, bean);
+		Collection<AnnotationBean> annotations = createChildDiscovery(
+				discoveryFactory, filter).call();
+		FieldComponent<? extends Component> field;
+		for (AnnotationBean bean : annotations) {
+			field = loadField(bean, injector);
 			addField(field);
 		}
 	}
 
-	private FieldComponent<? extends Component> loadField(FieldService service,
-			AnnotationBean bean) {
-		String fieldName = bean.getField().getName();
-		return service.getFactory().create(getParentObject(), fieldName);
+	private FieldComponent<? extends Component> loadField(AnnotationBean bean,
+			Injector injector) {
+		AccessibleObject field = bean.getMember();
+		String fieldName = beanField.toFieldName(field);
+		Object object = getParentObject();
+		PreferencesPanelField panelField = (PreferencesPanelField) preferencesPanelService
+				.getFactory(injector).create(object, fieldName);
+		panelField.createPanel(injector);
+		return panelField;
 	}
 
 	private AnnotationDiscovery createChildDiscovery(
 			AnnotationDiscoveryFactory discoveryFactory,
 			AnnotationFilter childFilter) {
 		return discoveryFactory.create(getParentObject(), childFilter);
-	}
-
-	private FieldService getPreferencePanelService(
-			ServiceLoader<FieldService> loader) {
-		for (FieldService service : loader) {
-			if (isPreferencePanelService(service)) {
-				return service;
-			}
-		}
-		throw log.noPreferencePanelService(this, PREFERENCE_PANEL_ANNOTATION);
-	}
-
-	private boolean isPreferencePanelService(FieldService service) {
-		return service.getInfo().getAnnotationType()
-				.equals(PREFERENCE_PANEL_ANNOTATION);
-	}
-
-	private void setupRenderer(ClassTaskFactory classTaskFactory) {
-		TabsRenderer renderer = (TabsRenderer) classTaskFactory
-				.create(RENDERER_ATTRIBUTE, ANNOTATION_CLASS,
-						getAccessibleObject()).withParent(getParentObject())
-				.build();
-		setRenderer(renderer);
 	}
 
 	/**

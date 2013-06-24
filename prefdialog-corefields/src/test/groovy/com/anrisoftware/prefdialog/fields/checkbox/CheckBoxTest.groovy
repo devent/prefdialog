@@ -30,6 +30,7 @@ import org.junit.Test
 
 import com.anrisoftware.globalpom.reflection.exceptions.ReflectionError
 import com.anrisoftware.globalpom.utils.TestFrameUtil
+import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
 import com.anrisoftware.resources.texts.api.Texts
 import com.google.inject.Guice
 import com.google.inject.Injector
@@ -193,7 +194,7 @@ class CheckBoxTest {
 
 	@BeforeClass
 	static void setupFactories() {
-		injector = Guice.createInjector(dependencies).createChildInjector(modules)
+		injector = Guice.createInjector(new CoreFieldComponentModule(), new CheckBoxModule())
 		factory = injector.getInstance CheckBoxFieldFactory
 		texts = createTextsResource(injector)
 	}

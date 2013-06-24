@@ -9,31 +9,38 @@ import javax.inject.Inject;
 import javax.swing.JPanel;
 
 import com.anrisoftware.prefdialog.csvimportdialog.model.CsvProperties;
-import com.anrisoftware.prefdialog.fields.FieldComponent;
-import com.anrisoftware.prefdialog.fields.FieldFactory;
+import com.anrisoftware.prefdialog.fields.FieldService;
+import com.anrisoftware.prefdialog.verticalpanel.VerticalPreferencesPanelField;
 import com.anrisoftware.resources.texts.api.Texts;
 import com.anrisoftware.resources.texts.api.TextsFactory;
+import com.google.inject.Injector;
 import com.google.inject.assistedinject.Assisted;
 
 public class CsvImportPanel {
 
 	private final JPanel container;
 
-	private final FieldComponent<JPanel> propertiesPanel;
-
 	private final Texts texts;
 
 	private final CsvProperties properties;
 
+	private final FieldService fieldService;
+
+	private VerticalPreferencesPanelField propertiesPanel;
+
 	@Inject
-	CsvImportPanel(TextsFactory textsFactory,
-			FieldFactory<JPanel> panelFieldFactory, @Assisted JPanel container,
-			@Assisted CsvProperties properties) {
+	CsvImportPanel(TextsFactory textsFactory, FieldService fieldService,
+			@Assisted JPanel container, @Assisted CsvProperties properties) {
+		this.fieldService = fieldService;
 		this.container = container;
 		this.properties = properties;
-		this.propertiesPanel = panelFieldFactory.create(properties,
-				"importPanel");
 		this.texts = textsFactory.create(CsvImportPanel.class.getSimpleName());
+	}
+
+	public void createPanel(Injector injector) {
+		this.propertiesPanel = (VerticalPreferencesPanelField) fieldService
+				.getFactory(injector).create(properties, "importPanel");
+		propertiesPanel.createPanel(injector);
 		setupPanel();
 		setupActions();
 	}

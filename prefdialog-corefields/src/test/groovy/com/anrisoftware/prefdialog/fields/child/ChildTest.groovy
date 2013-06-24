@@ -27,6 +27,7 @@ import org.junit.BeforeClass
 import org.junit.Test
 
 import com.anrisoftware.globalpom.utils.TestFrameUtil
+import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
 import com.anrisoftware.prefdialog.fields.checkbox.CheckBoxFieldFactory
 import com.anrisoftware.prefdialog.fields.checkbox.CheckBoxModule
 import com.google.inject.Guice
@@ -114,13 +115,13 @@ class ChildTest {
 
 	@BeforeClass
 	static void setupFactories() {
-		injector = Guice.createInjector(dependencies)
+		injector = Guice.createInjector(new CoreFieldComponentModule())
 		factory = createChildFieldFactory injector
 		checkBoxfactory = createCheckBoxFieldFactory injector
 	}
 
 	static ChildFieldFactory createChildFieldFactory(Injector injector) {
-		injector.createChildInjector(modules).getInstance(ChildFieldFactory)
+		injector.createChildInjector(new ChildModule()).getInstance(ChildFieldFactory)
 	}
 
 	static CheckBoxFieldFactory createCheckBoxFieldFactory(Injector injector) {

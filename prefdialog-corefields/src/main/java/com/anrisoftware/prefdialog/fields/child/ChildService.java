@@ -18,24 +18,15 @@
  */
 package com.anrisoftware.prefdialog.fields.child;
 
-import static java.util.Arrays.asList;
-
 import java.awt.Component;
-import java.util.List;
 
 import org.mangosdk.spi.ProviderFor;
 
-import com.anrisoftware.globalpom.mnemonic.MnemonicModule;
-import com.anrisoftware.globalpom.reflection.annotationclass.AnnotationClassModule;
-import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule;
-import com.anrisoftware.globalpom.reflection.beans.BeansModule;
 import com.anrisoftware.prefdialog.annotations.Child;
 import com.anrisoftware.prefdialog.fields.FieldFactory;
 import com.anrisoftware.prefdialog.fields.FieldInfo;
 import com.anrisoftware.prefdialog.fields.FieldService;
-import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.google.inject.Module;
 
 /**
  * Makes the child field available as service.
@@ -45,12 +36,6 @@ import com.google.inject.Module;
  */
 @ProviderFor(FieldService.class)
 public class ChildService implements FieldService {
-
-	private static final List<Module> dependencies = asList(new Module[] {
-			new AnnotationsModule(), new BeansModule(),
-			new AnnotationClassModule(), new MnemonicModule() });
-
-	private static final List<Module> modules = asList(new Module[] { new ChildModule() });
 
 	/**
 	 * The name post-fix of the title separator. The separator will have the
@@ -72,12 +57,11 @@ public class ChildService implements FieldService {
 	@SuppressWarnings("unchecked")
 	@Override
 	public FieldFactory<? extends Component> getFactory(Object... parent) {
-		return createInjector(parent.length > 0 ? (Injector) parent[0] : null)
-				.getInstance(FieldFactory.class);
+		return createInjector((Injector) parent[0]).getInstance(
+				FieldFactory.class);
 	}
 
 	private Injector createInjector(Injector parent) {
-		return parent != null ? parent.createChildInjector(modules) : Guice
-				.createInjector(dependencies).createChildInjector(modules);
+		return parent.createChildInjector(new ChildModule());
 	}
 }

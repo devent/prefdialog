@@ -28,6 +28,8 @@ import org.junit.BeforeClass
 import org.junit.Test
 
 import com.anrisoftware.globalpom.utils.TestFrameUtil
+import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
+import com.google.inject.Guice
 
 /**
  * @see ChildService
@@ -54,7 +56,8 @@ class ChildServiceTest {
 
 	@BeforeClass
 	static void setupFactories() {
-		factory = findService(INFO).getFactory()
+		def injector = Guice.createInjector(new CoreFieldComponentModule())
+		factory = findService(INFO).getFactory(injector)
 	}
 
 	@Before

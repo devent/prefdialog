@@ -18,7 +18,6 @@
  */
 package com.anrisoftware.prefdialog.fields.spinner;
 
-import static com.anrisoftware.prefdialog.miscswing.components.validating.AbstractValidatingComponent.VALUE_PROPERTY;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.beans.PropertyChangeEvent;
@@ -35,14 +34,15 @@ import javax.swing.SpinnerListModel;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 
+import com.anrisoftware.globalpom.reflection.annotationclass.AnnotationClass;
+import com.anrisoftware.globalpom.reflection.annotationclass.AnnotationClassFactory;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccess;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccessFactory;
 import com.anrisoftware.globalpom.reflection.beans.BeanAccessFactory;
 import com.anrisoftware.prefdialog.annotations.Spinner;
-import com.anrisoftware.prefdialog.classtask.ClassTask;
-import com.anrisoftware.prefdialog.classtask.ClassTaskFactory;
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
 import com.anrisoftware.prefdialog.fields.spacer.Spacer;
+import com.anrisoftware.prefdialog.miscswing.components.validating.AbstractValidatingComponent;
 import com.anrisoftware.prefdialog.miscswing.components.validating.ValidatingSpinner;
 import com.google.inject.assistedinject.Assisted;
 
@@ -81,6 +81,12 @@ public class SpinnerField extends AbstractTitleField<JSpinner> {
 
 	private boolean modelSet;
 
+	private AnnotationClassFactory annotationClassFactory;
+
+	private AnnotationAccess annotationAccess;
+
+	private BeanAccessFactory beanAccessFactory;
+
 	/**
 	 * @see SpinnerFieldFactory#create(Object, String)
 	 */
@@ -104,71 +110,71 @@ public class SpinnerField extends AbstractTitleField<JSpinner> {
 	}
 
 	private void setupValidating() {
-		validating.addVetoableChangeListener(VALUE_PROPERTY, valueVetoListener);
+		validating.addVetoableChangeListener(
+				AbstractValidatingComponent.VALUE_PROPERTY, valueVetoListener);
 	}
 
 	@Inject
-	void setupAnnotationElements(ClassTaskFactory classTaskFactory,
+	void setupSpinnerField(AnnotationClassFactory annotationClassFactory,
 			AnnotationAccessFactory annotationAccessFactory,
 			BeanAccessFactory beanAccessFactory) {
-		AnnotationAccess annotationAccess = annotationAccessFactory.create(
+		this.annotationClassFactory = annotationClassFactory;
+		this.annotationAccess = annotationAccessFactory.create(
 				ANNOTATION_CLASS, getAccessibleObject());
-		SpinnerModel defaultModel = createDefaultModel(annotationAccess,
-				beanAccessFactory);
-		setupModel(defaultModel, classTaskFactory, beanAccessFactory);
+		this.beanAccessFactory = beanAccessFactory;
+		SpinnerModel defaultModel = createDefaultModel();
+		setupModel(defaultModel);
 		getComponent().setValue(getValue());
 	}
 
-	private void setupModel(SpinnerModel defaultModel,
-			ClassTaskFactory classTaskFactory,
-			BeanAccessFactory beanAccessFactory) {
+	private void setupModel(SpinnerModel defaultModel) {
 		@SuppressWarnings("unchecked")
-		ClassTask<SpinnerModel> task = (ClassTask<SpinnerModel>) classTaskFactory
-				.create(MODEL_ELEMENT, ANNOTATION_CLASS, getAccessibleObject());
-		setModel(task.withParent(getParentObject()).withDefault(defaultModel)
-				.build());
+		AnnotationClass<SpinnerModel> annotationClass = (AnnotationClass<SpinnerModel>) annotationClassFactory
+				.create(getParentObject(), ANNOTATION_CLASS,
+						getAccessibleObject());
+		SpinnerModel model = annotationClass.withDefault(defaultModel)
+				.forAttribute(MODEL_ELEMENT).build();
+		setModel(model);
 	}
 
-	private SpinnerModel createDefaultModel(AnnotationAccess a,
-			BeanAccessFactory accessFactory) {
-		SpinnerModel model = createNumberModel(a);
-		model = model == null ? createDateModel(a) : model;
-		model = model == null ? createListModel(a, accessFactory) : model;
+	private SpinnerModel createDefaultModel() {
+		SpinnerModel model = createNumberModel();
+		model = model == null ? createDateModel() : model;
+		model = model == null ? createListModel() : model;
 		model = model == null ? new SpinnerNumberModel() : model;
 		return model;
 	}
 
-	private SpinnerModel createListModel(AnnotationAccess a,
-			BeanAccessFactory accessFactory) {
-		String field = a.getValue("elements");
+	private SpinnerModel createListModel() {
+		String field = annotationAccess.getValue("elements");
 		if (isBlank(field)) {
 			return null;
 		}
-		return new SpinnerListModel(accessFactory.create(field,
+		return new SpinnerListModel(beanAccessFactory.create(field,
 				getParentObject()).<List<?>> getValue());
 	}
 
-	private SpinnerModel createDateModel(AnnotationAccess a) {
+	private SpinnerModel createDateModel() {
 		Object value = getValue();
 		if (!(value instanceof Date)) {
 			return null;
 		}
-		long[] start = a.getValue(START_ATTRIBUTE);
-		long[] end = a.getValue(END_ATTRIBUTE);
-		int field = a.getValue(CALENDAR_FIELD_ATTRIBUTE);
+		long[] start = annotationAccess.getValue(START_ATTRIBUTE);
+		long[] end = annotationAccess.getValue(END_ATTRIBUTE);
+		int field = annotationAccess.getValue(CALENDAR_FIELD_ATTRIBUTE);
 		Comparable<?> cstart = start.length == 0 ? null : new Date(start[0]);
 		Comparable<?> cend = end.length == 0 ? null : new Date(end[0]);
 		return new SpinnerDateModel((Date) value, cstart, cend, field);
 	}
 
-	private SpinnerModel createNumberModel(AnnotationAccess a) {
+	private SpinnerModel createNumberModel() {
 		Object value = getValue();
 		if (!(value instanceof Number)) {
 			return null;
 		}
-		double[] max = a.getValue(MAXIMUM_ATTRIBUTE);
-		double[] min = a.getValue(MINIMUM_ATTRIBUTE);
-		double size = a.getValue(STEP_SIZE_ATTRIBUTE);
+		double[] max = annotationAccess.getValue(MAXIMUM_ATTRIBUTE);
+		double[] min = annotationAccess.getValue(MINIMUM_ATTRIBUTE);
+		double size = annotationAccess.getValue(STEP_SIZE_ATTRIBUTE);
 		if (value instanceof Integer) {
 			Comparable<?> maximum = max.length == 0 ? null : (int) max[0];
 			Comparable<?> minimum = min.length == 0 ? null : (int) min[0];

@@ -18,24 +18,15 @@
  */
 package com.anrisoftware.prefdialog.fields.checkbox;
 
-import static java.util.Arrays.asList;
-
 import java.awt.Component;
-import java.util.List;
 
 import org.mangosdk.spi.ProviderFor;
 
-import com.anrisoftware.globalpom.mnemonic.MnemonicModule;
-import com.anrisoftware.globalpom.reflection.annotationclass.AnnotationClassModule;
-import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule;
-import com.anrisoftware.globalpom.reflection.beans.BeansModule;
 import com.anrisoftware.prefdialog.annotations.CheckBox;
 import com.anrisoftware.prefdialog.fields.FieldFactory;
 import com.anrisoftware.prefdialog.fields.FieldInfo;
 import com.anrisoftware.prefdialog.fields.FieldService;
-import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.google.inject.Module;
 
 /**
  * Makes the check box field available.
@@ -51,12 +42,6 @@ public class CheckBoxService implements FieldService {
 	 */
 	public static final FieldInfo INFO = new FieldInfo(CheckBox.class);
 
-	private static final List<Module> modules = asList(new Module[] { new CheckBoxModule() });
-
-	private static final List<Module> dependencies = asList(new Module[] {
-			new AnnotationsModule(), new BeansModule(),
-			new AnnotationClassModule(), new MnemonicModule() });
-
 	@Override
 	public FieldInfo getInfo() {
 		return INFO;
@@ -65,12 +50,11 @@ public class CheckBoxService implements FieldService {
 	@SuppressWarnings("unchecked")
 	@Override
 	public FieldFactory<? extends Component> getFactory(Object... parent) {
-		return createInjector(parent.length > 0 ? (Injector) parent[0] : null)
-				.getInstance(FieldFactory.class);
+		return createInjector((Injector) parent[0]).getInstance(
+				FieldFactory.class);
 	}
 
 	private Injector createInjector(Injector parent) {
-		return parent != null ? parent.createChildInjector(modules) : Guice
-				.createInjector(dependencies).createChildInjector(modules);
+		return parent.createChildInjector(new CheckBoxModule());
 	}
 }

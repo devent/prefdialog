@@ -29,7 +29,6 @@ import java.awt.Component;
 import java.beans.PropertyVetoException;
 import java.lang.reflect.AccessibleObject;
 import java.util.Collection;
-import java.util.ServiceLoader;
 
 import javax.inject.Inject;
 import javax.swing.JPanel;
@@ -46,6 +45,8 @@ import com.anrisoftware.prefdialog.core.AbstractFieldComponent;
 import com.anrisoftware.prefdialog.fields.FieldComponent;
 import com.anrisoftware.prefdialog.fields.FieldService;
 import com.anrisoftware.prefdialog.panel.PreferencesPanel;
+import com.anrisoftware.prefdialog.panel.PreferencesPanelField;
+import com.google.inject.Injector;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 
@@ -70,8 +71,6 @@ public class VerticalPreferencesPanelField extends
 	 */
 	public static final String CHILDREN_PANEL_SUFFIX = "childrenPanel";
 
-	private static final Class<PreferencesPanel> PREFERENCE_PANEL_ANNOTATION = PreferencesPanel.class;
-
 	private final VerticalPreferencesPanelFieldLogger log;
 
 	private final TableLayout layout;
@@ -86,8 +85,11 @@ public class VerticalPreferencesPanelField extends
 
 	private transient AnnotationSetFilterFactory filterFactory;
 
+	private transient FieldService preferencesPanelService;
+
 	/**
-	 * @see VerticalPreferencesPanelFieldFactory#create(Object, String)
+	 * @see VerticalPreferencesPanelFieldFactory#create(Object, String,
+	 *      Object...)
 	 */
 	@AssistedInject
 	VerticalPreferencesPanelField(VerticalPreferencesPanelFieldLogger logger,
@@ -121,52 +123,46 @@ public class VerticalPreferencesPanelField extends
 	}
 
 	@Inject
-	void setupVerticalPreferencesPanelField(ServiceLoader<FieldService> loader,
+	void setupVerticalPreferencesPanelField(
+			FieldService preferencesPanelService,
 			AnnotationDiscoveryFactory discoveryFactory,
 			AnnotationSetFilterFactory filterFactory, BeanField beanField) {
+		this.preferencesPanelService = preferencesPanelService;
 		this.discoveryFactory = discoveryFactory;
 		this.filterFactory = filterFactory;
 		this.beanField = beanField;
-		discoverChildren(loader);
 	}
 
-	private void discoverChildren(ServiceLoader<FieldService> loader) {
+	public void createPanel(Injector injector) {
+		discoverChildren(injector);
+	}
+
+	private void discoverChildren(Injector injector) {
 		AnnotationFilter filter = filterFactory.create(Child.class);
-		FieldService service = getPreferencePanelService(loader);
 		Collection<AnnotationBean> fields = createChildDiscovery(
 				discoveryFactory, filter).call();
+		FieldComponent<? extends Component> field;
 		for (AnnotationBean bean : fields) {
-			FieldComponent<? extends Component> field = loadField(service, bean);
+			field = loadField(bean, injector);
 			addField(field);
 		}
 	}
 
-	private FieldComponent<? extends Component> loadField(FieldService service,
-			AnnotationBean bean) {
+	private FieldComponent<? extends Component> loadField(AnnotationBean bean,
+			Injector injector) {
 		AccessibleObject field = bean.getMember();
 		String fieldName = beanField.toFieldName(field);
-		return service.getFactory().create(getParentObject(), fieldName);
+		Object object = getParentObject();
+		PreferencesPanelField panelField = (PreferencesPanelField) preferencesPanelService
+				.getFactory(injector).create(object, fieldName);
+		panelField.createPanel(injector);
+		return panelField;
 	}
 
 	private AnnotationDiscovery createChildDiscovery(
 			AnnotationDiscoveryFactory discoveryFactory,
 			AnnotationFilter childFilter) {
 		return discoveryFactory.create(getParentObject(), childFilter);
-	}
-
-	private FieldService getPreferencePanelService(
-			ServiceLoader<FieldService> loader) {
-		for (FieldService service : loader) {
-			if (isPreferencePanelService(service)) {
-				return service;
-			}
-		}
-		throw log.noPreferencePanelService(this, PREFERENCE_PANEL_ANNOTATION);
-	}
-
-	private boolean isPreferencePanelService(FieldService service) {
-		return service.getInfo().getAnnotationType()
-				.equals(PREFERENCE_PANEL_ANNOTATION);
 	}
 
 	@Override
