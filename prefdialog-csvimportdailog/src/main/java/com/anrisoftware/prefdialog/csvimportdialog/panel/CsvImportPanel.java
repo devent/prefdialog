@@ -19,15 +19,11 @@ import com.google.inject.assistedinject.Assisted;
 
 public class CsvImportPanel {
 
-	private final UiPanel panel;
+	private final JPanel container;
 
 	private final FieldComponent<JPanel> propertiesPanel;
 
 	private final TextsResources texts;
-
-	private final CancelAction cancelAction;
-
-	private final ImportAction importAction;
 
 	private final CsvProperties properties;
 
@@ -35,16 +31,13 @@ public class CsvImportPanel {
 	CsvImportPanel(
 			TextsResourcesFactory textsFactory,
 			@Named("CsvImportPanel-texts-properties") Properties textsProperties,
-			UiPanel panel, FieldFactory<JPanel> panelFieldFactory,
-			CancelAction cancelAction, ImportAction importAction,
+			FieldFactory<JPanel> panelFieldFactory, @Assisted JPanel container,
 			@Assisted CsvProperties properties) {
-		this.panel = panel;
+		this.container = container;
 		this.properties = properties;
 		this.propertiesPanel = panelFieldFactory.create(properties,
 				"importPanel");
 		this.texts = textsFactory.create(textsProperties);
-		this.cancelAction = cancelAction;
-		this.importAction = importAction;
 		setupPanel();
 		setupActions();
 	}
@@ -60,11 +53,6 @@ public class CsvImportPanel {
 				.getUseCustomSeparatorAction()
 				.setSeparatorCharField(
 						propertiesPanel.findField("separatorChar"));
-		cancelAction.setTexts(texts);
-		importAction.setTexts(texts);
-		panel.getCancelButton().setAction(cancelAction);
-		panel.getImportButton().setAction(importAction);
-
 	}
 
 	private void setupPanel() {
@@ -72,7 +60,7 @@ public class CsvImportPanel {
 		setupMnemomic("locale");
 		setupMnemomic("charset");
 		setupMnemomic("startRow");
-		panel.add(propertiesPanel.getAWTComponent(), CENTER);
+		container.add(propertiesPanel.getAWTComponent(), CENTER);
 	}
 
 	private void setupMnemomic(String name) {
@@ -89,6 +77,10 @@ public class CsvImportPanel {
 	}
 
 	public Component getAWTComponent() {
-		return panel;
+		return container;
+	}
+
+	public CsvProperties getProperties() {
+		return properties;
 	}
 }

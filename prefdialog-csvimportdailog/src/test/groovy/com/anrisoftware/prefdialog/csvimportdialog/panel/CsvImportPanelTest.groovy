@@ -62,7 +62,7 @@ class CsvImportPanelTest {
 
 	static CsvImportPanelFactory factory
 
-	static size = new Dimension(400, 600)
+	static size = new Dimension(400, 362)
 
 	CsvProperties properties
 

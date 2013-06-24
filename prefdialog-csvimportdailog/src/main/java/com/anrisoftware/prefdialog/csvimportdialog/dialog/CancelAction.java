@@ -1,4 +1,4 @@
-package com.anrisoftware.prefdialog.csvimportdialog.panel;
+package com.anrisoftware.prefdialog.csvimportdialog.dialog;
 
 import java.awt.event.ActionEvent;
 
@@ -7,19 +7,24 @@ import javax.swing.AbstractAction;
 import com.anrisoftware.resources.texts.central.TextsResources;
 
 @SuppressWarnings("serial")
-public class ImportAction extends AbstractAction {
+public class CancelAction extends AbstractAction {
 
-	private static final String ACTION_NAME = "import";
+	private static final String ACTION_NAME = "cancel";
+
+	private CsvImportDialog dialog;
 
 	public void setTexts(TextsResources texts) {
 		putValue(NAME, texts.getAction(ACTION_NAME));
 		putValue(MNEMONIC_KEY, texts.getMnemonic(ACTION_NAME));
 	}
 
+	public void setDialog(CsvImportDialog dialog) {
+		this.dialog = dialog;
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-
+		dialog.closeDialog();
 	}
 
 }

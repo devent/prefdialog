@@ -1,21 +1,29 @@
-package com.anrisoftware.prefdialog.csvimportdialog.panel;
+package com.anrisoftware.prefdialog.csvimportdialog.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.Frame;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
-class UiPanel extends JPanel {
+class UiDialog extends JDialog {
+
 	private final JButton importButton;
 	private final JButton cancelButton;
 	private final JPanel buttonGroupPanel;
 
 	/**
-	 * Create the panel.
+	 * Create the dialog.
 	 */
-	public UiPanel() {
+	public UiDialog() {
+		this((Frame) null);
+	}
+
+	public UiDialog(Frame owner) {
+		super(owner);
 		setLayout(new BorderLayout(0, 0));
 
 		buttonGroupPanel = new JPanel();
@@ -30,7 +38,6 @@ class UiPanel extends JPanel {
 		cancelButton = new JButton("Cancel");
 		cancelButton.setName("cancelButton");
 		buttonGroupPanel.add(cancelButton);
-
 	}
 
 	public JButton getImportButton() {
