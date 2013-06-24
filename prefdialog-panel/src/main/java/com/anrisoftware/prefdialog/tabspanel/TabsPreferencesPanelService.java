@@ -24,6 +24,7 @@ import java.awt.Component;
 
 import org.mangosdk.spi.ProviderFor;
 
+import com.anrisoftware.globalpom.mnemonic.MnemonicModule;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule;
 import com.anrisoftware.globalpom.reflection.beans.BeansModule;
 import com.anrisoftware.prefdialog.classtask.ClassTaskModule;
@@ -59,7 +60,7 @@ public class TabsPreferencesPanelService implements FieldService {
 	public TabsPreferencesPanelService() {
 		this.modules = asList(new Module[] { new TabsPreferencesPanelModule() });
 		this.dependencies = asList(new Module[] { new AnnotationsModule(),
-				new BeansModule(), new ClassTaskModule() });
+				new BeansModule(), new ClassTaskModule(), new MnemonicModule() });
 	}
 
 	@Override

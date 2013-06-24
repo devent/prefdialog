@@ -69,6 +69,7 @@ class AbstractFieldComponentLogger extends AbstractLogger {
 	private static final String TITLE_SET = "Title '{}' set for {}.";
 	private static final String NAME_SET = "Name '{}' set for {}.";
 	private static final String ORDER_SET = "Order {} set for {}.";
+	private static final String MNEMONIC_SET = "Mnemonic '{}' set for {}.";
 
 	/**
 	 * Creates logger for {@link AbstractFieldComponent}.
@@ -87,6 +88,10 @@ class AbstractFieldComponentLogger extends AbstractLogger {
 
 	void showTitleSet(AbstractFieldComponent<?> field, boolean show) {
 		log.debug(SHOW_TITLE_SET, show, field);
+	}
+
+	void mnemonicSet(AbstractFieldComponent<?> field, String string) {
+		log.debug(MNEMONIC_SET, string, field);
 	}
 
 	void valueSet(AbstractFieldComponent<?> field, Object value) {

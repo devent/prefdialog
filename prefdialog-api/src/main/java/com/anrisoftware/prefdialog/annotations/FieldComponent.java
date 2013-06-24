@@ -70,11 +70,31 @@ public @interface FieldComponent {
 	boolean showTitle() default true;
 
 	/**
-	 * The tool-tip text for the field. Set to empty string to disable the
-	 * tool-tip. Defaults to empty string.
+	 * Sets the mnemonic character with an optimal mnemonic index. The string
+	 * can contain a key code name or the character. Defaults to empty string.
+	 * Examples:
+	 * <ul>
+	 * <li>{@code VK_A}</li>
+	 * <li>{@code a}</li>
+	 * <li>{@code VK_A,5}</li>
+	 * <li>{@code a,5}</li>
+	 * </ul>
 	 * <p>
-	 * The tool-tip can also be a resource name that is queried in the supplied
-	 * texts resource.
+	 * The mnemonic can also be a resource name that is queried in the supplied
+	 * texts resource. Example:
+	 * <ul>
+	 * <li>{@code field_mnemonic}</li>
+	 * </ul>
+	 * <p>
+	 * 
+	 * @since 3.0
+	 */
+	String mnemonic() default "";
+
+	/**
+	 * The tool-tip text for the field. Set to empty string to disable the
+	 * tool-tip. Defaults to empty string. The tool-tip can also be a resource
+	 * name that is queried in the supplied texts resource.
 	 */
 	String toolTip() default "";
 

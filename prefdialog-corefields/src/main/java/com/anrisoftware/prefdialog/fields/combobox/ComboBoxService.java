@@ -24,6 +24,7 @@ import java.awt.Component;
 
 import org.mangosdk.spi.ProviderFor;
 
+import com.anrisoftware.globalpom.mnemonic.MnemonicModule;
 import com.anrisoftware.globalpom.reflection.annotationclass.AnnotationClassModule;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule;
 import com.anrisoftware.globalpom.reflection.beans.BeansModule;
@@ -51,7 +52,7 @@ public class ComboBoxService implements FieldService {
 
 	private static final Iterable<Module> dependencies = asList(new Module[] {
 			new AnnotationsModule(), new BeansModule(),
-			new AnnotationClassModule() });
+			new AnnotationClassModule(), new MnemonicModule() });
 
 	private static final Iterable<Module> modules = asList(new Module[] { new ComboBoxModule() });
 

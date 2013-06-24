@@ -18,6 +18,7 @@
  */
 package com.anrisoftware.prefdialog.core;
 
+import static java.lang.String.format;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 import java.awt.Component;
@@ -40,6 +41,8 @@ import javax.swing.ToolTipManager;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import com.anrisoftware.globalpom.mnemonic.Mnemonic;
+import com.anrisoftware.globalpom.mnemonic.MnemonicFactory;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccess;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccessFactory;
 import com.anrisoftware.globalpom.reflection.beans.BeanAccess;
@@ -61,6 +64,7 @@ import com.anrisoftware.resources.texts.api.Texts;
  * <li>name</li>
  * <li>title</li>
  * <li>show title flag</li>
+ * <li>mnemonic</li>
  * <li>tool-tip</li>
  * <li>invalidText</li>
  * <li>read-only flag</li>
@@ -92,6 +96,8 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
 	private static final String SHOW_TITLE_ELEMENT = "showTitle";
 
+	private static final String MNEMONIC_ELEMENT = "mnemonic";
+
 	private static final String TOOLTIP_ELEMENT = "toolTip";
 
 	private static final String READ_ONLY_ELEMENT = "readOnly";
@@ -112,13 +118,21 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
 	private static final String ORDER_ELEMENT = "order";
 
-	private AbstractFieldComponentLogger log;
-
 	private final Object parentObject;
 
 	private final String fieldName;
 
 	private final List<FieldComponent<?>> childFields;
+
+	private transient MnemonicFactory mnemonicFactory;
+
+	private transient AnnotationAccess annotationAccess;
+
+	private transient BeanAccess beanAccess;
+
+	private transient BeanFactory beanFactory;
+
+	private AbstractFieldComponentLogger log;
 
 	private ComponentType component;
 
@@ -127,6 +141,10 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	private String title;
 
 	private boolean showTitle;
+
+	private String mnemonicResource;
+
+	private Integer mnemonic;
 
 	private String toolTipResource;
 
@@ -154,12 +172,6 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
 	private Locale locale;
 
-	private AnnotationAccess annotationAccess;
-
-	private BeanAccess beanAccess;
-
-	private BeanFactory beanFactory;
-
 	private Texts texts;
 
 	private Images images;
@@ -171,6 +183,8 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	private String name;
 
 	private int order;
+
+	private int mnemonicIndex;
 
 	/**
 	 * Sets the component of this field.
@@ -193,29 +207,18 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	}
 
 	/**
-	 * Injects the bean and annotation access.
-	 * 
-	 * @param beanAccessFactory
-	 *            the {@link BeanAccessFactory} to access beans.
-	 * 
-	 * @param beanFactory
-	 *            the {@link BeanFactory} to create beans.
-	 * 
-	 * @param annotationAccessFactory
-	 *            the {@link AnnotationAccessFactory} to access annotations.
-	 * 
-	 * @param logger
-	 *            the {@link AbstractFieldComponentLogger} for logging messages.
+	 * Setups the field component.
 	 */
 	@Inject
-	void setupAbstractFieldComponent(BeanAccessFactory beanAccessFactory,
-			BeanFactory beanFactory,
+	void setupAbstractFieldComponent(AbstractFieldComponentLogger logger,
+			BeanAccessFactory beanAccessFactory, BeanFactory beanFactory,
 			AnnotationAccessFactory annotationAccessFactory,
-			AbstractFieldComponentLogger logger) {
+			MnemonicFactory mnemonicFactory) {
 		this.beanAccess = createBeanAccess(beanAccessFactory);
 		this.annotationAccess = createAnnotationAccess(annotationAccessFactory);
 		this.beanFactory = beanFactory;
 		this.log = logger;
+		this.mnemonicFactory = mnemonicFactory;
 		setupField();
 	}
 
@@ -260,6 +263,7 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 		setupName();
 		setupTitle();
 		setupShowTitle();
+		setupMnemonic();
 		setupToolTip();
 		setupInvalidText();
 		setupReadOnly();
@@ -287,6 +291,12 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	private void setupShowTitle() {
 		boolean show = annotationAccess.getValue(SHOW_TITLE_ELEMENT);
 		setShowTitle(show);
+	}
+
+	private void setupMnemonic() {
+		String string = annotationAccess.getValue(MNEMONIC_ELEMENT);
+		string = isEmpty(string) ? format("%s_mnemonic", fieldName) : string;
+		setMnemonicString(string);
 	}
 
 	private void setupToolTip() {
@@ -416,6 +426,40 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	@Override
 	public boolean isShowTitle() {
 		return showTitle;
+	}
+
+	@Override
+	public void setMnemonicString(String string) {
+		this.mnemonicResource = string;
+		Mnemonic mnemonic = mnemonicFactory.create(string);
+		Integer code = mnemonic.getMnemonic();
+		if (code != null) {
+			setMnemonic(code);
+			setMnemonicIndex(mnemonic.getMnemonicIndex());
+		} else {
+			updateMnemonicResource();
+		}
+		log.mnemonicSet(this, string);
+	}
+
+	@Override
+	public void setMnemonic(int mnemonics) {
+		this.mnemonic = mnemonics;
+	}
+
+	@Override
+	public Integer getMnemonic() {
+		return mnemonic;
+	}
+
+	@Override
+	public void setMnemonicIndex(int index) {
+		this.mnemonicIndex = index;
+	}
+
+	@Override
+	public int getMnemonicIndex() {
+		return mnemonicIndex;
 	}
 
 	@Override
@@ -681,24 +725,36 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 		updateTitleResource();
 		updateToolTipResource();
 		updateInvalidTextResource();
+		updateMnemonicResource();
 	}
 
 	private void updateToolTipResource() {
 		if (haveTextResource(toolTipResource)) {
-			toolTip = getTextResource(toolTipResource);
+			toolTip = getTextResource(toolTipResource, toolTip);
 			setupToolTipText();
 		}
 	}
 
 	private void updateTitleResource() {
 		if (haveTextResource(titleResource)) {
-			title = getTextResource(titleResource);
+			title = getTextResource(titleResource, title);
 		}
 	}
 
 	private void updateInvalidTextResource() {
 		if (haveTextResource(invalidTextResource)) {
-			invalidText = getTextResource(invalidTextResource);
+			invalidText = getTextResource(invalidTextResource, invalidText);
+		}
+	}
+
+	private void updateMnemonicResource() {
+		if (haveTextResource(mnemonicResource)) {
+			String string = getTextResource(mnemonicResource, null);
+			if (string != null) {
+				setMnemonic(mnemonicFactory.create(string).getMnemonic());
+				setMnemonicIndex(mnemonicFactory.create(string)
+						.getMnemonicIndex());
+			}
 		}
 	}
 
@@ -721,16 +777,21 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	 * @param name
 	 *            the {@link String} resource name.
 	 * 
-	 * @return the {@link String} text resource.
+	 * @param defaultText
+	 *            the default text for the resource.
+	 * 
+	 * 
+	 * @return the {@link String} text resource or the default text if the text
+	 *         resource could not be found.
 	 * 
 	 * @see #getLocale()
 	 */
-	protected String getTextResource(String name) {
+	protected String getTextResource(String name, String defaultText) {
 		try {
 			return texts.getResource(name, getLocale()).getText();
 		} catch (MissingResourceException e) {
 			log.textResourceMissing(this, name);
-			return name;
+			return defaultText;
 		}
 	}
 

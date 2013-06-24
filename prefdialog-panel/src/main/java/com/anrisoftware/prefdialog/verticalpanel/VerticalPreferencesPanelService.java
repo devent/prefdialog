@@ -24,6 +24,7 @@ import java.awt.Component;
 
 import org.mangosdk.spi.ProviderFor;
 
+import com.anrisoftware.globalpom.mnemonic.MnemonicModule;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule;
 import com.anrisoftware.globalpom.reflection.beans.BeansModule;
 import com.anrisoftware.prefdialog.fields.FieldFactory;
@@ -58,7 +59,7 @@ public class VerticalPreferencesPanelService implements FieldService {
 	public VerticalPreferencesPanelService() {
 		this.modules = asList(new Module[] { new VerticalPreferencesPanelModule() });
 		this.dependencies = asList(new Module[] { new AnnotationsModule(),
-				new BeansModule() });
+				new BeansModule(), new MnemonicModule() });
 	}
 
 	@Override

@@ -106,6 +106,18 @@ public abstract class AbstractTitleField<ComponentType extends Component>
 		titleLabel.setName(format("%s-%s", name, TITLE_NAME));
 	}
 
+	@Override
+	public void setMnemonic(int mnemonic) {
+		super.setMnemonic(mnemonic);
+		titleLabel.setDisplayedMnemonic(mnemonic);
+	}
+
+	@Override
+	public void setMnemonicIndex(int index) {
+		super.setMnemonicIndex(index);
+		titleLabel.setDisplayedMnemonicIndex(index);
+	}
+
 	/**
 	 * Enabled or disables the title label with the component.
 	 */
@@ -177,8 +189,20 @@ public abstract class AbstractTitleField<ComponentType extends Component>
 	private void updateTitleResource() {
 		if (isShowTitle()) {
 			titleLabel.setText(getTitleLabelText());
+			updateMnemonic();
 		} else {
 			titleLabel.setText(null);
+		}
+	}
+
+	private void updateMnemonic() {
+		Integer mnemonic = getMnemonic();
+		if (mnemonic != null) {
+			titleLabel.setDisplayedMnemonic(mnemonic);
+		}
+		int index = getMnemonicIndex();
+		if (index != -1) {
+			titleLabel.setDisplayedMnemonicIndex(index);
 		}
 	}
 

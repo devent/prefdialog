@@ -175,12 +175,27 @@ public class AbstractFieldButtonField<ComponentType extends AbstractButton>
 
 	private void updateTextResource() {
 		if (haveTextResource(textResource)) {
-			text = getTextResource(textResource);
+			text = getTextResource(textResource, text);
 		}
 		if (showText) {
 			getComponent().setText(text);
+			updateMnemonic();
 		} else {
 			getComponent().setText("");
+		}
+	}
+
+	private void updateMnemonic() {
+		if (!showText) {
+			return;
+		}
+		Integer mnemonic = getMnemonic();
+		if (mnemonic != null) {
+			getComponent().setMnemonic(mnemonic);
+		}
+		int index = getMnemonicIndex();
+		if (index != -1) {
+			getComponent().setDisplayedMnemonicIndex(index);
 		}
 	}
 

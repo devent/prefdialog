@@ -19,6 +19,7 @@
 package com.anrisoftware.prefdialog.fields;
 
 import java.awt.Component;
+import java.awt.event.KeyEvent;
 import java.beans.PropertyVetoException;
 import java.util.Locale;
 import java.util.MissingResourceException;
@@ -100,6 +101,52 @@ public interface FieldComponent<ComponentType extends Component> {
 	 *         not.
 	 */
 	boolean isShowTitle();
+
+	/**
+	 * Sets the mnemonic character with an optimal mnemonic index. The string
+	 * can contain a key code name or the character. The mnemonic can also be a
+	 * resource name that is queried in the supplied texts resource.
+	 * 
+	 * @param mnemonics
+	 *            the mnemonic string or the text resource name.
+	 */
+	void setMnemonicString(String mnemonics);
+
+	/**
+	 * Sets the mnemonic key code.
+	 * 
+	 * @param mnemonics
+	 *            the mnemonic key code.
+	 * 
+	 * @see KeyEvent
+	 */
+	void setMnemonic(int mnemonics);
+
+	/**
+	 * Returns the mnemonic key code.
+	 * 
+	 * @return the mnemonic key code or {@code null} if no such code was set.
+	 * 
+	 * @see KeyEvent
+	 */
+	Integer getMnemonic();
+
+	/**
+	 * Sets the mnemonic displayed index.
+	 * 
+	 * @param index
+	 *            the mnemonic index.
+	 */
+	void setMnemonicIndex(int index);
+
+	/**
+	 * Returns the mnemonic displayed index.
+	 * 
+	 * @return the mnemonic displayed index.
+	 * 
+	 * @see KeyEvent
+	 */
+	int getMnemonicIndex();
 
 	/**
 	 * Set the text of the tool-tip for the component. The tool-tip can also be

@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.mangosdk.spi.ProviderFor;
 
+import com.anrisoftware.globalpom.mnemonic.MnemonicModule;
 import com.anrisoftware.globalpom.reflection.annotationclass.AnnotationClassModule;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule;
 import com.anrisoftware.globalpom.reflection.beans.BeansModule;
@@ -54,7 +55,7 @@ public class CheckBoxService implements FieldService {
 
 	private static final List<Module> dependencies = asList(new Module[] {
 			new AnnotationsModule(), new BeansModule(),
-			new AnnotationClassModule() });
+			new AnnotationClassModule(), new MnemonicModule() });
 
 	@Override
 	public FieldInfo getInfo() {

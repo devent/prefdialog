@@ -24,6 +24,7 @@ import java.awt.Component;
 
 import org.mangosdk.spi.ProviderFor;
 
+import com.anrisoftware.globalpom.mnemonic.MnemonicModule;
 import com.anrisoftware.globalpom.reflection.annotationclass.AnnotationClassModule;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule;
 import com.anrisoftware.globalpom.reflection.beans.BeansModule;
@@ -55,7 +56,8 @@ public class HistoryComboBoxService implements FieldService {
 
 	private static final Iterable<? extends Module> dependencies = asList(new Module[] {
 			new AnnotationsModule(), new BeansModule(),
-			new AnnotationClassModule(), new ComboBoxHistoryModule() });
+			new AnnotationClassModule(), new ComboBoxHistoryModule(),
+			new MnemonicModule() });
 
 	@Override
 	public FieldInfo getInfo() {
