@@ -19,6 +19,7 @@
 package com.anrisoftware.prefdialog.fields.child
 
 import com.anrisoftware.prefdialog.annotations.CheckBox
+import com.anrisoftware.prefdialog.annotations.FieldButton
 import com.anrisoftware.prefdialog.annotations.FieldComponent
 
 /**
@@ -32,22 +33,28 @@ class ChildBean {
 	static class ChildSubBean {
 
 		@FieldComponent
+		@FieldButton
 		@CheckBox
 		public boolean checkbox
+
+		@FieldComponent(order = -1)
+		@FieldButton
+		@CheckBox
+		public boolean checkboxOrder
 	}
 
 	static final CHECKBOX = "checkbox"
+
+	static final CHECKBOX_ORDER = "checkboxOrder"
 
 	static final NULL_VALUE = "nullValue"
 
 	static final NO_TITLE = "noTitle"
 
 	@FieldComponent
-	@CheckBox
 	public ChildSubBean nullValue
 
 	@FieldComponent(showTitle = false)
-	@CheckBox
 	public ChildSubBean noTitle
 }
 

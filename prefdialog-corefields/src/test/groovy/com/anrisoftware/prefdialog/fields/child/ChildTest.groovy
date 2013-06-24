@@ -26,8 +26,6 @@ import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 
-import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule
-import com.anrisoftware.globalpom.reflection.beans.BeansModule
 import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.prefdialog.fields.checkbox.CheckBoxFieldFactory
 import com.anrisoftware.prefdialog.fields.checkbox.CheckBoxModule
@@ -44,7 +42,7 @@ class ChildTest {
 
 	@Test
 	void "title"() {
-		def title = "$NAME :: title"
+		def title = "$NAME::title"
 		def fieldName = NULL_VALUE
 		def separatorName = "$fieldName-$TITLE_SEPARATOR_NAME"
 		def field = factory.create(bean, fieldName)
@@ -61,7 +59,7 @@ class ChildTest {
 
 	@Test
 	void "no title"() {
-		def title = "ChildTest :: no title"
+		def title = "ChildTest::no title"
 		def fieldName = NO_TITLE
 		def separatorName = "$fieldName-$TITLE_SEPARATOR_NAME"
 		def field = factory.create(bean, fieldName)
@@ -76,15 +74,31 @@ class ChildTest {
 		})
 	}
 
+	@Test
+	void "order children"() {
+		def title = "$NAME::order children"
+		def fieldName = NULL_VALUE
+		def separatorName = "$fieldName-$TITLE_SEPARATOR_NAME"
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
+		def checkBoxA = checkBoxfactory.create(bean.nullValue, CHECKBOX)
+		def checkBoxB = checkBoxfactory.create(bean.nullValue, CHECKBOX_ORDER)
+
+		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+			field.addField checkBoxA
+			field.addField checkBoxB
+		})
+	}
+
 	//@Test
 	void "manually"() {
-		def title = "$NAME :: manually"
+		def title = "$NAME::manually"
 		def fieldName = NULL_VALUE
 		def field = factory.create(bean, fieldName)
 		def container = field.getAWTComponent()
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
 			Thread.sleep 60*1000
-			assert false : "Deactivate manually test."
+			assert false : "manually test"
 		})
 	}
 
@@ -100,19 +114,17 @@ class ChildTest {
 
 	@BeforeClass
 	static void setupFactories() {
-		injector = Guice.createInjector(new AnnotationsModule(), new BeansModule())
+		injector = Guice.createInjector(dependencies)
 		factory = createChildFieldFactory injector
 		checkBoxfactory = createCheckBoxFieldFactory injector
 	}
 
 	static ChildFieldFactory createChildFieldFactory(Injector injector) {
-		injector.createChildInjector(new ChildModule()).getInstance(
-				ChildFieldFactory)
+		injector.createChildInjector(modules).getInstance(ChildFieldFactory)
 	}
 
 	static CheckBoxFieldFactory createCheckBoxFieldFactory(Injector injector) {
-		injector.createChildInjector(new CheckBoxModule()).getInstance(
-				CheckBoxFieldFactory)
+		injector.createChildInjector(new CheckBoxModule()).getInstance(CheckBoxFieldFactory)
 	}
 
 	@Before

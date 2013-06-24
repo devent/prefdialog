@@ -21,9 +21,11 @@ package com.anrisoftware.prefdialog.fields.child;
 import static java.util.Arrays.asList;
 
 import java.awt.Component;
+import java.util.List;
 
 import org.mangosdk.spi.ProviderFor;
 
+import com.anrisoftware.globalpom.reflection.annotationclass.AnnotationClassModule;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule;
 import com.anrisoftware.globalpom.reflection.beans.BeansModule;
 import com.anrisoftware.prefdialog.annotations.Child;
@@ -43,6 +45,12 @@ import com.google.inject.Module;
 @ProviderFor(FieldService.class)
 public class ChildService implements FieldService {
 
+	private static final List<Module> dependencies = asList(new Module[] {
+			new AnnotationsModule(), new BeansModule(),
+			new AnnotationClassModule() });
+
+	private static final List<Module> modules = asList(new Module[] { new ChildModule() });
+
 	/**
 	 * The name post-fix of the title separator. The separator will have the
 	 * name <code>&lt;name&gt;-{@value #TITLE_SEPARATOR_NAME}</code>, with
@@ -54,16 +62,6 @@ public class ChildService implements FieldService {
 	 * The field information.
 	 */
 	public static final FieldInfo INFO = new FieldInfo(Child.class);
-
-	private final Iterable<? extends Module> modules;
-
-	private final Iterable<? extends Module> dependencies;
-
-	public ChildService() {
-		this.modules = asList(new Module[] { new ChildModule() });
-		this.dependencies = asList(new Module[] { new AnnotationsModule(),
-				new BeansModule() });
-	}
 
 	@Override
 	public FieldInfo getInfo() {

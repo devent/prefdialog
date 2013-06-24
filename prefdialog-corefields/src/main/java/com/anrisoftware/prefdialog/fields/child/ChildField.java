@@ -47,8 +47,6 @@ import com.google.inject.assistedinject.AssistedInject;
 @SuppressWarnings("serial")
 public class ChildField extends AbstractTitleField<JPanel> {
 
-	private final ChildFieldLogger log;
-
 	private final TableLayout layout;
 
 	private final JSeparator separator;
@@ -61,10 +59,8 @@ public class ChildField extends AbstractTitleField<JPanel> {
 	 * @see ChildFieldFactory#create(Object, String)
 	 */
 	@AssistedInject
-	ChildField(ChildFieldLogger logger, @Assisted Object parentObject,
-			@Assisted String fieldName) {
+	ChildField(@Assisted Object parentObject, @Assisted String fieldName) {
 		super(new JPanel(), parentObject, fieldName);
-		this.log = logger;
 		this.layout = createLayout();
 		this.separator = new JSeparator(HORIZONTAL);
 		this.titleSeparatorShow = true;
@@ -151,17 +147,20 @@ public class ChildField extends AbstractTitleField<JPanel> {
 	@Override
 	public void addField(FieldComponent<?> field) {
 		super.addField(field);
-		addToChildrenPanel(field);
+		JPanel panel = getComponent();
+		addChildrenPanels(panel);
 	}
 
-	private void addToChildrenPanel(FieldComponent<?> field) {
-		JPanel panel = getComponent();
+	private void addChildrenPanels(JPanel panel) {
+		panel.removeAll();
 		int rows = childrenPanelLayout.getNumRow();
-		double height = field.getHeight().doubleValue();
-		childrenPanelLayout.insertRow(rows, height);
+		childrenPanelLayout.insertRow(rows, PREFERRED);
+		int i = 0;
+		for (FieldComponent<?> field : getFields()) {
+			childrenPanelLayout.setRow(i, field.getHeight().doubleValue());
+			panel.add(field.getAWTComponent(), format("0, %d", i++));
+		}
 		layout.layoutContainer(panel);
-		panel.add(field.getAWTComponent(), format("0, %d", rows));
 		getComponent().revalidate();
-		log.addChildField(this, field);
 	}
 }
