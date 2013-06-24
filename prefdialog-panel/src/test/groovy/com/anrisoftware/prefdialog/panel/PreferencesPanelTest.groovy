@@ -26,10 +26,9 @@ import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 
-import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule
-import com.anrisoftware.globalpom.reflection.beans.BeansModule
 import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.globalpom.utils.TestUtils
+import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
 import com.google.inject.Guice
 import com.google.inject.Injector
 
@@ -43,9 +42,10 @@ class PreferencesPanelTest {
 
 	@Test
 	void "panel with child"() {
-		def title = "$NAME :: panel with child"
+		def title = "$NAME::panel with child"
 		def fieldName = CHILD
 		def field = factory.create(bean, fieldName)
+		field.createPanel(injector)
 		def container = field.getAWTComponent()
 
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
@@ -54,13 +54,14 @@ class PreferencesPanelTest {
 
 	//@Test
 	void "manually"() {
-		def title = "$NAME :: manually"
+		def title = "$NAME::manually"
 		def fieldName = CHILD
 		def field = factory.create(bean, fieldName)
+		field.createPanel(injector)
 		def container = field.getAWTComponent()
 		new TestFrameUtil(title, container).withFixture({
 			Thread.sleep 60 * 1000l
-			assert false : "Deactivate manually test"
+			assert false : "manually test"
 		})
 	}
 
@@ -75,10 +76,9 @@ class PreferencesPanelTest {
 	@BeforeClass
 	static void setupFactories() {
 		TestUtils.toStringStyle
-		injector = Guice.createInjector(
-				new AnnotationsModule(), new BeansModule(),
-				new PreferencesPanelModule())
-		factory = injector.getInstance PreferencesPanelFieldFactory
+		injector = Guice.createInjector(new CoreFieldComponentModule())
+		factory = injector.createChildInjector(
+				new PreferencesPanelModule()).getInstance(PreferencesPanelFieldFactory)
 	}
 
 	@Before

@@ -42,7 +42,6 @@ import com.anrisoftware.prefdialog.annotations.Child;
 import com.anrisoftware.prefdialog.core.AbstractFieldComponent;
 import com.anrisoftware.prefdialog.fields.FieldComponent;
 import com.anrisoftware.prefdialog.fields.FieldService;
-import com.anrisoftware.prefdialog.panel.PreferencesPanel;
 import com.anrisoftware.prefdialog.panel.PreferencesPanelField;
 import com.google.inject.Injector;
 import com.google.inject.assistedinject.Assisted;
@@ -57,8 +56,6 @@ import com.google.inject.assistedinject.Assisted;
 @SuppressWarnings("serial")
 public class TabsPreferencesPanelField extends
 		AbstractFieldComponent<JTabbedPane> {
-
-	private static final Class<PreferencesPanel> PREFERENCE_PANEL_ANNOTATION = PreferencesPanel.class;
 
 	private static final String RENDERER_ATTRIBUTE = "renderer";
 

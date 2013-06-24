@@ -26,11 +26,9 @@ import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 
-import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule
-import com.anrisoftware.globalpom.reflection.beans.BeansModule
 import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.globalpom.utils.TestUtils
-import com.anrisoftware.prefdialog.classtask.ClassTaskModule
+import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
 import com.google.inject.Guice
 import com.google.inject.Injector
 
@@ -44,9 +42,10 @@ class TabsPreferencesPanelTest {
 
 	@Test
 	void "panel with child"() {
-		def title = "$NAME :: panel with child"
+		def title = "$NAME::panel with child"
 		def fieldName = NULL_VALUE
 		def field = factory.create(bean, fieldName)
+		field.createPanel(injector)
 		def container = field.getAWTComponent()
 		def tabbedPane
 
@@ -64,9 +63,10 @@ class TabsPreferencesPanelTest {
 
 	@Test
 	void "renderer field"() {
-		def title = "$NAME :: renderer field"
+		def title = "$NAME::renderer field"
 		def fieldName = RENDERER_FIELD
 		def field = factory.create(bean, fieldName)
+		field.createPanel(injector)
 		def container = field.getAWTComponent()
 		def tabbedPane
 
@@ -85,9 +85,10 @@ class TabsPreferencesPanelTest {
 
 	@Test
 	void "renderer class field"() {
-		def title = "$NAME :: renderer class field"
+		def title = "$NAME::renderer class field"
 		def fieldName = RENDERER_CLASS_FIELD
 		def field = factory.create(bean, fieldName)
+		field.createPanel(injector)
 		def container = field.getAWTComponent()
 		def tabbedPane
 
@@ -105,13 +106,14 @@ class TabsPreferencesPanelTest {
 
 	//@Test
 	void "manually"() {
-		def title = "$NAME :: manually"
+		def title = "$NAME::manually"
 		def fieldName = NULL_VALUE
 		def field = factory.create(bean, fieldName)
+		field.createPanel(injector)
 		def container = field.getAWTComponent()
 		new TestFrameUtil(title, container).withFixture({
 			Thread.sleep 60 * 1000l
-			assert false : "Deactivate manually test"
+			assert false : "manually test"
 		})
 	}
 
@@ -126,10 +128,9 @@ class TabsPreferencesPanelTest {
 	@BeforeClass
 	static void setupFactories() {
 		TestUtils.toStringStyle
-		injector = Guice.createInjector(
-				new AnnotationsModule(), new BeansModule(), new ClassTaskModule(),
-				new TabsPreferencesPanelModule())
-		factory = injector.getInstance TabsPreferencesPanelFieldFactory
+		injector = Guice.createInjector(new CoreFieldComponentModule())
+		factory = injector.createChildInjector(
+				new TabsPreferencesPanelModule()).getInstance(TabsPreferencesPanelFieldFactory)
 	}
 
 	@Before

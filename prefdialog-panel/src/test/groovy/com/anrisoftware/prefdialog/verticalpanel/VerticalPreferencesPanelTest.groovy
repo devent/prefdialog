@@ -26,10 +26,9 @@ import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 
-import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule
-import com.anrisoftware.globalpom.reflection.beans.BeansModule
 import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.globalpom.utils.TestUtils
+import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
 import com.google.inject.Guice
 import com.google.inject.Injector
 
@@ -46,6 +45,7 @@ class VerticalPreferencesPanelTest {
 		def title = "$NAME::children"
 		def fieldName = NULL_VALUE
 		def field = factory.create(bean, fieldName)
+		field.createPanel(injector)
 		def container = field.getAWTComponent()
 		def panel
 
@@ -64,6 +64,7 @@ class VerticalPreferencesPanelTest {
 		def title = "$NAME::ordered children"
 		def fieldName = NULL_VALUE
 		def field = factory.create(orderBean, fieldName)
+		field.createPanel(injector)
 		def container = field.getAWTComponent()
 		def panel
 
@@ -82,6 +83,7 @@ class VerticalPreferencesPanelTest {
 		def title = "$NAME::manually"
 		def fieldName = NULL_VALUE
 		def field = factory.create(bean, fieldName)
+		field.createPanel(injector)
 		def container = field.getAWTComponent()
 		new TestFrameUtil(title, container).withFixture({
 			Thread.sleep 60 * 1000l
@@ -102,10 +104,9 @@ class VerticalPreferencesPanelTest {
 	@BeforeClass
 	static void setupFactories() {
 		TestUtils.toStringStyle
-		injector = Guice.createInjector(
-				new AnnotationsModule(), new BeansModule(),
-				new VerticalPreferencesPanelModule())
-		factory = injector.getInstance VerticalPreferencesPanelFieldFactory
+		injector = Guice.createInjector(new CoreFieldComponentModule())
+		factory = injector.createChildInjector(
+				new VerticalPreferencesPanelModule()).getInstance(VerticalPreferencesPanelFieldFactory)
 	}
 
 	@Before

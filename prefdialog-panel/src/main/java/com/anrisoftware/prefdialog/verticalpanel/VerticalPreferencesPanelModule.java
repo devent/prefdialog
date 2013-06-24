@@ -57,7 +57,7 @@ class VerticalPreferencesPanelModule extends AbstractModule {
 
 	@Provides
 	@Singleton
-	FieldService getVerticalPreferencesPanelFieldFactory() {
+	FieldService getPreferencesPanelService() {
 		for (FieldService service : ServiceLoader.load(FieldService.class)) {
 			if (service.getInfo().getAnnotationType().getSimpleName()
 					.equals(PREFERENCE_PANEL_NAME)) {

@@ -43,6 +43,9 @@ import com.google.inject.assistedinject.FactoryModuleBuilder;
  */
 class TabsPreferencesPanelModule extends AbstractModule {
 
+	private static final String NO_SERVICE = "Could not find service '%s'.";
+	private static final String PREFERENCE_PANEL_NAME = "PreferencesPanel";
+
 	@Override
 	protected void configure() {
 		install(new FactoryModuleBuilder().implement(
@@ -54,7 +57,15 @@ class TabsPreferencesPanelModule extends AbstractModule {
 
 	@Provides
 	@Singleton
-	ServiceLoader<FieldService> getFieldServicesLoader() {
-		return ServiceLoader.load(FieldService.class);
+	FieldService getPreferencesPanelService() {
+		for (FieldService service : ServiceLoader.load(FieldService.class)) {
+			if (service.getInfo().getAnnotationType().getSimpleName()
+					.equals(PREFERENCE_PANEL_NAME)) {
+				return service;
+			}
+		}
+		addError(NO_SERVICE, PREFERENCE_PANEL_NAME);
+		return null;
 	}
+
 }
