@@ -28,6 +28,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.beans.PropertyVetoException;
 import java.lang.reflect.AccessibleObject;
+import java.util.Collection;
 import java.util.ServiceLoader;
 
 import javax.inject.Inject;
@@ -81,6 +82,10 @@ public class VerticalPreferencesPanelField extends
 
 	private transient BeanField beanField;
 
+	private transient AnnotationDiscoveryFactory discoveryFactory;
+
+	private transient AnnotationSetFilterFactory filterFactory;
+
 	/**
 	 * @see VerticalPreferencesPanelFieldFactory#create(Object, String)
 	 */
@@ -116,20 +121,21 @@ public class VerticalPreferencesPanelField extends
 	}
 
 	@Inject
-	void setFieldsServiceLoader(ServiceLoader<FieldService> loader,
+	void setupVerticalPreferencesPanelField(ServiceLoader<FieldService> loader,
 			AnnotationDiscoveryFactory discoveryFactory,
 			AnnotationSetFilterFactory filterFactory, BeanField beanField) {
+		this.discoveryFactory = discoveryFactory;
+		this.filterFactory = filterFactory;
 		this.beanField = beanField;
-		discoverChildren(loader, discoveryFactory, filterFactory);
+		discoverChildren(loader);
 	}
 
-	private void discoverChildren(ServiceLoader<FieldService> loader,
-			AnnotationDiscoveryFactory discoveryFactory,
-			AnnotationSetFilterFactory filterFactory) {
+	private void discoverChildren(ServiceLoader<FieldService> loader) {
 		AnnotationFilter filter = filterFactory.create(Child.class);
 		FieldService service = getPreferencePanelService(loader);
-		for (AnnotationBean bean : createChildDiscovery(discoveryFactory,
-				filter).call()) {
+		Collection<AnnotationBean> fields = createChildDiscovery(
+				discoveryFactory, filter).call();
+		for (AnnotationBean bean : fields) {
 			FieldComponent<? extends Component> field = loadField(service, bean);
 			addField(field);
 		}
@@ -179,9 +185,18 @@ public class VerticalPreferencesPanelField extends
 	public void addField(FieldComponent<?> field) {
 		setupFirstField(field);
 		super.addField(field);
+		childenPanel.removeAll();
 		int rowIndex = layout.getNumRow() - 1;
 		insertRow(rowIndex);
-		childenPanel.add(field.getAWTComponent(), format("%d,%d", 0, rowIndex));
+		insertFields();
+	}
+
+	private void insertFields() {
+		int i = 0;
+		for (FieldComponent<?> field : getFields()) {
+			Component component = field.getAWTComponent();
+			childenPanel.add(component, format("%d,%d", 0, i++));
+		}
 		layout.layoutContainer(childenPanel);
 		childenPanel.repaint();
 	}

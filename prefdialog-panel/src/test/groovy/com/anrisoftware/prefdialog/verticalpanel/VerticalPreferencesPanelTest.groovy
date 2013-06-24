@@ -42,8 +42,8 @@ import com.google.inject.Injector
 class VerticalPreferencesPanelTest {
 
 	@Test
-	void "panel with child"() {
-		def title = "$NAME::panel with child"
+	void "children"() {
+		def title = "$NAME::children"
 		def fieldName = NULL_VALUE
 		def field = factory.create(bean, fieldName)
 		def container = field.getAWTComponent()
@@ -53,6 +53,24 @@ class VerticalPreferencesPanelTest {
 			panel = fixture.panel fieldName
 			panel.requireVisible()
 			assert field.getValue() == bean.childA
+		}, { FrameFixture fixture ->
+			fixture.panel "childA" requireVisible()
+			fixture.panel "childB" requireVisible()
+		})
+	}
+
+	@Test
+	void "ordered children"() {
+		def title = "$NAME::ordered children"
+		def fieldName = NULL_VALUE
+		def field = factory.create(orderBean, fieldName)
+		def container = field.getAWTComponent()
+		def panel
+
+		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+			panel = fixture.panel fieldName
+			panel.requireVisible()
+			assert field.getValue() == orderBean.childA
 		}, { FrameFixture fixture ->
 			fixture.panel "childA" requireVisible()
 			fixture.panel "childB" requireVisible()
@@ -79,6 +97,8 @@ class VerticalPreferencesPanelTest {
 
 	VerticalPreferencesPanelBean bean
 
+	VerticalPreferencesPanelOrderBean orderBean
+
 	@BeforeClass
 	static void setupFactories() {
 		TestUtils.toStringStyle
@@ -91,5 +111,6 @@ class VerticalPreferencesPanelTest {
 	@Before
 	void setupBean() {
 		bean = new VerticalPreferencesPanelBean()
+		orderBean = new VerticalPreferencesPanelOrderBean()
 	}
 }
