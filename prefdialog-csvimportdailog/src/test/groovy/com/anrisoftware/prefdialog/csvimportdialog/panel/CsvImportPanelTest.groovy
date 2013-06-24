@@ -24,11 +24,14 @@ import static com.anrisoftware.prefdialog.fields.textfield.TextFieldBean.*
 
 import java.awt.Dimension
 
+import javax.swing.JPanel
+
 import org.fest.swing.fixture.FrameFixture
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 
+import com.anrisoftware.globalpom.mnemonic.MnemonicModule
 import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.prefdialog.csvimportdialog.model.CsvImportModuleModule
 import com.anrisoftware.prefdialog.csvimportdialog.model.CsvProperties
@@ -48,7 +51,7 @@ class CsvImportPanelTest {
 	@Test
 	void "manually"() {
 		def title = "$NAME::manually"
-		def field = factory.create(properties)
+		def field = factory.create(new JPanel(), properties)
 		def container = field.getAWTComponent()
 		new TestFrameUtil(title, container, size).withFixture({ FrameFixture fixture ->
 			Thread.sleep 60*1000
@@ -70,7 +73,8 @@ class CsvImportPanelTest {
 	static void setupFactories() {
 		injector = Guice.createInjector(
 				new CsvImportPanelModule(), new CsvImportModuleModule(),
-				new TextsResourcesDefaultModule(), new TextsCentralModule())
+				new TextsResourcesDefaultModule(), new TextsCentralModule(),
+				new MnemonicModule())
 		factory = injector.getInstance CsvImportPanelFactory
 	}
 

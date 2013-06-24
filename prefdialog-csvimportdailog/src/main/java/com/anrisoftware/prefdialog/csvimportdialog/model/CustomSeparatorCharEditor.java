@@ -38,11 +38,16 @@ public class CustomSeparatorCharEditor implements ComboBoxEditor {
 
 	@Override
 	public Object getItem() {
-		if (editor.getItem() != null) {
-			return editor.getItem().toString().charAt(0);
-		} else {
-			return null;
+		Object item = editor.getItem();
+		if (item != null) {
+			String string = item.toString();
+			if (string.length() > 0) {
+				item = string.charAt(0);
+			} else {
+				item = null;
+			}
 		}
+		return item;
 	}
 
 	@Override
