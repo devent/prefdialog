@@ -287,6 +287,25 @@ public interface FieldComponent<ComponentType extends Component> {
 	Locale getLocale();
 
 	/**
+	 * Sets the order number of the field.
+	 * 
+	 * @param order
+	 *            the order.
+	 * 
+	 * @see com.anrisoftware.prefdialog.annotations.FieldComponent#order()
+	 */
+	void setOrder(int order);
+
+	/**
+	 * Returns the order number of the field.
+	 * 
+	 * @return the order.
+	 * 
+	 * @see com.anrisoftware.prefdialog.annotations.FieldComponent#order()
+	 */
+	int getOrder();
+
+	/**
 	 * Sets the value of the field.
 	 * 
 	 * @param value
@@ -387,6 +406,17 @@ public interface FieldComponent<ComponentType extends Component> {
 	void addField(FieldComponent<?> field);
 
 	/**
+	 * Returns the field component that was added to this field with the
+	 * specified index.
+	 * 
+	 * @param index
+	 *            the index.
+	 * 
+	 * @return the {@link FieldComponent}.
+	 */
+	FieldComponent<?> getField(int index);
+
+	/**
 	 * Returns the field component that is in this field with the specified
 	 * name.
 	 * 
@@ -405,21 +435,17 @@ public interface FieldComponent<ComponentType extends Component> {
 	<K extends Component, T extends FieldComponent<K>> T findField(String name);
 
 	/**
-	 * Returns the field component that was added to this field with the
-	 * specified index.
-	 * 
-	 * @param index
-	 *            the index.
-	 * 
-	 * @return the {@link FieldComponent}.
-	 */
-	FieldComponent<?> getField(int index);
-
-	/**
 	 * Returns the count of field components that were added to this field.
 	 * 
 	 * @return the count of fields.
 	 */
 	int getFieldsCount();
+
+	/**
+	 * Returns the field components that were added to this field.
+	 * 
+	 * @return the {@link Iterable} of {@link FieldComponent}.
+	 */
+	Iterable<FieldComponent<?>> getFields();
 
 }

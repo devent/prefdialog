@@ -26,6 +26,7 @@ import java.beans.PropertyVetoException;
 import java.io.Serializable;
 import java.lang.reflect.AccessibleObject;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.MissingResourceException;
@@ -70,6 +71,7 @@ import com.anrisoftware.resources.texts.api.Texts;
  * <li>show icon flag</li>
  * <li>icon size</li>
  * <li>locale</li>
+ * <li>order</li>
  * <li>value</li>
  * </ul>
  * 
@@ -107,6 +109,8 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	private static final String LOCALE_ELEMENT = "locale";
 
 	private static final String INVALID_TEXT_ELEMENT = "invalidText";
+
+	private static final String ORDER_ELEMENT = "order";
 
 	private AbstractFieldComponentLogger log;
 
@@ -166,6 +170,8 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
 	private String name;
 
+	private int order;
+
 	/**
 	 * Sets the component of this field.
 	 * 
@@ -202,7 +208,7 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	 *            the {@link AbstractFieldComponentLogger} for logging messages.
 	 */
 	@Inject
-	void setBeanAccessFactory(BeanAccessFactory beanAccessFactory,
+	void setupAbstractFieldComponent(BeanAccessFactory beanAccessFactory,
 			BeanFactory beanFactory,
 			AnnotationAccessFactory annotationAccessFactory,
 			AbstractFieldComponentLogger logger) {
@@ -263,6 +269,7 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 		setupIcon();
 		setupIconSize();
 		setupLocale();
+		setupOrder();
 		setupValue();
 	}
 
@@ -328,6 +335,11 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 		Locale locale = isEmpty(localeName) ? Locale.getDefault() : new Locale(
 				localeName);
 		setLocale(locale);
+	}
+
+	private void setupOrder() {
+		int order = annotationAccess.getValue(ORDER_ELEMENT);
+		setOrder(order);
 	}
 
 	private void setupValue() {
@@ -573,6 +585,17 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	}
 
 	@Override
+	public void setOrder(int order) {
+		this.order = order;
+		log.orderSet(this, order);
+	}
+
+	@Override
+	public int getOrder() {
+		return order;
+	}
+
+	@Override
 	public void setValue(Object value) throws PropertyVetoException {
 		if (this.value == value) {
 			return;
@@ -747,6 +770,7 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	public void addField(FieldComponent<?> field) {
 		log.checkField(this, field);
 		childFields.add(field);
+		Collections.sort(childFields, new FieldComponentComparator());
 	}
 
 	@Override
@@ -757,6 +781,11 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 		} else {
 			return findFieldRecursive(name);
 		}
+	}
+
+	@Override
+	public FieldComponent<?> getField(int index) {
+		return childFields.get(index);
 	}
 
 	private <R extends Component, T extends FieldComponent<R>> T findFieldRecursive(
@@ -782,13 +811,13 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	}
 
 	@Override
-	public FieldComponent<?> getField(int index) {
-		return childFields.get(index);
+	public int getFieldsCount() {
+		return childFields.size();
 	}
 
 	@Override
-	public int getFieldsCount() {
-		return childFields.size();
+	public Iterable<FieldComponent<?>> getFields() {
+		return childFields;
 	}
 
 	@Override

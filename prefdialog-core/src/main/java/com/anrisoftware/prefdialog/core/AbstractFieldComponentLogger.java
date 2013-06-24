@@ -68,6 +68,7 @@ class AbstractFieldComponentLogger extends AbstractLogger {
 	private static final String SHOW_TITLE_SET = "Show title {} set for {}.";
 	private static final String TITLE_SET = "Title '{}' set for {}.";
 	private static final String NAME_SET = "Name '{}' set for {}.";
+	private static final String ORDER_SET = "Order {} set for {}.";
 
 	/**
 	 * Creates logger for {@link AbstractFieldComponent}.
@@ -147,6 +148,10 @@ class AbstractFieldComponentLogger extends AbstractLogger {
 
 	void localeSet(AbstractFieldComponent<?> field, Locale locale) {
 		log.debug(LOCALE_SET, locale, field);
+	}
+
+	void orderSet(AbstractFieldComponent<?> field, int order) {
+		log.debug(ORDER_SET, order, field);
 	}
 
 	void titlePositionSet(AbstractFieldComponent<?> field, TextPosition position) {

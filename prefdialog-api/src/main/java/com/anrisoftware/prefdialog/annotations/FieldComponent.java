@@ -140,4 +140,13 @@ public @interface FieldComponent {
 	 * the default locale is used.
 	 */
 	String locale() default "";
+
+	/**
+	 * Ordering number of the field. The fields are sorted based on the order
+	 * number in ascending order. Multiple fields can have the same order number
+	 * but then the order is unspecified.
+	 * 
+	 * @since 3.0
+	 */
+	int order() default 0;
 }
