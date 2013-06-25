@@ -28,6 +28,9 @@ import org.junit.BeforeClass
 import org.junit.Test
 
 import com.anrisoftware.globalpom.utils.TestFrameUtil
+import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
+import com.anrisoftware.prefdialog.miscswing.comboboxhistory.ComboBoxHistoryModule
+import com.google.inject.Guice
 
 /**
  * @see HistoryComboBox
@@ -55,7 +58,9 @@ class HistoryComboBoxServiceTest {
 
 	@BeforeClass
 	static void setupFactories() {
-		factory = findService(INFO).getFactory()
+		def injector = Guice.createInjector(
+				new CoreFieldComponentModule(), new ComboBoxHistoryModule())
+		factory = findService(INFO).getFactory(injector)
 	}
 
 	@Before

@@ -19,7 +19,6 @@
 package com.anrisoftware.prefdialog.fields.historycombobox
 
 import static com.anrisoftware.prefdialog.fields.historycombobox.HistoryComboBoxBean.*
-import static com.anrisoftware.prefdialog.fields.historycombobox.HistoryComboBoxService.*
 
 import java.awt.event.KeyEvent
 
@@ -29,12 +28,15 @@ import org.junit.BeforeClass
 import org.junit.Test
 
 import com.anrisoftware.globalpom.utils.TestFrameUtil
+import com.anrisoftware.globalpom.utils.TestUtils
+import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
 import com.anrisoftware.prefdialog.core.FieldTestUtils
+import com.anrisoftware.prefdialog.miscswing.comboboxhistory.ComboBoxHistoryModule
 import com.google.inject.Guice
 import com.google.inject.Injector
 
 /**
- * Test the {@link HistoryComboBoxField}.
+ * @see HistoryComboBoxField
  *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
@@ -189,7 +191,10 @@ class HistoryComboBoxTest extends FieldTestUtils {
 
 	@BeforeClass
 	static void setupFactories() {
-		injector = Guice.createInjector(dependencies).createChildInjector(modules)
+		TestUtils.toStringStyle
+		injector = Guice.createInjector(
+				new CoreFieldComponentModule(), new ComboBoxHistoryModule(),
+				new HistoryComboBoxModule())
 		factory = injector.getInstance HistoryComboBoxFactory
 	}
 
