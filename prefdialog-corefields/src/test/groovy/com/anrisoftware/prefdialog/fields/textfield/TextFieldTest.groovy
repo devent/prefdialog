@@ -29,15 +29,15 @@ import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 
-import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule
-import com.anrisoftware.globalpom.reflection.beans.BeansModule
 import com.anrisoftware.globalpom.utils.TestFrameUtil
+import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
 import com.anrisoftware.resources.texts.api.Texts
 import com.google.inject.Guice
 import com.google.inject.Injector
 
 /**
- * Test the {@link TextField}.
+ * @see TextField
+ * @see TextFieldBean
  *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
@@ -46,7 +46,7 @@ class TextFieldTest {
 
 	@Test
 	void "null value"() {
-		def title = "TextFieldTest :: null value"
+		def title = "$NAME::null value"
 		def fieldName = NULL_VALUE
 		def field = factory.create(bean, fieldName)
 		def container = field.getAWTComponent()
@@ -72,7 +72,7 @@ class TextFieldTest {
 
 	@Test
 	void "with initial value"() {
-		def title = "TextFieldTest :: with initial value"
+		def title = "$NAME::with initial value"
 		def fieldName = INITIAL_VALUE
 		def field = factory.create(bean, fieldName)
 		def container = field.getAWTComponent()
@@ -85,7 +85,7 @@ class TextFieldTest {
 
 	@Test
 	void "not editable"() {
-		def title = "TextFieldTest :: not editable"
+		def title = "$NAME::not editable"
 		def fieldName = NOT_EDITABLE
 		def field = factory.create(bean, fieldName)
 		def container = field.getAWTComponent()
@@ -105,7 +105,7 @@ class TextFieldTest {
 
 	@Test
 	void "validated"() {
-		def title = "TextFieldTest :: validated"
+		def title = "$NAME::validated"
 		def fieldName = VALIDATED
 		def field = factory.create(bean, fieldName)
 		def container = field.getAWTComponent()
@@ -127,6 +127,8 @@ class TextFieldTest {
 		})
 	}
 
+	static final String NAME = TextFieldTest.class.simpleName
+
 	static Injector injector
 
 	static TextFieldFactory factory
@@ -137,8 +139,7 @@ class TextFieldTest {
 
 	@BeforeClass
 	static void setupFactories() {
-		injector = Guice.createInjector(
-				new AnnotationsModule(), new BeansModule(), new TextFieldModule())
+		injector = Guice.createInjector(new CoreFieldComponentModule(), new TextFieldModule())
 		factory = injector.getInstance TextFieldFactory
 		texts = createTextsResource(injector)
 	}

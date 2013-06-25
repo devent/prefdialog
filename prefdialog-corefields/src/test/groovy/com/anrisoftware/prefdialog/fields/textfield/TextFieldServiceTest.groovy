@@ -27,14 +27,12 @@ import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 
-import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule
-import com.anrisoftware.globalpom.reflection.beans.BeansModule
 import com.anrisoftware.globalpom.utils.TestFrameUtil
+import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
 import com.google.inject.Guice
-import com.google.inject.Injector
 
 /**
- * Test the text field as a service.
+ * @see TextFieldService
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
@@ -42,15 +40,15 @@ import com.google.inject.Injector
 class TextFieldServiceTest {
 
 	@Test
-	void "with defaults"() {
-		def title = "TextFieldServiceTest :: with defaults"
+	void "service"() {
+		def title = "$NAME::service"
 		def fieldName = NULL_VALUE
 		def field = factory.create(bean, fieldName)
 		def container = field.getAWTComponent()
 		new TestFrameUtil(title, container).withFixture({})
 	}
 
-	static Injector injector
+	static final String NAME = TextFieldServiceTest.class.simpleName
 
 	static TextFieldFactory factory
 
@@ -58,7 +56,7 @@ class TextFieldServiceTest {
 
 	@BeforeClass
 	static void setupFactories() {
-		injector = Guice.createInjector(new AnnotationsModule(), new BeansModule())
+		def injector = Guice.createInjector(new CoreFieldComponentModule())
 		factory = findService(INFO).getFactory(injector)
 	}
 
