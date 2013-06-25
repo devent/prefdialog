@@ -27,11 +27,9 @@ import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 
-import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule
-import com.anrisoftware.globalpom.reflection.beans.BeansModule
 import com.anrisoftware.globalpom.utils.TestFrameUtil
+import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
 import com.google.inject.Guice
-import com.google.inject.Injector
 
 /**
  * @see SpacerService
@@ -42,8 +40,8 @@ import com.google.inject.Injector
 class SpacerServiceTest {
 
 	@Test
-	void "with defaults"() {
-		def title = "$NAME :: with defaults"
+	void "service"() {
+		def title = "$NAME::service"
 		def fieldName = SPACER
 		bean.childBeanWithDefaultSpacer = new SpacerBean.ChildBeanWithDefaultSpacer()
 		def field = factory.create(bean.childBeanWithDefaultSpacer, fieldName)
@@ -53,15 +51,13 @@ class SpacerServiceTest {
 
 	static final String NAME = SpacerServiceTest.class.simpleName
 
-	static Injector injector
-
 	static SpacerFieldFactory factory
 
 	SpacerBean bean
 
 	@BeforeClass
 	static void setupFactories() {
-		injector = Guice.createInjector(new AnnotationsModule(), new BeansModule())
+		def injector = Guice.createInjector(new CoreFieldComponentModule())
 		factory = findService(INFO).getFactory(injector)
 	}
 

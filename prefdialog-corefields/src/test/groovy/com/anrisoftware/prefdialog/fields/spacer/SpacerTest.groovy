@@ -28,9 +28,9 @@ import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 
-import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule
-import com.anrisoftware.globalpom.reflection.beans.BeansModule
 import com.anrisoftware.globalpom.utils.TestFrameUtil
+import com.anrisoftware.globalpom.utils.TestUtils
+import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
 import com.anrisoftware.prefdialog.fields.child.ChildFieldFactory
 import com.anrisoftware.prefdialog.fields.child.ChildModule
 import com.anrisoftware.prefdialog.fields.textfield.TextFieldFactory
@@ -48,7 +48,7 @@ class SpacerTest {
 
 	@Test
 	void "default spacer"() {
-		def title = "$NAME :: default spacer"
+		def title = "$NAME::default spacer"
 		def fieldName = SPACER
 		def childField = childFactory.create(bean, CHILD_BEAN)
 		def childBean = bean.childBeanWithDefaultSpacer
@@ -65,7 +65,7 @@ class SpacerTest {
 
 	@Test
 	void "fixed spacer"() {
-		def title = "$NAME :: fixed spacer"
+		def title = "$NAME::fixed spacer"
 		def fieldName = SPACER
 		def childField = childFactory.create(bean, CHILD_BEAN_FIXED_SPACER)
 		def childBean = bean.childBeanWithFixedSpacer
@@ -83,7 +83,7 @@ class SpacerTest {
 
 	//@Test
 	void "manually"() {
-		def title = "$NAME :: manually"
+		def title = "$NAME::manually"
 		def fieldName = SPACER
 		def childField = childFactory.create(bean, CHILD_BEAN)
 		def container = childField.getAWTComponent()
@@ -112,8 +112,8 @@ class SpacerTest {
 
 	@BeforeClass
 	static void setupFactories() {
-		injector = Guice.createInjector(
-				new AnnotationsModule(), new BeansModule())
+		TestUtils.toStringStyle
+		injector = Guice.createInjector(new CoreFieldComponentModule())
 		spacerFactory = createSpacerFieldFactory injector
 		childFactory = createChildFieldFactory injector
 		textFactory = createTextFieldFactory injector
