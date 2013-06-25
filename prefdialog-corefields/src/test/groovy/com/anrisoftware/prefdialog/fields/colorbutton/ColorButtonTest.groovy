@@ -32,16 +32,15 @@ import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 
-import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule
-import com.anrisoftware.globalpom.reflection.beans.BeansModule
 import com.anrisoftware.globalpom.reflection.exceptions.ReflectionError
 import com.anrisoftware.globalpom.utils.TestFrameUtil
+import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
 import com.anrisoftware.prefdialog.core.FieldTestUtils
 import com.google.inject.Guice
 import com.google.inject.Injector
 
 /**
- * Test the {@link ColorButtonField}.
+ * @see ColorButtonField
  *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
@@ -59,7 +58,7 @@ class ColorButtonTest extends FieldTestUtils {
 
 	@Test
 	void "apply user input"() {
-		def title = "ColorButtonTest :: apply user input"
+		def title = "$NAME::apply user input"
 		def fieldName = COLOR_BLACK
 		def field = factory.create(bean, fieldName)
 		def container = field.getAWTComponent()
@@ -75,7 +74,7 @@ class ColorButtonTest extends FieldTestUtils {
 
 	@Test
 	void "restore user input"() {
-		def title = "ColorButtonTest :: restore user input"
+		def title = "$NAME::restore user input"
 		def fieldName = COLOR_BLACK
 		def field = factory.create(bean, fieldName)
 		def container = field.getAWTComponent()
@@ -92,7 +91,7 @@ class ColorButtonTest extends FieldTestUtils {
 
 	@Test
 	void "with right alignment"() {
-		def title = "ColorButtonTest :: with right alignment"
+		def title = "$NAME::with right alignment"
 		def fieldName = COLOR_RIGHT
 		def field = factory.create(bean, fieldName)
 		def container = field.getAWTComponent()
@@ -103,7 +102,7 @@ class ColorButtonTest extends FieldTestUtils {
 
 	@Test
 	void "with center alignment"() {
-		def title = "ColorButtonTest :: with center alignment"
+		def title = "$NAME::with center alignment"
 		def fieldName = COLOR_MIDDLE
 		def field = factory.create(bean, fieldName)
 		def container = field.getAWTComponent()
@@ -114,7 +113,7 @@ class ColorButtonTest extends FieldTestUtils {
 
 	@Test
 	void "with left alignment"() {
-		def title = "ColorButtonTest :: with left alignment"
+		def title = "$NAME::with left alignment"
 		def fieldName = COLOR_LEFT
 		def field = factory.create(bean, fieldName)
 		def container = field.getAWTComponent()
@@ -125,7 +124,7 @@ class ColorButtonTest extends FieldTestUtils {
 
 	//@Test
 	void "manually"() {
-		def title = "ColorButtonTest :: manually"
+		def title = "$NAME::manually"
 		def fieldName = COLOR_BLACK
 		def field = factory.create(bean, fieldName)
 		def container = field.getAWTComponent()
@@ -135,6 +134,8 @@ class ColorButtonTest extends FieldTestUtils {
 		})
 	}
 
+	static final String NAME = ColorButtonTest.class.simpleName
+
 	static Injector injector
 
 	static ColorButtonFieldFactory factory
@@ -143,8 +144,7 @@ class ColorButtonTest extends FieldTestUtils {
 
 	@BeforeClass
 	static void setupFactories() {
-		injector = Guice.createInjector(
-				new AnnotationsModule(), new BeansModule(), new ColorButtonModule())
+		injector = Guice.createInjector(new CoreFieldComponentModule(), new ColorButtonModule())
 		factory = injector.getInstance ColorButtonFieldFactory
 	}
 
