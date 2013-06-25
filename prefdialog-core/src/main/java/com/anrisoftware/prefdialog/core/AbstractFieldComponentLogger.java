@@ -187,8 +187,9 @@ class AbstractFieldComponentLogger extends AbstractLogger {
 
 	PropertyVetoException errorTrySetValue(AbstractFieldComponent<?> field,
 			Exception e, Object value, String property) {
-		return logException(new PropertyVetoException(e.getMessage(),
-				new PropertyChangeEvent(this, property, null, value)),
-				ERROR_SET_VALUE, value, field);
+		PropertyVetoException ex = new PropertyVetoException(e.getMessage(),
+				new PropertyChangeEvent(field, property, null, value));
+		log.debug(ERROR_SET_VALUE, value, field);
+		return ex;
 	}
 }
