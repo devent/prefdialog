@@ -7,9 +7,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.swing.JPanel;
 
-import com.anrisoftware.prefdialog.csvimportdialog.model.CsvProperties;
 import com.anrisoftware.prefdialog.csvimportdialog.panel.CsvImportPanel;
 import com.anrisoftware.prefdialog.csvimportdialog.panel.CsvImportPanelFactory;
+import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.CsvProperties;
 import com.anrisoftware.resources.texts.central.TextsResourcesFactory;
 import com.google.inject.assistedinject.Assisted;
 

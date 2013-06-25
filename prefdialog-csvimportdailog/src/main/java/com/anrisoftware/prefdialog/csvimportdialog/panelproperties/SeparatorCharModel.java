@@ -1,4 +1,4 @@
-package com.anrisoftware.prefdialog.csvimportdialog.model;
+package com.anrisoftware.prefdialog.csvimportdialog.panelproperties;
 
 import java.util.Set;
 import java.util.TreeSet;

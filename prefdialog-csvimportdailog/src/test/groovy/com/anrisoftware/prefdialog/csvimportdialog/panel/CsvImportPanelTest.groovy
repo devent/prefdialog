@@ -33,8 +33,8 @@ import org.junit.Test
 
 import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
-import com.anrisoftware.prefdialog.csvimportdialog.model.CsvImportModuleModule
-import com.anrisoftware.prefdialog.csvimportdialog.model.CsvProperties
+import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.CsvImportModuleModule;
+import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.CsvProperties;
 import com.anrisoftware.prefdialog.miscswing.comboboxhistory.ComboBoxHistoryModule
 import com.anrisoftware.resources.texts.defaults.TextsResourcesDefaultModule
 import com.google.inject.Guice

@@ -8,7 +8,7 @@ import java.awt.Component;
 import javax.inject.Inject;
 import javax.swing.JPanel;
 
-import com.anrisoftware.prefdialog.csvimportdialog.model.CsvProperties;
+import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.CsvProperties;
 import com.anrisoftware.prefdialog.fields.FieldService;
 import com.anrisoftware.prefdialog.verticalpanel.VerticalPreferencesPanelField;
 import com.anrisoftware.resources.texts.api.Texts;
