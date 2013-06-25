@@ -29,6 +29,7 @@ import org.junit.BeforeClass
 import org.junit.Test
 
 import com.anrisoftware.globalpom.utils.TestFrameUtil
+import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
 import com.anrisoftware.prefdialog.core.FieldTestUtils
 import com.google.inject.Guice
 import com.google.inject.Injector
@@ -232,7 +233,7 @@ class ComboBoxTest extends FieldTestUtils {
 
 	@BeforeClass
 	static void setupFactories() {
-		injector = Guice.createInjector(dependencies).createChildInjector(modules)
+		injector = Guice.createInjector(new CoreFieldComponentModule(), new ComboBoxModule())
 		factory = injector.getInstance ComboBoxFieldFactory
 	}
 
