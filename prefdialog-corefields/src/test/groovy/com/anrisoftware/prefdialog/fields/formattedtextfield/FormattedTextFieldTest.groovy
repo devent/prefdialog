@@ -29,9 +29,8 @@ import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 
-import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule
-import com.anrisoftware.globalpom.reflection.beans.BeansModule
 import com.anrisoftware.globalpom.utils.TestFrameUtil
+import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
 import com.anrisoftware.resources.texts.api.Texts
 import com.google.inject.Guice
 import com.google.inject.Injector
@@ -46,7 +45,7 @@ class FormattedTextFieldTest {
 
 	@Test
 	void "null value"() {
-		def title = "$NAME :: null value string"
+		def title = "$NAME::null value string"
 		def fieldName = NULL_VALUE
 		def field = factory.create(bean, fieldName)
 		def container = field.getAWTComponent()
@@ -72,7 +71,7 @@ class FormattedTextFieldTest {
 
 	@Test
 	void "with initial value"() {
-		def title = "$NAME :: with initial value"
+		def title = "$NAME::with initial value"
 		def fieldName = INITIAL_VALUE
 		def field = factory.create(bean, fieldName)
 		def container = field.getAWTComponent()
@@ -85,7 +84,7 @@ class FormattedTextFieldTest {
 
 	@Test
 	void "not editable"() {
-		def title = "$NAME :: not editable"
+		def title = "$NAME::not editable"
 		def fieldName = NOT_EDITABLE
 		def field = factory.create(bean, fieldName)
 		def container = field.getAWTComponent()
@@ -105,7 +104,7 @@ class FormattedTextFieldTest {
 
 	@Test
 	void "validated"() {
-		def title = "$NAME :: validated"
+		def title = "$NAME::validated"
 		def fieldName = VALIDATED
 		def field = factory.create(bean, fieldName)
 		def container = field.getAWTComponent()
@@ -139,8 +138,7 @@ class FormattedTextFieldTest {
 
 	@BeforeClass
 	static void setupFactories() {
-		injector = Guice.createInjector(
-				new AnnotationsModule(), new BeansModule(), new FormattedTextFieldModule())
+		injector = Guice.createInjector(new CoreFieldComponentModule(), new FormattedTextFieldModule())
 		factory = injector.getInstance FormattedTextFieldFactory
 		texts = createTextsResource(injector)
 	}

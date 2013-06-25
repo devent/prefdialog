@@ -18,8 +18,6 @@
  */
 package com.anrisoftware.prefdialog.fields.formattedtextfield;
 
-import static com.anrisoftware.prefdialog.miscswing.components.validating.AbstractValidatingComponent.VALUE_PROPERTY;
-
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
@@ -31,6 +29,7 @@ import javax.swing.JFormattedTextField;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccess;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccessFactory;
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
+import com.anrisoftware.prefdialog.miscswing.components.validating.AbstractValidatingComponent;
 import com.anrisoftware.prefdialog.miscswing.components.validating.ValidatingFormattedTextComponent;
 import com.google.inject.assistedinject.Assisted;
 
@@ -78,11 +77,12 @@ public class FormattedTextField extends AbstractTitleField<JFormattedTextField> 
 	}
 
 	private void setupValidating() {
-		validating.addVetoableChangeListener(VALUE_PROPERTY, valueVetoListener);
+		validating.addVetoableChangeListener(
+				AbstractValidatingComponent.VALUE_PROPERTY, valueVetoListener);
 	}
 
 	@Inject
-	void setBeanAccessFactory(AnnotationAccessFactory annotationAccessFactory) {
+	void setupFormattedTextField(AnnotationAccessFactory annotationAccessFactory) {
 		this.fieldAnnotation = annotationAccessFactory.create(ANNOTATION_CLASS,
 				getAccessibleObject());
 		setupEditable();
