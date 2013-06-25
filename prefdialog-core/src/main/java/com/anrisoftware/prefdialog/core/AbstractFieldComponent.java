@@ -204,6 +204,8 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 		this.parentObject = parentObject;
 		this.fieldName = fieldName;
 		this.childFields = new ArrayList<FieldComponent<?>>();
+		this.mnemonic = null;
+		this.mnemonicIndex = -1;
 	}
 
 	/**
