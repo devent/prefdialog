@@ -21,7 +21,6 @@ package com.anrisoftware.prefdialog.fields.radiobutton
 import static com.anrisoftware.globalpom.utils.TestUtils.*
 import static com.anrisoftware.prefdialog.core.FieldTestUtils.*
 import static com.anrisoftware.prefdialog.fields.radiobutton.RadioButtonBean.*
-import static com.anrisoftware.prefdialog.fields.radiobutton.RadioButtonService.*
 
 import javax.swing.BoxLayout
 import javax.swing.JPanel
@@ -33,6 +32,7 @@ import org.junit.Test
 
 import com.anrisoftware.globalpom.reflection.exceptions.ReflectionError
 import com.anrisoftware.globalpom.utils.TestFrameUtil
+import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
 import com.anrisoftware.resources.texts.api.Texts
 import com.google.inject.Guice
 import com.google.inject.Injector
@@ -301,7 +301,7 @@ class RadioButtonTest {
 
 	@BeforeClass
 	static void setupFactories() {
-		injector = Guice.createInjector(dependencies).createChildInjector(modules)
+		injector = Guice.createInjector(new CoreFieldComponentModule(), new RadioButtonModule())
 		factory = injector.getInstance RadioButtonFieldFactory
 		texts = createTextsResource(injector)
 	}
