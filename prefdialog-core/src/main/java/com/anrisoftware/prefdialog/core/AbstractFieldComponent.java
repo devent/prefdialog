@@ -683,6 +683,16 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 		return value;
 	}
 
+	/**
+	 * Returns the old value of this field. That is the value that was
+	 * previously set.
+	 * 
+	 * @return the old value {@link Object}.
+	 */
+	public Object getOldValue() {
+		return oldValue;
+	}
+
 	@Override
 	public void setImages(Images images) {
 		log.checkImagesResource(this, images);

@@ -20,7 +20,6 @@ package com.anrisoftware.prefdialog.fields.filechooser;
 
 import javax.swing.JPanel;
 
-import com.anrisoftware.prefdialog.classtask.ClassTaskModule;
 import com.anrisoftware.prefdialog.fields.FieldComponent;
 import com.anrisoftware.prefdialog.fields.FieldFactory;
 import com.google.inject.AbstractModule;
@@ -28,7 +27,7 @@ import com.google.inject.TypeLiteral;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 
 /**
- * Binds the file chooser field factory.
+ * Installs the file chooser field factory.
  * 
  * @see FileChooserField
  * @see FileChooserFieldFactory
@@ -44,7 +43,6 @@ class FileChooserModule extends AbstractModule {
 				new TypeLiteral<FieldComponent<JPanel>>() {
 				}, FileChooserField.class).build(FileChooserFieldFactory.class));
 		bind(FieldFactory.class).to(FileChooserFieldFactory.class);
-		install(new ClassTaskModule());
 	}
 
 }

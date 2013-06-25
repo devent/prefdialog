@@ -18,8 +18,6 @@
  */
 package com.anrisoftware.prefdialog.fields.filechooser;
 
-import static com.anrisoftware.prefdialog.miscswing.components.validating.AbstractValidatingComponent.VALUE_PROPERTY;
-
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
@@ -30,11 +28,9 @@ import javax.inject.Inject;
 import javax.swing.Action;
 import javax.swing.JPanel;
 
-import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccessFactory;
+import com.anrisoftware.globalpom.reflection.annotationclass.AnnotationClassFactory;
 import com.anrisoftware.prefdialog.annotations.FileChooser;
 import com.anrisoftware.prefdialog.annotations.FileChooserModel;
-import com.anrisoftware.prefdialog.classtask.ClassTask;
-import com.anrisoftware.prefdialog.classtask.ClassTaskFactory;
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
 import com.anrisoftware.prefdialog.miscswing.components.validating.ValidatingFormattedTextComponent;
 import com.anrisoftware.prefdialog.miscswing.text.filetext.FileTextField;
@@ -78,13 +74,13 @@ public class FileChooserField extends AbstractTitleField<JPanel> {
 
 	private final OpenFileDialogAction openFileDialogAction;
 
-	private final ClassTaskFactory classTaskFactory;
-
-	private FileChooserModel model;
-
 	private final VetoableChangeListener filePropertyListener;
 
 	private final UiPanel panel;
+
+	private transient AnnotationClassFactory annotationClassFactory;
+
+	private FileChooserModel model;
 
 	/**
 	 * @see FileChooserFieldFactory#create(Object, String)
@@ -93,13 +89,11 @@ public class FileChooserField extends AbstractTitleField<JPanel> {
 	FileChooserField(FileChooserFieldLogger logger, UiPanel panel,
 			FileTextField fileTextField,
 			OpenFileDialogAction openFileDialogAction,
-			ClassTaskFactory classTaskFactory, @Assisted Object parentObject,
-			@Assisted String fieldName) {
+			@Assisted Object parentObject, @Assisted String fieldName) {
 		super(panel, parentObject, fieldName);
 		this.panel = panel;
 		this.log = logger;
 		this.fileTextField = fileTextField;
-		this.classTaskFactory = classTaskFactory;
 		this.openFileDialogAction = openFileDialogAction;
 		this.validating = new ValidatingFormattedTextComponent<FileTextField>(
 				fileTextField);
@@ -137,15 +131,17 @@ public class FileChooserField extends AbstractTitleField<JPanel> {
 	}
 
 	@Inject
-	void setBeanAccessFactory(AnnotationAccessFactory annotationAccessFactory) {
+	void setupFileChooserField(AnnotationClassFactory annotationClassFactory) {
+		this.annotationClassFactory = annotationClassFactory;
 		setupModel();
 	}
 
 	private void setupModel() {
-		@SuppressWarnings("unchecked")
-		ClassTask<FileChooserModel> classTask = (ClassTask<FileChooserModel>) classTaskFactory
-				.create(MODEL_ELEMENT, ANNOTATION_CLASS, getAccessibleObject());
-		setModel(classTask.withParent(getParentObject()).build());
+		FileChooserModel model = (FileChooserModel) annotationClassFactory
+				.create(getParentObject(), ANNOTATION_CLASS,
+						getAccessibleObject()).forAttribute(MODEL_ELEMENT)
+				.build();
+		setModel(model);
 	}
 
 	/**

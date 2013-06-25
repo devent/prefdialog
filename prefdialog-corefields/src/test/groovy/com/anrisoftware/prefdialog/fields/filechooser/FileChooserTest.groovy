@@ -28,10 +28,9 @@ import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 
-import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule
-import com.anrisoftware.globalpom.reflection.beans.BeansModule
 import com.anrisoftware.globalpom.reflection.exceptions.ReflectionError
 import com.anrisoftware.globalpom.utils.TestFrameUtil
+import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
 import com.anrisoftware.prefdialog.core.FieldTestUtils
 import com.google.inject.Guice
 import com.google.inject.Injector
@@ -44,21 +43,21 @@ import com.google.inject.Injector
  */
 class FileChooserTest extends FieldTestUtils {
 
-	@Test
+	//@Test
 	void "manually"() {
-		def title = "$NAME :: manually"
+		def title = "$NAME::manually"
 		def fieldName = INITIAL_VALUE
 		def field = factory.create(bean, fieldName)
 		def container = field.getAWTComponent()
-		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+		new TestFrameUtil(title, container).withFixture({
 			Thread.sleep 60*1000
-			assert false : "Deactivate manually test."
+			assert false : "manually test."
 		})
 	}
 
 	@Test
 	void "null value"() {
-		def title = "$NAME :: null value"
+		def title = "$NAME::null value"
 		def fieldName = NULL_VALUE
 		shouldFailWith(ReflectionError) {
 			def field = factory.create(bean, fieldName)
@@ -67,16 +66,16 @@ class FileChooserTest extends FieldTestUtils {
 
 	@Test
 	void "no model"() {
-		def title = "$NAME :: no model"
+		def title = "$NAME::no model"
 		def fieldName = NO_MODEL
-		shouldFailWith(IllegalArgumentException) {
+		shouldFailWith(NullPointerException) {
 			def field = factory.create(bean, fieldName)
 		}
 	}
 
 	@Test
 	void "with initial value"() {
-		def title = "$NAME :: with initial value"
+		def title = "$NAME::with initial value"
 		def fieldName = INITIAL_VALUE
 		def field = factory.create(bean, fieldName)
 		def container = field.getAWTComponent()
@@ -88,7 +87,7 @@ class FileChooserTest extends FieldTestUtils {
 
 	@Test
 	void "restore input"() {
-		def title = "$NAME :: restore input"
+		def title = "$NAME::restore input"
 		def fieldName = INITIAL_VALUE
 		def field = factory.create(bean, fieldName)
 		def container = field.getAWTComponent()
@@ -101,6 +100,7 @@ class FileChooserTest extends FieldTestUtils {
 			fileField = fixture.textBox "$fieldName-$FILE_FIELD_NAME"
 			openFileChooser = fixture.button "$fieldName-$OPEN_FILE_CHOOSER_NAME"
 		}, { FrameFixture fixture ->
+			fileField.requireText compile(/.*aaa.txt/)
 			fileField.selectAll()
 			fileField.enterText tmpfileA.absolutePath
 			openFileChooser.focus()
@@ -122,8 +122,7 @@ class FileChooserTest extends FieldTestUtils {
 
 	@BeforeClass
 	static void setupFactories() {
-		injector = Guice.createInjector(
-				new AnnotationsModule(), new BeansModule(), new FileChooserModule())
+		injector = Guice.createInjector(new CoreFieldComponentModule(), new FileChooserModule())
 		factory = injector.getInstance FileChooserFieldFactory
 	}
 
