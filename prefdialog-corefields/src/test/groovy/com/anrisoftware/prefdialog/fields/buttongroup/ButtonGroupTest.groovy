@@ -28,9 +28,8 @@ import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 
-import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule
-import com.anrisoftware.globalpom.reflection.beans.BeansModule
 import com.anrisoftware.globalpom.utils.TestFrameUtil
+import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
 import com.google.inject.Guice
 import com.google.inject.Injector
 
@@ -44,7 +43,7 @@ class ButtonGroupTest {
 
 	@Test
 	void "with defaults"() {
-		def title = "ButtonGroupTest :: with defaults"
+		def title = "$NAME::with defaults"
 		def fieldName = BUTTONS
 		def titleName = "$fieldName-$TITLE_NAME"
 		def buttons = [
@@ -66,7 +65,7 @@ class ButtonGroupTest {
 
 	@Test
 	void "with horizontal alignment middle"() {
-		def title = "ButtonGroupTest :: with horizontal alignment middle"
+		def title = "$NAME::with horizontal alignment middle"
 		def fieldName = BUTTONS_MIDDLE
 		def buttons = [
 			"$fieldName-0-$BUTTON_NAME",
@@ -85,7 +84,7 @@ class ButtonGroupTest {
 
 	@Test
 	void "with horizontal alignment left"() {
-		def title = "ButtonGroupTest :: with horizontal alignment left"
+		def title = "$NAME::with horizontal alignment left"
 		def fieldName = BUTTONS_LEFT
 		def buttons = [
 			"$fieldName-0-$BUTTON_NAME",
@@ -104,7 +103,7 @@ class ButtonGroupTest {
 
 	@Test
 	void "with horizontal alignment right"() {
-		def title = "ButtonGroupTest :: with horizontal alignment right"
+		def title = "$NAME::with horizontal alignment right"
 		def fieldName = BUTTONS_RIGHT
 		def buttons = [
 			"$fieldName-0-$BUTTON_NAME",
@@ -121,6 +120,8 @@ class ButtonGroupTest {
 		})
 	}
 
+	static final String NAME = ButtonGroupTest.class.simpleName
+
 	static Injector injector
 
 	static ButtonGroupFieldFactory factory
@@ -129,8 +130,7 @@ class ButtonGroupTest {
 
 	@BeforeClass
 	static void setupFactories() {
-		injector = Guice.createInjector(
-				new AnnotationsModule(), new BeansModule(), new ButtonGroupModule())
+		injector = Guice.createInjector(new CoreFieldComponentModule(), new ButtonGroupModule())
 		factory = injector.getInstance ButtonGroupFieldFactory
 	}
 

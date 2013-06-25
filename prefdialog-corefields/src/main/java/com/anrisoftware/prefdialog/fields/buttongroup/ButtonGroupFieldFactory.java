@@ -18,7 +18,7 @@
  */
 package com.anrisoftware.prefdialog.fields.buttongroup;
 
-import java.awt.Container;
+import javax.swing.JPanel;
 
 import com.anrisoftware.prefdialog.fields.FieldFactory;
 
@@ -28,5 +28,5 @@ import com.anrisoftware.prefdialog.fields.FieldFactory;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-public interface ButtonGroupFieldFactory extends FieldFactory<Container> {
+public interface ButtonGroupFieldFactory extends FieldFactory<JPanel> {
 }

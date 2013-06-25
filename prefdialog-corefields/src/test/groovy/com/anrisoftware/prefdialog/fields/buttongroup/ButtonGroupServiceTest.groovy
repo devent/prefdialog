@@ -31,11 +31,9 @@ import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 
-import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule
-import com.anrisoftware.globalpom.reflection.beans.BeansModule
 import com.anrisoftware.globalpom.utils.TestFrameUtil
+import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
 import com.google.inject.Guice
-import com.google.inject.Injector
 
 /**
  * Test the button group field as a service.
@@ -46,14 +44,14 @@ import com.google.inject.Injector
 class ButtonGroupServiceTest {
 
 	@Test
-	void "with defaults"() {
-		def title = "ButtonGroupServiceTest :: with defaults"
+	void "service"() {
+		def title = "$NAME::service"
 		def fieldName = BUTTONS
 		def field = factory.create(bean, fieldName)
 		new TestFrameUtil(title, field.AWTComponent).withFixture({})
 	}
 
-	static Injector injector
+	static final String NAME = ButtonGroupTest.class.simpleName
 
 	static ButtonGroupFieldFactory factory
 
@@ -63,7 +61,7 @@ class ButtonGroupServiceTest {
 
 	@BeforeClass
 	static void setupFactories() {
-		injector = Guice.createInjector(new AnnotationsModule(), new BeansModule())
+		def injector = Guice.createInjector(new CoreFieldComponentModule())
 		factory = findService(INFO).getFactory(injector)
 	}
 
