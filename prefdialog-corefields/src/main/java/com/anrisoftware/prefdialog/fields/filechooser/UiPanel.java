@@ -25,7 +25,7 @@ class UiPanel extends JPanel {
 	 * Create the panel.
 	 */
 	UiPanel() {
-		setLayout(new MigLayout("", "[grow][]", "[]"));
+		setLayout(new MigLayout("", "0[grow][]0", "0[]0"));
 
 		fileField = new JTextField();
 		fileField.setName(FileChooserField.FILE_FIELD_NAME);
