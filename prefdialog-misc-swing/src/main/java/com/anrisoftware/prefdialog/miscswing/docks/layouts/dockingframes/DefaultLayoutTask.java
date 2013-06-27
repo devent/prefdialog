@@ -268,6 +268,11 @@ public class DefaultLayoutTask implements DockingFramesLayoutTask {
 	private MultipleCDockable addEditorInAWT(CWorkingArea workingArea,
 			EditorDockWindow dock) {
 		DefaultMultipleCDockable dockable = createMultipleDock(dock);
+		dockable.setCloseable(dock.isCloseable());
+		dockable.setExternalizable(dock.isExternalizable());
+		dockable.setMaximizable(dock.isMaximizable());
+		dockable.setMinimizable(dock.isMinimizable());
+		dockable.setStackable(dock.isStackable());
 		DockPosition position = dock.getPosition();
 		setupDefaultMinizedLocation(dockable, position);
 		workingArea.show(dockable);
