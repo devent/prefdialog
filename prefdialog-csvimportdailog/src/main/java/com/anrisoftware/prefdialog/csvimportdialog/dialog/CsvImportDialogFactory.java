@@ -1,10 +1,10 @@
 package com.anrisoftware.prefdialog.csvimportdialog.dialog;
 
-import javax.swing.JPanel;
+import javax.swing.JFrame;
 
-import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.CsvProperties;
+import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.CsvPanelProperties;
 
 public interface CsvImportDialogFactory {
 
-	CsvImportDialog create(JPanel container, CsvProperties properties);
+	CsvImportDialog create(JFrame frame, CsvPanelProperties properties);
 }

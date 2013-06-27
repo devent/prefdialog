@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-corefields. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.csvimportdialog.dialog
+package com.anrisoftware.prefdialog.csvimportdialog.importpaneldock
 
 import static com.anrisoftware.globalpom.utils.TestUtils.*
 import static com.anrisoftware.prefdialog.core.FieldTestUtils.*
@@ -24,6 +24,7 @@ import static com.anrisoftware.prefdialog.fields.textfield.TextFieldBean.*
 
 import java.awt.Dimension
 
+import javax.swing.JFrame
 import javax.swing.JPanel
 
 import org.fest.swing.fixture.FrameFixture
@@ -33,40 +34,73 @@ import org.junit.Test
 
 import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
-import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.CsvPanelPropertiesModule
+import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanelModule
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.CsvPanelProperties
+import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.CsvPanelPropertiesFactory
+import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.CsvPanelPropertiesModule
 import com.anrisoftware.prefdialog.miscswing.comboboxhistory.ComboBoxHistoryModule
+import com.anrisoftware.prefdialog.miscswing.docks.api.Dock
+import com.anrisoftware.prefdialog.miscswing.docks.api.DockFactory
+import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.core.DockingFramesModule
+import com.anrisoftware.prefdialog.miscswing.docks.layouts.dockingframes.DefaultLayoutTask
 import com.anrisoftware.resources.texts.defaults.TextsResourcesDefaultModule
 import com.google.inject.Guice
 import com.google.inject.Injector
 
 /**
- * @see CsvImportDialog
+ * @see CsvImportPanel
  *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-class CsvImportDialogTest {
+class ImportPanelDockTest {
+
+	@Test
+	void "show"() {
+		def title = "$NAME::show"
+		def field = factory.create(new JPanel(), properties)
+		field.createPanel injector
+		def container = field.getAWTComponent()
+		new TestFrameUtil(title, container, size).withFixture({
+		})
+	}
 
 	@Test
 	void "manually"() {
 		def title = "$NAME::manually"
-		def field = factory.create new JPanel(), properties
-		field.createDialog injector
-		def container = field.getAWTComponent()
-		new TestFrameUtil(title, container, size).withFixture({ FrameFixture fixture ->
+		ImportPanelDock panelDock = panelInjector.getInstance(ImportPanelDock)
+		panelDock.createPanel injector, properties
+		JFrame frame
+		Dock dock
+		def util = new TestFrameUtil(title, null, size) {
+					protected def createFrame(String titlea, arg1) {
+						frame = new JFrame(titlea)
+						dock = dockFactory.create(frame)
+						frame.add dock.getAWTComponent()
+						dock.applyLayout defaultLayout
+						dock.addEditorDock panelDock
+						return frame
+					}
+				}
+		util.withFixture({
 			Thread.sleep 60*1000
 			assert false : "manually test"
 		})
 	}
 
-	static final String NAME = CsvImportDialogTest.class.simpleName
+	static final String NAME = ImportPanelDockTest.class.simpleName
 
 	static Injector injector
 
-	static CsvImportDialogFactory factory
+	static Injector panelInjector
 
 	static size = new Dimension(400, 362)
+
+	static CsvPanelPropertiesFactory propertiesFactory
+
+	static DockFactory dockFactory
+
+	static defaultLayout
 
 	CsvPanelProperties properties
 
@@ -74,15 +108,18 @@ class CsvImportDialogTest {
 	static void setupFactories() {
 		injector = Guice.createInjector(
 				new CoreFieldComponentModule(),
-				new CsvPanelPropertiesModule(),
 				new TextsResourcesDefaultModule(),
-				new ComboBoxHistoryModule())
-		factory = injector.createChildInjector(
-				new CsvImportDialogModule()).getInstance(CsvImportDialogFactory)
+				new CsvPanelPropertiesModule(),
+				new ComboBoxHistoryModule(),
+				new DockingFramesModule())
+		panelInjector = injector.createChildInjector(new CsvImportPanelModule())
+		dockFactory = panelInjector.getInstance(DockFactory)
+		propertiesFactory = injector.getInstance(CsvPanelPropertiesFactory)
+		defaultLayout = injector.getInstance(DefaultLayoutTask)
 	}
 
 	@Before
 	void setupBean() {
-		properties = injector.getInstance CsvPanelProperties
+		properties = propertiesFactory.create()
 	}
 }

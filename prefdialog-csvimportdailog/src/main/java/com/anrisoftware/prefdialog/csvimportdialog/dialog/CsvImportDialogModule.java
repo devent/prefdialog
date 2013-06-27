@@ -1,8 +1,8 @@
 package com.anrisoftware.prefdialog.csvimportdialog.dialog;
 
-import com.anrisoftware.prefdialog.csvimportdialog.panel.CsvImportPanel;
-import com.anrisoftware.prefdialog.csvimportdialog.panel.CsvImportPanelFactory;
-import com.anrisoftware.prefdialog.csvimportdialog.panel.CsvImportPanelModule;
+import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanel;
+import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanelFactory;
+import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanelModule;
 import com.google.inject.AbstractModule;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 
