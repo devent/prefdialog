@@ -19,6 +19,7 @@
 package com.anrisoftware.prefdialog.annotations;
 
 import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import java.lang.annotation.Documented;
@@ -52,7 +53,7 @@ import com.anrisoftware.resources.images.api.IconSize;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
  */
-@Target(FIELD)
+@Target({ FIELD, METHOD })
 @Retention(RUNTIME)
 @FieldAnnotation
 @Documented
