@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-corefields. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.csvimportdialog.panel
+package com.anrisoftware.prefdialog.csvimportdialog.dialog
 
 import static com.anrisoftware.globalpom.utils.TestUtils.*
 import static com.anrisoftware.prefdialog.core.FieldTestUtils.*
@@ -41,18 +41,18 @@ import com.google.inject.Guice
 import com.google.inject.Injector
 
 /**
- * @see CsvImportPanel
+ * @see CsvImportDialog
  *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-class CsvImportPanelTest {
+class CsvImportDialogTest {
 
 	@Test
 	void "manually"() {
 		def title = "$NAME::manually"
-		def field = factory.create(new JPanel(), properties)
-		field.createPanel(injector)
+		def field = factory.create properties
+		field.createDialog new JPanel(), injector
 		def container = field.getAWTComponent()
 		new TestFrameUtil(title, container, size).withFixture({ FrameFixture fixture ->
 			Thread.sleep 60*1000
@@ -60,11 +60,11 @@ class CsvImportPanelTest {
 		})
 	}
 
-	static final String NAME = CsvImportPanelTest.class.simpleName
+	static final String NAME = CsvImportDialogTest.class.simpleName
 
 	static Injector injector
 
-	static CsvImportPanelFactory factory
+	static CsvImportDialogFactory factory
 
 	static size = new Dimension(400, 362)
 
@@ -74,11 +74,11 @@ class CsvImportPanelTest {
 	static void setupFactories() {
 		injector = Guice.createInjector(
 				new CoreFieldComponentModule(),
-				new TextsResourcesDefaultModule(),
 				new CsvImportPropertiesModule(),
+				new TextsResourcesDefaultModule(),
 				new ComboBoxHistoryModule())
 		factory = injector.createChildInjector(
-				new CsvImportPanelModule()).getInstance(CsvImportPanelFactory)
+				new CsvImportDialogModule()).getInstance(CsvImportDialogFactory)
 	}
 
 	@Before

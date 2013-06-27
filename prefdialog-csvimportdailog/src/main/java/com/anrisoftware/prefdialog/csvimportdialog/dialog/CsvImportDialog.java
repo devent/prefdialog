@@ -1,6 +1,7 @@
 package com.anrisoftware.prefdialog.csvimportdialog.dialog;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.util.Properties;
 
 import javax.inject.Inject;
@@ -11,6 +12,7 @@ import com.anrisoftware.prefdialog.csvimportdialog.panel.CsvImportPanel;
 import com.anrisoftware.prefdialog.csvimportdialog.panel.CsvImportPanelFactory;
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.CsvProperties;
 import com.anrisoftware.resources.texts.central.TextsResourcesFactory;
+import com.google.inject.Injector;
 import com.google.inject.assistedinject.Assisted;
 
 public class CsvImportDialog {
@@ -23,20 +25,24 @@ public class CsvImportDialog {
 
 	private final CsvImportPanel panel;
 
-	private final UiDialog dialog;
+	private final UiPanel dialogPanel;
 
 	private final JPanel container;
 
+	private final JPanel panelContainer;
+
 	@Inject
 	CsvImportDialog(
-			UiDialog dialog,
+			UiPanel dialog,
 			TextsResourcesFactory textsFactory,
 			@Named("CsvImportPanel-texts-properties") Properties textsProperties,
 			CsvImportPanelFactory panelFactory, CancelAction cancelAction,
-			ImportAction importAction, @Assisted CsvProperties properties) {
-		this.dialog = dialog;
-		this.container = new JPanel();
-		this.panel = panelFactory.create(container, properties);
+			ImportAction importAction, @Assisted JPanel container,
+			@Assisted CsvProperties properties) {
+		this.container = container;
+		this.dialogPanel = dialog;
+		this.panelContainer = new JPanel();
+		this.panel = panelFactory.create(panelContainer, properties);
 		this.properties = properties;
 		this.cancelAction = cancelAction;
 		this.importAction = importAction;
@@ -45,12 +51,20 @@ public class CsvImportDialog {
 	}
 
 	private void setupDialog() {
-		dialog.add(container, BorderLayout.CENTER);
+		container.removeAll();
+		container.setLayout(new BorderLayout());
+		container.add(dialogPanel, BorderLayout.CENTER);
+		panelContainer.setLayout(new BorderLayout());
+		panelContainer.add(panelContainer, BorderLayout.CENTER);
 	}
 
 	private void setupActions() {
-		dialog.getCancelButton().setAction(cancelAction);
-		dialog.getImportButton().setAction(importAction);
+		dialogPanel.getCancelButton().setAction(cancelAction);
+		dialogPanel.getImportButton().setAction(importAction);
+	}
+
+	public void createDialog(Injector injector) {
+		panel.createPanel(injector);
 	}
 
 	public CsvProperties getProperties() {
@@ -58,10 +72,14 @@ public class CsvImportDialog {
 	}
 
 	public void openDialog() {
-		dialog.setVisible(true);
+		dialogPanel.setVisible(true);
 	}
 
 	public void closeDialog() {
-		dialog.setVisible(false);
+		dialogPanel.setVisible(false);
+	}
+
+	public Component getAWTComponent() {
+		return dialogPanel;
 	}
 }

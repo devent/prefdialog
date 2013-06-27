@@ -13,7 +13,13 @@ import org.apache.commons.codec.Charsets;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 
-public class CsvImportModuleModule extends AbstractModule {
+/**
+ * Provides the default character sets.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 1.0
+ */
+public class CsvImportPropertiesModule extends AbstractModule {
 
 	@Override
 	protected void configure() {

@@ -2,28 +2,21 @@ package com.anrisoftware.prefdialog.csvimportdialog.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import java.awt.Frame;
 
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
-class UiDialog extends JDialog {
+class UiPanel extends JPanel {
 
 	private final JButton importButton;
 	private final JButton cancelButton;
 	private final JPanel buttonGroupPanel;
 
 	/**
-	 * Create the dialog.
+	 * Create the panel.
 	 */
-	public UiDialog() {
-		this((Frame) null);
-	}
-
-	public UiDialog(Frame owner) {
-		super(owner);
+	public UiPanel() {
 		setLayout(new BorderLayout(0, 0));
 
 		buttonGroupPanel = new JPanel();

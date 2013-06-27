@@ -9,8 +9,18 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 
+/**
+ * Installs CSV import panel factory and dependent modules.
+ * 
+ * @see CsvImportPanel
+ * @see CsvImportPanelFactory
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 1.0
+ */
 public class CsvImportPanelModule extends AbstractModule {
 
+	private static final String NO_SERVICE = "No service '%s'";
 	private static final String VERTICAL_PREFERENCES_PANEL_NAME = "VerticalPreferencesPanel";
 
 	@Override
@@ -28,8 +38,7 @@ public class CsvImportPanelModule extends AbstractModule {
 				return service;
 			}
 		}
-		addError("Could not find service for %s",
-				VERTICAL_PREFERENCES_PANEL_NAME);
+		addError(NO_SERVICE, VERTICAL_PREFERENCES_PANEL_NAME);
 		return null;
 	}
 
