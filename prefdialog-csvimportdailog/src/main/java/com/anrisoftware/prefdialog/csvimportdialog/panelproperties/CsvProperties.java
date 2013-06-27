@@ -15,13 +15,17 @@ public class CsvProperties implements CsvImportProperties {
 
 	private Object importPanel;
 
+	private final FileProperties fileProperties;
+
 	private final ImportProperties importProperties;
 
 	private final SeparatorProperties separatorProperties;
 
 	@Inject
-	CsvProperties(ImportProperties importProperties,
+	CsvProperties(FileProperties fileProperties,
+			ImportProperties importProperties,
 			SeparatorProperties separatorProperties) {
+		this.fileProperties = fileProperties;
 		this.importProperties = importProperties;
 		this.separatorProperties = separatorProperties;
 	}
@@ -38,11 +42,17 @@ public class CsvProperties implements CsvImportProperties {
 
 	@FieldComponent(order = 0)
 	@Child
+	public FileProperties getFileProperties() {
+		return fileProperties;
+	}
+
+	@FieldComponent(order = 1)
+	@Child
 	public ImportProperties getImportProperties() {
 		return importProperties;
 	}
 
-	@FieldComponent(order = 1)
+	@FieldComponent(order = 2)
 	@Child
 	public SeparatorProperties getSeparatorProperties() {
 		return separatorProperties;
@@ -50,8 +60,7 @@ public class CsvProperties implements CsvImportProperties {
 
 	@Override
 	public File getFile() {
-		// TODO Auto-generated method stub
-		return null;
+		return fileProperties.getFile();
 	}
 
 	@Override
