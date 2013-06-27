@@ -3,6 +3,7 @@ package com.anrisoftware.prefdialog.miscswing.docks.dockingframes
 import static com.anrisoftware.prefdialog.miscswing.docks.api.DockPosition.*
 import static java.awt.Color.*
 
+import java.awt.BorderLayout
 import java.awt.Color
 import java.awt.Dimension
 
@@ -11,28 +12,29 @@ import javax.swing.JPanel
 
 import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.globalpom.utils.TestUtils
-import com.anrisoftware.prefdialog.miscswing.docks.api.Dock
+import com.anrisoftware.prefdialog.miscswing.docks.api.DockFactory
 import com.anrisoftware.prefdialog.miscswing.docks.api.LayoutTask
-import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.core.DockingFramesModule;
+import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.core.DockingFramesModule
 import com.anrisoftware.prefdialog.miscswing.docks.layouts.dockingframes.DefaultLayoutTask
 import com.google.inject.Guice
 import com.google.inject.Injector
 
 class DocksTestBase {
 
-	TestFrameUtil withFrame(String title, def setupDock) {
-		def util = new TestFrameUtil(title, new JPanel()) {
+	TestFrameUtil withFrame(String title, DockFactory factory, def setupDock) {
+		new TestFrameUtil(title, new JPanel(), size) {
 					protected createFrame(String titlea, def component) {
 						def frame = new JFrame(titlea)
-						dock.withFrame(frame)
-						setupDock()
+						def dock = factory.create frame
+						setupDock(dock)
 						frame.setPreferredSize frameSize
+						frame.add dock.getAWTComponent(), BorderLayout.CENTER
 						frame
 					}
 				}
-		util.frameSize = new Dimension(800, 640)
-		util
 	}
+
+	static Dimension size = new Dimension(800, 640)
 
 	static viewDocks = [
 		new ColorViewDock("view_a", "View West A", WEST, BLUE),
@@ -65,9 +67,5 @@ class DocksTestBase {
 		LayoutTask task = injector.getInstance(DefaultLayoutTask)
 		task.setName name
 		return task
-	}
-
-	static Dock createDock(Injector injector) {
-		injector.getInstance Dock
 	}
 }

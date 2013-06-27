@@ -2,7 +2,6 @@ package com.anrisoftware.prefdialog.miscswing.docks.dockingframes.core;
 
 import static javax.swing.SwingUtilities.invokeLater;
 
-import java.awt.BorderLayout;
 import java.awt.Component;
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,7 +13,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 
-import javax.inject.Inject;
 import javax.swing.JFrame;
 import javax.swing.SwingWorker;
 import javax.swing.event.ChangeListener;
@@ -30,8 +28,12 @@ import bibliothek.gui.dock.common.event.CDockableLocationListener;
 import bibliothek.gui.dock.common.event.CFocusListener;
 import bibliothek.gui.dock.common.intern.CDockable;
 import bibliothek.gui.dock.common.theme.ThemeMap;
+import bibliothek.gui.dock.util.DirectWindowProvider;
+import bibliothek.gui.dock.util.NullWindowProvider;
+import bibliothek.gui.dock.util.WindowProvider;
 
 import com.anrisoftware.prefdialog.miscswing.docks.api.Dock;
+import com.anrisoftware.prefdialog.miscswing.docks.api.DockFactory;
 import com.anrisoftware.prefdialog.miscswing.docks.api.EditorDockWindow;
 import com.anrisoftware.prefdialog.miscswing.docks.api.FocusChangedEvent;
 import com.anrisoftware.prefdialog.miscswing.docks.api.LayoutListener;
@@ -40,6 +42,8 @@ import com.anrisoftware.prefdialog.miscswing.docks.api.ShowingChangedEvent;
 import com.anrisoftware.prefdialog.miscswing.docks.api.ViewDockWindow;
 import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.layoutloader.LoadLayoutWorkerFactory;
 import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.layoutsaver.SaveLayoutWorkerFactory;
+import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
 
 public class DockingFramesDock implements Dock {
 
@@ -59,9 +63,9 @@ public class DockingFramesDock implements Dock {
 
 	private final EventListenerSupport<ChangeListener> changeListeners;
 
-	private CControl control;
+	private final CControl control;
 
-	private CWorkingArea workingArea;
+	private final CWorkingArea workingArea;
 
 	private DockingFramesLayoutTask currentLayout;
 
@@ -69,11 +73,32 @@ public class DockingFramesDock implements Dock {
 
 	private final CFocusListener editorsFocusListener;
 
-	@Inject
+	/**
+	 * @see DockFactory#create()
+	 */
+	@AssistedInject
 	DockingFramesDock(DockingFramesDockLogger logger,
 			SaveLayoutWorkerFactory saveFactory,
 			LoadLayoutWorkerFactory loadFactory) {
+		this(logger, saveFactory, loadFactory, new NullWindowProvider());
+	}
+
+	/**
+	 * @see DockFactory#create(JFrame)
+	 */
+	@AssistedInject
+	DockingFramesDock(DockingFramesDockLogger logger,
+			SaveLayoutWorkerFactory saveFactory,
+			LoadLayoutWorkerFactory loadFactory, @Assisted JFrame frame) {
+		this(logger, saveFactory, loadFactory, new DirectWindowProvider(frame));
+	}
+
+	private DockingFramesDock(DockingFramesDockLogger logger,
+			SaveLayoutWorkerFactory saveFactory,
+			LoadLayoutWorkerFactory loadFactory, WindowProvider window) {
 		this.log = logger;
+		this.control = new CControl(window);
+		this.workingArea = control.createWorkingArea(WORK_AREA_ID);
 		this.saveFactory = saveFactory;
 		this.loadFactory = loadFactory;
 		this.layoutListeners = new EventListenerSupport<LayoutListener>(
@@ -124,15 +149,7 @@ public class DockingFramesDock implements Dock {
 	}
 
 	@Override
-	public Dock withFrame(JFrame frame) {
-		control = new CControl(frame);
-		frame.add(getComponent(), BorderLayout.CENTER);
-		workingArea = control.createWorkingArea(WORK_AREA_ID);
-		return this;
-	}
-
-	@Override
-	public Component getComponent() {
+	public Component getAWTComponent() {
 		return control.getContentArea();
 	}
 

@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import javax.swing.JFrame;
 import javax.swing.event.ChangeListener;
 
 /**
@@ -24,26 +23,16 @@ import javax.swing.event.ChangeListener;
  * </pre>
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 1.0
+ * @since 3.0
  */
 public interface Dock {
-
-	/**
-	 * Sets the frame to the dock.
-	 * 
-	 * @param frame
-	 *            the {@link JFrame}.
-	 * 
-	 * @return the {@link Dock}.
-	 */
-	Dock withFrame(JFrame frame);
 
 	/**
 	 * Returns the AWT component of the dock to be added in a container.
 	 * 
 	 * @return the {@link Component}.
 	 */
-	Component getComponent();
+	Component getAWTComponent();
 
 	/**
 	 * Adds a dock in the outside of the working area.

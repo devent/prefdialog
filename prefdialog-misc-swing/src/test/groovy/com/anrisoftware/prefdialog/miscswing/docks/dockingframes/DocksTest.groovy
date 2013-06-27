@@ -5,13 +5,13 @@ import groovy.util.logging.Slf4j
 
 import javax.swing.event.ChangeListener
 
-import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 
 import bibliothek.gui.dock.common.theme.ThemeMap
 
 import com.anrisoftware.prefdialog.miscswing.docks.api.Dock
+import com.anrisoftware.prefdialog.miscswing.docks.api.DockFactory
 import com.anrisoftware.prefdialog.miscswing.docks.api.LayoutTask
 import com.google.inject.Injector
 
@@ -20,12 +20,14 @@ class DocksTest extends DocksTestBase {
 
 	@Test
 	void "flat theme"() {
-		String title = "DocksTest::flat theme"
-		withFrame(title, {
+		String title = "$NAME::flat theme"
+		Dock dock
+		withFrame(title, factory, { it ->
+			dock = it
+			dock.applyLayout defaultPerspective
 			viewDocks.each { dock.addViewDock(it) }
 			dock.addEditorDock(editorDocks[0])
 			dock.addEditorDock(editorDocks[1])
-			dock.applyLayout defaultPerspective
 			dock.setTheme(ThemeMap.KEY_FLAT_THEME)
 		}).withFixture({
 		})
@@ -33,47 +35,58 @@ class DocksTest extends DocksTestBase {
 
 	@Test
 	void "eclipse theme"() {
-		String title = "DocksTest::eclipse theme"
-		withFrame(title, {
+		String title = "$NAME::eclipse theme"
+		Dock dock
+		withFrame(title, factory, { it ->
+			dock = it
+			dock.applyLayout defaultPerspective
 			viewDocks.each { dock.addViewDock(it) }
 			dock.addEditorDock(editorDocks[0])
 			dock.addEditorDock(editorDocks[1])
-			dock.applyLayout defaultPerspective
 			dock.setTheme(ThemeMap.KEY_ECLIPSE_THEME)
+			dock.applyLayout defaultPerspective
 		}).withFixture({
 		})
 	}
 
-	@Test
+	//@Test
 	void "manually"() {
-		String title = "DocksTest::manually"
-		withFrame(title, {
+		String title = "$NAME::manually"
+		Dock dock
+		withFrame(title, factory, { it ->
+			dock = it
+			dock.applyLayout defaultPerspective
 			viewDocks.each { dock.addViewDock(it) }
 			dock.addEditorDock(editorDocks[0])
 			dock.addEditorDock(editorDocks[1])
-			dock.applyLayout defaultPerspective
 		}).withFixture({
 			Thread.sleep 60*1000
-			assert false : "Deactivate manually test"
+			assert false : "manually test"
 		})
 	}
 
-	@Test
+	//@Test
 	void "manually state change"() {
-		String title = "DocksTest::manually state change"
-		dock.addStateChangedListener({ ev -> println ev } as ChangeListener)
-		withFrame(title, {
+		String title = "$NAME::manually state change"
+		Dock dock
+		withFrame(title, factory, { it ->
+			dock = it
+			dock.addStateChangedListener({ ev -> println ev } as ChangeListener)
 			dock.applyLayout defaultPerspective
 			viewDocks.each { dock.addViewDock(it) }
 			dock.addEditorDock(editorDocks[0])
 			dock.addEditorDock(editorDocks[1])
 		}).withFixture({
 			Thread.sleep 60*1000
-			assert false : "Deactivate manually test"
+			assert false : "manually test"
 		})
 	}
+
+	static final String NAME = DocksTest.class.simpleName
 
 	static Injector injector
+
+	static DockFactory factory
 
 	static LayoutTask defaultPerspective
 
@@ -81,12 +94,6 @@ class DocksTest extends DocksTestBase {
 	static void setup() {
 		injector = createInjector()
 		defaultPerspective = createDefaultPerspective(injector, "default")
-	}
-
-	Dock dock
-
-	@Before
-	void setupDock() {
-		dock = createDock(injector)
+		this.factory = injector.getInstance(DockFactory.class)
 	}
 }
