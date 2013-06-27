@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 
+import javax.inject.Inject;
 import javax.swing.JFrame;
 import javax.swing.SwingWorker;
 import javax.swing.event.ChangeListener;
@@ -42,6 +43,7 @@ import com.anrisoftware.prefdialog.miscswing.docks.api.ShowingChangedEvent;
 import com.anrisoftware.prefdialog.miscswing.docks.api.ViewDockWindow;
 import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.layoutloader.LoadLayoutWorkerFactory;
 import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.layoutsaver.SaveLayoutWorkerFactory;
+import com.anrisoftware.prefdialog.miscswing.docks.layouts.dockingframes.DefaultLayoutTask;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 
@@ -130,13 +132,13 @@ public class DockingFramesDock implements Dock {
 		};
 	}
 
-	protected void fireEditorDockFocusGained(CDockable dockable) {
+	private void fireEditorDockFocusGained(CDockable dockable) {
 		EditorDockWindow editor = editorDocks.get(dockable);
 		changeListeners.fire()
 				.stateChanged(new FocusChangedEvent(editor, true));
 	}
 
-	protected void fireEditorDockFocusLost(CDockable dockable) {
+	private void fireEditorDockFocusLost(CDockable dockable) {
 		EditorDockWindow editor = editorDocks.get(dockable);
 		changeListeners.fire().stateChanged(
 				new FocusChangedEvent(editor, false));
@@ -146,6 +148,11 @@ public class DockingFramesDock implements Dock {
 		EditorDockWindow editor = editorDocks.get(event.getDockable());
 		changeListeners.fire().stateChanged(
 				new ShowingChangedEvent(editor, event.getNewShowing()));
+	}
+
+	@Inject
+	public void setDefaultLayout(DefaultLayoutTask layout) {
+		applyLayout(layout);
 	}
 
 	@Override

@@ -24,7 +24,6 @@ class DocksTest extends DocksTestBase {
 		Dock dock
 		withFrame(title, factory, { it ->
 			dock = it
-			dock.applyLayout defaultPerspective
 			viewDocks.each { dock.addViewDock(it) }
 			dock.addEditorDock(editorDocks[0])
 			dock.addEditorDock(editorDocks[1])
@@ -39,7 +38,6 @@ class DocksTest extends DocksTestBase {
 		Dock dock
 		withFrame(title, factory, { it ->
 			dock = it
-			dock.applyLayout defaultPerspective
 			viewDocks.each { dock.addViewDock(it) }
 			dock.addEditorDock(editorDocks[0])
 			dock.addEditorDock(editorDocks[1])
@@ -55,7 +53,6 @@ class DocksTest extends DocksTestBase {
 		Dock dock
 		withFrame(title, factory, { it ->
 			dock = it
-			dock.applyLayout defaultPerspective
 			viewDocks.each { dock.addViewDock(it) }
 			dock.addEditorDock(editorDocks[0])
 			dock.addEditorDock(editorDocks[1])
@@ -72,7 +69,6 @@ class DocksTest extends DocksTestBase {
 		withFrame(title, factory, { it ->
 			dock = it
 			dock.addStateChangedListener({ ev -> println ev } as ChangeListener)
-			dock.applyLayout defaultPerspective
 			viewDocks.each { dock.addViewDock(it) }
 			dock.addEditorDock(editorDocks[0])
 			dock.addEditorDock(editorDocks[1])
