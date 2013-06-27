@@ -9,7 +9,8 @@ import javax.swing.JPanel;
 
 import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanel;
 import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanelFactory;
-import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.CsvPanelProperties;
+import com.anrisoftware.prefdialog.csvimportdialog.importpaneldock.ImportPanelDock;
+import com.anrisoftware.prefdialog.csvimportdialog.model.CsvImportProperties;
 import com.anrisoftware.prefdialog.miscswing.docks.api.Dock;
 import com.anrisoftware.prefdialog.miscswing.docks.api.DockFactory;
 import com.anrisoftware.resources.texts.api.Texts;
@@ -23,7 +24,7 @@ public class CsvImportDialog {
 
 	private final ImportAction importAction;
 
-	private final CsvPanelProperties properties;
+	private final CsvImportProperties properties;
 
 	private final CsvImportPanel panel;
 
@@ -31,32 +32,31 @@ public class CsvImportDialog {
 
 	private final Dock dock;
 
-	private final JPanel panelContainer;
-
 	private final Texts texts;
 
+	private final ImportPanelDock importPanelDock;
+
 	@Inject
-	CsvImportDialog(UiPanel dialog, CsvImportPanelFactory panelFactory,
+	CsvImportDialog(UiPanel dialogPanel, CsvImportPanelFactory panelFactory,
 			TextsFactory textsFactory, CancelAction cancelAction,
 			ImportAction importAction, DockFactory dockFactory,
-			@Assisted JFrame frame, @Assisted CsvPanelProperties properties) {
+			ImportPanelDock importPanelDock, @Assisted JFrame frame,
+			@Assisted CsvImportProperties properties) {
 		this.texts = textsFactory.create(CsvImportDialog.class.getSimpleName());
 		this.dock = dockFactory.create(frame);
-		this.dialogPanel = dialog;
-		this.panelContainer = new JPanel();
-		this.panel = panelFactory.create(panelContainer, properties);
+		this.importPanelDock = importPanelDock;
+		this.dialogPanel = dialogPanel;
+		this.panel = panelFactory.create(new JPanel(), properties);
 		this.properties = properties;
 		this.cancelAction = cancelAction;
 		this.importAction = importAction;
-		setupDialog();
+		setupDock();
 		setupActions();
 	}
 
-	private void setupDialog() {
-		dock.removeAll();
-		dock.setLayout(new BorderLayout());
-		dock.add(dialogPanel, BorderLayout.CENTER);
-		dialogPanel.add(panelContainer, BorderLayout.CENTER);
+	private void setupDock() {
+		dialogPanel.add(dock.getAWTComponent(), BorderLayout.CENTER);
+		dock.addEditorDock(importPanelDock);
 	}
 
 	private void setupActions() {
@@ -68,9 +68,14 @@ public class CsvImportDialog {
 
 	public void createDialog(Injector injector) {
 		panel.createPanel(injector);
+		importPanelDock.createPanel(injector, properties);
 	}
 
-	public CsvPanelProperties getProperties() {
+	public Dock getDock() {
+		return dock;
+	}
+
+	public CsvImportProperties getProperties() {
 		return properties;
 	}
 
@@ -83,6 +88,6 @@ public class CsvImportDialog {
 	}
 
 	public Component getAWTComponent() {
-		return dock.getAWTComponent();
+		return dialogPanel;
 	}
 }

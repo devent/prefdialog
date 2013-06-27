@@ -28,7 +28,9 @@ public class CsvPanelProperties implements CsvImportProperties {
 	CsvPanelProperties(FileProperties fileProperties,
 			ImportProperties importProperties,
 			SeparatorProperties separatorProperties) {
-		this(fileProperties, importProperties, separatorProperties, null);
+		this.fileProperties = fileProperties;
+		this.importProperties = importProperties;
+		this.separatorProperties = separatorProperties;
 	}
 
 	/**

@@ -24,18 +24,18 @@ import static com.anrisoftware.prefdialog.fields.textfield.TextFieldBean.*
 
 import java.awt.Dimension
 
-import javax.swing.JPanel
+import javax.swing.JFrame
 
-import org.fest.swing.fixture.FrameFixture
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 
 import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
-import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.CsvPanelPropertiesModule
-import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.CsvPanelProperties
+import com.anrisoftware.prefdialog.csvimportdialog.model.CsvImportProperties
+import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.CsvPanelPropertiesFactory
 import com.anrisoftware.prefdialog.miscswing.comboboxhistory.ComboBoxHistoryModule
+import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.core.DockingFramesModule
 import com.anrisoftware.resources.texts.defaults.TextsResourcesDefaultModule
 import com.google.inject.Guice
 import com.google.inject.Injector
@@ -51,10 +51,18 @@ class CsvImportDialogTest {
 	@Test
 	void "manually"() {
 		def title = "$NAME::manually"
-		def field = factory.create new JPanel(), properties
-		field.createDialog injector
-		def container = field.getAWTComponent()
-		new TestFrameUtil(title, container, size).withFixture({ FrameFixture fixture ->
+		JFrame frame
+		CsvImportDialog dialog
+		def util = new TestFrameUtil(title, null, size) {
+					protected def createFrame(String titlea, arg1) {
+						frame = new JFrame(titlea)
+						dialog = factory.create(frame, CsvImportDialogTest.this.properties)
+						dialog.createDialog injector
+						frame.add dialog.getAWTComponent()
+						return frame
+					}
+				}
+		util.withFixture({
 			Thread.sleep 60*1000
 			assert false : "manually test"
 		})
@@ -64,25 +72,31 @@ class CsvImportDialogTest {
 
 	static Injector injector
 
+	static Injector panelInjector
+
 	static CsvImportDialogFactory factory
+
+	static CsvPanelPropertiesFactory propertiesFactory
 
 	static size = new Dimension(400, 362)
 
-	CsvPanelProperties properties
+	CsvImportProperties properties
 
 	@BeforeClass
 	static void setupFactories() {
 		injector = Guice.createInjector(
 				new CoreFieldComponentModule(),
-				new CsvPanelPropertiesModule(),
 				new TextsResourcesDefaultModule(),
-				new ComboBoxHistoryModule())
-		factory = injector.createChildInjector(
-				new CsvImportDialogModule()).getInstance(CsvImportDialogFactory)
+				new ComboBoxHistoryModule(),
+				new DockingFramesModule())
+		panelInjector = injector.createChildInjector(
+				new CsvImportDialogModule())
+		factory = panelInjector.getInstance(CsvImportDialogFactory)
+		propertiesFactory = panelInjector.getInstance(CsvPanelPropertiesFactory)
 	}
 
 	@Before
 	void setupBean() {
-		properties = injector.getInstance CsvPanelProperties
+		properties = propertiesFactory.create()
 	}
 }

@@ -4,6 +4,7 @@ import java.util.ServiceLoader;
 
 import javax.inject.Singleton;
 
+import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.CsvPanelPropertiesModule;
 import com.anrisoftware.prefdialog.fields.FieldService;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
@@ -25,6 +26,7 @@ public class CsvImportPanelModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
+		install(new CsvPanelPropertiesModule());
 		install(new FactoryModuleBuilder().implement(CsvImportPanel.class,
 				CsvImportPanel.class).build(CsvImportPanelFactory.class));
 	}
