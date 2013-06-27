@@ -51,8 +51,8 @@ class CsvImportDialogTest {
 	@Test
 	void "manually"() {
 		def title = "$NAME::manually"
-		def field = factory.create properties
-		field.createDialog new JPanel(), injector
+		def field = factory.create new JPanel(), properties
+		field.createDialog injector
 		def container = field.getAWTComponent()
 		new TestFrameUtil(title, container, size).withFixture({ FrameFixture fixture ->
 			Thread.sleep 60*1000

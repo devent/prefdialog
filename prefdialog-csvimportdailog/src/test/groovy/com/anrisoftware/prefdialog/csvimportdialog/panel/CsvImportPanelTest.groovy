@@ -52,7 +52,7 @@ class CsvImportPanelTest {
 	void "manually"() {
 		def title = "$NAME::manually"
 		def field = factory.create(new JPanel(), properties)
-		field.createPanel(injector)
+		field.createPanel injector
 		def container = field.getAWTComponent()
 		new TestFrameUtil(title, container, size).withFixture({ FrameFixture fixture ->
 			Thread.sleep 60*1000

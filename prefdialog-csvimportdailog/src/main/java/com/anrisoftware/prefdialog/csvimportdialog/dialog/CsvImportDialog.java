@@ -2,16 +2,15 @@ package com.anrisoftware.prefdialog.csvimportdialog.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.util.Properties;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.swing.JPanel;
 
 import com.anrisoftware.prefdialog.csvimportdialog.panel.CsvImportPanel;
 import com.anrisoftware.prefdialog.csvimportdialog.panel.CsvImportPanelFactory;
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.CsvProperties;
-import com.anrisoftware.resources.texts.central.TextsResourcesFactory;
+import com.anrisoftware.resources.texts.api.Texts;
+import com.anrisoftware.resources.texts.api.TextsFactory;
 import com.google.inject.Injector;
 import com.google.inject.assistedinject.Assisted;
 
@@ -31,14 +30,14 @@ public class CsvImportDialog {
 
 	private final JPanel panelContainer;
 
+	private final Texts texts;
+
 	@Inject
-	CsvImportDialog(
-			UiPanel dialog,
-			TextsResourcesFactory textsFactory,
-			@Named("CsvImportPanel-texts-properties") Properties textsProperties,
-			CsvImportPanelFactory panelFactory, CancelAction cancelAction,
+	CsvImportDialog(UiPanel dialog, CsvImportPanelFactory panelFactory,
+			TextsFactory textsFactory, CancelAction cancelAction,
 			ImportAction importAction, @Assisted JPanel container,
 			@Assisted CsvProperties properties) {
+		this.texts = textsFactory.create(CsvImportDialog.class.getSimpleName());
 		this.container = container;
 		this.dialogPanel = dialog;
 		this.panelContainer = new JPanel();
@@ -54,11 +53,12 @@ public class CsvImportDialog {
 		container.removeAll();
 		container.setLayout(new BorderLayout());
 		container.add(dialogPanel, BorderLayout.CENTER);
-		panelContainer.setLayout(new BorderLayout());
-		panelContainer.add(panelContainer, BorderLayout.CENTER);
+		dialogPanel.add(panelContainer, BorderLayout.CENTER);
 	}
 
 	private void setupActions() {
+		importAction.setTexts(texts);
+		cancelAction.setTexts(texts);
 		dialogPanel.getCancelButton().setAction(cancelAction);
 		dialogPanel.getImportButton().setAction(importAction);
 	}

@@ -2,18 +2,15 @@ package com.anrisoftware.prefdialog.csvimportdialog.dialog;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractAction;
-
-import com.anrisoftware.resources.texts.central.TextsResources;
+import com.anrisoftware.prefdialog.miscswing.actions.AbstractResourcesAction;
 
 @SuppressWarnings("serial")
-public class ImportAction extends AbstractAction {
+public class ImportAction extends AbstractResourcesAction {
 
 	private static final String ACTION_NAME = "import";
 
-	public void setTexts(TextsResources texts) {
-		putValue(NAME, texts.getAction(ACTION_NAME));
-		putValue(MNEMONIC_KEY, texts.getMnemonic(ACTION_NAME));
+	ImportAction() {
+		super(ACTION_NAME);
 	}
 
 	@Override

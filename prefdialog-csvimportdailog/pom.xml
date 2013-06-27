@@ -10,7 +10,6 @@
 	</parent>
 
 	<artifactId>prefdialog-csvimportdailog</artifactId>
-	<version>1.0-SNAPSHOT</version>
 	<name>Abgui :: CSV Import Dialog</name>
 	<description>Dialog to import formatted text data in a comma separated format. The comma can also be a tab, space, semicolon or any other character.</description>
 	<inceptionYear>2013</inceptionYear>

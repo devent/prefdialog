@@ -61,7 +61,7 @@
 		<dependency>
 			<groupId>com.anrisoftware.prefdialog</groupId>
 			<artifactId>prefdialog-misc-swing</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>3.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 
