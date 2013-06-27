@@ -4,14 +4,14 @@ import java.io.File;
 import java.nio.charset.Charset;
 import java.util.Locale;
 
-import javax.inject.Inject;
-
 import com.anrisoftware.prefdialog.annotations.Child;
 import com.anrisoftware.prefdialog.annotations.FieldComponent;
 import com.anrisoftware.prefdialog.csvimportdialog.model.CsvImportProperties;
 import com.anrisoftware.prefdialog.verticalpanel.VerticalPreferencesPanel;
+import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
 
-public class CsvProperties implements CsvImportProperties {
+public class CsvPanelProperties implements CsvImportProperties {
 
 	private Object importPanel;
 
@@ -21,13 +21,46 @@ public class CsvProperties implements CsvImportProperties {
 
 	private final SeparatorProperties separatorProperties;
 
-	@Inject
-	CsvProperties(FileProperties fileProperties,
+	/**
+	 * @see CsvPanelPropertiesFactory#create()
+	 */
+	@AssistedInject
+	CsvPanelProperties(FileProperties fileProperties,
 			ImportProperties importProperties,
 			SeparatorProperties separatorProperties) {
+		this(fileProperties, importProperties, separatorProperties, null);
+	}
+
+	/**
+	 * @see CsvPanelPropertiesFactory#create(CsvImportProperties)
+	 */
+	@AssistedInject
+	CsvPanelProperties(FileProperties fileProperties,
+			ImportProperties importProperties,
+			SeparatorProperties separatorProperties,
+			@Assisted CsvImportProperties properties) {
 		this.fileProperties = fileProperties;
 		this.importProperties = importProperties;
 		this.separatorProperties = separatorProperties;
+		setupProperties(properties);
+	}
+
+	private void setupProperties(CsvImportProperties properties) {
+		if (properties == null) {
+			return;
+		}
+		fileProperties.setFile(properties.getFile());
+		importProperties.setCharset(properties.getCharset());
+		importProperties.setLocale(properties.getLocale());
+		if (separatorProperties.getSeparatorCharModel().getIndexOf(
+				properties.getSeparator()) != -1) {
+			separatorProperties.setSeparatorChar(properties.getSeparator());
+		} else {
+			separatorProperties.setUseCustomSeparator(true);
+			separatorProperties.setCustomSeparatorChar(properties
+					.getSeparator());
+		}
+		importProperties.setStartRow(properties.getStartRow());
 	}
 
 	public void setImportPanel(Object importPanel) {

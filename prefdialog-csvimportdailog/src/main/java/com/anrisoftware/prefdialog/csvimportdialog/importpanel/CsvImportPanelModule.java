@@ -1,4 +1,4 @@
-package com.anrisoftware.prefdialog.csvimportdialog.panel;
+package com.anrisoftware.prefdialog.csvimportdialog.importpanel;
 
 import java.util.ServiceLoader;
 

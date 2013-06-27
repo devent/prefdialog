@@ -1,4 +1,4 @@
-package com.anrisoftware.prefdialog.csvimportdialog.panel;
+package com.anrisoftware.prefdialog.csvimportdialog.importpanel;
 
 import static java.awt.BorderLayout.CENTER;
 
@@ -8,7 +8,9 @@ import java.awt.Component;
 import javax.inject.Inject;
 import javax.swing.JPanel;
 
-import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.CsvProperties;
+import com.anrisoftware.prefdialog.csvimportdialog.model.CsvImportProperties;
+import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.CsvPanelProperties;
+import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.CsvPanelPropertiesFactory;
 import com.anrisoftware.prefdialog.fields.FieldService;
 import com.anrisoftware.prefdialog.verticalpanel.VerticalPreferencesPanelField;
 import com.anrisoftware.resources.texts.api.Texts;
@@ -22,7 +24,7 @@ public class CsvImportPanel {
 
 	private final Texts texts;
 
-	private final CsvProperties properties;
+	private final CsvPanelProperties properties;
 
 	private final FieldService fieldService;
 
@@ -30,10 +32,11 @@ public class CsvImportPanel {
 
 	@Inject
 	CsvImportPanel(TextsFactory textsFactory, FieldService fieldService,
-			@Assisted JPanel container, @Assisted CsvProperties properties) {
+			CsvPanelPropertiesFactory propertiesFactory, @Assisted JPanel container,
+			@Assisted CsvImportProperties properties) {
 		this.fieldService = fieldService;
 		this.container = container;
-		this.properties = properties;
+		this.properties = propertiesFactory.create(properties);
 		this.texts = textsFactory.create(CsvImportPanel.class.getSimpleName());
 	}
 
@@ -68,7 +71,7 @@ public class CsvImportPanel {
 		return container;
 	}
 
-	public CsvProperties getProperties() {
+	public CsvPanelProperties getProperties() {
 		return properties;
 	}
 }

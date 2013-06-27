@@ -33,8 +33,11 @@ import org.junit.Test
 
 import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
-import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.CsvImportPropertiesModule
-import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.CsvProperties
+import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanelFactory
+import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanelModule
+import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.CsvPanelProperties
+import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.CsvPanelPropertiesFactory
+import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.CsvPanelPropertiesModule
 import com.anrisoftware.prefdialog.miscswing.comboboxhistory.ComboBoxHistoryModule
 import com.anrisoftware.resources.texts.defaults.TextsResourcesDefaultModule
 import com.google.inject.Guice
@@ -49,6 +52,16 @@ import com.google.inject.Injector
 class CsvImportPanelTest {
 
 	@Test
+	void "show"() {
+		def title = "$NAME::show"
+		def field = factory.create(new JPanel(), properties)
+		field.createPanel injector
+		def container = field.getAWTComponent()
+		new TestFrameUtil(title, container, size).withFixture({
+		})
+	}
+
+	//@Test
 	void "manually"() {
 		def title = "$NAME::manually"
 		def field = factory.create(new JPanel(), properties)
@@ -68,21 +81,24 @@ class CsvImportPanelTest {
 
 	static size = new Dimension(400, 362)
 
-	CsvProperties properties
+	static CsvPanelPropertiesFactory propertiesFactory
+
+	CsvPanelProperties properties
 
 	@BeforeClass
 	static void setupFactories() {
 		injector = Guice.createInjector(
 				new CoreFieldComponentModule(),
 				new TextsResourcesDefaultModule(),
-				new CsvImportPropertiesModule(),
+				new CsvPanelPropertiesModule(),
 				new ComboBoxHistoryModule())
 		factory = injector.createChildInjector(
 				new CsvImportPanelModule()).getInstance(CsvImportPanelFactory)
+		propertiesFactory = injector.getInstance(CsvPanelPropertiesFactory)
 	}
 
 	@Before
 	void setupBean() {
-		properties = injector.getInstance CsvProperties
+		properties = propertiesFactory.create()
 	}
 }
