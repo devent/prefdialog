@@ -9,10 +9,12 @@ import org.junit.BeforeClass
 import org.junit.Test
 
 import bibliothek.gui.dock.common.theme.ThemeMap
+import bibliothek.gui.dock.displayer.DisplayerDockBorder
 
 import com.anrisoftware.prefdialog.miscswing.docks.api.Dock
 import com.anrisoftware.prefdialog.miscswing.docks.api.DockFactory
 import com.anrisoftware.prefdialog.miscswing.docks.api.LayoutTask
+import com.anrisoftware.prefdialog.miscswing.docks.themes.dockingframes.noborder.NoBorderModifierBridge
 import com.google.inject.Injector
 
 @Slf4j
@@ -41,12 +43,15 @@ class DocksTest extends DocksTestBase {
 			viewDocks.each { dock.addViewDock(it) }
 		}).withFixture({
 			dock.setTheme(ThemeMap.KEY_ECLIPSE_THEME)
-		}).withFixture({
+		}, {
 			dock.setTheme(ThemeMap.KEY_BUBBLE_THEME)
-		}).withFixture({
+		}, {
 			dock.setTheme(ThemeMap.KEY_SMOOTH_THEME)
-		}).withFixture({
+		}, {
 			dock.setTheme(ThemeMap.KEY_BASIC_THEME)
+		}, {
+			dock.getThemeManager().setBorderModifierBridge(
+					DisplayerDockBorder.KIND, new NoBorderModifierBridge())
 		})
 	}
 

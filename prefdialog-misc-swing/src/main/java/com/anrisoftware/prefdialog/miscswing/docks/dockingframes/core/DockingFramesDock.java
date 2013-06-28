@@ -29,6 +29,7 @@ import bibliothek.gui.dock.common.event.CDockableLocationListener;
 import bibliothek.gui.dock.common.event.CFocusListener;
 import bibliothek.gui.dock.common.intern.CDockable;
 import bibliothek.gui.dock.common.theme.ThemeMap;
+import bibliothek.gui.dock.themes.ThemeManager;
 import bibliothek.gui.dock.util.DirectWindowProvider;
 import bibliothek.gui.dock.util.NullWindowProvider;
 import bibliothek.gui.dock.util.WindowProvider;
@@ -47,6 +48,12 @@ import com.anrisoftware.prefdialog.miscswing.docks.layouts.dockingframes.Default
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 
+/**
+ * Docking frames docks.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 3.0
+ */
 public class DockingFramesDock implements Dock {
 
 	private static final String WORK_AREA_ID = "work";
@@ -154,6 +161,16 @@ public class DockingFramesDock implements Dock {
 	public void setDefaultLayout(DefaultLayoutTask layout) {
 		this.currentLayout = layout;
 		currentLayout.setupLayout(control, workingArea, viewDocks);
+	}
+
+	/**
+	 * Returns the theme manager so the user interface of the dock can be
+	 * modified.
+	 * 
+	 * @return the {@link ThemeManager}.
+	 */
+	public ThemeManager getThemeManager() {
+		return control.getController().getThemeManager();
 	}
 
 	@Override
