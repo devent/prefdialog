@@ -26,9 +26,9 @@ class DocksTestBase {
 					protected createFrame(String titlea, def component) {
 						def frame = new JFrame(titlea)
 						def dock = factory.create frame
-						setupDock(dock)
 						frame.setPreferredSize frameSize
 						frame.add dock.getAWTComponent(), BorderLayout.CENTER
+						setupDock(dock)
 						frame
 					}
 				}

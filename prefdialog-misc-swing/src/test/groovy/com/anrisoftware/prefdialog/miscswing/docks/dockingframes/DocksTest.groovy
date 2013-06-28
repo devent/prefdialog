@@ -33,6 +33,24 @@ class DocksTest extends DocksTestBase {
 	}
 
 	@Test
+	void "no editors"() {
+		String title = "$NAME::no editors"
+		Dock dock
+		withFrame(title, factory, { it ->
+			dock = it
+			viewDocks.each { dock.addViewDock(it) }
+		}).withFixture({
+			dock.setTheme(ThemeMap.KEY_ECLIPSE_THEME)
+		}).withFixture({
+			dock.setTheme(ThemeMap.KEY_BUBBLE_THEME)
+		}).withFixture({
+			dock.setTheme(ThemeMap.KEY_SMOOTH_THEME)
+		}).withFixture({
+			dock.setTheme(ThemeMap.KEY_BASIC_THEME)
+		})
+	}
+
+	@Test
 	void "eclipse theme"() {
 		String title = "$NAME::eclipse theme"
 		Dock dock
@@ -42,7 +60,6 @@ class DocksTest extends DocksTestBase {
 			dock.addEditorDock(editorDocks[0])
 			dock.addEditorDock(editorDocks[1])
 			dock.setTheme(ThemeMap.KEY_ECLIPSE_THEME)
-			dock.applyLayout defaultPerspective
 		}).withFixture({
 		})
 	}
@@ -84,12 +101,12 @@ class DocksTest extends DocksTestBase {
 
 	static DockFactory factory
 
-	static LayoutTask defaultPerspective
+	static LayoutTask defaultLayout
 
 	@BeforeClass
 	static void setup() {
 		injector = createInjector()
-		defaultPerspective = createDefaultPerspective(injector, "default")
+		defaultLayout = createDefaultPerspective(injector, "default")
 		this.factory = injector.getInstance(DockFactory.class)
 	}
 }

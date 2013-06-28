@@ -152,7 +152,8 @@ public class DockingFramesDock implements Dock {
 
 	@Inject
 	public void setDefaultLayout(DefaultLayoutTask layout) {
-		applyLayout(layout);
+		this.currentLayout = layout;
+		currentLayout.setupLayout(control, workingArea, viewDocks);
 	}
 
 	@Override
@@ -180,9 +181,15 @@ public class DockingFramesDock implements Dock {
 	 *             {@link DockingFramesLayoutTask}.
 	 */
 	@Override
-	public void applyLayout(LayoutTask layout) {
+	public synchronized void applyLayout(LayoutTask layout) {
 		this.currentLayout = (DockingFramesLayoutTask) layout;
-		currentLayout.setupLayout(control, workingArea, viewDocks);
+		invokeLater(new Runnable() {
+
+			@Override
+			public void run() {
+				currentLayout.setupLayout(control, workingArea, viewDocks);
+			}
+		});
 	}
 
 	@Override

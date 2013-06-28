@@ -74,20 +74,7 @@ public class DefaultLayoutTask implements DockingFramesLayoutTask {
 	}
 
 	@Override
-	public void setupLayout(final CControl control,
-			final CWorkingArea workingArea,
-			final Map<String, ViewDockWindow> docks) {
-		invokeLater(new Runnable() {
-
-			@Override
-			public void run() {
-				setupGridInAWT(control, workingArea, docks);
-			}
-
-		});
-	}
-
-	private void setupGridInAWT(CControl control, CWorkingArea workingArea,
+	public void setupLayout(CControl control, CWorkingArea workingArea,
 			Map<String, ViewDockWindow> docks) {
 		removeDocks(control, docks);
 		CGrid grid = new CGrid(control);
