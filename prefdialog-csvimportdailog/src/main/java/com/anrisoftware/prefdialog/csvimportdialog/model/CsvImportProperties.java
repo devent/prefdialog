@@ -49,10 +49,18 @@ public interface CsvImportProperties {
 	char getTextDelimiter();
 
 	/**
+	 * Returns the symbols for a new line.
+	 * 
+	 * @return new line symbols {@link String}.
+	 */
+	String getEndOfLineSymbols();
+
+	/**
 	 * Returns the start row. Data from the file is read beginning with the
 	 * start row.
 	 * 
 	 * @return the start row.
 	 */
 	int getStartRow();
+
 }

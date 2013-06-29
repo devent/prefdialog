@@ -1,4 +1,4 @@
-package com.anrisoftware.prefdialog.csvimportdialog.panelproperties;
+package com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties;
 
 import java.io.File;
 import java.nio.charset.Charset;
@@ -7,6 +7,10 @@ import java.util.Locale;
 import com.anrisoftware.prefdialog.annotations.Child;
 import com.anrisoftware.prefdialog.annotations.FieldComponent;
 import com.anrisoftware.prefdialog.csvimportdialog.model.CsvImportProperties;
+import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.fileproperties.FileProperties;
+import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.importproperties.ImportProperties;
+import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.separatorproperties.SeparatorCharModel;
+import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.separatorproperties.SeparatorProperties;
 import com.anrisoftware.prefdialog.verticalpanel.VerticalPreferencesPanel;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
@@ -54,15 +58,19 @@ public class CsvPanelProperties implements CsvImportProperties {
 		fileProperties.setFile(properties.getFile());
 		importProperties.setCharset(properties.getCharset());
 		importProperties.setLocale(properties.getLocale());
-		if (separatorProperties.getSeparatorCharModel().getIndexOf(
-				properties.getSeparator()) != -1) {
+		importProperties.setStartRow(properties.getStartRow());
+		setupSeparator(properties);
+	}
+
+	private void setupSeparator(CsvImportProperties properties) {
+		SeparatorCharModel model = separatorProperties.getSeparatorCharModel();
+		if (model.getIndexOf(properties.getSeparator()) != -1) {
 			separatorProperties.setSeparatorChar(properties.getSeparator());
 		} else {
 			separatorProperties.setUseCustomSeparator(true);
 			separatorProperties.setCustomSeparatorChar(properties
 					.getSeparator());
 		}
-		importProperties.setStartRow(properties.getStartRow());
 	}
 
 	public void setImportPanel(Object importPanel) {
@@ -119,6 +127,12 @@ public class CsvPanelProperties implements CsvImportProperties {
 	public char getTextDelimiter() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public String getEndOfLineSymbols() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override

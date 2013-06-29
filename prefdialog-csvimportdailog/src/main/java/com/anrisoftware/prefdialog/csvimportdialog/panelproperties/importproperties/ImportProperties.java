@@ -1,4 +1,4 @@
-package com.anrisoftware.prefdialog.csvimportdialog.panelproperties;
+package com.anrisoftware.prefdialog.csvimportdialog.panelproperties.importproperties;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.anrisoftware.prefdialog.csvimportdialog.panelproperties;
+package com.anrisoftware.prefdialog.csvimportdialog.panelproperties.fileproperties;
 
 import java.io.File;
 

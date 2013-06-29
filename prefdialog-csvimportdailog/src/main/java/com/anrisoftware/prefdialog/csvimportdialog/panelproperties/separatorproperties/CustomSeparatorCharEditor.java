@@ -1,18 +1,16 @@
-package com.anrisoftware.prefdialog.csvimportdialog.panelproperties;
+package com.anrisoftware.prefdialog.csvimportdialog.panelproperties.separatorproperties;
 
 import java.awt.Component;
 import java.awt.event.ActionListener;
-import java.nio.charset.Charset;
-import java.nio.charset.UnsupportedCharsetException;
 
 import javax.swing.ComboBoxEditor;
 import javax.swing.JComboBox;
 
-public class CharsetEditor implements ComboBoxEditor {
+public class CustomSeparatorCharEditor implements ComboBoxEditor {
 
 	private final ComboBoxEditor editor;
 
-	CharsetEditor() {
+	CustomSeparatorCharEditor() {
 		this.editor = new JComboBox<Object>().getEditor();
 	}
 
@@ -22,26 +20,34 @@ public class CharsetEditor implements ComboBoxEditor {
 	}
 
 	@Override
-	public void setItem(Object anObject) {
-		editor.setItem(anObject);
+	public void setItem(Object item) {
+		if (item instanceof Character) {
+			checkNullCharacter((Character) item);
+		} else {
+			editor.setItem(item);
+		}
+	}
+
+	private void checkNullCharacter(Character c) {
+		if (c.charValue() == '\0') {
+			editor.setItem(null);
+		} else {
+			editor.setItem(c);
+		}
 	}
 
 	@Override
 	public Object getItem() {
 		Object item = editor.getItem();
 		if (item != null) {
-			try {
-				return asCharset(item);
-			} catch (UnsupportedCharsetException e) {
-				return item;
+			String string = item.toString();
+			if (string.length() > 0) {
+				item = string.charAt(0);
+			} else {
+				item = null;
 			}
-		} else {
-			return null;
 		}
-	}
-
-	private Charset asCharset(Object item) {
-		return Charset.forName(item.toString());
+		return item;
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package com.anrisoftware.prefdialog.csvimportdialog.panelproperties;
+package com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties;
 
 import com.anrisoftware.prefdialog.csvimportdialog.model.CsvImportProperties;
 

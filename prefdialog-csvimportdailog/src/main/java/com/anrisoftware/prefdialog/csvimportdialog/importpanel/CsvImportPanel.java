@@ -9,8 +9,8 @@ import javax.inject.Inject;
 import javax.swing.JPanel;
 
 import com.anrisoftware.prefdialog.csvimportdialog.model.CsvImportProperties;
-import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.CsvPanelProperties;
-import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.CsvPanelPropertiesFactory;
+import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelProperties;
+import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelPropertiesFactory;
 import com.anrisoftware.prefdialog.fields.FieldService;
 import com.anrisoftware.prefdialog.verticalpanel.VerticalPreferencesPanelField;
 import com.anrisoftware.resources.texts.api.Texts;

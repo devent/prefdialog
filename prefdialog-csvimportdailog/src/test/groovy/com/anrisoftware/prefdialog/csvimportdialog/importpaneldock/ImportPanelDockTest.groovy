@@ -35,9 +35,9 @@ import org.junit.Test
 import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
 import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanelModule
-import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.CsvPanelProperties
-import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.CsvPanelPropertiesFactory
-import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.CsvPanelPropertiesModule
+import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelProperties;
+import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelPropertiesFactory;
+import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelPropertiesModule;
 import com.anrisoftware.prefdialog.miscswing.comboboxhistory.ComboBoxHistoryModule
 import com.anrisoftware.prefdialog.miscswing.docks.api.Dock
 import com.anrisoftware.prefdialog.miscswing.docks.api.DockFactory

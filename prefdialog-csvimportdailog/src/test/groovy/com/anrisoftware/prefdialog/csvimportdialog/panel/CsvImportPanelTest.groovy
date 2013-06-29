@@ -35,9 +35,8 @@ import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
 import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanelFactory
 import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanelModule
-import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.CsvPanelProperties
-import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.CsvPanelPropertiesFactory
-import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.CsvPanelPropertiesModule
+import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelProperties;
+import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelPropertiesFactory;
 import com.anrisoftware.prefdialog.miscswing.comboboxhistory.ComboBoxHistoryModule
 import com.anrisoftware.resources.texts.defaults.TextsResourcesDefaultModule
 import com.google.inject.Guice
@@ -61,7 +60,7 @@ class CsvImportPanelTest {
 		})
 	}
 
-	//@Test
+	@Test
 	void "manually"() {
 		def title = "$NAME::manually"
 		def field = factory.create(new JPanel(), properties)
@@ -77,9 +76,11 @@ class CsvImportPanelTest {
 
 	static Injector injector
 
+	static Injector panelInjector
+
 	static CsvImportPanelFactory factory
 
-	static size = new Dimension(400, 362)
+	static size = new Dimension(400, 460)
 
 	static CsvPanelPropertiesFactory propertiesFactory
 
@@ -90,11 +91,10 @@ class CsvImportPanelTest {
 		injector = Guice.createInjector(
 				new CoreFieldComponentModule(),
 				new TextsResourcesDefaultModule(),
-				new CsvPanelPropertiesModule(),
 				new ComboBoxHistoryModule())
-		factory = injector.createChildInjector(
-				new CsvImportPanelModule()).getInstance(CsvImportPanelFactory)
-		propertiesFactory = injector.getInstance(CsvPanelPropertiesFactory)
+		panelInjector = injector.createChildInjector(new CsvImportPanelModule())
+		factory = panelInjector.getInstance(CsvImportPanelFactory)
+		propertiesFactory = panelInjector.getInstance(CsvPanelPropertiesFactory)
 	}
 
 	@Before

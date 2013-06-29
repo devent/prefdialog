@@ -1,4 +1,4 @@
-package com.anrisoftware.prefdialog.csvimportdialog.panelproperties;
+package com.anrisoftware.prefdialog.csvimportdialog.panelproperties.separatorproperties;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
