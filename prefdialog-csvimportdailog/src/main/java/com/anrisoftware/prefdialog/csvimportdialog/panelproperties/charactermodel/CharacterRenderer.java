@@ -1,4 +1,4 @@
-package com.anrisoftware.prefdialog.csvimportdialog.panelproperties.separatorproperties;
+package com.anrisoftware.prefdialog.csvimportdialog.panelproperties.charactermodel;
 
 import static java.lang.String.format;
 
@@ -12,13 +12,25 @@ import javax.swing.JList;
 import com.anrisoftware.resources.texts.api.Texts;
 import com.anrisoftware.resources.texts.api.TextsFactory;
 
+/**
+ * Converts known characters to names.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 3.0
+ */
 @SuppressWarnings("serial")
-public class SeparatorCharRenderer extends DefaultListCellRenderer {
+public class CharacterRenderer extends DefaultListCellRenderer {
 
 	private final Texts texts;
 
+	/**
+	 * Injects the texts resources factory.
+	 * 
+	 * @param textsFactory
+	 *            the {@link TextsFactory}.
+	 */
 	@Inject
-	SeparatorCharRenderer(TextsFactory textsFactory) {
+	CharacterRenderer(TextsFactory textsFactory) {
 		this.texts = textsFactory.create(getClass().getSimpleName());
 	}
 

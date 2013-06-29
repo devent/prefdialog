@@ -7,6 +7,12 @@ import java.util.Vector;
 import javax.inject.Inject;
 import javax.swing.DefaultComboBoxModel;
 
+/**
+ * Sets the standard separator characters.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 3.0
+ */
 @SuppressWarnings("serial")
 public class SeparatorCharModel extends DefaultComboBoxModel<Character> {
 

@@ -9,6 +9,9 @@ import com.anrisoftware.prefdialog.annotations.CheckBox;
 import com.anrisoftware.prefdialog.annotations.ComboBox;
 import com.anrisoftware.prefdialog.annotations.FieldButton;
 import com.anrisoftware.prefdialog.annotations.FieldComponent;
+import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.charactermodel.CharacterRenderer;
+import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.charactermodel.CustomCharacterEditor;
+import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.charactermodel.CustomCharacterModel;
 import com.anrisoftware.prefdialog.fields.historycombobox.HistoryComboBox;
 
 public class SeparatorProperties {
@@ -17,15 +20,15 @@ public class SeparatorProperties {
 
 	private final SeparatorCharModel separatorCharModel;
 
-	private final SeparatorCharRenderer separatorCharRenderer;
+	private final CharacterRenderer separatorCharRenderer;
 
 	private Character customSeparatorChar;
 
 	private final List<Character> customSeparatorCharsHistory;
 
-	private final CustomSeparatorCharEditor customSeparatorCharEditor;
+	private final CustomCharacterEditor customSeparatorCharEditor;
 
-	private final CustomSeparatorCharModel customSeparatorCharModel;
+	private final CustomCharacterModel customSeparatorCharModel;
 
 	private boolean useCustomSeparator;
 
@@ -33,9 +36,9 @@ public class SeparatorProperties {
 
 	@Inject
 	SeparatorProperties(SeparatorCharModel separatorCharModel,
-			SeparatorCharRenderer separatorCharRenderer,
-			CustomSeparatorCharModel customSeparatorCharModel,
-			CustomSeparatorCharEditor customSeparatorCharEditor,
+			CharacterRenderer separatorCharRenderer,
+			CustomCharacterModel customSeparatorCharModel,
+			CustomCharacterEditor customSeparatorCharEditor,
 			UseCustomSeparatorAction useCustomSeparatorAction) {
 		this.separatorChar = separatorCharModel.getElementAt(0);
 		this.separatorCharModel = separatorCharModel;
@@ -62,7 +65,7 @@ public class SeparatorProperties {
 		return separatorCharModel;
 	}
 
-	public SeparatorCharRenderer getSeparatorCharRenderer() {
+	public CharacterRenderer getSeparatorCharRenderer() {
 		return separatorCharRenderer;
 	}
 
@@ -91,7 +94,7 @@ public class SeparatorProperties {
 		this.customSeparatorChar = customSeparatorChar;
 	}
 
-	public CustomSeparatorCharEditor getCustomSeparatorCharEditor() {
+	public CustomCharacterEditor getCustomSeparatorCharEditor() {
 		return customSeparatorCharEditor;
 	}
 
@@ -99,7 +102,7 @@ public class SeparatorProperties {
 		return customSeparatorCharsHistory;
 	}
 
-	public CustomSeparatorCharModel getCustomSeparatorCharModel() {
+	public CustomCharacterModel getCustomSeparatorCharModel() {
 		return customSeparatorCharModel;
 	}
 }

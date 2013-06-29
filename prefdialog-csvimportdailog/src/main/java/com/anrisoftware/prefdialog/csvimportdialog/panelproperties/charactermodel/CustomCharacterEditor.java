@@ -1,4 +1,4 @@
-package com.anrisoftware.prefdialog.csvimportdialog.panelproperties.separatorproperties;
+package com.anrisoftware.prefdialog.csvimportdialog.panelproperties.charactermodel;
 
 import java.awt.Component;
 import java.awt.event.ActionListener;
@@ -6,11 +6,17 @@ import java.awt.event.ActionListener;
 import javax.swing.ComboBoxEditor;
 import javax.swing.JComboBox;
 
-public class CustomSeparatorCharEditor implements ComboBoxEditor {
+/**
+ * Returns the first character of the entered string.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 3.0
+ */
+public class CustomCharacterEditor implements ComboBoxEditor {
 
 	private final ComboBoxEditor editor;
 
-	CustomSeparatorCharEditor() {
+	CustomCharacterEditor() {
 		this.editor = new JComboBox<Object>().getEditor();
 	}
 
