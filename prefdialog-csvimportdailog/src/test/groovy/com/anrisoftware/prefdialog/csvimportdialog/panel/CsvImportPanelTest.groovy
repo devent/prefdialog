@@ -35,8 +35,8 @@ import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
 import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanelFactory
 import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanelModule
-import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelProperties;
-import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelPropertiesFactory;
+import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelProperties
+import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelPropertiesFactory
 import com.anrisoftware.prefdialog.miscswing.comboboxhistory.ComboBoxHistoryModule
 import com.anrisoftware.resources.texts.defaults.TextsResourcesDefaultModule
 import com.google.inject.Guice
@@ -80,7 +80,7 @@ class CsvImportPanelTest {
 
 	static CsvImportPanelFactory factory
 
-	static size = new Dimension(400, 460)
+	static size = new Dimension(400, 540)
 
 	static CsvPanelPropertiesFactory propertiesFactory
 

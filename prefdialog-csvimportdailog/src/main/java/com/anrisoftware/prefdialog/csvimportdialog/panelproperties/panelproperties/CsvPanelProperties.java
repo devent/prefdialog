@@ -7,9 +7,9 @@ import java.util.Locale;
 import com.anrisoftware.prefdialog.annotations.Child;
 import com.anrisoftware.prefdialog.annotations.FieldComponent;
 import com.anrisoftware.prefdialog.csvimportdialog.model.CsvImportProperties;
+import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.advancedproperties.AdvancedProperties;
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.fileproperties.FileProperties;
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.importproperties.ImportProperties;
-import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.separatorproperties.SeparatorCharModel;
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.separatorproperties.SeparatorProperties;
 import com.anrisoftware.prefdialog.verticalpanel.VerticalPreferencesPanel;
 import com.google.inject.assistedinject.Assisted;
@@ -25,16 +25,20 @@ public class CsvPanelProperties implements CsvImportProperties {
 
 	private final SeparatorProperties separatorProperties;
 
+	private final AdvancedProperties advancedProperties;
+
 	/**
 	 * @see CsvPanelPropertiesFactory#create()
 	 */
 	@AssistedInject
 	CsvPanelProperties(FileProperties fileProperties,
 			ImportProperties importProperties,
-			SeparatorProperties separatorProperties) {
+			SeparatorProperties separatorProperties,
+			AdvancedProperties advancedProperties) {
 		this.fileProperties = fileProperties;
 		this.importProperties = importProperties;
 		this.separatorProperties = separatorProperties;
+		this.advancedProperties = advancedProperties;
 	}
 
 	/**
@@ -44,10 +48,12 @@ public class CsvPanelProperties implements CsvImportProperties {
 	CsvPanelProperties(FileProperties fileProperties,
 			ImportProperties importProperties,
 			SeparatorProperties separatorProperties,
+			AdvancedProperties advancedProperties,
 			@Assisted CsvImportProperties properties) {
 		this.fileProperties = fileProperties;
 		this.importProperties = importProperties;
 		this.separatorProperties = separatorProperties;
+		this.advancedProperties = advancedProperties;
 		setupProperties(properties);
 	}
 
@@ -59,18 +65,8 @@ public class CsvPanelProperties implements CsvImportProperties {
 		importProperties.setCharset(properties.getCharset());
 		importProperties.setLocale(properties.getLocale());
 		importProperties.setStartRow(properties.getStartRow());
-		setupSeparator(properties);
-	}
-
-	private void setupSeparator(CsvImportProperties properties) {
-		SeparatorCharModel model = separatorProperties.getSeparatorCharModel();
-		if (model.getIndexOf(properties.getSeparator()) != -1) {
-			separatorProperties.setSeparatorChar(properties.getSeparator());
-		} else {
-			separatorProperties.setUseCustomSeparator(true);
-			separatorProperties.setCustomSeparatorChar(properties
-					.getSeparator());
-		}
+		separatorProperties.setupProperties(properties);
+		advancedProperties.setupProperties(properties);
 	}
 
 	public void setImportPanel(Object importPanel) {
@@ -101,6 +97,12 @@ public class CsvPanelProperties implements CsvImportProperties {
 		return separatorProperties;
 	}
 
+	@FieldComponent(order = 3)
+	@Child
+	public AdvancedProperties getAdvancedProperties() {
+		return advancedProperties;
+	}
+
 	@Override
 	public File getFile() {
 		return fileProperties.getFile();
@@ -124,9 +126,9 @@ public class CsvPanelProperties implements CsvImportProperties {
 	}
 
 	@Override
-	public char getTextDelimiter() {
-		// TODO Auto-generated method stub
-		return 0;
+	public char getQuote() {
+		return advancedProperties.isUseCustomQuote() ? advancedProperties
+				.getCustomQuoteChar() : advancedProperties.getQuoteChar();
 	}
 
 	@Override

@@ -42,11 +42,11 @@ public interface CsvImportProperties {
 	char getSeparator();
 
 	/**
-	 * Returns the text delimiter character.
+	 * Returns the text quote character.
 	 * 
-	 * @return the text delimiter character
+	 * @return the text quote character
 	 */
-	char getTextDelimiter();
+	char getQuote();
 
 	/**
 	 * Returns the symbols for a new line.

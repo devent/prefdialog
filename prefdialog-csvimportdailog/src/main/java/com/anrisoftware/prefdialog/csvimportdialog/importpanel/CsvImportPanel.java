@@ -9,8 +9,10 @@ import javax.inject.Inject;
 import javax.swing.JPanel;
 
 import com.anrisoftware.prefdialog.csvimportdialog.model.CsvImportProperties;
+import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.advancedproperties.UseCustomQuoteAction;
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelProperties;
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelPropertiesFactory;
+import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.separatorproperties.UseCustomSeparatorAction;
 import com.anrisoftware.prefdialog.fields.FieldService;
 import com.anrisoftware.prefdialog.verticalpanel.VerticalPreferencesPanelField;
 import com.anrisoftware.resources.texts.api.Texts;
@@ -32,8 +34,8 @@ public class CsvImportPanel {
 
 	@Inject
 	CsvImportPanel(TextsFactory textsFactory, FieldService fieldService,
-			CsvPanelPropertiesFactory propertiesFactory, @Assisted JPanel container,
-			@Assisted CsvImportProperties properties) {
+			CsvPanelPropertiesFactory propertiesFactory,
+			@Assisted JPanel container, @Assisted CsvImportProperties properties) {
 		this.fieldService = fieldService;
 		this.container = container;
 		this.properties = propertiesFactory.create(properties);
@@ -49,16 +51,18 @@ public class CsvImportPanel {
 	}
 
 	private void setupActions() {
-		properties
-				.getSeparatorProperties()
-				.getUseCustomSeparatorAction()
-				.setCustomSeparatorCharField(
-						propertiesPanel.findField("customSeparatorChar"));
-		properties
-				.getSeparatorProperties()
-				.getUseCustomSeparatorAction()
-				.setSeparatorCharField(
-						propertiesPanel.findField("separatorChar"));
+		UseCustomSeparatorAction useCustomSeparatorAction = properties
+				.getSeparatorProperties().getUseCustomSeparatorAction();
+		useCustomSeparatorAction.setCustomSeparatorCharField(propertiesPanel
+				.findField("customSeparatorChar"));
+		useCustomSeparatorAction.setSeparatorCharField(propertiesPanel
+				.findField("separatorChar"));
+		UseCustomQuoteAction useCustomQuoteAction = properties
+				.getAdvancedProperties().getUseCustomQuoteAction();
+		useCustomQuoteAction.setQuoteField(propertiesPanel
+				.findField("quoteChar"));
+		useCustomQuoteAction.setCustomQuoteField(propertiesPanel
+				.findField("customQuoteChar"));
 	}
 
 	private void setupPanel() {

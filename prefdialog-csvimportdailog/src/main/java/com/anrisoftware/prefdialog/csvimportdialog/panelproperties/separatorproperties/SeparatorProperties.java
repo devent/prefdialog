@@ -9,6 +9,7 @@ import com.anrisoftware.prefdialog.annotations.CheckBox;
 import com.anrisoftware.prefdialog.annotations.ComboBox;
 import com.anrisoftware.prefdialog.annotations.FieldButton;
 import com.anrisoftware.prefdialog.annotations.FieldComponent;
+import com.anrisoftware.prefdialog.csvimportdialog.model.CsvImportProperties;
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.charactermodel.CharacterRenderer;
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.charactermodel.CustomCharacterEditor;
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.charactermodel.CustomCharacterModel;
@@ -104,5 +105,20 @@ public class SeparatorProperties {
 
 	public CustomCharacterModel getCustomSeparatorCharModel() {
 		return customSeparatorCharModel;
+	}
+
+	public void setupProperties(CsvImportProperties properties) {
+		setupSeparator(properties);
+	}
+
+	private void setupSeparator(CsvImportProperties properties) {
+		SeparatorCharModel model = getSeparatorCharModel();
+		char separator = properties.getSeparator();
+		if (model.getIndexOf(separator) != -1) {
+			setSeparatorChar(separator);
+		} else {
+			setUseCustomSeparator(true);
+			setCustomSeparatorChar(separator);
+		}
 	}
 }
