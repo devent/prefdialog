@@ -8,6 +8,7 @@ import com.anrisoftware.prefdialog.annotations.Child;
 import com.anrisoftware.prefdialog.annotations.FieldComponent;
 import com.anrisoftware.prefdialog.csvimportdialog.model.CsvImportProperties;
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.advancedproperties.AdvancedProperties;
+import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.advancedproperties.LineEnd;
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.fileproperties.FileProperties;
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.importproperties.ImportProperties;
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.separatorproperties.SeparatorProperties;
@@ -133,8 +134,13 @@ public class CsvPanelProperties implements CsvImportProperties {
 
 	@Override
 	public String getEndOfLineSymbols() {
-		// TODO Auto-generated method stub
-		return null;
+		LineEnd lineEnd = advancedProperties.getLineEndSymbols();
+		switch (lineEnd) {
+		case DEFAULT:
+			return System.getProperty("line.separator");
+		default:
+			return lineEnd.getSymbols();
+		}
 	}
 
 	@Override

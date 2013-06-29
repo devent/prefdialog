@@ -35,12 +35,20 @@ public class AdvancedProperties {
 
 	private final UseCustomQuoteAction useCustomQuoteAction;
 
+	private LineEnd lineEndSymbols;
+
+	private final LineEndModel lineEndSymbolsModel;
+
+	private final LineEndRenderer lineEndSymbolsRenderer;
+
 	@Inject
 	AdvancedProperties(QuoteCharModel quoteCharModel,
 			CharacterRenderer quoteCharRenderer,
 			CustomCharacterModel customQuoteCharModel,
 			CustomCharacterEditor customQuoteCharEditor,
-			UseCustomQuoteAction useCustomQuoteAction) {
+			UseCustomQuoteAction useCustomQuoteAction,
+			LineEndModel lineEndSymbolsModel,
+			LineEndRenderer lineEndSymbolsRenderer) {
 		this.quoteChar = quoteCharModel.getElementAt(0);
 		this.quoteCharModel = quoteCharModel;
 		this.quoteCharRenderer = quoteCharRenderer;
@@ -50,6 +58,9 @@ public class AdvancedProperties {
 		this.customQuoteCharModel = customQuoteCharModel;
 		this.useCustomQuote = false;
 		this.useCustomQuoteAction = useCustomQuoteAction;
+		this.lineEndSymbols = LineEnd.DEFAULT;
+		this.lineEndSymbolsModel = lineEndSymbolsModel;
+		this.lineEndSymbolsRenderer = lineEndSymbolsRenderer;
 	}
 
 	public void setQuoteChar(Character delimiter) {
@@ -107,8 +118,44 @@ public class AdvancedProperties {
 		return customQuoteCharModel;
 	}
 
+	public void setLineEndSymbols(LineEnd lineEndSymbols) {
+		this.lineEndSymbols = lineEndSymbols;
+	}
+
+	@FieldComponent(order = 3)
+	@ComboBox(editable = false, model = "lineEndSymbolsModel", renderer = "lineEndSymbolsRenderer")
+	public LineEnd getLineEndSymbols() {
+		return lineEndSymbols;
+	}
+
+	public LineEndModel getLineEndSymbolsModel() {
+		return lineEndSymbolsModel;
+	}
+
+	public LineEndRenderer getLineEndSymbolsRenderer() {
+		return lineEndSymbolsRenderer;
+	}
+
 	public void setupProperties(CsvImportProperties properties) {
 		setupQuoteChar(properties);
+		setupLineEndSymbols(properties.getEndOfLineSymbols());
+	}
+
+	private void setupLineEndSymbols(String symbols) {
+		if (symbols.equals(System.getProperty("line.separator"))) {
+			setLineEndSymbols(LineEnd.DEFAULT);
+		} else {
+			setLineEndSymbols(findLineEnd(symbols));
+		}
+	}
+
+	private LineEnd findLineEnd(String symbols) {
+		for (LineEnd value : LineEnd.values()) {
+			if (value.equals(symbols)) {
+				return value;
+			}
+		}
+		return LineEnd.DEFAULT;
 	}
 
 	private void setupQuoteChar(CsvImportProperties properties) {
