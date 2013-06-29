@@ -2,10 +2,16 @@ package com.anrisoftware.prefdialog.csvimportdialog.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 import javax.inject.Inject;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JRootPane;
+import javax.swing.KeyStroke;
 
 import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanel;
 import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanelFactory;
@@ -18,7 +24,57 @@ import com.anrisoftware.resources.texts.api.TextsFactory;
 import com.google.inject.Injector;
 import com.google.inject.assistedinject.Assisted;
 
+/**
+ * Cancel and import actions dialog.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 1.0
+ */
 public class CsvImportDialog {
+
+	/**
+	 * Status of the dialog.
+	 * 
+	 * @author Erwin Mueller, erwin.mueller@deventm.org
+	 * @since 3.0
+	 */
+	public enum Status {
+
+		/**
+		 * The user approved the dialog.
+		 */
+		APPROVED,
+
+		/**
+		 * The user canceled the dialog.
+		 */
+		CANCELED;
+	}
+
+	/**
+	 * Decorates the dialog with the CSV import dialog.
+	 * 
+	 * @param dialog
+	 *            the {@link JDialog}.
+	 * 
+	 * @param injector
+	 *            the parent {@link Injector}.
+	 * 
+	 * @see CsvImportDialogFactory#create(JFrame, CsvImportProperties)
+	 * 
+	 * @return the {@link CsvImportDialog}.
+	 */
+	public static CsvImportDialog decorate(JDialog dialog, JFrame frame,
+			CsvImportProperties properties, Injector injector) {
+		Injector dialogInjector = injector
+				.createChildInjector(new CsvImportDialogModule());
+		CsvImportDialog importDialog = dialogInjector.getInstance(
+				CsvImportDialogFactory.class).create(frame, properties);
+		importDialog.createPanel(injector);
+		importDialog.setDialog(dialog);
+		dialog.pack();
+		return importDialog;
+	}
 
 	private final CancelAction cancelAction;
 
@@ -36,6 +92,13 @@ public class CsvImportDialog {
 
 	private final ImportPanelDock importPanelDock;
 
+	private JDialog dialog;
+
+	private Status status;
+
+	/**
+	 * @see CsvImportDialogFactory#create(JFrame, CsvImportProperties)
+	 */
 	@Inject
 	CsvImportDialog(UiPanel dialogPanel, CsvImportPanelFactory panelFactory,
 			TextsFactory textsFactory, CancelAction cancelAction,
@@ -50,6 +113,7 @@ public class CsvImportDialog {
 		this.properties = properties;
 		this.cancelAction = cancelAction;
 		this.importAction = importAction;
+		this.status = null;
 		setupDock();
 		setupActions();
 	}
@@ -60,13 +124,15 @@ public class CsvImportDialog {
 	}
 
 	private void setupActions() {
+		importAction.setDialog(this);
 		importAction.setTexts(texts);
 		cancelAction.setTexts(texts);
+		cancelAction.setDialog(this);
 		dialogPanel.getCancelButton().setAction(cancelAction);
 		dialogPanel.getImportButton().setAction(importAction);
 	}
 
-	public void createDialog(Injector injector) {
+	public void createPanel(Injector injector) {
 		panel.createPanel(injector);
 		importPanelDock.createPanel(injector, properties);
 	}
@@ -79,15 +145,57 @@ public class CsvImportDialog {
 		return properties;
 	}
 
+	public void setDialog(JDialog dialog) {
+		this.dialog = dialog;
+		dialog.add(getAWTComponent());
+		setupDialog(dialog);
+	}
+
+	private void setupDialog(JDialog dialog) {
+		JRootPane rootPane = dialog.getRootPane();
+		rootPane.setDefaultButton(dialogPanel.getImportButton());
+		KeyStroke stroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
+		rootPane.registerKeyboardAction(cancelAction, stroke,
+				JComponent.WHEN_IN_FOCUSED_WINDOW);
+	}
+
+	public void addCancelAction(ActionListener action) {
+		dialogPanel.getCancelButton().addActionListener(action);
+	}
+
+	public void addImportAction(ActionListener action) {
+		dialogPanel.getImportButton().addActionListener(action);
+	}
+
 	public void openDialog() {
-		dialogPanel.setVisible(true);
+		dialog.setVisible(true);
 	}
 
 	public void closeDialog() {
-		dialogPanel.setVisible(false);
+		dialog.setVisible(false);
 	}
 
 	public Component getAWTComponent() {
 		return dialogPanel;
+	}
+
+	/**
+	 * Sets the status of the dialog.
+	 * 
+	 * @param status
+	 *            the {@link Status}.
+	 */
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+	/**
+	 * Returns the status of the dialog.
+	 * 
+	 * @return the {@link Status} or {@code null} if the dialog was not open
+	 *         yet.
+	 */
+	public Status getStatus() {
+		return status;
 	}
 }

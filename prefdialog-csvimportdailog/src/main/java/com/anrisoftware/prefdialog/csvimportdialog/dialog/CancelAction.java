@@ -4,8 +4,14 @@ import java.awt.event.ActionEvent;
 
 import com.anrisoftware.prefdialog.miscswing.actions.AbstractResourcesAction;
 
+/**
+ * Closes the dialog.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 3.0
+ */
 @SuppressWarnings("serial")
-public class CancelAction extends AbstractResourcesAction {
+class CancelAction extends AbstractResourcesAction {
 
 	private static final String ACTION_NAME = "cancel";
 

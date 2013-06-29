@@ -24,8 +24,11 @@ import static com.anrisoftware.prefdialog.fields.textfield.TextFieldBean.*
 
 import java.awt.Dimension
 
+import javax.swing.JDialog
 import javax.swing.JFrame
 
+import org.fest.swing.fixture.DialogFixture
+import org.fest.swing.fixture.FrameFixture
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
@@ -49,22 +52,99 @@ import com.google.inject.Injector
 class CsvImportDialogTest {
 
 	@Test
-	void "manually"() {
-		def title = "$NAME::manually"
+	void "show panel"() {
+		def title = "$NAME::show panel"
 		JFrame frame
 		CsvImportDialog dialog
 		def util = new TestFrameUtil(title, null, size) {
 					protected def createFrame(String titlea, arg1) {
 						frame = new JFrame(titlea)
 						dialog = factory.create(frame, CsvImportDialogTest.this.properties)
-						dialog.createDialog injector
+						dialog.createPanel injector
 						frame.add dialog.getAWTComponent()
 						return frame
 					}
 				}
 		util.withFixture({
-			Thread.sleep 60*1000
-			assert false : "manually test"
+		})
+	}
+
+	@Test
+	void "import dialog"() {
+		def title = "$NAME::import dialog"
+		JFrame frame
+		JDialog dialog
+		CsvImportDialog importDialog
+		DialogFixture dia
+		def util = new TestFrameUtil(title, null, size) {
+					protected def createFrame(String titlea, arg1) {
+						frame = new JFrame(titlea)
+						dialog = new JDialog(frame)
+						importDialog = factory.create(frame, CsvImportDialogTest.this.properties)
+						importDialog.createPanel injector
+						importDialog.setDialog dialog
+						dialog.pack()
+						return frame
+					}
+				}
+		util.withFixture({ FrameFixture fix ->
+			importDialog.openDialog()
+			dia = fix.dialog()
+		}, { FrameFixture fix ->
+			fix.button("importButton").click()
+			dia.requireNotVisible()
+			importDialog.getStatus() == CsvImportDialog.Status.APPROVED
+		})
+	}
+
+	@Test
+	void "cancel dialog"() {
+		def title = "$NAME::cancel dialog"
+		JFrame frame
+		JDialog dialog
+		CsvImportDialog importDialog
+		DialogFixture dia
+		def util = new TestFrameUtil(title, null, size) {
+					protected def createFrame(String titlea, arg1) {
+						frame = new JFrame(titlea)
+						dialog = new JDialog(frame)
+						importDialog = factory.create(frame, CsvImportDialogTest.this.properties)
+						importDialog.createPanel injector
+						importDialog.setDialog dialog
+						dialog.pack()
+						return frame
+					}
+				}
+		util.withFixture({ FrameFixture fix ->
+			importDialog.openDialog()
+			dia = fix.dialog()
+		}, { FrameFixture fix ->
+			fix.button("cancelButton").click()
+			dia.requireNotVisible()
+			importDialog.getStatus() == CsvImportDialog.Status.CANCELED
+		})
+	}
+
+	@Test
+	void "decorate dialog"() {
+		def title = "$NAME::decorate dialog"
+		JFrame frame
+		JDialog dialog
+		CsvImportDialog importDialog
+		DialogFixture dia
+		def util = new TestFrameUtil(title, null, size) {
+					protected def createFrame(String titlea, arg1) {
+						frame = new JFrame(titlea)
+						dialog = new JDialog(frame)
+						importDialog = CsvImportDialog.decorate(dialog, frame,
+								CsvImportDialogTest.this.properties, injector)
+						return frame
+					}
+				}
+		util.withFixture({ FrameFixture fix ->
+			importDialog.openDialog()
+			dia = fix.dialog()
+			dia.button("cancelButton").click()
 		})
 	}
 
