@@ -32,6 +32,7 @@ import org.junit.BeforeClass
 import org.junit.Test
 
 import com.anrisoftware.globalpom.utils.TestFrameUtil
+import com.anrisoftware.globalpom.utils.TestUtils
 import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
 import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanelFactory
 import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanelModule
@@ -80,7 +81,7 @@ class CsvImportPanelTest {
 
 	static CsvImportPanelFactory factory
 
-	static size = new Dimension(400, 540)
+	static size = new Dimension(400, 566)
 
 	static CsvPanelPropertiesFactory propertiesFactory
 
@@ -88,6 +89,7 @@ class CsvImportPanelTest {
 
 	@BeforeClass
 	static void setupFactories() {
+		TestUtils.toStringStyle
 		injector = Guice.createInjector(
 				new CoreFieldComponentModule(),
 				new TextsResourcesDefaultModule(),

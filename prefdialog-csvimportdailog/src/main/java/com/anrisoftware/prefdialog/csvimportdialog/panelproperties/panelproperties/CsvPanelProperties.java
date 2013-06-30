@@ -1,6 +1,7 @@
 package com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties;
 
 import java.io.File;
+import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.Locale;
 
@@ -62,7 +63,7 @@ public class CsvPanelProperties implements CsvImportProperties {
 		if (properties == null) {
 			return;
 		}
-		fileProperties.setFile(properties.getFile());
+		fileProperties.setFile(new File(properties.getFile()));
 		importProperties.setCharset(properties.getCharset());
 		importProperties.setLocale(properties.getLocale());
 		importProperties.setStartRow(properties.getStartRow());
@@ -105,8 +106,8 @@ public class CsvPanelProperties implements CsvImportProperties {
 	}
 
 	@Override
-	public File getFile() {
-		return fileProperties.getFile();
+	public URI getFile() {
+		return fileProperties.getFile().toURI();
 	}
 
 	@Override

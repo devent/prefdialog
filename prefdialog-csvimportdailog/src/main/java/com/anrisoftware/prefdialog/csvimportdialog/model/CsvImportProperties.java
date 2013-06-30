@@ -1,6 +1,7 @@
 package com.anrisoftware.prefdialog.csvimportdialog.model;
 
 import java.io.File;
+import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.Locale;
 
@@ -17,7 +18,7 @@ public interface CsvImportProperties {
 	 * 
 	 * @return the {@link File} path.
 	 */
-	File getFile();
+	URI getFile();
 
 	/**
 	 * Returns the character set of the file.
