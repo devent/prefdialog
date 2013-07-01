@@ -42,16 +42,18 @@ class DocksTest extends DocksTestBase {
 			dock = it
 			viewDocks.each { dock.addViewDock(it) }
 		}).withFixture({
-			dock.setTheme(ThemeMap.KEY_ECLIPSE_THEME)
+			invokeAndWait { dock.setTheme(ThemeMap.KEY_ECLIPSE_THEME) }
 		}, {
-			dock.setTheme(ThemeMap.KEY_BUBBLE_THEME)
+			invokeAndWait { dock.setTheme(ThemeMap.KEY_BUBBLE_THEME) }
 		}, {
-			dock.setTheme(ThemeMap.KEY_SMOOTH_THEME)
+			invokeAndWait { dock.setTheme(ThemeMap.KEY_SMOOTH_THEME) }
 		}, {
-			dock.setTheme(ThemeMap.KEY_BASIC_THEME)
+			invokeAndWait { dock.setTheme(ThemeMap.KEY_BASIC_THEME) }
 		}, {
-			dock.getThemeManager().setBorderModifierBridge(
-					DisplayerDockBorder.KIND, new NoBorderModifierBridge())
+			invokeAndWait {
+				dock.getThemeManager().setBorderModifierBridge(
+						DisplayerDockBorder.KIND, new NoBorderModifierBridge())
+			}
 		})
 	}
 

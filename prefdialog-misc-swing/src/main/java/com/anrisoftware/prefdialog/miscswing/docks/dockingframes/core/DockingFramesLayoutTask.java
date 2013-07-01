@@ -15,12 +15,16 @@ import com.anrisoftware.prefdialog.miscswing.docks.api.ViewDockWindow;
  * Apply a layout for the Docking Frames.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 1.0
+ * @since 3.0
  */
 public interface DockingFramesLayoutTask extends LayoutTask, Serializable {
 
 	/**
 	 * Sets the layout.
+	 * <p>
+	 * <h2>AWT Threading</h2>
+	 * <p>
+	 * Should be done in the AWT thread.
 	 * 
 	 * @param control
 	 *            the {@link CControl}.
@@ -35,7 +39,35 @@ public interface DockingFramesLayoutTask extends LayoutTask, Serializable {
 	void setupLayout(CControl control, CWorkingArea workingArea,
 			Map<String, ViewDockWindow> docks);
 
+	/**
+	 * Adds a new editor dock window.
+	 * <p>
+	 * <h2>AWT Threading</h2>
+	 * <p>
+	 * Should be done in the AWT thread.
+	 * 
+	 * @param control
+	 *            the {@link CControl} where to add the dock.
+	 * 
+	 * @param dock
+	 *            the {@link EditorDockWindow} dock.
+	 * 
+	 * @return the {@link MultipleCDockable} of the editor dock.
+	 */
 	MultipleCDockable addEditor(CWorkingArea workingArea, EditorDockWindow dock);
 
+	/**
+	 * Adds a new view dock window.
+	 * <p>
+	 * <h2>AWT Threading</h2>
+	 * <p>
+	 * Should be done in the AWT thread.
+	 * 
+	 * @param control
+	 *            the {@link CControl} where to add the dock.
+	 * 
+	 * @param dock
+	 *            the {@link ViewDockWindow} dock.
+	 */
 	void addView(CControl control, ViewDockWindow dock);
 }

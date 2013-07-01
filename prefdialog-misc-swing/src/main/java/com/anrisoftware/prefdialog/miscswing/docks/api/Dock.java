@@ -37,7 +37,9 @@ public interface Dock {
 	/**
 	 * Adds a dock in the outside of the working area.
 	 * <p>
-	 * The dock will be added in the AWT event thread.
+	 * <h2>AWT Threading</h2>
+	 * <p>
+	 * Should be done in the AWT thread.
 	 * 
 	 * @param dock
 	 *            the {@link ViewDockWindow}.
@@ -47,7 +49,9 @@ public interface Dock {
 	/**
 	 * Adds a dock in the working area.
 	 * <p>
-	 * The dock will be added in the AWT event thread.
+	 * <h2>AWT Threading</h2>
+	 * <p>
+	 * Should be done in the AWT thread.
 	 * 
 	 * @param dock
 	 *            the {@link EditorDockWindow}.
@@ -57,7 +61,9 @@ public interface Dock {
 	/**
 	 * Apply the layout.
 	 * <p>
-	 * The layout will be applied in the AWT event thread.
+	 * <h2>AWT Threading</h2>
+	 * <p>
+	 * Should be done in the AWT thread.
 	 * 
 	 * @param layout
 	 *            the {@link LayoutTask} that applies the layout.
@@ -129,6 +135,10 @@ public interface Dock {
 
 	/**
 	 * Sets a theme.
+	 * <p>
+	 * <h2>AWT Threading</h2>
+	 * <p>
+	 * Should be done in the AWT thread.
 	 * 
 	 * @param name
 	 *            the theme name.

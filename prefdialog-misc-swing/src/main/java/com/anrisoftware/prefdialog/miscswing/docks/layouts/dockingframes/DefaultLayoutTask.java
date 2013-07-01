@@ -2,15 +2,11 @@ package com.anrisoftware.prefdialog.miscswing.docks.layouts.dockingframes;
 
 import static bibliothek.gui.dock.common.CLocation.normalized;
 import static bibliothek.gui.dock.common.mode.ExtendedMode.MINIMIZED;
-import static javax.swing.SwingUtilities.invokeLater;
 
 import java.awt.Component;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
 
 import javax.inject.Inject;
 
@@ -44,21 +40,11 @@ public class DefaultLayoutTask implements DockingFramesLayoutTask {
 
 	private transient PropertyChangeSupport propertySupport;
 
-	private final DefaultLayoutTaskLogger log;
-
 	private String name;
 
 	@Inject
-	DefaultLayoutTask(DefaultLayoutTaskLogger logger) {
-		this.log = logger;
-		readResolve();
-	}
-
-	private Object readResolve() {
-		if (propertySupport == null) {
-			propertySupport = new PropertyChangeSupport(this);
-		}
-		return this;
+	DefaultLayoutTask() {
+		this.propertySupport = new PropertyChangeSupport(this);
 	}
 
 	@Override
@@ -127,18 +113,7 @@ public class DefaultLayoutTask implements DockingFramesLayoutTask {
 	}
 
 	@Override
-	public void addView(final CControl control, final ViewDockWindow dock) {
-		invokeLater(new Runnable() {
-
-			@Override
-			public void run() {
-				addViewInAWT(control, dock);
-			}
-
-		});
-	}
-
-	private void addViewInAWT(CControl control, ViewDockWindow dock) {
+	public void addView(CControl control, ViewDockWindow dock) {
 		DefaultSingleCDockable dockable = createSingleDock(dock);
 		CGridArea center = control.getContentArea().getCenterArea();
 		double x = getPerspectiveX(dock.getPosition()) / 200.0;
@@ -230,29 +205,7 @@ public class DefaultLayoutTask implements DockingFramesLayoutTask {
 	}
 
 	@Override
-	public MultipleCDockable addEditor(final CWorkingArea workingArea,
-			final EditorDockWindow dock) {
-		FutureTask<MultipleCDockable> task = new FutureTask<MultipleCDockable>(
-				new Callable<MultipleCDockable>() {
-
-					@Override
-					public MultipleCDockable call() throws Exception {
-						return addEditorInAWT(workingArea, dock);
-					}
-				});
-		invokeLater(task);
-		try {
-			return task.get();
-		} catch (InterruptedException e) {
-			log.addEditorInterrupted(this, e, dock);
-			return null;
-		} catch (ExecutionException e) {
-			log.addEditorError(this, e.getCause(), dock);
-			return null;
-		}
-	}
-
-	private MultipleCDockable addEditorInAWT(CWorkingArea workingArea,
+	public MultipleCDockable addEditor(CWorkingArea workingArea,
 			EditorDockWindow dock) {
 		DefaultMultipleCDockable dockable = createMultipleDock(dock);
 		dockable.setCloseable(dock.isCloseable());

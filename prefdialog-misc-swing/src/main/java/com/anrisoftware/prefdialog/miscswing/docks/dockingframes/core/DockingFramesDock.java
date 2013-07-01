@@ -1,7 +1,5 @@
 package com.anrisoftware.prefdialog.miscswing.docks.dockingframes.core;
 
-import static javax.swing.SwingUtilities.invokeLater;
-
 import java.awt.Component;
 import java.io.File;
 import java.io.FileInputStream;
@@ -200,13 +198,7 @@ public class DockingFramesDock implements Dock {
 	@Override
 	public synchronized void applyLayout(LayoutTask layout) {
 		this.currentLayout = (DockingFramesLayoutTask) layout;
-		invokeLater(new Runnable() {
-
-			@Override
-			public void run() {
-				currentLayout.setupLayout(control, workingArea, viewDocks);
-			}
-		});
+		currentLayout.setupLayout(control, workingArea, viewDocks);
 	}
 
 	@Override
@@ -276,14 +268,8 @@ public class DockingFramesDock implements Dock {
 
 	@Override
 	public void setTheme(final String name) {
-		invokeLater(new Runnable() {
-
-			@Override
-			public void run() {
-				ThemeMap themes = control.getThemes();
-				themes.select(name);
-			}
-		});
+		ThemeMap themes = control.getThemes();
+		themes.select(name);
 	}
 
 	@Override
