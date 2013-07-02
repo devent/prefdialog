@@ -35,6 +35,24 @@ class DocksTest extends DocksTestBase {
 	}
 
 	@Test
+	void "basic theme, no border modifier"() {
+		String title = "$NAME::basic theme, no border modifier"
+		Dock dock
+		withFrame(title, factory, { it ->
+			dock = it
+			viewDocks.each { dock.addViewDock(it) }
+			dock.addEditorDock(editorDocks[0])
+			dock.addEditorDock(editorDocks[1])
+		}).withFixture({
+			invokeAndWait {
+				dock.getThemeManager().setBorderModifierBridge(
+						DisplayerDockBorder.KIND, new NoBorderModifierBridge())
+			}
+			Thread.sleep 60*1000
+		})
+	}
+
+	@Test
 	void "no editors"() {
 		String title = "$NAME::no editors"
 		Dock dock
