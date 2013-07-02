@@ -1,5 +1,6 @@
 package com.anrisoftware.prefdialog.csvimportdialog.csvimport;
 
+import java.io.File;
 import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.Locale;
@@ -32,7 +33,7 @@ public class DefaultCsvImportProperties implements CsvImportProperties {
 	 * Sets system based default values.
 	 */
 	public DefaultCsvImportProperties() {
-		this.file = null;
+		this.file = new File("").toURI();
 		this.charset = Charset.defaultCharset();
 		this.locale = Locale.US;
 		this.separator = ',';
