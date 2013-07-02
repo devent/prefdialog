@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.beans.VetoableChangeListener;
 
 import javax.inject.Inject;
 import javax.swing.JComponent;
@@ -12,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
 
+import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanel;
 import com.anrisoftware.prefdialog.csvimportdialog.importpaneldock.ImportPanelDock;
 import com.anrisoftware.prefdialog.csvimportdialog.model.CsvImportProperties;
 import com.anrisoftware.prefdialog.miscswing.docks.api.Dock;
@@ -194,4 +196,37 @@ public class CsvImportDialog {
 	public Status getStatus() {
 		return status;
 	}
+
+	/**
+	 * @see CsvImportPanel#addVetoableChangeListener(VetoableChangeListener)
+	 */
+	public void addVetoableChangeListener(VetoableChangeListener listener) {
+		importPanelDock.addVetoableChangeListener(listener);
+	}
+
+	/**
+	 * @see CsvImportPanel#removeVetoableChangeListener(VetoableChangeListener)
+	 */
+	public void removeVetoableChangeListener(VetoableChangeListener listener) {
+		importPanelDock.removeVetoableChangeListener(listener);
+	}
+
+	/**
+	 * @see CsvImportPanel#addVetoableChangeListener(String,
+	 *      VetoableChangeListener)
+	 */
+	public void addVetoableChangeListener(String propertyName,
+			VetoableChangeListener listener) {
+		importPanelDock.addVetoableChangeListener(propertyName, listener);
+	}
+
+	/**
+	 * @see CsvImportPanel#removeVetoableChangeListener(String,
+	 *      VetoableChangeListener)
+	 */
+	public void removeVetoableChangeListener(String propertyName,
+			VetoableChangeListener listener) {
+		importPanelDock.removeVetoableChangeListener(propertyName, listener);
+	}
+
 }

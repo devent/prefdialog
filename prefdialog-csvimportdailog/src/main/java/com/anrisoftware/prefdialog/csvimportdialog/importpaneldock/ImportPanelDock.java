@@ -1,6 +1,7 @@
 package com.anrisoftware.prefdialog.csvimportdialog.importpaneldock;
 
 import java.awt.Component;
+import java.beans.VetoableChangeListener;
 
 import javax.inject.Inject;
 import javax.swing.JPanel;
@@ -20,6 +21,8 @@ public class ImportPanelDock implements EditorDockWindow {
 
 	private transient CsvImportPanelFactory panelFactory;
 
+	private CsvImportPanel importPanel;
+
 	@Inject
 	ImportPanelDock(CsvImportPanelFactory panelFactory) {
 		this.panelFactory = panelFactory;
@@ -36,8 +39,12 @@ public class ImportPanelDock implements EditorDockWindow {
 	 *            the {@link CsvImportProperties}.
 	 */
 	public void createPanel(Injector injector, CsvImportProperties properties) {
-		CsvImportPanel importPanel = panelFactory.create(panel, properties);
+		importPanel = panelFactory.create(panel, properties);
 		importPanel.createPanel(injector);
+	}
+
+	public CsvImportPanel getImportPanel() {
+		return importPanel;
 	}
 
 	@Override
@@ -83,6 +90,38 @@ public class ImportPanelDock implements EditorDockWindow {
 	@Override
 	public boolean isStackable() {
 		return false;
+	}
+
+	/**
+	 * @see CsvImportPanel#addVetoableChangeListener(VetoableChangeListener)
+	 */
+	public void addVetoableChangeListener(VetoableChangeListener listener) {
+		importPanel.addVetoableChangeListener(listener);
+	}
+
+	/**
+	 * @see CsvImportPanel#removeVetoableChangeListener(VetoableChangeListener)
+	 */
+	public void removeVetoableChangeListener(VetoableChangeListener listener) {
+		importPanel.removeVetoableChangeListener(listener);
+	}
+
+	/**
+	 * @see CsvImportPanel#addVetoableChangeListener(String,
+	 *      VetoableChangeListener)
+	 */
+	public void addVetoableChangeListener(String propertyName,
+			VetoableChangeListener listener) {
+		importPanel.addVetoableChangeListener(propertyName, listener);
+	}
+
+	/**
+	 * @see CsvImportPanel#removeVetoableChangeListener(String,
+	 *      VetoableChangeListener)
+	 */
+	public void removeVetoableChangeListener(String propertyName,
+			VetoableChangeListener listener) {
+		importPanel.removeVetoableChangeListener(propertyName, listener);
 	}
 
 }

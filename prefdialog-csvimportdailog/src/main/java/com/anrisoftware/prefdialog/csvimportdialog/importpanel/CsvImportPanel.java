@@ -137,4 +137,37 @@ public class CsvImportPanel {
 	public CsvPanelProperties getProperties() {
 		return properties;
 	}
+
+	/**
+	 * @see FieldComponent#addVetoableChangeListener(VetoableChangeListener)
+	 */
+	public void addVetoableChangeListener(VetoableChangeListener listener) {
+		propertiesPanel.addVetoableChangeListener(listener);
+	}
+
+	/**
+	 * @see FieldComponent#removeVetoableChangeListener(VetoableChangeListener)
+	 */
+	public void removeVetoableChangeListener(VetoableChangeListener listener) {
+		propertiesPanel.removeVetoableChangeListener(listener);
+	}
+
+	/**
+	 * @see FieldComponent#addVetoableChangeListener(String,
+	 *      VetoableChangeListener)
+	 */
+	public void addVetoableChangeListener(String propertyName,
+			VetoableChangeListener listener) {
+		propertiesPanel.addVetoableChangeListener(propertyName, listener);
+	}
+
+	/**
+	 * @see FieldComponent#removeVetoableChangeListener(String,
+	 *      VetoableChangeListener)
+	 */
+	public void removeVetoableChangeListener(String propertyName,
+			VetoableChangeListener listener) {
+		propertiesPanel.removeVetoableChangeListener(propertyName, listener);
+	}
+
 }
