@@ -23,14 +23,16 @@ public interface CsvImporter extends Callable<CsvImporter> {
 	 * Returns the values of the read row with the column name as the map key
 	 * and the column value as the map value.
 	 * 
-	 * @return the column names and values {@link Map} of the read row.
+	 * @return the column names and values {@link Map} of the read row or
+	 *         {@code null} if the end of file was reached.
 	 */
 	Map<String, Object> getMapValues();
 
 	/**
 	 * Returns the values of the read row.
 	 * 
-	 * @return the values {@link List} of the read row.
+	 * @return the values {@link List} of the read row or {@code null} if the
+	 *         end of file was reached.
 	 */
 	List<Object> getValues();
 
@@ -38,5 +40,5 @@ public interface CsvImporter extends Callable<CsvImporter> {
 	 * Reads the next row of the CSV formatted data.
 	 */
 	@Override
-	CsvImporter call() throws Exception;
+	CsvImporter call() throws CsvImportException;
 }
