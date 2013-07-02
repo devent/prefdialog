@@ -9,12 +9,9 @@ import javax.inject.Inject;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
 
-import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanel;
-import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanelFactory;
 import com.anrisoftware.prefdialog.csvimportdialog.importpaneldock.ImportPanelDock;
 import com.anrisoftware.prefdialog.csvimportdialog.model.CsvImportProperties;
 import com.anrisoftware.prefdialog.miscswing.docks.api.Dock;
@@ -82,15 +79,13 @@ public class CsvImportDialog {
 
 	private final CsvImportProperties properties;
 
-	private final CsvImportPanel panel;
-
-	private final UiPanel dialogPanel;
-
 	private final Dock dock;
 
 	private final Texts texts;
 
 	private final ImportPanelDock importPanelDock;
+
+	private final UiPanel dialogPanel;
 
 	private JDialog dialog;
 
@@ -100,16 +95,14 @@ public class CsvImportDialog {
 	 * @see CsvImportDialogFactory#create(JFrame, CsvImportProperties)
 	 */
 	@Inject
-	CsvImportDialog(UiPanel dialogPanel, CsvImportPanelFactory panelFactory,
-			TextsFactory textsFactory, CancelAction cancelAction,
-			ImportAction importAction, DockFactory dockFactory,
-			ImportPanelDock importPanelDock, @Assisted JFrame frame,
-			@Assisted CsvImportProperties properties) {
+	CsvImportDialog(UiPanel dialogPanel, TextsFactory textsFactory,
+			CancelAction cancelAction, ImportAction importAction,
+			DockFactory dockFactory, ImportPanelDock importPanelDock,
+			@Assisted JFrame frame, @Assisted CsvImportProperties properties) {
 		this.texts = textsFactory.create(CsvImportDialog.class.getSimpleName());
 		this.dock = dockFactory.create(frame);
 		this.importPanelDock = importPanelDock;
 		this.dialogPanel = dialogPanel;
-		this.panel = panelFactory.create(new JPanel(), properties);
 		this.properties = properties;
 		this.cancelAction = cancelAction;
 		this.importAction = importAction;
@@ -133,7 +126,6 @@ public class CsvImportDialog {
 	}
 
 	public void createPanel(Injector injector) {
-		panel.createPanel(injector);
 		importPanelDock.createPanel(injector, properties);
 	}
 
@@ -177,6 +169,10 @@ public class CsvImportDialog {
 
 	public Component getAWTComponent() {
 		return dialogPanel;
+	}
+
+	public ImportPanelDock getImportPanelDock() {
+		return importPanelDock;
 	}
 
 	/**
