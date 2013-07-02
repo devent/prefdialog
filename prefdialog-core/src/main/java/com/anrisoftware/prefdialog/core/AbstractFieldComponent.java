@@ -659,7 +659,7 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
 	private void fireValueChanged(Object value) throws PropertyVetoException {
 		try {
-			vetoableSupport.fireVetoableChange(VALUE_PROPERTY, oldValue, value);
+			vetoableSupport.fireVetoableChange(VALUE_PROPERTY, null, value);
 		} catch (PropertyVetoException e) {
 			trySetValue(oldValue);
 			throw e;
