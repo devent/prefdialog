@@ -50,6 +50,8 @@ public class CsvImportPanel {
 
 	private final CsvImporterFactory importerFactory;
 
+	private FieldComponent<Component> numberColumnsField;
+
 	@Inject
 	CsvImportPanel(CsvImportPanelLogger logger, TextsFactory textsFactory,
 			FieldService fieldService,
@@ -77,6 +79,7 @@ public class CsvImportPanel {
 	private void updateColumns() throws PropertyVetoException {
 		File file = new File(properties.getFile());
 		if (!file.isFile()) {
+			numberColumnsField.setValue(0);
 			return;
 		}
 		try {
@@ -91,9 +94,7 @@ public class CsvImportPanel {
 			throws CsvImportException, PropertyVetoException {
 		List<Object> values = importer.call().getValues();
 		if (values != null) {
-			FieldComponent<?> columns = propertiesPanel
-					.findField("numberColumns");
-			columns.setValue(values.size());
+			numberColumnsField.setValue(values.size());
 		}
 	}
 
@@ -126,6 +127,7 @@ public class CsvImportPanel {
 		propertiesPanel.setTexts(texts);
 		container.setLayout(new BorderLayout());
 		container.add(propertiesPanel.getAWTComponent(), CENTER);
+		numberColumnsField = propertiesPanel.findField("numberColumns");
 	}
 
 	public Component getAWTComponent() {
