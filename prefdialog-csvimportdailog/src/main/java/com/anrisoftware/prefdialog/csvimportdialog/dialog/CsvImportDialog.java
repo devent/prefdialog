@@ -136,7 +136,7 @@ public class CsvImportDialog {
 	}
 
 	public CsvImportProperties getProperties() {
-		return properties;
+		return importPanelDock.getImportPanel().getProperties();
 	}
 
 	public void setDialog(JDialog dialog) {

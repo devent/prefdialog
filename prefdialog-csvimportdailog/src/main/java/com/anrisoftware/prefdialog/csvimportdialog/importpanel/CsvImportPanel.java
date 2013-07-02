@@ -134,7 +134,12 @@ public class CsvImportPanel {
 		return container;
 	}
 
-	public CsvPanelProperties getProperties() {
+	/**
+	 * Returns the CSV properties of the panel.
+	 * 
+	 * @return the {@link CsvImportProperties}.
+	 */
+	public CsvImportProperties getProperties() {
 		return properties;
 	}
 
