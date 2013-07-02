@@ -1,18 +1,18 @@
 /*
  * Copyright 2012 Erwin Müller <erwin.mueller@deventm.org>
- *
+ * 
  * This file is part of prefdialog-corefields.
- *
+ * 
  * prefdialog-corefields is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- *
+ * 
  * prefdialog-corefields is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-corefields. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -26,6 +26,7 @@ import java.lang.annotation.Annotation;
 import java.util.ServiceLoader;
 
 import javax.inject.Inject;
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -87,6 +88,7 @@ public class PreferencesPanelField extends AbstractFieldComponent<JPanel> {
 		this.log = logger;
 		this.layout = createLayout();
 		this.scrollPane = new JScrollPane(getComponent());
+		getComponent().setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 		setupLayout();
 		setupScrollPane();
 	}
