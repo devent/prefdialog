@@ -83,4 +83,12 @@ public abstract class AbstractResourcesAction extends AbstractAction {
 		}
 	}
 
+	/**
+	 * Returns the name of the action.
+	 * 
+	 * @return the {@link String} name.
+	 */
+	public String getName() {
+		return name;
+	}
 }
