@@ -651,11 +651,19 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 		if (this.value == value) {
 			return;
 		}
-		Object oldValue = this.value;
-		vetoableSupport.fireVetoableChange(VALUE_PROPERTY, oldValue, value);
 		trySetValue(value);
+		fireValueChanged(value);
 		changeValue(value);
 		log.valueSet(this, value);
+	}
+
+	private void fireValueChanged(Object value) throws PropertyVetoException {
+		try {
+			vetoableSupport.fireVetoableChange(VALUE_PROPERTY, oldValue, value);
+		} catch (PropertyVetoException e) {
+			trySetValue(oldValue);
+			throw e;
+		}
 	}
 
 	/**
