@@ -29,6 +29,8 @@ public class DefaultCsvImportProperties implements CsvImportProperties {
 
 	private int startRow;
 
+	private int numCols;
+
 	/**
 	 * Sets system based default values.
 	 */
@@ -40,6 +42,7 @@ public class DefaultCsvImportProperties implements CsvImportProperties {
 		this.quote = '"';
 		this.endOfLineSymbols = System.getProperty("line.separator");
 		this.startRow = 0;
+		this.numCols = 0;
 	}
 
 	public void setFile(URI file) {
@@ -105,4 +108,12 @@ public class DefaultCsvImportProperties implements CsvImportProperties {
 		return startRow;
 	}
 
+	public void setNumCols(int numCols) {
+		this.numCols = numCols;
+	}
+
+	@Override
+	public int getNumCols() {
+		return numCols;
+	}
 }

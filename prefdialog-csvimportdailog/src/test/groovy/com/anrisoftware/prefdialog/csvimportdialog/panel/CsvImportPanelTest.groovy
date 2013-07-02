@@ -26,14 +26,18 @@ import java.awt.Dimension
 
 import javax.swing.JPanel
 
+import org.apache.commons.io.FileUtils
 import org.fest.swing.fixture.FrameFixture
 import org.junit.Before
 import org.junit.BeforeClass
+import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.TemporaryFolder
 
 import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.globalpom.utils.TestUtils
 import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
+import com.anrisoftware.prefdialog.csvimportdialog.csvimport.CsvImportModule
 import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanelFactory
 import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanelModule
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelProperties
@@ -73,7 +77,12 @@ class CsvImportPanelTest {
 		})
 	}
 
+	@Rule
+	public TemporaryFolder tmp = new TemporaryFolder()
+
 	static final String NAME = CsvImportPanelTest.class.simpleName
+
+	static URL LOTTO = CsvImportPanelTest.class.getResource("/com/anrisoftware/prefdialog/csvimportdialog/csvimport/lotto_2001.csv")
 
 	static Injector injector
 
@@ -87,13 +96,16 @@ class CsvImportPanelTest {
 
 	CsvPanelProperties properties
 
+	File lotto
+
 	@BeforeClass
 	static void setupFactories() {
 		TestUtils.toStringStyle
 		injector = Guice.createInjector(
 				new CoreFieldComponentModule(),
 				new TextsResourcesDefaultModule(),
-				new ComboBoxHistoryModule())
+				new ComboBoxHistoryModule(),
+				new CsvImportModule())
 		panelInjector = injector.createChildInjector(new CsvImportPanelModule())
 		factory = panelInjector.getInstance(CsvImportPanelFactory)
 		propertiesFactory = panelInjector.getInstance(CsvPanelPropertiesFactory)
@@ -102,5 +114,11 @@ class CsvImportPanelTest {
 	@Before
 	void setupBean() {
 		properties = propertiesFactory.create()
+	}
+
+	@Before
+	void setupData() {
+		lotto = tmp.newFile("lotto")
+		FileUtils.copyURLToFile LOTTO, lotto
 	}
 }

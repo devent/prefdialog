@@ -9,6 +9,7 @@ import com.anrisoftware.prefdialog.annotations.CheckBox;
 import com.anrisoftware.prefdialog.annotations.ComboBox;
 import com.anrisoftware.prefdialog.annotations.FieldButton;
 import com.anrisoftware.prefdialog.annotations.FieldComponent;
+import com.anrisoftware.prefdialog.annotations.FormattedTextField;
 import com.anrisoftware.prefdialog.csvimportdialog.model.CsvImportProperties;
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.charactermodel.CharacterRenderer;
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.charactermodel.CustomCharacterEditor;
@@ -16,6 +17,8 @@ import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.charactermode
 import com.anrisoftware.prefdialog.fields.historycombobox.HistoryComboBox;
 
 public class AdvancedProperties {
+
+	private int numberColumns;
 
 	private Character quoteChar;
 
@@ -49,6 +52,7 @@ public class AdvancedProperties {
 			UseCustomQuoteAction useCustomQuoteAction,
 			LineEndModel lineEndSymbolsModel,
 			LineEndRenderer lineEndSymbolsRenderer) {
+		this.numberColumns = 0;
 		this.quoteChar = quoteCharModel.getElementAt(0);
 		this.quoteCharModel = quoteCharModel;
 		this.quoteCharRenderer = quoteCharRenderer;
@@ -61,6 +65,16 @@ public class AdvancedProperties {
 		this.lineEndSymbols = LineEnd.DEFAULT;
 		this.lineEndSymbolsModel = lineEndSymbolsModel;
 		this.lineEndSymbolsRenderer = lineEndSymbolsRenderer;
+	}
+
+	public void setNumberColumns(int numberColumns) {
+		this.numberColumns = numberColumns;
+	}
+
+	@FieldComponent(order = -1)
+	@FormattedTextField(editable = false)
+	public int getNumberColumns() {
+		return numberColumns;
 	}
 
 	public void setQuoteChar(Character delimiter) {

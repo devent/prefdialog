@@ -64,4 +64,10 @@ public interface CsvImportProperties {
 	 */
 	int getStartRow();
 
+	/**
+	 * Returns the number of columns of the data.
+	 * 
+	 * @return the number of columns.
+	 */
+	int getNumCols();
 }

@@ -149,4 +149,8 @@ public class CsvPanelProperties implements CsvImportProperties {
 		return importProperties.getStartRow();
 	}
 
+	@Override
+	public int getNumCols() {
+		return advancedProperties.getNumberColumns();
+	}
 }
