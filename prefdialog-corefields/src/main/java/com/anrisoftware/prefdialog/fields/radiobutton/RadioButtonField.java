@@ -1,22 +1,24 @@
 /*
  * Copyright 2012 Erwin Müller <erwin.mueller@deventm.org>
- *
+ * 
  * This file is part of prefdialog-corefields.
- *
+ * 
  * prefdialog-corefields is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- *
+ * 
  * prefdialog-corefields is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-corefields. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.anrisoftware.prefdialog.fields.radiobutton;
+
+import static com.anrisoftware.prefdialog.miscswing.lockedevents.LockedVetoableChangeListener.lockedVetoableChangeListener;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
@@ -28,6 +30,7 @@ import javax.swing.JRadioButton;
 import com.anrisoftware.prefdialog.fields.fieldbutton.AbstractFieldButtonField;
 import com.anrisoftware.prefdialog.miscswing.components.validating.ValidatingButtonComponent;
 import com.anrisoftware.prefdialog.miscswing.components.validating.ValidatingTextComponent;
+import com.anrisoftware.prefdialog.miscswing.lockedevents.LockedVetoableChangeListener;
 import com.google.inject.assistedinject.Assisted;
 
 /**
@@ -41,7 +44,7 @@ public class RadioButtonField extends AbstractFieldButtonField<JRadioButton> {
 
 	private final ValidatingButtonComponent<JRadioButton> validating;
 
-	private final VetoableChangeListener valueVetoListener;
+	private final LockedVetoableChangeListener valueVetoListener;
 
 	private final RadioButtonFieldLogger log;
 
@@ -55,15 +58,17 @@ public class RadioButtonField extends AbstractFieldButtonField<JRadioButton> {
 		this.log = logger;
 		this.validating = new ValidatingButtonComponent<JRadioButton>(
 				getComponent());
-		this.valueVetoListener = new VetoableChangeListener() {
+		this.valueVetoListener = lockedVetoableChangeListener(new VetoableChangeListener() {
 
 			@Override
 			public void vetoableChange(PropertyChangeEvent evt)
 					throws PropertyVetoException {
-				RadioButtonField.super.trySetValue(evt.getNewValue());
-				changeValue(evt.getNewValue());
+				valueVetoListener.lock();
+				setValue(evt.getNewValue());
+				valueVetoListener.unlock();
 			}
-		};
+
+		});
 		setupValidating();
 	}
 
@@ -89,7 +94,9 @@ public class RadioButtonField extends AbstractFieldButtonField<JRadioButton> {
 	public void setValue(Object value) throws PropertyVetoException {
 		super.setValue(value);
 		log.checkValue(this, value);
+		valueVetoListener.lock();
 		validating.setValue(value);
+		valueVetoListener.unlock();
 	}
 
 }

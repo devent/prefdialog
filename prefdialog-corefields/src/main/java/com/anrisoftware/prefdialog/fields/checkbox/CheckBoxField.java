@@ -18,6 +18,8 @@
  */
 package com.anrisoftware.prefdialog.fields.checkbox;
 
+import static com.anrisoftware.prefdialog.miscswing.lockedevents.LockedVetoableChangeListener.lockedVetoableChangeListener;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
@@ -29,6 +31,7 @@ import com.anrisoftware.prefdialog.annotations.CheckBox;
 import com.anrisoftware.prefdialog.fields.fieldbutton.AbstractFieldButtonField;
 import com.anrisoftware.prefdialog.miscswing.components.validating.ValidatingButtonComponent;
 import com.anrisoftware.prefdialog.miscswing.components.validating.ValidatingTextComponent;
+import com.anrisoftware.prefdialog.miscswing.lockedevents.LockedVetoableChangeListener;
 import com.google.inject.assistedinject.Assisted;
 
 /**
@@ -47,7 +50,7 @@ public class CheckBoxField extends AbstractFieldButtonField<JCheckBox> {
 
 	private final ValidatingButtonComponent<JCheckBox> validating;
 
-	private final VetoableChangeListener valueVetoListener;
+	private final LockedVetoableChangeListener valueVetoListener;
 
 	/**
 	 * @see CheckBoxFieldFactory#create(Object, String)
@@ -59,15 +62,17 @@ public class CheckBoxField extends AbstractFieldButtonField<JCheckBox> {
 		JCheckBox checkBox = getComponent();
 		this.validating = new ValidatingButtonComponent<JCheckBox>(checkBox);
 		this.log = logger;
-		this.valueVetoListener = new VetoableChangeListener() {
+		this.valueVetoListener = lockedVetoableChangeListener(new VetoableChangeListener() {
 
 			@Override
 			public void vetoableChange(PropertyChangeEvent evt)
 					throws PropertyVetoException {
-				CheckBoxField.super.trySetValue(evt.getNewValue());
-				changeValue(evt.getNewValue());
+				valueVetoListener.lock();
+				setValue(evt.getNewValue());
+				valueVetoListener.unlock();
 			}
-		};
+
+		});
 		setupValidating();
 	}
 
@@ -93,6 +98,8 @@ public class CheckBoxField extends AbstractFieldButtonField<JCheckBox> {
 	public void setValue(Object value) throws PropertyVetoException {
 		super.setValue(value);
 		log.checkValue(this, value);
+		valueVetoListener.lock();
 		validating.setValue(value);
+		valueVetoListener.unlock();
 	}
 }
