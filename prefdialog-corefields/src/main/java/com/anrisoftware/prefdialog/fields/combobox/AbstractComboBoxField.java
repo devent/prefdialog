@@ -1,5 +1,6 @@
 package com.anrisoftware.prefdialog.fields.combobox;
 
+import static com.anrisoftware.prefdialog.miscswing.lockedevents.LockedVetoableChangeListener.lockedVetoableChangeListener;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 import java.beans.PropertyChangeEvent;
@@ -25,6 +26,7 @@ import com.anrisoftware.globalpom.reflection.beans.BeanAccessFactory;
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
 import com.anrisoftware.prefdialog.miscswing.components.validating.AbstractValidatingComponent;
 import com.anrisoftware.prefdialog.miscswing.components.validating.ValidatingComboBoxComponent;
+import com.anrisoftware.prefdialog.miscswing.lockedevents.LockedVetoableChangeListener;
 import com.anrisoftware.resources.texts.api.Texts;
 
 /**
@@ -51,7 +53,7 @@ public abstract class AbstractComboBoxField<ComponentType extends JComboBox<?>>
 
 	private final ValidatingComboBoxComponent<Object, ComponentType> validating;
 
-	private final VetoableChangeListener valueVetoListener;
+	private final LockedVetoableChangeListener valueVetoListener;
 
 	private final Class<? extends Annotation> annotationType;
 
@@ -85,22 +87,18 @@ public abstract class AbstractComboBoxField<ComponentType extends JComboBox<?>>
 		this.annotationType = annotationType;
 		this.validating = new ValidatingComboBoxComponent<Object, ComponentType>(
 				getComponent());
-		this.valueVetoListener = new VetoableChangeListener() {
+		this.valueVetoListener = lockedVetoableChangeListener(new VetoableChangeListener() {
 
 			@Override
 			public void vetoableChange(PropertyChangeEvent evt)
 					throws PropertyVetoException {
-				changeVetoableValue(evt);
+				valueVetoListener.lock();
+				setValue(evt.getNewValue());
+				valueVetoListener.unlock();
 			}
 
-		};
+		});
 		setupValidating();
-	}
-
-	protected void changeVetoableValue(PropertyChangeEvent evt)
-			throws PropertyVetoException {
-		super.trySetValue(evt.getNewValue());
-		changeValue(evt.getNewValue());
 	}
 
 	private void setupValidating() {
@@ -171,8 +169,11 @@ public abstract class AbstractComboBoxField<ComponentType extends JComboBox<?>>
 	}
 
 	@Override
-	protected void trySetValue(Object value) throws PropertyVetoException {
+	public void setValue(Object value) throws PropertyVetoException {
+		super.setValue(value);
+		valueVetoListener.lock();
 		validating.setValue(value);
+		valueVetoListener.unlock();
 	}
 
 	@Override

@@ -1,18 +1,18 @@
 /*
  * Copyright 2012 Erwin Müller <erwin.mueller@deventm.org>
- *
+ * 
  * This file is part of prefdialog-core.
- *
+ * 
  * prefdialog-core is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
  * Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- *
+ * 
  * prefdialog-core is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-core. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -21,6 +21,8 @@ package com.anrisoftware.prefdialog.fields;
 import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyVetoException;
+import java.beans.VetoableChangeListener;
+import java.beans.VetoableChangeSupport;
 import java.util.Locale;
 import java.util.MissingResourceException;
 
@@ -353,13 +355,16 @@ public interface FieldComponent<ComponentType extends Component> {
 	int getOrder();
 
 	/**
-	 * Sets the value of the field.
+	 * Sets the value of the field. The added property change listeners are
+	 * informed of the value change.
 	 * 
 	 * @param value
 	 *            the value {@link Object}.
 	 * 
 	 * @throws PropertyVetoException
 	 *             if the user input is not valid.
+	 * 
+	 * @see #VALUE_PROPERTY
 	 */
 	void setValue(Object value) throws PropertyVetoException;
 
@@ -494,5 +499,33 @@ public interface FieldComponent<ComponentType extends Component> {
 	 * @return the {@link Iterable} of {@link FieldComponent}.
 	 */
 	Iterable<FieldComponent<?>> getFields();
+
+	/**
+	 * @see VetoableChangeSupport#addVetoableChangeListener(VetoableChangeListener)
+	 * @see #VALUE_PROPERTY
+	 */
+	void addVetoableChangeListener(VetoableChangeListener listener);
+
+	/**
+	 * @see VetoableChangeSupport#removeVetoableChangeListener(VetoableChangeListener)
+	 * @see #VALUE_PROPERTY
+	 */
+	void removeVetoableChangeListener(VetoableChangeListener listener);
+
+	/**
+	 * @see VetoableChangeSupport#addVetoableChangeListener(String,
+	 *      VetoableChangeListener)
+	 * @see #VALUE_PROPERTY
+	 */
+	void addVetoableChangeListener(String propertyName,
+			VetoableChangeListener listener);
+
+	/**
+	 * @see VetoableChangeSupport#removeVetoableChangeListener(String,
+	 *      VetoableChangeListener)
+	 * @see #VALUE_PROPERTY
+	 */
+	void removeVetoableChangeListener(String propertyName,
+			VetoableChangeListener listener);
 
 }

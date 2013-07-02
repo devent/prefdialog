@@ -2,7 +2,6 @@ package com.anrisoftware.prefdialog.fields.historycombobox;
 
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -89,7 +88,7 @@ public class HistoryComboBoxField extends AbstractComboBoxField<JComboBox<?>> {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected void replaceHistory(int index0, int index1) {
+	private void replaceHistory(int index0, int index1) {
 		ComboBoxModel<?> model = getComponent().getModel();
 		for (int i = index0; i <= index1; i++) {
 			Object element = model.getElementAt(i);
@@ -99,7 +98,7 @@ public class HistoryComboBoxField extends AbstractComboBoxField<JComboBox<?>> {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected void insertHistory(int index0, int index1) {
+	private void insertHistory(int index0, int index1) {
 		ComboBoxModel<?> model = getComponent().getModel();
 		for (int i = index0; i <= index1; i++) {
 			Object element = model.getElementAt(i);
@@ -107,24 +106,12 @@ public class HistoryComboBoxField extends AbstractComboBoxField<JComboBox<?>> {
 		}
 	}
 
-	protected void removeHistory(int index0, int index1) {
+	private void removeHistory(int index0, int index1) {
 		ComboBoxModel<?> model = getComponent().getModel();
 		for (int i = index0; i <= index1; i++) {
 			Object element = model.getElementAt(i);
 			history.remove(element);
 		}
-	}
-
-	@Override
-	protected void changeVetoableValue(PropertyChangeEvent evt)
-			throws PropertyVetoException {
-		Object newValue = evt.getNewValue();
-		if (newValue instanceof ItemDefault) {
-			ItemDefault item = (ItemDefault) newValue;
-			newValue = item.getItem();
-		}
-		super.changeVetoableValue(new PropertyChangeEvent(evt.getSource(), evt
-				.getPropertyName(), evt.getOldValue(), newValue));
 	}
 
 	@Inject
@@ -186,6 +173,15 @@ public class HistoryComboBoxField extends AbstractComboBoxField<JComboBox<?>> {
 	private void setupMaximum() {
 		int maximum = fieldAnnotation.getValue("maximumHistory");
 		setMaximum(maximum);
+	}
+
+	@Override
+	public void setValue(Object value) throws PropertyVetoException {
+		if (value instanceof ItemDefault) {
+			ItemDefault item = (ItemDefault) value;
+			value = item.getItem();
+		}
+		super.setValue(value);
 	}
 
 	/**

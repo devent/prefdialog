@@ -1,18 +1,18 @@
 /*
  * Copyright 2012 Erwin Müller <erwin.mueller@deventm.org>
- *
+ * 
  * This file is part of prefdialog-core.
- *
+ * 
  * prefdialog-core is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
  * Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- *
+ * 
  * prefdialog-core is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-core. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -24,6 +24,8 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
 import java.awt.Component;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyVetoException;
+import java.beans.VetoableChangeListener;
+import java.beans.VetoableChangeSupport;
 import java.io.Serializable;
 import java.lang.reflect.AccessibleObject;
 import java.util.ArrayList;
@@ -124,6 +126,8 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
 	private final List<FieldComponent<?>> childFields;
 
+	private transient VetoableChangeSupport vetoableSupport;
+
 	private transient MnemonicFactory mnemonicFactory;
 
 	private transient AnnotationAccess annotationAccess;
@@ -206,6 +210,7 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 		this.childFields = new ArrayList<FieldComponent<?>>();
 		this.mnemonic = null;
 		this.mnemonicIndex = -1;
+		this.vetoableSupport = new VetoableChangeSupport(this);
 	}
 
 	/**
@@ -646,6 +651,8 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 		if (this.value == value) {
 			return;
 		}
+		Object oldValue = this.value;
+		vetoableSupport.fireVetoableChange(VALUE_PROPERTY, oldValue, value);
 		trySetValue(value);
 		changeValue(value);
 		log.valueSet(this, value);
@@ -891,6 +898,40 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	@Override
 	public Iterable<FieldComponent<?>> getFields() {
 		return childFields;
+	}
+
+	@Override
+	public void addVetoableChangeListener(VetoableChangeListener listener) {
+		vetoableSupport.addVetoableChangeListener(listener);
+		for (FieldComponent<?> field : childFields) {
+			field.addVetoableChangeListener(listener);
+		}
+	}
+
+	@Override
+	public void removeVetoableChangeListener(VetoableChangeListener listener) {
+		vetoableSupport.removeVetoableChangeListener(listener);
+		for (FieldComponent<?> field : childFields) {
+			field.removeVetoableChangeListener(listener);
+		}
+	}
+
+	@Override
+	public void addVetoableChangeListener(String propertyName,
+			VetoableChangeListener listener) {
+		vetoableSupport.addVetoableChangeListener(propertyName, listener);
+		for (FieldComponent<?> field : childFields) {
+			field.addVetoableChangeListener(propertyName, listener);
+		}
+	}
+
+	@Override
+	public void removeVetoableChangeListener(String propertyName,
+			VetoableChangeListener listener) {
+		vetoableSupport.removeVetoableChangeListener(propertyName, listener);
+		for (FieldComponent<?> field : childFields) {
+			field.removeVetoableChangeListener(propertyName, listener);
+		}
 	}
 
 	@Override
