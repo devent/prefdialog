@@ -1,23 +1,24 @@
 /*
  * Copyright 2012 Erwin Müller <erwin.mueller@deventm.org>
- *
+ * 
  * This file is part of prefdialog-corefields.
- *
+ * 
  * prefdialog-corefields is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- *
+ * 
  * prefdialog-corefields is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-corefields. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.anrisoftware.prefdialog.fields.spinner;
 
+import static com.anrisoftware.prefdialog.miscswing.lockedevents.LockedVetoableChangeListener.lockedVetoableChangeListener;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.beans.PropertyChangeEvent;
@@ -44,6 +45,7 @@ import com.anrisoftware.prefdialog.core.AbstractTitleField;
 import com.anrisoftware.prefdialog.fields.spacer.Spacer;
 import com.anrisoftware.prefdialog.miscswing.components.validating.AbstractValidatingComponent;
 import com.anrisoftware.prefdialog.miscswing.components.validating.ValidatingSpinner;
+import com.anrisoftware.prefdialog.miscswing.lockedevents.LockedVetoableChangeListener;
 import com.google.inject.assistedinject.Assisted;
 
 /**
@@ -75,7 +77,7 @@ public class SpinnerField extends AbstractTitleField<JSpinner> {
 
 	private final ValidatingSpinner<JSpinner> validating;
 
-	private final VetoableChangeListener valueVetoListener;
+	private final LockedVetoableChangeListener valueVetoListener;
 
 	private final SpinnerFieldLogger log;
 
@@ -97,15 +99,17 @@ public class SpinnerField extends AbstractTitleField<JSpinner> {
 		this.log = logger;
 		this.validating = new ValidatingSpinner<JSpinner>(getComponent());
 		this.modelSet = false;
-		this.valueVetoListener = new VetoableChangeListener() {
+		this.valueVetoListener = lockedVetoableChangeListener(new VetoableChangeListener() {
 
 			@Override
 			public void vetoableChange(PropertyChangeEvent evt)
 					throws PropertyVetoException {
-				SpinnerField.super.trySetValue(evt.getNewValue());
-				changeValue(evt.getNewValue());
+				valueVetoListener.lock();
+				setValue(evt.getNewValue());
+				valueVetoListener.unlock();
 			}
-		};
+
+		});
 		setupValidating();
 	}
 
@@ -197,9 +201,12 @@ public class SpinnerField extends AbstractTitleField<JSpinner> {
 	}
 
 	@Override
-	protected void trySetValue(Object value) throws PropertyVetoException {
+	public void setValue(Object value) throws PropertyVetoException {
+		super.setValue(value);
 		if (modelSet) {
+			valueVetoListener.lock();
 			validating.setValue(value);
+			valueVetoListener.unlock();
 		}
 	}
 
