@@ -4,7 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
+import java.beans.VetoableChangeSupport;
 
 import javax.inject.Inject;
 import javax.swing.JComponent;
@@ -51,6 +53,13 @@ public class CsvImportDialog {
 	}
 
 	/**
+	 * Status property.
+	 * 
+	 * @see #setStatus(Status)
+	 */
+	public static final String STATUS_PROPERTY = "status";
+
+	/**
 	 * Decorates the dialog with the CSV import dialog.
 	 * 
 	 * @param dialog
@@ -89,6 +98,8 @@ public class CsvImportDialog {
 
 	private final UiPanel dialogPanel;
 
+	private final VetoableChangeSupport vetoableSupport;
+
 	private JDialog dialog;
 
 	private Status status;
@@ -109,6 +120,7 @@ public class CsvImportDialog {
 		this.cancelAction = cancelAction;
 		this.importAction = importAction;
 		this.status = null;
+		this.vetoableSupport = new VetoableChangeSupport(this);
 		setupDock();
 		setupActions();
 	}
@@ -178,12 +190,21 @@ public class CsvImportDialog {
 	}
 
 	/**
-	 * Sets the status of the dialog.
+	 * Sets the status of the dialog. The property change listeners are informed
+	 * of the status change.
 	 * 
 	 * @param status
 	 *            the {@link Status}.
+	 * 
+	 * @throws PropertyVetoException
+	 *             if the status was vetoed by one of the property change
+	 *             listener.
+	 * 
+	 * @see #STATUS_PROPERTY
 	 */
-	public void setStatus(Status status) {
+	public void setStatus(Status status) throws PropertyVetoException {
+		Status oldValue = this.status;
+		vetoableSupport.fireVetoableChange(STATUS_PROPERTY, oldValue, status);
 		this.status = status;
 	}
 
@@ -199,34 +220,42 @@ public class CsvImportDialog {
 
 	/**
 	 * @see CsvImportPanel#addVetoableChangeListener(VetoableChangeListener)
+	 * @see #STATUS_PROPERTY
 	 */
 	public void addVetoableChangeListener(VetoableChangeListener listener) {
 		importPanelDock.addVetoableChangeListener(listener);
+		vetoableSupport.addVetoableChangeListener(listener);
 	}
 
 	/**
 	 * @see CsvImportPanel#removeVetoableChangeListener(VetoableChangeListener)
+	 * @see #STATUS_PROPERTY
 	 */
 	public void removeVetoableChangeListener(VetoableChangeListener listener) {
 		importPanelDock.removeVetoableChangeListener(listener);
+		vetoableSupport.removeVetoableChangeListener(listener);
 	}
 
 	/**
 	 * @see CsvImportPanel#addVetoableChangeListener(String,
 	 *      VetoableChangeListener)
+	 * @see #STATUS_PROPERTY
 	 */
 	public void addVetoableChangeListener(String propertyName,
 			VetoableChangeListener listener) {
 		importPanelDock.addVetoableChangeListener(propertyName, listener);
+		vetoableSupport.addVetoableChangeListener(propertyName, listener);
 	}
 
 	/**
 	 * @see CsvImportPanel#removeVetoableChangeListener(String,
 	 *      VetoableChangeListener)
+	 * @see #STATUS_PROPERTY
 	 */
 	public void removeVetoableChangeListener(String propertyName,
 			VetoableChangeListener listener) {
 		importPanelDock.removeVetoableChangeListener(propertyName, listener);
+		vetoableSupport.removeVetoableChangeListener(propertyName, listener);
 	}
 
 }

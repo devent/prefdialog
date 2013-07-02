@@ -3,6 +3,7 @@ package com.anrisoftware.prefdialog.csvimportdialog.dialog;
 import static com.anrisoftware.prefdialog.csvimportdialog.dialog.CsvImportDialog.Status.CANCELED;
 
 import java.awt.event.ActionEvent;
+import java.beans.PropertyVetoException;
 
 import com.anrisoftware.prefdialog.miscswing.actions.AbstractResourcesAction;
 
@@ -28,9 +29,12 @@ class CancelAction extends AbstractResourcesAction {
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		dialog.setStatus(CANCELED);
-		dialog.closeDialog();
+	public void actionPerformed(ActionEvent evt) {
+		try {
+			dialog.setStatus(CANCELED);
+			dialog.closeDialog();
+		} catch (PropertyVetoException e) {
+		}
 	}
 
 }
