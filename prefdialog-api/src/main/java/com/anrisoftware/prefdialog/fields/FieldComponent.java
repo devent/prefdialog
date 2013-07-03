@@ -20,6 +20,8 @@ package com.anrisoftware.prefdialog.fields;
 
 import java.awt.Component;
 import java.awt.event.KeyEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
 import java.beans.VetoableChangeSupport;
@@ -356,7 +358,8 @@ public interface FieldComponent<ComponentType extends Component> {
 
 	/**
 	 * Sets the value of the field. The added property change listeners are
-	 * informed of the value change.
+	 * informed of the value change. If one of the listeners veto the value then
+	 * the value is reset to the previos value of the field.
 	 * 
 	 * @param value
 	 *            the value {@link Object}.
@@ -527,5 +530,33 @@ public interface FieldComponent<ComponentType extends Component> {
 	 */
 	void removeVetoableChangeListener(String propertyName,
 			VetoableChangeListener listener);
+
+	/**
+	 * @see PropertyChangeSupport#addPropertyChangeListener(PropertyChangeListener)
+	 * @see #VALUE_PROPERTY
+	 */
+	void addPropertyChangeListener(PropertyChangeListener listener);
+
+	/**
+	 * @see PropertyChangeSupport#removePropertyChangeListener(PropertyChangeListener)
+	 * @see #VALUE_PROPERTY
+	 */
+	void removePropertyChangeListener(PropertyChangeListener listener);
+
+	/**
+	 * @see PropertyChangeSupport#addPropertyChangeListener(String,
+	 *      PropertyChangeListener)
+	 * @see #VALUE_PROPERTY
+	 */
+	void addPropertyChangeListener(String propertyName,
+			PropertyChangeListener listener);
+
+	/**
+	 * @see PropertyChangeSupport#removePropertyChangeListener(String,
+	 *      PropertyChangeListener)
+	 * @see #VALUE_PROPERTY
+	 */
+	void removePropertyChangeListener(String propertyName,
+			PropertyChangeListener listener);
 
 }

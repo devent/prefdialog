@@ -1,22 +1,24 @@
 /*
  * Copyright 2012 Erwin Müller <erwin.mueller@deventm.org>
- *
+ * 
  * This file is part of prefdialog-corefields.
- *
+ * 
  * prefdialog-corefields is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- *
+ * 
  * prefdialog-corefields is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-corefields. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.anrisoftware.prefdialog.fields.filechooser;
+
+import static com.anrisoftware.prefdialog.miscswing.lockedevents.LockedVetoableChangeListener.lockedVetoableChangeListener;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
@@ -33,6 +35,7 @@ import com.anrisoftware.prefdialog.annotations.FileChooser;
 import com.anrisoftware.prefdialog.annotations.FileChooserModel;
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
 import com.anrisoftware.prefdialog.miscswing.components.validating.ValidatingFormattedTextComponent;
+import com.anrisoftware.prefdialog.miscswing.lockedevents.LockedVetoableChangeListener;
 import com.anrisoftware.prefdialog.miscswing.text.filetext.FileTextField;
 import com.google.inject.assistedinject.Assisted;
 
@@ -70,7 +73,7 @@ public class FileChooserField extends AbstractTitleField<JPanel> {
 
 	private final ValidatingFormattedTextComponent<FileTextField> validating;
 
-	private final VetoableChangeListener valueVetoListener;
+	private final LockedVetoableChangeListener valueVetoListener;
 
 	private final OpenFileDialogAction openFileDialogAction;
 
@@ -97,7 +100,7 @@ public class FileChooserField extends AbstractTitleField<JPanel> {
 		this.openFileDialogAction = openFileDialogAction;
 		this.validating = new ValidatingFormattedTextComponent<FileTextField>(
 				fileTextField);
-		this.valueVetoListener = new VetoableChangeListener() {
+		this.valueVetoListener = lockedVetoableChangeListener(new VetoableChangeListener() {
 
 			@Override
 			public void vetoableChange(PropertyChangeEvent evt)
@@ -106,15 +109,19 @@ public class FileChooserField extends AbstractTitleField<JPanel> {
 				if (model != null) {
 					model.setFile((File) evt.getNewValue());
 				}
-				changeValue(evt.getNewValue());
+				valueVetoListener.lock();
+				setValue(evt.getNewValue());
+				valueVetoListener.unlock();
 			}
-		};
+		});
 		this.filePropertyListener = new VetoableChangeListener() {
 
 			@Override
 			public void vetoableChange(PropertyChangeEvent evt)
 					throws PropertyVetoException {
+				valueVetoListener.lock();
 				setValue(evt.getNewValue());
+				valueVetoListener.unlock();
 			}
 		};
 		setupValidating();
@@ -172,6 +179,7 @@ public class FileChooserField extends AbstractTitleField<JPanel> {
 	@Override
 	protected void trySetValue(Object value) throws PropertyVetoException {
 		validating.setValue(value);
+		super.trySetValue(value);
 	}
 
 	/**

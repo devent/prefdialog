@@ -23,6 +23,8 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 import java.awt.Component;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
 import java.beans.VetoableChangeSupport;
@@ -128,6 +130,8 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
 	private transient VetoableChangeSupport vetoableSupport;
 
+	private transient PropertyChangeSupport propertySupport;
+
 	private transient MnemonicFactory mnemonicFactory;
 
 	private transient AnnotationAccess annotationAccess;
@@ -211,6 +215,7 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 		this.mnemonic = null;
 		this.mnemonicIndex = -1;
 		this.vetoableSupport = new VetoableChangeSupport(this);
+		this.propertySupport = new PropertyChangeSupport(this);
 	}
 
 	/**
@@ -652,12 +657,17 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 			return;
 		}
 		trySetValue(value);
-		fireValueChanged(value);
+		vetoValueChanged(value);
 		changeValue(value);
+		fireValueChanged(value);
 		log.valueSet(this, value);
 	}
 
-	private void fireValueChanged(Object value) throws PropertyVetoException {
+	private void fireValueChanged(Object value) {
+		propertySupport.firePropertyChange(VALUE_PROPERTY, null, value);
+	}
+
+	private void vetoValueChanged(Object value) throws PropertyVetoException {
 		try {
 			vetoableSupport.fireVetoableChange(VALUE_PROPERTY, null, value);
 		} catch (PropertyVetoException e) {
@@ -939,6 +949,40 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 		vetoableSupport.removeVetoableChangeListener(propertyName, listener);
 		for (FieldComponent<?> field : childFields) {
 			field.removeVetoableChangeListener(propertyName, listener);
+		}
+	}
+
+	@Override
+	public void addPropertyChangeListener(PropertyChangeListener listener) {
+		propertySupport.addPropertyChangeListener(listener);
+		for (FieldComponent<?> field : childFields) {
+			field.addPropertyChangeListener(listener);
+		}
+	}
+
+	@Override
+	public void removePropertyChangeListener(PropertyChangeListener listener) {
+		propertySupport.removePropertyChangeListener(listener);
+		for (FieldComponent<?> field : childFields) {
+			field.removePropertyChangeListener(listener);
+		}
+	}
+
+	@Override
+	public void addPropertyChangeListener(String propertyName,
+			PropertyChangeListener listener) {
+		propertySupport.addPropertyChangeListener(propertyName, listener);
+		for (FieldComponent<?> field : childFields) {
+			field.addPropertyChangeListener(propertyName, listener);
+		}
+	}
+
+	@Override
+	public void removePropertyChangeListener(String propertyName,
+			PropertyChangeListener listener) {
+		propertySupport.removePropertyChangeListener(propertyName, listener);
+		for (FieldComponent<?> field : childFields) {
+			field.removePropertyChangeListener(propertyName, listener);
 		}
 	}
 

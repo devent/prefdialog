@@ -1,12 +1,13 @@
 package com.anrisoftware.prefdialog.csvimportdialog.importpanel;
 
 import static com.anrisoftware.prefdialog.fields.FieldComponent.VALUE_PROPERTY;
-import static com.anrisoftware.prefdialog.miscswing.lockedevents.LockedVetoableChangeListener.lockedVetoableChangeListener;
+import static com.anrisoftware.prefdialog.miscswing.lockedevents.LockedChangeListener.lockedVetoableChangeListener;
 import static java.awt.BorderLayout.CENTER;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
 import java.io.File;
@@ -25,7 +26,7 @@ import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperti
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.separatorproperties.UseCustomSeparatorAction;
 import com.anrisoftware.prefdialog.fields.FieldComponent;
 import com.anrisoftware.prefdialog.fields.FieldService;
-import com.anrisoftware.prefdialog.miscswing.lockedevents.LockedVetoableChangeListener;
+import com.anrisoftware.prefdialog.miscswing.lockedevents.LockedChangeListener;
 import com.anrisoftware.prefdialog.verticalpanel.VerticalPreferencesPanelField;
 import com.anrisoftware.resources.texts.api.Texts;
 import com.anrisoftware.resources.texts.api.TextsFactory;
@@ -46,7 +47,7 @@ public class CsvImportPanel {
 
 	private VerticalPreferencesPanelField propertiesPanel;
 
-	private final LockedVetoableChangeListener valueListener;
+	private final LockedChangeListener valueListener;
 
 	private final CsvImporterFactory importerFactory;
 
@@ -64,11 +65,10 @@ public class CsvImportPanel {
 		this.properties = propertiesFactory.create(properties);
 		this.texts = textsFactory.create(CsvImportPanel.class.getSimpleName());
 		this.importerFactory = importerFactory;
-		this.valueListener = lockedVetoableChangeListener(new VetoableChangeListener() {
+		this.valueListener = lockedVetoableChangeListener(new PropertyChangeListener() {
 
 			@Override
-			public void vetoableChange(PropertyChangeEvent evt)
-					throws PropertyVetoException {
+			public void propertyChange(PropertyChangeEvent evt) {
 				valueListener.lock();
 				updateColumns();
 				valueListener.unlock();
@@ -76,25 +76,32 @@ public class CsvImportPanel {
 		});
 	}
 
-	private void updateColumns() throws PropertyVetoException {
+	private void updateColumns() {
 		File file = new File(properties.getFile());
 		if (!file.isFile()) {
-			numberColumnsField.setValue(0);
+			setNumberColumns(0);
 			return;
 		}
 		try {
 			CsvImporter importer = importerFactory.create(properties);
 			readNumberColumns(importer);
 		} catch (CsvImportException e) {
-			throw log.errorRead(this, e);
+			log.errorRead(this, e);
 		}
 	}
 
 	private void readNumberColumns(CsvImporter importer)
-			throws CsvImportException, PropertyVetoException {
+			throws CsvImportException {
 		List<Object> values = importer.call().getValues();
 		if (values != null) {
-			numberColumnsField.setValue(values.size());
+			setNumberColumns(values.size());
+		}
+	}
+
+	private void setNumberColumns(int size) {
+		try {
+			numberColumnsField.setValue(size);
+		} catch (PropertyVetoException e) {
 		}
 	}
 
@@ -103,7 +110,7 @@ public class CsvImportPanel {
 				.getFactory(injector).create(properties, "importPanel");
 		propertiesPanel.createPanel(injector);
 		propertiesPanel
-				.addVetoableChangeListener(VALUE_PROPERTY, valueListener);
+				.addPropertyChangeListener(VALUE_PROPERTY, valueListener);
 		setupPanel();
 		setupActions();
 	}

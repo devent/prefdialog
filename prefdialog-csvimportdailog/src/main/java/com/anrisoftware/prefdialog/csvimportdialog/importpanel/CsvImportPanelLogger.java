@@ -23,8 +23,8 @@ class CsvImportPanelLogger extends AbstractLogger {
 		super(CsvImportPanel.class);
 	}
 
-	PropertyVetoException errorRead(CsvImportPanel panel, CsvImportException e) {
-		return logException(new PropertyVetoException(ERROR_READ, null),
+	void errorRead(CsvImportPanel panel, CsvImportException e) {
+		logException(new PropertyVetoException(ERROR_READ, null),
 				ERROR_READ_MESSAGE, panel);
 	}
 
