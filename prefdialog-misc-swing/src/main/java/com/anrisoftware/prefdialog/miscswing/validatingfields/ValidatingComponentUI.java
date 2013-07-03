@@ -22,7 +22,7 @@ import com.anrisoftware.prefdialog.miscswing.tooltip.ToolTipShower;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-public class ValidatingUi extends ComponentUI {
+public class ValidatingComponentUI extends ComponentUI implements ValidatingUI {
 
 	private static final AlphaComposite ALPHA = AlphaComposite.getInstance(
 			AlphaComposite.SRC_OVER, 0.1f);
@@ -43,32 +43,18 @@ public class ValidatingUi extends ComponentUI {
 	 * @param ui
 	 *            the {@link ComponentUI}.
 	 */
-	public ValidatingUi(ComponentUI ui) {
+	public ValidatingComponentUI(ComponentUI ui) {
 		this.ui = ui;
 		this.valid = true;
 		this.invalidBackground = Color.RED;
 	}
 
-	/**
-	 * Returns the installed component.
-	 * 
-	 * @return the {@link JComponent} or {@code null} if the user interface was
-	 *         not installed or was uninstalled.
-	 */
+	@Override
 	public JComponent getComponent() {
 		return component;
 	}
 
-	/**
-	 * Sets the invalid background color for the component.
-	 * <p>
-	 * <h2>AWT Thread</h2>
-	 * <p>
-	 * Should be called on the AWT thread.
-	 * 
-	 * @param color
-	 *            the background {@link Color}.
-	 */
+	@Override
 	public void setInvalidBackground(Color color) {
 		Color oldValue = this.invalidBackground;
 		this.invalidBackground = color;
@@ -77,26 +63,12 @@ public class ValidatingUi extends ComponentUI {
 		}
 	}
 
-	/**
-	 * Returns the invalid background color for the component.
-	 * 
-	 * @return the background {@link Color}.
-	 */
+	@Override
 	public Color getInvalidBackground() {
 		return invalidBackground;
 	}
 
-	/**
-	 * Sets that the input is valid. The component is repaint when the state
-	 * changed.
-	 * <p>
-	 * <h2>AWT Thread</h2>
-	 * <p>
-	 * Should be called on the AWT thread.
-	 * 
-	 * @param valid
-	 *            set to {@code true} if the current input is valid.
-	 */
+	@Override
 	public void setValid(boolean valid) {
 		boolean oldValue = this.valid;
 		this.valid = valid;
@@ -106,32 +78,17 @@ public class ValidatingUi extends ComponentUI {
 		toolTip.setShowToolTip(!valid);
 	}
 
-	/**
-	 * Returns that the input is valid.
-	 * 
-	 * @return {@code true} if the current input is valid.
-	 */
+	@Override
 	public boolean isValid() {
 		return valid;
 	}
 
-	/**
-	 * Sets the invalid text that is shown in a tool-tip if the input is set as
-	 * not valid.
-	 * 
-	 * @param text
-	 *            the text {@link String}.
-	 */
+	@Override
 	public void setInvalidText(String text) {
 		toolTip.setText(text);
 	}
 
-	/**
-	 * Returns the invalid text that is shown in a tool-tip if the input is set
-	 * as not valid.
-	 * 
-	 * @return the text {@link String}.
-	 */
+	@Override
 	public String getInvalidText() {
 		return toolTip.getText();
 	}

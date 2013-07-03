@@ -34,12 +34,12 @@ public class ValidatingComboBoxFieldUi extends ComboBoxUI {
 	 */
 	public static ValidatingComboBoxFieldUi decorate(JComboBox<?> field) {
 		ValidatingComboBoxFieldUi ui = new ValidatingComboBoxFieldUi(
-				new ValidatingUi(field.getUI()), field.getUI());
+				new ValidatingComponentUI(field.getUI()), field.getUI());
 		field.setUI(ui);
 		return ui;
 	}
 
-	private final ValidatingUi validatingUi;
+	private final ValidatingComponentUI validatingUi;
 
 	private final ComboBoxUI ui;
 
@@ -51,20 +51,20 @@ public class ValidatingComboBoxFieldUi extends ComboBoxUI {
 	 * @param ui
 	 *            the {@link ComboBoxUI}.
 	 */
-	public ValidatingComboBoxFieldUi(ValidatingUi validatingUi, ComboBoxUI ui) {
+	public ValidatingComboBoxFieldUi(ValidatingComponentUI validatingUi, ComboBoxUI ui) {
 		this.validatingUi = validatingUi;
 		this.ui = ui;
 	}
 
 	/**
-	 * @see ValidatingUi#getComponent()
+	 * @see ValidatingComponentUI#getComponent()
 	 */
 	public JComboBox<?> getComponent() {
 		return (JComboBox<?>) validatingUi.getComponent();
 	}
 
 	/**
-	 * @see ValidatingUi#setInvalidBackground(Color)
+	 * @see ValidatingComponentUI#setInvalidBackground(Color)
 	 */
 	public void setInvalidBackground(Color color) {
 		validatingUi.setInvalidBackground(color);
@@ -74,14 +74,14 @@ public class ValidatingComboBoxFieldUi extends ComboBoxUI {
 	}
 
 	/**
-	 * @see ValidatingUi#getInvalidBackground()
+	 * @see ValidatingComponentUI#getInvalidBackground()
 	 */
 	public Color getInvalidBackground() {
 		return validatingUi.getInvalidBackground();
 	}
 
 	/**
-	 * @see ValidatingUi#setValid(boolean)
+	 * @see ValidatingComponentUI#setValid(boolean)
 	 */
 	public void setValid(boolean valid) {
 		validatingUi.setValid(valid);
@@ -91,14 +91,14 @@ public class ValidatingComboBoxFieldUi extends ComboBoxUI {
 	}
 
 	/**
-	 * @see ValidatingUi#isValid()
+	 * @see ValidatingComponentUI#isValid()
 	 */
 	public boolean isValid() {
 		return validatingUi.isValid();
 	}
 
 	/**
-	 * @see ValidatingUi#setInvalidText(String)
+	 * @see ValidatingComponentUI#setInvalidText(String)
 	 */
 	public void setInvalidText(String text) {
 		validatingUi.setInvalidText(text);
@@ -108,7 +108,7 @@ public class ValidatingComboBoxFieldUi extends ComboBoxUI {
 	}
 
 	/**
-	 * @see ValidatingUi#getInvalidText()
+	 * @see ValidatingComponentUI#getInvalidText()
 	 */
 	public String getInvalidText() {
 		return validatingUi.getInvalidText();

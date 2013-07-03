@@ -24,7 +24,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-public class ValidatingTextFieldUi extends TextUI {
+public class ValidatingTextFieldUi extends TextUI implements ValidatingUI {
 
 	/**
 	 * Sets the validating text field user interface to the specified text
@@ -36,13 +36,13 @@ public class ValidatingTextFieldUi extends TextUI {
 	 * @return the {@link ValidatingTextFieldUi}.
 	 */
 	public static ValidatingTextFieldUi decorate(JTextComponent field) {
-		ValidatingTextFieldUi ui = new ValidatingTextFieldUi(new ValidatingUi(
-				field.getUI()), field.getUI());
+		ValidatingTextFieldUi ui = new ValidatingTextFieldUi(
+				new ValidatingComponentUI(field.getUI()), field.getUI());
 		field.setUI(ui);
 		return ui;
 	}
 
-	private final ValidatingUi validatingUi;
+	private final ValidatingComponentUI validatingUi;
 
 	private final TextUI ui;
 
@@ -52,56 +52,63 @@ public class ValidatingTextFieldUi extends TextUI {
 	 * @param ui
 	 *            the {@link TextUI}.
 	 */
-	public ValidatingTextFieldUi(ValidatingUi validatingUi, TextUI ui) {
+	public ValidatingTextFieldUi(ValidatingComponentUI validatingUi, TextUI ui) {
 		this.validatingUi = validatingUi;
 		this.ui = ui;
 	}
 
 	/**
-	 * @see ValidatingUi#getComponent()
+	 * @see ValidatingComponentUI#getComponent()
 	 */
+	@Override
 	public JTextComponent getComponent() {
 		return (JTextComponent) validatingUi.getComponent();
 	}
 
 	/**
-	 * @see ValidatingUi#setInvalidBackground(Color)
+	 * @see ValidatingComponentUI#setInvalidBackground(Color)
 	 */
+	@Override
 	public void setInvalidBackground(Color color) {
 		validatingUi.setInvalidBackground(color);
 	}
 
 	/**
-	 * @see ValidatingUi#getInvalidBackground()
+	 * @see ValidatingComponentUI#getInvalidBackground()
 	 */
+	@Override
 	public Color getInvalidBackground() {
 		return validatingUi.getInvalidBackground();
 	}
 
 	/**
-	 * @see ValidatingUi#setValid(boolean)
+	 * @see ValidatingComponentUI#setValid(boolean)
 	 */
+	@Override
 	public void setValid(boolean valid) {
 		validatingUi.setValid(valid);
 	}
 
 	/**
-	 * @see ValidatingUi#isValid()
+	 * @see ValidatingComponentUI#isValid()
 	 */
+	@Override
 	public boolean isValid() {
 		return validatingUi.isValid();
 	}
 
 	/**
-	 * @see ValidatingUi#setInvalidText(String)
+	 * @see ValidatingComponentUI#setInvalidText(String)
 	 */
+	@Override
 	public void setInvalidText(String text) {
 		validatingUi.setInvalidText(text);
 	}
 
 	/**
-	 * @see ValidatingUi#getInvalidText()
+	 * @see ValidatingComponentUI#getInvalidText()
 	 */
+	@Override
 	public String getInvalidText() {
 		return validatingUi.getInvalidText();
 	}

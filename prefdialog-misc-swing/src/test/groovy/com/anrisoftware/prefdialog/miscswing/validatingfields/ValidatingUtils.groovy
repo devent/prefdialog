@@ -6,6 +6,7 @@ import java.beans.PropertyVetoException
 import java.beans.VetoableChangeListener
 
 import javax.swing.JComboBox
+import javax.swing.JFormattedTextField
 import javax.swing.JPanel
 import javax.swing.JSpinner
 import javax.swing.JTextField
@@ -59,6 +60,15 @@ class ValidatingUtils {
 	 */
 	static JTextField createTextField(String name) {
 		def field = new JTextField()
+		field.setName name
+		return field
+	}
+
+	/**
+	 * Create a formatted text field with the specified name.
+	 */
+	static JFormattedTextField createFormattedTextField(String name, def value) {
+		def field = new JFormattedTextField(value)
 		field.setName name
 		return field
 	}
