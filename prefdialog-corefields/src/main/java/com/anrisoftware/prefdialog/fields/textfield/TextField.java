@@ -29,7 +29,7 @@ import javax.swing.JTextField;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccess;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccessFactory;
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
-import com.anrisoftware.prefdialog.miscswing.components.validating.ValidatingTextComponent;
+import com.anrisoftware.prefdialog.miscswing.validatingfields.ValidatingTextComponent;
 import com.google.inject.assistedinject.Assisted;
 
 /**

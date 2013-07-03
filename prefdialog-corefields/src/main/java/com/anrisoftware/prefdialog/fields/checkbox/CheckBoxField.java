@@ -29,9 +29,9 @@ import javax.swing.JCheckBox;
 
 import com.anrisoftware.prefdialog.annotations.CheckBox;
 import com.anrisoftware.prefdialog.fields.fieldbutton.AbstractFieldButtonField;
-import com.anrisoftware.prefdialog.miscswing.components.validating.ValidatingButtonComponent;
-import com.anrisoftware.prefdialog.miscswing.components.validating.ValidatingTextComponent;
 import com.anrisoftware.prefdialog.miscswing.lockedevents.LockedVetoableChangeListener;
+import com.anrisoftware.prefdialog.miscswing.validatingfields.ValidatingButtonComponent;
+import com.anrisoftware.prefdialog.miscswing.validatingfields.ValidatingTextComponent;
 import com.google.inject.assistedinject.Assisted;
 
 /**

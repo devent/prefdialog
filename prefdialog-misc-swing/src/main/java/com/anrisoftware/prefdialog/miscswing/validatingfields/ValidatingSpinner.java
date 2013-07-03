@@ -1,4 +1,4 @@
-package com.anrisoftware.prefdialog.miscswing.components.validating;
+package com.anrisoftware.prefdialog.miscswing.validatingfields;
 
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;

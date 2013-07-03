@@ -16,9 +16,9 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-corefields. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.miscswing.components.validating
+package com.anrisoftware.prefdialog.miscswing.validatingfields
 
-import static com.anrisoftware.prefdialog.miscswing.components.validating.AbstractValidatingComponent.*
+import static com.anrisoftware.prefdialog.miscswing.validatingfields.AbstractValidatingComponent.*
 import static info.clearthought.layout.TableLayoutConstants.*
 import info.clearthought.layout.TableLayout
 

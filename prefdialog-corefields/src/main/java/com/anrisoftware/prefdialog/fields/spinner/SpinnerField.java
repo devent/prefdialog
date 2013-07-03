@@ -43,9 +43,9 @@ import com.anrisoftware.globalpom.reflection.beans.BeanAccessFactory;
 import com.anrisoftware.prefdialog.annotations.Spinner;
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
 import com.anrisoftware.prefdialog.fields.spacer.Spacer;
-import com.anrisoftware.prefdialog.miscswing.components.validating.AbstractValidatingComponent;
-import com.anrisoftware.prefdialog.miscswing.components.validating.ValidatingSpinner;
 import com.anrisoftware.prefdialog.miscswing.lockedevents.LockedVetoableChangeListener;
+import com.anrisoftware.prefdialog.miscswing.validatingfields.AbstractValidatingComponent;
+import com.anrisoftware.prefdialog.miscswing.validatingfields.ValidatingSpinner;
 import com.google.inject.assistedinject.Assisted;
 
 /**

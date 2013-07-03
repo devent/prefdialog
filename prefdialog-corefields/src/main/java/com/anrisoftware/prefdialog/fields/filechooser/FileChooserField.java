@@ -34,9 +34,9 @@ import com.anrisoftware.globalpom.reflection.annotationclass.AnnotationClassFact
 import com.anrisoftware.prefdialog.annotations.FileChooser;
 import com.anrisoftware.prefdialog.annotations.FileChooserModel;
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
-import com.anrisoftware.prefdialog.miscswing.components.validating.ValidatingFormattedTextComponent;
 import com.anrisoftware.prefdialog.miscswing.lockedevents.LockedVetoableChangeListener;
 import com.anrisoftware.prefdialog.miscswing.text.filetext.FileTextField;
+import com.anrisoftware.prefdialog.miscswing.validatingfields.ValidatingFormattedTextComponent;
 import com.google.inject.assistedinject.Assisted;
 
 /**

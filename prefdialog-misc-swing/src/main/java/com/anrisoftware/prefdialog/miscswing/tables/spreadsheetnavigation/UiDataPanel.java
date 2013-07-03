@@ -8,7 +8,7 @@ import javax.swing.border.EtchedBorder;
 
 import net.miginfocom.swing.MigLayout;
 
-import com.anrisoftware.prefdialog.miscswing.components.validating.ValidatingFormattedTextComponent;
+import com.anrisoftware.prefdialog.miscswing.validatingfields.ValidatingFormattedTextComponent;
 
 /**
  * Navigation panel.

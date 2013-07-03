@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.miscswing.components.validating;
+package com.anrisoftware.prefdialog.miscswing.validatingfields;
 
 import java.awt.Color;
 import java.awt.event.ComponentAdapter;

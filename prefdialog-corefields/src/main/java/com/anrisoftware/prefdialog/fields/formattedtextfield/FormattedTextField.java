@@ -29,8 +29,8 @@ import javax.swing.JFormattedTextField;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccess;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccessFactory;
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
-import com.anrisoftware.prefdialog.miscswing.components.validating.AbstractValidatingComponent;
-import com.anrisoftware.prefdialog.miscswing.components.validating.ValidatingFormattedTextComponent;
+import com.anrisoftware.prefdialog.miscswing.validatingfields.AbstractValidatingComponent;
+import com.anrisoftware.prefdialog.miscswing.validatingfields.ValidatingFormattedTextComponent;
 import com.google.inject.assistedinject.Assisted;
 
 /**

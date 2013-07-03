@@ -42,8 +42,8 @@ import com.anrisoftware.prefdialog.annotations.HorizontalAlignment;
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
 import com.anrisoftware.prefdialog.fields.buttongroup.ButtonsGroupPanel;
 import com.anrisoftware.prefdialog.fields.buttongroup.ButtonsRowPanel;
-import com.anrisoftware.prefdialog.miscswing.components.validating.AbstractValidatingComponent;
-import com.anrisoftware.prefdialog.miscswing.components.validating.ValidatingTextComponent;
+import com.anrisoftware.prefdialog.miscswing.validatingfields.AbstractValidatingComponent;
+import com.anrisoftware.prefdialog.miscswing.validatingfields.ValidatingTextComponent;
 import com.google.inject.assistedinject.Assisted;
 
 /**

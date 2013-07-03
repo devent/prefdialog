@@ -1,4 +1,4 @@
-package com.anrisoftware.prefdialog.miscswing.components.validating
+package com.anrisoftware.prefdialog.miscswing.validatingfields
 
 import info.clearthought.layout.TableLayout
 

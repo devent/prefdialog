@@ -24,9 +24,9 @@ import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccessFactory
 import com.anrisoftware.globalpom.reflection.beans.BeanAccess;
 import com.anrisoftware.globalpom.reflection.beans.BeanAccessFactory;
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
-import com.anrisoftware.prefdialog.miscswing.components.validating.AbstractValidatingComponent;
-import com.anrisoftware.prefdialog.miscswing.components.validating.ValidatingComboBoxComponent;
 import com.anrisoftware.prefdialog.miscswing.lockedevents.LockedVetoableChangeListener;
+import com.anrisoftware.prefdialog.miscswing.validatingfields.AbstractValidatingComponent;
+import com.anrisoftware.prefdialog.miscswing.validatingfields.ValidatingComboBoxComponent;
 import com.anrisoftware.resources.texts.api.Texts;
 
 /**

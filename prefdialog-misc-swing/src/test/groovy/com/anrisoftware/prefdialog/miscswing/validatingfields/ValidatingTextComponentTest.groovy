@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-corefields. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.miscswing.components.validating
+package com.anrisoftware.prefdialog.miscswing.validatingfields
 
 import static info.clearthought.layout.TableLayoutConstants.*
 import info.clearthought.layout.TableLayout
@@ -32,6 +32,7 @@ import org.fest.swing.fixture.FrameFixture
 import org.junit.Test
 
 import com.anrisoftware.globalpom.utils.TestFrameUtil
+import com.anrisoftware.prefdialog.miscswing.validatingfields.ValidatingTextComponent;
 
 /**
  * Test the {@link ValidatingTextComponent}.
