@@ -5,6 +5,7 @@ import info.clearthought.layout.TableLayout
 import java.beans.PropertyVetoException
 import java.beans.VetoableChangeListener
 
+import javax.swing.JComboBox
 import javax.swing.JPanel
 import javax.swing.JSpinner
 import javax.swing.JTextField
@@ -59,6 +60,16 @@ class ValidatingUtils {
 	static JTextField createTextField(String name) {
 		def field = new JTextField()
 		field.setName name
+		return field
+	}
+
+	/**
+	 * Create a combo-box field with the specified name.
+	 */
+	static JComboBox createComboBoxField(String name, boolean editable) {
+		def field = new JComboBox(["A", "B"] as String[])
+		field.setName name
+		field.setEditable editable
 		return field
 	}
 

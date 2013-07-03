@@ -187,6 +187,7 @@ public class ValidatingUi extends ComponentUI {
 	 */
 	@Override
 	public void update(Graphics g, JComponent c) {
+		ui.update(g, c);
 		paint(g, c);
 	}
 
