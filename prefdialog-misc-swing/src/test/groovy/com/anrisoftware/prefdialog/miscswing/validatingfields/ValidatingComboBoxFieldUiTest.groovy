@@ -40,7 +40,8 @@ class ValidatingComboBoxFieldUiTest {
 		def title = "$NAME::not editable, show invalid with tool-tip"
 		def fieldName = "fieldA"
 		def field = ValidatingComboBoxFieldUi.decorate(createComboBoxField(fieldName, false))
-		field.setText "Not valid"
+		def comboBox
+		field.setInvalidText "Not valid"
 		def fieldB = createTextField("fieldB")
 		def panel = createPanel cols: [FILL], rows: [
 			FILL,
@@ -52,8 +53,11 @@ class ValidatingComboBoxFieldUiTest {
 			"0, 2": fieldB
 		]
 		new TestFrameUtil(title, panel).withFixture({ FrameFixture fix ->
+			comboBox = fix.comboBox()
 			fix.comboBox().selectItem(0)
 			invokeAndWait { field.setValid false  }
+			comboBox.selectItem(0)
+			comboBox.selectItem(1)
 		}, {
 			invokeAndWait { field.setValid true  }
 		}, {
@@ -61,6 +65,44 @@ class ValidatingComboBoxFieldUiTest {
 		}, { FrameFixture fix ->
 			fix.textBox().focus()
 			invokeAndWait { field.setValid false  }
+			comboBox.selectItem(0)
+			comboBox.selectItem(1)
+		}, {
+			invokeAndWait { field.setValid true  }
+		}, {
+			invokeAndWait { field.setValid false  }
+		})
+	}
+
+	@Test
+	void "editable, show invalid with tool-tip"() {
+		def title = "$NAME::editable, show invalid with tool-tip"
+		def fieldName = "fieldA"
+		def field = ValidatingComboBoxFieldUi.decorate(createComboBoxField(fieldName, true))
+		field.setInvalidText "Not valid"
+		def fieldB = createTextField("fieldB")
+		def panel = createPanel cols: [FILL], rows: [
+			FILL,
+			PREFERRED,
+			PREFERRED,
+			FILL
+		], fields: [
+			"0, 1": field.component,
+			"0, 2": fieldB
+		]
+		new TestFrameUtil(title, panel).withFixture({ FrameFixture fix ->
+			invokeAndWait { field.setValid false }
+			fix.comboBox().selectItem(0)
+			fix.comboBox().selectItem(1)
+		}, { FrameFixture fix ->
+			invokeAndWait { field.setValid true  }
+		}, {
+			invokeAndWait { field.setValid false  }
+		}, { FrameFixture fix ->
+			fix.textBox("fieldB").focus()
+			invokeAndWait { field.setValid false  }
+			fix.comboBox().selectItem(0)
+			fix.comboBox().selectItem(1)
 		}, {
 			invokeAndWait { field.setValid true  }
 		}, {

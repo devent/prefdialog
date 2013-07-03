@@ -1,6 +1,7 @@
 package com.anrisoftware.prefdialog.miscswing.validatingfields;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Component.BaselineResizeBehavior;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -9,6 +10,7 @@ import javax.accessibility.Accessible;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.plaf.ComboBoxUI;
+import javax.swing.text.JTextComponent;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -41,6 +43,8 @@ public class ValidatingComboBoxFieldUi extends ComboBoxUI {
 
 	private final ComboBoxUI ui;
 
+	private ValidatingTextFieldUi editorUi;
+
 	/**
 	 * Sets the underlying combo-box user interface.
 	 * 
@@ -64,6 +68,9 @@ public class ValidatingComboBoxFieldUi extends ComboBoxUI {
 	 */
 	public void setInvalidBackground(Color color) {
 		validatingUi.setInvalidBackground(color);
+		if (editorUi != null) {
+			editorUi.setInvalidBackground(color);
+		}
 	}
 
 	/**
@@ -78,6 +85,9 @@ public class ValidatingComboBoxFieldUi extends ComboBoxUI {
 	 */
 	public void setValid(boolean valid) {
 		validatingUi.setValid(valid);
+		if (editorUi != null) {
+			editorUi.setValid(valid);
+		}
 	}
 
 	/**
@@ -92,6 +102,9 @@ public class ValidatingComboBoxFieldUi extends ComboBoxUI {
 	 */
 	public void setInvalidText(String text) {
 		validatingUi.setInvalidText(text);
+		if (editorUi != null) {
+			editorUi.setInvalidText(text);
+		}
 	}
 
 	/**
@@ -101,24 +114,23 @@ public class ValidatingComboBoxFieldUi extends ComboBoxUI {
 		return validatingUi.getInvalidText();
 	}
 
-	/**
-	 * @see ValidatingUi#setText(String)
-	 */
-	public void setText(String text) {
-		validatingUi.setText(text);
-	}
-
-	/**
-	 * @see ValidatingUi#getText()
-	 */
-	public String getText() {
-		return validatingUi.getInvalidText();
-	}
-
 	@Override
 	public void installUI(JComponent c) {
 		ui.installUI(c);
 		validatingUi.installUI(c);
+		setupEditor();
+	}
+
+	private void setupEditor() {
+		if (!getComponent().isEditable()) {
+			return;
+		}
+		Component editorComponent = getComponent().getEditor()
+				.getEditorComponent();
+		if (editorComponent instanceof JTextComponent) {
+			JTextComponent text = (JTextComponent) editorComponent;
+			editorUi = ValidatingTextFieldUi.decorate(text);
+		}
 	}
 
 	@Override
@@ -153,6 +165,10 @@ public class ValidatingComboBoxFieldUi extends ComboBoxUI {
 	@Override
 	public void uninstallUI(JComponent c) {
 		ui.uninstallUI(c);
+		validatingUi.uninstallUI(c);
+		if (editorUi != null) {
+			editorUi.uninstallUI(editorUi.getComponent());
+		}
 	}
 
 	@Override

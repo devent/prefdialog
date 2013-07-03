@@ -40,7 +40,7 @@ class ValidatingTextFieldUiTest {
 		def title = "$NAME::show invalid with tool-tip"
 		def fieldName = "fieldA"
 		def field = ValidatingTextFieldUi.decorate(createTextField(fieldName))
-		field.setText "Not valid"
+		field.setInvalidText "Not valid"
 		def fieldB = createTextField("fieldB")
 		def panel = createPanel cols: [FILL], rows: [
 			FILL,

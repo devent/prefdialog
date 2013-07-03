@@ -106,20 +106,6 @@ public class ValidatingTextFieldUi extends TextUI {
 		return validatingUi.getInvalidText();
 	}
 
-	/**
-	 * @see ValidatingUi#setText(String)
-	 */
-	public void setText(String text) {
-		validatingUi.setText(text);
-	}
-
-	/**
-	 * @see ValidatingUi#getText()
-	 */
-	public String getText() {
-		return validatingUi.getInvalidText();
-	}
-
 	@Override
 	public void installUI(JComponent c) {
 		ui.installUI(c);

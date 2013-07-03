@@ -37,8 +37,6 @@ public class ValidatingUi extends ComponentUI {
 
 	private JComponent component;
 
-	private String invalidText;
-
 	/**
 	 * Sets the underlying user interface.
 	 * 
@@ -125,7 +123,7 @@ public class ValidatingUi extends ComponentUI {
 	 *            the text {@link String}.
 	 */
 	public void setInvalidText(String text) {
-		this.invalidText = text;
+		toolTip.setText(text);
 	}
 
 	/**
@@ -135,20 +133,6 @@ public class ValidatingUi extends ComponentUI {
 	 * @return the text {@link String}.
 	 */
 	public String getInvalidText() {
-		return invalidText;
-	}
-
-	/**
-	 * @see ToolTipShower#setText(String)
-	 */
-	public void setText(String text) {
-		toolTip.setText(text);
-	}
-
-	/**
-	 * @see ToolTipShower#getText()
-	 */
-	public String getText() {
 		return toolTip.getText();
 	}
 
