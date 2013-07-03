@@ -1,11 +1,9 @@
 package com.anrisoftware.prefdialog.miscswing.validatingfields;
 
-import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Component.BaselineResizeBehavior;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 
@@ -20,13 +18,11 @@ import javax.swing.text.View;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import com.anrisoftware.prefdialog.miscswing.tooltip.ToolTipShower;
-
 /**
  * Decorated the text component depending whether or not the input is valid.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 1.0
+ * @since 3.0
  */
 public class ValidatingTextFieldUi extends TextUI {
 
@@ -40,26 +36,15 @@ public class ValidatingTextFieldUi extends TextUI {
 	 * @return the {@link ValidatingTextFieldUi}.
 	 */
 	public static ValidatingTextFieldUi decorate(JTextComponent field) {
-		ValidatingTextFieldUi ui = new ValidatingTextFieldUi(field.getUI(),
-				ToolTipShower.decorate(field));
+		ValidatingTextFieldUi ui = new ValidatingTextFieldUi(new ValidatingUi(
+				field.getUI()), field.getUI());
 		field.setUI(ui);
 		return ui;
 	}
 
-	private static final AlphaComposite ALPHA = AlphaComposite.getInstance(
-			AlphaComposite.SRC_OVER, 0.1f);
+	private final ValidatingUi validatingUi;
 
 	private final TextUI ui;
-
-	private final ToolTipShower toolTip;
-
-	private Color invalidBackground;
-
-	private boolean valid;
-
-	private JTextComponent component;
-
-	private String invalidText;
 
 	/**
 	 * Sets the underlying text user interface.
@@ -67,132 +52,89 @@ public class ValidatingTextFieldUi extends TextUI {
 	 * @param ui
 	 *            the {@link TextUI}.
 	 */
-	public ValidatingTextFieldUi(TextUI ui, ToolTipShower toolTip) {
+	public ValidatingTextFieldUi(ValidatingUi validatingUi, TextUI ui) {
+		this.validatingUi = validatingUi;
 		this.ui = ui;
-		this.toolTip = toolTip;
-		this.valid = true;
-		this.invalidBackground = Color.RED;
 	}
 
 	/**
-	 * Sets the invalid background color for the component.
-	 * <p>
-	 * <h2>AWT Thread</h2>
-	 * <p>
-	 * Should be called on the AWT thread.
-	 * 
-	 * @param color
-	 *            the background {@link Color}.
+	 * @see ValidatingUi#getComponent()
+	 */
+	public JTextComponent getComponent() {
+		return (JTextComponent) validatingUi.getComponent();
+	}
+
+	/**
+	 * @see ValidatingUi#setInvalidBackground(Color)
 	 */
 	public void setInvalidBackground(Color color) {
-		Color oldValue = this.invalidBackground;
-		this.invalidBackground = color;
-		if (oldValue != color) {
-			component.repaint();
-		}
+		validatingUi.setInvalidBackground(color);
 	}
 
 	/**
-	 * Returns the invalid background color for the component.
-	 * 
-	 * @return the background {@link Color}.
+	 * @see ValidatingUi#getInvalidBackground()
 	 */
 	public Color getInvalidBackground() {
-		return invalidBackground;
+		return validatingUi.getInvalidBackground();
 	}
 
 	/**
-	 * Sets that the input is valid. The component is repaint when the state
-	 * changed.
-	 * <p>
-	 * <h2>AWT Thread</h2>
-	 * <p>
-	 * Should be called on the AWT thread.
-	 * 
-	 * @param valid
-	 *            set to {@code true} if the current input is valid.
+	 * @see ValidatingUi#setValid(boolean)
 	 */
 	public void setValid(boolean valid) {
-		boolean oldValue = this.valid;
-		this.valid = valid;
-		if (oldValue != valid) {
-			component.repaint();
-		}
-		toolTip.setShowToolTip(!valid);
+		validatingUi.setValid(valid);
 	}
 
 	/**
-	 * Returns that the input is valid.
-	 * 
-	 * @return {@code true} if the current input is valid.
+	 * @see ValidatingUi#isValid()
 	 */
 	public boolean isValid() {
-		return valid;
+		return validatingUi.isValid();
 	}
 
 	/**
-	 * Sets the invalid text that is shown in a tool-tip if the input is set as
-	 * not valid.
-	 * 
-	 * @param text
-	 *            the text {@link String}.
+	 * @see ValidatingUi#setInvalidText(String)
 	 */
 	public void setInvalidText(String text) {
-		this.invalidText = text;
+		validatingUi.setInvalidText(text);
 	}
 
 	/**
-	 * Returns the invalid text that is shown in a tool-tip if the input is set
-	 * as not valid.
-	 * 
-	 * @return the text {@link String}.
+	 * @see ValidatingUi#getInvalidText()
 	 */
 	public String getInvalidText() {
-		return invalidText;
+		return validatingUi.getInvalidText();
 	}
 
 	/**
-	 * @see ToolTipShower#setText(String)
+	 * @see ValidatingUi#setText(String)
 	 */
 	public void setText(String text) {
-		toolTip.setText(text);
+		validatingUi.setText(text);
 	}
 
 	/**
-	 * @see ToolTipShower#getText()
+	 * @see ValidatingUi#getText()
 	 */
 	public String getText() {
-		return toolTip.getText();
+		return validatingUi.getInvalidText();
 	}
 
 	@Override
 	public void installUI(JComponent c) {
 		ui.installUI(c);
-		component = (JTextComponent) c;
+		validatingUi.installUI(c);
 	}
 
 	@Override
 	public void paint(Graphics g, JComponent c) {
 		ui.paint(g, c);
-		if (!valid) {
-			paintInvalidOverlay(g);
-		}
+		validatingUi.paint(g, c);
 	}
 
-	private void paintInvalidOverlay(Graphics g) {
-		Graphics2D g2 = (Graphics2D) g;
-		g2.setComposite(ALPHA);
-		g2.setPaint(invalidBackground);
-		Rectangle bounds = g.getClipBounds();
-		g2.fillRect(bounds.x, bounds.y, bounds.width, bounds.height);
-	}
-
-	/**
-	 * Call validating paint method.
-	 */
 	@Override
 	public void update(Graphics g, JComponent c) {
-		paint(g, c);
+		validatingUi.update(g, c);
 	}
 
 	@Override
@@ -226,11 +168,6 @@ public class ValidatingTextFieldUi extends TextUI {
 	public int getNextVisualPositionFrom(JTextComponent t, int pos, Bias b,
 			int direction, Bias[] biasRet) throws BadLocationException {
 		return ui.getNextVisualPositionFrom(t, pos, b, direction, biasRet);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		return ui.equals(obj);
 	}
 
 	@Override
