@@ -10,7 +10,7 @@
  * should have received a copy of the GNU Lesser General Public License along
  * with prefdialog-corefields. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.miscswing.text.filetext;
+package com.anrisoftware.prefdialog.miscswing.filetextfield;
 
 import static javax.swing.SwingUtilities.invokeLater;
 
@@ -35,12 +35,10 @@ import com.google.inject.Injector;
  * used to calculate the viewable characters for the file path.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 1.0
+ * @since 3.0
  */
 @SuppressWarnings("serial")
 public class FileTextField extends JFormattedTextField {
-
-	private static final Injector INJECTOR = Guice.createInjector();
 
 	/**
 	 * @see #create()
@@ -71,9 +69,20 @@ public class FileTextField extends JFormattedTextField {
 	 * @return the file text field {@link JFormattedTextField}.
 	 */
 	public static JFormattedTextField create(File file) {
-		FileTextField field = INJECTOR.getInstance(FileTextField.class);
+		FileTextField field = getInjector().getInstance(FileTextField.class);
 		field.setValue(file);
 		return field;
+	}
+
+	private static Injector injector;
+
+	private static Injector getInjector() {
+		if (injector == null) {
+			synchronized (FileTextField.class) {
+				injector = Guice.createInjector();
+			}
+		}
+		return injector;
 	}
 
 	private final FileDisplayFormatter displayFormatter;
@@ -97,7 +106,7 @@ public class FileTextField extends JFormattedTextField {
 		this.focusListener = new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
-				updateCaretToLastCharacterOnFocus();
+				updateCaretToLastCharacter();
 			}
 
 		};
@@ -124,7 +133,7 @@ public class FileTextField extends JFormattedTextField {
 		displayFormatter.updatePathMaxWidth(getWidth());
 	}
 
-	private void updateCaretToLastCharacterOnFocus() {
+	private void updateCaretToLastCharacter() {
 		invokeLater(new Runnable() {
 
 			@Override

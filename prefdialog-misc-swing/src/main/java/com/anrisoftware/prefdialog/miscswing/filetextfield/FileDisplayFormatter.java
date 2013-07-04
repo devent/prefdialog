@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-corefields. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.miscswing.text.filetext;
+package com.anrisoftware.prefdialog.miscswing.filetextfield;
 
 import static java.io.File.separatorChar;
 
@@ -37,7 +37,7 @@ import org.apache.commons.lang3.StringUtils;
  * {@link FileDisplayFormatter#setFontMetrics(FontMetrics, int)} method.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 1.0
+ * @since 3.0
  */
 @SuppressWarnings("serial")
 class FileDisplayFormatter extends DefaultFormatter {

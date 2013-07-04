@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-corefields. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.miscswing.text.filetext;
+package com.anrisoftware.prefdialog.miscswing.filetextfield;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,13 +28,13 @@ import com.anrisoftware.globalpom.resources.ConvertException;
  * Log messages for the file text transfer handler.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 1.0
+ * @since 3.0
  */
 class FileTextTransferHandlerLogger extends AbstractLogger {
 
 	private static final String IMPORT_FILE = "Import file '{}' in {}.";
-	private static final String INVALID_URI_SYNTAX = "Invalid URI syntax: %s.";
-	private static final String ERROR_IMPORTING = "Error while importing data: %s.";
+	private static final String INVALID_URI_SYNTAX = "Invalid URI syntax: {}.";
+	private static final String ERROR_IMPORTING = "Error while importing data: {}.";
 
 	FileTextTransferHandlerLogger() {
 		super(FileTextTransferHandler.class);

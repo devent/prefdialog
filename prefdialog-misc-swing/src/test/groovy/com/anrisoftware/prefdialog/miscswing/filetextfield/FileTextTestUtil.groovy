@@ -1,4 +1,4 @@
-package com.anrisoftware.prefdialog.miscswing.text.filetext
+package com.anrisoftware.prefdialog.miscswing.filetextfield
 
 import javax.swing.JButton
 import javax.swing.JPanel
@@ -11,7 +11,7 @@ import com.anrisoftware.globalpom.utils.TestFrameUtil
  * Utilities to test the file text field.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 1.0
+ * @since 3.0
  */
 class FileTextTestUtil {
 
