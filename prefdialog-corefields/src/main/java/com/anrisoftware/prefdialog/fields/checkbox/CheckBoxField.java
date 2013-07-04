@@ -18,20 +18,13 @@
  */
 package com.anrisoftware.prefdialog.fields.checkbox;
 
-import static com.anrisoftware.prefdialog.miscswing.lockedevents.LockedVetoableChangeListener.lockedVetoableChangeListener;
-
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
-import java.beans.VetoableChangeListener;
 
 import javax.inject.Inject;
 import javax.swing.JCheckBox;
 
 import com.anrisoftware.prefdialog.annotations.CheckBox;
 import com.anrisoftware.prefdialog.fields.fieldbutton.AbstractFieldButtonField;
-import com.anrisoftware.prefdialog.miscswing.lockedevents.LockedVetoableChangeListener;
-import com.anrisoftware.prefdialog.miscswing.validatingfields.ValidatingButtonComponent;
-import com.anrisoftware.prefdialog.miscswing.validatingfields.ValidatingTextComponent;
 import com.google.inject.assistedinject.Assisted;
 
 /**
@@ -48,10 +41,6 @@ public class CheckBoxField extends AbstractFieldButtonField<JCheckBox> {
 
 	private final CheckBoxFieldLogger log;
 
-	private final ValidatingButtonComponent<JCheckBox> validating;
-
-	private final LockedVetoableChangeListener valueVetoListener;
-
 	/**
 	 * @see CheckBoxFieldFactory#create(Object, String)
 	 */
@@ -59,26 +48,7 @@ public class CheckBoxField extends AbstractFieldButtonField<JCheckBox> {
 	CheckBoxField(CheckBoxFieldLogger logger, @Assisted Object parentObject,
 			@Assisted String fieldName) {
 		super(new JCheckBox(), parentObject, fieldName);
-		JCheckBox checkBox = getComponent();
-		this.validating = new ValidatingButtonComponent<JCheckBox>(checkBox);
 		this.log = logger;
-		this.valueVetoListener = lockedVetoableChangeListener(new VetoableChangeListener() {
-
-			@Override
-			public void vetoableChange(PropertyChangeEvent evt)
-					throws PropertyVetoException {
-				valueVetoListener.lock();
-				setValue(evt.getNewValue());
-				valueVetoListener.unlock();
-			}
-
-		});
-		setupValidating();
-	}
-
-	private void setupValidating() {
-		validating.addVetoableChangeListener(
-				ValidatingTextComponent.VALUE_PROPERTY, valueVetoListener);
 	}
 
 	/**
@@ -98,8 +68,6 @@ public class CheckBoxField extends AbstractFieldButtonField<JCheckBox> {
 	public void setValue(Object value) throws PropertyVetoException {
 		super.setValue(value);
 		log.checkValue(this, value);
-		valueVetoListener.lock();
-		validating.setValue(value);
-		valueVetoListener.unlock();
+		getComponent().setSelected((Boolean) value);
 	}
 }

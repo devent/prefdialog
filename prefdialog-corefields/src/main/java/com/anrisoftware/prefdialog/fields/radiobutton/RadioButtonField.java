@@ -18,19 +18,12 @@
  */
 package com.anrisoftware.prefdialog.fields.radiobutton;
 
-import static com.anrisoftware.prefdialog.miscswing.lockedevents.LockedVetoableChangeListener.lockedVetoableChangeListener;
-
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
-import java.beans.VetoableChangeListener;
 
 import javax.inject.Inject;
 import javax.swing.JRadioButton;
 
 import com.anrisoftware.prefdialog.fields.fieldbutton.AbstractFieldButtonField;
-import com.anrisoftware.prefdialog.miscswing.lockedevents.LockedVetoableChangeListener;
-import com.anrisoftware.prefdialog.miscswing.validatingfields.ValidatingButtonComponent;
-import com.anrisoftware.prefdialog.miscswing.validatingfields.ValidatingTextComponent;
 import com.google.inject.assistedinject.Assisted;
 
 /**
@@ -42,10 +35,6 @@ import com.google.inject.assistedinject.Assisted;
 @SuppressWarnings("serial")
 public class RadioButtonField extends AbstractFieldButtonField<JRadioButton> {
 
-	private final ValidatingButtonComponent<JRadioButton> validating;
-
-	private final LockedVetoableChangeListener valueVetoListener;
-
 	private final RadioButtonFieldLogger log;
 
 	/**
@@ -56,25 +45,6 @@ public class RadioButtonField extends AbstractFieldButtonField<JRadioButton> {
 			@Assisted Object parentObject, @Assisted String fieldName) {
 		super(new JRadioButton(), parentObject, fieldName);
 		this.log = logger;
-		this.validating = new ValidatingButtonComponent<JRadioButton>(
-				getComponent());
-		this.valueVetoListener = lockedVetoableChangeListener(new VetoableChangeListener() {
-
-			@Override
-			public void vetoableChange(PropertyChangeEvent evt)
-					throws PropertyVetoException {
-				valueVetoListener.lock();
-				setValue(evt.getNewValue());
-				valueVetoListener.unlock();
-			}
-
-		});
-		setupValidating();
-	}
-
-	private void setupValidating() {
-		validating.addVetoableChangeListener(
-				ValidatingTextComponent.VALUE_PROPERTY, valueVetoListener);
 	}
 
 	/**
@@ -94,9 +64,6 @@ public class RadioButtonField extends AbstractFieldButtonField<JRadioButton> {
 	public void setValue(Object value) throws PropertyVetoException {
 		super.setValue(value);
 		log.checkValue(this, value);
-		valueVetoListener.lock();
-		validating.setValue(value);
-		valueVetoListener.unlock();
+		getComponent().setSelected((Boolean) value);
 	}
-
 }

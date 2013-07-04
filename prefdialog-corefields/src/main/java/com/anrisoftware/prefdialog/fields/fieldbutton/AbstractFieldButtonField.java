@@ -1,18 +1,18 @@
 /*
  * Copyright 2012 Erwin Müller <erwin.mueller@deventm.org>
- *
+ * 
  * This file is part of prefdialog-corefields.
- *
+ * 
  * prefdialog-corefields is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- *
+ * 
  * prefdialog-corefields is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-corefields. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -20,7 +20,9 @@ package com.anrisoftware.prefdialog.fields.fieldbutton;
 
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyVetoException;
 import java.lang.annotation.Annotation;
 import java.util.Locale;
 
@@ -59,6 +61,8 @@ public class AbstractFieldButtonField<ComponentType extends AbstractButton>
 
 	private static final String GROUP_ELEMENT = "group";
 
+	private final ActionListener valueAction;
+
 	private transient AnnotationAccess fieldAnnotation;
 
 	private transient AnnotationClass<?> annotationClass;
@@ -82,6 +86,16 @@ public class AbstractFieldButtonField<ComponentType extends AbstractButton>
 	protected AbstractFieldButtonField(ComponentType component,
 			Object parentObject, String fieldName) {
 		super(component, parentObject, fieldName);
+		this.valueAction = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					setValue(getComponent().isSelected());
+				} catch (PropertyVetoException e1) {
+				}
+			}
+		};
 	}
 
 	@Inject
@@ -97,6 +111,7 @@ public class AbstractFieldButtonField<ComponentType extends AbstractButton>
 		setupShowText();
 		setupAction();
 		setupGroup();
+		setupButton();
 	}
 
 	private void setupText() {
@@ -129,6 +144,10 @@ public class AbstractFieldButtonField<ComponentType extends AbstractButton>
 		if (group != null) {
 			setButtonGroup(group);
 		}
+	}
+
+	private void setupButton() {
+		getComponent().addActionListener(valueAction);
 	}
 
 	@Override

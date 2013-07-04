@@ -1,18 +1,18 @@
 /*
  * Copyright 2012 Erwin Müller <erwin.mueller@deventm.org>
- *
+ * 
  * This file is part of prefdialog-corefields.
- *
+ * 
  * prefdialog-corefields is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- *
+ * 
  * prefdialog-corefields is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-corefields. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -25,14 +25,12 @@ import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
-import java.beans.VetoableChangeListener;
 import java.lang.annotation.Annotation;
 
 import javax.inject.Inject;
 import javax.swing.Action;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccess;
@@ -42,8 +40,6 @@ import com.anrisoftware.prefdialog.annotations.HorizontalAlignment;
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
 import com.anrisoftware.prefdialog.fields.buttongroup.ButtonsGroupPanel;
 import com.anrisoftware.prefdialog.fields.buttongroup.ButtonsRowPanel;
-import com.anrisoftware.prefdialog.miscswing.validatingfields.AbstractValidatingComponent;
-import com.anrisoftware.prefdialog.miscswing.validatingfields.ValidatingTextComponent;
 import com.google.inject.assistedinject.Assisted;
 
 /**
@@ -75,10 +71,6 @@ public class ColorButtonField extends AbstractTitleField<JPanel> {
 
 	private final PropertyChangeListener colorListener;
 
-	private final VetoableChangeListener valueVetoListener;
-
-	private AbstractValidatingComponent<Color, JComponent> validating;
-
 	/**
 	 * @see ColorButtonFieldFactory#create(Object, String)
 	 */
@@ -94,35 +86,16 @@ public class ColorButtonField extends AbstractTitleField<JPanel> {
 		this.buttonsRowPanel = buttonsRowPanel;
 		this.rowModel = new DefaultListModel<Action>();
 		this.selectColorAction = selectColorAction;
-		this.validating = new AbstractValidatingComponent<Color, JComponent>(
-				buttonsGroupPanel) {
-
-			@Override
-			protected void setComponentValue(Color value) {
-				setupColorValue(value);
-			}
-
-			@Override
-			protected Color getComponentValue() {
-				return ColorButtonField.this.getColor();
-			}
-		};
 		this.colorListener = new PropertyChangeListener() {
 
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				if (evt.getPropertyName() == COLOR_PROPERTY) {
-					validating.setValue((Color) evt.getNewValue());
+					try {
+						setValue((Color) evt.getNewValue());
+					} catch (PropertyVetoException e) {
+					}
 				}
-			}
-		};
-		this.valueVetoListener = new VetoableChangeListener() {
-
-			@Override
-			public void vetoableChange(PropertyChangeEvent evt)
-					throws PropertyVetoException {
-				ColorButtonField.super.trySetValue(evt.getNewValue());
-				changeValue(evt.getNewValue());
 			}
 		};
 		setup();
@@ -134,8 +107,6 @@ public class ColorButtonField extends AbstractTitleField<JPanel> {
 		rowModel.addElement(selectColorAction);
 		buttonsRowPanel.setModel(rowModel);
 		colorButton = buttonsRowPanel.getButton(0);
-		validating.addVetoableChangeListener(
-				ValidatingTextComponent.VALUE_PROPERTY, valueVetoListener);
 	}
 
 	@Inject
