@@ -18,12 +18,9 @@
  */
 package com.anrisoftware.prefdialog.fields.spinner;
 
-import static com.anrisoftware.prefdialog.miscswing.lockedevents.LockedVetoableChangeListener.lockedVetoableChangeListener;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
-import java.beans.VetoableChangeListener;
 import java.lang.annotation.Annotation;
 import java.util.Date;
 import java.util.List;
@@ -34,6 +31,8 @@ import javax.swing.SpinnerDateModel;
 import javax.swing.SpinnerListModel;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import com.anrisoftware.globalpom.reflection.annotationclass.AnnotationClass;
 import com.anrisoftware.globalpom.reflection.annotationclass.AnnotationClassFactory;
@@ -43,9 +42,6 @@ import com.anrisoftware.globalpom.reflection.beans.BeanAccessFactory;
 import com.anrisoftware.prefdialog.annotations.Spinner;
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
 import com.anrisoftware.prefdialog.fields.spacer.Spacer;
-import com.anrisoftware.prefdialog.miscswing.lockedevents.LockedVetoableChangeListener;
-import com.anrisoftware.prefdialog.miscswing.validatingfields.AbstractValidatingComponent;
-import com.anrisoftware.prefdialog.miscswing.validatingfields.ValidatingSpinner;
 import com.google.inject.assistedinject.Assisted;
 
 /**
@@ -75,19 +71,17 @@ public class SpinnerField extends AbstractTitleField<JSpinner> {
 
 	private static final String CALENDAR_FIELD_ATTRIBUTE = "calendarField";
 
-	private final ValidatingSpinner<JSpinner> validating;
-
-	private final LockedVetoableChangeListener valueVetoListener;
-
 	private final SpinnerFieldLogger log;
 
-	private boolean modelSet;
+	private final ChangeListener changeListener;
 
-	private AnnotationClassFactory annotationClassFactory;
+	private transient AnnotationClassFactory annotationClassFactory;
 
-	private AnnotationAccess annotationAccess;
+	private transient AnnotationAccess annotationAccess;
 
-	private BeanAccessFactory beanAccessFactory;
+	private transient BeanAccessFactory beanAccessFactory;
+
+	private boolean customModelSet;
 
 	/**
 	 * @see SpinnerFieldFactory#create(Object, String)
@@ -97,25 +91,18 @@ public class SpinnerField extends AbstractTitleField<JSpinner> {
 			@Assisted String fieldName) {
 		super(new JSpinner(), parentObject, fieldName);
 		this.log = logger;
-		this.validating = new ValidatingSpinner<JSpinner>(getComponent());
-		this.modelSet = false;
-		this.valueVetoListener = lockedVetoableChangeListener(new VetoableChangeListener() {
+		this.customModelSet = false;
+		this.changeListener = new ChangeListener() {
 
 			@Override
-			public void vetoableChange(PropertyChangeEvent evt)
-					throws PropertyVetoException {
-				valueVetoListener.lock();
-				setValue(evt.getNewValue());
-				valueVetoListener.unlock();
+			public void stateChanged(ChangeEvent e) {
+				try {
+					setValue(getComponent().getValue());
+				} catch (PropertyVetoException e1) {
+				}
 			}
+		};
 
-		});
-		setupValidating();
-	}
-
-	private void setupValidating() {
-		validating.addVetoableChangeListener(
-				AbstractValidatingComponent.VALUE_PROPERTY, valueVetoListener);
 	}
 
 	@Inject
@@ -203,10 +190,8 @@ public class SpinnerField extends AbstractTitleField<JSpinner> {
 	@Override
 	public void setValue(Object value) throws PropertyVetoException {
 		super.setValue(value);
-		if (modelSet) {
-			valueVetoListener.lock();
-			validating.setValue(value);
-			valueVetoListener.unlock();
+		if (customModelSet) {
+			getComponent().setValue(value);
 		}
 	}
 
@@ -221,9 +206,15 @@ public class SpinnerField extends AbstractTitleField<JSpinner> {
 	 */
 	public void setModel(SpinnerModel model) {
 		log.checkModel(this, model);
+		removeOldModel();
 		getComponent().setModel(model);
-		modelSet = true;
+		model.addChangeListener(changeListener);
+		customModelSet = true;
 		log.modelSet(this, model);
+	}
+
+	private void removeOldModel() {
+		getComponent().getModel().removeChangeListener(changeListener);
 	}
 
 	/**

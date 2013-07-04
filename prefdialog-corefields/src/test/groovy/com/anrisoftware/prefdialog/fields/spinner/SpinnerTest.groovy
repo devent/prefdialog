@@ -76,8 +76,8 @@ class SpinnerTest {
 			spinner.enterText "$valueB"
 			spinner.pressAndReleaseKeys KeyEvent.VK_ENTER
 			field.restoreInput()
-			spinner.requireValue valueA
-			assert bean.integerValue == valueA
+			spinner.requireValue 0
+			assert bean.integerValue == 0
 		})
 	}
 
