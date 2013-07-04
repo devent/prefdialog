@@ -175,13 +175,20 @@ public class HistoryComboBoxField extends AbstractComboBoxField<JComboBox<?>> {
 		setMaximum(maximum);
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public void setValue(Object value) throws PropertyVetoException {
 		if (value instanceof ItemDefault) {
 			ItemDefault item = (ItemDefault) value;
 			value = item.getItem();
 		}
-		super.setValue(value);
+		try {
+			super.setValue(value);
+		} catch (PropertyVetoException e) {
+			((MutableComboBoxModel) getModel()).removeElement(value);
+			getComponent().setSelectedItem(value);
+			throw e;
+		}
 	}
 
 	/**

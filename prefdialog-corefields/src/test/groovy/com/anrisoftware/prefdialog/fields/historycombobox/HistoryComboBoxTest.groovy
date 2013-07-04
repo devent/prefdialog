@@ -21,6 +21,8 @@ package com.anrisoftware.prefdialog.fields.historycombobox
 import static com.anrisoftware.prefdialog.fields.historycombobox.HistoryComboBoxBean.*
 
 import java.awt.event.KeyEvent
+import java.beans.PropertyVetoException
+import java.beans.VetoableChangeListener
 
 import org.fest.swing.fixture.FrameFixture
 import org.junit.Before
@@ -31,6 +33,7 @@ import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.globalpom.utils.TestUtils
 import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
 import com.anrisoftware.prefdialog.core.FieldTestUtils
+import com.anrisoftware.prefdialog.fields.FieldComponent
 import com.anrisoftware.prefdialog.miscswing.comboboxhistory.ComboBoxHistoryModule
 import com.google.inject.Guice
 import com.google.inject.Injector
@@ -169,11 +172,50 @@ class HistoryComboBoxTest extends FieldTestUtils {
 		})
 	}
 
+	@Test
+	void "editable, veto value"() {
+		def title = "$NAME::editable, veto value"
+		def fieldName = LIST_ELEMENTS
+		def field = factory.create(bean, fieldName)
+		setupVetoableListener field, bean
+		def container = field.getAWTComponent()
+		def comboBox
+
+		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+			comboBox = fixture.comboBox fieldName
+			comboBox.replaceText "Some"
+			comboBox.pressAndReleaseKeys KeyEvent.VK_ENTER
+			assert bean."$fieldName" == null
+		}, {
+			comboBox.replaceText "Valid"
+			comboBox.pressAndReleaseKeys KeyEvent.VK_ENTER
+			assert bean."$fieldName" == "Valid"
+		}, {
+			comboBox.selectItem 0
+			assert bean."$fieldName" == "Valid"
+			comboBox.selectItem 1
+			assert bean."$fieldName" == "One"
+		})
+	}
+
 	//@Test
 	void "manually"() {
 		def title = "$NAME::manually"
 		def fieldName = LIST_ELEMENTS
 		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
+		new TestFrameUtil(title, container).withFixture({
+			Thread.sleep 60*1000
+			assert false : "manually test"
+		})
+	}
+
+	//@Test
+	void "manually, validated"() {
+		def title = "$NAME::manually, validated"
+		def fieldName = LIST_ELEMENTS
+		def field = factory.create(bean, fieldName)
+		setupVetoableListener field, bean
 		def container = field.getAWTComponent()
 		new TestFrameUtil(title, container).withFixture({
 			Thread.sleep 60*1000
@@ -202,4 +244,19 @@ class HistoryComboBoxTest extends FieldTestUtils {
 	void setupBean() {
 		bean = new HistoryComboBoxBean()
 	}
+
+	static setupVetoableListener(FieldComponent field, HistoryComboBoxBean bean) {
+		def validValues = [
+			"Valid",
+			bean.listElements,
+			bean.defaultItems
+		].flatten()
+		def l = {
+			if (!validValues.contains(it.newValue)) {
+				throw new PropertyVetoException("Not valid", it)
+			}
+		} as VetoableChangeListener
+		field.addVetoableChangeListener(l)
+	}
+
 }
