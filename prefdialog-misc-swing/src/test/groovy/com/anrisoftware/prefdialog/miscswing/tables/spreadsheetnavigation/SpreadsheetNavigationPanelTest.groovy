@@ -17,7 +17,7 @@ import com.google.inject.Injector
  * @see SpreadsheetNavigationPanel
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 1.0
+ * @since 3.0
  */
 class SpreadsheetNavigationPanelTest {
 

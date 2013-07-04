@@ -22,7 +22,8 @@ public class ValidatingFormattedTextField extends ValidatingTextField {
 	 *            the {@link JFormattedTextField}.
 	 * 
 	 * @param verifier
-	 *            the {@link InputVerifier}.
+	 *            the {@link InputVerifier} or {@code null} if the verifier is
+	 *            set at a later point.
 	 * 
 	 * @return the {@link ValidatingFormattedTextField}.
 	 */
@@ -43,8 +44,14 @@ public class ValidatingFormattedTextField extends ValidatingTextField {
 
 	@Override
 	protected boolean verifyField(InputVerifier verifier, JTextField field) {
+		JFormattedTextField ftf = (JFormattedTextField) field;
+		return commitAndVerify(verifier, ftf);
+	}
+
+	private boolean commitAndVerify(InputVerifier verifier,
+			JFormattedTextField field) {
 		try {
-			((JFormattedTextField) field).commitEdit();
+			field.commitEdit();
 			return super.verifyField(verifier, field);
 		} catch (ParseException e) {
 			return false;

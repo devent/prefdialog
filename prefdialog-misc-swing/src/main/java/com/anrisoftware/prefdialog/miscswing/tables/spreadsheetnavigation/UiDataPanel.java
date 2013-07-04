@@ -1,5 +1,6 @@
 package com.anrisoftware.prefdialog.miscswing.tables.spreadsheetnavigation;
 
+import javax.swing.InputVerifier;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -8,13 +9,13 @@ import javax.swing.border.EtchedBorder;
 
 import net.miginfocom.swing.MigLayout;
 
-import com.anrisoftware.prefdialog.miscswing.validatingfields.ValidatingFormattedTextComponent;
+import com.anrisoftware.prefdialog.miscswing.validatingfields.ValidatingFormattedTextField;
 
 /**
  * Navigation panel.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 1.0
+ * @since 3.0
  */
 @SuppressWarnings("serial")
 class UiDataPanel extends JPanel {
@@ -25,8 +26,8 @@ class UiDataPanel extends JPanel {
 	private final JLabel rowSeparatorLabel;
 	private final JFormattedTextField currentRowField;
 	private final JFormattedTextField maximumRowField;
-	private final ValidatingFormattedTextComponent<JFormattedTextField> currentColumnValidatingField;
-	private final ValidatingFormattedTextComponent<JFormattedTextField> currentRowValidatingField;
+	private final ValidatingFormattedTextField currentColumnValidating;
+	private final ValidatingFormattedTextField currentRowValidating;
 
 	/**
 	 * Create the panel.
@@ -42,8 +43,8 @@ class UiDataPanel extends JPanel {
 		currentColumnField.setText("0");
 		add(currentColumnField, "cell 1 0,growx");
 		currentColumnField.setColumns(10);
-		currentColumnValidatingField = new ValidatingFormattedTextComponent<JFormattedTextField>(
-				currentColumnField);
+		currentColumnValidating = ValidatingFormattedTextField.decorate(
+				currentColumnField, null);
 
 		columnSeparatorLabel = new JLabel("-");
 		columnSeparatorLabel.setName("columnSeparatorLabel");
@@ -66,8 +67,8 @@ class UiDataPanel extends JPanel {
 		currentRowField.setName("currentRowField");
 		currentRowField.setText("0");
 		add(currentRowField, "cell 5 0,growx");
-		currentRowValidatingField = new ValidatingFormattedTextComponent<JFormattedTextField>(
-				currentRowField);
+		currentRowValidating = ValidatingFormattedTextField.decorate(
+				currentRowField, null);
 
 		rowSeparatorLabel = new JLabel("-");
 		rowSeparatorLabel.setName("rowSeparatorLabel");
@@ -86,8 +87,12 @@ class UiDataPanel extends JPanel {
 		return currentColumnField;
 	}
 
-	public ValidatingFormattedTextComponent<JFormattedTextField> getCurrentColumnValidatingField() {
-		return currentColumnValidatingField;
+	public ValidatingFormattedTextField getCurrentColumnValidating() {
+		return currentColumnValidating;
+	}
+
+	public void setCurrentColumnFieldVerifier(InputVerifier verifier) {
+		currentColumnValidating.setVerifier(verifier);
 	}
 
 	public JFormattedTextField getMaximumColumnField() {
@@ -98,8 +103,12 @@ class UiDataPanel extends JPanel {
 		return currentRowField;
 	}
 
-	public ValidatingFormattedTextComponent<JFormattedTextField> getCurrentRowValidatingField() {
-		return currentRowValidatingField;
+	public ValidatingFormattedTextField getCurrentRowValidating() {
+		return currentRowValidating;
+	}
+
+	public void setCurrentRowFieldVerifier(InputVerifier verifier) {
+		currentRowValidating.setVerifier(verifier);
 	}
 
 	public JFormattedTextField getMaximumRowField() {

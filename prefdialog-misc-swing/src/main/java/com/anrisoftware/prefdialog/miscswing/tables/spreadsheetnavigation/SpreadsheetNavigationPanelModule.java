@@ -10,14 +10,16 @@ import com.google.inject.assistedinject.FactoryModuleBuilder;
  * @see SpreadsheetNavigationPanelFactory
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 1.0
+ * @since 3.0
  */
 public class SpreadsheetNavigationPanelModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
-		install(new FactoryModuleBuilder().implement(SpreadsheetNavigationPanel.class,
-				SpreadsheetNavigationPanel.class).build(SpreadsheetNavigationPanelFactory.class));
+		install(new FactoryModuleBuilder().implement(
+				SpreadsheetNavigationPanel.class,
+				SpreadsheetNavigationPanel.class).build(
+				SpreadsheetNavigationPanelFactory.class));
 	}
 
 }

@@ -38,7 +38,7 @@ import com.anrisoftware.globalpom.utils.TestFrameUtil
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-class ValidatingTextFieldTest {
+class ValidatingFormattedTextFieldTest {
 
 	@Test
 	void "show invalid with tool-tip"() {
@@ -66,25 +66,29 @@ class ValidatingTextFieldTest {
 			textFieldFix.selectAll()
 			textFieldFix.enterText "20"
 			textFieldFix.pressAndReleaseKeys KeyEvent.VK_ENTER
+			assert field.isValid() == false
 		}, {
 			textFieldFix.selectAll()
-			textFieldFix.enterText "10"
+			textFieldFix.enterText "5"
 			textFieldFix.pressAndReleaseKeys KeyEvent.VK_ENTER
+			assert field.isValid() == true
 		}, {
 			textFieldFix.selectAll()
 			textFieldFix.enterText "20"
 			fieldBFix.focus()
+			assert field.isValid() == false
 		}, {
 			textFieldFix.selectAll()
 			textFieldFix.enterText "10"
 			fieldBFix.focus()
+			assert field.isValid() == true
 		}, { Thread.sleep 60000 //
 		})
 	}
 
-	static final String NAME = ValidatingTextFieldTest.class.simpleName
+	static final String NAME = ValidatingFormattedTextFieldTest.class.simpleName
 
 	static createVerifier(JFormattedTextField field) {
-		[ verify: { return field.value == 10 } ] as InputVerifier
+		[ verify: { return field.value == 10 || field.value == 5 } ] as InputVerifier
 	}
 }

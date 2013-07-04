@@ -9,7 +9,7 @@ import com.anrisoftware.prefdialog.miscswing.tables.spreadsheet.SpreadsheetTable
  * Factory to create a new spreadsheet table navigation panel.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 1.0
+ * @since 3.0
  */
 public interface SpreadsheetNavigationPanelFactory {
 

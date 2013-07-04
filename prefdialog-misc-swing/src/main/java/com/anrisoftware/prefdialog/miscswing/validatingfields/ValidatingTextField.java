@@ -26,7 +26,8 @@ public class ValidatingTextField {
 	 *            the {@link JTextField}.
 	 * 
 	 * @param verifier
-	 *            the {@link InputVerifier}.
+	 *            the {@link InputVerifier} or {@code null} if the verifier is
+	 *            set at a later point.
 	 * 
 	 * @return the {@link ValidatingTextField}.
 	 */
@@ -44,6 +45,8 @@ public class ValidatingTextField {
 
 	private final ValidatingUI fieldUI;
 
+	private InputVerifier parentVerifier;
+
 	/**
 	 * @see #decorate(JTextField, InputVerifier)
 	 * 
@@ -51,15 +54,16 @@ public class ValidatingTextField {
 	 *            the {@link ValidatingUI} of the text field.
 	 */
 	protected ValidatingTextField(JTextField field, ValidatingUI fieldUI,
-			final InputVerifier verifier) {
+			InputVerifier verifier) {
 		this.fieldUI = fieldUI;
 		this.field = field;
+		this.parentVerifier = verifier;
 		this.verifier = new InputVerifier() {
 
 			@Override
 			public boolean verify(JComponent input) {
 				JTextField field = ValidatingTextField.this.field;
-				boolean valid = verifyField(verifier, field);
+				boolean valid = verifyField(parentVerifier, field);
 				setValidAWT(valid);
 				return valid;
 			}
@@ -81,10 +85,24 @@ public class ValidatingTextField {
 		field.addActionListener(validateAction);
 	}
 
+	/**
+	 * Verify the field from an external event.
+	 */
 	protected void verifyField() {
 		verifier.shouldYieldFocus(field);
 	}
 
+	/**
+	 * Verifies the field.
+	 * 
+	 * @param verifier
+	 *            the {@link InputVerifier} that verifiers the input.
+	 * 
+	 * @param input
+	 *            the {@link JTextField}.
+	 * 
+	 * @return {@code true} if the input is valid and the focus can be yield.
+	 */
 	protected boolean verifyField(InputVerifier verifier, JTextField input) {
 		return verifier.verify(input);
 	}
@@ -97,6 +115,25 @@ public class ValidatingTextField {
 				setValid(valid);
 			}
 		});
+	}
+
+	/**
+	 * Returns the text field that is verified.
+	 * 
+	 * @return the {@link JTextField}.
+	 */
+	public JTextField getField() {
+		return field;
+	}
+
+	/**
+	 * Sets the input verifier that validated the input.
+	 * 
+	 * @param verifier
+	 *            the {@link InputVerifier}.
+	 */
+	public void setVerifier(InputVerifier verifier) {
+		this.parentVerifier = verifier;
 	}
 
 	/**

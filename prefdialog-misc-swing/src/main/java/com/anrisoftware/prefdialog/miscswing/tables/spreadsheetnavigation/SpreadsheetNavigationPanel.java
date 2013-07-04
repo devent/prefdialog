@@ -1,6 +1,5 @@
 package com.anrisoftware.prefdialog.miscswing.tables.spreadsheetnavigation;
 
-import static com.anrisoftware.prefdialog.miscswing.lockedevents.LockedVetoableChangeListener.lockedVetoableChangeListener;
 import static com.google.inject.Guice.createInjector;
 import static java.awt.BorderLayout.CENTER;
 import static java.awt.BorderLayout.SOUTH;
@@ -10,9 +9,11 @@ import static javax.swing.event.TableModelEvent.UPDATE;
 
 import java.awt.BorderLayout;
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyVetoException;
-import java.beans.VetoableChangeListener;
+import java.beans.PropertyChangeListener;
 
+import javax.swing.InputVerifier;
+import javax.swing.JComponent;
+import javax.swing.JFormattedTextField;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -22,7 +23,6 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
-import com.anrisoftware.prefdialog.miscswing.lockedevents.LockedVetoableChangeListener;
 import com.anrisoftware.prefdialog.miscswing.tables.spreadsheet.SpreadsheetTable;
 import com.google.inject.Injector;
 import com.google.inject.assistedinject.Assisted;
@@ -34,9 +34,11 @@ import com.google.inject.assistedinject.AssistedInject;
  * enter a new position.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 1.0
+ * @since 3.0
  */
 public class SpreadsheetNavigationPanel {
+
+	private static final String VALUE_PROPERTY = "value";
 
 	private static SpreadsheetNavigationPanelFactory factory;
 
@@ -76,15 +78,19 @@ public class SpreadsheetNavigationPanel {
 
 	private final TableModelListener tableListener;
 
-	private final LockedVetoableChangeListener currentColumnListener;
+	private final InputVerifier currentColumnVerifier;
 
-	private final LockedVetoableChangeListener currentRowListener;
+	private final PropertyChangeListener currentRowListener;
 
-	private ListSelectionListener tableSelectionListener;
+	private final ListSelectionListener tableSelectionListener;
 
 	private int startRowIndex;
 
 	private int startColumnIndex;
+
+	private PropertyChangeListener currentColumnListener;
+
+	private InputVerifier currentRowVerifier;
 
 	/**
 	 * @see SpreadsheetNavigationPanelFactory#create(JPanel, SpreadsheetTable)
@@ -122,24 +128,36 @@ public class SpreadsheetNavigationPanel {
 				}
 			}
 		};
-		this.currentColumnListener = lockedVetoableChangeListener(new VetoableChangeListener() {
+		this.currentColumnVerifier = new InputVerifier() {
 
 			@Override
-			public void vetoableChange(PropertyChangeEvent evt)
-					throws PropertyVetoException {
-				validateColumn((Integer) evt.getNewValue(), evt);
+			public boolean verify(JComponent input) {
+				Object value = ((JFormattedTextField) input).getValue();
+				return validateCurrentColumn((Integer) value);
+			}
+		};
+		this.currentColumnListener = new PropertyChangeListener() {
+
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
 				updateSelectedColumn((Integer) evt.getNewValue());
 			}
-		});
-		this.currentRowListener = lockedVetoableChangeListener(new VetoableChangeListener() {
+		};
+		this.currentRowVerifier = new InputVerifier() {
 
 			@Override
-			public void vetoableChange(PropertyChangeEvent evt)
-					throws PropertyVetoException {
-				validateRow((Integer) evt.getNewValue(), evt);
+			public boolean verify(JComponent input) {
+				Object value = ((JFormattedTextField) input).getValue();
+				return validateRow((Integer) value);
+			}
+		};
+		this.currentRowListener = new PropertyChangeListener() {
+
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
 				updateSelectedRow((Integer) evt.getNewValue());
 			}
-		});
+		};
 		this.tableSelectionListener = new ListSelectionListener() {
 
 			@Override
@@ -156,48 +174,50 @@ public class SpreadsheetNavigationPanel {
 	}
 
 	protected void updateSelected() {
-		currentColumnListener.lock();
-		currentRowListener.lock();
 		int row = getSelectedRow();
 		int column = getSelectedColumn();
-		dataPanel.getCurrentRowValidatingField().setValue(row);
-		dataPanel.getCurrentColumnValidatingField().setValue(column);
-		currentColumnListener.unlock();
-		currentRowListener.unlock();
+		dataPanel.getCurrentRowField().setValue(row);
+		dataPanel.getCurrentColumnField().setValue(column);
 	}
 
 	private void updateSelectedColumn(int column) {
 		column = column - startColumnIndex;
 		JTable table = getViewTable();
+		if (column < 0 || column >= table.getColumnCount()) {
+			return;
+		}
 		table.setColumnSelectionInterval(column, column);
 		table.scrollRectToVisible(table.getCellRect(0, column, true));
 	}
 
-	private void validateColumn(int column, PropertyChangeEvent evt)
-			throws PropertyVetoException {
+	private boolean validateCurrentColumn(int column) {
 		if (column < startColumnIndex) {
-			throw new PropertyVetoException("", evt);
+			return false;
 		}
 		if (column >= getColumnCount()) {
-			throw new PropertyVetoException("", evt);
+			return false;
 		}
+		return true;
 	}
 
 	private void updateSelectedRow(int row) {
 		row = row - getViewOffset() - startRowIndex;
 		JTable table = getViewTable();
+		if (row < 0 || row >= table.getRowCount()) {
+			return;
+		}
 		table.setRowSelectionInterval(row, row);
 		table.scrollRectToVisible(table.getCellRect(row, 0, true));
 	}
 
-	private void validateRow(int row, PropertyChangeEvent evt)
-			throws PropertyVetoException {
+	private boolean validateRow(int row) {
 		if (row < startRowIndex) {
-			throw new PropertyVetoException("", evt);
+			return false;
 		}
 		if (row >= getViewRowCount()) {
 			setViewMaximum(row + 1);
 		}
+		return true;
 	}
 
 	private void setupPane() {
@@ -211,17 +231,23 @@ public class SpreadsheetNavigationPanel {
 
 	private void setupDataPanel() {
 		container.add(dataPanel, SOUTH);
+		dataPanel.setCurrentColumnFieldVerifier(currentColumnVerifier);
+		dataPanel.getCurrentColumnField().addPropertyChangeListener(
+				VALUE_PROPERTY, currentColumnListener);
+		dataPanel.setCurrentRowFieldVerifier(currentRowVerifier);
+		dataPanel.getCurrentRowField().addPropertyChangeListener(
+				VALUE_PROPERTY, currentRowListener);
+		setupViewTable();
+		updateSelected();
+		updateMaximum();
+	}
+
+	private void setupViewTable() {
 		getViewModel().addTableModelListener(tableListener);
-		dataPanel.getCurrentColumnValidatingField().addVetoableChangeListener(
-				currentColumnListener);
-		dataPanel.getCurrentRowValidatingField().addVetoableChangeListener(
-				currentRowListener);
 		getViewTable().getSelectionModel().addListSelectionListener(
 				tableSelectionListener);
 		getViewTable().getColumnModel().getSelectionModel()
 				.addListSelectionListener(tableSelectionListener);
-		updateSelected();
-		updateMaximum();
 	}
 
 	private void updateMaximum() {

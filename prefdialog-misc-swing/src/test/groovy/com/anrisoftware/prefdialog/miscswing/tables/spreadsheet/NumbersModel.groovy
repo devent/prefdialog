@@ -2,6 +2,12 @@ package com.anrisoftware.prefdialog.miscswing.tables.spreadsheet
 
 import javax.swing.table.AbstractTableModel
 
+/**
+ * Table model that generated a numbers table.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 3.0
+ */
 class NumbersModel extends AbstractTableModel implements SpreadsheetModel {
 
 	private static final String[] COLUMN_NAMES = ["Index"]
@@ -42,7 +48,7 @@ class NumbersModel extends AbstractTableModel implements SpreadsheetModel {
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		return data[columnIndex][rowIndex];
+		return data[columnIndex][rowIndex]
 	}
 
 	@Override
@@ -54,7 +60,7 @@ class NumbersModel extends AbstractTableModel implements SpreadsheetModel {
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
 		if( columnIndex >= COLUMN_NAMES.length) {
-			return true;
+			return true
 		} else {
 			return false
 		}
@@ -63,7 +69,7 @@ class NumbersModel extends AbstractTableModel implements SpreadsheetModel {
 	@Override
 	public boolean isColumnEditable(int columnIndex) {
 		if( columnIndex >= COLUMN_NAMES.length) {
-			return true;
+			return true
 		} else {
 			return false
 		}
@@ -82,7 +88,7 @@ class NumbersModel extends AbstractTableModel implements SpreadsheetModel {
 	@Override
 	public Object getColumnValue(int rowIndex, int columnIndex) {
 		if( columnIndex == COLUMN_NAMES.length - 1) {
-			return rowIndex + 1;
+			return rowIndex + 1
 		} else {
 			return 0
 		}
