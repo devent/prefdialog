@@ -184,6 +184,8 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
 	private Images images;
 
+	private Object originalValue;
+
 	private Object value;
 
 	private Object oldValue;
@@ -369,6 +371,7 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 		if (value == null) {
 			value = beanFactory.create(beanAccess.getType());
 		}
+		this.originalValue = value;
 		try {
 			setValue(value);
 		} catch (PropertyVetoException e) {
@@ -837,8 +840,7 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 		for (FieldComponent<?> component : childFields) {
 			component.restoreInput();
 		}
-		setValue(oldValue);
-		this.value = oldValue;
+		setValue(originalValue);
 		log.restoredInput(this);
 	}
 
