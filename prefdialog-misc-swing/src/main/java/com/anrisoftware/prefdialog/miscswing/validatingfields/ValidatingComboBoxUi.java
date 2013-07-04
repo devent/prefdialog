@@ -5,11 +5,12 @@ import java.awt.Component;
 import java.awt.Component.BaselineResizeBehavior;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
 import javax.accessibility.Accessible;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.plaf.ComboBoxUI;
+import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.text.JTextComponent;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -21,7 +22,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-public class ValidatingComboBoxUi extends ComboBoxUI {
+public class ValidatingComboBoxUi extends BasicComboBoxUI {
 
 	/**
 	 * Sets the validating combo-box field user interface to the specified
@@ -34,14 +35,15 @@ public class ValidatingComboBoxUi extends ComboBoxUI {
 	 */
 	public static ValidatingComboBoxUi decorate(JComboBox<?> field) {
 		ValidatingComboBoxUi ui = new ValidatingComboBoxUi(
-				new ValidatingComponentUI(field.getUI()), field.getUI());
+				new ValidatingComponentUI(field.getUI()),
+				(BasicComboBoxUI) field.getUI());
 		field.setUI(ui);
 		return ui;
 	}
 
 	private final ValidatingComponentUI validatingUi;
 
-	private final ComboBoxUI ui;
+	private final BasicComboBoxUI ui;
 
 	private ValidatingTextFieldUi editorUi;
 
@@ -49,9 +51,10 @@ public class ValidatingComboBoxUi extends ComboBoxUI {
 	 * Sets the underlying combo-box user interface.
 	 * 
 	 * @param ui
-	 *            the {@link ComboBoxUI}.
+	 *            the {@link BasicComboBoxUI}.
 	 */
-	public ValidatingComboBoxUi(ValidatingComponentUI validatingUi, ComboBoxUI ui) {
+	public ValidatingComboBoxUi(ValidatingComponentUI validatingUi,
+			BasicComboBoxUI ui) {
 		this.validatingUi = validatingUi;
 		this.ui = ui;
 	}
@@ -209,6 +212,47 @@ public class ValidatingComboBoxUi extends ComboBoxUI {
 	@Override
 	public Accessible getAccessibleChild(JComponent c, int i) {
 		return ui.getAccessibleChild(c, i);
+	}
+
+	@Override
+	public int hashCode() {
+		return ui.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return ui.equals(obj);
+	}
+
+	@Override
+	public void addEditor() {
+		ui.addEditor();
+	}
+
+	@Override
+	public void removeEditor() {
+		ui.removeEditor();
+	}
+
+	@Override
+	public void configureArrowButton() {
+		ui.configureArrowButton();
+	}
+
+	@Override
+	public void unconfigureArrowButton() {
+		ui.unconfigureArrowButton();
+	}
+
+	@Override
+	public void paintCurrentValue(Graphics g, Rectangle bounds, boolean hasFocus) {
+		ui.paintCurrentValue(g, bounds, hasFocus);
+	}
+
+	@Override
+	public void paintCurrentValueBackground(Graphics g, Rectangle bounds,
+			boolean hasFocus) {
+		ui.paintCurrentValueBackground(g, bounds, hasFocus);
 	}
 
 	@Override
