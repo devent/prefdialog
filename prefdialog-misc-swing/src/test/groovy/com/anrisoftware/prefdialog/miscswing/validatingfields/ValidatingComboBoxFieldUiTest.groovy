@@ -39,7 +39,7 @@ class ValidatingComboBoxFieldUiTest {
 	void "not editable, show invalid with tool-tip"() {
 		def title = "$NAME::not editable, show invalid with tool-tip"
 		def fieldName = "fieldA"
-		def field = ValidatingComboBoxFieldUi.decorate(createComboBoxField(fieldName, false))
+		def field = ValidatingComboBoxUi.decorate(createComboBoxField(fieldName, false))
 		def comboBox
 		field.setInvalidText "Not valid"
 		def fieldB = createTextField("fieldB")
@@ -78,7 +78,7 @@ class ValidatingComboBoxFieldUiTest {
 	void "editable, show invalid with tool-tip"() {
 		def title = "$NAME::editable, show invalid with tool-tip"
 		def fieldName = "fieldA"
-		def field = ValidatingComboBoxFieldUi.decorate(createComboBoxField(fieldName, true))
+		def field = ValidatingComboBoxUi.decorate(createComboBoxField(fieldName, true))
 		field.setInvalidText "Not valid"
 		def fieldB = createTextField("fieldB")
 		def panel = createPanel cols: [FILL], rows: [

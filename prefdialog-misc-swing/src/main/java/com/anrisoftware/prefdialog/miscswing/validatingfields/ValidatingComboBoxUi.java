@@ -21,7 +21,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-public class ValidatingComboBoxFieldUi extends ComboBoxUI {
+public class ValidatingComboBoxUi extends ComboBoxUI {
 
 	/**
 	 * Sets the validating combo-box field user interface to the specified
@@ -30,10 +30,10 @@ public class ValidatingComboBoxFieldUi extends ComboBoxUI {
 	 * @param field
 	 *            the {@link JComboBox}.
 	 * 
-	 * @return the {@link ValidatingComboBoxFieldUi}.
+	 * @return the {@link ValidatingComboBoxUi}.
 	 */
-	public static ValidatingComboBoxFieldUi decorate(JComboBox<?> field) {
-		ValidatingComboBoxFieldUi ui = new ValidatingComboBoxFieldUi(
+	public static ValidatingComboBoxUi decorate(JComboBox<?> field) {
+		ValidatingComboBoxUi ui = new ValidatingComboBoxUi(
 				new ValidatingComponentUI(field.getUI()), field.getUI());
 		field.setUI(ui);
 		return ui;
@@ -51,7 +51,7 @@ public class ValidatingComboBoxFieldUi extends ComboBoxUI {
 	 * @param ui
 	 *            the {@link ComboBoxUI}.
 	 */
-	public ValidatingComboBoxFieldUi(ValidatingComponentUI validatingUi, ComboBoxUI ui) {
+	public ValidatingComboBoxUi(ValidatingComponentUI validatingUi, ComboBoxUI ui) {
 		this.validatingUi = validatingUi;
 		this.ui = ui;
 	}
