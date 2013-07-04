@@ -13,7 +13,7 @@ import com.anrisoftware.prefdialog.annotations.FileChooserModel;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-class OpenFileDialogAction implements ActionListener {
+class OpenDialogAction implements ActionListener {
 
 	private FileChooserModel model;
 

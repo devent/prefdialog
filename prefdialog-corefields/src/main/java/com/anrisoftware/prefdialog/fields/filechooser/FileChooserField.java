@@ -18,9 +18,10 @@
  */
 package com.anrisoftware.prefdialog.fields.filechooser;
 
-import static com.anrisoftware.prefdialog.miscswing.lockedevents.LockedVetoableChangeListener.lockedVetoableChangeListener;
-
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
 import java.io.File;
@@ -34,9 +35,8 @@ import com.anrisoftware.globalpom.reflection.annotationclass.AnnotationClassFact
 import com.anrisoftware.prefdialog.annotations.FileChooser;
 import com.anrisoftware.prefdialog.annotations.FileChooserModel;
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
-import com.anrisoftware.prefdialog.miscswing.lockedevents.LockedVetoableChangeListener;
-import com.anrisoftware.prefdialog.miscswing.text.filetext.FileTextField;
-import com.anrisoftware.prefdialog.miscswing.validatingfields.ValidatingFormattedTextComponent;
+import com.anrisoftware.prefdialog.miscswing.filetextfield.FileTextField;
+import com.anrisoftware.prefdialog.miscswing.validatingfields.ValidatingTextFieldUi;
 import com.google.inject.assistedinject.Assisted;
 
 /**
@@ -71,15 +71,15 @@ public class FileChooserField extends AbstractTitleField<JPanel> {
 
 	private final FileTextField fileTextField;
 
-	private final ValidatingFormattedTextComponent<FileTextField> validating;
+	private final ValidatingTextFieldUi validating;
 
-	private final LockedVetoableChangeListener valueVetoListener;
+	private final OpenDialogAction openDialogAction;
 
-	private final OpenFileDialogAction openFileDialogAction;
-
-	private final VetoableChangeListener filePropertyListener;
+	private final VetoableChangeListener fileListener;
 
 	private final UiPanel panel;
+
+	private final ActionListener fileAction;
 
 	private transient AnnotationClassFactory annotationClassFactory;
 
@@ -90,51 +90,50 @@ public class FileChooserField extends AbstractTitleField<JPanel> {
 	 */
 	@Inject
 	FileChooserField(FileChooserFieldLogger logger, UiPanel panel,
-			FileTextField fileTextField,
-			OpenFileDialogAction openFileDialogAction,
+			FileTextField fileTextField, OpenDialogAction openDialogAction,
 			@Assisted Object parentObject, @Assisted String fieldName) {
 		super(panel, parentObject, fieldName);
 		this.panel = panel;
 		this.log = logger;
 		this.fileTextField = fileTextField;
-		this.openFileDialogAction = openFileDialogAction;
-		this.validating = new ValidatingFormattedTextComponent<FileTextField>(
-				fileTextField);
-		this.valueVetoListener = lockedVetoableChangeListener(new VetoableChangeListener() {
+		this.openDialogAction = openDialogAction;
+		this.validating = ValidatingTextFieldUi.decorate(fileTextField);
+		this.fileListener = new VetoableChangeListener() {
 
 			@Override
 			public void vetoableChange(PropertyChangeEvent evt)
 					throws PropertyVetoException {
-				FileChooserField.super.trySetValue(evt.getNewValue());
-				if (model != null) {
-					model.setFile((File) evt.getNewValue());
-				}
-				valueVetoListener.lock();
 				setValue(evt.getNewValue());
-				valueVetoListener.unlock();
-			}
-		});
-		this.filePropertyListener = new VetoableChangeListener() {
-
-			@Override
-			public void vetoableChange(PropertyChangeEvent evt)
-					throws PropertyVetoException {
-				valueVetoListener.lock();
-				setValue(evt.getNewValue());
-				valueVetoListener.unlock();
 			}
 		};
-		setupValidating();
-		setupPanel(panel);
+		this.fileAction = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					setValue(FileChooserField.this.fileTextField.getValue());
+				} catch (PropertyVetoException e1) {
+				}
+			}
+		};
+		setupPanel();
 	}
 
-	private void setupValidating() {
-		validating.addVetoableChangeListener(VALUE_PROPERTY, valueVetoListener);
-	}
-
-	private void setupPanel(UiPanel panel) {
+	private void setupPanel() {
 		panel.setFileField(fileTextField);
-		panel.getOpenFileChooser().addActionListener(openFileDialogAction);
+		panel.getOpenFileChooser().addActionListener(openDialogAction);
+		fileTextField.addActionListener(fileAction);
+		fileTextField.addPropertyChangeListener("value",
+				new PropertyChangeListener() {
+
+					@Override
+					public void propertyChange(PropertyChangeEvent evt) {
+						try {
+							setValue(evt.getNewValue());
+						} catch (PropertyVetoException e) {
+						}
+					}
+				});
 	}
 
 	@Inject
@@ -151,6 +150,30 @@ public class FileChooserField extends AbstractTitleField<JPanel> {
 		setModel(model);
 	}
 
+	@Override
+	public void setValue(Object value) throws PropertyVetoException {
+		if (model == null) {
+			super.setValue(value);
+			fileTextField.setValue(value);
+			return;
+		}
+		File oldFile = model.getFile();
+		try {
+			model.setFile((File) value);
+		} catch (PropertyVetoException e) {
+			validating.setValid(false);
+			throw e;
+		}
+		try {
+			super.setValue(value);
+			fileTextField.setValue(value);
+		} catch (PropertyVetoException e) {
+			model.setFile(oldFile);
+			validating.setValid(false);
+			throw e;
+		}
+	}
+
 	/**
 	 * Sets the file chooser model.
 	 * 
@@ -162,24 +185,21 @@ public class FileChooserField extends AbstractTitleField<JPanel> {
 	 */
 	public void setModel(FileChooserModel model) {
 		log.checkModel(this, model);
-		FileChooserModel oldModel = this.model;
-		if (oldModel != null) {
-			oldModel.removeVetoableChangeListener(filePropertyListener);
-		}
+		removeOldModel();
 		this.model = model;
 		try {
 			model.setFile((File) getValue());
 		} catch (PropertyVetoException e) {
 		}
-		model.addVetoableChangeListener(filePropertyListener);
-		openFileDialogAction.setFileChooserModel(model);
+		model.addVetoableChangeListener(fileListener);
+		openDialogAction.setFileChooserModel(model);
 		log.modelSet(this, model);
 	}
 
-	@Override
-	protected void trySetValue(Object value) throws PropertyVetoException {
-		validating.setValue(value);
-		super.trySetValue(value);
+	private void removeOldModel() {
+		if (model != null) {
+			model.removeVetoableChangeListener(fileListener);
+		}
 	}
 
 	/**

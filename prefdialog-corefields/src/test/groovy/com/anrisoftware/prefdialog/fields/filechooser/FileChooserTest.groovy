@@ -26,7 +26,9 @@ import static java.util.regex.Pattern.compile
 import org.fest.swing.fixture.FrameFixture
 import org.junit.Before
 import org.junit.BeforeClass
+import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.TemporaryFolder
 
 import com.anrisoftware.globalpom.reflection.exceptions.ReflectionError
 import com.anrisoftware.globalpom.utils.TestFrameUtil
@@ -43,7 +45,7 @@ import com.google.inject.Injector
  */
 class FileChooserTest extends FieldTestUtils {
 
-	//@Test
+	@Test
 	void "manually"() {
 		def title = "$NAME::manually"
 		def fieldName = INITIAL_VALUE
@@ -91,24 +93,22 @@ class FileChooserTest extends FieldTestUtils {
 		def fieldName = INITIAL_VALUE
 		def field = factory.create(bean, fieldName)
 		def container = field.getAWTComponent()
-		def tmpfileA = File.createTempFile("$NAME", null)
-		def tmpfileB = File.createTempFile("$NAME", null)
-		def fileField
+		def tmpfileA = tmp.newFile "fileA"
+		def fieldFix
 		def openFileChooser
 
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
-			fileField = fixture.textBox "$fieldName-$FILE_FIELD_NAME"
+			fieldFix = fixture.textBox "$fieldName-$FILE_FIELD_NAME"
 			openFileChooser = fixture.button "$fieldName-$OPEN_FILE_CHOOSER_NAME"
-		}, { FrameFixture fixture ->
-			fileField.requireText compile(/.*aaa.txt/)
-			fileField.selectAll()
-			fileField.enterText tmpfileA.absolutePath
+		}, {
+			fieldFix.requireText compile(/.*aaa.txt/)
+			fieldFix.selectAll()
+			fieldFix.enterText tmpfileA.absolutePath
 			openFileChooser.focus()
-			assert bean.initialValue == tmpfileA
-		}, { FrameFixture fixture ->
+		}, { assert bean.initialValue == tmpfileA }, {
 			field.restoreInput()
 			openFileChooser.focus()
-			fileField.requireText compile(/.*aaa.txt/)
+			fieldFix.requireText compile(/.*aaa.txt/)
 		})
 	}
 
@@ -117,6 +117,9 @@ class FileChooserTest extends FieldTestUtils {
 	static FileChooserFieldFactory factory
 
 	static final String NAME = FileChooserTest.class.simpleName
+
+	@Rule
+	public TemporaryFolder tmp = new TemporaryFolder()
 
 	FileChooserBean bean
 
