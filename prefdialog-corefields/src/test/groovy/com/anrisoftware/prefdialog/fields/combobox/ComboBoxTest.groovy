@@ -22,6 +22,8 @@ import static com.anrisoftware.prefdialog.fields.combobox.ComboBoxBean.*
 import static com.anrisoftware.prefdialog.fields.combobox.ComboBoxService.*
 
 import java.awt.event.KeyEvent
+import java.beans.PropertyVetoException
+import java.beans.VetoableChangeListener
 
 import org.fest.swing.fixture.FrameFixture
 import org.junit.Before
@@ -62,7 +64,7 @@ class ComboBoxTest extends FieldTestUtils {
 	@Test
 	void "restore input"() {
 		def title = "$NAME::restore input"
-		def fieldName = ARRAY_ELEMENTS
+		def fieldName = ARRAY_ELEMENTS_SECOND
 		def field = factory.create(bean, fieldName)
 		def container = field.getAWTComponent()
 
@@ -70,8 +72,8 @@ class ComboBoxTest extends FieldTestUtils {
 			fixture.comboBox fieldName selectItem 0
 			fixture.comboBox fieldName selectItem 2
 			field.restoreInput()
-			fixture.comboBox fieldName requireSelection "One"
-			assert bean."$fieldName" == "One"
+			fixture.comboBox fieldName requireSelection "Two"
+			assert bean."$fieldName" == "Two"
 		})
 	}
 
@@ -220,6 +222,32 @@ class ComboBoxTest extends FieldTestUtils {
 			fixture.comboBox fieldName pressAndReleaseKeys KeyEvent.VK_ENTER
 			fixture.comboBox fieldName requireSelection text
 			assert bean."$fieldName" == text
+		})
+	}
+
+	@Test
+	void "editable, veto value"() {
+		def title = "$NAME::editable, veto value"
+		def fieldName = EDITABLE
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
+		def l = {
+			if (it.newValue != "Valid") {
+				throw new PropertyVetoException("Not valid", it)
+			}
+		} as VetoableChangeListener
+		field.addVetoableChangeListener(l)
+		def comboBox
+
+		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+			comboBox = fixture.comboBox fieldName
+			comboBox.replaceText "Some"
+			comboBox.pressAndReleaseKeys KeyEvent.VK_ENTER
+			assert bean."$fieldName" == null
+		}, {
+			comboBox.replaceText "Valid"
+			comboBox.pressAndReleaseKeys KeyEvent.VK_ENTER
+			assert bean."$fieldName" == "Valid"
 		})
 	}
 

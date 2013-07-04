@@ -654,6 +654,26 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 		return order;
 	}
 
+	/**
+	 * Sets the original value of the field. That is the value that is restored.
+	 * 
+	 * @param value
+	 *            the original value {@link Object}.
+	 */
+	protected void setOriginalValue(Object value) {
+		this.originalValue = value;
+	}
+
+	/**
+	 * Returns the original value of the field. That is the value that is
+	 * restored.
+	 * 
+	 * @return the original value {@link Object}.
+	 */
+	protected Object getOriginalValue() {
+		return originalValue;
+	}
+
 	@Override
 	public void setValue(Object value) throws PropertyVetoException {
 		if (this.value == value) {

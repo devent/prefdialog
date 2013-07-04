@@ -1,11 +1,10 @@
 package com.anrisoftware.prefdialog.fields.combobox;
 
-import static com.anrisoftware.prefdialog.miscswing.lockedevents.LockedVetoableChangeListener.lockedVetoableChangeListener;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
-import java.beans.PropertyChangeEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
-import java.beans.VetoableChangeListener;
 import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.Vector;
@@ -24,9 +23,7 @@ import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccessFactory
 import com.anrisoftware.globalpom.reflection.beans.BeanAccess;
 import com.anrisoftware.globalpom.reflection.beans.BeanAccessFactory;
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
-import com.anrisoftware.prefdialog.miscswing.lockedevents.LockedVetoableChangeListener;
-import com.anrisoftware.prefdialog.miscswing.validatingfields.AbstractValidatingComponent;
-import com.anrisoftware.prefdialog.miscswing.validatingfields.ValidatingComboBoxComponent;
+import com.anrisoftware.prefdialog.miscswing.validatingfields.ValidatingComboBoxUi;
 import com.anrisoftware.resources.texts.api.Texts;
 
 /**
@@ -51,9 +48,7 @@ public abstract class AbstractComboBoxField<ComponentType extends JComboBox<?>>
 
 	private AbstractComboBoxFieldLogger log;
 
-	private final ValidatingComboBoxComponent<Object, ComponentType> validating;
-
-	private final LockedVetoableChangeListener valueVetoListener;
+	private ValidatingComboBoxUi validating;
 
 	private final Class<? extends Annotation> annotationType;
 
@@ -62,6 +57,8 @@ public abstract class AbstractComboBoxField<ComponentType extends JComboBox<?>>
 	private transient AnnotationClass<?> annotationClass;
 
 	private transient BeanAccessFactory beanAccessFactory;
+
+	private ActionListener dataListener;
 
 	/**
 	 * @see AbstractTitleField#AbstractTitleField(java.awt.Component, Object,
@@ -85,25 +82,6 @@ public abstract class AbstractComboBoxField<ComponentType extends JComboBox<?>>
 			ComponentType component, Object parentObject, String fieldName) {
 		super(component, parentObject, fieldName);
 		this.annotationType = annotationType;
-		this.validating = new ValidatingComboBoxComponent<Object, ComponentType>(
-				getComponent());
-		this.valueVetoListener = lockedVetoableChangeListener(new VetoableChangeListener() {
-
-			@Override
-			public void vetoableChange(PropertyChangeEvent evt)
-					throws PropertyVetoException {
-				valueVetoListener.lock();
-				setValue(evt.getNewValue());
-				valueVetoListener.unlock();
-			}
-
-		});
-		setupValidating();
-	}
-
-	private void setupValidating() {
-		validating.addVetoableChangeListener(
-				AbstractValidatingComponent.VALUE_PROPERTY, valueVetoListener);
 	}
 
 	/**
@@ -120,12 +98,29 @@ public abstract class AbstractComboBoxField<ComponentType extends JComboBox<?>>
 		this.fieldAnnotation = annotationAccessFactory.create(annotationType,
 				getAccessibleObject());
 		this.beanAccessFactory = beanAccessFactory;
+		this.dataListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					setValue(getComponent().getSelectedItem());
+				} catch (PropertyVetoException e1) {
+				}
+			}
+		};
 		setupModel();
 		setupRenderer();
 		setupElements();
 		setupEditable();
 		setupEditor();
-		getComponent().setSelectedItem(getValue());
+		setupComboBox();
+	}
+
+	private void setupComboBox() {
+		ComponentType component = getComponent();
+		component.setSelectedItem(getValue());
+		component.addActionListener(dataListener);
+		validating = ValidatingComboBoxUi.decorate(component);
+		validating.setInvalidText(getInvalidText());
 	}
 
 	private void setupEditor() {
@@ -170,22 +165,34 @@ public abstract class AbstractComboBoxField<ComponentType extends JComboBox<?>>
 
 	@Override
 	public void setValue(Object value) throws PropertyVetoException {
-		super.setValue(value);
-		valueVetoListener.lock();
-		validating.setValue(value);
-		valueVetoListener.unlock();
+		try {
+			super.setValue(value);
+			if (validating != null) {
+				validating.setValid(true);
+			}
+			getComponent().setSelectedItem(value);
+		} catch (PropertyVetoException e) {
+			if (validating != null) {
+				validating.setValid(false);
+			}
+			throw e;
+		}
 	}
 
 	@Override
 	public void setInvalidText(String text) {
 		super.setInvalidText(text);
-		validating.setInvalidText(getInvalidText());
+		if (validating != null) {
+			validating.setInvalidText(getInvalidText());
+		}
 	}
 
 	@Override
 	public void setTexts(Texts texts) {
 		super.setTexts(texts);
-		validating.setInvalidText(getInvalidText());
+		if (validating != null) {
+			validating.setInvalidText(getInvalidText());
+		}
 	}
 
 	/**
