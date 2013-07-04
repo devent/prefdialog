@@ -49,24 +49,27 @@ class TextFieldTest {
 		def title = "$NAME::null value"
 		def fieldName = NULL_VALUE
 		def field = factory.create(bean, fieldName)
+		def fieldFix
 		def container = field.getAWTComponent()
-		def text = "Text A"
+		def textA = "Text A"
 		def textB = "Text B"
 
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
-			fixture.textBox fieldName requireVisible()
-			fixture.textBox fieldName requireText("")
-		}, { FrameFixture fixture ->
-			fixture.textBox fieldName enterText text
-			fixture.textBox fieldName pressAndReleaseKeys KeyEvent.VK_ENTER
-			assert bean.nullValue == text
-		}, { FrameFixture fixture ->
-			fixture.textBox fieldName deleteText()
-			fixture.textBox fieldName enterText textB
-			fixture.textBox fieldName pressAndReleaseKeys KeyEvent.VK_ENTER
+			fieldFix = fixture.textBox fieldName
+			fieldFix.requireVisible()
+			fieldFix.requireText ""
+		}, {
+			fieldFix.enterText textA
+			fieldFix.pressAndReleaseKeys KeyEvent.VK_ENTER
+			assert bean.nullValue == textA
+		}, {
+			fieldFix.deleteText()
+			fieldFix.enterText textB
+			fieldFix.pressAndReleaseKeys KeyEvent.VK_ENTER
+			assert bean.nullValue == textB
 			field.restoreInput()
-			fixture.textBox fieldName requireText text
-			assert bean.nullValue == text
+			fieldFix.requireText ""
+			assert bean.nullValue == ""
 		})
 	}
 
@@ -108,21 +111,24 @@ class TextFieldTest {
 		def title = "$NAME::validated"
 		def fieldName = VALIDATED
 		def field = factory.create(bean, fieldName)
+		def fieldFix
 		def container = field.getAWTComponent()
 
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
-			fixture.textBox fieldName requireVisible()
-			fixture.textBox fieldName requireText("")
-		}, { FrameFixture fixture ->
-			fixture.textBox fieldName enterText VALIDATED_VALID_VALUE
-			fixture.textBox fieldName pressAndReleaseKeys KeyEvent.VK_ENTER
-			fixture.textBox fieldName requireText VALIDATED_VALID_VALUE
+			fieldFix = fixture.textBox fieldName
+			fieldFix.requireVisible()
+			fieldFix.requireText VALIDATED_VALID_VALUE
+		}, {
+			fieldFix.deleteText()
+			fieldFix.enterText VALIDATED_VALID_VALUE
+			fieldFix.pressAndReleaseKeys KeyEvent.VK_ENTER
+			fieldFix.requireText VALIDATED_VALID_VALUE
 			assert bean.validated == VALIDATED_VALID_VALUE
-		}, { FrameFixture fixture ->
-			fixture.textBox fieldName deleteText()
-			fixture.textBox fieldName enterText VALIDATED_INVALID_VALUE
-			fixture.textBox fieldName pressAndReleaseKeys KeyEvent.VK_ENTER
-			fixture.textBox fieldName requireText VALIDATED_INVALID_VALUE
+		}, {
+			fieldFix.deleteText()
+			fieldFix.enterText VALIDATED_INVALID_VALUE
+			fieldFix.pressAndReleaseKeys KeyEvent.VK_ENTER
+			fieldFix.requireText VALIDATED_INVALID_VALUE
 			assert bean.validated == VALIDATED_VALID_VALUE
 		})
 	}

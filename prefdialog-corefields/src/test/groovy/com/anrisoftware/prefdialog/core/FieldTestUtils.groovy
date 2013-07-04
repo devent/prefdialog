@@ -18,9 +18,13 @@
  */
 package com.anrisoftware.prefdialog.core
 
+import java.beans.PropertyVetoException
+import java.beans.VetoableChangeListener
+
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule
 import com.anrisoftware.globalpom.reflection.beans.BeansModule
 import com.anrisoftware.globalpom.utils.TestUtils
+import com.anrisoftware.prefdialog.fields.FieldComponent
 import com.anrisoftware.prefdialog.fields.FieldService
 import com.anrisoftware.resources.images.api.Images
 import com.anrisoftware.resources.images.api.ImagesFactory
@@ -68,5 +72,14 @@ class FieldTestUtils {
 
 	static def findService(def info) {
 		ServiceLoader.load(FieldService).find { it.info == info }
+	}
+
+	static setupVetoableListener(FieldComponent field, List validValues) {
+		def l = {
+			if (!validValues.contains(it.newValue)) {
+				throw new PropertyVetoException("Not valid", it)
+			}
+		} as VetoableChangeListener
+		field.addVetoableChangeListener(l)
 	}
 }

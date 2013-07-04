@@ -55,7 +55,7 @@ class TextFieldBean {
 	@TextField(editable = false)
 	public String notEditable = "Not Editable"
 
-	private String validated
+	private String validated = VALIDATED_VALID_VALUE
 
 	public void setValidated(String text) {
 		if (text != VALIDATED_VALID_VALUE) {

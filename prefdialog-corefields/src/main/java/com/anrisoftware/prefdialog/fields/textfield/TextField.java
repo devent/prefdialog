@@ -1,26 +1,26 @@
 /*
  * Copyright 2012 Erwin Müller <erwin.mueller@deventm.org>
- *
+ * 
  * This file is part of prefdialog-corefields.
- *
+ * 
  * prefdialog-corefields is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- *
+ * 
  * prefdialog-corefields is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-corefields. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.anrisoftware.prefdialog.fields.textfield;
 
-import java.beans.PropertyChangeEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
-import java.beans.VetoableChangeListener;
 import java.lang.annotation.Annotation;
 
 import javax.inject.Inject;
@@ -29,11 +29,11 @@ import javax.swing.JTextField;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccess;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccessFactory;
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
-import com.anrisoftware.prefdialog.miscswing.validatingfields.ValidatingTextComponent;
+import com.anrisoftware.prefdialog.miscswing.validatingfields.ValidatingTextFieldUi;
 import com.google.inject.assistedinject.Assisted;
 
 /**
- * Simple text field.
+ * Text field.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
@@ -47,11 +47,11 @@ public class TextField extends AbstractTitleField<JTextField> {
 
 	private final TextFieldLogger log;
 
-	private final ValidatingTextComponent<JTextField> validating;
-
-	private final VetoableChangeListener valueVetoListener;
+	private final ValidatingTextFieldUi validating;
 
 	private AnnotationAccess fieldAnnotation;
+
+	private final ActionListener textAction;
 
 	/**
 	 * @see TextFieldFactory#create(Object, String)
@@ -61,23 +61,17 @@ public class TextField extends AbstractTitleField<JTextField> {
 			@Assisted String fieldName) {
 		super(new JTextField(), parentObject, fieldName);
 		this.log = logger;
-		this.validating = new ValidatingTextComponent<JTextField>(
-				getComponent());
-		this.valueVetoListener = new VetoableChangeListener() {
+		this.validating = ValidatingTextFieldUi.decorate(getComponent());
+		this.textAction = new ActionListener() {
 
 			@Override
-			public void vetoableChange(PropertyChangeEvent evt)
-					throws PropertyVetoException {
-				TextField.super.trySetValue(evt.getNewValue());
-				changeValue(evt.getNewValue());
+			public void actionPerformed(ActionEvent e) {
+				try {
+					setValue(getComponent().getText());
+				} catch (PropertyVetoException e1) {
+				}
 			}
 		};
-		setupValidating();
-	}
-
-	private void setupValidating() {
-		validating.addVetoableChangeListener(
-				ValidatingTextComponent.VALUE_PROPERTY, valueVetoListener);
 	}
 
 	@Inject
@@ -85,6 +79,7 @@ public class TextField extends AbstractTitleField<JTextField> {
 		this.fieldAnnotation = annotationAccessFactory.create(ANNOTATION_CLASS,
 				getAccessibleObject());
 		setupEditable();
+		setupTextField();
 	}
 
 	private void setupEditable() {
@@ -92,9 +87,20 @@ public class TextField extends AbstractTitleField<JTextField> {
 		setEditable(editable);
 	}
 
+	private void setupTextField() {
+		getComponent().addActionListener(textAction);
+	}
+
 	@Override
-	protected void trySetValue(Object value) throws PropertyVetoException {
-		validating.setValue(value);
+	public void setValue(Object value) throws PropertyVetoException {
+		try {
+			super.setValue(value);
+			validating.setValid(true);
+			getComponent().setText(String.valueOf(value));
+		} catch (PropertyVetoException e) {
+			validating.setValid(false);
+			throw e;
+		}
 	}
 
 	/**

@@ -1,26 +1,26 @@
 /*
  * Copyright 2012 Erwin Müller <erwin.mueller@deventm.org>
- *
+ * 
  * This file is part of prefdialog-corefields.
- *
+ * 
  * prefdialog-corefields is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- *
+ * 
  * prefdialog-corefields is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-corefields. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.anrisoftware.prefdialog.fields.formattedtextfield;
 
-import java.beans.PropertyChangeEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
-import java.beans.VetoableChangeListener;
 import java.lang.annotation.Annotation;
 
 import javax.inject.Inject;
@@ -29,8 +29,7 @@ import javax.swing.JFormattedTextField;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccess;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccessFactory;
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
-import com.anrisoftware.prefdialog.miscswing.validatingfields.AbstractValidatingComponent;
-import com.anrisoftware.prefdialog.miscswing.validatingfields.ValidatingFormattedTextComponent;
+import com.anrisoftware.prefdialog.miscswing.validatingfields.ValidatingTextFieldUi;
 import com.google.inject.assistedinject.Assisted;
 
 /**
@@ -48,9 +47,9 @@ public class FormattedTextField extends AbstractTitleField<JFormattedTextField> 
 
 	private final FormattedTextFieldLogger log;
 
-	private final ValidatingFormattedTextComponent<JFormattedTextField> validating;
+	private final ValidatingTextFieldUi validating;
 
-	private final VetoableChangeListener valueVetoListener;
+	private final ActionListener textAction;
 
 	private AnnotationAccess fieldAnnotation;
 
@@ -62,23 +61,17 @@ public class FormattedTextField extends AbstractTitleField<JFormattedTextField> 
 			@Assisted Object parentObject, @Assisted String fieldName) {
 		super(new JFormattedTextField(), parentObject, fieldName);
 		this.log = logger;
-		this.validating = new ValidatingFormattedTextComponent<JFormattedTextField>(
-				getComponent());
-		this.valueVetoListener = new VetoableChangeListener() {
+		this.validating = ValidatingTextFieldUi.decorate(getComponent());
+		this.textAction = new ActionListener() {
 
 			@Override
-			public void vetoableChange(PropertyChangeEvent evt)
-					throws PropertyVetoException {
-				FormattedTextField.super.trySetValue(evt.getNewValue());
-				changeValue(evt.getNewValue());
+			public void actionPerformed(ActionEvent e) {
+				try {
+					setValue(getComponent().getValue());
+				} catch (PropertyVetoException e1) {
+				}
 			}
 		};
-		setupValidating();
-	}
-
-	private void setupValidating() {
-		validating.addVetoableChangeListener(
-				AbstractValidatingComponent.VALUE_PROPERTY, valueVetoListener);
 	}
 
 	@Inject
@@ -86,6 +79,11 @@ public class FormattedTextField extends AbstractTitleField<JFormattedTextField> 
 		this.fieldAnnotation = annotationAccessFactory.create(ANNOTATION_CLASS,
 				getAccessibleObject());
 		setupEditable();
+		setupTextField();
+	}
+
+	private void setupTextField() {
+		getComponent().addActionListener(textAction);
 	}
 
 	private void setupEditable() {
@@ -94,8 +92,15 @@ public class FormattedTextField extends AbstractTitleField<JFormattedTextField> 
 	}
 
 	@Override
-	protected void trySetValue(Object value) throws PropertyVetoException {
-		validating.setValue(value);
+	public void setValue(Object value) throws PropertyVetoException {
+		try {
+			super.setValue(value);
+			validating.setValid(true);
+			getComponent().setValue(value);
+		} catch (PropertyVetoException e) {
+			validating.setValid(false);
+			throw e;
+		}
 	}
 
 	/**
