@@ -447,7 +447,7 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	public void setMnemonicString(String string) {
 		this.mnemonicResource = string;
 		Mnemonic mnemonic = mnemonicFactory.create(string);
-		Integer code = mnemonic.getMnemonic();
+		Integer code = mnemonic(mnemonic);
 		if (code != null) {
 			setMnemonic(code);
 			setMnemonicIndex(mnemonic.getMnemonicIndex());
@@ -455,6 +455,10 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 			updateMnemonicResource();
 		}
 		log.mnemonicSet(this, string);
+	}
+
+	private Integer mnemonic(Mnemonic mnemonic) {
+		return mnemonic.isValid() ? mnemonic.getMnemonic() : null;
 	}
 
 	@Override
