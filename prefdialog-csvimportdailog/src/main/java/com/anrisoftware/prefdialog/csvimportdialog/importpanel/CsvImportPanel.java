@@ -1,7 +1,7 @@
 package com.anrisoftware.prefdialog.csvimportdialog.importpanel;
 
 import static com.anrisoftware.prefdialog.fields.FieldComponent.VALUE_PROPERTY;
-import static com.anrisoftware.prefdialog.miscswing.lockedevents.LockedChangeListener.lockedVetoableChangeListener;
+import static com.anrisoftware.prefdialog.miscswing.lockedevents.LockedChangeListener.lockedChangeListener;
 import static java.awt.BorderLayout.CENTER;
 
 import java.awt.BorderLayout;
@@ -65,7 +65,7 @@ public class CsvImportPanel {
 		this.properties = propertiesFactory.create(properties);
 		this.texts = textsFactory.create(CsvImportPanel.class.getSimpleName());
 		this.importerFactory = importerFactory;
-		this.valueListener = lockedVetoableChangeListener(new PropertyChangeListener() {
+		this.valueListener = lockedChangeListener(new PropertyChangeListener() {
 
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
