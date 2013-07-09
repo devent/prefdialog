@@ -16,7 +16,7 @@ public class LockedChangeListener extends AbstractLockable implements
 	/**
 	 * @see #decorate(VetoableChangeListener)
 	 */
-	public static LockedChangeListener lockedVetoableChangeListener(
+	public static LockedChangeListener lockedChangeListener(
 			PropertyChangeListener l) {
 		return decorate(l);
 	}
