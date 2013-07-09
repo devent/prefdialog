@@ -46,10 +46,6 @@
 			<artifactId>guice-multibindings</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.anrisoftware.propertiesutils</groupId>
-			<artifactId>propertiesutils-swingproperties</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>com.anrisoftware.globalpom</groupId>
 			<artifactId>globalpom-utils</artifactId>
 		</dependency>

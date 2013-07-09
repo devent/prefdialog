@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.anrisoftware.globalpom</groupId>
 		<artifactId>globalpom-groovy</artifactId>
-		<version>1.18</version>
+		<version>1.19</version>
 		<relativePath />
 	</parent>
 
@@ -68,7 +68,7 @@
 			<dependency>
 				<groupId>com.anrisoftware.globalpom</groupId>
 				<artifactId>globalpom-groovytestutils</artifactId>
-				<version>1.20-SNAPSHOT</version>
+				<version>1.20</version>
 			</dependency>
 			<dependency>
 				<groupId>com.anrisoftware.resources</groupId>
@@ -83,32 +83,17 @@
 			<dependency>
 				<groupId>com.anrisoftware.globalpom</groupId>
 				<artifactId>globalpom-log</artifactId>
-				<version>1.12</version>
+				<version>1.13</version>
 			</dependency>
 			<dependency>
 				<groupId>com.anrisoftware.globalpom</groupId>
 				<artifactId>globalpom-utils</artifactId>
-				<version>1.6-SNAPSHOT</version>
+				<version>1.6</version>
 			</dependency>
 			<dependency>
 				<groupId>org.dockingframes</groupId>
 				<artifactId>docking-frames-common</artifactId>
 				<version>1.1.2-SNAPSHOT</version>
-			</dependency>
-			<dependency>
-				<groupId>com.miglayout</groupId>
-				<artifactId>miglayout-swing</artifactId>
-				<version>4.2</version>
-			</dependency>
-			<dependency>
-				<groupId>com.esotericsoftware.kryo</groupId>
-				<artifactId>kryo</artifactId>
-				<version>2.20</version>
-			</dependency>
-			<dependency>
-				<groupId>com.anrisoftware.propertiesutils</groupId>
-				<artifactId>propertiesutils-swingproperties</artifactId>
-				<version>1.2</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
