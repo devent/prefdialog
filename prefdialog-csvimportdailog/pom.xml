@@ -21,6 +21,8 @@
 	</issueManagement>
 
 	<dependencies>
+
+		<!-- own modules dependencies -->
 		<dependency>
 			<groupId>com.anrisoftware.prefdialog</groupId>
 			<artifactId>prefdialog-corefields</artifactId>
@@ -32,6 +34,13 @@
 			<version>3.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
+			<groupId>com.anrisoftware.prefdialog</groupId>
+			<artifactId>prefdialog-misc-swing</artifactId>
+			<version>3.0-SNAPSHOT</version>
+		</dependency>
+
+		<!-- docking frames -->
+		<dependency>
 			<groupId>org.dockingframes</groupId>
 			<artifactId>docking-frames-common</artifactId>
 			<optional>true</optional>
@@ -41,6 +50,8 @@
 			<artifactId>kryo</artifactId>
 			<optional>true</optional>
 		</dependency>
+
+		<!-- other dependencies -->
 		<dependency>
 			<groupId>net.sf.supercsv</groupId>
 			<artifactId>super-csv</artifactId>
