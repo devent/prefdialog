@@ -10,7 +10,7 @@
 	</parent>
 
 	<artifactId>prefdialog-api</artifactId>
-	<name>Preferences Dialog :: API</name>
+	<name>Prefdialog :: API</name>
 	<description>Preferences dialog public application interface.</description>
 	<url>https://www.anr-institute.com/projects/projects/prefdialog-public</url>
 	<inceptionYear>2013</inceptionYear>

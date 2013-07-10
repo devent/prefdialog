@@ -11,7 +11,7 @@
 	</parent>
 
 	<artifactId>prefdialog-panel</artifactId>
-	<name>Preferences Dialog :: Panel</name>
+	<name>Prefdialog :: Panel</name>
 	<url>https://www.anr-institute.com/projects/projects/prefdialog-panel</url>
 	<description>Panel that contains the annotated field components.</description>
 	<inceptionYear>2012</inceptionYear>

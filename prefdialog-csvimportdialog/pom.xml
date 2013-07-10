@@ -11,7 +11,7 @@
 	</parent>
 
 	<artifactId>prefdialog-csvimportdialog</artifactId>
-	<name>Abgui :: CSV Import Dialog</name>
+	<name>Prefdialog :: CSV Import Dialog</name>
 	<description>Dialog to import formatted text data in a comma separated format. The comma can also be a tab, space, semicolon or any other character.</description>
 	<inceptionYear>2013</inceptionYear>
 	<url>https://www.anr-institute.com/projects/projects/prefdialog-csvimportdailog</url>

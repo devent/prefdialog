@@ -14,7 +14,7 @@
 	<artifactId>prefdialog-parent</artifactId>
 	<version>3.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>Preferences Dialog :: Parent POM</name>
+	<name>Prefdialog :: Parent POM</name>
 	<description>Manages the dependencies for the modules.</description>
 	<url>https://www.anr-institute.com/projects/projects/prefdialog-parent</url>
 	<inceptionYear>2010</inceptionYear>
