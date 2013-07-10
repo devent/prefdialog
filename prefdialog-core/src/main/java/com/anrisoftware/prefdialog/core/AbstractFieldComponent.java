@@ -945,6 +945,11 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	}
 
 	@Override
+	public void requestFocus() {
+		component.requestFocusInWindow();
+	}
+
+	@Override
 	public void addVetoableChangeListener(VetoableChangeListener listener) {
 		vetoableSupport.addVetoableChangeListener(listener);
 		for (FieldComponent<?> field : childFields) {

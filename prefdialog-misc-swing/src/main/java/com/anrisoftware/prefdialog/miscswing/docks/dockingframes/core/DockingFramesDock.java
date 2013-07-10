@@ -25,6 +25,7 @@ import bibliothek.gui.dock.common.MultipleCDockable;
 import bibliothek.gui.dock.common.event.CDockableLocationEvent;
 import bibliothek.gui.dock.common.event.CDockableLocationListener;
 import bibliothek.gui.dock.common.event.CFocusListener;
+import bibliothek.gui.dock.common.intern.AbstractCDockable;
 import bibliothek.gui.dock.common.intern.CDockable;
 import bibliothek.gui.dock.common.theme.ThemeMap;
 import bibliothek.gui.dock.themes.ThemeManager;
@@ -250,6 +251,27 @@ public class DockingFramesDock implements Dock {
 	@Override
 	public LayoutTask getCurrentLayout() {
 		return currentLayout;
+	}
+
+	@Override
+	public void requestFocus(EditorDockWindow dock) {
+		MultipleCDockable dockable = findDockable(dock);
+		if (dockable == null) {
+			return;
+		}
+		if (dockable instanceof AbstractCDockable) {
+			((AbstractCDockable) dockable).toFront();
+		}
+	}
+
+	private MultipleCDockable findDockable(EditorDockWindow dock) {
+		for (Map.Entry<MultipleCDockable, EditorDockWindow> entry : editorDocks
+				.entrySet()) {
+			if (entry.getValue().getId().equals(dock.getId())) {
+				return entry.getKey();
+			}
+		}
+		return null;
 	}
 
 	/**

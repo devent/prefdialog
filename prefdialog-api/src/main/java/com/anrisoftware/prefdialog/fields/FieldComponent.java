@@ -504,6 +504,13 @@ public interface FieldComponent<ComponentType extends Component> {
 	Iterable<FieldComponent<?>> getFields();
 
 	/**
+	 * Request the focus to the input component of the field.
+	 * 
+	 * @see Component#requestFocus()
+	 */
+	void requestFocus();
+
+	/**
 	 * @see VetoableChangeSupport#addVetoableChangeListener(VetoableChangeListener)
 	 * @see #VALUE_PROPERTY
 	 */

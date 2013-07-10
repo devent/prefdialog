@@ -154,6 +154,14 @@ public interface Dock {
 	void addLayoutListener(LayoutListener listener);
 
 	/**
+	 * Focus the specified editor dock.
+	 * 
+	 * @param dock
+	 *            the {@link EditorDockWindow}.
+	 */
+	void requestFocus(EditorDockWindow dock);
+
+	/**
 	 * Removes the listener that was informed of layout changes.
 	 * 
 	 * @param listener
@@ -176,4 +184,5 @@ public interface Dock {
 	 *            the {@link ChangeListener}.
 	 */
 	void removeStateChangedListener(ChangeListener listener);
+
 }

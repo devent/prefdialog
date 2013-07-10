@@ -150,6 +150,11 @@ public class CsvImportPanel {
 		return properties;
 	}
 
+	public void requestFocus() {
+		FieldComponent<Component> file = propertiesPanel.findField("file");
+		file.requestFocus();
+	}
+
 	/**
 	 * @see FieldComponent#addVetoableChangeListener(VetoableChangeListener)
 	 */

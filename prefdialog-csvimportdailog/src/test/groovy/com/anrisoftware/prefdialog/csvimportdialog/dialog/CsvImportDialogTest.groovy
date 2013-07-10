@@ -145,6 +145,7 @@ class CsvImportDialogTest {
 		util.withFixture({ FrameFixture fix ->
 			importDialog.openDialog()
 			dia = fix.dialog()
+			Thread.sleep 60*1000
 			dia.button("cancelButton").click()
 		})
 	}

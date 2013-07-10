@@ -212,4 +212,9 @@ public class FileChooserField extends AbstractTitleField<JPanel> {
 		panel.getOpenFileChooser().setAction(action);
 	}
 
+	@Override
+	public void requestFocus() {
+		panel.getFileField().requestFocusInWindow();
+	}
+
 }

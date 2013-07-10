@@ -16,12 +16,15 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanel;
 import com.anrisoftware.prefdialog.csvimportdialog.importpaneldock.ImportPanelDock;
 import com.anrisoftware.prefdialog.csvimportdialog.model.CsvImportProperties;
 import com.anrisoftware.prefdialog.miscswing.docks.api.Dock;
 import com.anrisoftware.prefdialog.miscswing.docks.api.DockFactory;
+import com.anrisoftware.prefdialog.miscswing.docks.api.FocusChangedEvent;
 import com.anrisoftware.resources.texts.api.Texts;
 import com.anrisoftware.resources.texts.api.TextsFactory;
 import com.google.inject.Injector;
@@ -172,6 +175,16 @@ public class CsvImportDialog {
 				cancelAction.actionPerformed(null);
 			}
 		});
+		dock.addStateChangedListener(new ChangeListener() {
+
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				if (e instanceof FocusChangedEvent) {
+					dock.requestFocus(importPanelDock);
+					importPanelDock.getImportPanel().requestFocus();
+				}
+			}
+		});
 	}
 
 	public void addCancelAction(ActionListener action) {
@@ -183,6 +196,7 @@ public class CsvImportDialog {
 	}
 
 	public void openDialog() {
+		importPanelDock.getImportPanel().requestFocus();
 		dialog.setVisible(true);
 	}
 
