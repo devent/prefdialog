@@ -29,14 +29,20 @@ import java.lang.annotation.Annotation;
 
 import javax.inject.Inject;
 import javax.swing.Action;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import com.anrisoftware.globalpom.mnemonic.Mnemonic;
+import com.anrisoftware.globalpom.mnemonic.MnemonicFactory;
 import com.anrisoftware.globalpom.reflection.annotationclass.AnnotationClassFactory;
+import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccess;
+import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccessFactory;
 import com.anrisoftware.prefdialog.annotations.FileChooser;
 import com.anrisoftware.prefdialog.annotations.FileChooserModel;
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
 import com.anrisoftware.prefdialog.miscswing.filetextfield.FileTextField;
 import com.anrisoftware.prefdialog.miscswing.validatingfields.ValidatingTextFieldUi;
+import com.anrisoftware.resources.texts.api.Texts;
 import com.google.inject.assistedinject.Assisted;
 
 /**
@@ -67,6 +73,10 @@ public class FileChooserField extends AbstractTitleField<JPanel> {
 
 	private static final String MODEL_ELEMENT = "model";
 
+	private static final String BUTTON_TEXT_ELEMENT = "buttonText";
+
+	private static final String BUTTON_MNEMONIC_ELEMENT = "buttonMnemonic";
+
 	private final FileChooserFieldLogger log;
 
 	private final FileTextField fileTextField;
@@ -83,7 +93,21 @@ public class FileChooserField extends AbstractTitleField<JPanel> {
 
 	private transient AnnotationClassFactory annotationClassFactory;
 
+	private String buttonTextResource;
+
+	private String buttonText;
+
 	private FileChooserModel model;
+
+	private AnnotationAccess annotationAccess;
+
+	private String buttonMnemonicResource;
+
+	private Integer buttonMnemonic;
+
+	private MnemonicFactory mnemonicFactory;
+
+	private int buttonMnemonicIndex;
 
 	/**
 	 * @see FileChooserFieldFactory#create(Object, String)
@@ -137,9 +161,26 @@ public class FileChooserField extends AbstractTitleField<JPanel> {
 	}
 
 	@Inject
-	void setupFileChooserField(AnnotationClassFactory annotationClassFactory) {
+	void setupFileChooserField(AnnotationClassFactory annotationClassFactory,
+			AnnotationAccessFactory annotationAccessFactory,
+			MnemonicFactory mnemonicFactory) {
 		this.annotationClassFactory = annotationClassFactory;
+		this.annotationAccess = annotationAccessFactory.create(
+				ANNOTATION_CLASS, getAccessibleObject());
+		this.mnemonicFactory = mnemonicFactory;
 		setupModel();
+		setupButtonText();
+		setupButtonMnemonic();
+	}
+
+	private void setupButtonText() {
+		String title = annotationAccess.getValue(BUTTON_TEXT_ELEMENT);
+		setButtonText(title);
+	}
+
+	private void setupButtonMnemonic() {
+		String mnemonic = annotationAccess.getValue(BUTTON_MNEMONIC_ELEMENT);
+		setButtonMnemonicString(mnemonic);
 	}
 
 	private void setupModel() {
@@ -210,6 +251,144 @@ public class FileChooserField extends AbstractTitleField<JPanel> {
 	 */
 	public void setOpenFileChooserAction(Action action) {
 		panel.getOpenFileChooser().setAction(action);
+	}
+
+	/**
+	 * Sets the text of the button that opens the file chooser dialog. The text
+	 * can also be a resource name that is queried in the supplied texts
+	 * resource.
+	 * 
+	 * @param buttonText
+	 *            the button text or the resource name.
+	 */
+	public void setButtonText(String buttonText) {
+		this.buttonTextResource = buttonText;
+		this.buttonText = buttonText;
+		log.buttonTextSet(buttonText, this);
+		updateButtonTextResource();
+	}
+
+	/**
+	 * Returns the text of the button that opens the file chooser dialog.
+	 * 
+	 * @return the button text.
+	 */
+	public String getButtonText() {
+		return buttonText;
+	}
+
+	/**
+	 * Sets the mnemonic character with an optimal mnemonic index for the button
+	 * that opens the file chooser dialog. The string can contain a key code
+	 * name or the character. The mnemonic can also be a resource name that is
+	 * queried in the supplied texts resource.
+	 * 
+	 * @param string
+	 *            the mnemonic string or the resource name.
+	 */
+	public void setButtonMnemonicString(String string) {
+		this.buttonMnemonicResource = string;
+		Mnemonic mnemonic = mnemonicFactory.create(string);
+		Integer code = mnemonic(mnemonic);
+		if (code != null) {
+			setButtonMnemonic(code);
+			setButtonMnemonicIndex(mnemonic.getMnemonicIndex());
+		} else {
+			updateButtonMnemonicResource();
+		}
+		log.buttonMnemonicSet(this, string);
+	}
+
+	private Integer mnemonic(Mnemonic mnemonic) {
+		return mnemonic.isValid() ? mnemonic.getMnemonic() : null;
+	}
+
+	/**
+	 * Sets the mnemonic character code for the open the file chooser dialog
+	 * button.
+	 * 
+	 * @param mnemonic
+	 *            the mnemonic character code.
+	 */
+	public void setButtonMnemonic(int mnemonic) {
+		this.buttonMnemonic = mnemonic;
+		getOpenFileChooser().setMnemonic(mnemonic);
+	}
+
+	/**
+	 * Returns the mnemonic character code for the open the file chooser dialog
+	 * button.
+	 * 
+	 * @return the mnemonic character code or {@code null} if no mnemonic was
+	 *         set.
+	 */
+	public Integer getButtonMnemonic() {
+		return buttonMnemonic;
+	}
+
+	/**
+	 * Sets the mnemonic index for the open the file chooser dialog button.
+	 * 
+	 * @param index
+	 *            the mnemonic index.
+	 */
+	public void setButtonMnemonicIndex(int index) {
+		this.buttonMnemonicIndex = index;
+		getOpenFileChooser().setDisplayedMnemonicIndex(index);
+	}
+
+	/**
+	 * Returns the mnemonic index for the open the file chooser dialog button.
+	 * 
+	 * @param index
+	 *            the mnemonic index.
+	 */
+	public int getButtonMnemonicIndex() {
+		return buttonMnemonicIndex;
+	}
+
+	@Override
+	public void setTexts(Texts texts) {
+		super.setTexts(texts);
+		updateTextsResources();
+	}
+
+	private void updateTextsResources() {
+		updateButtonTextResource();
+		updateButtonMnemonicResource();
+	}
+
+	private void updateButtonTextResource() {
+		if (haveTextResource(buttonTextResource)) {
+			buttonText = getTextResource(buttonTextResource, buttonText);
+		}
+		getOpenFileChooser().setText(buttonText);
+		updateButtonMnemonicResource();
+	}
+
+	private void updateButtonMnemonicResource() {
+		if (!haveTextResource(buttonMnemonicResource)) {
+			return;
+		}
+		String string = getTextResource(buttonMnemonicResource, null);
+		if (string == null) {
+			return;
+		}
+		Mnemonic mnemonic = mnemonicFactory.create(string);
+		setButtonMnemonic(mnemonic.getMnemonic());
+		int index = mnemonic.getMnemonicIndex();
+		if (index != -1) {
+			setButtonMnemonicIndex(index);
+		}
+	}
+
+	/**
+	 * Returns the open file chooser button.
+	 * 
+	 * @return the {@link JButton}.
+	 */
+	public JButton getOpenFileChooser() {
+		return panel.getOpenFileChooser();
 	}
 
 	@Override

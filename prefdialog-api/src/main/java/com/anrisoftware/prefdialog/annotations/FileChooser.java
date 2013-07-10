@@ -1,18 +1,18 @@
 /*
  * Copyright 2012 Erwin Müller <erwin.mueller@deventm.org>
- *
+ * 
  * This file is part of prefdialog-core.
- *
+ * 
  * prefdialog-core is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
  * Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- *
+ * 
  * prefdialog-core is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-core. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -67,6 +67,23 @@ public @interface FileChooser {
 	 * texts resource.
 	 */
 	String buttonText() default "Open…";
+
+	/**
+	 * Sets the mnemonic character with an optimal mnemonic index for the button
+	 * that opens the file chooser dialog. The string can contain a key code
+	 * name or the character. The mnemonic can also be a resource name that is
+	 * queried in the supplied texts resource. Defaults to character "o" for
+	 * "Open". Examples:
+	 * <ul>
+	 * <li>{@code VK_A}</li>
+	 * <li>{@code a}</li>
+	 * <li>{@code VK_A,5}</li>
+	 * <li>{@code a,5}</li>
+	 * </ul>
+	 * 
+	 * @since 3.0
+	 */
+	String buttonMnemonic() default "o";
 
 	/**
 	 * The position of the title of the button that opens the file chooser

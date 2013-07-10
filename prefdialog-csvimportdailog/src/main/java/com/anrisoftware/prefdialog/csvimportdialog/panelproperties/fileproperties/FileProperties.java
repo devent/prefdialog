@@ -31,7 +31,7 @@ public class FileProperties {
 	}
 
 	@FieldComponent(showTitle = false)
-	@FileChooser(model = "fileModel")
+	@FileChooser(buttonText = "fileButton", buttonMnemonic = "fileButton_mnemonic", model = "fileModel")
 	public File getFile() {
 		return file;
 	}
