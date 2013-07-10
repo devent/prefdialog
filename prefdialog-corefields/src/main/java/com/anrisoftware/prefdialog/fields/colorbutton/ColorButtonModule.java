@@ -1,11 +1,11 @@
 /*
- * Copyright 2012 Erwin Müller <erwin.mueller@deventm.org>
+ * Copyright 2013-2013 Erwin Müller <erwin.mueller@deventm.org>
  *
  * This file is part of prefdialog-corefields.
  *
- * prefdialog-corefields is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or (at your
+ * prefdialog-corefields is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
  *
  * prefdialog-corefields is distributed in the hope that it will be useful, but
