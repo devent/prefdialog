@@ -248,7 +248,7 @@ class ComboBoxTest extends FieldTestUtils {
 			comboBox.replaceText "Valid"
 			comboBox.pressAndReleaseKeys KeyEvent.VK_ENTER
 			assert bean."$fieldName" == "Valid"
-		})
+		}, { Thread.sleep 60000 })
 	}
 
 	static final String NAME = ComboBoxTest.class.simpleName

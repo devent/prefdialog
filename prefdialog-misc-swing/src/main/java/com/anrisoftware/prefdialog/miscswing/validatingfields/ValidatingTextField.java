@@ -98,7 +98,7 @@ public class ValidatingTextField extends JTextField {
 
 			@Override
 			public boolean verify(JComponent input) {
-				return true;
+				return validating.isValid();
 			}
 		};
 		this.verifier = new InputVerifier() {
