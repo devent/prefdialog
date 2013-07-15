@@ -113,9 +113,12 @@ class ValidatingUtils {
 	 * Create a combo-box field with the specified name.
 	 */
 	static JComboBox createComboBoxField(String name, boolean editable) {
-		def field = new JComboBox(["A", "B"] as String[])
-		field.setName name
-		field.setEditable editable
+		def field
+		invokeAndWait {
+			field = new JComboBox(["A", "B"] as String[])
+			field.setName name
+			field.setEditable editable
+		}
 		return field
 	}
 

@@ -41,7 +41,7 @@ import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccessFactory
 import com.anrisoftware.globalpom.reflection.beans.BeanAccess;
 import com.anrisoftware.globalpom.reflection.beans.BeanAccessFactory;
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
-import com.anrisoftware.prefdialog.miscswing.validatingfields.ValidatingComboBoxUi;
+import com.anrisoftware.prefdialog.miscswing.validatingfields.ValidatingComboBoxEditor;
 import com.anrisoftware.resources.texts.api.Texts;
 
 /**
@@ -66,7 +66,7 @@ public abstract class AbstractComboBoxField<ComponentType extends JComboBox<?>>
 
 	private AbstractComboBoxFieldLogger log;
 
-	private ValidatingComboBoxUi validating;
+	private ValidatingComboBoxEditor validating;
 
 	private final Class<? extends Annotation> annotationType;
 
@@ -137,7 +137,7 @@ public abstract class AbstractComboBoxField<ComponentType extends JComboBox<?>>
 		ComponentType component = getComponent();
 		component.setSelectedItem(getValue());
 		component.addActionListener(dataListener);
-		validating = ValidatingComboBoxUi.decorate(component);
+		validating = ValidatingComboBoxEditor.decorate(component);
 		validating.setInvalidText(getInvalidText());
 	}
 

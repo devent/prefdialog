@@ -22,7 +22,10 @@ import static com.anrisoftware.prefdialog.miscswing.validatingfields.ValidatingU
 import static info.clearthought.layout.TableLayoutConstants.*
 import static javax.swing.SwingUtilities.*
 
+import javax.swing.JComboBox
+
 import org.fest.swing.fixture.FrameFixture
+import org.fest.swing.fixture.JComboBoxFixture
 import org.junit.Test
 
 import com.anrisoftware.globalpom.utils.TestFrameUtil
@@ -36,79 +39,53 @@ import com.anrisoftware.globalpom.utils.TestFrameUtil
 class ValidatingComboBoxFieldUiTest {
 
 	@Test
-	void "not editable, show invalid with tool-tip"() {
-		def title = "$NAME::not editable, show invalid with tool-tip"
+	void "show invalid with tool-tip"() {
+		def title = "$NAME::show invalid with tool-tip"
 		def fieldName = "fieldA"
-		def field = ValidatingComboBoxUi.decorate(createComboBoxField(fieldName, false))
-		def comboBox
-		field.setInvalidText "Not valid"
-		def fieldB = createTextField("fieldB")
-		def panel = createPanel cols: [FILL], rows: [
+		field = createComboBoxField(fieldName, true)
+		fieldEditor = ValidatingComboBoxEditor.decorate field
+		fieldEditor.setInvalidText "Not valid"
+		fieldB = createTextField("fieldB")
+		panel = createPanel cols: [FILL], rows: [
 			FILL,
 			PREFERRED,
 			PREFERRED,
 			FILL
 		], fields: [
-			"0, 1": field.component,
+			"0, 1": field,
 			"0, 2": fieldB
 		]
 		new TestFrameUtil(title, panel).withFixture({ FrameFixture fix ->
-			comboBox = fix.comboBox()
+			comboBoxFix = fix.comboBox()
 			fix.comboBox().selectItem(0)
-			invokeAndWait { field.setValid false  }
-			comboBox.selectItem(0)
-			comboBox.selectItem(1)
+			invokeAndWait { fieldEditor.setInputValid false  }
+			comboBoxFix.selectItem(0)
+			comboBoxFix.selectItem(1)
 		}, {
-			invokeAndWait { field.setValid true  }
+			invokeAndWait { fieldEditor.setInputValid true  }
 		}, {
-			invokeAndWait { field.setValid false  }
-		}, { FrameFixture fix ->
-			fix.textBox().focus()
-			invokeAndWait { field.setValid false  }
-			comboBox.selectItem(0)
-			comboBox.selectItem(1)
-		}, {
-			invokeAndWait { field.setValid true  }
-		}, {
-			invokeAndWait { field.setValid false  }
-		})
-	}
-
-	@Test
-	void "editable, show invalid with tool-tip"() {
-		def title = "$NAME::editable, show invalid with tool-tip"
-		def fieldName = "fieldA"
-		def field = ValidatingComboBoxUi.decorate(createComboBoxField(fieldName, true))
-		field.setInvalidText "Not valid"
-		def fieldB = createTextField("fieldB")
-		def panel = createPanel cols: [FILL], rows: [
-			FILL,
-			PREFERRED,
-			PREFERRED,
-			FILL
-		], fields: [
-			"0, 1": field.component,
-			"0, 2": fieldB
-		]
-		new TestFrameUtil(title, panel).withFixture({ FrameFixture fix ->
-			invokeAndWait { field.setValid false }
-			fix.comboBox().selectItem(0)
-			fix.comboBox().selectItem(1)
-		}, { FrameFixture fix ->
-			invokeAndWait { field.setValid true  }
-		}, {
-			invokeAndWait { field.setValid false  }
+			invokeAndWait { fieldEditor.setInputValid false  }
 		}, { FrameFixture fix ->
 			fix.textBox("fieldB").focus()
-			invokeAndWait { field.setValid false  }
-			fix.comboBox().selectItem(0)
-			fix.comboBox().selectItem(1)
+			invokeAndWait { fieldEditor.setInputValid false  }
+			comboBoxFix.selectItem(0)
+			comboBoxFix.selectItem(1)
 		}, {
-			invokeAndWait { field.setValid true  }
+			invokeAndWait { fieldEditor.setInputValid true  }
 		}, {
-			invokeAndWait { field.setValid false  }
+			invokeAndWait { fieldEditor.setInputValid false  }
 		})
 	}
 
 	static final String NAME = ValidatingComboBoxFieldUiTest.class.simpleName
+
+	JComboBox field
+
+	JComboBoxFixture comboBoxFix
+
+	ValidatingComboBoxEditor fieldEditor
+
+	def fieldB
+
+	def panel
 }
