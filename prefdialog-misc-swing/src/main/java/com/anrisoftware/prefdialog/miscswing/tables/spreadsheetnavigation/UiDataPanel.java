@@ -1,24 +1,23 @@
 /*
  * Copyright 2013-2013 Erwin Müller <erwin.mueller@deventm.org>
- *
+ * 
  * This file is part of prefdialog-misc-swing.
- *
- * prefdialog-misc-swing is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
+ * 
+ * prefdialog-misc-swing is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- *
+ * 
  * prefdialog-misc-swing is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-misc-swing. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.anrisoftware.prefdialog.miscswing.tables.spreadsheetnavigation;
 
-import javax.swing.InputVerifier;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -37,15 +36,13 @@ import com.anrisoftware.prefdialog.miscswing.validatingfields.ValidatingFormatte
  */
 @SuppressWarnings("serial")
 class UiDataPanel extends JPanel {
-	private final JFormattedTextField currentColumnField;
+	private final ValidatingFormattedTextField currentColumnField;
 	private final JFormattedTextField maximumColumnField;
 	private final JLabel separatorLabel;
 	private final JLabel columnSeparatorLabel;
 	private final JLabel rowSeparatorLabel;
-	private final JFormattedTextField currentRowField;
+	private final ValidatingFormattedTextField currentRowField;
 	private final JFormattedTextField maximumRowField;
-	private final ValidatingFormattedTextField currentColumnValidating;
-	private final ValidatingFormattedTextField currentRowValidating;
 
 	/**
 	 * Create the panel.
@@ -55,14 +52,12 @@ class UiDataPanel extends JPanel {
 		setLayout(new MigLayout("gap 0 0 fill ins 0",
 				"0[grow][10%][][10%][][10%][][10%]0", "0[]0"));
 
-		currentColumnField = new JFormattedTextField();
+		currentColumnField = new ValidatingFormattedTextField();
 		currentColumnField.setHorizontalAlignment(SwingConstants.TRAILING);
 		currentColumnField.setName("currentColumnField");
 		currentColumnField.setText("0");
 		add(currentColumnField, "cell 1 0,growx");
 		currentColumnField.setColumns(10);
-		currentColumnValidating = ValidatingFormattedTextField.decorate(
-				currentColumnField, null);
 
 		columnSeparatorLabel = new JLabel("-");
 		columnSeparatorLabel.setName("columnSeparatorLabel");
@@ -80,13 +75,11 @@ class UiDataPanel extends JPanel {
 		separatorLabel.setName("separatorLabel");
 		add(separatorLabel, "cell 4 0,alignx trailing");
 
-		currentRowField = new JFormattedTextField();
+		currentRowField = new ValidatingFormattedTextField();
 		currentRowField.setHorizontalAlignment(SwingConstants.TRAILING);
 		currentRowField.setName("currentRowField");
 		currentRowField.setText("0");
 		add(currentRowField, "cell 5 0,growx");
-		currentRowValidating = ValidatingFormattedTextField.decorate(
-				currentRowField, null);
 
 		rowSeparatorLabel = new JLabel("-");
 		rowSeparatorLabel.setName("rowSeparatorLabel");
@@ -101,32 +94,16 @@ class UiDataPanel extends JPanel {
 
 	}
 
-	public JFormattedTextField getCurrentColumnField() {
+	public ValidatingFormattedTextField getCurrentColumnField() {
 		return currentColumnField;
-	}
-
-	public ValidatingFormattedTextField getCurrentColumnValidating() {
-		return currentColumnValidating;
-	}
-
-	public void setCurrentColumnFieldVerifier(InputVerifier verifier) {
-		currentColumnValidating.setVerifier(verifier);
 	}
 
 	public JFormattedTextField getMaximumColumnField() {
 		return maximumColumnField;
 	}
 
-	public JFormattedTextField getCurrentRowField() {
+	public ValidatingFormattedTextField getCurrentRowField() {
 		return currentRowField;
-	}
-
-	public ValidatingFormattedTextField getCurrentRowValidating() {
-		return currentRowValidating;
-	}
-
-	public void setCurrentRowFieldVerifier(InputVerifier verifier) {
-		currentRowValidating.setVerifier(verifier);
 	}
 
 	public JFormattedTextField getMaximumRowField() {

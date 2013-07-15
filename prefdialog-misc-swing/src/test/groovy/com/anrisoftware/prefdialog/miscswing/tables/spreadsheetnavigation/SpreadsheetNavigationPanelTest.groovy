@@ -22,6 +22,7 @@ import javax.swing.JPanel
 import javax.swing.JTable
 
 import org.junit.BeforeClass
+import org.junit.Test
 
 import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.prefdialog.miscswing.tables.spreadsheet.NumbersModel
@@ -39,7 +40,7 @@ import com.google.inject.Injector
  */
 class SpreadsheetNavigationPanelTest {
 
-	//@Test
+	@Test
 	void "manually"() {
 		def title = "$NAME::manually"
 		def table = new JTable()
