@@ -18,15 +18,24 @@
  */
 package com.anrisoftware.prefdialog.miscswing.filetextfield
 
+import org.junit.Test
+
 /**
  * Test the file text field.
- * 
+ *
  * @see FileTextField
  *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
 class FileTextTest extends FileTextTestUtil {
+
+	@Test
+	void "show"() {
+		def title = "FileTextTest::show"
+		def frame = createFrame title
+		frame.withFixture {}
+	}
 
 	//@Test
 	void "manually"() {

@@ -1,18 +1,18 @@
 /*
  * Copyright 2013-2013 Erwin Müller <erwin.mueller@deventm.org>
- *
+ * 
  * This file is part of prefdialog-misc-swing.
- *
- * prefdialog-misc-swing is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
+ * 
+ * prefdialog-misc-swing is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- *
+ * 
  * prefdialog-misc-swing is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-misc-swing. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -32,6 +32,7 @@ import java.io.File;
 import javax.swing.JFormattedTextField;
 import javax.swing.text.DefaultFormatterFactory;
 
+import com.anrisoftware.prefdialog.miscswing.validatingfields.ValidatingFormattedTextField;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
@@ -44,7 +45,7 @@ import com.google.inject.Injector;
  * @since 3.0
  */
 @SuppressWarnings("serial")
-public class FileTextField extends JFormattedTextField {
+public class FileTextField extends ValidatingFormattedTextField {
 
 	/**
 	 * @see #create()

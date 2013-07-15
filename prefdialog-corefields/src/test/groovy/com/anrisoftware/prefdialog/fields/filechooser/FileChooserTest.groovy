@@ -45,7 +45,7 @@ import com.google.inject.Injector
  */
 class FileChooserTest extends FieldTestUtils {
 
-	@Test
+	//@Test
 	void "manually"() {
 		def title = "$NAME::manually"
 		def fieldName = INITIAL_VALUE
