@@ -109,7 +109,7 @@ public class ValidatingFormattedTextField extends JFormattedTextField {
 
 			@Override
 			public boolean verify(JComponent input) {
-				return true;
+				return validating.isValid();
 			}
 		};
 		this.verifier = new InputVerifier() {

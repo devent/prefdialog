@@ -1,18 +1,18 @@
 /*
  * Copyright 2013-2013 Erwin Müller <erwin.mueller@deventm.org>
- *
+ * 
  * This file is part of prefdialog-corefields.
- *
- * prefdialog-corefields is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
+ * 
+ * prefdialog-corefields is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- *
+ * 
  * prefdialog-corefields is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-corefields. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -29,7 +29,7 @@ import javax.swing.JFormattedTextField;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccess;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccessFactory;
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
-import com.anrisoftware.prefdialog.miscswing.validatingfields.ValidatingTextFieldUi;
+import com.anrisoftware.prefdialog.miscswing.validatingfields.ValidatingFormattedTextField;
 import com.google.inject.assistedinject.Assisted;
 
 /**
@@ -47,7 +47,7 @@ public class FormattedTextField extends AbstractTitleField<JFormattedTextField> 
 
 	private final FormattedTextFieldLogger log;
 
-	private final ValidatingTextFieldUi validating;
+	private final ValidatingFormattedTextField validating;
 
 	private final ActionListener textAction;
 
@@ -59,9 +59,9 @@ public class FormattedTextField extends AbstractTitleField<JFormattedTextField> 
 	@Inject
 	FormattedTextField(FormattedTextFieldLogger logger,
 			@Assisted Object parentObject, @Assisted String fieldName) {
-		super(new JFormattedTextField(), parentObject, fieldName);
+		super(new ValidatingFormattedTextField(), parentObject, fieldName);
 		this.log = logger;
-		this.validating = ValidatingTextFieldUi.decorate(getComponent());
+		this.validating = (ValidatingFormattedTextField) getComponent();
 		this.textAction = new ActionListener() {
 
 			@Override
@@ -95,10 +95,10 @@ public class FormattedTextField extends AbstractTitleField<JFormattedTextField> 
 	public void setValue(Object value) throws PropertyVetoException {
 		try {
 			super.setValue(value);
-			validating.setValid(true);
+			validating.setInputValid(true);
 			getComponent().setValue(value);
 		} catch (PropertyVetoException e) {
-			validating.setValid(false);
+			validating.setInputValid(false);
 			throw e;
 		}
 	}
