@@ -31,11 +31,19 @@ import javax.swing.JTextField
 
 /**
  * Utilities for validating components.
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
  */
 class ValidatingUtils {
+
+	public static final String validatingTextField = ValidatingTextField.class.name
+
+	public static final String jtextField = JTextField.class.name
+
+	public static final String validatingFormattedTextField = ValidatingFormattedTextField.class.name
+
+	public static final String jformattedTextField = JFormattedTextField.class.name
 
 	/**
 	 * Create a vetoable change listener.
@@ -50,7 +58,7 @@ class ValidatingUtils {
 
 	/**
 	 * Create panel that contains the fields.
-	 * 
+	 *
 	 * @param attributes
 	 * 			  <dl>
 	 * 			  <dt>cols</dt>
@@ -60,7 +68,7 @@ class ValidatingUtils {
 	 * 			  <dt>fields</dt>
 	 * 			  <dd>a map of the fields, key is the position, value is the field.</dd>
 	 * 			  </dl>
-	 * 
+	 *
 	 * @return
 	 */
 	static JPanel createPanel(def attributes) {
@@ -76,8 +84,8 @@ class ValidatingUtils {
 	/**
 	 * Create a text field with the specified name.
 	 */
-	static JTextField createTextField(String name) {
-		def field = new JTextField()
+	static JTextField createTextField(String name, String type = jtextField) {
+		def field = Class.forName(type).newInstance()
 		field.setName name
 		return field
 	}
@@ -85,8 +93,8 @@ class ValidatingUtils {
 	/**
 	 * Create a formatted text field with the specified name.
 	 */
-	static JFormattedTextField createFormattedTextField(String name, def value) {
-		def field = new JFormattedTextField(value)
+	static JFormattedTextField createFormattedTextField(String name, def value, String type = jformattedTextField) {
+		def field = Class.forName(type).getConstructor([Object]as Class[]).newInstance(value)
 		field.setName name
 		return field
 	}

@@ -51,12 +51,12 @@ public class ValidatingSpinnerFieldUi extends SpinnerUI {
 	 */
 	public static ValidatingSpinnerFieldUi decorate(JSpinner field) {
 		ValidatingSpinnerFieldUi ui = new ValidatingSpinnerFieldUi(
-				new ValidatingComponentUI(field.getUI()), field.getUI());
+				new ValidatingComponent(field.getUI()), field.getUI());
 		field.setUI(ui);
 		return ui;
 	}
 
-	private final ValidatingComponentUI validatingUi;
+	private final ValidatingComponent validatingUi;
 
 	private final SpinnerUI ui;
 
@@ -68,20 +68,20 @@ public class ValidatingSpinnerFieldUi extends SpinnerUI {
 	 * @param ui
 	 *            the {@link TextUI}.
 	 */
-	public ValidatingSpinnerFieldUi(ValidatingComponentUI validatingUi, SpinnerUI ui) {
+	public ValidatingSpinnerFieldUi(ValidatingComponent validatingUi, SpinnerUI ui) {
 		this.validatingUi = validatingUi;
 		this.ui = ui;
 	}
 
 	/**
-	 * @see ValidatingComponentUI#getComponent()
+	 * @see ValidatingComponent#getComponent()
 	 */
 	public JSpinner getComponent() {
 		return (JSpinner) validatingUi.getComponent();
 	}
 
 	/**
-	 * @see ValidatingComponentUI#setInvalidBackground(Color)
+	 * @see ValidatingComponent#setInvalidBackground(Color)
 	 */
 	public void setInvalidBackground(Color color) {
 		validatingUi.setInvalidBackground(color);
@@ -91,14 +91,14 @@ public class ValidatingSpinnerFieldUi extends SpinnerUI {
 	}
 
 	/**
-	 * @see ValidatingComponentUI#getInvalidBackground()
+	 * @see ValidatingComponent#getInvalidBackground()
 	 */
 	public Color getInvalidBackground() {
 		return validatingUi.getInvalidBackground();
 	}
 
 	/**
-	 * @see ValidatingComponentUI#setValid(boolean)
+	 * @see ValidatingComponent#setValid(boolean)
 	 */
 	public void setValid(boolean valid) {
 		validatingUi.setValid(valid);
@@ -108,14 +108,14 @@ public class ValidatingSpinnerFieldUi extends SpinnerUI {
 	}
 
 	/**
-	 * @see ValidatingComponentUI#isValid()
+	 * @see ValidatingComponent#isValid()
 	 */
 	public boolean isValid() {
 		return validatingUi.isValid();
 	}
 
 	/**
-	 * @see ValidatingComponentUI#setInvalidText(String)
+	 * @see ValidatingComponent#setInvalidText(String)
 	 */
 	public void setInvalidText(String text) {
 		validatingUi.setInvalidText(text);
@@ -125,7 +125,7 @@ public class ValidatingSpinnerFieldUi extends SpinnerUI {
 	}
 
 	/**
-	 * @see ValidatingComponentUI#getInvalidText()
+	 * @see ValidatingComponent#getInvalidText()
 	 */
 	public String getInvalidText() {
 		return validatingUi.getInvalidText();

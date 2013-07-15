@@ -28,6 +28,7 @@ import javax.swing.InputVerifier
 import javax.swing.JFormattedTextField
 
 import org.fest.swing.fixture.FrameFixture
+import org.fest.swing.fixture.JTextComponentFixture
 import org.junit.Test
 
 import com.anrisoftware.globalpom.utils.TestFrameUtil
@@ -43,46 +44,41 @@ class ValidatingFormattedTextFieldTest {
 	@Test
 	void "show invalid with tool-tip"() {
 		def title = "$NAME::show invalid with tool-tip"
-		def fieldName = "fieldA"
-		def value = 10
-		def textFieldFix
-		def textField = createFormattedTextField(fieldName, value)
-		def field = ValidatingFormattedTextField.decorate(textField, createVerifier(textField))
+		field = createFormattedTextField(fieldName, value, validatingFormattedTextField)
+		field.setVerifier createVerifier(field)
 		field.setInvalidText "Not valid"
-		def fieldBFix
-		def fieldB = createTextField("fieldB")
+		fieldB = createTextField("fieldB")
 		def panel = createPanel cols: [FILL], rows: [
 			FILL,
 			PREFERRED,
 			PREFERRED,
 			FILL
 		], fields: [
-			"0, 1": textField,
+			"0, 1": field,
 			"0, 2": fieldB
 		]
 		new TestFrameUtil(title, panel).withFixture({ FrameFixture fix ->
-			textFieldFix = fix.textBox(fieldName)
+			fieldFix = fix.textBox(fieldName)
 			fieldBFix = fix.textBox("fieldB")
-			textFieldFix.selectAll()
-			textFieldFix.enterText "20"
-			textFieldFix.pressAndReleaseKeys KeyEvent.VK_ENTER
-			assert field.isValid() == false
+			fieldFix.selectAll()
+			fieldFix.enterText "20"
+			fieldFix.pressAndReleaseKeys KeyEvent.VK_ENTER
+			assert field.isInputValid() == false
 		}, {
-			textFieldFix.selectAll()
-			textFieldFix.enterText "5"
-			textFieldFix.pressAndReleaseKeys KeyEvent.VK_ENTER
-			assert field.isValid() == true
+			fieldFix.selectAll()
+			fieldFix.enterText "5"
+			fieldFix.pressAndReleaseKeys KeyEvent.VK_ENTER
+			assert field.isInputValid() == true
 		}, {
-			textFieldFix.selectAll()
-			textFieldFix.enterText "20"
+			fieldFix.selectAll()
+			fieldFix.enterText "20"
 			fieldBFix.focus()
-			assert field.isValid() == false
+			assert field.isInputValid() == false
 		}, {
-			textFieldFix.selectAll()
-			textFieldFix.enterText "10"
+			fieldFix.selectAll()
+			fieldFix.enterText "10"
 			fieldBFix.focus()
-			assert field.isValid() == true
-		}, { Thread.sleep 60000 //
+			assert field.isInputValid() == true
 		})
 	}
 
@@ -91,4 +87,16 @@ class ValidatingFormattedTextFieldTest {
 	static createVerifier(JFormattedTextField field) {
 		[ verify: { return field.value == 10 || field.value == 5 } ] as InputVerifier
 	}
+
+	def value = 10
+
+	def fieldName = "fieldA"
+
+	JTextComponentFixture fieldBFix
+
+	def fieldB
+
+	ValidatingFormattedTextField field
+
+	JTextComponentFixture fieldFix
 }

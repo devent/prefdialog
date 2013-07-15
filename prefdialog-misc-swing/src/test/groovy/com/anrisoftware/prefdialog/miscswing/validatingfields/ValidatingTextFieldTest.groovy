@@ -28,18 +28,18 @@ import org.junit.Test
 import com.anrisoftware.globalpom.utils.TestFrameUtil
 
 /**
- * @see ValidatingTextFieldUi
+ * @see ValidatingTextField
  *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-class ValidatingTextFieldUiTest {
+class ValidatingTextFieldTest {
 
 	@Test
 	void "show invalid with tool-tip"() {
 		def title = "$NAME::show invalid with tool-tip"
 		def fieldName = "fieldA"
-		def field = ValidatingTextFieldUi.decorate(createTextField(fieldName))
+		def field = createTextField(fieldName, validatingTextField)
 		field.setInvalidText "Not valid"
 		def fieldB = createTextField("fieldB")
 		def panel = createPanel cols: [FILL], rows: [
@@ -48,18 +48,18 @@ class ValidatingTextFieldUiTest {
 			PREFERRED,
 			FILL
 		], fields: [
-			"0, 1": field.component,
+			"0, 1": field,
 			"0, 2": fieldB
 		]
 		new TestFrameUtil(title, panel).withFixture({ FrameFixture fix ->
 			fix.textBox(fieldName).enterText("Text")
-			invokeAndWait { field.setValid false  }
+			invokeAndWait { field.setInputValid false  }
 		}, {
-			invokeAndWait { field.setValid true  }
+			invokeAndWait { field.setInputValid true  }
 		}, {
-			invokeAndWait { field.setValid false  }
+			invokeAndWait { field.setInputValid false  }
 		})
 	}
 
-	static final String NAME = ValidatingTextFieldUiTest.class.simpleName
+	static final String NAME = ValidatingTextFieldTest.class.simpleName
 }
