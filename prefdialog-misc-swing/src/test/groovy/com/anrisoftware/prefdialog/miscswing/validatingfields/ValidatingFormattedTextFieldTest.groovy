@@ -18,6 +18,7 @@
  */
 package com.anrisoftware.prefdialog.miscswing.validatingfields
 
+import static com.anrisoftware.globalpom.utils.TestFrameUtil.*
 import static com.anrisoftware.prefdialog.miscswing.validatingfields.ValidatingUtils.*
 import static info.clearthought.layout.TableLayoutConstants.*
 import static javax.swing.SwingUtilities.*
@@ -43,6 +44,7 @@ class ValidatingFormattedTextFieldTest {
 
 	@Test
 	void "show invalid with tool-tip"() {
+		//setLookAndFeel SUBSTANCE_BUSINESS_LOOK_AND_FEEL
 		def title = "$NAME::show invalid with tool-tip"
 		field = createFormattedTextField(fieldName, value, validatingFormattedTextField)
 		field.setVerifier createVerifier(field)
