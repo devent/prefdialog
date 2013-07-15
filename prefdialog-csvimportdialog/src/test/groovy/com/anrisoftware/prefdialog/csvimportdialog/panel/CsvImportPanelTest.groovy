@@ -65,7 +65,7 @@ class CsvImportPanelTest {
 		})
 	}
 
-	@Test
+	//@Test
 	void "manually"() {
 		def title = "$NAME::manually"
 		def field = factory.create(new JPanel(), properties)

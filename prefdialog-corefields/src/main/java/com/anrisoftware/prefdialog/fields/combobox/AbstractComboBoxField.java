@@ -66,8 +66,6 @@ public abstract class AbstractComboBoxField<ComponentType extends JComboBox<?>>
 
 	private AbstractComboBoxFieldLogger log;
 
-	private ValidatingComboBoxEditor validating;
-
 	private final Class<? extends Annotation> annotationType;
 
 	private transient AnnotationAccess fieldAnnotation;
@@ -128,8 +126,8 @@ public abstract class AbstractComboBoxField<ComponentType extends JComboBox<?>>
 		setupModel();
 		setupRenderer();
 		setupElements();
-		setupEditable();
 		setupEditor();
+		setupEditable();
 		setupComboBox();
 	}
 
@@ -137,8 +135,6 @@ public abstract class AbstractComboBoxField<ComponentType extends JComboBox<?>>
 		ComponentType component = getComponent();
 		component.setSelectedItem(getValue());
 		component.addActionListener(dataListener);
-		validating = ValidatingComboBoxEditor.decorate(component);
-		validating.setInvalidText(getInvalidText());
 	}
 
 	private void setupEditor() {
@@ -185,31 +181,42 @@ public abstract class AbstractComboBoxField<ComponentType extends JComboBox<?>>
 	public void setValue(Object value) throws PropertyVetoException {
 		try {
 			super.setValue(value);
-			if (validating != null) {
-				validating.setInputValid(true);
+			if (isValidatingEditor()) {
+				getValidatingEditor().setInputValid(true);
 			}
 			getComponent().setSelectedItem(value);
 		} catch (PropertyVetoException e) {
-			if (validating != null) {
-				validating.setInputValid(false);
+			if (isValidatingEditor()) {
+				getValidatingEditor().setInputValid(false);
 			}
 			throw e;
 		}
 	}
 
+	private ValidatingComboBoxEditor getValidatingEditor() {
+		if (isValidatingEditor()) {
+			return (ValidatingComboBoxEditor) getComponent().getEditor();
+		}
+		return null;
+	}
+
+	private boolean isValidatingEditor() {
+		return getComponent().getEditor() instanceof ValidatingComboBoxEditor;
+	}
+
 	@Override
 	public void setInvalidText(String text) {
 		super.setInvalidText(text);
-		if (validating != null) {
-			validating.setInvalidText(getInvalidText());
+		if (isValidatingEditor()) {
+			getValidatingEditor().setInvalidText(getInvalidText());
 		}
 	}
 
 	@Override
 	public void setTexts(Texts texts) {
 		super.setTexts(texts);
-		if (validating != null) {
-			validating.setInvalidText(getInvalidText());
+		if (isValidatingEditor()) {
+			getValidatingEditor().setInvalidText(getInvalidText());
 		}
 	}
 

@@ -19,11 +19,13 @@
 package com.anrisoftware.prefdialog.miscswing.validatingfields;
 
 import java.awt.Color;
+import java.awt.Component;
 
 import javax.swing.InputVerifier;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
+import javax.swing.plaf.metal.MetalComboBoxEditor;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -52,17 +54,32 @@ public class ValidatingComboBoxEditor extends BasicComboBoxEditor {
 
 	private ValidatingTextField validating;
 
+	private final Class<?> editorType;
+
 	/**
 	 * @see BasicComboBoxEditor#BasicComboBoxEditor()
 	 */
 	public ValidatingComboBoxEditor() {
-		super();
+		this.editorType = new JComboBox<Object>().getEditor().getClass();
+		this.validating = (ValidatingTextField) createEditorComponent();
+	}
+
+	@Override
+	public Component getEditorComponent() {
+		return validating;
 	}
 
 	@Override
 	protected JTextField createEditorComponent() {
-		validating = new ValidatingTextField("", 9);
-		validating.setBorder(null);
+		if (validating != null) {
+			return validating;
+		}
+		if (editorType == MetalComboBoxEditor.UIResource.class) {
+			validating = new MetalComboBoxEditorField("", 9);
+		} else {
+			validating = new ValidatingTextField("", 9);
+			validating.setBorder(null);
+		}
 		return validating;
 	}
 

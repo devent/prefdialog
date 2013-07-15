@@ -1,18 +1,18 @@
 /*
  * Copyright 2012-2013 Erwin Müller <erwin.mueller@deventm.org>
- *
+ * 
  * This file is part of prefdialog-core.
- *
+ * 
  * prefdialog-core is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
  * Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- *
+ * 
  * prefdialog-core is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-core. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -42,7 +42,7 @@ import com.anrisoftware.resources.texts.api.Texts;
  */
 class AbstractFieldComponentLogger extends AbstractLogger {
 
-	private static final String ERROR_SET_VALUE = "Error set value '{}' for {}.";
+	private static final String ERROR_SET_VALUE = "Error set value '{}' for {}: {}.";
 	private static final String COMPONENT_NULL = "Component cannot be null.";
 	private static final String ERROR_SETUP_VALUE_MESSAGE = "Error setup value '{}' for {}.";
 	private static final String ERROR_SETUP_VALUE = "Error setup value";
@@ -189,7 +189,7 @@ class AbstractFieldComponentLogger extends AbstractLogger {
 			Exception e, Object value, String property) {
 		PropertyVetoException ex = new PropertyVetoException(e.getMessage(),
 				new PropertyChangeEvent(field, property, null, value));
-		log.debug(ERROR_SET_VALUE, value, field);
+		log.debug(ERROR_SET_VALUE, value, field, e.getLocalizedMessage());
 		return ex;
 	}
 }
