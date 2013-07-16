@@ -18,6 +18,7 @@
  */
 package com.anrisoftware.prefdialog.miscswing.tables.spreadsheetnavigation;
 
+import static com.anrisoftware.prefdialog.miscswing.lockedevents.LockedChangeListener.lockedChangeListener;
 import static com.google.inject.Guice.createInjector;
 import static java.awt.BorderLayout.CENTER;
 import static java.awt.BorderLayout.SOUTH;
@@ -41,6 +42,7 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
+import com.anrisoftware.prefdialog.miscswing.lockedevents.LockedChangeListener;
 import com.anrisoftware.prefdialog.miscswing.tables.spreadsheet.SpreadsheetTable;
 import com.google.inject.Injector;
 import com.google.inject.assistedinject.Assisted;
@@ -98,15 +100,15 @@ public class SpreadsheetNavigationPanel {
 
 	private final InputVerifier currentColumnVerifier;
 
-	private final PropertyChangeListener currentRowListener;
+	private final LockedChangeListener currentRowListener;
+
+	private final LockedChangeListener currentColumnListener;
 
 	private final ListSelectionListener tableSelectionListener;
 
 	private int startRowIndex;
 
 	private int startColumnIndex;
-
-	private PropertyChangeListener currentColumnListener;
 
 	private InputVerifier currentRowVerifier;
 
@@ -154,13 +156,13 @@ public class SpreadsheetNavigationPanel {
 				return validateCurrentColumn((Integer) value);
 			}
 		};
-		this.currentColumnListener = new PropertyChangeListener() {
+		this.currentColumnListener = lockedChangeListener(new PropertyChangeListener() {
 
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				updateSelectedColumn((Integer) evt.getNewValue());
 			}
-		};
+		});
 		this.currentRowVerifier = new InputVerifier() {
 
 			@Override
@@ -169,13 +171,13 @@ public class SpreadsheetNavigationPanel {
 				return validateRow((Integer) value);
 			}
 		};
-		this.currentRowListener = new PropertyChangeListener() {
+		this.currentRowListener = lockedChangeListener(new PropertyChangeListener() {
 
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				updateSelectedRow((Integer) evt.getNewValue());
 			}
-		};
+		});
 		this.tableSelectionListener = new ListSelectionListener() {
 
 			@Override
@@ -194,8 +196,12 @@ public class SpreadsheetNavigationPanel {
 	protected void updateSelected() {
 		int row = getSelectedRow();
 		int column = getSelectedColumn();
+		currentColumnListener.lock();
+		currentRowListener.lock();
 		dataPanel.getCurrentRowField().setValue(row);
 		dataPanel.getCurrentColumnField().setValue(column);
+		currentColumnListener.unlock();
+		currentRowListener.unlock();
 	}
 
 	private void updateSelectedColumn(int column) {
