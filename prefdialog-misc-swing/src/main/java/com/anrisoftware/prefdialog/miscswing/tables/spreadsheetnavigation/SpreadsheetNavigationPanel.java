@@ -133,8 +133,8 @@ public class SpreadsheetNavigationPanel {
 		this.scrollPane = pane;
 		this.dataPanel = dataPanel;
 		this.table = table;
-		this.startRowIndex = 1;
-		this.startColumnIndex = 1;
+		this.startRowIndex = 0;
+		this.startColumnIndex = 0;
 		this.tableListener = new TableModelListener() {
 
 			@Override
