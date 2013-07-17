@@ -21,11 +21,15 @@ class EditOnSelection implements ListSelectionListener {
 
 	private final JTable table;
 
-	private int row;
+	private int row1;
 
-	private int column;
+	private int column1;
 
 	private JTextField field;
+
+	private int row0;
+
+	private int column0;
 
 	public EditOnSelection(JTable table) {
 		this.table = table;
@@ -40,6 +44,18 @@ class EditOnSelection implements ListSelectionListener {
 	}
 
 	private void editCell() {
+		row0 = table.getSelectionModel().getAnchorSelectionIndex();
+		row1 = table.getSelectionModel().getLeadSelectionIndex();
+		column0 = table.getColumnModel().getSelectionModel()
+				.getAnchorSelectionIndex();
+		column1 = table.getColumnModel().getSelectionModel()
+				.getLeadSelectionIndex();
+		if (row0 != row1) {
+			return;
+		}
+		if (column0 != column1) {
+			return;
+		}
 		invokeLater(new Runnable() {
 
 			@Override
@@ -51,9 +67,7 @@ class EditOnSelection implements ListSelectionListener {
 	}
 
 	private void editCellInAWT() {
-		row = table.getSelectedRow();
-		column = table.getSelectedColumn();
-		if (table.editCellAt(row, column)) {
+		if (table.editCellAt(row1, column1)) {
 			Component editor = table.getEditorComponent();
 			editor.requestFocusInWindow();
 			if (editor instanceof JTextField && field == null) {
@@ -85,10 +99,10 @@ class EditOnSelection implements ListSelectionListener {
 	}
 
 	private void moveCellInAWT() {
-		row = row + 1;
-		table.getSelectionModel().setSelectionInterval(row, row);
+		row1 = row1 + 1;
+		table.getSelectionModel().setSelectionInterval(row1, row1);
 		table.getColumnModel().getSelectionModel()
-				.setSelectionInterval(column, column);
-		table.scrollRectToVisible(table.getCellRect(row, 0, true));
+				.setSelectionInterval(column1, column1);
+		table.scrollRectToVisible(table.getCellRect(row1, 0, true));
 	}
 }
