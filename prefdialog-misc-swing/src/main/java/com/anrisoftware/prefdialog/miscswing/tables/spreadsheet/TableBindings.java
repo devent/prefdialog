@@ -34,10 +34,10 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableModel;
 
 /**
- * Rebinds keys of the spreadsheet table.
+ * Re-binds keys of the spreadsheet table.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 1.0
+ * @since 3.0
  */
 @SuppressWarnings("serial")
 class TableBindings {

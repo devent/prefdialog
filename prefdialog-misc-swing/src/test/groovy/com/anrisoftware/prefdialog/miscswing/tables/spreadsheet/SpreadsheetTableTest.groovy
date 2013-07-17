@@ -25,6 +25,7 @@ import javax.swing.JScrollPane
 import javax.swing.JTable
 
 import org.junit.BeforeClass
+import org.junit.Test
 
 import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.google.inject.Guice
@@ -32,11 +33,21 @@ import com.google.inject.Injector
 
 /**
  * @see SpreadsheetTable
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
 class SpreadsheetTableTest {
+
+	@Test
+	void "show"() {
+		def title = "$NAME::show"
+		def table = new JTable()
+		def range = new ViewRange(40)
+		def model = new NumbersModel(3, 20)
+		def spreadsheet = factory.create(table, model, range)
+		new TestFrameUtil(title, createTablePanel(table)).withFixture({})
+	}
 
 	//@Test
 	void "manually"() {
