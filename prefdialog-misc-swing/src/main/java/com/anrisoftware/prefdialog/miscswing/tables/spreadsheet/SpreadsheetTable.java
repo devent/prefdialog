@@ -83,6 +83,8 @@ public class SpreadsheetTable {
 
 	private EditOnSelection editOnSelection;
 
+	private SpreadsheetCellRenderer renderer;
+
 	/**
 	 * @see SpreadsheetTableFactory#create(JTable, SpreadsheetModel)
 	 */
@@ -105,6 +107,7 @@ public class SpreadsheetTable {
 		this.model = modelFactory.create(model, range);
 		this.tableBindings = tableBindings;
 		this.editOnSelection = new EditOnSelection(table);
+		this.renderer = new SpreadsheetCellRenderer();
 		this.selectionListener = new ListSelectionListener() {
 
 			@Override
@@ -172,6 +175,7 @@ public class SpreadsheetTable {
 	}
 
 	private void setupTable() {
+		table.setDefaultRenderer(Object.class, renderer);
 		table.setModel(model);
 		table.getSelectionModel().addListSelectionListener(selectionListener);
 		table.addAncestorListener(ancestorListener);

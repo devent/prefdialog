@@ -18,6 +18,9 @@
  */
 package com.anrisoftware.prefdialog.miscswing.tables.spreadsheet
 
+import static com.anrisoftware.globalpom.utils.TestFrameUtil.*
+import static javax.swing.SwingUtilities.*
+
 import java.awt.BorderLayout
 
 import javax.swing.JPanel
@@ -42,7 +45,8 @@ class SpreadsheetTableTest {
 	@Test
 	void "show"() {
 		def title = "$NAME::show"
-		def table = new JTable()
+		def table
+		invokeAndWait { table = new JTable() }
 		def range = new ViewRange(40)
 		def model = new NumbersModel(3, 20)
 		def spreadsheet = factory.create(table, model, range)
@@ -51,12 +55,20 @@ class SpreadsheetTableTest {
 
 	//@Test
 	void "manually"() {
+		//setLookAndFeel GTK_LOOK_AND_FEEL
+		//setLookAndFeel SUBSTANCE_BUSINESS_LOOK_AND_FEEL
 		def title = "$NAME::manually"
-		def table = new JTable()
 		def range = new ViewRange(40)
 		def model = new NumbersModel(3, 20)
-		def spreadsheet = factory.create(table, model, range)
-		new TestFrameUtil(title, createTablePanel(table)).withFixture({
+		def panel
+		def table
+		def spreadsheet
+		invokeAndWait {
+			table = new JTable()
+			spreadsheet = factory.create(table, model, range)
+			panel = createTablePanel(table)
+		}
+		new TestFrameUtil(title, panel).withFixture({
 			Thread.sleep 60*1000
 			assert false : "Deactivate manually test"
 		})
