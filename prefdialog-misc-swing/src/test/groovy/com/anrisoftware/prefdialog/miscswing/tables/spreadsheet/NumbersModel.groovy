@@ -22,7 +22,7 @@ import javax.swing.table.AbstractTableModel
 
 /**
  * Table model that generated a numbers table.
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
@@ -110,5 +110,9 @@ class NumbersModel extends AbstractTableModel implements SpreadsheetModel {
 		} else {
 			return 0
 		}
+	}
+
+	@Override
+	public void undoValue(Object value, int row, int column) {
 	}
 }
