@@ -45,7 +45,29 @@ import com.google.inject.Injector
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-class SimpleDialogTest {
+class SimplePreferencesDialogTest {
+
+	@Test
+	void "restore dialog"() {
+		def title = "$NAME::restore dialog"
+		def fieldName = NULL_VALUE
+		def frame = new TestFrameUtil(title: title, component: new JPanel())
+		def dialog
+		def simpleDialog
+		def dialogFix
+		frame.withFixture({
+			dialog = new JDialog(frame.frame, title)
+			simpleDialog = SimpleDialog.decorate(dialog, bean, fieldName, texts, injector).createDialog()
+			dialog.pack()
+			dialog.setLocationRelativeTo(frame.frame)
+			simpleDialog.openDialog()
+		}, { FrameFixture fix ->
+			fix.textBox "childAName" selectAll()
+			fix.textBox "childAName" enterText "Some"
+			fix.button "restoreButton" click()
+			assert bean.childA.childAName == "Child A"
+		})
+	}
 
 	@Test
 	void "cancel dialog"() {
@@ -55,11 +77,9 @@ class SimpleDialogTest {
 		def dialog
 		def simpleDialog
 		def dialogFix
-		def panel
 		frame.withFixture({
-			panel = new JPanel()
 			dialog = new JDialog(frame.frame, title)
-			simpleDialog = SimpleDialog.decorate(dialog, panel, texts, injector).createDialog()
+			simpleDialog = SimpleDialog.decorate(dialog, bean, fieldName, texts, injector).createDialog()
 			dialog.pack()
 			dialog.setLocationRelativeTo(frame.frame)
 			simpleDialog.openDialog()
@@ -77,11 +97,9 @@ class SimpleDialogTest {
 		def dialog
 		def simpleDialog
 		def dialogFix
-		def panel
 		frame.withFixture({
-			panel = new JPanel()
 			dialog = new JDialog(frame.frame, title)
-			simpleDialog = SimpleDialog.decorate(dialog, panel, texts, injector).createDialog()
+			simpleDialog = SimpleDialog.decorate(dialog, bean, fieldName, texts, injector).createDialog()
 			dialog.pack()
 			dialog.setLocationRelativeTo(frame.frame)
 			simpleDialog.openDialog()
@@ -98,11 +116,9 @@ class SimpleDialogTest {
 		def frame = new TestFrameUtil(title: title, component: new JPanel())
 		def dialog
 		def simpleDialog
-		def panel
 		frame.withFixture({
-			panel = new JPanel()
 			dialog = new JDialog(frame.frame, title)
-			simpleDialog = SimpleDialog.decorate(dialog, panel, texts, injector).createDialog()
+			simpleDialog = SimpleDialog.decorate(dialog, bean, fieldName, texts, injector).createDialog()
 			dialog.pack()
 			dialog.setLocationRelativeTo(frame.frame)
 			simpleDialog.openDialog()
@@ -113,7 +129,7 @@ class SimpleDialogTest {
 
 	static Injector injector
 
-	static final String NAME = SimpleDialogTest.class.simpleName
+	static final String NAME = SimplePreferencesDialogTest.class.simpleName
 
 	static TextsFactory textsFactory
 

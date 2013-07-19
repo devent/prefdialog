@@ -20,6 +20,7 @@
 package com.anrisoftware.prefdialog.simpledialog;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.Injector;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 
 /**
@@ -32,6 +33,31 @@ import com.google.inject.assistedinject.FactoryModuleBuilder;
  * @since 3.0
  */
 public class SimpleDialogModule extends AbstractModule {
+
+	private static Injector injector;
+
+	/**
+	 * Returns the simple dialog factory.
+	 * 
+	 * @param parent
+	 *            the parent Guice {@link Injector} for the needed dependent
+	 *            modules.
+	 * 
+	 * @return the {@link SimpleDialogFactory}.
+	 */
+	public static SimpleDialogFactory getSimpleDialogFactory(Injector parent) {
+		injector = getInjector(parent);
+		return injector.getInstance(SimpleDialogFactory.class);
+	}
+
+	private static Injector getInjector(Injector parent) {
+		if (injector == null) {
+			synchronized (SimpleDialogModule.class) {
+				injector = parent.createChildInjector(new SimpleDialogModule());
+			}
+		}
+		return injector;
+	}
 
 	@Override
 	protected void configure() {

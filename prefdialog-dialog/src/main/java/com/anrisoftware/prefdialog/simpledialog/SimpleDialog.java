@@ -1,7 +1,7 @@
 package com.anrisoftware.prefdialog.simpledialog;
 
+import static com.anrisoftware.prefdialog.simpledialog.SimpleDialogModule.getSimpleDialogFactory;
 import static java.awt.event.KeyEvent.VK_ESCAPE;
-import static java.util.ServiceLoader.load;
 import static javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW;
 import static javax.swing.KeyStroke.getKeyStroke;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
@@ -19,13 +19,8 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JRootPane;
 
-import com.anrisoftware.prefdialog.fields.FieldComponent;
-import com.anrisoftware.prefdialog.fields.FieldFactory;
-import com.anrisoftware.prefdialog.fields.FieldService;
-import com.anrisoftware.prefdialog.verticalpanel.VerticalPreferencesPanelField;
 import com.anrisoftware.resources.texts.api.Texts;
 import com.google.inject.Injector;
-import com.google.inject.assistedinject.Assisted;
 
 /**
  * Simple dialog with approve, restore and cancel buttons.
@@ -60,24 +55,21 @@ public class SimpleDialog {
 	 * @param dialog
 	 *            the {@link JDialog}.
 	 * 
+	 * @param fieldsPanel
+	 *            the fields panel {@link Component} for the dialog.
+	 * 
 	 * @param texts
 	 *            the {@link Texts} resources.
 	 * 
-	 * @param parent
-	 *            the parent {@link Injector}.
+	 * @see SimpleDialogFactory#create()
 	 * 
-	 * @see SimpleDialogFactory#create(Object, String)
-	 * 
-	 * @return the {@link CsvImportDialog}.
+	 * @return the {@link SimpleDialog}.
 	 */
-	public static SimpleDialog decorate(JDialog dialog, Object properties,
-			String panelFieldName, Texts texts, Injector parent) {
-		Injector injector = parent
-				.createChildInjector(new SimpleDialogModule());
-		SimpleDialog simpleDialog = injector.getInstance(
-				SimpleDialogFactory.class).create(properties, panelFieldName);
+	public static SimpleDialog decorate(JDialog dialog, Component fieldsPanel,
+			Texts texts, Injector parent) {
+		SimpleDialog simpleDialog = getSimpleDialogFactory(parent).create();
+		simpleDialog.setFieldsPanel(fieldsPanel);
 		simpleDialog.setTexts(texts);
-		simpleDialog.setParent(parent);
 		simpleDialog.setDialog(dialog);
 		dialog.pack();
 		return simpleDialog;
@@ -105,33 +97,23 @@ public class SimpleDialog {
 	 */
 	public static final String CANCEL_BUTTON_NAME = "cancelButton";
 
-	private static final String PREFERENCES_PANEL_NAME = "VerticalPreferencesPanel";
-
 	static final String CANCEL_ACTION_NAME = "cancel_action";
 
 	static final String APPROVE_ACTION_NAME = "approve_action";
 
 	static final String RESTORE_ACTION_NAME = "restore_action";
 
-	private final SimpleDialogLogger log;
+	private CancelAction cancelAction;
 
-	private final CancelAction cancelAction;
+	private ApproveAction approveAction;
 
-	private final ApproveAction approveAction;
-
-	private final Object properties;
-
-	private final String panelFieldName;
-
-	private final UiDialogPanel dialogPanel;
+	private UiDialogPanel dialogPanel;
 
 	private final VetoableChangeSupport vetoableSupport;
 
-	private final RestoreAction restoreAction;
+	private RestoreAction restoreAction;
 
-	private Object parent;
-
-	private VerticalPreferencesPanelField panel;
+	private Component fieldsPanel;
 
 	private JDialog dialog;
 
@@ -140,21 +122,41 @@ public class SimpleDialog {
 	private Texts texts;
 
 	/**
-	 * @see SimpleDialogFactory#create(Object, String)
+	 * @see SimpleDialogFactory#create()
 	 */
 	@Inject
-	SimpleDialog(SimpleDialogLogger logger, UiDialogPanel dialogPanel,
-			ApproveAction approveAction, CancelAction cancelAction,
-			RestoreAction restoreAction, @Assisted Object properties,
-			@Assisted String panelFieldName) {
-		this.log = logger;
-		this.dialogPanel = dialogPanel;
-		this.properties = properties;
-		this.panelFieldName = panelFieldName;
-		this.approveAction = approveAction;
-		this.cancelAction = cancelAction;
-		this.restoreAction = restoreAction;
+	SimpleDialog() {
 		this.vetoableSupport = new VetoableChangeSupport(this);
+	}
+
+	@Inject
+	void setDialogPanel(UiDialogPanel panel) {
+		this.dialogPanel = panel;
+	}
+
+	@Inject
+	void setApproveAction(ApproveAction action) {
+		this.approveAction = action;
+	}
+
+	@Inject
+	void setCancelAction(CancelAction action) {
+		this.cancelAction = action;
+	}
+
+	@Inject
+	void setRestoreAction(RestoreAction action) {
+		this.restoreAction = action;
+	}
+
+	/**
+	 * Sets the panel component with the fields of the dialog.
+	 * 
+	 * @param panel
+	 *            the panel {@link Component}.
+	 */
+	public void setFieldsPanel(Component panel) {
+		this.fieldsPanel = panel;
 	}
 
 	/**
@@ -171,19 +173,6 @@ public class SimpleDialog {
 	 */
 	public void setTexts(Texts texts) {
 		this.texts = texts;
-		if (panel != null) {
-			panel.setTexts(texts);
-		}
-	}
-
-	/**
-	 * Sets the parent dependencies.
-	 * 
-	 * @param parent
-	 *            the parent dependencies or {@code null}.
-	 */
-	public void setParent(Object parent) {
-		this.parent = parent;
 	}
 
 	/**
@@ -226,29 +215,9 @@ public class SimpleDialog {
 	 * @return this {@link SimpleDialog}.
 	 */
 	public SimpleDialog createDialog() {
-		panel = createPanel().createPanel((Injector) parent);
-		dialogPanel.add(panel.getAWTComponent(), "cell 0 0");
+		dialogPanel.add(fieldsPanel, "cell 0 0");
 		setupActions();
 		return this;
-	}
-
-	private VerticalPreferencesPanelField createPanel() {
-		return (VerticalPreferencesPanelField) findPanelFactory().create(
-				properties, panelFieldName);
-	}
-
-	private FieldFactory<?> findPanelFactory() {
-		for (FieldService service : load(FieldService.class)) {
-			if (isPreferencesPanelService(service)) {
-				return service.getFactory(parent);
-			}
-		}
-		throw log.errorFindService(this, PREFERENCES_PANEL_NAME);
-	}
-
-	private boolean isPreferencesPanelService(FieldService service) {
-		return service.getInfo().getAnnotationType().getSimpleName()
-				.equals(PREFERENCES_PANEL_NAME);
 	}
 
 	private void setupActions() {
@@ -319,8 +288,7 @@ public class SimpleDialog {
 	 * <p>
 	 * Should be called in the AWT thread.
 	 */
-	private void openDialog() {
-		panel.requestFocus();
+	public void openDialog() {
 		dialog.setVisible(true);
 	}
 
@@ -343,10 +311,6 @@ public class SimpleDialog {
 	 * Should be called in the AWT thread.
 	 */
 	public void restoreDialog() {
-		try {
-			panel.restoreInput();
-		} catch (PropertyVetoException e) {
-		}
 	}
 
 	/**
@@ -416,42 +380,32 @@ public class SimpleDialog {
 	}
 
 	/**
-	 * @see FieldComponent#addVetoableChangeListener(VetoableChangeListener)
 	 * @see #STATUS_PROPERTY
 	 */
 	public void addVetoableChangeListener(VetoableChangeListener listener) {
-		panel.addVetoableChangeListener(listener);
 		vetoableSupport.addVetoableChangeListener(listener);
 	}
 
 	/**
-	 * @see FieldComponent#removeVetoableChangeListener(VetoableChangeListener)
 	 * @see #STATUS_PROPERTY
 	 */
 	public void removeVetoableChangeListener(VetoableChangeListener listener) {
-		panel.removeVetoableChangeListener(listener);
 		vetoableSupport.removeVetoableChangeListener(listener);
 	}
 
 	/**
-	 * @see FieldComponent#addVetoableChangeListener(String,
-	 *      VetoableChangeListener)
 	 * @see #STATUS_PROPERTY
 	 */
 	public void addVetoableChangeListener(String propertyName,
 			VetoableChangeListener listener) {
-		panel.addVetoableChangeListener(propertyName, listener);
 		vetoableSupport.addVetoableChangeListener(propertyName, listener);
 	}
 
 	/**
-	 * @see FieldComponent#removeVetoableChangeListener(String,
-	 *      VetoableChangeListener)
 	 * @see #STATUS_PROPERTY
 	 */
 	public void removeVetoableChangeListener(String propertyName,
 			VetoableChangeListener listener) {
-		panel.removeVetoableChangeListener(propertyName, listener);
 		vetoableSupport.removeVetoableChangeListener(propertyName, listener);
 	}
 

@@ -19,21 +19,29 @@
  */
 package com.anrisoftware.prefdialog.simpledialog;
 
+import com.anrisoftware.prefdialog.verticalpanel.VerticalPreferencesPanel;
 
 /**
  * Factory to create a simple dialog.
  * 
- * @see SimpleDialog
+ * @see SimplePropertiesDialog
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-public interface SimpleDialogFactory {
+public interface SimplePreferencesDialogFactory {
 
 	/**
-	 * Creates the simple dialog.
+	 * Creates the simple dialog from the specified properties.
 	 * 
-	 * @return the {@link SimpleDialog}.
+	 * @param properties
+	 *            the {@link Object} properties of the dialog.
+	 * 
+	 * @param panelFieldName
+	 *            the name of the field that is annotated as
+	 *            {@link VerticalPreferencesPanel}.
+	 * 
+	 * @return the {@link SimplePropertiesDialog}.
 	 */
-	SimpleDialog create();
+	SimplePropertiesDialog create(Object properties, String panelFieldName);
 }
