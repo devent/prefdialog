@@ -21,6 +21,12 @@
 		<url>https://www.anr-institute.com/projects/projects/prefdialog-panel</url>
 	</issueManagement>
 
+	<scm>
+		<connection>scm:git:${gitpublic.repository.root}prefdialog.git</connection>
+		<developerConnection>scm:git:${gitpublic.repository.root}prefdialog.git</developerConnection>
+		<url>https://www.anr-institute.com/gitpublic/prefdialog.git/</url>
+	</scm>
+
 	<dependencies>
 
 		<!-- test dependencies -->
