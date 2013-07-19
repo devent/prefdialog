@@ -28,6 +28,8 @@ import com.google.inject.assistedinject.FactoryModuleBuilder;
  * 
  * @see SimpleDialog
  * @see SimpleDialogFactory
+ * @see SimplePropertiesDialog
+ * @see SimplePropertiesDialogFactory
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
@@ -50,6 +52,21 @@ public class SimpleDialogModule extends AbstractModule {
 		return injector.getInstance(SimpleDialogFactory.class);
 	}
 
+	/**
+	 * Returns the simple properties dialog factory.
+	 * 
+	 * @param parent
+	 *            the parent Guice {@link Injector} for the needed dependent
+	 *            modules.
+	 * 
+	 * @return the {@link SimplePropertiesDialogFactory}.
+	 */
+	public static SimplePropertiesDialogFactory getSimplePropertiesDialogFactory(
+			Injector parent) {
+		injector = getInjector(parent);
+		return injector.getInstance(SimplePropertiesDialogFactory.class);
+	}
+
 	private static Injector getInjector(Injector parent) {
 		if (injector == null) {
 			synchronized (SimpleDialogModule.class) {
@@ -63,6 +80,9 @@ public class SimpleDialogModule extends AbstractModule {
 	protected void configure() {
 		install(new FactoryModuleBuilder().implement(SimpleDialog.class,
 				SimpleDialog.class).build(SimpleDialogFactory.class));
+		install(new FactoryModuleBuilder().implement(
+				SimplePropertiesDialog.class, SimplePropertiesDialog.class)
+				.build(SimplePropertiesDialogFactory.class));
 	}
 
 }

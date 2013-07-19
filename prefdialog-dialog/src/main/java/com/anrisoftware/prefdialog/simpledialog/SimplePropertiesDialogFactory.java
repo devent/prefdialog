@@ -29,7 +29,7 @@ import com.anrisoftware.prefdialog.verticalpanel.VerticalPreferencesPanel;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-public interface SimplePreferencesDialogFactory {
+public interface SimplePropertiesDialogFactory {
 
 	/**
 	 * Creates the simple dialog from the specified properties.

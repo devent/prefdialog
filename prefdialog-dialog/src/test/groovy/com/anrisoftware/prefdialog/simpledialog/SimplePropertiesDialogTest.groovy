@@ -32,7 +32,6 @@ import org.junit.Test
 import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.globalpom.utils.TestUtils
 import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
-import com.anrisoftware.prefdialog.simpledialog.SimpleDialog.Status
 import com.anrisoftware.resources.texts.api.Texts
 import com.anrisoftware.resources.texts.api.TextsFactory
 import com.anrisoftware.resources.texts.defaults.TextsResourcesDefaultModule
@@ -40,12 +39,12 @@ import com.google.inject.Guice
 import com.google.inject.Injector
 
 /**
- * @see SimpleDialog
+ * @see SimplePropertiesDialog
  *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-class SimplePreferencesDialogTest {
+class SimplePropertiesDialogTest {
 
 	@Test
 	void "restore dialog"() {
@@ -57,7 +56,8 @@ class SimplePreferencesDialogTest {
 		def dialogFix
 		frame.withFixture({
 			dialog = new JDialog(frame.frame, title)
-			simpleDialog = SimpleDialog.decorate(dialog, bean, fieldName, texts, injector).createDialog()
+			simpleDialog = SimplePropertiesDialog.decorate(
+					dialog, bean, fieldName, texts, injector).createDialog()
 			dialog.pack()
 			dialog.setLocationRelativeTo(frame.frame)
 			simpleDialog.openDialog()
@@ -66,46 +66,6 @@ class SimplePreferencesDialogTest {
 			fix.textBox "childAName" enterText "Some"
 			fix.button "restoreButton" click()
 			assert bean.childA.childAName == "Child A"
-		})
-	}
-
-	@Test
-	void "cancel dialog"() {
-		def title = "$NAME::cancel dialog"
-		def fieldName = NULL_VALUE
-		def frame = new TestFrameUtil(title: title, component: new JPanel())
-		def dialog
-		def simpleDialog
-		def dialogFix
-		frame.withFixture({
-			dialog = new JDialog(frame.frame, title)
-			simpleDialog = SimpleDialog.decorate(dialog, bean, fieldName, texts, injector).createDialog()
-			dialog.pack()
-			dialog.setLocationRelativeTo(frame.frame)
-			simpleDialog.openDialog()
-		}, { FrameFixture fix ->
-			fix.button "cancelButton" click()
-			assert simpleDialog.status == Status.CANCELED
-		})
-	}
-
-	@Test
-	void "approve dialog"() {
-		def title = "$NAME::approve dialog"
-		def fieldName = NULL_VALUE
-		def frame = new TestFrameUtil(title: title, component: new JPanel())
-		def dialog
-		def simpleDialog
-		def dialogFix
-		frame.withFixture({
-			dialog = new JDialog(frame.frame, title)
-			simpleDialog = SimpleDialog.decorate(dialog, bean, fieldName, texts, injector).createDialog()
-			dialog.pack()
-			dialog.setLocationRelativeTo(frame.frame)
-			simpleDialog.openDialog()
-		}, { FrameFixture fix ->
-			fix.button "approveButton" click()
-			assert simpleDialog.status == Status.APPROVED
 		})
 	}
 
@@ -118,7 +78,8 @@ class SimplePreferencesDialogTest {
 		def simpleDialog
 		frame.withFixture({
 			dialog = new JDialog(frame.frame, title)
-			simpleDialog = SimpleDialog.decorate(dialog, bean, fieldName, texts, injector).createDialog()
+			simpleDialog = SimplePropertiesDialog.decorate(
+					dialog, bean, fieldName, texts, injector).createDialog()
 			dialog.pack()
 			dialog.setLocationRelativeTo(frame.frame)
 			simpleDialog.openDialog()
@@ -129,7 +90,7 @@ class SimplePreferencesDialogTest {
 
 	static Injector injector
 
-	static final String NAME = SimplePreferencesDialogTest.class.simpleName
+	static final String NAME = SimplePropertiesDialogTest.class.simpleName
 
 	static TextsFactory textsFactory
 

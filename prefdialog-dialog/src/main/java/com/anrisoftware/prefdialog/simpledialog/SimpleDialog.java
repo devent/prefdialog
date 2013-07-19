@@ -71,7 +71,6 @@ public class SimpleDialog {
 		simpleDialog.setFieldsPanel(fieldsPanel);
 		simpleDialog.setTexts(texts);
 		simpleDialog.setDialog(dialog);
-		dialog.pack();
 		return simpleDialog;
 	}
 

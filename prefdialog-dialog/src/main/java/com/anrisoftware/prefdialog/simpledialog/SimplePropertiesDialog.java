@@ -1,5 +1,6 @@
 package com.anrisoftware.prefdialog.simpledialog;
 
+import static com.anrisoftware.prefdialog.simpledialog.SimpleDialogModule.getSimplePropertiesDialogFactory;
 import static java.util.ServiceLoader.load;
 
 import java.beans.PropertyVetoException;
@@ -16,6 +17,12 @@ import com.anrisoftware.resources.texts.api.Texts;
 import com.google.inject.Injector;
 import com.google.inject.assistedinject.Assisted;
 
+/**
+ * Simple dialog with approve, restore and cancel buttons.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 3.0
+ */
 public class SimplePropertiesDialog extends SimpleDialog {
 
 	/**
@@ -30,21 +37,18 @@ public class SimplePropertiesDialog extends SimpleDialog {
 	 * @param parent
 	 *            the parent {@link Injector}.
 	 * 
-	 * @see SimpleDialogFactory#create(Object, String)
+	 * @see SimplePropertiesDialogFactory#create(Object, String)
 	 * 
 	 * @return the {@link CsvImportDialog}.
 	 */
 	public static SimplePropertiesDialog decorate(JDialog dialog,
 			Object properties, String panelFieldName, Texts texts,
 			Injector parent) {
-		Injector injector = parent
-				.createChildInjector(new SimpleDialogModule());
-		SimplePropertiesDialog simpleDialog = injector.getInstance(
-				SimplePreferencesDialogFactory.class).create(properties,
-				panelFieldName);
+		SimplePropertiesDialog simpleDialog = getSimplePropertiesDialogFactory(
+				parent).create(properties, panelFieldName);
+		simpleDialog.setParent(parent);
 		simpleDialog.setTexts(texts);
 		simpleDialog.setDialog(dialog);
-		dialog.pack();
 		return simpleDialog;
 	}
 
@@ -58,10 +62,10 @@ public class SimplePropertiesDialog extends SimpleDialog {
 
 	private VerticalPreferencesPanelField panel;
 
-	private Object parent;
+	private Injector parent;
 
 	/**
-	 * @see SimplePreferencesDialogFactory#create(Object, String)
+	 * @see SimplePropertiesDialogFactory#create(Object, String)
 	 */
 	@Inject
 	SimplePropertiesDialog(SimplePropertiesDialogLogger logger,
@@ -89,12 +93,12 @@ public class SimplePropertiesDialog extends SimpleDialog {
 	 *            the parent dependencies or {@code null}.
 	 */
 	public void setParent(Object parent) {
-		this.parent = parent;
+		this.parent = (Injector) parent;
 	}
 
 	@Override
 	public SimpleDialog createDialog() {
-		this.panel = createPanel();
+		this.panel = createPanel().createPanel(parent);
 		setFieldsPanel(panel.getAWTComponent());
 		return super.createDialog();
 	}
