@@ -48,6 +48,28 @@ import com.google.inject.Injector
 class SimpleDialogTest {
 
 	@Test
+	void "restore dialog"() {
+		def title = "$NAME::restore dialog"
+		def fieldName = NULL_VALUE
+		def frame = new TestFrameUtil(title: title, component: new JPanel())
+		def dialog
+		def simpleDialog
+		def dialogFix
+		frame.withFixture({
+			dialog = new JDialog(frame.frame, title)
+			simpleDialog = SimpleDialog.decorate(dialog, bean, fieldName, texts, injector).createDialog()
+			dialog.pack()
+			dialog.setLocationRelativeTo(frame.frame)
+			simpleDialog.openDialog()
+		}, { FrameFixture fix ->
+			fix.textBox "childAName" selectAll()
+			fix.textBox "childAName" enterText "Some"
+			fix.button "restoreButton" click()
+			assert bean.childA.childAName == "Child A"
+		})
+	}
+
+	@Test
 	void "cancel dialog"() {
 		def title = "$NAME::cancel dialog"
 		def fieldName = NULL_VALUE

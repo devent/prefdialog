@@ -1,5 +1,8 @@
 package com.anrisoftware.prefdialog.simpledialog;
 
+import static com.anrisoftware.prefdialog.simpledialog.SimpleDialog.APPROVE_BUTTON_NAME;
+import static com.anrisoftware.prefdialog.simpledialog.SimpleDialog.CANCEL_BUTTON_NAME;
+import static com.anrisoftware.prefdialog.simpledialog.SimpleDialog.RESTORE_BUTTON_NAME;
 import static javax.swing.BoxLayout.LINE_AXIS;
 
 import javax.swing.Box;
@@ -12,11 +15,8 @@ import net.miginfocom.swing.MigLayout;
 @SuppressWarnings("serial")
 class UiDialogPanel extends JPanel {
 
-	private static final String CANCEL_BUTTON_NAME = "cancelButton";
-	private static final String RESET_BUTTON_NAME = "resetButton";
-	private static final String APPROVE_BUTTON_NAME = "approveButton";
 	private final JButton cancelButton;
-	private final JButton resetButton;
+	private final JButton restoreButton;
 	private final JButton approveButton;
 
 	/**
@@ -36,9 +36,9 @@ class UiDialogPanel extends JPanel {
 
 		buttonsPanel.add(Box.createHorizontalStrut(4));
 
-		resetButton = new JButton("Reset");
-		resetButton.setName(RESET_BUTTON_NAME);
-		buttonsPanel.add(resetButton);
+		restoreButton = new JButton("Reset");
+		restoreButton.setName(RESTORE_BUTTON_NAME);
+		buttonsPanel.add(restoreButton);
 
 		buttonsPanel.add(Box.createHorizontalStrut(4));
 
@@ -51,8 +51,8 @@ class UiDialogPanel extends JPanel {
 		return cancelButton;
 	}
 
-	public JButton getResetButton() {
-		return resetButton;
+	public JButton getRestoreButton() {
+		return restoreButton;
 	}
 
 	public JButton getApproveButton() {

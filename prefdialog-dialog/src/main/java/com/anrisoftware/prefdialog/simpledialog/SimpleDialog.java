@@ -84,11 +84,28 @@ public class SimpleDialog {
 	 */
 	public static final String STATUS_PROPERTY = "status";
 
+	/**
+	 * Approve button name.
+	 */
+	public static final String APPROVE_BUTTON_NAME = "approveButton";
+
+	/**
+	 * Restore button name.
+	 */
+	public static final String RESTORE_BUTTON_NAME = "restoreButton";
+
+	/**
+	 * Cancel button name.
+	 */
+	public static final String CANCEL_BUTTON_NAME = "cancelButton";
+
 	private static final String PREFERENCES_PANEL_NAME = "VerticalPreferencesPanel";
 
-	public static final String CANCEL_ACTION_NAME = "cancel_action";
+	static final String CANCEL_ACTION_NAME = "cancel_action";
 
-	public static final String APPROVE_ACTION_NAME = "approve_action";
+	static final String APPROVE_ACTION_NAME = "approve_action";
+
+	static final String RESTORE_ACTION_NAME = "restore_action";
 
 	private final SimpleDialogLogger log;
 
@@ -103,6 +120,8 @@ public class SimpleDialog {
 	private final UiDialogPanel dialogPanel;
 
 	private final VetoableChangeSupport vetoableSupport;
+
+	private final RestoreAction restoreAction;
 
 	private Object parent;
 
@@ -120,13 +139,15 @@ public class SimpleDialog {
 	@Inject
 	SimpleDialog(SimpleDialogLogger logger, UiDialogPanel dialogPanel,
 			ApproveAction approveAction, CancelAction cancelAction,
-			@Assisted Object properties, @Assisted String panelFieldName) {
+			RestoreAction restoreAction, @Assisted Object properties,
+			@Assisted String panelFieldName) {
 		this.log = logger;
 		this.dialogPanel = dialogPanel;
 		this.properties = properties;
 		this.panelFieldName = panelFieldName;
 		this.approveAction = approveAction;
 		this.cancelAction = cancelAction;
+		this.restoreAction = restoreAction;
 		this.vetoableSupport = new VetoableChangeSupport(this);
 	}
 
@@ -136,6 +157,7 @@ public class SimpleDialog {
 	 * <ul>
 	 * <li>{@value #APPROVE_ACTION_NAME}
 	 * <li>{@value #CANCEL_ACTION_NAME}
+	 * <li>{@value #RESTORE_ACTION_NAME}
 	 * </ul>
 	 * 
 	 * @param texts
@@ -228,8 +250,12 @@ public class SimpleDialog {
 		approveAction.setTexts(texts);
 		cancelAction.setDialog(this);
 		cancelAction.setTexts(texts);
+		restoreAction.setDialog(this);
+		restoreAction.setTexts(texts);
+		cancelAction.setTexts(texts);
 		getCancelButton().setAction(cancelAction);
 		getApprovalButton().setAction(approveAction);
+		getRestoreButton().setAction(restoreAction);
 	}
 
 	/**
@@ -253,13 +279,13 @@ public class SimpleDialog {
 	}
 
 	/**
-	 * Adds a new action listener to the reset dialog button.
+	 * Adds a new action listener to the restore dialog button.
 	 * 
 	 * @param action
 	 *            the {@link ActionListener}.
 	 */
-	public void addResetAction(ActionListener action) {
-		getResetButton().addActionListener(action);
+	public void addRestoreAction(ActionListener action) {
+		getRestoreButton().addActionListener(action);
 	}
 
 	/**
@@ -304,6 +330,20 @@ public class SimpleDialog {
 	}
 
 	/**
+	 * Restores the input of the dialog.
+	 * <p>
+	 * <h2>AWT Thread</h2>
+	 * <p>
+	 * Should be called in the AWT thread.
+	 */
+	public void restoreDialog() {
+		try {
+			panel.restoreInput();
+		} catch (PropertyVetoException e) {
+		}
+	}
+
+	/**
 	 * Returns the component to be added in a container. The component contains
 	 * the dialog button and fields.
 	 * 
@@ -327,8 +367,8 @@ public class SimpleDialog {
 	 * 
 	 * @return the reset {@link JButton}.
 	 */
-	public JButton getResetButton() {
-		return dialogPanel.getResetButton();
+	public JButton getRestoreButton() {
+		return dialogPanel.getRestoreButton();
 	}
 
 	/**

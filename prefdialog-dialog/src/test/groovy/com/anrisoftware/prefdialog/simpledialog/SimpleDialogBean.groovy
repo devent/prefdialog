@@ -41,22 +41,22 @@ class SimpleDialogBean {
 
 		@FieldComponent
 		@TextField
-		public String childName = "Child A"
+		public String childAName = "Child A"
 
 		@FieldComponent
 		@TextField
-		public String childTitle
+		public String childATitle
 	}
 
 	static class ChildBBean {
 
 		@FieldComponent
 		@TextField
-		public String childName = "Child B"
+		public String childBName = "Child B"
 
 		@FieldComponent
 		@TextField
-		public String childTitle
+		public String childBTitle
 	}
 
 	@FieldComponent
