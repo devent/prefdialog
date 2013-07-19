@@ -31,7 +31,7 @@ import com.anrisoftware.prefdialog.miscswing.actions.AbstractResourcesAction;
  * Sets the approval state and closes the dialog.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 1.0
+ * @since 3.0
  */
 @SuppressWarnings("serial")
 class ApproveAction extends AbstractResourcesAction {

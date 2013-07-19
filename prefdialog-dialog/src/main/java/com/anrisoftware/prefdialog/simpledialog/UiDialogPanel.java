@@ -12,6 +12,12 @@ import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 
+/**
+ * Simple dialog panel with approval, restore and cancel buttons.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 3.0
+ */
 @SuppressWarnings("serial")
 class UiDialogPanel extends JPanel {
 

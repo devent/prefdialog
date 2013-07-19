@@ -27,6 +27,12 @@ import com.anrisoftware.resources.texts.api.Texts;
 import com.google.inject.Injector;
 import com.google.inject.assistedinject.Assisted;
 
+/**
+ * Simple dialog with approve, restore and cancel buttons.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 3.0
+ */
 public class SimpleDialog {
 
 	/**

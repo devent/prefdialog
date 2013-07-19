@@ -29,7 +29,7 @@ import com.google.inject.assistedinject.FactoryModuleBuilder;
  * @see SimpleDialogFactory
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 1.0
+ * @since 3.0
  */
 public class SimpleDialogModule extends AbstractModule {
 
