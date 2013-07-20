@@ -25,6 +25,8 @@ import java.util.MissingResourceException;
 import javax.inject.Inject;
 import javax.swing.AbstractAction;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.anrisoftware.globalpom.mnemonic.Accelerator;
 import com.anrisoftware.globalpom.mnemonic.AcceleratorFactory;
 import com.anrisoftware.globalpom.mnemonic.Mnemonic;
@@ -45,7 +47,7 @@ public abstract class AbstractResourcesAction extends AbstractAction {
 
 	private static final String ACCELERATOR_SUFFIX = "accelerator";
 
-	private final String name;
+	private String name;
 
 	private AbstractResourcesActionLogger log;
 
@@ -109,6 +111,23 @@ public abstract class AbstractResourcesAction extends AbstractAction {
 	public void setTexts(Texts texts) {
 		this.texts = texts;
 		if (texts != null) {
+			updateTitle();
+			updateMnemonic();
+			updateAcc();
+		}
+	}
+
+	/**
+	 * Sets the action name. The action name is used to look up the action
+	 * resources.
+	 * 
+	 * @param name
+	 *            the action name {@link String}.
+	 */
+	public void setActionName(String name) {
+		String oldValue = this.name;
+		this.name = name;
+		if (texts != null && !StringUtils.equals(oldValue, name)) {
 			updateTitle();
 			updateMnemonic();
 			updateAcc();

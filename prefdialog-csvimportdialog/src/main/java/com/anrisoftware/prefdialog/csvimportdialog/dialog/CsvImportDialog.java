@@ -49,6 +49,8 @@ import com.google.inject.assistedinject.Assisted;
  */
 public class CsvImportDialog extends SimpleDialog {
 
+	private static final String IMPORT_ACTION_NAME = "import_action";
+
 	/**
 	 * Decorates the dialog with the CSV import dialog.
 	 * 
@@ -121,6 +123,7 @@ public class CsvImportDialog extends SimpleDialog {
 
 	@Override
 	public SimpleDialog createDialog() {
+		setApproveActionName(IMPORT_ACTION_NAME);
 		importPanelDock.createPanel(parent, properties);
 		setFieldsPanel(dock.getAWTComponent());
 		dock.addEditorDock(importPanelDock);

@@ -175,6 +175,39 @@ public class SimpleDialog {
 	}
 
 	/**
+	 * Sets the approval action name. The action name is used to look up the
+	 * action resources.
+	 * 
+	 * @param name
+	 *            the action name {@link String}.
+	 */
+	public void setApproveActionName(String name) {
+		approveAction.setActionName(name);
+	}
+
+	/**
+	 * Sets the cancel action name. The action name is used to look up the
+	 * action resources.
+	 * 
+	 * @param name
+	 *            the action name {@link String}.
+	 */
+	public void setCancelActionName(String name) {
+		cancelAction.setActionName(name);
+	}
+
+	/**
+	 * Sets the restore action name. The action name is used to look up the
+	 * action resources.
+	 * 
+	 * @param name
+	 *            the action name {@link String}.
+	 */
+	public void setRestoreActionName(String name) {
+		restoreAction.setActionName(name);
+	}
+
+	/**
 	 * Sets the dialog.
 	 * 
 	 * @param dialog
