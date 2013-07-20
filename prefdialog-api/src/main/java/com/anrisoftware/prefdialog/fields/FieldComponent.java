@@ -1,18 +1,18 @@
 /*
  * Copyright 2013 Erwin Müller <erwin.mueller@deventm.org>
- *
+ * 
  * This file is part of prefdialog-api.
- *
+ * 
  * prefdialog-api is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
  * Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- *
- * prefdialog-api is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * 
+ * prefdialog-api is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-api. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -268,6 +268,10 @@ public interface FieldComponent<ComponentType extends Component> {
 	/**
 	 * Sets the resource for the icon. The resource is loaded from the specified
 	 * images resources.
+	 * <p>
+	 * <h2>AWT Thread</h2>
+	 * <p>
+	 * Should be called in the AWT thread.
 	 * 
 	 * @param name
 	 *            the icon resource name or {@code null} or empty if the old
@@ -284,6 +288,10 @@ public interface FieldComponent<ComponentType extends Component> {
 	/**
 	 * Sets the new icon for the field. No icon resource name is set that means
 	 * that we can not change the locale or the size of the icon.
+	 * <p>
+	 * <h2>AWT Thread</h2>
+	 * <p>
+	 * Should be called in the AWT thread.
 	 * 
 	 * @param icon
 	 *            the {@link Icon} for the field or {@code null} if the old icon
@@ -300,6 +308,10 @@ public interface FieldComponent<ComponentType extends Component> {
 
 	/**
 	 * Sets the size of the icon.
+	 * <p>
+	 * <h2>AWT Thread</h2>
+	 * <p>
+	 * Should be called in the AWT thread.
 	 * 
 	 * @param size
 	 *            the {@link IconSize}.
@@ -320,10 +332,12 @@ public interface FieldComponent<ComponentType extends Component> {
 	IconSize getIconSize();
 
 	/**
-	 * Sets the locale of the field.
+	 * Sets the locale of the field. If a texts resource is set then the title,
+	 * tool-tip text and icon are retrieved with the new locale.
 	 * <p>
-	 * If a texts resource is set then the title, tool-tip text and icon are
-	 * retrieved with the new locale.
+	 * <h2>AWT Thread</h2>
+	 * <p>
+	 * Should be called in the AWT thread.
 	 * 
 	 * @param locale
 	 *            the {@link Locale}.
@@ -360,6 +374,10 @@ public interface FieldComponent<ComponentType extends Component> {
 	 * Sets the value of the field. The added property change listeners are
 	 * informed of the value change. If one of the listeners veto the value then
 	 * the value is reset to the previos value of the field.
+	 * <p>
+	 * <h2>AWT Thread</h2>
+	 * <p>
+	 * Should be called in the AWT thread.
 	 * 
 	 * @param value
 	 *            the value {@link Object}.
@@ -380,6 +398,10 @@ public interface FieldComponent<ComponentType extends Component> {
 
 	/**
 	 * Sets the texts resource.
+	 * <p>
+	 * <h2>AWT Thread</h2>
+	 * <p>
+	 * Should be called in the AWT thread.
 	 * 
 	 * @param texts
 	 *            the {@link Texts} resource.
@@ -398,6 +420,10 @@ public interface FieldComponent<ComponentType extends Component> {
 
 	/**
 	 * Sets the images resource.
+	 * <p>
+	 * <h2>AWT Thread</h2>
+	 * <p>
+	 * Should be called in the AWT thread.
 	 * 
 	 * @param images
 	 *            the {@link Images} resources.
@@ -419,6 +445,10 @@ public interface FieldComponent<ComponentType extends Component> {
 
 	/**
 	 * Restores the user input of this field.
+	 * <p>
+	 * <h2>AWT Thread</h2>
+	 * <p>
+	 * Should be called in the AWT thread.
 	 * 
 	 * @throws PropertyVetoException
 	 *             if the old user input is not valid.
@@ -427,6 +457,10 @@ public interface FieldComponent<ComponentType extends Component> {
 
 	/**
 	 * Sets the Swing component of the field.
+	 * <p>
+	 * <h2>AWT Thread</h2>
+	 * <p>
+	 * Should be called in the AWT thread.
 	 * 
 	 * @param component
 	 *            the {@link Component}.
@@ -505,6 +539,10 @@ public interface FieldComponent<ComponentType extends Component> {
 
 	/**
 	 * Request the focus to the input component of the field.
+	 * <p>
+	 * <h2>AWT Thread</h2>
+	 * <p>
+	 * Should be called in the AWT thread.
 	 * 
 	 * @see Component#requestFocus()
 	 */

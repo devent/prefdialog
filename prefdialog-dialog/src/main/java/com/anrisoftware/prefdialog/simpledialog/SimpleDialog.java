@@ -124,7 +124,7 @@ public class SimpleDialog {
 	 * @see SimpleDialogFactory#create()
 	 */
 	@Inject
-	SimpleDialog() {
+	protected SimpleDialog() {
 		this.vetoableSupport = new VetoableChangeSupport(this);
 	}
 

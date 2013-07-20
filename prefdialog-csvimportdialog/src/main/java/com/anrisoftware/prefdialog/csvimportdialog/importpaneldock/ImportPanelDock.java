@@ -1,24 +1,26 @@
 /*
  * Copyright 2013-2013 Erwin Müller <erwin.mueller@deventm.org>
- *
+ * 
  * This file is part of prefdialog-csvimportdialog.
- *
- * prefdialog-csvimportdialog is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
- *
- * prefdialog-csvimportdialog is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
+ * 
+ * prefdialog-csvimportdialog is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * 
+ * prefdialog-csvimportdialog is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with prefdialog-csvimportdialog. If not, see <http://www.gnu.org/licenses/>.
+ * along with prefdialog-csvimportdialog. If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 package com.anrisoftware.prefdialog.csvimportdialog.importpaneldock;
 
 import java.awt.Component;
+import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
 
 import javax.inject.Inject;
@@ -31,24 +33,33 @@ import com.anrisoftware.prefdialog.miscswing.docks.api.DockPosition;
 import com.anrisoftware.prefdialog.miscswing.docks.api.EditorDockWindow;
 import com.google.inject.Injector;
 
+/**
+ * Dock containing the CSV import panel.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 3.0
+ */
 public class ImportPanelDock implements EditorDockWindow {
 
 	public static final String ID = "importPanelDock";
 
-	private final JPanel panel;
-
 	private transient CsvImportPanelFactory panelFactory;
+
+	private JPanel panel;
 
 	private CsvImportPanel importPanel;
 
 	@Inject
 	ImportPanelDock(CsvImportPanelFactory panelFactory) {
 		this.panelFactory = panelFactory;
-		this.panel = new JPanel();
 	}
 
 	/**
 	 * Sets the CSV import properties.
+	 * <p>
+	 * <h2>AWT Thread</h2>
+	 * <p>
+	 * Should be called in the AWT thread.
 	 * 
 	 * @param injector
 	 *            the parent {@link Injector}.
@@ -57,12 +68,28 @@ public class ImportPanelDock implements EditorDockWindow {
 	 *            the {@link CsvImportProperties}.
 	 */
 	public void createPanel(Injector injector, CsvImportProperties properties) {
+		this.panel = new JPanel();
 		importPanel = panelFactory.create(panel, properties);
 		importPanel.createPanel(injector);
 	}
 
+	/**
+	 * Returns the CSV import panel.
+	 * 
+	 * @return the {@link CsvImportPanel}.
+	 */
 	public CsvImportPanel getImportPanel() {
 		return importPanel;
+	}
+
+	/**
+	 * Restores the input of the panel to default values.
+	 * 
+	 * @throws PropertyVetoException
+	 *             if the old user input is not valid.
+	 */
+	public void restoreInput() throws PropertyVetoException {
+		importPanel.retoreInput();
 	}
 
 	@Override

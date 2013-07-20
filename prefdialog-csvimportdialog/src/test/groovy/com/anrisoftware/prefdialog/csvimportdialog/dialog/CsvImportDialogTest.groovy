@@ -25,10 +25,8 @@ import static com.anrisoftware.prefdialog.fields.textfield.TextFieldBean.*
 import java.awt.Dimension
 
 import javax.swing.JDialog
-import javax.swing.JFrame
+import javax.swing.JPanel
 
-import org.fest.swing.fixture.DialogFixture
-import org.fest.swing.fixture.FrameFixture
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
@@ -40,6 +38,8 @@ import com.anrisoftware.prefdialog.csvimportdialog.model.CsvImportProperties
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelPropertiesFactory
 import com.anrisoftware.prefdialog.miscswing.comboboxhistory.ComboBoxHistoryModule
 import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.core.DockingFramesModule
+import com.anrisoftware.resources.texts.api.Texts
+import com.anrisoftware.resources.texts.api.TextsFactory
 import com.anrisoftware.resources.texts.defaults.TextsResourcesDefaultModule
 import com.google.inject.Guice
 import com.google.inject.Injector
@@ -53,101 +53,35 @@ import com.google.inject.Injector
 class CsvImportDialogTest {
 
 	@Test
-	void "show panel"() {
-		def title = "$NAME::show panel"
-		JFrame frame
-		CsvImportDialog dialog
-		def util = new TestFrameUtil(title, null, size) {
-					protected def createFrame(String titlea, arg1) {
-						frame = new JFrame(titlea)
-						dialog = factory.create(frame, CsvImportDialogTest.this.properties)
-						dialog.createPanel injector
-						frame.add dialog.getAWTComponent()
-						return frame
-					}
-				}
-		util.withFixture({
+	void "show dialog"() {
+		def title = "$NAME::show dialog"
+		def dialog
+		def importDialog
+		def frame = new TestFrameUtil(title: title, component: new JPanel())
+		frame.withFixture({
+			dialog = new JDialog(frame.frame, title)
+			importDialog = CsvImportDialog.decorate(
+					dialog, frame.frame, bean, texts, injector).createDialog()
+			dialog.pack()
+			dialog.setLocationRelativeTo(frame.frame)
+			importDialog.openDialog()
 		})
 	}
 
 	@Test
-	void "import dialog"() {
-		def title = "$NAME::import dialog"
-		JFrame frame
-		JDialog dialog
-		CsvImportDialog importDialog
-		DialogFixture dia
-		def util = new TestFrameUtil(title, null, size) {
-					protected def createFrame(String titlea, arg1) {
-						frame = new JFrame(titlea)
-						dialog = new JDialog(frame)
-						importDialog = factory.create(frame, CsvImportDialogTest.this.properties)
-						importDialog.createPanel injector
-						importDialog.setDialog dialog
-						dialog.pack()
-						return frame
-					}
-				}
-		util.withFixture({ FrameFixture fix ->
+	void "manually decorate"() {
+		def title = "$NAME::manually decorate"
+		def dialog
+		def importDialog
+		def frame = new TestFrameUtil(title: title, component: new JPanel())
+		frame.withFixture({
+			dialog = new JDialog(frame.frame, title)
+			importDialog = CsvImportDialog.decorate(
+					dialog, frame.frame, bean, texts, injector).createDialog()
+			dialog.pack()
+			dialog.setLocationRelativeTo(frame.frame)
 			importDialog.openDialog()
-			dia = fix.dialog()
-		}, { FrameFixture fix ->
-			fix.button("importButton").click()
-			dia.requireNotVisible()
-			importDialog.getStatus() == CsvImportDialog.Status.APPROVED
-		})
-	}
-
-	@Test
-	void "cancel dialog"() {
-		def title = "$NAME::cancel dialog"
-		JFrame frame
-		JDialog dialog
-		CsvImportDialog importDialog
-		DialogFixture dia
-		def util = new TestFrameUtil(title, null, size) {
-					protected def createFrame(String titlea, arg1) {
-						frame = new JFrame(titlea)
-						dialog = new JDialog(frame)
-						importDialog = factory.create(frame, CsvImportDialogTest.this.properties)
-						importDialog.createPanel injector
-						importDialog.setDialog dialog
-						dialog.pack()
-						return frame
-					}
-				}
-		util.withFixture({ FrameFixture fix ->
-			importDialog.openDialog()
-			dia = fix.dialog()
-		}, { FrameFixture fix ->
-			fix.button("cancelButton").click()
-			dia.requireNotVisible()
-			importDialog.getStatus() == CsvImportDialog.Status.CANCELED
-		})
-	}
-
-	@Test
-	void "decorate dialog"() {
-		def title = "$NAME::decorate dialog"
-		JFrame frame
-		JDialog dialog
-		CsvImportDialog importDialog
-		DialogFixture dia
-		def util = new TestFrameUtil(title, null, size) {
-					protected def createFrame(String titlea, arg1) {
-						frame = new JFrame(titlea)
-						dialog = new JDialog(frame)
-						importDialog = CsvImportDialog.decorate(dialog, frame,
-								CsvImportDialogTest.this.properties, injector)
-						return frame
-					}
-				}
-		util.withFixture({ FrameFixture fix ->
-			importDialog.openDialog()
-			dia = fix.dialog()
-			Thread.sleep 60*1000
-			dia.button("cancelButton").click()
-		})
+		}, { Thread.sleep 60*1000 })
 	}
 
 	static final String NAME = CsvImportDialogTest.class.simpleName
@@ -162,24 +96,30 @@ class CsvImportDialogTest {
 
 	static size = new Dimension(400, 362)
 
-	CsvImportProperties properties
+	static TextsFactory textsFactory
+
+	static Texts texts
+
+	CsvImportProperties bean
 
 	@BeforeClass
 	static void setupFactories() {
 		injector = Guice.createInjector(
 				new CoreFieldComponentModule(),
-				new TextsResourcesDefaultModule(),
 				new ComboBoxHistoryModule(),
 				new DockingFramesModule(),
-				new CsvImportModule())
+				new CsvImportModule(),
+				new TextsResourcesDefaultModule())
 		panelInjector = injector.createChildInjector(
 				new CsvImportDialogModule())
 		factory = panelInjector.getInstance(CsvImportDialogFactory)
 		propertiesFactory = panelInjector.getInstance(CsvPanelPropertiesFactory)
+		textsFactory = injector.getInstance(TextsFactory)
+		texts = textsFactory.create(CsvImportDialog.class.getSimpleName())
 	}
 
 	@Before
 	void setupBean() {
-		properties = propertiesFactory.create()
+		bean = propertiesFactory.create()
 	}
 }

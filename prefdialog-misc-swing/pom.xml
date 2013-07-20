@@ -47,6 +47,11 @@
 		</dependency>
 
 		<!-- for docks -->
+        <dependency>
+            <groupId>org.dockingframes</groupId>
+            <artifactId>docking-frames-core</artifactId>
+            <optional>true</optional>
+        </dependency>
 		<dependency>
 			<groupId>org.dockingframes</groupId>
 			<artifactId>docking-frames-common</artifactId>
