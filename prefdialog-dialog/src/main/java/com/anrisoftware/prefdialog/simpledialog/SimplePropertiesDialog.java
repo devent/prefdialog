@@ -98,7 +98,9 @@ public class SimplePropertiesDialog extends SimpleDialog {
 
 	@Override
 	public SimpleDialog createDialog() {
-		this.panel = createPanel().createPanel(parent);
+		this.panel = createPanel();
+		panel.createPanel(parent);
+		panel.setTexts(getTexts());
 		setFieldsPanel(panel.getAWTComponent());
 		return super.createDialog();
 	}
