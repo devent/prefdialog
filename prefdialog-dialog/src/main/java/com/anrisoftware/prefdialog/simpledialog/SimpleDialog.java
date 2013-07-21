@@ -175,6 +175,15 @@ public class SimpleDialog {
 	}
 
 	/**
+	 * Returns the texts resources for the dialog.
+	 * 
+	 * @return the {@link Texts} resources.
+	 */
+	public Texts getTexts() {
+		return texts;
+	}
+
+	/**
 	 * Sets the approval action name. The action name is used to look up the
 	 * action resources.
 	 * 
@@ -217,6 +226,15 @@ public class SimpleDialog {
 		this.dialog = dialog;
 		dialog.add(getAWTComponent());
 		setupDialog();
+	}
+
+	/**
+	 * Returns the dialog.
+	 * 
+	 * @return the {@link JDialog}.
+	 */
+	public JDialog getDialog() {
+		return dialog;
 	}
 
 	private void setupDialog() {
