@@ -54,7 +54,7 @@ public class SimplePropertiesDialog extends SimpleDialog {
 
 	private static final String PREFERENCES_PANEL_NAME = "VerticalPreferencesPanel";
 
-	private final SimplePropertiesDialogLogger log;
+	private SimplePropertiesDialogLogger log;
 
 	private final Object properties;
 
@@ -68,11 +68,15 @@ public class SimplePropertiesDialog extends SimpleDialog {
 	 * @see SimplePropertiesDialogFactory#create(Object, String)
 	 */
 	@Inject
-	SimplePropertiesDialog(SimplePropertiesDialogLogger logger,
-			@Assisted Object properties, @Assisted String panelFieldName) {
-		this.log = logger;
+	protected SimplePropertiesDialog(@Assisted Object properties,
+			@Assisted String panelFieldName) {
 		this.properties = properties;
 		this.panelFieldName = panelFieldName;
+	}
+
+	@Inject
+	void setSimplePropertiesDialogLogger(SimplePropertiesDialogLogger logger) {
+		this.log = logger;
 	}
 
 	/**
