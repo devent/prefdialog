@@ -18,6 +18,8 @@
  */
 package com.anrisoftware.prefdialog.csvimportdialog.csvimport
 
+import static com.anrisoftware.globalpom.utils.TestUtils.*
+
 import org.junit.BeforeClass
 import org.junit.Test
 
@@ -56,6 +58,13 @@ class CsvImporterImplTest {
 		assert importer.getValues().toString() == "[3, 1, 2001, 46, 13, 21, 34, 19, 36, 38, 2]"
 		importer()
 		assert importer.getValues().toString() == "[6, 1, 2001, 17, 42, 12, 8, 37, 26, 31, 6]"
+	}
+
+
+	@Test
+	void "serialize default properties"() {
+		def properties = injector.getInstance DefaultCsvImportProperties
+		def propertiesB = reserialize properties
 	}
 
 	static Injector injector
