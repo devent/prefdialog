@@ -20,6 +20,8 @@ package com.anrisoftware.prefdialog.fields.textfield;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.beans.PropertyVetoException;
 import java.lang.annotation.Annotation;
 
@@ -53,6 +55,8 @@ public class TextField extends AbstractTitleField<JTextField> {
 
 	private final ActionListener textAction;
 
+	private final FocusAdapter textFocus;
+
 	/**
 	 * @see TextFieldFactory#create(Object, String)
 	 */
@@ -72,6 +76,17 @@ public class TextField extends AbstractTitleField<JTextField> {
 				}
 			}
 		};
+		this.textFocus = new FocusAdapter() {
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				try {
+					setValue(getComponent().getText());
+				} catch (PropertyVetoException e1) {
+				}
+			}
+
+		};
 	}
 
 	@Inject
@@ -89,6 +104,7 @@ public class TextField extends AbstractTitleField<JTextField> {
 
 	private void setupTextField() {
 		getComponent().addActionListener(textAction);
+		getComponent().addFocusListener(textFocus);
 	}
 
 	@Override
