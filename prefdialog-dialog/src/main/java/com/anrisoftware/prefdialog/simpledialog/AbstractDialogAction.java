@@ -237,7 +237,7 @@ public abstract class AbstractDialogAction<Value, Dialog extends SimpleDialog>
 		return createdDialog;
 	}
 
-	private Value createValue() {
+	private Value createValue() throws Exception {
 		if (createdDialog.getStatus() == CANCELED) {
 			return null;
 		}
@@ -252,7 +252,7 @@ public abstract class AbstractDialogAction<Value, Dialog extends SimpleDialog>
 	 * 
 	 * @return the value.
 	 */
-	protected abstract Value createValue(Dialog dialog);
+	protected abstract Value createValue(Dialog dialog) throws Exception;
 
 	@Override
 	public String toString() {
