@@ -16,13 +16,21 @@ import com.anrisoftware.resources.texts.api.Texts;
  */
 public class MessageNode extends AbstractMutableTreeTableNode {
 
-	private final CategoryNode category;
+	private CategoryNode category;
 
 	private List<Object> values;
 
 	private List<String> resourceNames;
 
 	private Texts texts;
+
+	/**
+	 * The category must be set.
+	 * 
+	 * @see #setCategory(CategoryNode)
+	 */
+	public MessageNode() {
+	}
 
 	/**
 	 * Sets the category of this message. The message have the same columns as
@@ -34,6 +42,16 @@ public class MessageNode extends AbstractMutableTreeTableNode {
 	public MessageNode(CategoryNode category) {
 		this.category = category;
 		setColumnCount(category.getColumnCount());
+	}
+
+	/**
+	 * Sets the category of this message.
+	 * 
+	 * @param category
+	 *            the {@link CategoryNode}.
+	 */
+	public void setCategory(CategoryNode category) {
+		this.category = category;
 	}
 
 	/**

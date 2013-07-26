@@ -58,12 +58,18 @@ public class ProblemsPane {
 
 	private List<Object> columnNames;
 
-	private ArrayList<String> columnNamesResources;
+	private List<String> columnNamesResources;
+
+	private final List<CategoryNode> categories;
+
+	private final List<MessageNode> messages;
 
 	@Inject
 	ProblemsPane(UiPane pane, RootNode rootNode) {
 		this.pane = pane;
 		this.root = rootNode;
+		this.categories = new ArrayList<CategoryNode>();
+		this.messages = new ArrayList<MessageNode>();
 	}
 
 	/**
@@ -93,8 +99,13 @@ public class ProblemsPane {
 	 */
 	public void setTexts(Texts texts) {
 		this.texts = texts;
-		root.setTexts(texts);
 		updateTextsResource();
+		for (CategoryNode node : categories) {
+			node.setTexts(texts);
+		}
+		for (MessageNode node : messages) {
+			node.setTexts(texts);
+		}
 	}
 
 	private void updateTextsResource() {
@@ -118,11 +129,13 @@ public class ProblemsPane {
 	}
 
 	public void addCategory(CategoryNode category) {
+		categories.add(category);
 		category.setColumnCount(root.getColumnCount());
 		model.insertNodeInto(category, root, 0);
 	}
 
 	public void addMessage(MessageNode message) {
+		messages.add(message);
 		model.insertNodeInto(message, message.getCategory(), 0);
 		pane.getProblemsTable().expandAll();
 	}

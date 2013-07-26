@@ -2,9 +2,6 @@ package com.anrisoftware.prefdialog.miscswing.problemspane;
 
 import org.jdesktop.swingx.treetable.AbstractMutableTreeTableNode;
 
-import com.anrisoftware.resources.api.ResourcesException;
-import com.anrisoftware.resources.texts.api.Texts;
-
 /**
  * Root node.
  * 
@@ -15,10 +12,6 @@ class RootNode extends AbstractMutableTreeTableNode {
 
 	private String name;
 
-	private Texts texts;
-
-	private String nameResource;
-
 	private int columnCount;
 
 	/**
@@ -28,30 +21,7 @@ class RootNode extends AbstractMutableTreeTableNode {
 	 *            the {@link String} name or the resource name for the category.
 	 */
 	public void setName(String name) {
-		this.nameResource = name;
 		this.name = name;
-	}
-
-	/**
-	 * Sets the texts resources for the category. The name is looked up in the
-	 * resources.
-	 * 
-	 * @param texts
-	 *            the {@link Texts}.
-	 */
-	public void setTexts(Texts texts) {
-		this.texts = texts;
-		updateTextsResource();
-	}
-
-	private void updateTextsResource() {
-		if (texts == null) {
-			return;
-		}
-		try {
-			name = texts.getResource(nameResource).getText();
-		} catch (ResourcesException e) {
-		}
 	}
 
 	@Override
