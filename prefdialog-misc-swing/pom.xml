@@ -47,11 +47,11 @@
 		</dependency>
 
 		<!-- for docks -->
-        <dependency>
-            <groupId>org.dockingframes</groupId>
-            <artifactId>docking-frames-core</artifactId>
-            <optional>true</optional>
-        </dependency>
+		<dependency>
+			<groupId>org.dockingframes</groupId>
+			<artifactId>docking-frames-core</artifactId>
+			<optional>true</optional>
+		</dependency>
 		<dependency>
 			<groupId>org.dockingframes</groupId>
 			<artifactId>docking-frames-common</artifactId>
@@ -63,10 +63,16 @@
 			<optional>true</optional>
 		</dependency>
 
-        <!-- for resorces action -->
+		<!-- for resources action -->
 		<dependency>
 			<groupId>com.anrisoftware.resources</groupId>
 			<artifactId>resources-texts</artifactId>
+		</dependency>
+
+		<!-- for problems pane -->
+		<dependency>
+			<groupId>org.swinglabs.swingx</groupId>
+			<artifactId>swingx-core</artifactId>
 		</dependency>
 	</dependencies>
 </project>
