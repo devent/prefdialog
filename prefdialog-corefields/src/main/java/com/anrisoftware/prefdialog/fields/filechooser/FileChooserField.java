@@ -18,6 +18,8 @@
  */
 package com.anrisoftware.prefdialog.fields.filechooser;
 
+import static org.apache.commons.lang3.StringUtils.isEmpty;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -29,6 +31,7 @@ import java.lang.annotation.Annotation;
 
 import javax.inject.Inject;
 import javax.swing.Action;
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
@@ -39,8 +42,11 @@ import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccess;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccessFactory;
 import com.anrisoftware.prefdialog.annotations.FileChooser;
 import com.anrisoftware.prefdialog.annotations.FileChooserModel;
+import com.anrisoftware.prefdialog.annotations.TextPosition;
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
 import com.anrisoftware.prefdialog.miscswing.filetextfield.FileTextField;
+import com.anrisoftware.resources.images.api.IconSize;
+import com.anrisoftware.resources.images.api.Images;
 import com.anrisoftware.resources.texts.api.Texts;
 import com.google.inject.assistedinject.Assisted;
 
@@ -76,6 +82,12 @@ public class FileChooserField extends AbstractTitleField<JPanel> {
 
 	private static final String BUTTON_MNEMONIC_ELEMENT = "buttonMnemonic";
 
+	private static final String BUTTON_TEXT_POSITION_ELEMENT = "buttonTextPosition";
+
+	private static final String BUTTON_ICON_ELEMENT = "buttonIcon";
+
+	private static final String BUTTON_ICON_SIZE_ELEMENT = "buttonIconSize";
+
 	private final FileChooserFieldLogger log;
 
 	private final FileTextField fileTextField;
@@ -105,6 +117,14 @@ public class FileChooserField extends AbstractTitleField<JPanel> {
 	private MnemonicFactory mnemonicFactory;
 
 	private int buttonMnemonicIndex;
+
+	private TextPosition buttonTextPosition;
+
+	private String buttonIconResource;
+
+	private Icon buttonIcon;
+
+	private IconSize buttonIconSize;
 
 	/**
 	 * @see FileChooserFieldFactory#create(Object, String)
@@ -167,6 +187,25 @@ public class FileChooserField extends AbstractTitleField<JPanel> {
 		setupModel();
 		setupButtonText();
 		setupButtonMnemonic();
+		setupButtonIcon();
+		setupButtonTextPosition();
+		setupButtonIconSize();
+	}
+
+	private void setupButtonIconSize() {
+		IconSize size = annotationAccess.getValue(BUTTON_ICON_SIZE_ELEMENT);
+		setButtonIconSize(size);
+	}
+
+	private void setupButtonIcon() {
+		String name = annotationAccess.getValue(BUTTON_ICON_ELEMENT);
+		setButtonIconResource(name);
+	}
+
+	private void setupButtonTextPosition() {
+		TextPosition position = annotationAccess
+				.getValue(BUTTON_TEXT_POSITION_ELEMENT);
+		setButtonTextPosition(position);
 	}
 
 	private void setupButtonText() {
@@ -253,6 +292,10 @@ public class FileChooserField extends AbstractTitleField<JPanel> {
 	 * Sets the text of the button that opens the file chooser dialog. The text
 	 * can also be a resource name that is queried in the supplied texts
 	 * resource.
+	 * <p>
+	 * <h2>AWT Thread</h2>
+	 * <p>
+	 * Should be called in the AWT thread.
 	 * 
 	 * @param buttonText
 	 *            the button text or the resource name.
@@ -278,6 +321,10 @@ public class FileChooserField extends AbstractTitleField<JPanel> {
 	 * that opens the file chooser dialog. The string can contain a key code
 	 * name or the character. The mnemonic can also be a resource name that is
 	 * queried in the supplied texts resource.
+	 * <p>
+	 * <h2>AWT Thread</h2>
+	 * <p>
+	 * Should be called in the AWT thread.
 	 * 
 	 * @param string
 	 *            the mnemonic string or the resource name.
@@ -302,6 +349,10 @@ public class FileChooserField extends AbstractTitleField<JPanel> {
 	/**
 	 * Sets the mnemonic character code for the open the file chooser dialog
 	 * button.
+	 * <p>
+	 * <h2>AWT Thread</h2>
+	 * <p>
+	 * Should be called in the AWT thread.
 	 * 
 	 * @param mnemonic
 	 *            the mnemonic character code.
@@ -324,6 +375,10 @@ public class FileChooserField extends AbstractTitleField<JPanel> {
 
 	/**
 	 * Sets the mnemonic index for the open the file chooser dialog button.
+	 * <p>
+	 * <h2>AWT Thread</h2>
+	 * <p>
+	 * Should be called in the AWT thread.
 	 * 
 	 * @param index
 	 *            the mnemonic index.
@@ -343,10 +398,136 @@ public class FileChooserField extends AbstractTitleField<JPanel> {
 		return buttonMnemonicIndex;
 	}
 
+	/**
+	 * Sets the position of the button text and icon.
+	 * <p>
+	 * <h2>AWT Thread</h2>
+	 * <p>
+	 * Should be called in the AWT thread.
+	 * 
+	 * @param position
+	 *            the {@link TextPosition}.
+	 */
+	public void setButtonTextPosition(TextPosition position) {
+		this.buttonTextPosition = position;
+		switch (position) {
+		case ICON_ONLY:
+			getOpenFileChooser().setText(null);
+			break;
+		case TEXT_ALONGSIDE_ICON:
+			getOpenFileChooser().setText(buttonText);
+			getOpenFileChooser().setIcon(buttonIcon);
+			break;
+		case TEXT_UNDER_ICON:
+			getOpenFileChooser().setText(buttonText);
+			getOpenFileChooser().setIcon(buttonIcon);
+			break;
+		case TEXT_ONLY:
+			getOpenFileChooser().setText(buttonText);
+			getOpenFileChooser().setIcon(null);
+			break;
+		}
+		log.buttonTextPositionSet(this, position);
+	}
+
+	/**
+	 * Returns the position of the button text and icon.
+	 * 
+	 * @return the {@link TextPosition}.
+	 */
+	public TextPosition getButtonTextPosition() {
+		return buttonTextPosition;
+	}
+
+	/**
+	 * Sets the resource for the button icon. The resource is loaded from the
+	 * specified images resources.
+	 * <p>
+	 * <h2>AWT Thread</h2>
+	 * <p>
+	 * Should be called in the AWT thread.
+	 * 
+	 * @param name
+	 *            the icon resource name or {@code null} or empty if the old
+	 *            icon should be removed.
+	 */
+	public void setButtonIconResource(String name) {
+		this.buttonIconResource = name;
+		if (isEmpty(name)) {
+			buttonIcon = null;
+			getOpenFileChooser().setIcon(null);
+		} else {
+			updateButtonIconResources();
+		}
+		log.buttonIconResourceSet(this, name);
+	}
+
+	/**
+	 * Sets the new button icon for the field.
+	 * <p>
+	 * <h2>AWT Thread</h2>
+	 * <p>
+	 * Should be called in the AWT thread.
+	 * 
+	 * @param icon
+	 *            the {@link Icon} for the field or {@code null} if the old icon
+	 *            should be deleted.
+	 * 
+	 * @see #getOpenFileChooser()
+	 */
+	public void setButtonIcon(Icon icon) {
+		this.buttonIconResource = null;
+		this.buttonIcon = icon;
+		getOpenFileChooser().setIcon(icon);
+		log.buttonIconSet(this, icon);
+	}
+
+	/**
+	 * Returns the button icon for this field.
+	 * 
+	 * @return the {@link Icon}
+	 * 
+	 * @see #getOpenFileChooser()
+	 */
+	public Icon getButtonIcon() {
+		return buttonIcon;
+	}
+
+	/**
+	 * Sets the size of the button icon.
+	 * <p>
+	 * <h2>AWT Thread</h2>
+	 * <p>
+	 * Should be called in the AWT thread.
+	 * 
+	 * @param size
+	 *            the {@link IconSize}.
+	 */
+	public void setButtonIconSize(IconSize size) {
+		this.buttonIconSize = size;
+		updateButtonIconResources();
+		log.buttonIconSizeSet(this, buttonIconSize);
+	}
+
+	/**
+	 * Returns the button size of the icon.
+	 * 
+	 * @return the {@link IconSize}.
+	 */
+	public IconSize getButtonIconSize() {
+		return buttonIconSize;
+	}
+
 	@Override
 	public void setTexts(Texts texts) {
 		super.setTexts(texts);
 		updateTextsResources();
+	}
+
+	@Override
+	public void setImages(Images images) {
+		super.setImages(images);
+		updateImagesResources();
 	}
 
 	private void updateTextsResources() {
@@ -375,6 +556,18 @@ public class FileChooserField extends AbstractTitleField<JPanel> {
 		int index = mnemonic.getMnemonicIndex();
 		if (index != -1) {
 			setButtonMnemonicIndex(index);
+		}
+	}
+
+	private void updateImagesResources() {
+		updateButtonIconResources();
+	}
+
+	private void updateButtonIconResources() {
+		if (haveImageResource(buttonIconResource)) {
+			buttonIcon = getIconResource(buttonIconResource, buttonIconSize,
+					buttonIcon);
+			getOpenFileChooser().setIcon(buttonIcon);
 		}
 	}
 

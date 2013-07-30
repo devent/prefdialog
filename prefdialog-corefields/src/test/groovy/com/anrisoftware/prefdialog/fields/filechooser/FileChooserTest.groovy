@@ -23,6 +23,8 @@ import static com.anrisoftware.prefdialog.fields.filechooser.FileChooserBean.*
 import static com.anrisoftware.prefdialog.fields.filechooser.FileChooserField.*
 import static java.util.regex.Pattern.compile
 
+import java.awt.Insets
+
 import org.fest.swing.fixture.FrameFixture
 import org.junit.Before
 import org.junit.BeforeClass
@@ -34,6 +36,7 @@ import com.anrisoftware.globalpom.reflection.exceptions.ReflectionError
 import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
 import com.anrisoftware.prefdialog.core.FieldTestUtils
+import com.anrisoftware.resources.images.api.Images
 import com.google.inject.Guice
 import com.google.inject.Injector
 
@@ -45,7 +48,7 @@ import com.google.inject.Injector
  */
 class FileChooserTest extends FieldTestUtils {
 
-	//@Test
+	@Test
 	void "manually"() {
 		def title = "$NAME::manually"
 		def fieldName = INITIAL_VALUE
@@ -112,11 +115,29 @@ class FileChooserTest extends FieldTestUtils {
 		})
 	}
 
+	@Test
+	void "button icon resource"() {
+		def title = "$NAME::button icon resource"
+		def fieldName = BUTTON_ICON_RESOURCE
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
+		field.images = images
+		field.openFileChooser.setContentAreaFilled false
+		field.openFileChooser.setBorderPainted true
+		field.openFileChooser.setMargin new Insets(0, 4, 0, 4)
+
+		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+			fixture.textBox "$fieldName-$FILE_FIELD_NAME" requireText compile(/.*aaa.txt/)
+		})
+	}
+
 	static Injector injector
 
 	static FileChooserFieldFactory factory
 
 	static final String NAME = FileChooserTest.class.simpleName
+
+	static Images images
 
 	@Rule
 	public TemporaryFolder tmp = new TemporaryFolder()
@@ -127,6 +148,7 @@ class FileChooserTest extends FieldTestUtils {
 	static void setupFactories() {
 		injector = Guice.createInjector(new CoreFieldComponentModule(), new FileChooserModule())
 		factory = injector.getInstance FileChooserFieldFactory
+		images = createImagesResource(injector)
 	}
 
 	@Before

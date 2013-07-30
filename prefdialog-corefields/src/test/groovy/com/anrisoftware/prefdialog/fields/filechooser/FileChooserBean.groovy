@@ -23,6 +23,7 @@ import javax.swing.JFileChooser
 import com.anrisoftware.prefdialog.annotations.FieldComponent
 import com.anrisoftware.prefdialog.annotations.FileChooser
 import com.anrisoftware.prefdialog.annotations.FileChooserModel
+import com.anrisoftware.prefdialog.annotations.TextPosition
 
 /**
  * Bean with file chooser fields.
@@ -38,6 +39,8 @@ class FileChooserBean {
 
 	static final INITIAL_VALUE = "initialValue"
 
+	static final BUTTON_ICON_RESOURCE = "buttonIconResource"
+
 	@FieldComponent
 	@FileChooser(model = "fileModel")
 	public File nullValue
@@ -49,6 +52,10 @@ class FileChooserBean {
 	@FieldComponent
 	@FileChooser(model = "fileModel")
 	public File initialValue = new File("aaa.txt")
+
+	@FieldComponent
+	@FileChooser(model = "fileModel", buttonIcon = "open_icon", buttonTextPosition = TextPosition.ICON_ONLY)
+	public File buttonIconResource = new File("aaa.txt")
 
 	public FileChooserModel fileModel = new OpenFileDialogModel()
 

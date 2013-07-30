@@ -1,18 +1,18 @@
 /*
  * Copyright 2012-2013 Erwin Müller <erwin.mueller@deventm.org>
- *
+ * 
  * This file is part of prefdialog-core.
- *
+ * 
  * prefdialog-core is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
  * Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- *
+ * 
  * prefdialog-core is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-core. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -856,6 +856,46 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 		} catch (MissingResourceException e) {
 			log.textResourceMissing(this, name);
 			return defaultText;
+		}
+	}
+
+	/**
+	 * Tests if the image resource is available.
+	 * 
+	 * @param name
+	 *            the {@link String} name of the image resource.
+	 * 
+	 * @return {@code true} if the name is not {@code null} or empty and the
+	 *         texts resources are available, {@code false} otherwise.
+	 */
+	protected boolean haveImageResource(String name) {
+		return !isEmpty(name) && images != null;
+	}
+
+	/**
+	 * Returns the icon resource with the specified name and the current locale.
+	 * 
+	 * @param name
+	 *            the {@link String} resource name.
+	 * 
+	 * @param size
+	 *            the {@link IconSize} size of the icon.
+	 * 
+	 * @param defaultText
+	 *            the default {@link Icon} icon for the resource.
+	 * 
+	 * @return the {@link Icon} icon resource or the default icon if the image
+	 *         resource could not be found.
+	 * 
+	 * @see #getLocale()
+	 */
+	protected Icon getIconResource(String name, IconSize size, Icon defaultIcon) {
+		try {
+			return new ImageIcon(images.getResource(name, getLocale(), size)
+					.getImage());
+		} catch (MissingResourceException e) {
+			log.iconResourceMissing(this, name);
+			return defaultIcon;
 		}
 	}
 

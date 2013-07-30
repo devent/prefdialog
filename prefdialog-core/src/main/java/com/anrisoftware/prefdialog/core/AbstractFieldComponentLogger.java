@@ -70,6 +70,7 @@ class AbstractFieldComponentLogger extends AbstractLogger {
 	private static final String NAME_SET = "Name '{}' set for {}.";
 	private static final String ORDER_SET = "Order {} set for {}.";
 	private static final String MNEMONIC_SET = "Mnemonic '{}' set for {}.";
+	private static final String NO_ICON_RESOURCE = "Icon resource '{}' not found for {}.";
 
 	/**
 	 * Creates logger for {@link AbstractFieldComponent}.
@@ -145,6 +146,10 @@ class AbstractFieldComponentLogger extends AbstractLogger {
 
 	void checkImagesResource(AbstractFieldComponent<?> field, Images images) {
 		notNull(images, IMAGES_RESOURCE_NULL);
+	}
+
+	void iconResourceMissing(AbstractFieldComponent<?> field, String title) {
+		log.warn(NO_ICON_RESOURCE, title, field);
 	}
 
 	void checkLocale(AbstractFieldComponent<?> field, Locale locale) {
