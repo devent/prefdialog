@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.SwingWorker;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.joda.time.Duration;
 
 import com.anrisoftware.globalpom.threads.api.Threads;
 
@@ -25,6 +26,8 @@ import com.anrisoftware.globalpom.threads.api.Threads;
  */
 public abstract class AbstractDialogAction<Value, Dialog extends SimpleDialog>
 		implements Callable<Value> {
+
+	private static final Duration WAIT_DURATION = Duration.parse("PT1S");
 
 	private AbstractDialogActionLogger log;
 
@@ -226,7 +229,7 @@ public abstract class AbstractDialogAction<Value, Dialog extends SimpleDialog>
 		while (createdDialog == null) {
 			try {
 				synchronized (this) {
-					wait(1000);
+					wait(getDialogWaitDuration().getMillis());
 				}
 				log.checkDialogCreated(this, createdDialog);
 			} catch (InterruptedException e) {
@@ -235,6 +238,15 @@ public abstract class AbstractDialogAction<Value, Dialog extends SimpleDialog>
 		}
 		createdDialog = dialog;
 		return createdDialog;
+	}
+
+	/**
+	 * Returns the time duration to wait for the dialog to be created.
+	 * 
+	 * @return the time {@link Duration}.
+	 */
+	protected Duration getDialogWaitDuration() {
+		return WAIT_DURATION;
 	}
 
 	private Value createValue() throws Exception {
