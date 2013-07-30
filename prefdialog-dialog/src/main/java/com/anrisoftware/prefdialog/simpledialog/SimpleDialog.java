@@ -19,6 +19,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JRootPane;
 
+import com.anrisoftware.resources.images.api.Images;
 import com.anrisoftware.resources.texts.api.Texts;
 import com.google.inject.Injector;
 
@@ -181,6 +182,15 @@ public class SimpleDialog {
 	 */
 	public Texts getTexts() {
 		return texts;
+	}
+
+	/**
+	 * Sets the images resources for the dialog.
+	 * 
+	 * @param images
+	 *            the {@link Images} resources.
+	 */
+	public void setImages(Images images) {
 	}
 
 	/**

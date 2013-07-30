@@ -13,6 +13,7 @@ import com.anrisoftware.prefdialog.fields.FieldComponent;
 import com.anrisoftware.prefdialog.fields.FieldFactory;
 import com.anrisoftware.prefdialog.fields.FieldService;
 import com.anrisoftware.prefdialog.verticalpanel.VerticalPreferencesPanelField;
+import com.anrisoftware.resources.images.api.Images;
 import com.anrisoftware.resources.texts.api.Texts;
 import com.google.inject.Injector;
 import com.google.inject.assistedinject.Assisted;
@@ -87,6 +88,17 @@ public class SimplePropertiesDialog extends SimpleDialog {
 		super.setTexts(texts);
 		if (panel != null) {
 			panel.setTexts(texts);
+		}
+	}
+
+	/**
+	 * @see SimpleDialog#setImages(Images)
+	 */
+	@Override
+	public void setImages(Images images) {
+		super.setImages(images);
+		if (panel != null) {
+			panel.setImages(images);
 		}
 	}
 
