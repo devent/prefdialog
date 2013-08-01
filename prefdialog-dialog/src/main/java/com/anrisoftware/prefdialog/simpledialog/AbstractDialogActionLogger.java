@@ -19,6 +19,7 @@ import com.anrisoftware.globalpom.log.AbstractLogger;
 @Singleton
 class AbstractDialogActionLogger extends AbstractLogger {
 
+	private static final String CAN_CREATE = "Can create dialog for {}.";
 	private static final String DIALOG_NULL = "Dialog was not created for %s.";
 	private static final String NO_DIALOG = "No dialog set for {}.";
 	private static final String NO_THREADS = "No threads set for {}.";
@@ -48,27 +49,20 @@ class AbstractDialogActionLogger extends AbstractLogger {
 		}
 	}
 
-	boolean checkFrame(AbstractDialogAction<?, ?> action, Object frame) {
-		if (frame == null) {
+	boolean checkCanCreateDialog(AbstractDialogAction<?, ?> action) {
+		if (action.getFrame() == null) {
 			log.debug(NO_FRAME, action);
 			return false;
 		}
-		return true;
-	}
-
-	boolean checkThreads(AbstractDialogAction<?, ?> action, Object threads) {
-		if (threads == null) {
+		if (action.getThreads() == null) {
 			log.debug(NO_THREADS, action);
 			return false;
 		}
-		return true;
-	}
-
-	boolean checkDialog(AbstractDialogAction<?, ?> action, Object dialog) {
-		if (dialog == null) {
+		if (action.getNotCreatedDialog() == null) {
 			log.debug(NO_DIALOG, action);
 			return false;
 		}
+		log.debug(CAN_CREATE, action);
 		return true;
 	}
 

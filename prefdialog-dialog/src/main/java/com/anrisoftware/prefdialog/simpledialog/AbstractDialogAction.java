@@ -123,6 +123,15 @@ public abstract class AbstractDialogAction<Value, Dialog extends SimpleDialog>
 	}
 
 	/**
+	 * Returns the not yet created dialog.
+	 * 
+	 * @return the {@link SimpleDialog}.
+	 */
+	public Dialog getNotCreatedDialog() {
+		return dialog;
+	}
+
+	/**
 	 * Waits for the dialog to be created and opens the dialog. Waits until the
 	 * user either canceled or approved the dialog. After the dialog was
 	 * approved a value is created and returned.
@@ -206,8 +215,7 @@ public abstract class AbstractDialogAction<Value, Dialog extends SimpleDialog>
 	 * @return {@code true} if the dialog can be created.
 	 */
 	protected boolean canCreateDialog() {
-		return log.checkFrame(this, frame) && log.checkThreads(this, threads)
-				&& log.checkDialog(this, dialog);
+		return log.checkCanCreateDialog(this);
 	}
 
 	private void dialogCreated(PropertyChangeEvent evt) {
@@ -216,6 +224,16 @@ public abstract class AbstractDialogAction<Value, Dialog extends SimpleDialog>
 		synchronized (this) {
 			notify();
 		}
+		dialogCreated(dialog);
+	}
+
+	/**
+	 * Called when the dialog is created.
+	 * 
+	 * @param dialog
+	 *            the {@link SimpleDialog}.
+	 */
+	protected void dialogCreated(Dialog dialog) {
 	}
 
 	/**
