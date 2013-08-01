@@ -1,30 +1,33 @@
 /*
  * Copyright 2013-2013 Erwin Müller <erwin.mueller@deventm.org>
- *
+ * 
  * This file is part of prefdialog-corefields.
- *
- * prefdialog-corefields is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
+ * 
+ * prefdialog-corefields is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- *
+ * 
  * prefdialog-corefields is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-corefields. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.anrisoftware.prefdialog.fields.filechooser;
 
 import java.awt.Component;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
 import java.beans.VetoableChangeSupport;
 import java.io.File;
 
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -41,12 +44,17 @@ public class OpenFileDialogModel implements FileChooserModel {
 
 	private final VetoableChangeSupport vetoableChange;
 
+	private final PropertyChangeSupport propertySupport;
+
 	private JFileChooser chooser;
 
 	private File file;
 
+	private FileFilter fileFilter;
+
 	public OpenFileDialogModel() {
 		this.vetoableChange = new VetoableChangeSupport(this);
+		this.propertySupport = new PropertyChangeSupport(this);
 	}
 
 	/**
@@ -63,8 +71,22 @@ public class OpenFileDialogModel implements FileChooserModel {
 	public void openDialog(Component parent) throws PropertyVetoException {
 		int result = chooser.showDialog(parent, null);
 		if (result == JFileChooser.APPROVE_OPTION) {
+			setFileFilter(chooser.getFileFilter());
 			setFile(chooser.getSelectedFile());
 		}
+	}
+
+	@Override
+	public void setFileFilter(FileFilter filter) {
+		Object oldValue = this.fileFilter;
+		this.fileFilter = filter;
+		propertySupport.firePropertyChange(FILE_FILTER_PROPERTY, oldValue,
+				filter);
+	}
+
+	@Override
+	public FileFilter getFileFilter() {
+		return fileFilter;
 	}
 
 	@Override
@@ -78,6 +100,42 @@ public class OpenFileDialogModel implements FileChooserModel {
 	@Override
 	public File getFile() {
 		return file;
+	}
+
+	/**
+	 * @see PropertyChangeSupport#addPropertyChangeListener(PropertyChangeListener)
+	 */
+	@Override
+	public void addPropertyChangeListener(PropertyChangeListener listener) {
+		propertySupport.addPropertyChangeListener(listener);
+	}
+
+	/**
+	 * @see PropertyChangeSupport#removePropertyChangeListener(PropertyChangeListener)
+	 */
+	@Override
+	public void removePropertyChangeListener(PropertyChangeListener listener) {
+		propertySupport.removePropertyChangeListener(listener);
+	}
+
+	/**
+	 * @see PropertyChangeSupport#addPropertyChangeListener(String,
+	 *      PropertyChangeListener)
+	 */
+	@Override
+	public void addPropertyChangeListener(String propertyName,
+			PropertyChangeListener listener) {
+		propertySupport.addPropertyChangeListener(propertyName, listener);
+	}
+
+	/**
+	 * @see PropertyChangeSupport#removePropertyChangeListener(String,
+	 *      PropertyChangeListener)
+	 */
+	@Override
+	public void removePropertyChangeListener(String propertyName,
+			PropertyChangeListener listener) {
+		propertySupport.removePropertyChangeListener(propertyName, listener);
 	}
 
 	@Override

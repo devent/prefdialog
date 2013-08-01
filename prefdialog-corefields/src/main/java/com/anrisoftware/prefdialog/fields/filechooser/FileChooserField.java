@@ -279,6 +279,15 @@ public class FileChooserField extends AbstractTitleField<JPanel> {
 	}
 
 	/**
+	 * Returns the file chooser model.
+	 * 
+	 * @return the {@link FileChooserModel}.
+	 */
+	public FileChooserModel getModel() {
+		return model;
+	}
+
+	/**
 	 * Sets the open file chooser action.
 	 * 
 	 * @param action
