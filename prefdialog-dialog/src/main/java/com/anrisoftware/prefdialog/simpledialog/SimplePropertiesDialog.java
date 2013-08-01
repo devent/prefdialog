@@ -8,6 +8,7 @@ import java.beans.VetoableChangeListener;
 
 import javax.inject.Inject;
 import javax.swing.JDialog;
+import javax.swing.JPanel;
 
 import com.anrisoftware.prefdialog.fields.FieldComponent;
 import com.anrisoftware.prefdialog.fields.FieldFactory;
@@ -110,6 +111,15 @@ public class SimplePropertiesDialog extends SimpleDialog {
 	 */
 	public void setParent(Object parent) {
 		this.parent = (Injector) parent;
+	}
+
+	/**
+	 * Returns the properties field.
+	 * 
+	 * @return the {@link FieldComponent}.
+	 */
+	public FieldComponent<JPanel> getField() {
+		return panel;
 	}
 
 	@Override
