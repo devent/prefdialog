@@ -67,12 +67,24 @@ public class OpenFileDialogModel implements FileChooserModel {
 		this.chooser = chooser;
 	}
 
+	/**
+	 * Returns the file chooser dialog that will be open.
+	 * 
+	 * @return the {@link JFileChooser}.
+	 */
+	public JFileChooser getFileChooser() {
+		return chooser;
+	}
+
 	@Override
 	public void openDialog(Component parent) throws PropertyVetoException {
-		int result = chooser.showDialog(parent, null);
+		int result = chooser.showOpenDialog(parent);
 		if (result == JFileChooser.APPROVE_OPTION) {
 			setFileFilter(chooser.getFileFilter());
 			setFile(chooser.getSelectedFile());
+		} else {
+			setFileFilter(null);
+			setFile(null);
 		}
 	}
 
@@ -93,7 +105,9 @@ public class OpenFileDialogModel implements FileChooserModel {
 	public void setFile(File file) throws PropertyVetoException {
 		File oldValue = this.file;
 		this.file = file;
-		chooser.setSelectedFile(file);
+		if (file != null) {
+			chooser.setSelectedFile(file);
+		}
 		vetoableChange.fireVetoableChange(FILE_PROPERTY, oldValue, file);
 	}
 

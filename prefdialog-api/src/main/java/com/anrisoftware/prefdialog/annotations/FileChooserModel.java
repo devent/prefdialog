@@ -48,7 +48,12 @@ public interface FileChooserModel extends Serializable {
 	static final String FILE_FILTER_PROPERTY = "file_filter";
 
 	/**
-	 * Opens the dialog under the parent component.
+	 * Opens the dialog under the parent component for the user to select the
+	 * file.
+	 * <p>
+	 * <h2>AWT Thread</h2>
+	 * <p>
+	 * Should be called in the AWT thread.
 	 * 
 	 * @param parent
 	 *            the parent component or {@code null}.
@@ -73,7 +78,7 @@ public interface FileChooserModel extends Serializable {
 	/**
 	 * Returns the selected file.
 	 * 
-	 * @return the {@link File}.
+	 * @return the {@link File} or {@code null} if the dialog was canceled.
 	 */
 	File getFile();
 
@@ -89,7 +94,8 @@ public interface FileChooserModel extends Serializable {
 	/**
 	 * Returns the current file filter.
 	 * 
-	 * @return the {@link FileFilter}.
+	 * @return the {@link FileFilter} or {@code null} if the dialog was
+	 *         canceled.
 	 */
 	FileFilter getFileFilter();
 
