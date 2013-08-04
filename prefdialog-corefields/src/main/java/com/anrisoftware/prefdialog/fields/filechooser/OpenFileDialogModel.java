@@ -18,6 +18,8 @@
  */
 package com.anrisoftware.prefdialog.fields.filechooser;
 
+import static javax.swing.SwingUtilities.invokeLater;
+
 import java.awt.Component;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -105,10 +107,21 @@ public class OpenFileDialogModel implements FileChooserModel {
 	public void setFile(File file) throws PropertyVetoException {
 		File oldValue = this.file;
 		this.file = file;
-		if (file != null) {
-			chooser.setSelectedFile(file);
-		}
+		updateSelectedFile(file);
 		vetoableChange.fireVetoableChange(FILE_PROPERTY, oldValue, file);
+	}
+
+	private void updateSelectedFile(final File file) {
+		if (file == null) {
+			return;
+		}
+		invokeLater(new Runnable() {
+
+			@Override
+			public void run() {
+				chooser.setSelectedFile(file);
+			}
+		});
 	}
 
 	@Override
