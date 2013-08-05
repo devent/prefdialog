@@ -14,6 +14,7 @@
         <module>prefdialog-core</module>
         <module>prefdialog-corefields</module>
         <module>prefdialog-csvimportdialog</module>
+        <module>prefdialog-dialog</module>
         <module>prefdialog-misc-swing</module>
         <module>prefdialog-panel</module>
     </modules>
