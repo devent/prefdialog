@@ -170,6 +170,15 @@ public class CsvImportPanel {
 	}
 
 	/**
+	 * Returns the created vertical preferences panel.
+	 * 
+	 * @return the {@link VerticalPreferencesPanelField}.
+	 */
+	public VerticalPreferencesPanelField getPanel() {
+		return propertiesPanel;
+	}
+
+	/**
 	 * Sets the focus on the CSV import panel.
 	 * <p>
 	 * <h2>AWT Thread</h2>
