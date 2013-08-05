@@ -1,22 +1,25 @@
 /*
  * Copyright 2013-2013 Erwin Müller <erwin.mueller@deventm.org>
- *
+ * 
  * This file is part of prefdialog-csvimportdialog.
- *
- * prefdialog-csvimportdialog is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
- *
- * prefdialog-csvimportdialog is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
+ * 
+ * prefdialog-csvimportdialog is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * 
+ * prefdialog-csvimportdialog is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with prefdialog-csvimportdialog. If not, see <http://www.gnu.org/licenses/>.
+ * along with prefdialog-csvimportdialog. If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 package com.anrisoftware.prefdialog.csvimportdialog.panelproperties.advancedproperties;
+
+import static java.lang.String.format;
 
 /**
  * Possible line end symbols.
@@ -41,6 +44,10 @@ public enum LineEnd {
 	 */
 	DEFAULT(null);
 
+	private static final String UNKNOWN = "Unknown line symbol '%s'";
+
+	private static final String LINE_SEP = System.getProperty("line.separator");
+
 	private String symbols;
 
 	private LineEnd(String symbols) {
@@ -50,10 +57,36 @@ public enum LineEnd {
 	/**
 	 * Returns the line end symbols.
 	 * 
-	 * @return the symbols {@link String} or {@code null} if the system default
-	 *         line end symbols should be used.
+	 * @return the symbols {@link String}.
 	 */
 	public String getSymbols() {
+		if (this == DEFAULT) {
+			return LINE_SEP;
+		}
 		return symbols;
+	}
+
+	/**
+	 * Parses the string symbols to a line end symbol.
+	 * 
+	 * @param symbols
+	 *            the symbols to parse.
+	 * 
+	 * @return the {@link LineEnd}.
+	 * 
+	 * @throws IllegalArgumentException
+	 *             if the specified symbols string is unknown.
+	 */
+	public static LineEnd parse(String symbols) {
+		if (symbols.equals(LINE_SEP)) {
+			return LineEnd.DEFAULT;
+		} else {
+			for (LineEnd symbol : values()) {
+				if (symbol.getSymbols().equals(symbols)) {
+					return symbol;
+				}
+			}
+		}
+		throw new IllegalArgumentException(format(UNKNOWN, symbols));
 	}
 }
