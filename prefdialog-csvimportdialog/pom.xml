@@ -22,8 +22,19 @@
 	</issueManagement>
 
 	<dependencies>
+		<!-- test dependencies -->
+		<dependency>
+			<groupId>com.anrisoftware.globalpom</groupId>
+			<artifactId>globalpom-groovytestutils</artifactId>
+			<scope>test</scope>
+		</dependency>
 
 		<!-- own modules dependencies -->
+        <dependency>
+            <groupId>com.anrisoftware.prefdialog</groupId>
+            <artifactId>prefdialog-core</artifactId>
+            <version>3.0-SNAPSHOT</version>
+        </dependency>
 		<dependency>
 			<groupId>com.anrisoftware.prefdialog</groupId>
 			<artifactId>prefdialog-corefields</artifactId>
@@ -39,18 +50,23 @@
 			<artifactId>prefdialog-misc-swing</artifactId>
 			<version>3.0-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>com.anrisoftware.prefdialog</groupId>
+			<artifactId>prefdialog-dialog</artifactId>
+			<version>3.0-SNAPSHOT</version>
+		</dependency>
 
 		<!-- docking frames -->
-        <dependency>
-            <groupId>org.dockingframes</groupId>
-            <artifactId>docking-frames-core</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.dockingframes</groupId>
-            <artifactId>docking-frames-common</artifactId>
-            <optional>true</optional>
-        </dependency>
+		<dependency>
+			<groupId>org.dockingframes</groupId>
+			<artifactId>docking-frames-core</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.dockingframes</groupId>
+			<artifactId>docking-frames-common</artifactId>
+			<optional>true</optional>
+		</dependency>
 		<dependency>
 			<groupId>com.esotericsoftware.kryo</groupId>
 			<artifactId>kryo</artifactId>
@@ -66,11 +82,6 @@
 		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.anrisoftware.prefdialog</groupId>
-			<artifactId>prefdialog-dialog</artifactId>
-			<version>3.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 </project>
