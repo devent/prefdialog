@@ -1,23 +1,24 @@
 /*
  * Copyright 2013-2013 Erwin Müller <erwin.mueller@deventm.org>
- *
+ * 
  * This file is part of prefdialog-misc-swing.
- *
- * prefdialog-misc-swing is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
+ * 
+ * prefdialog-misc-swing is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- *
+ * 
  * prefdialog-misc-swing is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-misc-swing. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.anrisoftware.prefdialog.miscswing.tables.spreadsheet;
 
+import static com.anrisoftware.prefdialog.miscswing.lockedevents.LockedListSelectionListener.lockedListSelectionListener;
 import static com.google.inject.Guice.createInjector;
 
 import java.awt.Rectangle;
@@ -30,6 +31,7 @@ import javax.swing.event.AncestorListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import com.anrisoftware.prefdialog.miscswing.lockedevents.LockedListSelectionListener;
 import com.google.inject.Injector;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
@@ -71,7 +73,7 @@ public class SpreadsheetTable {
 
 	private final SpreadsheetTableModel model;
 
-	private final ListSelectionListener selectionListener;
+	private final LockedListSelectionListener selectionListener;
 
 	private final AncestorListener ancestorListener;
 
@@ -108,7 +110,7 @@ public class SpreadsheetTable {
 		this.tableBindings = tableBindings;
 		this.editOnSelection = new EditOnSelection(table);
 		this.renderer = new SpreadsheetCellRenderer();
-		this.selectionListener = new ListSelectionListener() {
+		this.selectionListener = lockedListSelectionListener(new ListSelectionListener() {
 
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
@@ -117,7 +119,7 @@ public class SpreadsheetTable {
 				}
 				updateOffset();
 			}
-		};
+		});
 		this.ancestorListener = new AncestorListener() {
 
 			@Override
@@ -154,23 +156,34 @@ public class SpreadsheetTable {
 	}
 
 	private void updateOffset() {
+		selectionListener.lock();
 		int[] selected = table.getSelectedRows();
+		int[] selectedCols = table.getColumnModel().getSelectedColumns();
 		int maxRow = table.getSelectionModel().getMaxSelectionIndex();
+		table.clearSelection();
 		int maximum = getMaximum();
 		int offset = getOffset();
 		if (maxRow == 0) {
 			if (offset > 0) {
 				setOffset(offset - 1);
-				for (int row : selected) {
-					table.addRowSelectionInterval(row + 1, row + 1);
-				}
+				setRowInterval(selected, 1);
 			}
 		} else if (maxRow >= maximum - 1) {
 			int difference = maximum - maxRow + offset;
 			setOffset(difference);
-			for (int row : selected) {
-				table.addRowSelectionInterval(row - 1, row - 1);
-			}
+			setRowInterval(selected, -1);
+		} else {
+			setRowInterval(selected, 0);
+		}
+		for (int col : selectedCols) {
+			table.addColumnSelectionInterval(col, col);
+		}
+		selectionListener.unlock();
+	}
+
+	private void setRowInterval(int[] rows, int offset) {
+		for (int row : rows) {
+			table.addRowSelectionInterval(row + offset, row + offset);
 		}
 	}
 
