@@ -53,12 +53,25 @@ class SpreadsheetTableTest {
 		new TestFrameUtil(title, createTablePanel(table)).withFixture({})
 	}
 
+	@Test
+	void "set maximum view range"() {
+		def title = "$NAME::set maximum view range"
+		def table
+		invokeAndWait { table = new JTable() }
+		def range = new ViewRange(40)
+		def model = new NumbersModel(3, 20)
+		def spreadsheet = factory.create(table, model, range)
+		new TestFrameUtil(title, createTablePanel(table)).withFixture({ }, {
+			invokeAndWait { spreadsheet.setMaximum 20 }
+		})
+	}
+
 	//@Test
 	void "manually"() {
 		//setLookAndFeel GTK_LOOK_AND_FEEL
 		//setLookAndFeel SUBSTANCE_BUSINESS_LOOK_AND_FEEL
 		def title = "$NAME::manually"
-		def range = new ViewRange(40)
+		def range = new ViewRange(20)
 		def model = new NumbersModel(3, 20)
 		def panel
 		def table
