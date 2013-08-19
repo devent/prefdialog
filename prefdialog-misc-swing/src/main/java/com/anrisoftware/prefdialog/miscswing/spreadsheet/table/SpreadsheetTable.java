@@ -18,185 +18,61 @@
  */
 package com.anrisoftware.prefdialog.miscswing.spreadsheet.table;
 
-import static com.anrisoftware.prefdialog.miscswing.lockedevents.LockedListSelectionListener.lockedListSelectionListener;
-import static com.google.inject.Guice.createInjector;
+import static com.anrisoftware.prefdialog.miscswing.spreadsheet.table.SpreadsheetTableModule.getFactory;
 
-import java.awt.Rectangle;
-import java.awt.event.HierarchyBoundsListener;
-import java.awt.event.HierarchyEvent;
-
+import javax.inject.Inject;
 import javax.swing.JTable;
-import javax.swing.event.AncestorEvent;
-import javax.swing.event.AncestorListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
-import com.anrisoftware.prefdialog.miscswing.lockedevents.LockedListSelectionListener;
-import com.google.inject.Injector;
 import com.google.inject.assistedinject.Assisted;
-import com.google.inject.assistedinject.AssistedInject;
 
 /**
  * Spreadsheet like table.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 1.0
+ * @since 3.0
  */
 public class SpreadsheetTable {
 
-	private static SpreadsheetTableFactory factory;
-
 	/**
-	 * @see SpreadsheetTableFactory#create(JTable, SpreadsheetModel)
+	 * Decorate the specified table to be a spreadsheet table.
+	 * <p>
+	 * <h2>AWT Thread</h2>
+	 * <p>
+	 * Should be called in the AWT thread.
+	 * 
+	 * @see SpreadsheetTableFactory#create(JTable)
 	 */
-	public static SpreadsheetTable decorate(JTable table, SpreadsheetModel model) {
-		return getFactory().create(table, model);
-	}
-
-	/**
-	 * @see SpreadsheetTableFactory#create(JTable, SpreadsheetModel, ViewRange)
-	 */
-	public static SpreadsheetTable decorate(JTable table,
-			SpreadsheetModel model, ViewRange range) {
-		return getFactory().create(table, model, range);
-	}
-
-	private static SpreadsheetTableFactory getFactory() {
-		if (factory == null) {
-			Injector injector = createInjector(new SpreadsheetTableModule());
-			factory = injector.getInstance(SpreadsheetTableFactory.class);
-		}
-		return factory;
+	public static SpreadsheetTable decorate(JTable table) {
+		return getFactory().create(table);
 	}
 
 	private final JTable table;
 
-	private final SpreadsheetTableModel model;
-
-	private final LockedListSelectionListener selectionListener;
-
-	private final AncestorListener ancestorListener;
-
-	private final HierarchyBoundsListener boundsListener;
-
-	private boolean ancestorAdded;
-
 	private final TableBindings tableBindings;
 
-	private EditOnSelection editOnSelection;
+	private final EditOnSelection editOnSelection;
 
-	private SpreadsheetCellRenderer renderer;
-
-	/**
-	 * @see SpreadsheetTableFactory#create(JTable, SpreadsheetModel)
-	 */
-	@AssistedInject
-	SpreadsheetTable(SpreadsheetTableModelFactory modelFactory,
-			TableBindings tableBindings, @Assisted JTable table,
-			@Assisted SpreadsheetModel model) {
-		this(modelFactory, tableBindings, new JTable(), model, new ViewRange());
-	}
+	private final SpreadsheetCellRenderer renderer;
 
 	/**
-	 * @see SpreadsheetTableFactory#create(JTable, SpreadsheetModel, ViewRange)
+	 * @see SpreadsheetTableFactory#create(JTable)
 	 */
-	@AssistedInject
-	SpreadsheetTable(SpreadsheetTableModelFactory modelFactory,
-			TableBindings tableBindings, @Assisted JTable table,
-			@Assisted SpreadsheetModel model, @Assisted ViewRange range) {
-		this.table = table;
-		this.ancestorAdded = false;
-		this.model = modelFactory.create(model, range);
+	@Inject
+	SpreadsheetTable(TableBindings tableBindings,
+			EditOnSelection editOnSelection, SpreadsheetCellRenderer renderer,
+			@Assisted JTable table) {
 		this.tableBindings = tableBindings;
-		this.editOnSelection = new EditOnSelection(table);
-		this.renderer = new SpreadsheetCellRenderer();
-		this.selectionListener = lockedListSelectionListener(new ListSelectionListener() {
-
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
-				if (e.getValueIsAdjusting()) {
-					return;
-				}
-				updateOffset();
-			}
-		});
-		this.ancestorListener = new AncestorListener() {
-
-			@Override
-			public void ancestorRemoved(AncestorEvent event) {
-			}
-
-			@Override
-			public void ancestorMoved(AncestorEvent event) {
-			}
-
-			@Override
-			public void ancestorAdded(AncestorEvent event) {
-				ancestorAdded = true;
-			}
-		};
-		this.boundsListener = new HierarchyBoundsListener() {
-
-			@Override
-			public void ancestorResized(HierarchyEvent e) {
-				if (!ancestorAdded) {
-					return;
-				}
-				Rectangle r = getTable().getVisibleRect();
-				if (r.getSize().equals(getTable().getSize())) {
-					setMaximum(getMaximum() + getExtendAmount());
-				}
-			}
-
-			@Override
-			public void ancestorMoved(HierarchyEvent e) {
-			}
-		};
+		this.editOnSelection = editOnSelection;
+		this.renderer = renderer;
+		this.table = table;
 		setupTable();
 	}
 
-	private void updateOffset() {
-		selectionListener.lock();
-		int[] selected = table.getSelectedRows();
-		int[] selectedCols = table.getColumnModel().getSelectedColumns();
-		int maxRow = table.getSelectionModel().getMaxSelectionIndex();
-		table.clearSelection();
-		int maximum = getMaximum();
-		int offset = getOffset();
-		if (maxRow == 0) {
-			if (offset > 0) {
-				setOffset(offset - 1);
-				setRowInterval(selected, 1);
-			}
-		} else if (maxRow >= maximum - 1) {
-			int difference = maximum - maxRow + offset;
-			setOffset(difference);
-			setRowInterval(selected, -1);
-		} else {
-			setRowInterval(selected, 0);
-		}
-		for (int col : selectedCols) {
-			table.addColumnSelectionInterval(col, col);
-		}
-		selectionListener.unlock();
-	}
-
-	private void setRowInterval(int[] rows, int offset) {
-		for (int row : rows) {
-			table.addRowSelectionInterval(row + offset, row + offset);
-		}
-	}
-
 	private void setupTable() {
+		tableBindings.setTable(table);
+		editOnSelection.setTable(table);
 		table.setDefaultRenderer(Object.class, renderer);
-		table.setModel(model);
-		table.getSelectionModel().addListSelectionListener(selectionListener);
-		table.addAncestorListener(ancestorListener);
-		table.addHierarchyBoundsListener(boundsListener);
-		tableBindings.bindTable(table);
-		table.getColumnModel().getSelectionModel()
-				.addListSelectionListener(editOnSelection);
-		table.getSelectionModel().addListSelectionListener(editOnSelection);
+		tableBindings.setTable(table);
 	}
 
 	/**
@@ -206,93 +82,6 @@ public class SpreadsheetTable {
 	 */
 	public JTable getTable() {
 		return table;
-	}
-
-	/**
-	 * Returns the spreadsheet table model.
-	 * 
-	 * @return the {@link SpreadsheetTableModel}.
-	 */
-	public SpreadsheetTableModel getModel() {
-		return model;
-	}
-
-	/**
-	 * Sets the view range for the model.
-	 * 
-	 * @param range
-	 *            the {@link ViewRange}.
-	 */
-	public void setViewRange(ViewRange range) {
-		model.setViewRange(range);
-	}
-
-	/**
-	 * Returns the view range for the model.
-	 * 
-	 * @return the {@link ViewRange}.
-	 */
-	public ViewRange getViewRange() {
-		return model.getViewRange();
-	}
-
-	/**
-	 * Sets the offset of the view.
-	 * 
-	 * @param offset
-	 *            the offset index.
-	 */
-	public void setOffset(int offset) {
-		model.getViewRange().setOffset(offset);
-	}
-
-	/**
-	 * Returns the offset of the view.
-	 * 
-	 * @return the offset index.
-	 */
-	public int getOffset() {
-		return model.getOffset();
-	}
-
-	/**
-	 * Sets the maximum of the view.
-	 * 
-	 * @param maximum
-	 *            the maximum rows.
-	 */
-	public void setMaximum(int maximum) {
-		model.getViewRange().setMaximum(maximum);
-	}
-
-	/**
-	 * Returns the maximum of the view.
-	 * 
-	 * @return the maximum.
-	 */
-	public int getMaximum() {
-		return model.getMaximum();
-	}
-
-	/**
-	 * Sets how much the view should be extended if the user selects over the
-	 * maximum of the view.
-	 * 
-	 * @param amount
-	 *            the amount to extend.
-	 */
-	public void setExtendAmount(int amount) {
-		model.getViewRange().setExtendAmount(amount);
-	}
-
-	/**
-	 * Returns how much the view should be extended if the user selects over the
-	 * maximum of the view.
-	 * 
-	 * @return the amount to extend.
-	 */
-	public int getExtendAmount() {
-		return model.getViewRange().getExtendAmount();
 	}
 
 }

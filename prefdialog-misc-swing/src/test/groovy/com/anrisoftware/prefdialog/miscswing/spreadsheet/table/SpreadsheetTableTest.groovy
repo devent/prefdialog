@@ -25,7 +25,7 @@ import java.awt.BorderLayout
 
 import javax.swing.JPanel
 import javax.swing.JScrollPane
-import javax.swing.JTable
+import javax.swing.ListSelectionModel
 
 import org.junit.BeforeClass
 import org.junit.Test
@@ -45,40 +45,33 @@ class SpreadsheetTableTest {
 	@Test
 	void "show"() {
 		def title = "$NAME::show"
+		def model = new NumbersModel(3, 128)
 		def table
-		invokeAndWait { table = new JTable() }
-		def range = new ViewRange(40)
-		def model = new NumbersModel(3, 20)
-		def spreadsheet = factory.create(table, model, range)
-		new TestFrameUtil(title, createTablePanel(table)).withFixture({})
-	}
-
-	@Test
-	void "set maximum view range"() {
-		def title = "$NAME::set maximum view range"
-		def table
-		invokeAndWait { table = new JTable() }
-		def range = new ViewRange(40)
-		def model = new NumbersModel(3, 20)
-		def spreadsheet = factory.create(table, model, range)
-		new TestFrameUtil(title, createTablePanel(table)).withFixture({ }, {
-			invokeAndWait { spreadsheet.setMaximum 20 }
-		})
+		def spreadsheet
+		def panel
+		invokeAndWait {
+			table = new SheetTable(model)
+			spreadsheet = factory.create(table)
+			panel = createTablePanel(table)
+		}
+		new TestFrameUtil(title, panel).withFixture({})
 	}
 
 	@Test
 	void "manually"() {
 		//setLookAndFeel GTK_LOOK_AND_FEEL
 		//setLookAndFeel SUBSTANCE_BUSINESS_LOOK_AND_FEEL
+		//setLookAndFeel NIMBUS_LOOK_AND_FEEL
 		def title = "$NAME::manually"
-		def range = new ViewRange(20)
-		def model = new NumbersModel(3, 20)
-		def panel
+		def model = new NumbersModel(3, 128)
 		def table
 		def spreadsheet
+		def panel
 		invokeAndWait {
-			table = new JTable()
-			spreadsheet = factory.create(table, model, range)
+			table = new SheetTable(model)
+			table.setColumnSelectionAllowed(true)
+			table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION)
+			spreadsheet = factory.create(table)
 			panel = createTablePanel(table)
 		}
 		new TestFrameUtil(title, panel).withFixture({

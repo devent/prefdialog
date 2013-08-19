@@ -29,7 +29,6 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.TableColumnModel;
 
 /**
  * Starts cell editing on selection.
@@ -37,13 +36,17 @@ import javax.swing.table.TableColumnModel;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-class EditOnSelection implements ListSelectionListener {
+class EditOnSelection {
 
-	private final JTable table;
+	private final ListSelectionListener selectionListener;
 
-	private final ListSelectionModel model;
+	private JTable table;
 
-	private final TableColumnModel columnModel;
+	private ListSelectionModel model;
+
+	private ListSelectionModel columnSelectionModel;
+
+	private ListSelectionModel selectionModel;
 
 	private JTextField field;
 
@@ -55,25 +58,45 @@ class EditOnSelection implements ListSelectionListener {
 
 	private int column1;
 
-	public EditOnSelection(JTable table) {
-		this.table = table;
-		this.model = table.getSelectionModel();
-		this.columnModel = table.getColumnModel();
+	EditOnSelection() {
+		this.selectionListener = new ListSelectionListener() {
+
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				if (e.getValueIsAdjusting()) {
+					return;
+				}
+				editCell();
+			}
+		};
 	}
 
-	@Override
-	public void valueChanged(ListSelectionEvent e) {
-		if (e.getValueIsAdjusting()) {
-			return;
+	/**
+	 * Sets the table.
+	 * 
+	 * @param table
+	 *            the {@link JTable}.
+	 */
+	public void setTable(JTable table) {
+		if (columnSelectionModel != null) {
+			columnSelectionModel.removeListSelectionListener(selectionListener);
 		}
-		editCell();
+		if (selectionModel != null) {
+			selectionModel.removeListSelectionListener(selectionListener);
+		}
+		this.table = table;
+		this.model = table.getSelectionModel();
+		this.columnSelectionModel = table.getColumnModel().getSelectionModel();
+		this.selectionModel = table.getSelectionModel();
+		columnSelectionModel.addListSelectionListener(selectionListener);
+		selectionModel.addListSelectionListener(selectionListener);
 	}
 
 	private void editCell() {
 		row0 = model.getAnchorSelectionIndex();
 		row1 = model.getLeadSelectionIndex();
-		column0 = columnModel.getSelectionModel().getAnchorSelectionIndex();
-		column1 = columnModel.getSelectionModel().getLeadSelectionIndex();
+		column0 = columnSelectionModel.getAnchorSelectionIndex();
+		column1 = columnSelectionModel.getLeadSelectionIndex();
 		if (row0 != row1) {
 			return;
 		}
@@ -125,7 +148,7 @@ class EditOnSelection implements ListSelectionListener {
 	private void moveCellInAWT() {
 		row1 = row1 + 1;
 		model.setSelectionInterval(row1, row1);
-		columnModel.getSelectionModel().setSelectionInterval(column1, column1);
+		columnSelectionModel.setSelectionInterval(column1, column1);
 		table.scrollRectToVisible(table.getCellRect(row1, 0, true));
 	}
 }
