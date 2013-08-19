@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-misc-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.miscswing.tables.spreadsheetnavigation;
+package com.anrisoftware.prefdialog.miscswing.spreadsheet.navigation;
 
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;

@@ -16,27 +16,28 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-misc-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.miscswing.tables.spreadsheet;
+package com.anrisoftware.prefdialog.miscswing.spreadsheet.navigation;
+
+import com.google.inject.AbstractModule;
+import com.google.inject.assistedinject.FactoryModuleBuilder;
 
 /**
- * Factory to create a spreadsheet model.
+ * Installs spreadsheet pane factory.
+ * 
+ * @see SpreadsheetNavigationPanel
+ * @see SpreadsheetNavigationPanelFactory
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 1.0
+ * @since 3.0
  */
-public interface SpreadsheetTableModelFactory {
+public class SpreadsheetNavigationPanelModule extends AbstractModule {
 
-	/**
-	 * Creates the spreadsheet model with the specified model as the underlying
-	 * model.
-	 * 
-	 * @param model
-	 *            the underlying {@link SpreadsheetModel}.
-	 * 
-	 * @param range
-	 *            the {@link ViewRange}.
-	 * 
-	 * @return the {@link SpreadsheetTableModel}.
-	 */
-	SpreadsheetTableModel create(SpreadsheetModel model, ViewRange range);
+	@Override
+	protected void configure() {
+		install(new FactoryModuleBuilder().implement(
+				SpreadsheetNavigationPanel.class,
+				SpreadsheetNavigationPanel.class).build(
+				SpreadsheetNavigationPanelFactory.class));
+	}
+
 }

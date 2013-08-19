@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-misc-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.miscswing.tables.spreadsheetnavigation;
+package com.anrisoftware.prefdialog.miscswing.spreadsheet.navigation;
 
 import static com.anrisoftware.prefdialog.miscswing.lockedevents.LockedChangeListener.lockedChangeListener;
 import static com.google.inject.Guice.createInjector;
@@ -43,7 +43,7 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
 import com.anrisoftware.prefdialog.miscswing.lockedevents.LockedChangeListener;
-import com.anrisoftware.prefdialog.miscswing.tables.spreadsheet.SpreadsheetTable;
+import com.anrisoftware.prefdialog.miscswing.spreadsheet.table.SpreadsheetTable;
 import com.google.inject.Injector;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;

@@ -16,41 +16,37 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-misc-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.miscswing.tables.spreadsheetnavigation;
+package com.anrisoftware.prefdialog.miscswing.spreadsheet.table;
 
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-
-import com.anrisoftware.prefdialog.miscswing.tables.spreadsheet.SpreadsheetTable;
+import javax.swing.JTable;
 
 /**
- * Factory to create a new spreadsheet table navigation panel.
+ * Factory to create a spreadsheet like table.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 3.0
+ * @since 1.0
  */
-public interface SpreadsheetNavigationPanelFactory {
+public interface SpreadsheetTableFactory {
 
 	/**
-	 * Creates the navigation panel.
-	 * 
-	 * @param container
-	 *            the {@link JPanel} parent container.
+	 * Decorates the table to be a spreadsheet like table.
 	 * 
 	 * @param table
-	 *            the {@link SpreadsheetTable}.
+	 *            the {@link JTable}.
 	 * 
-	 * @param pane
-	 *            the {@link JScrollPane} scroll pane for the spreadsheet table.
+	 * @param model
+	 *            the {@link SpreadsheetModel}.
 	 * 
-	 * @return the {@link SpreadsheetNavigationPanel}.
+	 * @param range
+	 *            the {@link ViewRange}.
+	 * 
+	 * @return the {@link SpreadsheetTable}.
 	 */
-	SpreadsheetNavigationPanel create(JPanel container, SpreadsheetTable table,
-			JScrollPane pane);
+	SpreadsheetTable create(JTable table, SpreadsheetModel model,
+			ViewRange range);
 
 	/**
-	 * @see #create(JPanel, SpreadsheetTable, JScrollPane)
+	 * @see #create(JTable, SpreadsheetModel, ViewRange)
 	 */
-	SpreadsheetNavigationPanel create(JPanel container, SpreadsheetTable table);
-
+	SpreadsheetTable create(JTable table, SpreadsheetModel model);
 }

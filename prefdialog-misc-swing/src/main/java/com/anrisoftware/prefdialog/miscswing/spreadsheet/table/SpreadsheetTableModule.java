@@ -16,33 +16,31 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-misc-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.miscswing.tables.spreadsheet;
+package com.anrisoftware.prefdialog.miscswing.spreadsheet.table;
 
-import static org.apache.commons.lang3.Validate.notNull;
-
-import javax.inject.Singleton;
-
-import com.anrisoftware.globalpom.log.AbstractLogger;
+import com.google.inject.AbstractModule;
+import com.google.inject.assistedinject.FactoryModuleBuilder;
 
 /**
- * Logging messages for {@link SpreadsheetTableModel}.
+ * Installs spreadsheet table factories.
+ * 
+ * @see SpreadsheetTable
+ * @see SpreadsheetTableFactory
+ * @see SpreadsheetTableModel
+ * @see SpreadsheetTableModelFactory
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
  */
-@Singleton
-class SpreadsheetTableModelLogger extends AbstractLogger {
+public class SpreadsheetTableModule extends AbstractModule {
 
-	private static final String RANGE_NULL = "Range cannot be null.";
-
-	/**
-	 * Create logger for {@link SpreadsheetTableModel}.
-	 */
-	public SpreadsheetTableModelLogger() {
-		super(SpreadsheetTableModel.class);
+	@Override
+	protected void configure() {
+		install(new FactoryModuleBuilder().implement(SpreadsheetTable.class,
+				SpreadsheetTable.class).build(SpreadsheetTableFactory.class));
+		install(new FactoryModuleBuilder().implement(
+				SpreadsheetTableModel.class, SpreadsheetTableModel.class)
+				.build(SpreadsheetTableModelFactory.class));
 	}
 
-	void checkViewRange(ViewRange range) {
-		notNull(range, RANGE_NULL);
-	}
 }

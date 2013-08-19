@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-misc-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.miscswing.tables.spreadsheet
+package com.anrisoftware.prefdialog.miscswing.spreadsheet.table
 
 import static com.anrisoftware.globalpom.utils.TestFrameUtil.*
 import static javax.swing.SwingUtilities.*
@@ -66,7 +66,7 @@ class SpreadsheetTableTest {
 		})
 	}
 
-	//@Test
+	@Test
 	void "manually"() {
 		//setLookAndFeel GTK_LOOK_AND_FEEL
 		//setLookAndFeel SUBSTANCE_BUSINESS_LOOK_AND_FEEL

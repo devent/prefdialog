@@ -16,10 +16,10 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-misc-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.miscswing.tables.spreadsheet;
+package com.anrisoftware.prefdialog.miscswing.spreadsheet.table;
 
-import static com.anrisoftware.prefdialog.miscswing.tables.spreadsheet.ViewRange.MAXIMUM_PROPERTY;
-import static com.anrisoftware.prefdialog.miscswing.tables.spreadsheet.ViewRange.OFFSET_PROPERTY;
+import static com.anrisoftware.prefdialog.miscswing.spreadsheet.table.ViewRange.MAXIMUM_PROPERTY;
+import static com.anrisoftware.prefdialog.miscswing.spreadsheet.table.ViewRange.OFFSET_PROPERTY;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;

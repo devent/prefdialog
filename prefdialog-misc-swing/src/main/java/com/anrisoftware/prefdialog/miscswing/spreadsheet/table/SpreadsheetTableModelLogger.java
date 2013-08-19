@@ -16,28 +16,33 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-misc-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.miscswing.tables.spreadsheetnavigation;
+package com.anrisoftware.prefdialog.miscswing.spreadsheet.table;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.assistedinject.FactoryModuleBuilder;
+import static org.apache.commons.lang3.Validate.notNull;
+
+import javax.inject.Singleton;
+
+import com.anrisoftware.globalpom.log.AbstractLogger;
 
 /**
- * Installs spreadsheet pane factory.
- * 
- * @see SpreadsheetNavigationPanel
- * @see SpreadsheetNavigationPanelFactory
+ * Logging messages for {@link SpreadsheetTableModel}.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 3.0
+ * @since 1.0
  */
-public class SpreadsheetNavigationPanelModule extends AbstractModule {
+@Singleton
+class SpreadsheetTableModelLogger extends AbstractLogger {
 
-	@Override
-	protected void configure() {
-		install(new FactoryModuleBuilder().implement(
-				SpreadsheetNavigationPanel.class,
-				SpreadsheetNavigationPanel.class).build(
-				SpreadsheetNavigationPanelFactory.class));
+	private static final String RANGE_NULL = "Range cannot be null.";
+
+	/**
+	 * Create logger for {@link SpreadsheetTableModel}.
+	 */
+	public SpreadsheetTableModelLogger() {
+		super(SpreadsheetTableModel.class);
 	}
 
+	void checkViewRange(ViewRange range) {
+		notNull(range, RANGE_NULL);
+	}
 }
