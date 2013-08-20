@@ -23,6 +23,12 @@ import javax.swing.JTable;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableModel;
 
+/**
+ * Removes the border around the editor component.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 3.0
+ */
 @SuppressWarnings("serial")
 public class SheetTable extends JTable {
 

@@ -69,7 +69,7 @@ class SpreadsheetTableTest {
 		def panel
 		invokeAndWait {
 			table = new SheetTable(model)
-			table.setColumnSelectionAllowed(true)
+			table.setCellSelectionEnabled(true)
 			table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION)
 			spreadsheet = factory.create(table)
 			panel = createTablePanel(table)

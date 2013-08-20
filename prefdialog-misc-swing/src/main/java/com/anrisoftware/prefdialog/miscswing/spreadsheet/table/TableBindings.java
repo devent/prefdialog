@@ -100,9 +100,13 @@ class TableBindings {
 						&& !model.isCellEditable(rowIndex, index)) {
 					index++;
 				}
-				if (index < model.getColumnCount()) {
-					table.setColumnSelectionInterval(index, index);
+				if (index >= model.getColumnCount()) {
+					index = model.getColumnCount() - 1;
 				}
+				while (index > 0 && !model.isCellEditable(rowIndex, index)) {
+					index--;
+				}
+				table.setColumnSelectionInterval(index, index);
 			}
 		};
 	}
