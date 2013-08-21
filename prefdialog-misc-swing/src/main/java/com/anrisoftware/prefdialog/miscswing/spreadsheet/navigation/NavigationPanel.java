@@ -190,10 +190,18 @@ public class NavigationPanel {
 	}
 
 	private void updateMaximum() {
-		System.out.println(getColumnCount());// TODO println
-		System.out.println(getRowCount());// TODO println
-		setMaximumColumn(getColumnCount());
-		setMaximumRow(getRowCount());
+		int maximumColumn = getColumnCount() - 1;
+		int maximumRow = getRowCount() - 1;
+		int column = getColumnIndex();
+		int row = getRowIndex();
+		if (column > maximumColumn) {
+			setColumnIndex(maximumColumn);
+		}
+		if (row > maximumRow) {
+			setRowIndex(maximumRow);
+		}
+		setMaximumColumn(maximumColumn);
+		setMaximumRow(maximumRow);
 	}
 
 	private void updateSelected() {
