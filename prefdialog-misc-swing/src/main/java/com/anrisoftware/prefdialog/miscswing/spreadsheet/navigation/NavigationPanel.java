@@ -27,6 +27,7 @@ import static com.anrisoftware.prefdialog.miscswing.spreadsheet.navigation.Navig
 import static java.awt.BorderLayout.SOUTH;
 import static javax.swing.event.TableModelEvent.DELETE;
 import static javax.swing.event.TableModelEvent.INSERT;
+import static javax.swing.event.TableModelEvent.UPDATE;
 
 import java.awt.BorderLayout;
 import java.beans.PropertyChangeEvent;
@@ -102,6 +103,7 @@ public class NavigationPanel {
 				switch (e.getType()) {
 				case INSERT:
 				case DELETE:
+				case UPDATE:
 					updateMaximum();
 					break;
 				}
@@ -188,6 +190,8 @@ public class NavigationPanel {
 	}
 
 	private void updateMaximum() {
+		System.out.println(getColumnCount());// TODO println
+		System.out.println(getRowCount());// TODO println
 		setMaximumColumn(getColumnCount());
 		setMaximumRow(getRowCount());
 	}
@@ -227,11 +231,11 @@ public class NavigationPanel {
 	}
 
 	private int getRowCount() {
-		return getDataTable().getRowCount();
+		return getDataTable().getModel().getRowCount();
 	}
 
 	private int getColumnCount() {
-		return getDataTable().getColumnCount();
+		return getDataTable().getModel().getColumnCount();
 	}
 
 	private JTable getDataTable() {

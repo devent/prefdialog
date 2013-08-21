@@ -61,12 +61,11 @@ class TableBindings {
 
 	private ListSelectionModel columnSelectionModel;
 
-	private TableModel model;
-
 	TableBindings() {
 		this.enterAction = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
+				TableModel model = getModel();
 				int maxrows = model.getRowCount();
 				int row = table.getSelectedRow() + 1;
 				if (row < maxrows) {
@@ -78,6 +77,7 @@ class TableBindings {
 		this.tabAction = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
+				TableModel model = getModel();
 				int maxcolumns = model.getColumnCount();
 				int column = table.getSelectedColumn() + 1;
 				if (column < maxcolumns) {
@@ -96,6 +96,7 @@ class TableBindings {
 				if (rowIndex < 0 || index < 0) {
 					return;
 				}
+				TableModel model = getModel();
 				while (index < model.getColumnCount()
 						&& !model.isCellEditable(rowIndex, index)) {
 					index++;
@@ -119,7 +120,6 @@ class TableBindings {
 	 */
 	public void setTable(JTable table) {
 		this.table = table;
-		this.model = table.getModel();
 		this.columnModel = table.getColumnModel();
 		this.columnSelectionModel = columnModel.getSelectionModel();
 		this.inputs = table.getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
@@ -127,6 +127,10 @@ class TableBindings {
 		setupSelectNextEditableCell();
 		setupEnter();
 		setupTab();
+	}
+
+	private TableModel getModel() {
+		return table.getModel();
 	}
 
 	private void setupSelectNextEditableCell() {
