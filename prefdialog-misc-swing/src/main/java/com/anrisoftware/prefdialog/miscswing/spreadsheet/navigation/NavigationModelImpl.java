@@ -10,29 +10,13 @@ import static com.anrisoftware.prefdialog.miscswing.spreadsheet.navigation.Navig
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-import javax.swing.table.AbstractTableModel;
-
 /**
- * Returns the row and column index, the maximum rows and columns for a table.
+ * Returns the row and column index, the maximum rows and columns.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 1.0
+ * @since 3.0
  */
-@SuppressWarnings("serial")
-class NavigationModelImpl extends AbstractTableModel implements NavigationModel {
-
-	private static final int ROW_INDEX_COLUMN = 0;
-
-	private static final int MAXIMUM_ROW_COLUMN = 1;
-
-	private static final int COLUMN_INDEX_COLUMN = 2;
-
-	private static final int MAXIMUM_COLUMN_COLUMN = 3;
-
-	private static boolean[] EDITABLE = { true, false, true, false };
-
-	private static Class<?>[] TYPES = { Integer.class, Integer.class,
-			Integer.class, Integer.class };
+class NavigationModelImpl implements NavigationModel {
 
 	private final PropertyChangeSupport propertySupport;
 
@@ -68,7 +52,6 @@ class NavigationModelImpl extends AbstractTableModel implements NavigationModel 
 		}
 		int oldValue = this.rowIndex;
 		this.rowIndex = rowIndex;
-		fireTableCellUpdated(0, ROW_INDEX_COLUMN);
 		propertySupport.firePropertyChange(ROW_INDEX_PROPERTY.toString(),
 				oldValue, rowIndex);
 	}
@@ -88,9 +71,8 @@ class NavigationModelImpl extends AbstractTableModel implements NavigationModel 
 		}
 		int oldValue = this.columnIndex;
 		this.columnIndex = columnIndex;
-		fireTableCellUpdated(0, COLUMN_INDEX_COLUMN);
 		propertySupport.firePropertyChange(COLUMN_INDEX_PROPERTY.toString(),
-				oldValue, rowIndex);
+				oldValue, columnIndex);
 	}
 
 	@Override
@@ -102,9 +84,8 @@ class NavigationModelImpl extends AbstractTableModel implements NavigationModel 
 	public void setMaximumColumn(int maximumColumn) {
 		int oldValue = this.maximumColumn;
 		this.maximumColumn = maximumColumn;
-		fireTableCellUpdated(0, MAXIMUM_COLUMN_COLUMN);
 		propertySupport.firePropertyChange(MAXIMUM_COLUMN_PROPERTY.toString(),
-				oldValue, rowIndex);
+				oldValue, maximumColumn);
 	}
 
 	@Override
@@ -116,9 +97,8 @@ class NavigationModelImpl extends AbstractTableModel implements NavigationModel 
 	public void setMaximumRow(int maximumRow) {
 		int oldValue = this.maximumRow;
 		this.maximumRow = maximumRow;
-		fireTableCellUpdated(0, MAXIMUM_ROW_COLUMN);
 		propertySupport.firePropertyChange(MAXIMUM_ROW_PROPERTY.toString(),
-				oldValue, rowIndex);
+				oldValue, maximumRow);
 	}
 
 	@Override
@@ -150,55 +130,6 @@ class NavigationModelImpl extends AbstractTableModel implements NavigationModel 
 	@Override
 	public int getMinimumRow() {
 		return minimumRow;
-	}
-
-	@Override
-	public int getRowCount() {
-		return 1;
-	}
-
-	@Override
-	public int getColumnCount() {
-		return TYPES.length;
-	}
-
-	@Override
-	public Object getValueAt(int row, int column) {
-		switch (column) {
-		case ROW_INDEX_COLUMN:
-			return rowIndex;
-		case MAXIMUM_ROW_COLUMN:
-			return maximumRow;
-		case COLUMN_INDEX_COLUMN:
-			return columnIndex;
-		case MAXIMUM_COLUMN_COLUMN:
-			return maximumColumn;
-		default:
-			return null;
-		}
-	}
-
-	@Override
-	public void setValueAt(Object value, int row, int column) {
-		int index = (Integer) value;
-		switch (column) {
-		case ROW_INDEX_COLUMN:
-			setRowIndex(index);
-			break;
-		case COLUMN_INDEX_COLUMN:
-			setColumnIndex(index);
-			break;
-		}
-	}
-
-	@Override
-	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		return EDITABLE[columnIndex];
-	}
-
-	@Override
-	public Class<?> getColumnClass(int columnIndex) {
-		return TYPES[columnIndex];
 	}
 
 	@Override

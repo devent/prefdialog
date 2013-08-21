@@ -18,20 +18,18 @@
  */
 package com.anrisoftware.prefdialog.miscswing.spreadsheet.navigation;
 
-import static javax.swing.ListSelectionModel.SINGLE_SELECTION;
-
-import java.awt.BorderLayout;
+import java.awt.Font;
 
 import javax.inject.Inject;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JFormattedTextField;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTable;
-import javax.swing.border.EtchedBorder;
+import javax.swing.JSpinner;
+import javax.swing.SwingConstants;
 
 import net.miginfocom.swing.MigLayout;
-
-import com.anrisoftware.prefdialog.miscswing.spreadsheet.table.SheetTable;
-import com.anrisoftware.prefdialog.miscswing.spreadsheet.table.SpreadsheetTable;
-import com.anrisoftware.prefdialog.miscswing.spreadsheet.table.SpreadsheetTableFactory;
 
 /**
  * Navigation panel.
@@ -42,61 +40,83 @@ import com.anrisoftware.prefdialog.miscswing.spreadsheet.table.SpreadsheetTableF
 @SuppressWarnings("serial")
 class UiNavigationPanel extends JPanel {
 
-	private final JTable table;
-
-	private SpreadsheetTable sheetTable;
-
-	private NavigationModel model;
-
-	@Inject
-	UiNavigationPanel(SpreadsheetTableFactory tableFactory,
-			NavigationModelImpl model) {
-		this(new SheetTable(model));
-		this.model = model;
-		this.sheetTable = tableFactory.create(table);
-	}
-
-	UiNavigationPanel() {
-		this(new JTable());
-	}
+	private final JSpinner currentRow;
+	private final JFormattedTextField maximumRow;
+	private final JFormattedTextField maximumColumn;
+	private final JSpinner currentColumn;
+	private final JLabel seperatorLabel;
 
 	/**
 	 * Create the panel.
 	 */
-	private UiNavigationPanel(JTable table) {
-
-		this.table = table;
-		table.getTableHeader().setVisible(false);
-		table.setCellSelectionEnabled(true);
-		setLayout(new MigLayout("", "0[grow][256]0", "0[grow]0"));
+	UiNavigationPanel() {
+		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+		add(Box.createHorizontalGlue());
 
 		JPanel panel = new JPanel();
-		panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		panel.setLayout(new BorderLayout(0, 0));
-		panel.add(table);
+		panel.setLayout(new MigLayout("",
+				"0[64,grow]2[64,grow][pref!][64,grow]2[64,grow]0", "0[]0"));
+		add(panel);
 
-		add(panel, "cell 0 0,grow");
-		table.setSelectionMode(SINGLE_SELECTION);
-		table.setSurrendersFocusOnKeystroke(true);
+		currentColumn = new JSpinner();
+		currentColumn.setFont(currentColumn.getFont().deriveFont(
+				currentColumn.getFont().getStyle() & ~Font.BOLD));
+		panel.add(currentColumn, "cell 0 0,growx");
 
-		add(panel, "cell 1 0,grow");
+		maximumColumn = new JFormattedTextField();
+		maximumColumn.setHorizontalAlignment(SwingConstants.TRAILING);
+		maximumColumn.setEditable(false);
+		panel.add(maximumColumn, "cell 1 0,growx");
+
+		seperatorLabel = new JLabel("-");
+		panel.add(seperatorLabel, "cell 2 0,alignx center");
+
+		currentRow = new JSpinner();
+		currentRow.setFont(currentRow.getFont().deriveFont(
+				currentRow.getFont().getStyle() & ~Font.BOLD));
+		panel.add(currentRow, "cell 3 0,growx");
+
+		maximumRow = new JFormattedTextField();
+		maximumRow.setHorizontalAlignment(SwingConstants.TRAILING);
+		maximumRow.setEditable(false);
+		panel.add(maximumRow, "cell 4 0,growx");
 	}
 
 	@Inject
-	void setNavigationCellRenderer(NavigationCellRenderer cellRenderer) {
-		table.setDefaultRenderer(Object.class, cellRenderer);
-		table.setDefaultRenderer(Integer.class, cellRenderer);
+	void setCurrentRowModel(CurrentRowModel model) {
+		currentRow.setModel(model);
 	}
 
-	public SpreadsheetTable getSheetTable() {
-		return sheetTable;
+	public CurrentRowModel getCurrentRowModel() {
+		return (CurrentRowModel) currentRow.getModel();
 	}
 
-	public JTable getTable() {
-		return table;
+	@Inject
+	void setCurrentColumnModel(CurrentColumnModel model) {
+		currentColumn.setModel(model);
 	}
 
-	public NavigationModel getModel() {
-		return model;
+	public CurrentColumnModel getCurrentColumnModel() {
+		return (CurrentColumnModel) currentColumn.getModel();
+	}
+
+	public JSpinner getCurrentRow() {
+		return currentRow;
+	}
+
+	public JFormattedTextField getMaximumRow() {
+		return maximumRow;
+	}
+
+	public JFormattedTextField getMaximumColumn() {
+		return maximumColumn;
+	}
+
+	public JSpinner getCurrentColumn() {
+		return currentColumn;
+	}
+
+	public JLabel getSeperatorLabel() {
+		return seperatorLabel;
 	}
 }

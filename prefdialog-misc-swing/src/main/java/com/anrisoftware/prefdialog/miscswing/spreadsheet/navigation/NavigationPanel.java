@@ -20,6 +20,8 @@ package com.anrisoftware.prefdialog.miscswing.spreadsheet.navigation;
 
 import static com.anrisoftware.prefdialog.miscswing.lockedevents.LockedChangeListener.lockedChangeListener;
 import static com.anrisoftware.prefdialog.miscswing.spreadsheet.navigation.NavigationModel.Property.COLUMN_INDEX_PROPERTY;
+import static com.anrisoftware.prefdialog.miscswing.spreadsheet.navigation.NavigationModel.Property.MAXIMUM_COLUMN_PROPERTY;
+import static com.anrisoftware.prefdialog.miscswing.spreadsheet.navigation.NavigationModel.Property.MAXIMUM_ROW_PROPERTY;
 import static com.anrisoftware.prefdialog.miscswing.spreadsheet.navigation.NavigationModel.Property.ROW_INDEX_PROPERTY;
 import static com.anrisoftware.prefdialog.miscswing.spreadsheet.navigation.NavigationPanelModule.getFactory;
 import static java.awt.BorderLayout.SOUTH;
@@ -80,6 +82,12 @@ public class NavigationPanel {
 
 	private final LockedChangeListener rowIndexListener;
 
+	private final PropertyChangeListener maximumRowListener;
+
+	private final PropertyChangeListener maximumColumnListener;
+
+	private NavigationModelImpl navigationModel;
+
 	/**
 	 * @see NavigationPanelFactory#create(JPanel, SpreadsheetTablee)
 	 */
@@ -123,11 +131,27 @@ public class NavigationPanel {
 				updateSelectedRow((Integer) evt.getNewValue());
 			}
 		});
+		this.maximumRowListener = new PropertyChangeListener() {
+
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				dataPanel.getMaximumRow().setValue(evt.getNewValue());
+			}
+		};
+		this.maximumColumnListener = new PropertyChangeListener() {
+
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				dataPanel.getMaximumColumn().setValue(evt.getNewValue());
+			}
+		};
 	}
 
 	@Inject
-	void setDataPanel(UiNavigationPanel dataPanel) {
+	void setNavigationPanel(UiNavigationPanel dataPanel,
+			NavigationModelImpl navigationModel) {
 		this.dataPanel = dataPanel;
+		this.navigationModel = navigationModel;
 		setupContainer();
 		setupDataTable();
 		setupNavigationPanel();
@@ -149,11 +173,16 @@ public class NavigationPanel {
 
 	private void setupNavigationPanel() {
 		container.add(dataPanel, SOUTH);
-		NavigationModel navigationModel = dataPanel.getModel();
 		navigationModel.addPropertyChangeListener(COLUMN_INDEX_PROPERTY,
 				columnIndexListener);
 		navigationModel.addPropertyChangeListener(ROW_INDEX_PROPERTY,
 				rowIndexListener);
+		navigationModel.addPropertyChangeListener(MAXIMUM_COLUMN_PROPERTY,
+				maximumColumnListener);
+		navigationModel.addPropertyChangeListener(MAXIMUM_ROW_PROPERTY,
+				maximumRowListener);
+		dataPanel.getCurrentRowModel().setNavigation(navigationModel);
+		dataPanel.getCurrentColumnModel().setNavigation(navigationModel);
 		updateSelected();
 		updateMaximum();
 	}
@@ -233,91 +262,91 @@ public class NavigationPanel {
 	 * @return the {@link NavigationModel}.
 	 */
 	public NavigationModel getNavigationModel() {
-		return dataPanel.getModel();
+		return navigationModel;
 	}
 
 	/**
 	 * @see NavigationModel#setRowIndex(int)
 	 */
 	public void setRowIndex(int rowIndex) {
-		getNavigationModel().setRowIndex(rowIndex);
+		navigationModel.setRowIndex(rowIndex);
 	}
 
 	/**
 	 * @see NavigationModel#getRowIndex()
 	 */
 	public int getRowIndex() {
-		return getNavigationModel().getRowIndex();
+		return navigationModel.getRowIndex();
 	}
 
 	/**
 	 * @see NavigationModel#setColumnIndex(int)
 	 */
 	public void setColumnIndex(int columnIndex) {
-		getNavigationModel().setColumnIndex(columnIndex);
+		navigationModel.setColumnIndex(columnIndex);
 	}
 
 	/**
 	 * @see NavigationModel#getColumnIndex()
 	 */
 	public int getColumnIndex() {
-		return getNavigationModel().getColumnIndex();
+		return navigationModel.getColumnIndex();
 	}
 
 	/**
 	 * @see NavigationModel#setMaximumColumn(int)
 	 */
 	public void setMaximumColumn(int maximumColumn) {
-		getNavigationModel().setMaximumColumn(maximumColumn);
+		navigationModel.setMaximumColumn(maximumColumn);
 	}
 
 	/**
 	 * @see NavigationModel#getMaximumColumn()
 	 */
 	public int getMaximumColumn() {
-		return getNavigationModel().getMaximumColumn();
+		return navigationModel.getMaximumColumn();
 	}
 
 	/**
 	 * @see NavigationModel#setMaximumRow(int)
 	 */
 	public void setMaximumRow(int maximumRow) {
-		getNavigationModel().setMaximumRow(maximumRow);
+		navigationModel.setMaximumRow(maximumRow);
 	}
 
 	/**
 	 * @see NavigationModel#getMaximumRow()
 	 */
 	public int getMaximumRow() {
-		return getNavigationModel().getMaximumRow();
+		return navigationModel.getMaximumRow();
 	}
 
 	/**
 	 * @see NavigationModel#setMinimumColumn(int)
 	 */
 	public void setMinimumColumn(int minimumColumn) {
-		getNavigationModel().setMinimumColumn(minimumColumn);
+		navigationModel.setMinimumColumn(minimumColumn);
 	}
 
 	/**
 	 * @see NavigationModel#getMinimumColumn()
 	 */
 	public int getMinimumColumn() {
-		return getNavigationModel().getMinimumColumn();
+		return navigationModel.getMinimumColumn();
 	}
 
 	/**
 	 * @see NavigationModel#setMinimumRow(int)
 	 */
 	public void setMinimumRow(int minimumRow) {
-		getNavigationModel().setMinimumRow(minimumRow);
+		navigationModel.setMinimumRow(minimumRow);
 	}
 
 	/**
 	 * @see NavigationModel#getMinimumRow()
 	 */
 	public int getMinimumRow() {
-		return getNavigationModel().getMinimumRow();
+		return navigationModel.getMinimumRow();
 	}
 
 }

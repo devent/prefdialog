@@ -75,7 +75,7 @@ class NavigationPanelTest {
 
 			spreadsheet = tableFactory.create(table)
 			pane = paneFactory.create(new JPanel(), spreadsheet)
-			pane.minimumRow = 1
+			pane.minimumRow = 0
 			pane.minimumColumn = 0
 			panel = createTablePanel(table, pane.container)
 		}
