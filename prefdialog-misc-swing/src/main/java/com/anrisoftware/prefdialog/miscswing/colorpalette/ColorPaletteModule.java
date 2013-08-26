@@ -16,43 +16,46 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-misc-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.miscswing.spreadsheet.navigation;
+package com.anrisoftware.prefdialog.miscswing.colorpalette;
 
 import static com.google.inject.Guice.createInjector;
 
+import com.anrisoftware.globalpom.format.point.PointFormatFactory;
 import com.google.inject.AbstractModule;
 import com.google.inject.Injector;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 
 /**
- * Installs spreadsheet pane factory.
- * 
- * @see NavigationPanel
- * @see NavigationPanelFactory
+ * Installs the color palette factories.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-public class NavigationPanelModule extends AbstractModule {
+public class ColorPaletteModule extends AbstractModule {
 
 	/**
-	 * Create the navigation panel factory.
-	 * 
-	 * @return the {@link NavigationPanelFactory}.
+	 * @see #getFactory()
 	 */
-	public static NavigationPanelFactory getFactory() {
-		return InjectorSingleton.injector
-				.getInstance(NavigationPanelFactory.class);
+	public static PaletteFactory getPaletteFactory() {
+		return getFactory();
 	}
 
-	private static class InjectorSingleton {
-		static Injector injector = createInjector(new NavigationPanelModule());
+	/**
+	 * Creates the point format factory.
+	 * 
+	 * @return the {@link PointFormatFactory}.
+	 */
+	public static PaletteFactory getFactory() {
+		return InjectorInstance.injector.getInstance(PaletteFactory.class);
+	}
+
+	private static class InjectorInstance {
+		static final Injector injector = createInjector(new ColorPaletteModule());
 	}
 
 	@Override
 	protected void configure() {
-		install(new FactoryModuleBuilder().implement(NavigationPanel.class,
-				NavigationPanel.class).build(NavigationPanelFactory.class));
+		install(new FactoryModuleBuilder().implement(BrightPalette.class,
+				BrightPalette.class).build(PaletteFactory.class));
 	}
-
 }

@@ -67,12 +67,21 @@
 		<dependency>
 			<groupId>com.anrisoftware.resources</groupId>
 			<artifactId>resources-texts</artifactId>
+			<optional>true</optional>
 		</dependency>
 
 		<!-- for problems pane -->
 		<dependency>
 			<groupId>org.swinglabs.swingx</groupId>
 			<artifactId>swingx-core</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+		<!-- for color palette -->
+		<dependency>
+			<groupId>com.anrisoftware.propertiesutils</groupId>
+			<artifactId>propertiesutils-contextproperties</artifactId>
+			<optional>true</optional>
 		</dependency>
 	</dependencies>
 </project>

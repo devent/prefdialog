@@ -16,37 +16,41 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-misc-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.miscswing.spreadsheet.table;
+package com.anrisoftware.prefdialog.miscswing.colorpalette;
 
-import java.awt.Component;
+import java.awt.Color;
+import java.net.URL;
+import java.text.ParseException;
+import java.util.List;
 
-import javax.swing.BorderFactory;
-import javax.swing.JComponent;
-import javax.swing.JTable;
-import javax.swing.table.TableCellEditor;
-import javax.swing.table.TableModel;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import com.anrisoftware.globalpom.format.color.ColorFormat;
+import com.anrisoftware.propertiesutils.AbstractContextPropertiesProvider;
 
 /**
- * Removes the border around the editor component.
+ * Loads color palettes from the properties file
+ * {@code color_palette.properties}.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
 @SuppressWarnings("serial")
-public class SheetTable extends JTable {
+@Singleton
+class ColorPaletteProperties extends AbstractContextPropertiesProvider {
 
-	public SheetTable(TableModel model) {
-		super(model);
+	private static final URL resource = ColorPaletteProperties.class
+			.getResource("/color_palette.properties");
+
+	@Inject
+	private ColorFormat colorFormat;
+
+	protected ColorPaletteProperties() {
+		super(ColorPaletteProperties.class, resource);
 	}
 
-	@Override
-	public Component prepareEditor(TableCellEditor editor, int row, int column) {
-		Component comp = super.prepareEditor(editor, row, column);
-		if (comp instanceof JComponent) {
-			JComponent jcomp = (JComponent) comp;
-			jcomp.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-		}
-		return comp;
+	public List<Color> retrieveColors(String name) throws ParseException {
+		return get().getTypedListProperty(name, colorFormat);
 	}
-
 }

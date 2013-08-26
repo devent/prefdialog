@@ -16,37 +16,29 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-misc-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.miscswing.spreadsheet.table;
+package com.anrisoftware.prefdialog.miscswing.colorpalette
 
-import java.awt.Component;
+import static com.anrisoftware.prefdialog.miscswing.colorpalette.ColorPaletteModule.*
+import groovy.util.logging.Slf4j
 
-import javax.swing.BorderFactory;
-import javax.swing.JComponent;
-import javax.swing.JTable;
-import javax.swing.table.TableCellEditor;
-import javax.swing.table.TableModel;
+import org.junit.Test
 
 /**
- * Removes the border around the editor component.
- * 
+ * @see BrightPalette
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-@SuppressWarnings("serial")
-public class SheetTable extends JTable {
+@Slf4j
+class BrightPaletteTest {
 
-	public SheetTable(TableModel model) {
-		super(model);
-	}
-
-	@Override
-	public Component prepareEditor(TableCellEditor editor, int row, int column) {
-		Component comp = super.prepareEditor(editor, row, column);
-		if (comp instanceof JComponent) {
-			JComponent jcomp = (JComponent) comp;
-			jcomp.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+	@Test
+	void "bright palette"() {
+		def palette = paletteFactory.createBright()
+		def iterator = palette.iterator()
+		for (int i = 0; i < 32; i++) {
+			assert iterator.hasNext()
+			log.info "Color: {}", iterator.next()
 		}
-		return comp;
 	}
-
 }
