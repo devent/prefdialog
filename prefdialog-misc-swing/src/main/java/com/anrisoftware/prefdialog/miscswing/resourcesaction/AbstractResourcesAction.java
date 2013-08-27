@@ -48,6 +48,8 @@ import com.anrisoftware.resources.texts.api.Texts;
 @SuppressWarnings("serial")
 public abstract class AbstractResourcesAction extends AbstractAction {
 
+	private static final String SHORT_DESCRIPTION_SUFFIX = "short";
+
 	private static final String SMALL_ICON_SUFFIX = "small_icon";
 
 	private static final String LARGE_ICON_SUFFIX = "large_icon";
@@ -103,10 +105,8 @@ public abstract class AbstractResourcesAction extends AbstractAction {
 		if (oldValue == locale) {
 			return;
 		}
-		if (images != null) {
-			updateLargeIcon();
-			updateSmallIcon();
-		}
+		updateTextsResources();
+		updateImagesResources();
 	}
 
 	/**
@@ -158,11 +158,7 @@ public abstract class AbstractResourcesAction extends AbstractAction {
 	 */
 	public void setTexts(Texts texts) {
 		this.texts = texts;
-		if (texts != null) {
-			updateTitle();
-			updateMnemonic();
-			updateAcc();
-		}
+		updateTextsResources();
 	}
 
 	/**
@@ -197,34 +193,35 @@ public abstract class AbstractResourcesAction extends AbstractAction {
 		if (StringUtils.equals(oldValue, name)) {
 			return;
 		}
-		if (texts != null) {
-			updateTitle();
-			updateMnemonic();
-			updateAcc();
+		updateTextsResources();
+		updateImagesResources();
+	}
+
+	private void updateImagesResources() {
+		if (images == null) {
+			return;
 		}
-		if (images != null) {
-			updateLargeIcon();
-			updateSmallIcon();
-		}
+		updateLargeIcon();
+		updateSmallIcon();
 	}
 
 	private void updateLargeIcon() {
-		ImageResource icon = loadImageResourceSave(LARGE_ICON_SUFFIX,
-				largeIconSize);
-		if (icon != null) {
-			putValue(LARGE_ICON_KEY, new ImageIcon(icon.getImage()));
+		ImageResource icon = loadImageSave(LARGE_ICON_SUFFIX, largeIconSize);
+		if (!log.checkResource(this, icon, LARGE_ICON_SUFFIX)) {
+			return;
 		}
+		putValue(LARGE_ICON_KEY, new ImageIcon(icon.getImage()));
 	}
 
 	private void updateSmallIcon() {
-		ImageResource icon = loadImageResourceSave(SMALL_ICON_SUFFIX,
-				smallIconSize);
-		if (icon != null) {
-			putValue(SMALL_ICON, new ImageIcon(icon.getImage()));
+		ImageResource icon = loadImageSave(SMALL_ICON_SUFFIX, smallIconSize);
+		if (!log.checkResource(this, icon, SMALL_ICON_SUFFIX)) {
+			return;
 		}
+		putValue(SMALL_ICON, new ImageIcon(icon.getImage()));
 	}
 
-	private ImageResource loadImageResourceSave(String suffix, IconSize size) {
+	private ImageResource loadImageSave(String suffix, IconSize size) {
 		try {
 			String resource = format("%s_%s", name, suffix);
 			return images.getResource(resource, locale, size);
@@ -233,14 +230,23 @@ public abstract class AbstractResourcesAction extends AbstractAction {
 		}
 	}
 
+	private void updateTextsResources() {
+		if (texts == null) {
+			return;
+		}
+		updateTitle();
+		updateMnemonic();
+		updateAcc();
+		updateShortDescription();
+	}
+
 	private void updateTitle() {
 		putValue(NAME, texts.getResource(name).getText());
 	}
 
 	private void updateMnemonic() {
-		TextResource resource = loadTextResourceSave(MNEMONIC_SUFFIX);
-		if (resource == null) {
-			log.noResource(this, MNEMONIC_SUFFIX);
+		TextResource resource = loadTextSave(MNEMONIC_SUFFIX);
+		if (!log.checkResource(this, resource, MNEMONIC_SUFFIX)) {
 			return;
 		}
 		Mnemonic m = mnemonicFactory.create(resource.getText());
@@ -255,16 +261,23 @@ public abstract class AbstractResourcesAction extends AbstractAction {
 	}
 
 	private void updateAcc() {
-		TextResource resource = loadTextResourceSave(ACCELERATOR_SUFFIX);
-		if (resource == null) {
-			log.noResource(this, ACCELERATOR_SUFFIX);
+		TextResource resource = loadTextSave(ACCELERATOR_SUFFIX);
+		if (!log.checkResource(this, resource, ACCELERATOR_SUFFIX)) {
 			return;
 		}
 		Accelerator acc = acceleratorFactory.create(resource.getText());
 		putValue(ACCELERATOR_KEY, acc.getAccelerator());
 	}
 
-	private TextResource loadTextResourceSave(String suffix) {
+	private void updateShortDescription() {
+		TextResource resource = loadTextSave(SHORT_DESCRIPTION_SUFFIX);
+		if (!log.checkResource(this, resource, SHORT_DESCRIPTION_SUFFIX)) {
+			return;
+		}
+		putValue(SHORT_DESCRIPTION, resource.getText());
+	}
+
+	private TextResource loadTextSave(String suffix) {
 		try {
 			return texts.getResource(format("%s_%s", name, suffix));
 		} catch (MissingResourceException e) {
