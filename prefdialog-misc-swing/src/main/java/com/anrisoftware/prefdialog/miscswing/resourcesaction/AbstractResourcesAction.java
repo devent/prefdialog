@@ -1,18 +1,18 @@
 /*
  * Copyright 2013-2013 Erwin Müller <erwin.mueller@deventm.org>
- *
+ * 
  * This file is part of prefdialog-misc-swing.
- *
- * prefdialog-misc-swing is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
+ * 
+ * prefdialog-misc-swing is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- *
+ * 
  * prefdialog-misc-swing is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-misc-swing. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -20,10 +20,12 @@ package com.anrisoftware.prefdialog.miscswing.resourcesaction;
 
 import static java.lang.String.format;
 
+import java.util.Locale;
 import java.util.MissingResourceException;
 
 import javax.inject.Inject;
 import javax.swing.AbstractAction;
+import javax.swing.ImageIcon;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -31,6 +33,9 @@ import com.anrisoftware.globalpom.mnemonic.Accelerator;
 import com.anrisoftware.globalpom.mnemonic.AcceleratorFactory;
 import com.anrisoftware.globalpom.mnemonic.Mnemonic;
 import com.anrisoftware.globalpom.mnemonic.MnemonicFactory;
+import com.anrisoftware.resources.images.api.IconSize;
+import com.anrisoftware.resources.images.api.ImageResource;
+import com.anrisoftware.resources.images.api.Images;
 import com.anrisoftware.resources.texts.api.TextResource;
 import com.anrisoftware.resources.texts.api.Texts;
 
@@ -43,19 +48,34 @@ import com.anrisoftware.resources.texts.api.Texts;
 @SuppressWarnings("serial")
 public abstract class AbstractResourcesAction extends AbstractAction {
 
+	private static final String SMALL_ICON_SUFFIX = "small_icon";
+
+	private static final String LARGE_ICON_SUFFIX = "large_icon";
+
 	private static final String MNEMONIC_SUFFIX = "mnemonic";
 
 	private static final String ACCELERATOR_SUFFIX = "accelerator";
 
 	private String name;
 
+	@Inject
 	private AbstractResourcesActionLogger log;
+
+	@Inject
+	private MnemonicFactory mnemonicFactory;
+
+	@Inject
+	private AcceleratorFactory acceleratorFactory;
 
 	private Texts texts;
 
-	private MnemonicFactory mnemonicFactory;
+	private Images images;
 
-	private AcceleratorFactory acceleratorFactory;
+	private Locale locale;
+
+	private IconSize largeIconSize;
+
+	private IconSize smallIconSize;
 
 	/**
 	 * Sets the name of the action. The name is used as the text resource name
@@ -66,33 +86,61 @@ public abstract class AbstractResourcesAction extends AbstractAction {
 	 */
 	protected AbstractResourcesAction(String name) {
 		this.name = name;
-	}
-
-	@Inject
-	void setAbstractResourcesActionLogger(AbstractResourcesActionLogger logger) {
-		this.log = logger;
-	}
-
-	/**
-	 * Injects the mnemonic factory.
-	 * 
-	 * @param mnemonicFactory
-	 *            the {@link MnemonicFactory}.
-	 */
-	@Inject
-	public void setMnemonicFactory(MnemonicFactory mnemonicFactory) {
-		this.mnemonicFactory = mnemonicFactory;
+		this.locale = Locale.getDefault();
+		this.largeIconSize = IconSize.SMALL;
+		this.smallIconSize = IconSize.SMALL;
 	}
 
 	/**
-	 * Injects the accelerator factory.
+	 * Sets the locale for the resources of this action.
 	 * 
-	 * @param acceleratorFactory
-	 *            the {@link AcceleratorFactory}.
+	 * @param locale
+	 *            the {@link Locale}.
 	 */
-	@Inject
-	public void setMnemonicFactory(AcceleratorFactory acceleratorFactory) {
-		this.acceleratorFactory = acceleratorFactory;
+	public void setLocale(Locale locale) {
+		Locale oldValue = this.locale;
+		this.locale = locale;
+		if (oldValue == locale) {
+			return;
+		}
+		if (images != null) {
+			updateLargeIcon();
+			updateSmallIcon();
+		}
+	}
+
+	/**
+	 * Sets the icon size for the large icon resources of this action.
+	 * 
+	 * @param size
+	 *            the {@link IconSize}.
+	 */
+	public void setLargeIconSize(IconSize size) {
+		IconSize oldValue = this.largeIconSize;
+		this.largeIconSize = size;
+		if (oldValue == size) {
+			return;
+		}
+		if (images != null) {
+			updateLargeIcon();
+		}
+	}
+
+	/**
+	 * Sets the icon size for the large icon resources of this action.
+	 * 
+	 * @param size
+	 *            the {@link IconSize}.
+	 */
+	public void setSmallIconSize(IconSize size) {
+		IconSize oldValue = this.smallIconSize;
+		this.smallIconSize = size;
+		if (oldValue == size) {
+			return;
+		}
+		if (images != null) {
+			updateSmallIcon();
+		}
 	}
 
 	/**
@@ -118,6 +166,25 @@ public abstract class AbstractResourcesAction extends AbstractAction {
 	}
 
 	/**
+	 * Sets the images resource for the action. The images should contain the
+	 * following resources:
+	 * 
+	 * <ul>
+	 * <li>name_large_icon
+	 * </ul>
+	 * 
+	 * @param images
+	 *            the {@link Images}.
+	 */
+	public void setImages(Images images) {
+		this.images = images;
+		if (images != null) {
+			updateLargeIcon();
+			updateSmallIcon();
+		}
+	}
+
+	/**
 	 * Sets the action name. The action name is used to look up the action
 	 * resources.
 	 * 
@@ -127,10 +194,42 @@ public abstract class AbstractResourcesAction extends AbstractAction {
 	public void setActionName(String name) {
 		String oldValue = this.name;
 		this.name = name;
-		if (texts != null && !StringUtils.equals(oldValue, name)) {
+		if (StringUtils.equals(oldValue, name)) {
+			return;
+		}
+		if (texts != null) {
 			updateTitle();
 			updateMnemonic();
 			updateAcc();
+		}
+		if (images != null) {
+			updateLargeIcon();
+			updateSmallIcon();
+		}
+	}
+
+	private void updateLargeIcon() {
+		ImageResource icon = loadImageResourceSave(LARGE_ICON_SUFFIX,
+				largeIconSize);
+		if (icon != null) {
+			putValue(LARGE_ICON_KEY, new ImageIcon(icon.getImage()));
+		}
+	}
+
+	private void updateSmallIcon() {
+		ImageResource icon = loadImageResourceSave(SMALL_ICON_SUFFIX,
+				smallIconSize);
+		if (icon != null) {
+			putValue(SMALL_ICON, new ImageIcon(icon.getImage()));
+		}
+	}
+
+	private ImageResource loadImageResourceSave(String suffix, IconSize size) {
+		try {
+			String resource = format("%s_%s", name, suffix);
+			return images.getResource(resource, locale, size);
+		} catch (MissingResourceException e) {
+			return null;
 		}
 	}
 
@@ -139,7 +238,7 @@ public abstract class AbstractResourcesAction extends AbstractAction {
 	}
 
 	private void updateMnemonic() {
-		TextResource resource = loadResourceSave(MNEMONIC_SUFFIX);
+		TextResource resource = loadTextResourceSave(MNEMONIC_SUFFIX);
 		if (resource == null) {
 			log.noResource(this, MNEMONIC_SUFFIX);
 			return;
@@ -156,7 +255,7 @@ public abstract class AbstractResourcesAction extends AbstractAction {
 	}
 
 	private void updateAcc() {
-		TextResource resource = loadResourceSave(ACCELERATOR_SUFFIX);
+		TextResource resource = loadTextResourceSave(ACCELERATOR_SUFFIX);
 		if (resource == null) {
 			log.noResource(this, ACCELERATOR_SUFFIX);
 			return;
@@ -165,7 +264,7 @@ public abstract class AbstractResourcesAction extends AbstractAction {
 		putValue(ACCELERATOR_KEY, acc.getAccelerator());
 	}
 
-	private TextResource loadResourceSave(String suffix) {
+	private TextResource loadTextResourceSave(String suffix) {
 		try {
 			return texts.getResource(format("%s_%s", name, suffix));
 		} catch (MissingResourceException e) {

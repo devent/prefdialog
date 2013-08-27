@@ -69,6 +69,11 @@
 			<artifactId>resources-texts</artifactId>
 			<optional>true</optional>
 		</dependency>
+        <dependency>
+            <groupId>com.anrisoftware.resources</groupId>
+            <artifactId>resources-images</artifactId>
+            <optional>true</optional>
+        </dependency>
 
 		<!-- for problems pane -->
 		<dependency>
