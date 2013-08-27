@@ -981,7 +981,7 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
 	@Override
 	public Iterable<FieldComponent<?>> getFields() {
-		return childFields;
+		return new ArrayList<FieldComponent<?>>(childFields);
 	}
 
 	@Override

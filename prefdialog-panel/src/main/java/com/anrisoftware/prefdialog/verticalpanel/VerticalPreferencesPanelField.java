@@ -213,7 +213,8 @@ public class VerticalPreferencesPanelField extends
 
 	private void insertFields() {
 		int i = 0;
-		for (FieldComponent<?> field : getFields()) {
+		Iterable<FieldComponent<?>> fields = getFields();
+		for (FieldComponent<?> field : fields) {
 			Component component = field.getAWTComponent();
 			childenPanel.add(component, format("%d,%d", 0, i++));
 		}
