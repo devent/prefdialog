@@ -293,4 +293,18 @@ public abstract class AbstractResourcesAction extends AbstractAction {
 	public String getName() {
 		return name;
 	}
+
+	/**
+	 * Sets show the text of the action.
+	 * 
+	 * @param b
+	 *            set to {@code true} to show the text.
+	 */
+	public void setShowText(boolean b) {
+		if (b) {
+			updateTitle();
+		} else {
+			putValue(NAME, null);
+		}
+	}
 }
