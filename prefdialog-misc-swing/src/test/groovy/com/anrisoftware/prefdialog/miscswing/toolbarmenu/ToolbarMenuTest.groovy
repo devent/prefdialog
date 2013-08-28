@@ -37,6 +37,8 @@ class ToolbarMenuTest {
 		def title = "$NAME::popup menu"
 		new TestFrameUtil(title, panel).withFixture({ FrameFixture fix ->
 			fix.toolBar().showPopupMenu()
+			assert fix.menuItem(TEXT_ALONGSIDE_NAME).target.selected
+			assert fix.menuItem(SMALL_ICON_SIZE_NAME).target.selected
 		})
 	}
 

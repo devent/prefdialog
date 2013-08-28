@@ -20,6 +20,7 @@ class TextAlongsideAction extends AbstractResourcesAction {
 	TextAlongsideAction() {
 		super(ACTION_NAME);
 		putValue(NAME, "Text Alongside Icons");
+		putValue(SELECTED_KEY, true);
 	}
 
 	public void setToolbarMenu(ToolbarMenu toolbar) {

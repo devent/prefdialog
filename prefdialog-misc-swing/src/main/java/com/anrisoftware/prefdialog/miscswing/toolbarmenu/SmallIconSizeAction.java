@@ -16,5 +16,6 @@ class SmallIconSizeAction extends AbstractIconSizeAction {
 	SmallIconSizeAction() {
 		super(ACTION_NAME, IconSize.SMALL);
 		putValue(NAME, "Small (16x16)");
+		putValue(SELECTED_KEY, true);
 	}
 }
