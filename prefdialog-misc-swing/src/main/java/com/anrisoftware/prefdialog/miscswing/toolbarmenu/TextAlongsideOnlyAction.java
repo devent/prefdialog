@@ -5,21 +5,21 @@ import java.awt.event.ActionEvent;
 import com.anrisoftware.prefdialog.miscswing.resourcesaction.AbstractResourcesAction;
 
 /**
- * Shows icons only.
+ * Shows text alongside icons.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
 @SuppressWarnings("serial")
-class IconsOnlyAction extends AbstractResourcesAction {
+class TextAlongsideOnlyAction extends AbstractResourcesAction {
 
-	private static final String ACTION_NAME = "icons_only_action";
+	private static final String ACTION_NAME = "text_alongside_action";
 
 	private ToolbarMenu toolbar;
 
-	IconsOnlyAction() {
+	TextAlongsideOnlyAction() {
 		super(ACTION_NAME);
-		putValue(NAME, "Icons Only");
+		putValue(NAME, "Text Alongside Icons");
 	}
 
 	public void setToolbarMenu(ToolbarMenu toolbar) {
@@ -28,7 +28,7 @@ class IconsOnlyAction extends AbstractResourcesAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		toolbar.setIconsOnly(true);
+		toolbar.setIconsOnly(false);
 		toolbar.setTextOnly(false);
 	}
 

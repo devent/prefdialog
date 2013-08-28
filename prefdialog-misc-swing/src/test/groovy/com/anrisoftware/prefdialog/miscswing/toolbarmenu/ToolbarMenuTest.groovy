@@ -1,5 +1,6 @@
 package com.anrisoftware.prefdialog.miscswing.toolbarmenu
 
+import static com.anrisoftware.prefdialog.miscswing.toolbarmenu.ToolbarMenu.*
 import static javax.swing.SwingUtilities.*
 
 import java.awt.BorderLayout
@@ -40,12 +41,23 @@ class ToolbarMenuTest {
 	}
 
 	@Test
-	void "set icons only"() {
-		def title = "$NAME::set icons only"
-		new TestFrameUtil(title, panel).withFixture({
-			invokeAndWait { toolbarMenu.setIconsOnly true }
-		}, {
-			invokeAndWait { toolbarMenu.setIconsOnly false }
+	void "switch text position"() {
+		def title = "$NAME::switch text position"
+		new TestFrameUtil(title, panel).withFixture({ FrameFixture fix ->
+			fix.toolBar().showPopupMenu()
+			fix.menuItem ICONS_ONLY_NAME click()
+		}, { FrameFixture fix ->
+			fix.toolBar().showPopupMenu()
+			fix.menuItem TEXT_ONLY_NAME click()
+		}, { FrameFixture fix ->
+			fix.toolBar().showPopupMenu()
+			fix.menuItem ICONS_ONLY_NAME click()
+		}, { FrameFixture fix ->
+			fix.toolBar().showPopupMenu()
+			fix.menuItem TEXT_ONLY_NAME click()
+		}, { FrameFixture fix ->
+			fix.toolBar().showPopupMenu()
+			fix.menuItem TEXT_ALONGSIDE_NAME click()
 		})
 	}
 
