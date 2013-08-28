@@ -245,7 +245,7 @@ public class ToolbarMenu {
 	 */
 	public void setTextOnly(boolean b) {
 		for (AbstractResourcesAction action : actions) {
-			action.setShowIcon(!b);
+			action.setShowLargeIcon(!b);
 		}
 	}
 

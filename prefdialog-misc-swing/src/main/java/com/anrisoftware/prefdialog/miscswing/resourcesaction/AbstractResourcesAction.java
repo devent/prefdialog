@@ -309,18 +309,16 @@ public abstract class AbstractResourcesAction extends AbstractAction {
 	}
 
 	/**
-	 * Sets show the icon of the action.
+	 * Sets show the large icon of the action.
 	 * 
 	 * @param b
 	 *            set to {@code true} to show the icon.
 	 */
-	public void setShowIcon(boolean b) {
+	public void setShowLargeIcon(boolean b) {
 		if (b) {
 			updateLargeIcon();
-			updateSmallIcon();
 		} else {
 			putValue(LARGE_ICON_KEY, null);
-			putValue(SMALL_ICON, null);
 		}
 	}
 }
