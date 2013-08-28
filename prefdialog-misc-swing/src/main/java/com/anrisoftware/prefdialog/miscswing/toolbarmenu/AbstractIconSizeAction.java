@@ -3,23 +3,24 @@ package com.anrisoftware.prefdialog.miscswing.toolbarmenu;
 import java.awt.event.ActionEvent;
 
 import com.anrisoftware.prefdialog.miscswing.resourcesaction.AbstractResourcesAction;
+import com.anrisoftware.resources.images.api.IconSize;
 
 /**
- * Shows text alongside icons.
+ * Sets the icon size.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
 @SuppressWarnings("serial")
-class TextAlongsideOnlyAction extends AbstractResourcesAction {
+class AbstractIconSizeAction extends AbstractResourcesAction {
 
-	private static final String ACTION_NAME = "text_alongside_action";
+	private final IconSize size;
 
 	private ToolbarMenu toolbar;
 
-	TextAlongsideOnlyAction() {
-		super(ACTION_NAME);
-		putValue(NAME, "Text Alongside Icons");
+	protected AbstractIconSizeAction(String name, IconSize size) {
+		super(name);
+		this.size = size;
 	}
 
 	public void setToolbarMenu(ToolbarMenu toolbar) {
@@ -28,8 +29,7 @@ class TextAlongsideOnlyAction extends AbstractResourcesAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		toolbar.setIconsOnly(false);
-		toolbar.setTextOnly(false);
+		toolbar.setIconSize(size);
 	}
 
 }

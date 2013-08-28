@@ -61,6 +61,24 @@ class ToolbarMenuTest {
 		})
 	}
 
+	@Test
+	void "switch icon sizes"() {
+		def title = "$NAME::switch icon sizes"
+		new TestFrameUtil(title, panel).withFixture({ FrameFixture fix ->
+			fix.toolBar().showPopupMenu()
+			fix.menuItem HUGE_ICON_SIZE_NAME click()
+		}, { FrameFixture fix ->
+			fix.toolBar().showPopupMenu()
+			fix.menuItem LARGE_ICON_SIZE_NAME click()
+		}, { FrameFixture fix ->
+			fix.toolBar().showPopupMenu()
+			fix.menuItem MEDIUM_ICON_SIZE_NAME click()
+		}, { FrameFixture fix ->
+			fix.toolBar().showPopupMenu()
+			fix.menuItem SMALL_ICON_SIZE_NAME click()
+		})
+	}
+
 	static final String NAME = ToolbarMenuTest.class.simpleName
 
 	static Injector injector
