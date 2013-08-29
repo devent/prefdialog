@@ -241,7 +241,8 @@ public abstract class AbstractResourcesAction extends AbstractAction {
 	}
 
 	private void updateTitle() {
-		putValue(NAME, texts.getResource(name).getText());
+		String text = texts.getResource(name).getText();
+		putValue(NAME, text);
 	}
 
 	private void updateMnemonic() {

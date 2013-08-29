@@ -109,14 +109,15 @@ public abstract class AbstractMenuActions {
 	 * Adds the action to be executed on the AWT thread for the specified menu
 	 * entry.
 	 * 
-	 * the name of the action.
+	 * @param name
+	 *            the name of the action.
 	 * 
 	 * @param action
 	 *            the {@link Runnable} action.
 	 * 
 	 * @see MenuAction#addAWTAction(Runnable)
 	 */
-	public void addAction(String name, Runnable action) {
+	public void addAWTAction(String name, Runnable action) {
 		getActions().get(name).addAWTAction(action);
 	}
 
