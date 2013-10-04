@@ -16,23 +16,21 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-corefields. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.fields.combobox;
+package com.anrisoftware.prefdialog.fields.listbox;
 
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
 import java.lang.annotation.Annotation;
 import java.util.List;
-import java.util.Vector;
 
 import javax.inject.Inject;
-import javax.swing.ComboBoxEditor;
-import javax.swing.ComboBoxModel;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComboBox;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
 import javax.swing.ListCellRenderer;
+import javax.swing.ListModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import com.anrisoftware.globalpom.reflection.annotationclass.AnnotationClass;
 import com.anrisoftware.globalpom.reflection.annotationclass.AnnotationClassFactory;
@@ -41,20 +39,16 @@ import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccessFactory
 import com.anrisoftware.globalpom.reflection.beans.BeanAccess;
 import com.anrisoftware.globalpom.reflection.beans.BeanAccessFactory;
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
-import com.anrisoftware.prefdialog.miscswing.validatingfields.ValidatingComboBoxEditor;
-import com.anrisoftware.resources.texts.api.Texts;
 
 /**
- * Implements the combo box field.
+ * Implements the list box field.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
 @SuppressWarnings("serial")
-public abstract class AbstractComboBoxField<ComponentType extends JComboBox<?>>
+public abstract class AbstractListBoxField<ComponentType extends JList<?>>
 		extends AbstractTitleField<ComponentType> {
-
-	private static final String EDITABLE_ELEMENT = "editable";
 
 	private static final String RENDERER_ELEMENT = "renderer";
 
@@ -62,9 +56,7 @@ public abstract class AbstractComboBoxField<ComponentType extends JComboBox<?>>
 
 	private static final String ELEMENTS_ELEMENT = "elements";
 
-	private static final String EDITOR_ELEMENT = "editor";
-
-	private AbstractComboBoxFieldLogger log;
+	private AbstractListBoxFieldLogger log;
 
 	private final Class<? extends Annotation> annotationType;
 
@@ -74,7 +66,7 @@ public abstract class AbstractComboBoxField<ComponentType extends JComboBox<?>>
 
 	private transient BeanAccessFactory beanAccessFactory;
 
-	private ActionListener dataListener;
+	private final ListSelectionListener dataListener;
 
 	/**
 	 * @see AbstractTitleField#AbstractTitleField(java.awt.Component, Object,
@@ -89,22 +81,28 @@ public abstract class AbstractComboBoxField<ComponentType extends JComboBox<?>>
 	 *            <li>renderer</li>
 	 *            <li>rendererClass</li>
 	 *            <li>elements</li>
-	 *            <li>editable</li>
-	 *            <li>editor</li>
-	 *            <li>editorClass</li>
 	 *            </ul>
 	 */
-	protected AbstractComboBoxField(Class<? extends Annotation> annotationType,
+	protected AbstractListBoxField(Class<? extends Annotation> annotationType,
 			ComponentType component, Object parentObject, String fieldName) {
 		super(component, parentObject, fieldName);
 		this.annotationType = annotationType;
+		this.dataListener = new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				try {
+					setSelectedIndices(getComponent().getSelectedIndices());
+				} catch (PropertyVetoException e1) {
+				}
+			}
+		};
 	}
 
 	/**
 	 * Reads the attributes of the annotation and setups the field.
 	 */
 	@Inject
-	void setupField(AbstractComboBoxFieldLogger logger,
+	void setupField(AbstractListBoxFieldLogger logger,
 			AnnotationAccessFactory annotationAccessFactory,
 			AnnotationClassFactory classFactory,
 			BeanAccessFactory beanAccessFactory) {
@@ -114,45 +112,21 @@ public abstract class AbstractComboBoxField<ComponentType extends JComboBox<?>>
 		this.fieldAnnotation = annotationAccessFactory.create(annotationType,
 				getAccessibleObject());
 		this.beanAccessFactory = beanAccessFactory;
-		this.dataListener = new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try {
-					setValue(getComponent().getSelectedItem());
-				} catch (PropertyVetoException e1) {
-				}
-			}
-		};
 		setupModel();
 		setupRenderer();
 		setupElements();
-		setupEditor();
-		setupEditable();
-		setupComboBox();
+		setupListBox();
 	}
 
-	private void setupComboBox() {
+	private void setupListBox() {
 		ComponentType component = getComponent();
-		component.setSelectedItem(getValue());
-		component.addActionListener(dataListener);
-	}
-
-	private void setupEditor() {
-		ComboBoxEditor editor = (ComboBoxEditor) annotationClass.forAttribute(
-				EDITOR_ELEMENT).build();
-		if (editor != null) {
-			setEditor(editor);
-		}
-	}
-
-	private void setupEditable() {
-		boolean editable = fieldAnnotation.getValue(EDITABLE_ELEMENT);
-		setEditable(editable);
+		component.setSelectedIndices(getSelectedIndices());
+		component.getSelectionModel().addListSelectionListener(dataListener);
 	}
 
 	private void setupModel() {
-		ComboBoxModel<?> model = (ComboBoxModel<?>) annotationClass
-				.forAttribute(MODEL_ELEMENT).build();
+		ListModel<?> model = (ListModel<?>) annotationClass.forAttribute(
+				MODEL_ELEMENT).build();
 		if (model != null) {
 			setModel(model);
 		}
@@ -181,67 +155,65 @@ public abstract class AbstractComboBoxField<ComponentType extends JComboBox<?>>
 	public void setValue(Object value) throws PropertyVetoException {
 		try {
 			super.setValue(value);
-			if (isValidatingEditor()) {
-				getValidatingEditor().setInputValid(true);
-			}
-			getComponent().setSelectedItem(value);
+			getComponent().setSelectedValue(value, true);
 		} catch (PropertyVetoException e) {
-			if (isValidatingEditor()) {
-				getValidatingEditor().setInputValid(false);
-			}
 			throw e;
 		}
 	}
 
-	private ValidatingComboBoxEditor getValidatingEditor() {
-		if (isValidatingEditor()) {
-			return (ValidatingComboBoxEditor) getComponent().getEditor();
+	/**
+	 * Sets the selected indices.
+	 * 
+	 * @param indices
+	 *            the selected indices.
+	 * 
+	 * @throws PropertyVetoException
+	 *             if the first index's value is vetoed.
+	 * 
+	 * @see JList#setSelectedIndices(int[])
+	 */
+	public void setSelectedIndices(int[] indices) throws PropertyVetoException {
+		ComponentType list = getComponent();
+		if (indices.length > 0) {
+			Object value = list.getModel().getElementAt(indices[0]);
+			setValue(value);
 		}
-		return null;
-	}
-
-	private boolean isValidatingEditor() {
-		return getComponent().getEditor() instanceof ValidatingComboBoxEditor;
-	}
-
-	@Override
-	public void setInvalidText(String text) {
-		super.setInvalidText(text);
-		if (isValidatingEditor()) {
-			getValidatingEditor().setInvalidText(getInvalidText());
-		}
-	}
-
-	@Override
-	public void setTexts(Texts texts) {
-		super.setTexts(texts);
-		if (isValidatingEditor()) {
-			getValidatingEditor().setInvalidText(getInvalidText());
-		}
+		list.setSelectedIndices(indices);
 	}
 
 	/**
-	 * Sets the specified model for the combo box field.
+	 * Returns the selected indices.
+	 * 
+	 * @return the selected indices.
+	 * 
+	 * @see JList#getSelectedIndices()
+	 */
+	public int[] getSelectedIndices() {
+		return getComponent().getSelectedIndices();
+	}
+
+	/**
+	 * Sets the specified model for the list box.
 	 * 
 	 * @param model
-	 *            the {@link ComboBoxModel}.
+	 *            the {@link ListModel}.
 	 * 
 	 * @throws NullPointerException
 	 *             if the specified model is {@code null}.
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public void setModel(ComboBoxModel<?> model) {
+	public void setModel(ListModel<?> model) {
 		log.checkModel(this, model);
-		getComponent().setModel((ComboBoxModel) model);
+		getComponent().setModel((ListModel) model);
 		log.modelSet(this, model);
 	}
 
 	/**
-	 * Returns the model of the combo box field.
+	 * Returns the model of the list box.
 	 * 
-	 * @return the {@link ComboBoxModel}.
+	 * @return the {@link ListModel}.
 	 */
-	public ComboBoxModel<?> getModel() {
+	public ListModel<?> getModel() {
 		return getComponent().getModel();
 	}
 
@@ -257,7 +229,7 @@ public abstract class AbstractComboBoxField<ComponentType extends JComboBox<?>>
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void setRenderer(ListCellRenderer<?> renderer) {
 		log.checkRenderer(this, renderer);
-		getComponent().setRenderer((ListCellRenderer) renderer);
+		getComponent().setCellRenderer((ListCellRenderer) renderer);
 		log.rendererSet(this, renderer);
 	}
 
@@ -267,31 +239,7 @@ public abstract class AbstractComboBoxField<ComponentType extends JComboBox<?>>
 	 * @return the {@link ListCellRenderer}.
 	 */
 	public ListCellRenderer<?> getRenderer() {
-		return getComponent().getRenderer();
-	}
-
-	/**
-	 * Sets the specified editor for the combo box field.
-	 * 
-	 * @param editor
-	 *            the {@link ComboBoxEditor}.
-	 * 
-	 * @throws NullPointerException
-	 *             if the specified editor is {@code null}.
-	 */
-	public void setEditor(ComboBoxEditor editor) {
-		log.checkEditor(this, editor);
-		getComponent().setEditor(editor);
-		log.editorSet(this, editor);
-	}
-
-	/**
-	 * Returns the editor of the combo box field.
-	 * 
-	 * @return the {@link ComboBoxEditor}.
-	 */
-	public ComboBoxEditor getEditor() {
-		return getComponent().getEditor();
+		return getComponent().getCellRenderer();
 	}
 
 	private void setElements(Object elements) {
@@ -317,7 +265,11 @@ public abstract class AbstractComboBoxField<ComponentType extends JComboBox<?>>
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void setElements(Object[] elements) {
 		log.checkElements(this, elements);
-		getComponent().setModel(new DefaultComboBoxModel(elements));
+		DefaultListModel model = new DefaultListModel();
+		for (Object e : elements) {
+			model.addElement(e);
+		}
+		getComponent().setModel(model);
 		log.elementsSet(this, elements);
 	}
 
@@ -333,37 +285,12 @@ public abstract class AbstractComboBoxField<ComponentType extends JComboBox<?>>
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void setElements(Iterable<?> elements) {
 		log.checkElements(this, elements);
-		getComponent().setModel(new DefaultComboBoxModel(asList(elements)));
-		log.elementsSet(this, elements);
-	}
-
-	private Vector<Object> asList(Iterable<?> elements) {
-		Vector<Object> list = new Vector<Object>();
-		for (Object object : elements) {
-			list.add(object);
+		DefaultListModel model = new DefaultListModel();
+		for (Object e : elements) {
+			model.addElement(e);
 		}
-		return list;
-	}
-
-	/**
-	 * Sets if the field should be editable.
-	 * 
-	 * @param editable
-	 *            {@code true} if the combo box should be editable or
-	 *            {@code false} if not.
-	 */
-	public void setEditable(boolean editable) {
-		getComponent().setEditable(editable);
-	}
-
-	/**
-	 * Returns if the field should is editable.
-	 * 
-	 * @return {@code true} if the combo box is editable or {@code false} if
-	 *         not.
-	 */
-	public boolean isEditable() {
-		return getComponent().isEditable();
+		getComponent().setModel(model);
+		log.elementsSet(this, elements);
 	}
 
 }

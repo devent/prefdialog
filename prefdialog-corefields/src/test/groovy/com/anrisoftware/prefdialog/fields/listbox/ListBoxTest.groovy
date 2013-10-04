@@ -16,10 +16,10 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-corefields. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.fields.combobox
+package com.anrisoftware.prefdialog.fields.listbox
 
-import static com.anrisoftware.prefdialog.fields.combobox.ComboBoxBean.*
-import static com.anrisoftware.prefdialog.fields.combobox.ComboBoxService.*
+import static com.anrisoftware.prefdialog.fields.listbox.ListBoxBean.*
+import static com.anrisoftware.prefdialog.fields.listbox.ListBoxService.*
 
 import java.awt.event.KeyEvent
 import java.beans.PropertyVetoException
@@ -37,13 +37,13 @@ import com.google.inject.Guice
 import com.google.inject.Injector
 
 /**
- * @see ComboBoxBean
- * @see ComboBoxField
+ * @see ListBoxBean
+ * @see ListBoxField
  *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-class ComboBoxTest extends FieldTestUtils {
+class ListBoxTest extends FieldTestUtils {
 
 	@Test
 	void "array elements with null value"() {
@@ -53,10 +53,12 @@ class ComboBoxTest extends FieldTestUtils {
 		def container = field.getAWTComponent()
 
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
-			fixture.comboBox fieldName requireSelection "One"
-			fixture.comboBox fieldName selectItem 1
+			fixture.list fieldName requireNoSelection()
+			fixture.list fieldName selectItem 0
+			assert bean."$fieldName" == "One"
+			fixture.list fieldName selectItem 1
 			assert bean."$fieldName" == "Two"
-			fixture.comboBox fieldName selectItem 2
+			fixture.list fieldName selectItem 2
 			assert bean."$fieldName" == "Three"
 		})
 	}
@@ -253,22 +255,22 @@ class ComboBoxTest extends FieldTestUtils {
 		})
 	}
 
-	static final String NAME = ComboBoxTest.class.simpleName
+	static final String NAME = ListBoxTest.class.simpleName
 
 	static Injector injector
 
-	static ComboBoxFieldFactory factory
+	static ListBoxFieldFactory factory
 
-	ComboBoxBean bean
+	ListBoxBean bean
 
 	@BeforeClass
 	static void setupFactories() {
-		injector = Guice.createInjector(new CoreFieldComponentModule(), new ComboBoxModule())
-		factory = injector.getInstance ComboBoxFieldFactory
+		injector = Guice.createInjector(new CoreFieldComponentModule(), new ListBoxModule())
+		factory = injector.getInstance ListBoxFieldFactory
 	}
 
 	@Before
 	void setupBean() {
-		bean = new ComboBoxBean()
+		bean = new ListBoxBean()
 	}
 }
