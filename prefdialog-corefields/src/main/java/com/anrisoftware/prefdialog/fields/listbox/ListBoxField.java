@@ -22,7 +22,7 @@ import java.lang.annotation.Annotation;
 
 import javax.swing.JList;
 
-import com.anrisoftware.prefdialog.annotations.ComboBox;
+import com.anrisoftware.prefdialog.annotations.ListBox;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 
@@ -35,7 +35,7 @@ import com.google.inject.assistedinject.AssistedInject;
 @SuppressWarnings("serial")
 public class ListBoxField extends AbstractListBoxField<JList<?>> {
 
-	private static final Class<? extends Annotation> ANNOTATION_CLASS = ComboBox.class;
+	private static final Class<? extends Annotation> ANNOTATION_CLASS = ListBox.class;
 
 	/**
 	 * @see ListBoxFieldFactory#create(Object, String)

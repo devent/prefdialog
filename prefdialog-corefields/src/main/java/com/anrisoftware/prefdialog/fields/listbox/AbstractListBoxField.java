@@ -18,10 +18,13 @@
  */
 package com.anrisoftware.prefdialog.fields.listbox;
 
+import static com.anrisoftware.prefdialog.miscswing.lockedevents.LockedListSelectionListener.lockedListSelectionListener;
+import static java.util.Arrays.asList;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 import java.beans.PropertyVetoException;
 import java.lang.annotation.Annotation;
+import java.util.Collection;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -39,6 +42,8 @@ import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccessFactory
 import com.anrisoftware.globalpom.reflection.beans.BeanAccess;
 import com.anrisoftware.globalpom.reflection.beans.BeanAccessFactory;
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
+import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
+import com.anrisoftware.prefdialog.miscswing.lockedevents.LockedListSelectionListener;
 
 /**
  * Implements the list box field.
@@ -66,7 +71,7 @@ public abstract class AbstractListBoxField<ComponentType extends JList<?>>
 
 	private transient BeanAccessFactory beanAccessFactory;
 
-	private final ListSelectionListener dataListener;
+	private final LockedListSelectionListener dataListener;
 
 	/**
 	 * @see AbstractTitleField#AbstractTitleField(java.awt.Component, Object,
@@ -87,7 +92,7 @@ public abstract class AbstractListBoxField<ComponentType extends JList<?>>
 			ComponentType component, Object parentObject, String fieldName) {
 		super(component, parentObject, fieldName);
 		this.annotationType = annotationType;
-		this.dataListener = new ListSelectionListener() {
+		this.dataListener = lockedListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				try {
@@ -95,7 +100,7 @@ public abstract class AbstractListBoxField<ComponentType extends JList<?>>
 				} catch (PropertyVetoException e1) {
 				}
 			}
-		};
+		});
 	}
 
 	/**
@@ -162,7 +167,31 @@ public abstract class AbstractListBoxField<ComponentType extends JList<?>>
 	}
 
 	/**
+	 * Sets the values as the selected values of the list.
+	 * 
+	 * @param values
+	 *            the values array.
+	 * 
+	 * @throws PropertyVetoException
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void setValues(Object[] values) throws PropertyVetoException {
+		Object value = getValue();
+		if (value.getClass().isArray()) {
+			setValue(values);
+		} else if (value instanceof Collection) {
+			Collection collection = (Collection) value;
+			collection.clear();
+			collection.addAll(asList(values));
+		}
+	}
+
+	/**
 	 * Sets the selected indices.
+	 * <p>
+	 * <h2>AWT Thread</h2>
+	 * <p>
+	 * Should be called in the AWT thread.
 	 * 
 	 * @param indices
 	 *            the selected indices.
@@ -172,22 +201,42 @@ public abstract class AbstractListBoxField<ComponentType extends JList<?>>
 	 * 
 	 * @see JList#setSelectedIndices(int[])
 	 */
+	@OnAwt
 	public void setSelectedIndices(int[] indices) throws PropertyVetoException {
 		ComponentType list = getComponent();
-		if (indices.length > 0) {
-			Object value = list.getModel().getElementAt(indices[0]);
-			setValue(value);
+		ListModel<?> model = list.getModel();
+		if (indices.length == 1) {
+			setValue(model.getElementAt(indices[0]));
+		} else if (indices.length > 1) {
+			setValues(findSelectedValues(indices));
 		}
+		dataListener.lock();
 		list.setSelectedIndices(indices);
+		dataListener.unlock();
+	}
+
+	private Object[] findSelectedValues(int[] indices) {
+		ComponentType list = getComponent();
+		ListModel<?> model = list.getModel();
+		Object[] values = new Object[indices.length];
+		for (int i : indices) {
+			values[i] = model.getElementAt(indices[i]);
+		}
+		return values;
 	}
 
 	/**
 	 * Returns the selected indices.
+	 * <p>
+	 * <h2>AWT Thread</h2>
+	 * <p>
+	 * Should be called in the AWT thread.
 	 * 
 	 * @return the selected indices.
 	 * 
 	 * @see JList#getSelectedIndices()
 	 */
+	@OnAwt
 	public int[] getSelectedIndices() {
 		return getComponent().getSelectedIndices();
 	}
