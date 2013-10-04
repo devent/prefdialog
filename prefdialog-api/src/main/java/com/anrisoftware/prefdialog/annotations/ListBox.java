@@ -121,12 +121,6 @@ public @interface ListBox {
 	String elements() default "";
 
 	/**
-	 * If the field should be editable. Set to {@code true} if the list box
-	 * should be editable or {@code false} if not. Defaults to {@code false}.
-	 */
-	boolean editable() default false;
-
-	/**
 	 * The name of the field name to use for the custom {@link ListModel}.
 	 * Defaults to an empty name which means no field is set.
 	 */

@@ -42,6 +42,7 @@ import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccessFactory
 import com.anrisoftware.globalpom.reflection.beans.BeanAccess;
 import com.anrisoftware.globalpom.reflection.beans.BeanAccessFactory;
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
+import com.anrisoftware.prefdialog.core.AbstractTitleScrollField;
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 import com.anrisoftware.prefdialog.miscswing.lockedevents.LockedListSelectionListener;
 
@@ -53,7 +54,7 @@ import com.anrisoftware.prefdialog.miscswing.lockedevents.LockedListSelectionLis
  */
 @SuppressWarnings("serial")
 public abstract class AbstractListBoxField<ComponentType extends JList<?>>
-		extends AbstractTitleField<ComponentType> {
+		extends AbstractTitleScrollField<ComponentType> {
 
 	private static final String RENDERER_ELEMENT = "renderer";
 
