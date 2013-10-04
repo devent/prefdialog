@@ -21,10 +21,6 @@ package com.anrisoftware.prefdialog.fields.listbox
 import static com.anrisoftware.prefdialog.fields.listbox.ListBoxBean.*
 import static com.anrisoftware.prefdialog.fields.listbox.ListBoxService.*
 
-import java.awt.event.KeyEvent
-import java.beans.PropertyVetoException
-import java.beans.VetoableChangeListener
-
 import org.fest.swing.fixture.FrameFixture
 import org.junit.Before
 import org.junit.BeforeClass
@@ -71,10 +67,11 @@ class ListBoxTest extends FieldTestUtils {
 		def container = field.getAWTComponent()
 
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
-			fixture.comboBox fieldName selectItem 0
-			fixture.comboBox fieldName selectItem 2
+			fixture.list fieldName requireSelection "Two"
+			fixture.list fieldName selectItem 0
+			fixture.list fieldName selectItem 2
 			field.restoreInput()
-			fixture.comboBox fieldName requireSelection "Two"
+			fixture.list fieldName requireSelection "Two"
 			assert bean."$fieldName" == "Two"
 		})
 	}
@@ -87,7 +84,7 @@ class ListBoxTest extends FieldTestUtils {
 		def container = field.getAWTComponent()
 
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
-			fixture.comboBox fieldName requireSelection "Two"
+			fixture.list fieldName requireSelection "Two"
 		})
 	}
 
@@ -99,10 +96,11 @@ class ListBoxTest extends FieldTestUtils {
 		def container = field.getAWTComponent()
 
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
-			fixture.comboBox fieldName requireSelection "One"
-			fixture.comboBox fieldName selectItem 1
+			fixture.list fieldName selectItem 0
+			assert bean."$fieldName" == "One"
+			fixture.list fieldName selectItem 1
 			assert bean."$fieldName" == "Two"
-			fixture.comboBox fieldName selectItem 2
+			fixture.list fieldName selectItem 2
 			assert bean."$fieldName" == "Three"
 		})
 	}
@@ -115,10 +113,11 @@ class ListBoxTest extends FieldTestUtils {
 		def container = field.getAWTComponent()
 
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
-			fixture.comboBox fieldName requireSelection "Eins"
-			fixture.comboBox fieldName selectItem 1
+			fixture.list fieldName selectItem 0
+			assert bean."$fieldName" == "Eins"
+			fixture.list fieldName selectItem 1
 			assert bean."$fieldName" == "Zwei"
-			fixture.comboBox fieldName selectItem 2
+			fixture.list fieldName selectItem 2
 			assert bean."$fieldName" == "Drei"
 		})
 	}
@@ -132,10 +131,11 @@ class ListBoxTest extends FieldTestUtils {
 
 		assert bean.modelFieldNull != null
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
-			fixture.comboBox fieldName requireSelection "Eins"
-			fixture.comboBox fieldName selectItem 1
+			fixture.list fieldName selectItem 0
+			assert bean."$fieldName" == "Eins"
+			fixture.list fieldName selectItem 1
 			assert bean."$fieldName" == "Zwei"
-			fixture.comboBox fieldName selectItem 2
+			fixture.list fieldName selectItem 2
 			assert bean."$fieldName" == "Drei"
 		})
 	}
@@ -148,12 +148,14 @@ class ListBoxTest extends FieldTestUtils {
 		def container = field.getAWTComponent()
 
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
-			fixture.comboBox fieldName requireSelection "ONE"
-			fixture.comboBox fieldName selectItem 1
-			fixture.comboBox fieldName requireSelection "TWO"
+			fixture.list fieldName selectItem 0
+			fixture.list fieldName requireSelection "ONE"
+			assert bean."$fieldName" == "One"
+			fixture.list fieldName selectItem 1
+			fixture.list fieldName requireSelection "TWO"
 			assert bean."$fieldName" == "Two"
-			fixture.comboBox fieldName selectItem 2
-			fixture.comboBox fieldName requireSelection "THREE"
+			fixture.list fieldName selectItem 2
+			fixture.list fieldName requireSelection "THREE"
 			assert bean."$fieldName" == "Three"
 		})
 	}
@@ -167,12 +169,14 @@ class ListBoxTest extends FieldTestUtils {
 
 		assert bean.rendererFieldNull != null
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
-			fixture.comboBox fieldName requireSelection "ONE"
-			fixture.comboBox fieldName selectItem 1
-			fixture.comboBox fieldName requireSelection "TWO"
+			fixture.list fieldName selectItem 0
+			fixture.list fieldName requireSelection "ONE"
+			assert bean."$fieldName" == "One"
+			fixture.list fieldName selectItem 1
+			fixture.list fieldName requireSelection "TWO"
 			assert bean."$fieldName" == "Two"
-			fixture.comboBox fieldName selectItem 2
-			fixture.comboBox fieldName requireSelection "THREE"
+			fixture.list fieldName selectItem 2
+			fixture.list fieldName requireSelection "THREE"
 			assert bean."$fieldName" == "Three"
 		})
 	}
@@ -185,10 +189,11 @@ class ListBoxTest extends FieldTestUtils {
 		def container = field.getAWTComponent()
 
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
-			fixture.comboBox fieldName requireSelection "Eins"
-			fixture.comboBox fieldName selectItem 1
+			fixture.list fieldName selectItem 0
+			assert bean."$fieldName" == "Eins"
+			fixture.list fieldName selectItem 1
 			assert bean."$fieldName" == "Zwei"
-			fixture.comboBox fieldName selectItem 2
+			fixture.list fieldName selectItem 2
 			assert bean."$fieldName" == "Drei"
 		})
 	}
@@ -201,57 +206,15 @@ class ListBoxTest extends FieldTestUtils {
 		def container = field.getAWTComponent()
 
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
-			fixture.comboBox fieldName requireSelection "ONE"
-			fixture.comboBox fieldName selectItem 1
-			fixture.comboBox fieldName requireSelection "TWO"
+			fixture.list fieldName selectItem 0
+			fixture.list fieldName requireSelection "ONE"
+			assert bean."$fieldName" == "One"
+			fixture.list fieldName selectItem 1
+			fixture.list fieldName requireSelection "TWO"
 			assert bean."$fieldName" == "Two"
-			fixture.comboBox fieldName selectItem 2
-			fixture.comboBox fieldName requireSelection "THREE"
+			fixture.list fieldName selectItem 2
+			fixture.list fieldName requireSelection "THREE"
 			assert bean."$fieldName" == "Three"
-		})
-	}
-
-	@Test
-	void "editable"() {
-		def title = "$NAME::editable"
-		def fieldName = EDITABLE
-		def field = factory.create(bean, fieldName)
-		def container = field.getAWTComponent()
-		def text = "Zwei"
-
-		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
-			fixture.comboBox fieldName replaceText text
-			fixture.comboBox fieldName pressAndReleaseKeys KeyEvent.VK_ENTER
-			fixture.comboBox fieldName requireSelection text
-			assert bean."$fieldName" == text
-		})
-	}
-
-	@Test
-	void "editable, veto value"() {
-		def title = "$NAME::editable, veto value"
-		def fieldName = EDITABLE
-		def field = factory.create(bean, fieldName)
-		def container = field.getAWTComponent()
-		def l = {
-			if (it.newValue != "Valid") {
-				throw new PropertyVetoException("Not valid", it)
-			}
-		} as VetoableChangeListener
-		field.addVetoableChangeListener(l)
-		def comboBox
-
-		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
-			comboBox = fixture.comboBox fieldName
-			comboBox.replaceText "Some"
-			comboBox.pressAndReleaseKeys KeyEvent.VK_ENTER
-			assert bean."$fieldName" == null
-		}, {
-			comboBox.replaceText "Valid"
-			comboBox.pressAndReleaseKeys KeyEvent.VK_ENTER
-			assert bean."$fieldName" == "Valid"
-		}, {
-			// Thread.sleep 60000
 		})
 	}
 

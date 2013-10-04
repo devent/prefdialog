@@ -125,8 +125,17 @@ public abstract class AbstractListBoxField<ComponentType extends JList<?>>
 
 	private void setupListBox() {
 		ComponentType component = getComponent();
-		component.setSelectedIndices(getSelectedIndices());
+		setupListValues();
 		component.getSelectionModel().addListSelectionListener(dataListener);
+	}
+
+	private void setupListValues() {
+		try {
+			Object value = getValue();
+			setValues(value);
+		} catch (PropertyVetoException e) {
+			log.vetoedValues(this, e);
+		}
 	}
 
 	private void setupModel() {
@@ -166,6 +175,35 @@ public abstract class AbstractListBoxField<ComponentType extends JList<?>>
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
+	private void setValues(Object values) throws PropertyVetoException {
+		if (values.getClass().isArray()) {
+			setValues((Object[]) values);
+		} else if (values instanceof Collection) {
+			setValues((Collection) values);
+		} else {
+			setValue(values);
+		}
+	}
+
+	/**
+	 * Sets the values as the selected values of the list.
+	 * 
+	 * @param values
+	 *            the {@link Collection} values.
+	 * 
+	 * @throws PropertyVetoException
+	 */
+	@SuppressWarnings("rawtypes")
+	public void setValues(Collection values) throws PropertyVetoException {
+		Object value = getValue();
+		if (value.getClass().isArray()) {
+			setValue(values.toArray());
+		} else if (value instanceof Collection) {
+			setValue(values);
+		}
+	}
+
 	/**
 	 * Sets the values as the selected values of the list.
 	 * 
@@ -183,6 +221,7 @@ public abstract class AbstractListBoxField<ComponentType extends JList<?>>
 			Collection collection = (Collection) value;
 			collection.clear();
 			collection.addAll(asList(values));
+			setValue(collection);
 		}
 	}
 

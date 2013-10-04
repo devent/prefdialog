@@ -18,18 +18,19 @@
  */
 package com.anrisoftware.prefdialog.fields.listbox;
 
-import static com.anrisoftware.prefdialog.fields.listbox.AbstractListBoxFieldLogger._.ELEMENTS_NULL;
-import static com.anrisoftware.prefdialog.fields.listbox.AbstractListBoxFieldLogger._.ELEMENTS_SET;
-import static com.anrisoftware.prefdialog.fields.listbox.AbstractListBoxFieldLogger._.ERROR_SET_CUSTOM_MODEL;
-import static com.anrisoftware.prefdialog.fields.listbox.AbstractListBoxFieldLogger._.ERROR_SET_CUSTOM_MODEL_MESSAGE;
-import static com.anrisoftware.prefdialog.fields.listbox.AbstractListBoxFieldLogger._.ERROR_SET_CUSTOM_RENDERER;
-import static com.anrisoftware.prefdialog.fields.listbox.AbstractListBoxFieldLogger._.ERROR_SET_CUSTOM_RENDERER_MESSAGE;
-import static com.anrisoftware.prefdialog.fields.listbox.AbstractListBoxFieldLogger._.FIELD;
-import static com.anrisoftware.prefdialog.fields.listbox.AbstractListBoxFieldLogger._.MODEL_NULL;
-import static com.anrisoftware.prefdialog.fields.listbox.AbstractListBoxFieldLogger._.MODEL_SET;
-import static com.anrisoftware.prefdialog.fields.listbox.AbstractListBoxFieldLogger._.RENDERER_NULL;
-import static com.anrisoftware.prefdialog.fields.listbox.AbstractListBoxFieldLogger._.RENDERER_SET;
-import static com.anrisoftware.prefdialog.fields.listbox.AbstractListBoxFieldLogger._.TYPE_NOT_SUPPORTED;
+import static com.anrisoftware.prefdialog.fields.listbox.AbstractListBoxFieldLogger._.elements_null;
+import static com.anrisoftware.prefdialog.fields.listbox.AbstractListBoxFieldLogger._.elements_set;
+import static com.anrisoftware.prefdialog.fields.listbox.AbstractListBoxFieldLogger._.error_custom_model;
+import static com.anrisoftware.prefdialog.fields.listbox.AbstractListBoxFieldLogger._.error_custom_model_message;
+import static com.anrisoftware.prefdialog.fields.listbox.AbstractListBoxFieldLogger._.error_custom_renderer;
+import static com.anrisoftware.prefdialog.fields.listbox.AbstractListBoxFieldLogger._.error_custom_renderer_message;
+import static com.anrisoftware.prefdialog.fields.listbox.AbstractListBoxFieldLogger._.model_null;
+import static com.anrisoftware.prefdialog.fields.listbox.AbstractListBoxFieldLogger._.model_set;
+import static com.anrisoftware.prefdialog.fields.listbox.AbstractListBoxFieldLogger._.renderer_null;
+import static com.anrisoftware.prefdialog.fields.listbox.AbstractListBoxFieldLogger._.renderer_set;
+import static com.anrisoftware.prefdialog.fields.listbox.AbstractListBoxFieldLogger._.type_not_supported;
+import static com.anrisoftware.prefdialog.fields.listbox.AbstractListBoxFieldLogger._.vetoed_values;
+import static com.anrisoftware.prefdialog.fields.listbox.AbstractListBoxFieldLogger._.vetoed_values_message;
 import static org.apache.commons.lang3.Validate.isTrue;
 import static org.apache.commons.lang3.Validate.notNull;
 
@@ -53,29 +54,33 @@ class AbstractListBoxFieldLogger extends AbstractLogger {
 
 	enum _ {
 
-		FIELD("field"),
+		field("field"),
 
-		ELEMENTS_SET("Elements {} set for {}."),
+		elements_set("Elements {} set for {}."),
 
-		TYPE_NOT_SUPPORTED("Type %s not supported for %s"),
+		type_not_supported("Type %s not supported for %s"),
 
-		ELEMENTS_NULL("Elements cannot be null for %s."),
+		elements_null("Elements cannot be null for %s."),
 
-		RENDERER_SET("Combo box renderer {} set for {}."),
+		renderer_set("Combo box renderer {} set for {}."),
 
-		RENDERER_NULL("Renderer cannot be null for %s."),
+		renderer_null("Renderer cannot be null for %s."),
 
-		MODEL_SET("Combo box model {} set for {}."),
+		model_set("Combo box model {} set for {}."),
 
-		MODEL_NULL("Model cannot be null for %s."),
+		model_null("Model cannot be null for %s."),
 
-		ERROR_SET_CUSTOM_RENDERER_MESSAGE("Error set custom renderer for %s"),
+		error_custom_renderer_message("Error set custom renderer for %s"),
 
-		ERROR_SET_CUSTOM_RENDERER("Error set custom renderer"),
+		error_custom_renderer("Error set custom renderer"),
 
-		ERROR_SET_CUSTOM_MODEL_MESSAGE("Error set custom model for %s"),
+		error_custom_model_message("Error set custom model for %s"),
 
-		ERROR_SET_CUSTOM_MODEL("Error set custom model");
+		error_custom_model("Error set custom model"),
+
+		vetoed_values("Values vetoed"),
+
+		vetoed_values_message("Values vetoed for field {}.");
 
 		private String name;
 
@@ -97,44 +102,49 @@ class AbstractListBoxFieldLogger extends AbstractLogger {
 	}
 
 	void checkModel(AbstractListBoxField field, ListModel model) {
-		notNull(model, MODEL_NULL.toString(), field);
+		notNull(model, model_null.toString(), field);
 	}
 
 	void modelSet(AbstractListBoxField field, ListModel model) {
-		debug(MODEL_SET.toString(), model, field);
+		debug(model_set.toString(), model, field);
 	}
 
 	void unsupportedType(AbstractListBoxField field, Object elements) {
-		isTrue(false, TYPE_NOT_SUPPORTED.toString(), elements.getClass(), field);
+		isTrue(false, type_not_supported.toString(), elements.getClass(), field);
 	}
 
 	void checkElements(AbstractListBoxField field, Object elements) {
-		notNull(elements, ELEMENTS_NULL.toString(), field);
+		notNull(elements, elements_null.toString(), field);
 	}
 
 	void elementsSet(AbstractListBoxField field, Object elements) {
-		debug(ELEMENTS_SET, elements, field);
+		debug(elements_set, elements, field);
 	}
 
 	void checkRenderer(AbstractListBoxField field, ListCellRenderer renderer) {
-		notNull(renderer, RENDERER_NULL.toString(), field);
+		notNull(renderer, renderer_null.toString(), field);
 	}
 
 	void rendererSet(AbstractListBoxField field, ListCellRenderer renderer) {
-		debug(RENDERER_SET, renderer, field);
+		debug(renderer_set, renderer, field);
 	}
 
 	ReflectionError errorSetModel(AbstractListBoxField field,
 			PropertyVetoException e) {
-		return logException(new ReflectionError(ERROR_SET_CUSTOM_MODEL, e).add(
-				FIELD, field), ERROR_SET_CUSTOM_MODEL_MESSAGE, field.getName());
+		return logException(
+				new ReflectionError(error_custom_model, e).add(field, field),
+				error_custom_model_message, field.getName());
 	}
 
 	ReflectionError errorSetRenderer(AbstractListBoxField field,
 			PropertyVetoException e) {
 		return logException(
-				new ReflectionError(ERROR_SET_CUSTOM_RENDERER, e).add(FIELD,
-						field), ERROR_SET_CUSTOM_RENDERER_MESSAGE,
-				field.getName());
+				new ReflectionError(error_custom_renderer, e).add(field, field),
+				error_custom_renderer_message, field.getName());
+	}
+
+	void vetoedValues(AbstractListBoxField field, PropertyVetoException e) {
+		logException(new ReflectionError(vetoed_values, e).add(field, field),
+				vetoed_values_message, field.getName());
 	}
 }
