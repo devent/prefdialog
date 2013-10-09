@@ -1,18 +1,18 @@
 /*
  * Copyright 2012-2013 Erwin Müller <erwin.mueller@deventm.org>
- *
+ * 
  * This file is part of prefdialog-dialog.
- *
+ * 
  * prefdialog-dialog is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
  * Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- *
+ * 
  * prefdialog-dialog is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-dialog. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -23,6 +23,7 @@ import static java.util.ServiceLoader.load;
 
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
+import java.util.Locale;
 
 import javax.inject.Inject;
 import javax.swing.JDialog;
@@ -99,9 +100,6 @@ public class SimplePropertiesDialog extends SimpleDialog {
 		this.log = logger;
 	}
 
-	/**
-	 * @see SimpleDialog#setTexts(Texts)
-	 */
 	@Override
 	public void setTexts(Texts texts) {
 		super.setTexts(texts);
@@ -110,14 +108,19 @@ public class SimplePropertiesDialog extends SimpleDialog {
 		}
 	}
 
-	/**
-	 * @see SimpleDialog#setImages(Images)
-	 */
 	@Override
 	public void setImages(Images images) {
 		super.setImages(images);
 		if (panel != null) {
 			panel.setImages(images);
+		}
+	}
+
+	@Override
+	public void setLocale(Locale locale) {
+		super.setLocale(locale);
+		if (panel != null) {
+			panel.setLocale(locale);
 		}
 	}
 
@@ -138,6 +141,15 @@ public class SimplePropertiesDialog extends SimpleDialog {
 	 */
 	public FieldComponent<JPanel> getField() {
 		return panel;
+	}
+
+	/**
+	 * Returns the properties of the dialog.
+	 * 
+	 * @return the properties {@link Object}.
+	 */
+	public Object getProperties() {
+		return properties;
 	}
 
 	@Override
