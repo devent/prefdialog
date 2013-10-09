@@ -1,18 +1,18 @@
 /*
  * Copyright 2012-2013 Erwin Müller <erwin.mueller@deventm.org>
- *
+ * 
  * This file is part of prefdialog-dialog.
- *
+ * 
  * prefdialog-dialog is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
  * Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- *
+ * 
  * prefdialog-dialog is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-dialog. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -33,6 +33,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.joda.time.Duration;
 
 import com.anrisoftware.globalpom.threads.api.Threads;
+import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 
 /**
  * Creates a simple dialog in a background thread, opens it and waits for the
@@ -196,11 +197,12 @@ public abstract class AbstractDialogAction<Value, Dialog extends SimpleDialog>
 	}
 
 	/**
-	 * Creates the dialog in a background thread. The dialog is only created if
-	 * all dependencies are set.
+	 * Creates the dialog. The dialog is only created if all dependencies are
+	 * set.
 	 * 
 	 * @see #canCreateDialog()
 	 */
+	@OnAwt
 	public final void createDialog() {
 		if (!canCreateDialog() || creatingDialog) {
 			return;
@@ -215,6 +217,7 @@ public abstract class AbstractDialogAction<Value, Dialog extends SimpleDialog>
 	 * 
 	 * @see #canCreateDialog()
 	 */
+	@OnAwt
 	protected void doCreateDialog() {
 		CreateDialogAction action = new CreateDialogAction(dialog);
 		threads.submit(action, new PropertyChangeListener() {
