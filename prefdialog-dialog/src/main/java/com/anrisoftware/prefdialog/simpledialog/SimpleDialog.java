@@ -142,6 +142,8 @@ public class SimpleDialog {
 
 	private Locale locale;
 
+	private Images images;
+
 	/**
 	 * @see SimpleDialogFactory#create()
 	 */
@@ -213,6 +215,16 @@ public class SimpleDialog {
 	 *            the {@link Images} resources.
 	 */
 	public void setImages(Images images) {
+		this.images = images;
+	}
+
+	/**
+	 * Returns the images resources for the dialog.
+	 * 
+	 * @return the {@link Images} resources.
+	 */
+	public Images getImages() {
+		return images;
 	}
 
 	/**
