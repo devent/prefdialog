@@ -427,6 +427,7 @@ public class FileChooserField extends AbstractTitleField<JPanel> {
 		this.buttonTextPosition = position;
 		switch (position) {
 		case ICON_ONLY:
+			getOpenFileChooser().setIcon(buttonIcon);
 			getOpenFileChooser().setText(null);
 			break;
 		case TEXT_ALONGSIDE_ICON:

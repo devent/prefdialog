@@ -34,8 +34,10 @@ import org.junit.rules.TemporaryFolder
 
 import com.anrisoftware.globalpom.reflection.exceptions.ReflectionError
 import com.anrisoftware.globalpom.utils.TestFrameUtil
+import com.anrisoftware.prefdialog.annotations.TextPosition
 import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
 import com.anrisoftware.prefdialog.core.FieldTestUtils
+import com.anrisoftware.resources.images.api.IconSize
 import com.anrisoftware.resources.images.api.Images
 import com.google.inject.Guice
 import com.google.inject.Injector
@@ -129,6 +131,46 @@ class FileChooserTest extends FieldTestUtils {
 		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
 			fixture.textBox "$fieldName-$FILE_FIELD_NAME" requireText compile(/.*aaa.txt/)
 		})
+	}
+
+	@Test
+	void "button icon size"() {
+		def title = "$NAME::button icon size"
+		def fieldName = BUTTON_ICON_RESOURCE
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
+		field.images = images
+		field.openFileChooser.setContentAreaFilled false
+		field.openFileChooser.setBorderPainted true
+		field.openFileChooser.setMargin new Insets(0, 4, 0, 4)
+
+		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+			fixture.textBox "$fieldName-$FILE_FIELD_NAME" requireText compile(/.*aaa.txt/)
+		},
+		{ field.setIconSize IconSize.HUGE },
+		{ field.setIconSize IconSize.LARGE },
+		{ field.setIconSize IconSize.MEDIUM },
+		{ field.setIconSize IconSize.SMALL })
+	}
+
+	@Test
+	void "button text position"() {
+		def title = "$NAME::button text position"
+		def fieldName = BUTTON_ICON_RESOURCE
+		def field = factory.create(bean, fieldName)
+		def container = field.getAWTComponent()
+		field.images = images
+		field.openFileChooser.setContentAreaFilled false
+		field.openFileChooser.setBorderPainted true
+		field.openFileChooser.setMargin new Insets(0, 4, 0, 4)
+
+		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+			fixture.textBox "$fieldName-$FILE_FIELD_NAME" requireText compile(/.*aaa.txt/)
+		},
+		, { field.setButtonTextPosition(TextPosition.ICON_ONLY) }
+		, { field.setButtonTextPosition(TextPosition.TEXT_ONLY) }
+		, { field.setButtonTextPosition(TextPosition.ICON_ONLY) }
+		, { field.setButtonTextPosition(TextPosition.TEXT_ALONGSIDE_ICON) })
 	}
 
 	static Injector injector
