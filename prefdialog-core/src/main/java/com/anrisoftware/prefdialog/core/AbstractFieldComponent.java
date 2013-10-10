@@ -621,9 +621,12 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 	}
 
 	@Override
-	public void setIconSize(IconSize newSize) {
-		iconSize = newSize;
+	public void setIconSize(IconSize size) {
+		this.iconSize = size;
 		updateIconResources();
+		for (FieldComponent<?> field : childFields) {
+			field.setIconSize(size);
+		}
 		log.iconSizeSet(this, iconSize);
 	}
 
@@ -637,6 +640,9 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 		log.checkLocale(this, locale);
 		this.locale = locale;
 		component.setLocale(locale);
+		for (FieldComponent<?> field : childFields) {
+			field.setLocale(locale);
+		}
 		updateTextsResources();
 		updateIconResources();
 		log.localeSet(this, locale);
