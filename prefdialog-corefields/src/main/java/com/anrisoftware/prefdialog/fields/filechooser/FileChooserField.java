@@ -20,6 +20,7 @@ package com.anrisoftware.prefdialog.fields.filechooser;
 
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -190,6 +191,14 @@ public class FileChooserField extends AbstractTitleField<JPanel> {
 		setupButtonIcon();
 		setupButtonTextPosition();
 		setupButtonIconSize();
+		setupButton();
+	}
+
+	private void setupButton() {
+		JButton button = getOpenFileChooser();
+		button.setContentAreaFilled(false);
+		button.setBorderPainted(true);
+		button.setMargin(new Insets(0, 4, 0, 4));
 	}
 
 	private void setupButtonIconSize() {
