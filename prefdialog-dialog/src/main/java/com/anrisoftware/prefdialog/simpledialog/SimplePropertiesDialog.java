@@ -157,6 +157,7 @@ public class SimplePropertiesDialog extends SimpleDialog {
 		this.panel = createPanel();
 		panel.createPanel(parent);
 		panel.setTexts(getTexts());
+		panel.setImages(getImages());
 		setFieldsPanel(panel.getAWTComponent());
 		return super.createDialog();
 	}
