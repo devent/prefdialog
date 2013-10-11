@@ -32,7 +32,9 @@ import javax.swing.JPanel;
 import com.anrisoftware.prefdialog.fields.FieldComponent;
 import com.anrisoftware.prefdialog.fields.FieldFactory;
 import com.anrisoftware.prefdialog.fields.FieldService;
+import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 import com.anrisoftware.prefdialog.verticalpanel.VerticalPreferencesPanelField;
+import com.anrisoftware.resources.images.api.IconSize;
 import com.anrisoftware.resources.images.api.Images;
 import com.anrisoftware.resources.texts.api.Texts;
 import com.google.inject.Injector;
@@ -122,6 +124,30 @@ public class SimplePropertiesDialog extends SimpleDialog {
 		if (panel != null) {
 			panel.setLocale(locale);
 		}
+	}
+
+	/**
+	 * Sets the icon size for the properties dialog.
+	 * <p>
+	 * <h2>AWT Thread</h2>
+	 * <p>
+	 * Should be called in the AWT thread.
+	 * 
+	 * @param size
+	 *            the {@link IconSize}.
+	 */
+	@OnAwt
+	public void setIconSize(IconSize size) {
+		getField().setIconSize(size);
+	}
+
+	/**
+	 * Returns the icon size for the properties dialog.
+	 * 
+	 * @return the {@link IconSize}.
+	 */
+	public IconSize getIconSize() {
+		return getField().getIconSize();
 	}
 
 	/**
