@@ -69,11 +69,11 @@
 			<artifactId>resources-texts</artifactId>
 			<optional>true</optional>
 		</dependency>
-        <dependency>
-            <groupId>com.anrisoftware.resources</groupId>
-            <artifactId>resources-images</artifactId>
-            <optional>true</optional>
-        </dependency>
+		<dependency>
+			<groupId>com.anrisoftware.resources</groupId>
+			<artifactId>resources-images</artifactId>
+			<optional>true</optional>
+		</dependency>
 
 		<!-- for problems pane -->
 		<dependency>
@@ -87,6 +87,12 @@
 			<groupId>com.anrisoftware.propertiesutils</groupId>
 			<artifactId>propertiesutils-contextproperties</artifactId>
 			<optional>true</optional>
+		</dependency>
+
+		<!-- for fading pane -->
+		<dependency>
+			<groupId>aurelienribon.tweenengine</groupId>
+			<artifactId>tween-engine-api</artifactId>
 		</dependency>
 	</dependencies>
 </project>
