@@ -19,7 +19,7 @@
  */
 package com.anrisoftware.prefdialog.csvimportdialog.dialog;
 
-import static com.anrisoftware.prefdialog.csvimportdialog.dialog.CsvImportDialogModule.getSimpleDialogFactory;
+import static com.anrisoftware.prefdialog.csvimportdialog.dialog.CsvImportDialogModule.getFactory;
 
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
@@ -33,11 +33,13 @@ import javax.swing.event.ChangeListener;
 import com.anrisoftware.globalpom.dataimport.CsvImportProperties;
 import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanel;
 import com.anrisoftware.prefdialog.csvimportdialog.importpaneldock.ImportPanelDock;
+import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 import com.anrisoftware.prefdialog.miscswing.docks.api.Dock;
 import com.anrisoftware.prefdialog.miscswing.docks.api.DockFactory;
 import com.anrisoftware.prefdialog.miscswing.docks.api.FocusChangedEvent;
 import com.anrisoftware.prefdialog.simpledialog.SimpleDialog;
 import com.anrisoftware.resources.texts.api.Texts;
+import com.anrisoftware.resources.texts.api.TextsFactory;
 import com.google.inject.Injector;
 import com.google.inject.assistedinject.Assisted;
 
@@ -52,28 +54,27 @@ public class CsvImportDialog extends SimpleDialog {
 	private static final String IMPORT_ACTION_NAME = "import_action";
 
 	/**
-	 * Decorates the dialog with the CSV import dialog.
+	 * @see #decorate(JDialog, JFrame, CsvImportProperties)
+	 */
+	public static CsvImportDialog decorateCsvImportDialog(JDialog dialog,
+			JFrame frame, CsvImportProperties properties) {
+		return decorate(dialog, frame, properties);
+	}
+
+	/**
+	 * Decorates the dialog with the CSV import panel and dialog actions.
 	 * 
 	 * @param dialog
 	 *            the {@link JDialog}.
-	 * 
-	 * @param texts
-	 *            the {@link Texts} resources.
-	 * 
-	 * @param parent
-	 *            the parent Guice {@link Injector} for the needed dependent
-	 *            modules.
 	 * 
 	 * @see CsvImportDialogFactory#create(JFrame, CsvImportProperties)
 	 * 
 	 * @return the {@link CsvImportDialog}.
 	 */
 	public static CsvImportDialog decorate(JDialog dialog, JFrame frame,
-			CsvImportProperties properties, Texts texts, Injector parent) {
+			CsvImportProperties properties) {
 		CsvImportDialog importDialog;
-		importDialog = getSimpleDialogFactory(parent).create(frame, properties);
-		importDialog.setTexts(texts);
-		importDialog.setParent(parent);
+		importDialog = getFactory().create(frame, properties);
 		importDialog.setDialog(dialog);
 		return importDialog;
 	}
@@ -82,18 +83,21 @@ public class CsvImportDialog extends SimpleDialog {
 
 	private final Dock dock;
 
-	private final ImportPanelDock importPanelDock;
+	@Inject
+	private ImportPanelDock importPanelDock;
 
+	@Inject
 	private Injector parent;
+
+	private Texts texts;
 
 	/**
 	 * @see CsvImportDialogFactory#create(JFrame, CsvImportProperties)
 	 */
 	@Inject
-	CsvImportDialog(DockFactory dockFactory, ImportPanelDock importPanelDock,
-			@Assisted JFrame frame, @Assisted CsvImportProperties properties) {
+	CsvImportDialog(DockFactory dockFactory, @Assisted JFrame frame,
+			@Assisted CsvImportProperties properties) {
 		this.dock = dockFactory.create(frame);
-		this.importPanelDock = importPanelDock;
 		this.properties = properties;
 		setupDock();
 	}
@@ -111,6 +115,11 @@ public class CsvImportDialog extends SimpleDialog {
 		});
 	}
 
+	@Inject
+	void setTextsFactory(TextsFactory factory) {
+		this.texts = factory.create(CsvImportDialog.class.getSimpleName());
+	}
+
 	/**
 	 * Sets the parent dependencies.
 	 * 
@@ -122,11 +131,13 @@ public class CsvImportDialog extends SimpleDialog {
 	}
 
 	@Override
+	@OnAwt
 	public SimpleDialog createDialog() {
 		setApproveActionName(IMPORT_ACTION_NAME);
 		importPanelDock.createPanel(parent, properties);
 		setFieldsPanel(dock.getAWTComponent());
 		dock.addEditorDock(importPanelDock);
+		setTexts(texts);
 		return super.createDialog();
 	}
 

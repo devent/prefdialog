@@ -29,6 +29,7 @@ import javax.swing.JPanel;
 import com.anrisoftware.globalpom.dataimport.CsvImportProperties;
 import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanel;
 import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanelFactory;
+import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 import com.anrisoftware.prefdialog.miscswing.docks.api.DockPosition;
 import com.anrisoftware.prefdialog.miscswing.docks.api.EditorDockWindow;
 import com.google.inject.Injector;
@@ -43,16 +44,12 @@ public class ImportPanelDock implements EditorDockWindow {
 
 	public static final String ID = "importPanelDock";
 
+	@Inject
 	private transient CsvImportPanelFactory panelFactory;
 
 	private JPanel panel;
 
 	private CsvImportPanel importPanel;
-
-	@Inject
-	ImportPanelDock(CsvImportPanelFactory panelFactory) {
-		this.panelFactory = panelFactory;
-	}
 
 	/**
 	 * Sets the CSV import properties.
@@ -66,11 +63,16 @@ public class ImportPanelDock implements EditorDockWindow {
 	 * 
 	 * @param properties
 	 *            the {@link CsvImportProperties}.
+	 * 
+	 * @return this {@link ImportPanelDock}.
 	 */
-	public void createPanel(Injector injector, CsvImportProperties properties) {
+	@OnAwt
+	public ImportPanelDock createPanel(Injector injector,
+			CsvImportProperties properties) {
 		this.panel = new JPanel();
 		importPanel = panelFactory.create(panel, properties);
 		importPanel.createPanel(injector);
+		return this;
 	}
 
 	/**

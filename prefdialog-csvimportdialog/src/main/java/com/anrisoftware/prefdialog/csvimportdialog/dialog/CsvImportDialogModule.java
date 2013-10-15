@@ -1,27 +1,35 @@
 /*
  * Copyright 2013-2013 Erwin Müller <erwin.mueller@deventm.org>
- *
+ * 
  * This file is part of prefdialog-csvimportdialog.
- *
- * prefdialog-csvimportdialog is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
- *
- * prefdialog-csvimportdialog is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
+ * 
+ * prefdialog-csvimportdialog is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * 
+ * prefdialog-csvimportdialog is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with prefdialog-csvimportdialog. If not, see <http://www.gnu.org/licenses/>.
+ * along with prefdialog-csvimportdialog. If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 package com.anrisoftware.prefdialog.csvimportdialog.dialog;
 
+import com.anrisoftware.globalpom.dataimport.CsvImportModule;
+import com.anrisoftware.prefdialog.core.CoreFieldComponentModule;
 import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanel;
 import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanelFactory;
 import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanelModule;
+import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelPropertiesFactory;
+import com.anrisoftware.prefdialog.miscswing.comboboxhistory.ComboBoxHistoryModule;
+import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.core.DockingFramesModule;
+import com.anrisoftware.resources.texts.defaults.TextsResourcesDefaultModule;
 import com.google.inject.AbstractModule;
+import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 
@@ -37,30 +45,50 @@ import com.google.inject.assistedinject.FactoryModuleBuilder;
  */
 public class CsvImportDialogModule extends AbstractModule {
 
-	private static Injector injector;
+	/**
+	 * @see #getFactory()
+	 */
+	public static CsvImportDialogFactory getCsvImportDialogFactory() {
+		return getFactory();
+	}
 
 	/**
 	 * Returns the CSV import dialog factory.
 	 * 
-	 * @param parent
-	 *            the parent Guice {@link Injector} for the needed dependent
-	 *            modules.
-	 * 
 	 * @return the {@link CsvImportDialogFactory}.
 	 */
-	public static CsvImportDialogFactory getSimpleDialogFactory(Injector parent) {
-		injector = getInjector(parent);
-		return injector.getInstance(CsvImportDialogFactory.class);
+	public static CsvImportDialogFactory getFactory() {
+		return SingletonHolder.factory;
 	}
 
-	private static Injector getInjector(Injector parent) {
-		if (injector == null) {
-			synchronized (CsvImportDialogModule.class) {
-				injector = parent
-						.createChildInjector(new CsvImportDialogModule());
-			}
-		}
-		return injector;
+	/**
+	 * @see #getPropertiesFactory()
+	 */
+	public static CsvPanelPropertiesFactory getCsvImportPropertiesFactory() {
+		return getPropertiesFactory();
+	}
+
+	/**
+	 * Creates and returns the panel properties factory.
+	 * 
+	 * @return the {@link CsvPanelPropertiesFactory}.
+	 */
+	public static CsvPanelPropertiesFactory getPropertiesFactory() {
+		return SingletonHolder.propertiesFactory;
+	}
+
+	private static class SingletonHolder {
+
+		public static final Injector injector = Guice.createInjector(
+				new CsvImportDialogModule(), new CoreFieldComponentModule(),
+				new ComboBoxHistoryModule(), new DockingFramesModule(),
+				new CsvImportModule(), new TextsResourcesDefaultModule());
+
+		public static final CsvImportDialogFactory factory = injector
+				.getInstance(CsvImportDialogFactory.class);
+
+		public static final CsvPanelPropertiesFactory propertiesFactory = injector
+				.getInstance(CsvPanelPropertiesFactory.class);
 	}
 
 	@Override
