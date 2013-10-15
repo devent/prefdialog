@@ -1,24 +1,25 @@
 /*
  * Copyright 2013-2013 Erwin Müller <erwin.mueller@deventm.org>
- *
+ * 
  * This file is part of prefdialog-misc-swing.
- *
- * prefdialog-misc-swing is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
+ * 
+ * prefdialog-misc-swing is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- *
+ * 
  * prefdialog-misc-swing is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-misc-swing. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.anrisoftware.prefdialog.miscswing.docks.api;
 
 import java.awt.Component;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -125,10 +126,15 @@ public interface Dock {
 	 * @param file
 	 *            the {@link File} file from where to load the layout.
 	 * 
+	 * @param listeners
+	 *            optionally, {@link PropertyChangeListener} listeners that are
+	 *            informed when the layout have been loaded and set.
+	 * 
 	 * @throws IOException
 	 *             if there was I/O error loading the layout.
 	 */
-	void loadLayout(String name, File file) throws IOException;
+	void loadLayout(String name, File file, PropertyChangeListener... listeners)
+			throws IOException;
 
 	/**
 	 * Loads the previously saved layout with the specified name.
@@ -139,10 +145,15 @@ public interface Dock {
 	 * @param stream
 	 *            the {@link InputStream} stream from where to load the layout.
 	 * 
+	 * @param listeners
+	 *            optionally, {@link PropertyChangeListener} listeners that are
+	 *            informed when the layout have been loaded and set.
+	 * 
 	 * @throws IOException
 	 *             if there was I/O error loading the layout.
 	 */
-	void loadLayout(String name, InputStream stream) throws IOException;
+	void loadLayout(String name, InputStream stream,
+			PropertyChangeListener... listeners) throws IOException;
 
 	/**
 	 * Returns the current active layout.

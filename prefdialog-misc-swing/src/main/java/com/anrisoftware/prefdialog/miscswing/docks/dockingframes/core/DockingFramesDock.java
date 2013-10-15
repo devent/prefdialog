@@ -1,24 +1,25 @@
 /*
  * Copyright 2013-2013 Erwin Müller <erwin.mueller@deventm.org>
- *
+ * 
  * This file is part of prefdialog-misc-swing.
- *
- * prefdialog-misc-swing is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
+ * 
+ * prefdialog-misc-swing is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- *
+ * 
  * prefdialog-misc-swing is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-misc-swing. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.anrisoftware.prefdialog.miscswing.docks.dockingframes.core;
 
 import java.awt.Component;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -244,19 +245,22 @@ public class DockingFramesDock implements Dock {
 	}
 
 	@Override
-	public synchronized void loadLayout(String name, File file)
-			throws IOException {
+	public synchronized void loadLayout(String name, File file,
+			PropertyChangeListener... listeners) throws IOException {
 		FileInputStream stream = new FileInputStream(file);
-		loadLayout(name, stream);
+		loadLayout(name, stream, listeners);
 		log.layoutLoaded(this, name, file);
 	}
 
 	@Override
-	public synchronized void loadLayout(String name, InputStream stream)
-			throws IOException {
+	public synchronized void loadLayout(String name, InputStream stream,
+			PropertyChangeListener... listeners) throws IOException {
 		try {
 			SwingWorker<InputStream, InputStream> worker = loadFactory.create(
 					layoutListeners, this, name, control, stream);
+			for (PropertyChangeListener l : listeners) {
+				worker.addPropertyChangeListener(l);
+			}
 			worker.execute();
 			worker.get();
 		} catch (InterruptedException e) {

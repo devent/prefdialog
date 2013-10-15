@@ -1,18 +1,18 @@
 /*
  * Copyright 2013-2013 Erwin Müller <erwin.mueller@deventm.org>
- *
+ * 
  * This file is part of prefdialog-misc-swing.
- *
- * prefdialog-misc-swing is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
+ * 
+ * prefdialog-misc-swing is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- *
+ * 
  * prefdialog-misc-swing is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-misc-swing. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -26,6 +26,7 @@ import javax.swing.JPanel;
 
 import org.jdesktop.swingx.treetable.DefaultTreeTableModel;
 
+import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 import com.anrisoftware.resources.api.ResourcesException;
 import com.anrisoftware.resources.texts.api.Texts;
 import com.google.inject.Guice;
@@ -152,6 +153,17 @@ public class ProblemsPane {
 		model.insertNodeInto(category, root, 0);
 	}
 
+	/**
+	 * Adds the message to the list of problems.
+	 * <p>
+	 * <h2>AWT Thread</h2>
+	 * <p>
+	 * Should be called in the AWT thread.
+	 * 
+	 * @param message
+	 *            the {@link MessageNode}.
+	 */
+	@OnAwt
 	public void addMessage(MessageNode message) {
 		messages.add(message);
 		model.insertNodeInto(message, message.getCategory(), 0);

@@ -34,10 +34,10 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
 
+import com.anrisoftware.globalpom.dataimport.CsvImportModule
 import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.globalpom.utils.TestUtils
 import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
-import com.anrisoftware.prefdialog.csvimportdialog.csvimport.CsvImportModule
 import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanelFactory
 import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanelModule
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelProperties

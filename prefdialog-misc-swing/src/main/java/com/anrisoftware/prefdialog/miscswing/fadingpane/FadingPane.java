@@ -207,22 +207,22 @@ public class FadingPane extends JComponent {
 	}
 
 	/**
-	 * Sets the speed of the fade in.
+	 * Sets the fade in duration.
 	 * 
 	 * @param duration
-	 *            the speed in seconds.
+	 *            the {@link Duration}.
 	 */
 	public void setDurationIn(Duration duration) {
 		this.durationIn = duration;
 	}
 
 	/**
-	 * Sets the speed of the fade out.
+	 * Sets the fade out duration.
 	 * 
 	 * @param duration
-	 *            the speed in seconds.
+	 *            the {@link Duration}.
 	 */
-	public void setSpeedOut(Duration duration) {
+	public void setDurationOut(Duration duration) {
 		this.durationOut = duration;
 	}
 
