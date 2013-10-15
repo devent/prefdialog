@@ -44,7 +44,6 @@ import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperti
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelPropertiesFactory;
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.separatorproperties.UseCustomSeparatorAction;
 import com.anrisoftware.prefdialog.fields.FieldComponent;
-import com.anrisoftware.prefdialog.fields.FieldService;
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 import com.anrisoftware.prefdialog.miscswing.lockedevents.LockedChangeListener;
 import com.anrisoftware.prefdialog.verticalpanel.VerticalPreferencesPanelField;
@@ -73,7 +72,7 @@ public class CsvImportPanel {
 	private CsvImportPanelLogger log;
 
 	@Inject
-	private FieldService fieldService;
+	private VerticalPreferencesPanelFieldProvider fieldService;
 
 	@Inject
 	private CsvImporterFactory importerFactory;
@@ -121,7 +120,7 @@ public class CsvImportPanel {
 	@OnAwt
 	public void createPanel(Injector parent) {
 		this.propertiesPanel = (VerticalPreferencesPanelField) fieldService
-				.getFactory(parent).create(properties, PANEL_BEAN);
+				.get().getFactory(parent).create(properties, PANEL_BEAN);
 		propertiesPanel.createPanel(parent);
 		propertiesPanel
 				.addPropertyChangeListener(VALUE_PROPERTY, valueListener);
