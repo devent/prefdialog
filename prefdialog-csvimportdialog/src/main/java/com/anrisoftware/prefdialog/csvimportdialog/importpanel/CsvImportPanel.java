@@ -69,6 +69,9 @@ public class CsvImportPanel {
 	private final LockedChangeListener valueListener;
 
 	@Inject
+	private Injector injector;
+
+	@Inject
 	private CsvImportPanelLogger log;
 
 	@Inject
@@ -108,6 +111,14 @@ public class CsvImportPanel {
 	}
 
 	/**
+	 * @see #createPanel(Injector)
+	 */
+	@OnAwt
+	public CsvImportPanel createPanel() {
+		return createPanel(injector);
+	}
+
+	/**
 	 * Creates the panel from the parent Guice injector.
 	 * <p>
 	 * <h2>AWT Thread</h2>
@@ -116,9 +127,11 @@ public class CsvImportPanel {
 	 * 
 	 * @param parent
 	 *            the parent {@link Injector}.
+	 * 
+	 * @return this {@link CsvImportPanel}.
 	 */
 	@OnAwt
-	public void createPanel(Injector parent) {
+	public CsvImportPanel createPanel(Injector parent) {
 		this.propertiesPanel = (VerticalPreferencesPanelField) fieldService
 				.get().getFactory(parent).create(properties, PANEL_BEAN);
 		propertiesPanel.createPanel(parent);
@@ -126,6 +139,7 @@ public class CsvImportPanel {
 				.addPropertyChangeListener(VALUE_PROPERTY, valueListener);
 		setupPanel();
 		setupActions();
+		return this;
 	}
 
 	private void setupActions() {

@@ -19,8 +19,15 @@
  */
 package com.anrisoftware.prefdialog.csvimportdialog.importpanel;
 
+import com.anrisoftware.globalpom.dataimport.CsvImportModule;
+import com.anrisoftware.prefdialog.core.CoreFieldComponentModule;
+import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelPropertiesFactory;
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelPropertiesModule;
+import com.anrisoftware.prefdialog.miscswing.comboboxhistory.ComboBoxHistoryModule;
+import com.anrisoftware.resources.texts.defaults.TextsResourcesDefaultModule;
 import com.google.inject.AbstractModule;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 
 /**
@@ -33,6 +40,52 @@ import com.google.inject.assistedinject.FactoryModuleBuilder;
  * @since 3.0
  */
 public class CsvImportPanelModule extends AbstractModule {
+
+	/**
+	 * @see #getFactory()
+	 */
+	public static CsvImportPanelFactory getCsvImportPanelFactory() {
+		return getFactory();
+	}
+
+	/**
+	 * Creates and returns the import panel factory.
+	 * 
+	 * @return the {@link CsvImportPanelFactory}.
+	 */
+	public static CsvImportPanelFactory getFactory() {
+		return SingletonHolder.factory;
+	}
+
+	/**
+	 * @see #getPropertiesFactory()
+	 */
+	public static CsvPanelPropertiesFactory getCsvImportPropertiesFactory() {
+		return getPropertiesFactory();
+	}
+
+	/**
+	 * Creates and returns the panel properties factory.
+	 * 
+	 * @return the {@link CsvPanelPropertiesFactory}.
+	 */
+	public static CsvPanelPropertiesFactory getPropertiesFactory() {
+		return SingletonHolder.propertiesFactory;
+	}
+
+	private static class SingletonHolder {
+
+		public static final Injector injector = Guice.createInjector(
+				new CsvImportPanelModule(), new CoreFieldComponentModule(),
+				new TextsResourcesDefaultModule(), new ComboBoxHistoryModule(),
+				new CsvImportModule());
+
+		public static final CsvImportPanelFactory factory = injector
+				.getInstance(CsvImportPanelFactory.class);
+
+		public static final CsvPanelPropertiesFactory propertiesFactory = injector
+				.getInstance(CsvPanelPropertiesFactory.class);
+	}
 
 	@Override
 	protected void configure() {

@@ -20,6 +20,7 @@ package com.anrisoftware.prefdialog.csvimportdialog.panel
 
 import static com.anrisoftware.globalpom.utils.TestUtils.*
 import static com.anrisoftware.prefdialog.core.FieldTestUtils.*
+import static com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanelModule.*
 import static com.anrisoftware.prefdialog.fields.textfield.TextFieldBean.*
 
 import java.awt.Dimension
@@ -34,18 +35,10 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
 
-import com.anrisoftware.globalpom.dataimport.CsvImportModule
 import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.globalpom.utils.TestUtils
-import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
 import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanelFactory
-import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanelModule
-import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelProperties
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelPropertiesFactory
-import com.anrisoftware.prefdialog.miscswing.comboboxhistory.ComboBoxHistoryModule
-import com.anrisoftware.resources.texts.defaults.TextsResourcesDefaultModule
-import com.google.inject.Guice
-import com.google.inject.Injector
 
 /**
  * @see CsvImportPanel
@@ -58,8 +51,8 @@ class CsvImportPanelTest {
 	@Test
 	void "show"() {
 		def title = "$NAME::show"
-		def field = factory.create(new JPanel(), properties)
-		field.createPanel injector
+		def p = propertiesFactory.create()
+		def field = factory.create(new JPanel(), p).createPanel()
 		def container = field.getAWTComponent()
 		new TestFrameUtil(title, container, size).withFixture({
 		})
@@ -68,8 +61,8 @@ class CsvImportPanelTest {
 	//@Test
 	void "manually"() {
 		def title = "$NAME::manually"
-		def field = factory.create(new JPanel(), properties)
-		field.createPanel injector
+		def p = propertiesFactory.create()
+		def field = factory.create(new JPanel(), p).createPanel()
 		def container = field.getAWTComponent()
 		new TestFrameUtil(title, container, size).withFixture({ FrameFixture fixture ->
 			Thread.sleep 60*1000
@@ -84,36 +77,19 @@ class CsvImportPanelTest {
 
 	static URL LOTTO = CsvImportPanelTest.class.getResource("/com/anrisoftware/prefdialog/csvimportdialog/csvimport/lotto_2001.csv")
 
-	static Injector injector
-
-	static Injector panelInjector
-
 	static CsvImportPanelFactory factory
 
 	static size = new Dimension(400, 566)
 
 	static CsvPanelPropertiesFactory propertiesFactory
 
-	CsvPanelProperties properties
-
 	File lotto
 
 	@BeforeClass
 	static void setupFactories() {
 		TestUtils.toStringStyle
-		injector = Guice.createInjector(
-				new CoreFieldComponentModule(),
-				new TextsResourcesDefaultModule(),
-				new ComboBoxHistoryModule(),
-				new CsvImportModule())
-		panelInjector = injector.createChildInjector(new CsvImportPanelModule())
-		factory = panelInjector.getInstance(CsvImportPanelFactory)
-		propertiesFactory = panelInjector.getInstance(CsvPanelPropertiesFactory)
-	}
-
-	@Before
-	void setupBean() {
-		properties = propertiesFactory.create()
+		factory = getCsvImportPanelFactory()
+		propertiesFactory = getCsvImportPropertiesFactory()
 	}
 
 	@Before
