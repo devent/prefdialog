@@ -33,6 +33,7 @@ import com.anrisoftware.globalpom.utils.TestUtils
 import com.anrisoftware.prefdialog.miscswing.docks.api.DockFactory
 import com.anrisoftware.prefdialog.miscswing.docks.api.LayoutTask
 import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.core.DockingFramesModule
+import com.anrisoftware.prefdialog.miscswing.docks.docktesting.DockTestingModule
 import com.anrisoftware.prefdialog.miscswing.docks.layouts.dockingframes.DefaultLayoutTask
 import com.google.inject.Guice
 import com.google.inject.Injector
@@ -78,7 +79,7 @@ class DocksTestBase {
 
 	static Injector createInjector() {
 		TestUtils.toStringStyle
-		Guice.createInjector new DockingFramesModule()
+		Guice.createInjector(new DockingFramesModule(), new DockTestingModule())
 	}
 
 	static LayoutTask createDefaultPerspective(Injector injector, name) {
