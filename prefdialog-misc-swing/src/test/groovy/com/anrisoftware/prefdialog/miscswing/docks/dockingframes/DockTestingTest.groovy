@@ -25,7 +25,7 @@ class DockTestingTest {
 	@Test
 	void "flat theme"() {
 		String title = "$NAME::flat theme"
-		def testing = testingFactory.create([title: title]).createDock()
+		def testing = testingFactory.create([title: title])()
 		testing.withFixture({
 			invokeAndWait {
 				viewDocks.each {

@@ -29,7 +29,7 @@ import com.google.inject.assistedinject.FactoryModuleBuilder
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-public class DockTestingModule extends AbstractModule {
+class DockTestingModule extends AbstractModule {
 
 	@Override
 	protected void configure() {

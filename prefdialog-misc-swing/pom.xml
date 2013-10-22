@@ -18,9 +18,10 @@
 	<dependencies>
 		<!-- test dependencies -->
 		<dependency>
+			<!-- for dock testing -->
 			<groupId>com.anrisoftware.globalpom</groupId>
 			<artifactId>globalpom-groovytestutils</artifactId>
-			<scope>test</scope>
+			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>tablelayout</groupId>
