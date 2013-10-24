@@ -26,6 +26,8 @@ import com.anrisoftware.prefdialog.simpledialog.SimpleDialog.Status;
  */
 class ValidListener {
 
+	private static final String FILE_FIELD = "file";
+
 	private final VetoableChangeListener valueListener;
 
 	private final VetoableChangeListener statusListener;
@@ -81,11 +83,11 @@ class ValidListener {
 
 	private void checkValidFile(PropertyChangeEvent evt, FieldComponent<?> field)
 			throws PropertyVetoException {
-		if (!field.getName().equals("file")) {
+		if (!field.getName().equals(FILE_FIELD)) {
 			return;
 		}
 		File file = (File) evt.getNewValue();
-		inputValid = file.isFile() && file.canRead();
+		inputValid = file != null && file.isFile() && file.canRead();
 		if (!inputValid) {
 			throw new PropertyVetoException("File expected", evt);
 		}
