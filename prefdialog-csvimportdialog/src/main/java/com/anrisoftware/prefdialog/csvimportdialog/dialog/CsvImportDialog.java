@@ -89,6 +89,9 @@ public class CsvImportDialog extends SimpleDialog {
 	@Inject
 	private Injector parent;
 
+	@Inject
+	private ValidListener validListener;
+
 	private Texts texts;
 
 	/**
@@ -138,6 +141,7 @@ public class CsvImportDialog extends SimpleDialog {
 		setFieldsPanel(dock.getAWTComponent());
 		dock.addEditorDock(importPanelDock);
 		setTexts(texts);
+		validListener.installDialog(this);
 		return super.createDialog();
 	}
 
