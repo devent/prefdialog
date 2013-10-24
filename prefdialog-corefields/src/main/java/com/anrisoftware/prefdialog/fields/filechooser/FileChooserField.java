@@ -18,6 +18,7 @@
  */
 package com.anrisoftware.prefdialog.fields.filechooser;
 
+import static com.anrisoftware.prefdialog.miscswing.lockedevents.LockedVetoableChangeListener.lockedVetoableChangeListener;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 import java.awt.Insets;
@@ -46,6 +47,7 @@ import com.anrisoftware.prefdialog.annotations.FileChooserModel;
 import com.anrisoftware.prefdialog.annotations.TextPosition;
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
 import com.anrisoftware.prefdialog.miscswing.filetextfield.FileTextField;
+import com.anrisoftware.prefdialog.miscswing.lockedevents.LockedVetoableChangeListener;
 import com.anrisoftware.resources.images.api.IconSize;
 import com.anrisoftware.resources.images.api.Images;
 import com.anrisoftware.resources.texts.api.Texts;
@@ -95,7 +97,7 @@ public class FileChooserField extends AbstractTitleField<JPanel> {
 
 	private final OpenDialogAction openDialogAction;
 
-	private final VetoableChangeListener fileListener;
+	private final LockedVetoableChangeListener fileListener;
 
 	private final UiPanel panel;
 
@@ -139,14 +141,19 @@ public class FileChooserField extends AbstractTitleField<JPanel> {
 		this.log = logger;
 		this.fileTextField = fileTextField;
 		this.openDialogAction = openDialogAction;
-		this.fileListener = new VetoableChangeListener() {
+		this.fileListener = lockedVetoableChangeListener(new VetoableChangeListener() {
 
 			@Override
 			public void vetoableChange(PropertyChangeEvent evt)
 					throws PropertyVetoException {
-				setValue(evt.getNewValue());
+				try {
+					fileListener.lock();
+					setValue(evt.getNewValue());
+				} finally {
+					fileListener.unlock();
+				}
 			}
-		};
+		});
 		this.fileAction = new ActionListener() {
 
 			@Override
