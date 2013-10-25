@@ -21,7 +21,9 @@ package com.anrisoftware.prefdialog.miscswing.spreadsheet.navigation
 import static javax.swing.SwingUtilities.*
 
 import java.awt.BorderLayout
+import java.awt.Component
 
+import javax.swing.JFrame
 import javax.swing.JPanel
 import javax.swing.JScrollPane
 import javax.swing.JTable
@@ -29,9 +31,9 @@ import javax.swing.JTable
 import org.junit.BeforeClass
 import org.junit.Test
 
-import com.anrisoftware.globalpom.utils.TestFrameUtil
+import com.anrisoftware.globalpom.utils.frametesting.FrameTestingFactory
+import com.anrisoftware.globalpom.utils.frametesting.FrameTestingModule
 import com.anrisoftware.prefdialog.miscswing.spreadsheet.table.NumbersModel
-import com.anrisoftware.prefdialog.miscswing.spreadsheet.table.SheetTable
 import com.anrisoftware.prefdialog.miscswing.spreadsheet.table.SpreadsheetTableFactory
 import com.anrisoftware.prefdialog.miscswing.spreadsheet.table.SpreadsheetTableModule
 import com.google.inject.Guice
@@ -47,39 +49,30 @@ class NavigationPanelTest {
 
 	@Test
 	void "show"() {
-		def title = "$NAME::show"
-		def table
-		def spreadsheet
-		def pane
-		def panel
+		def title = "$NAME/show"
 		def model = new NumbersModel(3, 128)
-		invokeAndWait {
-			table = new JTable(model)
-			spreadsheet = tableFactory.create(table)
-			pane = paneFactory.create(new JPanel(), spreadsheet)
-			panel = createTablePanel(table, pane.container)
-		}
-		new TestFrameUtil(title, panel).withFixture({ })
+		def testing = testingFactory.create([title: title, setupFrame: { JFrame frame, Component component ->
+				def table = new JTable(model)
+				def spreadsheet = tableFactory.create(table)
+				def pane = paneFactory.create(new JPanel(), spreadsheet)
+				def panel = createTablePanel table, pane.container
+				frame.add panel, BorderLayout.CENTER
+			}])()
+		testing.withFixture({})
 	}
 
-	@Test
+	//@Test
 	void "manually"() {
-		def title = "$NAME::manually"
-		def table
-		def spreadsheet
-		def pane
-		def panel
+		def title = "$NAME/manually"
 		def model = new NumbersModel(3, 128)
-		invokeAndWait {
-			table = new SheetTable(model)
-
-			spreadsheet = tableFactory.create(table)
-			pane = paneFactory.create(new JPanel(), spreadsheet)
-			pane.minimumRow = 0
-			pane.minimumColumn = 0
-			panel = createTablePanel(table, pane.container)
-		}
-		new TestFrameUtil(title, panel).withFixture({
+		def testing = testingFactory.create([title: title, setupFrame: { JFrame frame, Component component ->
+				def table = new JTable(model)
+				def spreadsheet = tableFactory.create(table)
+				def pane = paneFactory.create(new JPanel(), spreadsheet)
+				def panel = createTablePanel table, pane.container
+				frame.add panel, BorderLayout.CENTER
+			}])()
+		testing.withFixture({
 			Thread.sleep 60*1000
 			assert false : "Deactivate manually test"
 		})
@@ -91,6 +84,8 @@ class NavigationPanelTest {
 
 	static NavigationPanelFactory paneFactory
 
+	static FrameTestingFactory testingFactory
+
 	static final String NAME = NavigationPanelTest.class.simpleName
 
 	@BeforeClass
@@ -98,13 +93,15 @@ class NavigationPanelTest {
 		injector = createInjector()
 		paneFactory = injector.getInstance NavigationPanelFactory
 		tableFactory = injector.getInstance SpreadsheetTableFactory
+		testingFactory = injector.getInstance FrameTestingFactory
 	}
 
 	static Injector createInjector() {
-		Guice.createInjector(new SpreadsheetTableModule(), new NavigationPanelModule())
+		Guice.createInjector(new SpreadsheetTableModule(), new NavigationPanelModule(),
+				new FrameTestingModule())
 	}
 
-	static JPanel createTablePanel(def table, def navigation) {
+	static JPanel createTablePanel(JTable table, JPanel navigation) {
 		def panel = new JPanel(new BorderLayout())
 		def scroll = new JScrollPane(table)
 		panel.add scroll, BorderLayout.CENTER
