@@ -30,6 +30,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
 import java.io.File;
+import java.net.URI;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -214,7 +215,12 @@ public class CsvImportPanel {
 	}
 
 	private void updateColumns() {
-		File file = new File(properties.getFile());
+		URI uri = properties.getFile();
+		if (uri == null) {
+			setNumberColumns(0);
+			return;
+		}
+		File file = new File(uri);
 		if (!file.isFile()) {
 			setNumberColumns(0);
 			return;

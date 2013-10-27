@@ -125,7 +125,8 @@ public class CsvPanelProperties implements CsvImportProperties {
 
 	@Override
 	public URI getFile() {
-		return fileProperties.getFile().toURI();
+		File file = fileProperties.getFile();
+		return file == null ? null : file.toURI();
 	}
 
 	@Override

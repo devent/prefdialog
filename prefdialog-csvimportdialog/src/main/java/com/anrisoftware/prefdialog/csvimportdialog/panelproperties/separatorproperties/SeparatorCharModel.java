@@ -48,4 +48,7 @@ public class SeparatorCharModel extends DefaultComboBoxModel<Character> {
 		return list;
 	}
 
+	public boolean isSeparator(char c) {
+		return getIndexOf(c) != -1;
+	}
 }

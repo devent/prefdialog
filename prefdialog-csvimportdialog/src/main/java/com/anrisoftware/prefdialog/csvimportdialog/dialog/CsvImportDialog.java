@@ -1,18 +1,18 @@
 /*
  * Copyright 2013-2013 Erwin Müller <erwin.mueller@deventm.org>
- * 
+ *
  * This file is part of prefdialog-csvimportdialog.
- * 
+ *
  * prefdialog-csvimportdialog is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
- * 
+ *
  * prefdialog-csvimportdialog is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
  * Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-csvimportdialog. If not, see
  * <http://www.gnu.org/licenses/>.
@@ -23,16 +23,23 @@ import static com.anrisoftware.prefdialog.csvimportdialog.dialog.CsvImportDialog
 
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
+import java.io.File;
 
 import javax.inject.Inject;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import com.anrisoftware.globalpom.dataimport.CsvImportProperties;
 import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanel;
 import com.anrisoftware.prefdialog.csvimportdialog.importpaneldock.ImportPanelDock;
+import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.advancedproperties.LineEnd;
+import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.advancedproperties.QuoteCharModel;
+import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelProperties;
+import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.separatorproperties.SeparatorCharModel;
+import com.anrisoftware.prefdialog.fields.FieldComponent;
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 import com.anrisoftware.prefdialog.miscswing.docks.api.Dock;
 import com.anrisoftware.prefdialog.miscswing.docks.api.DockFactory;
@@ -45,7 +52,7 @@ import com.google.inject.assistedinject.Assisted;
 
 /**
  * Dialog to import CSV data.
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
@@ -63,12 +70,12 @@ public class CsvImportDialog extends SimpleDialog {
 
 	/**
 	 * Decorates the dialog with the CSV import panel and dialog actions.
-	 * 
+	 *
 	 * @param dialog
 	 *            the {@link JDialog}.
-	 * 
+	 *
 	 * @see CsvImportDialogFactory#create(JFrame, CsvImportProperties)
-	 * 
+	 *
 	 * @return the {@link CsvImportDialog}.
 	 */
 	public static CsvImportDialog decorate(JDialog dialog, JFrame frame,
@@ -123,9 +130,129 @@ public class CsvImportDialog extends SimpleDialog {
 		this.texts = factory.create(CsvImportDialog.class.getSimpleName());
 	}
 
+	@OnAwt
+	public void setProperties(CsvImportProperties properties)
+			throws PropertyVetoException {
+		FieldComponent<?> field = getImportPanelField();
+		setCharsetProperty(properties, field);
+		setLineEndProperty(properties, field);
+		setFileProperty(properties, field);
+		setLocaleProperty(properties, field);
+		setNumColsProperty(properties, field);
+		setQuoteProperty(properties, field);
+		setSeparatorProperty(properties, field);
+		setStartRowProperty(properties, field);
+	}
+
+	@OnAwt
+	public void setPropertiesNoChecks(CsvImportProperties properties) {
+		FieldComponent<?> field = getImportPanelField();
+		try {
+			setCharsetProperty(properties, field);
+		} catch (PropertyVetoException e) {
+		}
+		try {
+			setLineEndProperty(properties, field);
+		} catch (PropertyVetoException e) {
+		}
+		try {
+			setFileProperty(properties, field);
+		} catch (PropertyVetoException e) {
+		}
+		try {
+			setLocaleProperty(properties, field);
+		} catch (PropertyVetoException e) {
+		}
+		try {
+			setNumColsProperty(properties, field);
+		} catch (PropertyVetoException e) {
+		}
+		try {
+			setQuoteProperty(properties, field);
+		} catch (PropertyVetoException e) {
+		}
+		try {
+			setSeparatorProperty(properties, field);
+		} catch (PropertyVetoException e) {
+		}
+		try {
+			setStartRowProperty(properties, field);
+		} catch (PropertyVetoException e) {
+		}
+	}
+
+	private void setQuoteProperty(CsvImportProperties properties,
+			FieldComponent<?> field) throws PropertyVetoException {
+		CsvPanelProperties fieldProperties = (CsvPanelProperties) getProperties();
+		QuoteCharModel model = fieldProperties.getAdvancedProperties()
+				.getQuoteCharModel();
+		char quote = properties.getQuote();
+		FieldComponent<?> f;
+		if (model.isQuoteChar(quote)) {
+			f = field.findField("quoteChar");
+			f.setValue(properties.getQuote());
+		} else {
+			f = field.findField("useCustomQuote");
+			f.setValue(true);
+			f = field.findField("customQuoteChar");
+			f.setValue(properties.getQuote());
+		}
+	}
+
+	private void setNumColsProperty(CsvImportProperties properties,
+			FieldComponent<?> field) throws PropertyVetoException {
+		FieldComponent<?> f = field.findField("locale");
+		f.setValue(properties.getLocale());
+	}
+
+	private void setStartRowProperty(CsvImportProperties properties,
+			FieldComponent<?> field) throws PropertyVetoException {
+		FieldComponent<?> f = field.findField("startRow");
+		f.setValue(properties.getStartRow());
+	}
+
+	private void setLocaleProperty(CsvImportProperties properties,
+			FieldComponent<?> field) throws PropertyVetoException {
+		FieldComponent<?> f = field.findField("locale");
+		f.setValue(properties.getLocale());
+	}
+
+	private void setFileProperty(CsvImportProperties properties,
+			FieldComponent<?> field) throws PropertyVetoException {
+		FieldComponent<?> f = field.findField("file");
+		f.setValue(new File(properties.getFile()));
+	}
+
+	private void setCharsetProperty(CsvImportProperties properties,
+			FieldComponent<?> field) throws PropertyVetoException {
+		FieldComponent<?> f = field.findField("charset");
+		f.setValue(properties.getCharset());
+	}
+
+	private void setLineEndProperty(CsvImportProperties properties,
+			FieldComponent<?> field) throws PropertyVetoException {
+		FieldComponent<?> f = field.findField("lineEndSymbols");
+		LineEnd symbols = LineEnd.parse(properties.getEndOfLineSymbols());
+		f.setValue(symbols);
+	}
+
+	private void setSeparatorProperty(CsvImportProperties properties,
+			FieldComponent<?> field) throws PropertyVetoException {
+		CsvPanelProperties fieldProperties = (CsvPanelProperties) getProperties();
+		SeparatorCharModel model = fieldProperties.getSeparatorProperties()
+				.getSeparatorCharModel();
+		char separator = properties.getSeparator();
+		if (model.isSeparator(separator)) {
+			field.findField("separatorChar").setValue(separator);
+		} else {
+			field.findField("useCustomSeparator").setValue(true);
+			field.findField("customSeparatorChar").setValue(separator);
+		}
+	}
+
 	/**
 	 * Sets the parent dependencies.
-	 * 
+	 *
 	 * @param parent
 	 *            the parent dependencies or {@code null}.
 	 */
@@ -147,7 +274,7 @@ public class CsvImportDialog extends SimpleDialog {
 
 	/**
 	 * Returns the dock.
-	 * 
+	 *
 	 * @return the {@link Dock}.
 	 */
 	public Dock getDock() {
@@ -156,7 +283,7 @@ public class CsvImportDialog extends SimpleDialog {
 
 	/**
 	 * Returns the CSV import properties.
-	 * 
+	 *
 	 * @return the {@link CsvImportProperties}.
 	 */
 	public CsvImportProperties getProperties() {
@@ -165,11 +292,20 @@ public class CsvImportDialog extends SimpleDialog {
 
 	/**
 	 * Returns the import panel dock.
-	 * 
+	 *
 	 * @return the {@link ImportPanelDock}.
 	 */
 	public ImportPanelDock getImportPanelDock() {
 		return importPanelDock;
+	}
+
+	/**
+	 * Returns the CSV import panel field.
+	 *
+	 * @return the {@link FieldComponent}.
+	 */
+	public FieldComponent<JPanel> getImportPanelField() {
+		return importPanelDock.getImportPanel().getPanel();
 	}
 
 	@Override
