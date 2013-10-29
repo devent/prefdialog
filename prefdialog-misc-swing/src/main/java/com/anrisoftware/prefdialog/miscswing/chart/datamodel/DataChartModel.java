@@ -1,10 +1,11 @@
 package com.anrisoftware.prefdialog.miscswing.chart.datamodel;
 
-import javax.inject.Inject;
-
 import com.anrisoftware.globalpom.data.DataBean;
+import com.anrisoftware.prefdialog.miscswing.chart.columnnames.DefaultColumnNamesFactory;
 import com.anrisoftware.prefdialog.miscswing.chart.model.AbstractChartModel;
+import com.anrisoftware.prefdialog.miscswing.chart.model.ColumnNames;
 import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
 
 /**
  * Chart model for data.
@@ -17,13 +18,23 @@ public class DataChartModel extends AbstractChartModel {
 
 	private final DataBean data;
 
-	private final String[] columnNames;
+	private final ColumnNames columnNames;
 
 	/**
 	 * @see DataChartModelFactory#create(DataBean, String[])
 	 */
-	@Inject
-	DataChartModel(@Assisted DataBean data, @Assisted String[] columnNames) {
+	@AssistedInject
+	DataChartModel(DefaultColumnNamesFactory namesFactory,
+			@Assisted DataBean data, @Assisted String[] columnNames) {
+		this.data = data;
+		this.columnNames = namesFactory.create(columnNames);
+	}
+
+	/**
+	 * @see DataChartModelFactory#create(DataBean, ColumnNames)
+	 */
+	@AssistedInject
+	DataChartModel(@Assisted DataBean data, @Assisted ColumnNames columnNames) {
 		this.data = data;
 		this.columnNames = columnNames;
 	}
@@ -40,11 +51,7 @@ public class DataChartModel extends AbstractChartModel {
 
 	@Override
 	public String getColumnName(int column) {
-		if (column >= columnNames.length) {
-			return null;
-		} else {
-			return columnNames[column];
-		}
+		return columnNames.getColumnName(column);
 	}
 
 	@Override
