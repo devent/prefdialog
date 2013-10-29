@@ -49,7 +49,7 @@ import com.anrisoftware.resources.texts.api.Texts;
  * 	private Map&lt;String, MenuAction&gt; actions;
  * 
  * 	&#064;Inject
- * 	protected void setTexts(TextsProvider texts) {
+ * 	void setTexts(TextsProvider texts) {
  * 		super.setTexts(texts);
  * 	}
  * 
@@ -80,7 +80,7 @@ public abstract class AbstractMenuActions {
 	 * 
 	 * @see AbstractResourcesAction#setTexts(Texts)
 	 */
-	protected void setTexts(Texts texts) {
+	public void setTexts(Texts texts) {
 		for (MenuAction action : getActions().values()) {
 			((AbstractResourcesAction) action).setTexts(texts);
 		}
@@ -89,9 +89,9 @@ public abstract class AbstractMenuActions {
 	/**
 	 * Sets the images resource for the actions.
 	 * 
-	 * @see AbstractResourcesAction#setImages(com.anrisoftware.resources.images.api.Images)
+	 * @see AbstractResourcesAction#setImages(Images)
 	 */
-	protected void setImages(Images images) {
+	public void setImages(Images images) {
 		for (MenuAction action : getActions().values()) {
 			AbstractResourcesAction a = (AbstractResourcesAction) action;
 			a.setImages(images);
