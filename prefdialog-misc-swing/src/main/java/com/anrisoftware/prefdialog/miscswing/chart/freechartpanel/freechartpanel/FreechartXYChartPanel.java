@@ -8,6 +8,7 @@ import java.io.Serializable;
 import javax.inject.Inject;
 
 import org.jfree.chart.ChartPanel;
+import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
@@ -193,6 +194,21 @@ public class FreechartXYChartPanel implements Serializable {
 		float zoom = factor < 0 ? 1.25f : 0.75f;
 		max = round(max * zoom);
 		model.setMaximum(max);
+	}
+
+	/**
+	 * Sets the orientation of the chart.
+	 * <p>
+	 * <h2>AWT Thread</h2>
+	 * <p>
+	 * Should be called in the AWT thread.
+	 * 
+	 * @param orientation
+	 *            the {@link PlotOrientation}.
+	 */
+	@OnAwt
+	public void setPlotOrientation(PlotOrientation orientation) {
+		panel.setPlotOrientation(orientation);
 	}
 
 	private void setupNewModel() {

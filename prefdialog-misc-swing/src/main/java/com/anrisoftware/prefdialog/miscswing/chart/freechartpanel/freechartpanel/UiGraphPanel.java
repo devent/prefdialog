@@ -26,8 +26,6 @@ import javax.swing.JScrollBar;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -41,6 +39,7 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 import com.anrisoftware.prefdialog.miscswing.actions.AbstractMenuActions;
 import com.anrisoftware.prefdialog.miscswing.actions.MenuAction;
+import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 import com.anrisoftware.prefdialog.miscswing.chart.freechartpanel.actions.GraphWindowActions;
 import com.anrisoftware.prefdialog.miscswing.colorpalette.PaletteFactory;
 import com.anrisoftware.prefdialog.miscswing.resourcesaction.AbstractResourcesAction;
@@ -58,7 +57,7 @@ class UiGraphPanel extends JPanel {
 	@Inject
 	private PaletteFactory paletteFactory;
 
-	private final JScrollBar graphScrollBar;
+	private final JScrollBar horizontalScrollBar;
 
 	private final ChartPanel chartPanel;
 
@@ -66,7 +65,7 @@ class UiGraphPanel extends JPanel {
 
 	private final JPanel graphScrollPanel;
 
-	private final JFormattedTextField maximumField;
+	private final JFormattedTextField rangeField;
 
 	private GraphScrollModel graphScrollModel;
 
@@ -89,6 +88,9 @@ class UiGraphPanel extends JPanel {
 	private boolean blackWhite;
 
 	private ToolbarMenu toolbarMenu;
+	private final JScrollBar verticalScrollBar;
+
+	private JScrollBar plotScrollBar;
 
 	/**
 	 * Create the panel.
@@ -104,17 +106,7 @@ class UiGraphPanel extends JPanel {
 
 		graphScrollPanel = new JPanel();
 		add(graphScrollPanel, BorderLayout.SOUTH);
-		graphScrollPanel.setLayout(new MigLayout("", "0[grow][64]0", "0[]0"));
-
-		this.graphScrollBar = new JScrollBar();
-		graphScrollPanel.add(graphScrollBar, "cell 0 0,growx");
-		graphScrollBar.setName("graphScrollBar");
-		graphScrollBar.setOrientation(JScrollBar.HORIZONTAL);
-
-		maximumField = new JFormattedTextField();
-		maximumField.setValue(0);
-		maximumField.setHorizontalAlignment(SwingConstants.TRAILING);
-		graphScrollPanel.add(maximumField, "cell 1 0,growx");
+		graphScrollPanel.setLayout(new BorderLayout(0, 0));
 
 		toolBar = new JToolBar();
 		add(toolBar, BorderLayout.NORTH);
@@ -134,6 +126,20 @@ class UiGraphPanel extends JPanel {
 		optionsButton = new JButton("Options");
 		toolBar.add(optionsButton);
 
+		rangeField = new JFormattedTextField();
+		toolBar.add(rangeField);
+		rangeField.setValue(0);
+		rangeField.setHorizontalAlignment(SwingConstants.TRAILING);
+
+		verticalScrollBar = new JScrollBar();
+		add(verticalScrollBar, BorderLayout.EAST);
+
+		this.horizontalScrollBar = new JScrollBar();
+		add(horizontalScrollBar, BorderLayout.SOUTH);
+		horizontalScrollBar.setName("graphScrollBar");
+		horizontalScrollBar.setOrientation(JScrollBar.HORIZONTAL);
+
+		setPlotOrientation(chart.getXYPlot().getOrientation());
 	}
 
 	private JFreeChart createChart() {
@@ -193,14 +199,16 @@ class UiGraphPanel extends JPanel {
 	public void setGraphScrollModel(GraphScrollModel model) {
 		removeOldScrollModel(this.graphScrollModel);
 		this.graphScrollModel = model;
-		graphScrollBar.setModel(model);
+		horizontalScrollBar.setModel(model);
+		verticalScrollBar.setModel(model);
 	}
 
 	private void removeOldScrollModel(GraphScrollModel model) {
 		if (model == null) {
 			return;
 		}
-		graphScrollBar.setModel(new DefaultBoundedRangeModel());
+		horizontalScrollBar.setModel(new DefaultBoundedRangeModel());
+		verticalScrollBar.setModel(new DefaultBoundedRangeModel());
 	}
 
 	public GraphScrollModel getGraphScrollModel() {
@@ -234,11 +242,11 @@ class UiGraphPanel extends JPanel {
 	}
 
 	public JScrollBar getGraphScrollBar() {
-		return graphScrollBar;
+		return horizontalScrollBar;
 	}
 
-	public JFormattedTextField getMaximumField() {
-		return maximumField;
+	public JFormattedTextField getRangeField() {
+		return rangeField;
 	}
 
 	public JButton getAutoZoomButton() {
@@ -322,5 +330,29 @@ class UiGraphPanel extends JPanel {
 		Action action = (Action) menuAction;
 		button.setAction(action);
 		toolbarMenu.addAction((AbstractResourcesAction) menuAction);
+	}
+
+	@OnAwt
+	public void setPlotOrientation(PlotOrientation orientation) {
+		XYPlot plot = (XYPlot) chart.getPlot();
+		plot.setOrientation(orientation);
+		if (orientation == PlotOrientation.HORIZONTAL) {
+			verticalScrollBar.setVisible(true);
+			horizontalScrollBar.setVisible(false);
+			this.plotScrollBar = verticalScrollBar;
+		}
+		if (orientation == PlotOrientation.VERTICAL) {
+			verticalScrollBar.setVisible(false);
+			horizontalScrollBar.setVisible(true);
+			this.plotScrollBar = horizontalScrollBar;
+		}
+	}
+
+	public JScrollBar getVerticalScrollBar() {
+		return verticalScrollBar;
+	}
+
+	public JScrollBar getPlotScrollBar() {
+		return plotScrollBar;
 	}
 }
