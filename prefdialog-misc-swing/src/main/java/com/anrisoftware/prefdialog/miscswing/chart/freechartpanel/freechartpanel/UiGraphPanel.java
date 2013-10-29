@@ -159,7 +159,7 @@ class UiGraphPanel extends JPanel {
 		plot.setDomainZeroBaselineVisible(true);
 		plot.setRangeZeroBaselineVisible(true);
 		ValueAxis rangeAxis = plot.getRangeAxis();
-		rangeAxis.setAutoRange(false);
+		rangeAxis.setAutoRange(true);
 		return plot;
 	}
 

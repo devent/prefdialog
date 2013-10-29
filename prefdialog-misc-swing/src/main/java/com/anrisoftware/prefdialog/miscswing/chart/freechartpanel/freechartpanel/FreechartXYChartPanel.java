@@ -1,10 +1,13 @@
 package com.anrisoftware.prefdialog.miscswing.chart.freechartpanel.freechartpanel;
 
+import static java.lang.Math.round;
+
 import java.awt.Component;
 import java.io.Serializable;
 
 import javax.inject.Inject;
 
+import org.jfree.chart.ChartPanel;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
@@ -50,6 +53,8 @@ public class FreechartXYChartPanel implements Serializable {
 			public void chartChanged(ChartModelEvent e) {
 				int row0 = e.getFirstRow();
 				int row1 = e.getLastRow();
+				System.out.println(e.getType());// TODO println
+				System.out.printf("%d-%d%n", row0, row1); // TODO print
 				switch (e.getType()) {
 				case INSERTED:
 					updateInsertData(row0, row1);
@@ -86,13 +91,114 @@ public class FreechartXYChartPanel implements Serializable {
 	 *            the {@link ChartModel}.
 	 */
 	@OnAwt
-	public void setChartModel(ChartModel model) {
+	public void setModel(ChartModel model) {
 		removeOldModel(this.model);
 		removeOldScrollModel(this.scrollModel);
 		this.model = model;
 		this.scrollModel = scrollModelFactory.create(model);
+		setupNewModel();
+		setAutoZoomDomain(true);
+	}
+
+	/**
+	 * Returns the chart model.
+	 * 
+	 * @return the {@link ChartModel}.
+	 */
+	public ChartModel getModel() {
+		return model;
+	}
+
+	/**
+	 * Sets to use anti-aliasing in the data graph.
+	 * <p>
+	 * <h2>AWT Thread</h2>
+	 * <p>
+	 * Should be called in the AWT thread.
+	 * 
+	 * @param antiAliasing
+	 *            set to {@code true} to enable anti-aliasing.
+	 */
+	@OnAwt
+	public void setAntiAliasing(boolean antiAliasing) {
+		panel.getChart().setAntiAlias(antiAliasing);
+	}
+
+	/**
+	 * Sets black/white or color data graph.
+	 * <p>
+	 * <h2>AWT Thread</h2>
+	 * <p>
+	 * Should be called in the AWT thread.
+	 * 
+	 * @param blackWhite
+	 *            set to {@code true} to enable black/white.
+	 */
+	@OnAwt
+	public void setBlackWhite(boolean blackWhite) {
+		panel.setBlackWhite(blackWhite);
+	}
+
+	/**
+	 * Sets show shapes graph.
+	 * <p>
+	 * <h2>AWT Thread</h2>
+	 * <p>
+	 * Should be called in the AWT thread.
+	 * 
+	 * @param showShapes
+	 *            set to {@code true} to enable black/white.
+	 */
+	@OnAwt
+	public void setShowShapes(boolean showShapes) {
+		panel.setShapeGraph(showShapes);
+	}
+
+	/**
+	 * Sets auto zooms of the domain axis.
+	 * <p>
+	 * <h2>AWT Thread</h2>
+	 * <p>
+	 * Should be called in the AWT thread.
+	 * 
+	 * @param autoZoom
+	 *            set to {@code true} for auto zoom.
+	 */
+	@OnAwt
+	public void setAutoZoomDomain(boolean autoZoom) {
+		if (!autoZoom) {
+			return;
+		}
+		ChartModel model = getModel();
+		ChartPanel panel = this.panel.getChartPanel();
+		panel.restoreAutoDomainBounds();
+		int size = model.getRowCount();
+		model.setMaximum(size / 4);
+	}
+
+	/**
+	 * Zooms the domain axis.
+	 * <p>
+	 * <h2>AWT Thread</h2>
+	 * <p>
+	 * Should be called in the AWT thread.
+	 * 
+	 * @param factor
+	 *            set to 1 to zoom in or -1 to zoom out the domain axis.
+	 */
+	@OnAwt
+	public void setZoomDomain(int factor) {
+		ChartModel model = getModel();
+		int max = model.getMaximum();
+		float zoom = factor < 0 ? 1.25f : 0.75f;
+		max = round(max * zoom);
+		model.setMaximum(max);
+	}
+
+	private void setupNewModel() {
 		model.addChartModelListener(chartModelListener);
-		updateInsertData(0, model.getMaximumRowCount());
+		setupData(0, model.getMaximumRowCount());
+		updateInsertData(0, model.getMaximumRowCount() - 1);
 		panel.setGraphScrollModel(scrollModel);
 	}
 
@@ -108,7 +214,18 @@ public class FreechartXYChartPanel implements Serializable {
 		}
 	}
 
+	private void setupData(int row0, int row1) {
+		ChartModel model = this.model;
+		int cols = model.getColumnCount();
+		XYSeriesCollection dataset = getCategory();
+		for (int i = 0; i < cols; i++) {
+			XYSeries series = new XYSeries(model.getColumnName(i), false, false);
+			dataset.addSeries(series);
+		}
+	}
+
 	private void updateData(int row0, int row1) {
+		ChartModel model = this.model;
 		XYSeriesCollection series = getCategory();
 		int col0 = 0;
 		int col1 = series.getSeriesCount() - 1;
@@ -131,6 +248,7 @@ public class FreechartXYChartPanel implements Serializable {
 	}
 
 	private void updateInsertData(int row0, int row1) {
+		ChartModel model = this.model;
 		XYSeriesCollection series = getCategory();
 		for (int col = 0; col < series.getSeriesCount(); col++) {
 			XYSeries xyseries = series.getSeries(col);

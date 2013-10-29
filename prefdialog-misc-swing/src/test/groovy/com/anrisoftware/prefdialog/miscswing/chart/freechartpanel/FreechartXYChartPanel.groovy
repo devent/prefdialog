@@ -10,6 +10,7 @@ import org.junit.Test
 import com.anrisoftware.globalpom.mnemonic.MnemonicModule
 import com.anrisoftware.globalpom.utils.frametesting.FrameTestingFactory
 import com.anrisoftware.globalpom.utils.frametesting.FrameTestingModule
+import com.anrisoftware.prefdialog.miscswing.chart.columnnames.ChartColumnNamesModule
 import com.anrisoftware.prefdialog.miscswing.chart.datamodel.ChartDataModelModule
 import com.anrisoftware.prefdialog.miscswing.chart.datamodel.DataChartModelFactory
 import com.anrisoftware.prefdialog.miscswing.chart.freechartpanel.freechartpanel.FreechartPanelModule
@@ -40,10 +41,10 @@ class FreechartXYChartPanel {
 			"6"] as String[]
 		def testing = testingFactory.create([title: title, createComponent: { JFrame frame ->
 				def panel = panelFactory.create()
-				panel.setChartModel model
+				panel.setModel model
 				panel.panel
 			}])()
-		testing.withFixture({})
+		testing.withFixture({Thread.sleep 60600})
 	}
 
 	static Injector injector
@@ -67,6 +68,7 @@ class FreechartXYChartPanel {
 	static Injector createInjector() {
 		Guice.createInjector(new FreechartPanelModule(),
 				new ChartDataModelModule(),
+				new ChartColumnNamesModule(),
 				new ColorPaletteModule(),
 				new MnemonicModule(),
 				new FrameTestingModule())

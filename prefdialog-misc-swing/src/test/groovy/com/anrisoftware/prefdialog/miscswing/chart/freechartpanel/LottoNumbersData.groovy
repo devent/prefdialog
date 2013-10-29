@@ -37,6 +37,7 @@ class LottoNumbersData {
 		def properties = SingletonHolder.propertiesFactory.create()
 		properties.setFile resource.toURI()
 		properties.setSeparator ';' as char
+		properties.setNumCols 7
 		def importer = SingletonHolder.importerFactory.create properties
 		def data = SingletonHolder.dataImportFactory.create(importer)()
 		SingletonHolder.beanFactory.create(data)
