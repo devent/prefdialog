@@ -22,6 +22,11 @@ public class ChartModelEvent extends EventObject {
 		DELETED
 	}
 
+	/**
+	 * Marker for all columns.
+	 */
+	public static final int ALL_COLUMNS = -1;
+
 	private static final String COLUMN = "column";
 
 	private static final String LAST_ROW = "last row";
@@ -30,7 +35,7 @@ public class ChartModelEvent extends EventObject {
 
 	private static final String TYPE = "type";
 
-	public static final int ALL_COLUMNS = -1;
+	private static final String OFFSET = "offset";
 
 	private final EventType type;
 
@@ -39,6 +44,8 @@ public class ChartModelEvent extends EventObject {
 	private final int lastRow;
 
 	private final int column;
+
+	private final int offset;
 
 	/**
 	 * The data values from the first row to the last row in the specified
@@ -59,14 +66,18 @@ public class ChartModelEvent extends EventObject {
 	 * @param column
 	 *            the column index of change or {@link #ALL_COLUMNS} indicating
 	 *            that all columns have been updated.
+	 * 
+	 * @param offset
+	 *            the current offset of the data.
 	 */
 	public ChartModelEvent(ChartModel source, EventType type, int fistRow,
-			int lastRow, int column) {
+			int lastRow, int column, int offset) {
 		super(source);
 		this.type = type;
 		this.firstRow = fistRow;
 		this.lastRow = lastRow;
 		this.column = column;
+		this.offset = offset;
 	}
 
 	public EventType getType() {
@@ -85,10 +96,15 @@ public class ChartModelEvent extends EventObject {
 		return column;
 	}
 
+	public int getOffset() {
+		return offset;
+	}
+
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this).appendSuper(super.toString())
 				.append(TYPE, type).append(FIRST_ROW, firstRow)
-				.append(LAST_ROW, lastRow).append(COLUMN, column).toString();
+				.append(LAST_ROW, lastRow).append(COLUMN, column)
+				.append(OFFSET, offset).toString();
 	}
 }

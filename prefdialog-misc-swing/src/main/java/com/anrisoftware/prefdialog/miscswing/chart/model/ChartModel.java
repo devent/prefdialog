@@ -71,14 +71,14 @@ public interface ChartModel extends Serializable {
 	 *            the maximum.
 	 */
 	@OnAwt
-	void setMaximum(int max);
+	void setViewMaximum(int max);
 
 	/**
 	 * Returns the maximum visible data points of the graph.
 	 * 
 	 * @returns the maximum.
 	 */
-	int getMaximum();
+	int getViewMaximum();
 
 	/**
 	 * Returns the count of values in the model that can be shown in the chart.

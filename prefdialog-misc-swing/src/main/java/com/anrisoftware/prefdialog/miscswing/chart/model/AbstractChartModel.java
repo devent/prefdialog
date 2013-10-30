@@ -31,7 +31,7 @@ public abstract class AbstractChartModel implements ChartModel {
 
 	private int offset;
 
-	private int maximum;
+	private int viewMaximum;
 
 	private double valuesMinimum;
 
@@ -39,7 +39,7 @@ public abstract class AbstractChartModel implements ChartModel {
 
 	protected AbstractChartModel() {
 		this.offset = 0;
-		this.maximum = 100;
+		this.viewMaximum = 100;
 		this.valuesMinimum = -100;
 		this.valuesMaximum = 100;
 		readResolve();
@@ -72,24 +72,24 @@ public abstract class AbstractChartModel implements ChartModel {
 	}
 
 	@Override
-	public void setMaximum(int max) {
+	public void setViewMaximum(int max) {
 		int oldMax = getMaximumRowCount();
-		int oldValue = this.maximum;
-		this.maximum = max;
+		int oldValue = this.viewMaximum;
+		this.viewMaximum = max;
 		if (oldValue == max) {
 			return;
 		}
 		int newMax = getMaximumRowCount();
 		if (oldMax - newMax > 0) {
-			fireRowsDeleted(newMax - 1, oldMax - 1);
+			fireRowsDeleted(newMax, oldMax - 1);
 		} else {
-			fireRowsInserted(oldMax - 1, newMax - 1);
+			fireRowsInserted(oldMax, newMax - 1);
 		}
 	}
 
 	@Override
-	public int getMaximum() {
-		return maximum;
+	public int getViewMaximum() {
+		return viewMaximum;
 	}
 
 	@Override
@@ -118,7 +118,7 @@ public abstract class AbstractChartModel implements ChartModel {
 
 	@Override
 	public final int getMaximumRowCount() {
-		return min(maximum, getRowCount());
+		return min(viewMaximum, getRowCount());
 	}
 
 	@Override
@@ -128,26 +128,27 @@ public abstract class AbstractChartModel implements ChartModel {
 
 	public void fireTableDataChanged() {
 		fireChartChanged(new ChartModelEvent(this, UPDATED, 0, MAX_VALUE,
-				ALL_COLUMNS));
+				ALL_COLUMNS, getOffset()));
 	}
 
 	public void fireRowsInserted(int firstRow, int lastRow) {
 		fireChartChanged(new ChartModelEvent(this, INSERTED, firstRow, lastRow,
-				ALL_COLUMNS));
+				ALL_COLUMNS, getOffset()));
 	}
 
 	public void fireRowsUpdated(int firstRow, int lastRow) {
 		fireChartChanged(new ChartModelEvent(this, UPDATED, firstRow, lastRow,
-				ALL_COLUMNS));
+				ALL_COLUMNS, getOffset()));
 	}
 
 	public void fireRowsDeleted(int firstRow, int lastRow) {
 		fireChartChanged(new ChartModelEvent(this, DELETED, firstRow, lastRow,
-				ALL_COLUMNS));
+				ALL_COLUMNS, getOffset()));
 	}
 
 	public void fireChartValueUpdated(int row, int column) {
-		fireChartChanged(new ChartModelEvent(this, UPDATED, row, row, column));
+		fireChartChanged(new ChartModelEvent(this, UPDATED, row, row, column,
+				getOffset()));
 	}
 
 	public void fireChartChanged(ChartModelEvent e) {

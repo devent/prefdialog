@@ -1,8 +1,12 @@
 package com.anrisoftware.prefdialog.miscswing.chart.freechartpanel.freechartpanel;
 
+import static com.anrisoftware.prefdialog.miscswing.chart.freechartpanel.freechartpanel.GraphScrollModel.Property.VALUE_PROPERTY;
 import static java.lang.Math.round;
+import static javax.swing.SwingUtilities.invokeLater;
 
 import java.awt.Component;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.Serializable;
 
 import javax.inject.Inject;
@@ -16,6 +20,7 @@ import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 import com.anrisoftware.prefdialog.miscswing.chart.model.ChartModel;
 import com.anrisoftware.prefdialog.miscswing.chart.model.ChartModelEvent;
 import com.anrisoftware.prefdialog.miscswing.chart.model.ChartModelListener;
+import com.anrisoftware.resources.images.api.IconSize;
 
 /**
  * {@code JFreeChart} X/Y line chart panel.
@@ -26,9 +31,14 @@ import com.anrisoftware.prefdialog.miscswing.chart.model.ChartModelListener;
 @SuppressWarnings("serial")
 public class FreechartXYChartPanel implements Serializable {
 
+	private static final String SWING_VALUE_PROPERTY = "value";
+
 	private transient ChartModelListener chartModelListener;
 
 	private final UiGraphPanel panel;
+
+	@Inject
+	private FreechartXYChartPanelLogger log;
 
 	@Inject
 	private GraphScrollModelFactory scrollModelFactory;
@@ -36,6 +46,10 @@ public class FreechartXYChartPanel implements Serializable {
 	private ChartModel model;
 
 	private GraphScrollModel scrollModel;
+
+	private PropertyChangeListener rangeValueListener;
+
+	private PropertyChangeListener viewScrollValueListener;
 
 	/**
 	 * @see FreechartXYChartPanelFactory#create()
@@ -54,19 +68,47 @@ public class FreechartXYChartPanel implements Serializable {
 			public void chartChanged(ChartModelEvent e) {
 				int row0 = e.getFirstRow();
 				int row1 = e.getLastRow();
-				System.out.println(e.getType());// TODO println
-				System.out.printf("%d-%d%n", row0, row1); // TODO print
+				int offset = e.getOffset();
+				log.chartChanged(FreechartXYChartPanel.this, e);
 				switch (e.getType()) {
 				case INSERTED:
-					updateInsertData(row0, row1);
+					updateInsertData(row0, row1, offset);
 					break;
 				case DELETED:
-					updateDeletedData(row0, row1);
+					updateDeletedData(row0, row1, offset);
 					break;
 				case UPDATED:
-					updateData(row0, row1);
+					updateData(row0, row1, offset);
 					break;
 				}
+			}
+		};
+		this.rangeValueListener = new PropertyChangeListener() {
+
+			@Override
+			public void propertyChange(final PropertyChangeEvent evt) {
+				invokeLater(new Runnable() {
+
+					@Override
+					public void run() {
+						setViewMaximum((Integer) evt.getNewValue());
+					}
+
+				});
+			}
+		};
+		this.viewScrollValueListener = new PropertyChangeListener() {
+
+			@Override
+			public void propertyChange(final PropertyChangeEvent evt) {
+				invokeLater(new Runnable() {
+
+					@Override
+					public void run() {
+						setOffset((Integer) evt.getNewValue());
+					}
+
+				});
 			}
 		};
 		return this;
@@ -108,6 +150,23 @@ public class FreechartXYChartPanel implements Serializable {
 	 */
 	public ChartModel getModel() {
 		return model;
+	}
+
+	/**
+	 * @see ChartModel#setViewMaximum(int)
+	 */
+	@OnAwt
+	public void setViewMaximum(int max) {
+		model.setViewMaximum(max);
+		scrollModel.setViewMaximum(max);
+	}
+
+	/**
+	 * @see ChartModel#setOffset(int)
+	 */
+	@OnAwt
+	public void setOffset(int offset) {
+		model.setOffset(offset);
 	}
 
 	/**
@@ -174,7 +233,7 @@ public class FreechartXYChartPanel implements Serializable {
 		ChartPanel panel = this.panel.getChartPanel();
 		panel.restoreAutoDomainBounds();
 		int size = model.getRowCount();
-		model.setMaximum(size / 4);
+		setViewMaximum(size / 4);
 	}
 
 	/**
@@ -190,10 +249,22 @@ public class FreechartXYChartPanel implements Serializable {
 	@OnAwt
 	public void setZoomDomain(int factor) {
 		ChartModel model = getModel();
-		int max = model.getMaximum();
+		int max = model.getViewMaximum();
 		float zoom = factor < 0 ? 1.25f : 0.75f;
 		max = round(max * zoom);
-		model.setMaximum(max);
+		setViewMaximum(max);
+	}
+
+	/**
+	 * Sets the icon size of the tool-bar buttons.
+	 * 
+	 * @param size
+	 *            the {@link IconSize}.
+	 */
+	@OnAwt
+	public void setIconSize(IconSize size) {
+		// TODO Auto-generated method stub
+
 	}
 
 	/**
@@ -214,8 +285,12 @@ public class FreechartXYChartPanel implements Serializable {
 	private void setupNewModel() {
 		model.addChartModelListener(chartModelListener);
 		setupData(0, model.getMaximumRowCount());
-		updateInsertData(0, model.getMaximumRowCount() - 1);
+		updateInsertData(0, model.getMaximumRowCount() - 1, 0);
 		panel.setGraphScrollModel(scrollModel);
+		panel.getRangeField().addPropertyChangeListener(SWING_VALUE_PROPERTY,
+				rangeValueListener);
+		scrollModel.addPropertyChangeListener(VALUE_PROPERTY,
+				viewScrollValueListener);
 	}
 
 	private void removeOldScrollModel(GraphScrollModel model) {
@@ -240,7 +315,7 @@ public class FreechartXYChartPanel implements Serializable {
 		}
 	}
 
-	private void updateData(int row0, int row1) {
+	private void updateData(int row0, int row1, int offset) {
 		ChartModel model = this.model;
 		XYSeriesCollection series = getCategory();
 		int col0 = 0;
@@ -248,12 +323,13 @@ public class FreechartXYChartPanel implements Serializable {
 		for (int col = col0; col <= col1; col++) {
 			XYSeries xyseries = series.getSeries(col);
 			for (int row = row0; row <= row1; row++) {
-				xyseries.updateByIndex(row, model.getValueAt(row, col));
+				double value = model.getValueAt(row + offset, col);
+				xyseries.updateByIndex(row, value);
 			}
 		}
 	}
 
-	private void updateDeletedData(int row0, int row1) {
+	private void updateDeletedData(int row0, int row1, int offset) {
 		XYSeriesCollection series = getCategory();
 		for (int col = 0; col < series.getSeriesCount(); col++) {
 			XYSeries xyseries = series.getSeries(col);
@@ -263,7 +339,7 @@ public class FreechartXYChartPanel implements Serializable {
 		}
 	}
 
-	private void updateInsertData(int row0, int row1) {
+	private void updateInsertData(int row0, int row1, int offset) {
 		ChartModel model = this.model;
 		XYSeriesCollection series = getCategory();
 		for (int col = 0; col < series.getSeriesCount(); col++) {

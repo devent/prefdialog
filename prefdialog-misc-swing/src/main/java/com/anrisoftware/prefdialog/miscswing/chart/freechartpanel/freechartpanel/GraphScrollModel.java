@@ -24,7 +24,7 @@ import com.google.inject.assistedinject.Assisted;
  * Sets the maximum range based on the forecast data.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 1.0
+ * @since 3.0
  */
 @SuppressWarnings("serial")
 class GraphScrollModel extends DefaultBoundedRangeModel {
@@ -33,9 +33,9 @@ class GraphScrollModel extends DefaultBoundedRangeModel {
 	 * Properties of the graph scroll model.
 	 * 
 	 * @author Erwin Mueller, erwin.mueller@deventm.org
-	 * @since 1.0
+	 * @since 3.0
 	 */
-	static enum Property {
+	public static enum Property {
 
 		/**
 		 * The current view position property.
