@@ -16,6 +16,7 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
+import com.anrisoftware.globalpom.textposition.TextPosition;
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 import com.anrisoftware.prefdialog.miscswing.chart.model.ChartModel;
 import com.anrisoftware.prefdialog.miscswing.chart.model.ChartModelEvent;
@@ -263,6 +264,11 @@ public class FreechartXYChartPanel implements Serializable {
 	 */
 	@OnAwt
 	public void setIconSize(IconSize size) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void setTextPosition(TextPosition position) {
 		// TODO Auto-generated method stub
 
 	}

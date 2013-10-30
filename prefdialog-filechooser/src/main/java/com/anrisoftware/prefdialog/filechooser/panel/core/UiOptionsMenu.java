@@ -35,7 +35,7 @@ import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 
-import com.anrisoftware.prefdialog.annotations.TextPosition;
+import com.anrisoftware.globalpom.textposition.TextPosition;
 import com.anrisoftware.resources.images.api.IconSize;
 
 @SuppressWarnings("serial")

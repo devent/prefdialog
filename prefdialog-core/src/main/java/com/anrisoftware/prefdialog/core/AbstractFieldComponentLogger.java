@@ -28,7 +28,7 @@ import java.util.Locale;
 import javax.swing.Icon;
 
 import com.anrisoftware.globalpom.log.AbstractLogger;
-import com.anrisoftware.prefdialog.annotations.TextPosition;
+import com.anrisoftware.globalpom.textposition.TextPosition;
 import com.anrisoftware.prefdialog.fields.FieldComponent;
 import com.anrisoftware.resources.images.api.IconSize;
 import com.anrisoftware.resources.images.api.Images;

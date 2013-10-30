@@ -30,7 +30,7 @@ import java.util.MissingResourceException;
 
 import javax.swing.Icon;
 
-import com.anrisoftware.prefdialog.annotations.TextPosition;
+import com.anrisoftware.globalpom.textposition.TextPosition;
 import com.anrisoftware.resources.api.ResourcesException;
 import com.anrisoftware.resources.images.api.IconSize;
 import com.anrisoftware.resources.images.api.Images;

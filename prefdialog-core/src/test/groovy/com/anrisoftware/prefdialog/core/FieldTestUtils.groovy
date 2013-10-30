@@ -18,7 +18,7 @@
  */
 package com.anrisoftware.prefdialog.core
 
-import static com.anrisoftware.prefdialog.annotations.TextPosition.*
+import static com.anrisoftware.globalpom.textposition.TextPosition.*
 import static com.anrisoftware.resources.images.api.IconSize.*
 
 import javax.swing.BorderFactory

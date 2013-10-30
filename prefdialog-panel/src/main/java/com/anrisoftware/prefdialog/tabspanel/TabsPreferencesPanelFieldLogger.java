@@ -52,15 +52,15 @@ class TabsPreferencesPanelFieldLogger extends AbstractLogger {
 
 	ReflectionError noFieldAnnotationFound(TabsPreferencesPanelField panel,
 			AnnotationBean bean) {
-		return logException(new ReflectionError(NO_FIELD_ANNOTATION)
-				.addContextValue(PANEL, panel).addContextValue(BEAN, bean),
-				NO_FIELD_ANNOTATION_MESSAGE, bean);
+		return logException(
+				new ReflectionError(NO_FIELD_ANNOTATION).add(PANEL, panel).add(
+						BEAN, bean), NO_FIELD_ANNOTATION_MESSAGE, bean);
 	}
 
 	ReflectionError noPreferencePanelService(TabsPreferencesPanelField panel,
 			Class<?> a) {
 		return logException(new ReflectionError(NO_PREFERENCE_PANEL_SERVICE)
-				.addContextValue(PANEL, panel).addContextValue(ANNOTATION, a),
+				.add(PANEL, panel).add(ANNOTATION, a),
 				NO_PREFERENCE_PANEL_SERVICE_MESSAGE, a);
 	}
 
@@ -68,8 +68,7 @@ class TabsPreferencesPanelFieldLogger extends AbstractLogger {
 		log.debug(VETOED_VALUE, index, panel);
 	}
 
-	void checkRenderer(TabsPreferencesPanelField panel,
-			TabsRenderer renderer) {
+	void checkRenderer(TabsPreferencesPanelField panel, TabsRenderer renderer) {
 		notNull(renderer, RENDERER_NULL, panel);
 	}
 

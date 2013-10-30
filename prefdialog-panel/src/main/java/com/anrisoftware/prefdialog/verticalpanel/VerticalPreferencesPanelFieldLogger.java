@@ -47,7 +47,7 @@ class VerticalPreferencesPanelFieldLogger extends AbstractLogger {
 	ReflectionError noPreferencePanelService(
 			VerticalPreferencesPanelField panel, Class<?> a) {
 		return logException(new ReflectionError(NO_PREFERENCE_PANEL_SERVICE)
-				.addContextValue(PANEL, panel).addContextValue(ANNOTATION, a),
+				.add(PANEL, panel).add(ANNOTATION, a),
 				NO_PREFERENCE_PANEL_SERVICE_MESSAGE, a);
 	}
 

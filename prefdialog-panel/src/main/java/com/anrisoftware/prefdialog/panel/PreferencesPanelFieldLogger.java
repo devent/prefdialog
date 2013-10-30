@@ -49,15 +49,14 @@ class PreferencesPanelFieldLogger extends AbstractLogger {
 
 	ReflectionError noFieldAnnotationFound(PreferencesPanelField panel,
 			AnnotationBean bean) {
-		return logException(new ReflectionError(NO_FIELD_ANNOTATION)
-				.addContextValue(PANEL, panel).addContextValue(BEAN, bean),
-				NO_FIELD_ANNOTATION_MESSAGE, bean);
+		return logException(
+				new ReflectionError(NO_FIELD_ANNOTATION).add(PANEL, panel).add(
+						BEAN, bean), NO_FIELD_ANNOTATION_MESSAGE, bean);
 	}
 
 	ReflectionError noFieldServiceFound(PreferencesPanelField panel,
 			Class<? extends Annotation> type) {
-		return logException(
-				new ReflectionError(NO_SERVICE).addContextValue(PANEL, panel)
-						.addContextValue(TYPE, type), NO_SERVICE_MESSAGE, type);
+		return logException(new ReflectionError(NO_SERVICE).add(PANEL, panel)
+				.add(TYPE, type), NO_SERVICE_MESSAGE, type);
 	}
 }

@@ -25,6 +25,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
+import javax.swing.border.EtchedBorder;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -96,6 +97,7 @@ class UiGraphPanel extends JPanel {
 	 * Create the panel.
 	 */
 	UiGraphPanel() {
+		setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		this.shapeGraph = true;
 		this.blackWhite = false;
 		setLayout(new BorderLayout(0, 0));

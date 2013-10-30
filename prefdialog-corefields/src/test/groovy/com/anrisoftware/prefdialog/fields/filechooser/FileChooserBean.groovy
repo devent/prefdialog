@@ -20,10 +20,10 @@ package com.anrisoftware.prefdialog.fields.filechooser
 
 import javax.swing.JFileChooser
 
+import com.anrisoftware.globalpom.textposition.TextPosition;
 import com.anrisoftware.prefdialog.annotations.FieldComponent
 import com.anrisoftware.prefdialog.annotations.FileChooser
 import com.anrisoftware.prefdialog.annotations.FileChooserModel
-import com.anrisoftware.prefdialog.annotations.TextPosition
 
 /**
  * Bean with file chooser fields.

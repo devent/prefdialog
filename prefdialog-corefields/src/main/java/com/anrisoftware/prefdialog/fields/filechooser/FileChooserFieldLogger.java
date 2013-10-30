@@ -23,8 +23,8 @@ import static org.apache.commons.lang3.Validate.notNull;
 import javax.swing.Icon;
 
 import com.anrisoftware.globalpom.log.AbstractLogger;
+import com.anrisoftware.globalpom.textposition.TextPosition;
 import com.anrisoftware.prefdialog.annotations.FileChooserModel;
-import com.anrisoftware.prefdialog.annotations.TextPosition;
 import com.anrisoftware.prefdialog.core.AbstractFieldComponent;
 import com.anrisoftware.resources.images.api.IconSize;
 

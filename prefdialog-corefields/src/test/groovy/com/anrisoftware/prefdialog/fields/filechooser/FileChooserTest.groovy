@@ -33,8 +33,8 @@ import org.junit.Test
 import org.junit.rules.TemporaryFolder
 
 import com.anrisoftware.globalpom.reflection.exceptions.ReflectionError
+import com.anrisoftware.globalpom.textposition.TextPosition;
 import com.anrisoftware.globalpom.utils.TestFrameUtil
-import com.anrisoftware.prefdialog.annotations.TextPosition
 import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
 import com.anrisoftware.prefdialog.core.FieldTestUtils
 import com.anrisoftware.resources.images.api.IconSize

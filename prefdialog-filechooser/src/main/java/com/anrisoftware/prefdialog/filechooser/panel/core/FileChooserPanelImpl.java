@@ -34,7 +34,7 @@ import javax.swing.filechooser.FileSystemView;
 
 import org.apache.commons.lang3.event.EventListenerSupport;
 
-import com.anrisoftware.prefdialog.annotations.TextPosition;
+import com.anrisoftware.globalpom.textposition.TextPosition;
 import com.anrisoftware.prefdialog.filechooser.panel.api.DirectoyModel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanel;
 import com.anrisoftware.prefdialog.filechooser.panel.api.FileChooserPanelProperties;
