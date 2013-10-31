@@ -24,6 +24,7 @@ import static com.anrisoftware.prefdialog.csvimportdialog.dialog.CsvImportDialog
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
 import java.io.File;
+import java.net.URI;
 
 import javax.inject.Inject;
 import javax.swing.JDialog;
@@ -33,6 +34,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import com.anrisoftware.globalpom.dataimport.CsvImportProperties;
+import com.anrisoftware.prefdialog.annotations.FileChooserModel;
 import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanel;
 import com.anrisoftware.prefdialog.csvimportdialog.importpaneldock.ImportPanelDock;
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.advancedproperties.LineEnd;
@@ -137,6 +139,7 @@ public class CsvImportDialog extends SimpleDialog {
 		setCharsetProperty(properties, field);
 		setLineEndProperty(properties, field);
 		setFileProperty(properties, field);
+		setModelFileProperty(properties);
 		setLocaleProperty(properties, field);
 		setNumColsProperty(properties, field);
 		setQuoteProperty(properties, field);
@@ -157,6 +160,10 @@ public class CsvImportDialog extends SimpleDialog {
 		}
 		try {
 			setFileProperty(properties, field);
+		} catch (PropertyVetoException e) {
+		}
+		try {
+			setModelFileProperty(properties);
 		} catch (PropertyVetoException e) {
 		}
 		try {
@@ -221,6 +228,17 @@ public class CsvImportDialog extends SimpleDialog {
 			FieldComponent<?> field) throws PropertyVetoException {
 		FieldComponent<?> f = field.findField("file");
 		f.setValue(new File(properties.getFile()));
+	}
+
+	private void setModelFileProperty(CsvImportProperties properties)
+			throws PropertyVetoException {
+		CsvPanelProperties fieldProperties = (CsvPanelProperties) getProperties();
+		FileChooserModel model = fieldProperties.getFileProperties()
+				.getFileModel();
+		URI file = properties.getFile();
+		if (file != null) {
+			model.setFile(new File(file));
+		}
 	}
 
 	private void setCharsetProperty(CsvImportProperties properties,

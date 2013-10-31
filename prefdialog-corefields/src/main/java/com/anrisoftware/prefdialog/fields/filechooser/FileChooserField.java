@@ -250,21 +250,24 @@ public class FileChooserField extends AbstractTitleField<JPanel> {
 
 	@Override
 	public void setValue(Object value) throws PropertyVetoException {
+		File file = (File) value;
 		if (model == null) {
-			super.setValue(value);
-			fileTextField.setValue(value);
+			super.setValue(file);
+			fileTextField.setValue(file);
 			return;
 		}
+
 		File oldFile = model.getFile();
 		try {
-			model.setFile((File) value);
+			model.setFile(file);
 		} catch (PropertyVetoException e) {
+			fileTextField.setValue(file);
 			fileTextField.setInputValid(false);
 			throw e;
 		}
 		try {
-			super.setValue(value);
-			fileTextField.setValue(value);
+			super.setValue(file);
+			fileTextField.setValue(file);
 			fileTextField.setInputValid(true);
 		} catch (PropertyVetoException e) {
 			model.setFile(oldFile);
