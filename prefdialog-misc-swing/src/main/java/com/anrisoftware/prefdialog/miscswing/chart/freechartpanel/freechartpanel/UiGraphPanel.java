@@ -33,7 +33,6 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.event.RendererChangeEvent;
-import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.XYSeriesCollection;
@@ -42,6 +41,7 @@ import com.anrisoftware.prefdialog.miscswing.actions.AbstractMenuActions;
 import com.anrisoftware.prefdialog.miscswing.actions.MenuAction;
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 import com.anrisoftware.prefdialog.miscswing.chart.freechartpanel.actions.GraphWindowActions;
+import com.anrisoftware.prefdialog.miscswing.chart.model.PlotOrientation;
 import com.anrisoftware.prefdialog.miscswing.colorpalette.PaletteFactory;
 import com.anrisoftware.prefdialog.miscswing.resourcesaction.AbstractResourcesAction;
 import com.anrisoftware.prefdialog.miscswing.toolbarmenu.ToolbarMenu;
@@ -141,7 +141,7 @@ class UiGraphPanel extends JPanel {
 		horizontalScrollBar.setName("graphScrollBar");
 		horizontalScrollBar.setOrientation(JScrollBar.HORIZONTAL);
 
-		setPlotOrientation(chart.getXYPlot().getOrientation());
+		setPlotOrientation(PlotOrientation.VERTICAL);
 	}
 
 	private JFreeChart createChart() {
@@ -149,7 +149,7 @@ class UiGraphPanel extends JPanel {
 		String xAxisLabel = null;
 		String yAxisLabel = null;
 		XYSeriesCollection dataset = new XYSeriesCollection();
-		PlotOrientation orientation = PlotOrientation.VERTICAL;
+		org.jfree.chart.plot.PlotOrientation orientation = org.jfree.chart.plot.PlotOrientation.VERTICAL;
 		boolean legend = true;
 		boolean tooltips = true;
 		boolean urls = false;
@@ -337,17 +337,30 @@ class UiGraphPanel extends JPanel {
 	@OnAwt
 	public void setPlotOrientation(PlotOrientation orientation) {
 		XYPlot plot = (XYPlot) chart.getPlot();
-		plot.setOrientation(orientation);
-		if (orientation == PlotOrientation.HORIZONTAL) {
+		plot.setOrientation(toFreechartOrientation(orientation));
+		switch (orientation) {
+		case HORIZONTAL:
 			verticalScrollBar.setVisible(true);
 			horizontalScrollBar.setVisible(false);
 			this.plotScrollBar = verticalScrollBar;
-		}
-		if (orientation == PlotOrientation.VERTICAL) {
+			break;
+		case VERTICAL:
 			verticalScrollBar.setVisible(false);
 			horizontalScrollBar.setVisible(true);
 			this.plotScrollBar = horizontalScrollBar;
+			break;
 		}
+	}
+
+	private org.jfree.chart.plot.PlotOrientation toFreechartOrientation(
+			PlotOrientation orientation) {
+		switch (orientation) {
+		case HORIZONTAL:
+			return org.jfree.chart.plot.PlotOrientation.HORIZONTAL;
+		case VERTICAL:
+			return org.jfree.chart.plot.PlotOrientation.VERTICAL;
+		}
+		throw new UnsupportedOperationException();
 	}
 
 	public JScrollBar getVerticalScrollBar() {

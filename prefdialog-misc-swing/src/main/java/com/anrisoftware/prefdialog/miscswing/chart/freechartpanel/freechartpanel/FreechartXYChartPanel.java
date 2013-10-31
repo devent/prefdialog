@@ -12,7 +12,6 @@ import java.io.Serializable;
 import javax.inject.Inject;
 
 import org.jfree.chart.ChartPanel;
-import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
@@ -21,11 +20,12 @@ import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 import com.anrisoftware.prefdialog.miscswing.chart.model.ChartModel;
 import com.anrisoftware.prefdialog.miscswing.chart.model.ChartModelEvent;
 import com.anrisoftware.prefdialog.miscswing.chart.model.ChartModelListener;
+import com.anrisoftware.prefdialog.miscswing.chart.model.PlotOrientation;
 import com.anrisoftware.resources.images.api.IconSize;
 
 /**
  * {@code JFreeChart} X/Y line chart panel.
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
  */
@@ -36,13 +36,13 @@ public class FreechartXYChartPanel implements Serializable {
 
 	private transient ChartModelListener chartModelListener;
 
-	private final UiGraphPanel panel;
-
 	@Inject
 	private FreechartXYChartPanelLogger log;
 
 	@Inject
 	private GraphScrollModelFactory scrollModelFactory;
+
+	private UiGraphPanel panel;
 
 	private ChartModel model;
 
@@ -52,13 +52,15 @@ public class FreechartXYChartPanel implements Serializable {
 
 	private PropertyChangeListener viewScrollValueListener;
 
+	private PlotOrientation orientation;
+
+	private int negative;
+
 	/**
 	 * @see FreechartXYChartPanelFactory#create()
 	 */
-	@Inject
 	@OnAwt
-	FreechartXYChartPanel(UiGraphPanel panel) {
-		this.panel = panel;
+	FreechartXYChartPanel() {
 		resolveObject();
 	}
 
@@ -115,9 +117,15 @@ public class FreechartXYChartPanel implements Serializable {
 		return this;
 	}
 
+	@Inject
+	@OnAwt
+	void setUiGraphPanel(UiGraphPanel panel) {
+		this.panel = panel;
+	}
+
 	/**
 	 * Returns the panel's component to be added in a container.
-	 * 
+	 *
 	 * @return the {@link Component}.
 	 */
 	public Component getPanel() {
@@ -130,7 +138,7 @@ public class FreechartXYChartPanel implements Serializable {
 	 * <h2>AWT Thread</h2>
 	 * <p>
 	 * Should be called in the AWT thread.
-	 * 
+	 *
 	 * @param model
 	 *            the {@link ChartModel}.
 	 */
@@ -146,7 +154,7 @@ public class FreechartXYChartPanel implements Serializable {
 
 	/**
 	 * Returns the chart model.
-	 * 
+	 *
 	 * @return the {@link ChartModel}.
 	 */
 	public ChartModel getModel() {
@@ -176,7 +184,7 @@ public class FreechartXYChartPanel implements Serializable {
 	 * <h2>AWT Thread</h2>
 	 * <p>
 	 * Should be called in the AWT thread.
-	 * 
+	 *
 	 * @param antiAliasing
 	 *            set to {@code true} to enable anti-aliasing.
 	 */
@@ -191,7 +199,7 @@ public class FreechartXYChartPanel implements Serializable {
 	 * <h2>AWT Thread</h2>
 	 * <p>
 	 * Should be called in the AWT thread.
-	 * 
+	 *
 	 * @param blackWhite
 	 *            set to {@code true} to enable black/white.
 	 */
@@ -206,7 +214,7 @@ public class FreechartXYChartPanel implements Serializable {
 	 * <h2>AWT Thread</h2>
 	 * <p>
 	 * Should be called in the AWT thread.
-	 * 
+	 *
 	 * @param showShapes
 	 *            set to {@code true} to enable black/white.
 	 */
@@ -221,7 +229,7 @@ public class FreechartXYChartPanel implements Serializable {
 	 * <h2>AWT Thread</h2>
 	 * <p>
 	 * Should be called in the AWT thread.
-	 * 
+	 *
 	 * @param autoZoom
 	 *            set to {@code true} for auto zoom.
 	 */
@@ -243,7 +251,7 @@ public class FreechartXYChartPanel implements Serializable {
 	 * <h2>AWT Thread</h2>
 	 * <p>
 	 * Should be called in the AWT thread.
-	 * 
+	 *
 	 * @param factor
 	 *            set to 1 to zoom in or -1 to zoom out the domain axis.
 	 */
@@ -258,7 +266,7 @@ public class FreechartXYChartPanel implements Serializable {
 
 	/**
 	 * Sets the icon size of the tool-bar buttons.
-	 * 
+	 *
 	 * @param size
 	 *            the {@link IconSize}.
 	 */
@@ -279,7 +287,7 @@ public class FreechartXYChartPanel implements Serializable {
 	 * <h2>AWT Thread</h2>
 	 * <p>
 	 * Should be called in the AWT thread.
-	 * 
+	 *
 	 * @param orientation
 	 *            the {@link PlotOrientation}.
 	 */
@@ -347,11 +355,13 @@ public class FreechartXYChartPanel implements Serializable {
 
 	private void updateInsertData(int row0, int row1, int offset) {
 		ChartModel model = this.model;
+		int x;
 		XYSeriesCollection series = getCategory();
 		for (int col = 0; col < series.getSeriesCount(); col++) {
 			XYSeries xyseries = series.getSeries(col);
 			for (int row = row0; row <= row1; row++) {
-				xyseries.add(row, model.getValueAt(row, col), false);
+				x = row * negative;
+				xyseries.add(x, model.getValueAt(row, col), false);
 			}
 			xyseries.fireSeriesChanged();
 		}
