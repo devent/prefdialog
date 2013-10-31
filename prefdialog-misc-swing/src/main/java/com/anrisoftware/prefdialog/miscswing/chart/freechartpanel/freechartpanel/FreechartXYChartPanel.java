@@ -1,6 +1,7 @@
 package com.anrisoftware.prefdialog.miscswing.chart.freechartpanel.freechartpanel;
 
 import static com.anrisoftware.prefdialog.miscswing.chart.freechartpanel.freechartpanel.GraphScrollModel.Property.VALUE_PROPERTY;
+import static java.lang.Math.min;
 import static java.lang.Math.round;
 import static javax.swing.SwingUtilities.invokeLater;
 
@@ -60,6 +61,8 @@ public class FreechartXYChartPanel implements Serializable {
 
 	private AxisNegative negative;
 
+	private int maximumView;
+
 	/**
 	 * @see FreechartXYChartPanelFactory#create()
 	 */
@@ -70,10 +73,14 @@ public class FreechartXYChartPanel implements Serializable {
 
 	private Object resolveObject() {
 		if (negative == null) {
-			negative = AxisNegative.POSITIVE;
+			this.negative = AxisNegative.POSITIVE;
+			this.negativeFactor = 1;
 		}
 		if (orientation == null) {
-			orientation = PlotOrientation.VERTICAL;
+			this.orientation = PlotOrientation.VERTICAL;
+		}
+		if (maximumView == 0) {
+			this.maximumView = 1024;
 		}
 		this.chartModelListener = new ChartModelListener() {
 
@@ -252,7 +259,8 @@ public class FreechartXYChartPanel implements Serializable {
 		ChartPanel panel = this.panel.getChartPanel();
 		panel.restoreAutoDomainBounds();
 		int size = model.getRowCount();
-		setViewMaximum(size / 4);
+		size = min(size / 4, maximumView);
+		setViewMaximum(size);
 	}
 
 	/**
@@ -268,15 +276,25 @@ public class FreechartXYChartPanel implements Serializable {
 	@OnAwt
 	public void setZoomDomain(int factor) {
 		ChartModel model = getModel();
-		int max = model.getViewMaximum();
+		int size = model.getViewMaximum();
 		float zoom = factor < 0 ? 1.25f : 0.75f;
-		max = round(max * zoom);
-		setViewMaximum(max);
+		size = round(size * zoom);
+		setViewMaximum(size);
+	}
+
+	/**
+	 * Sets the maximum rows of the view for auto-zoom.
+	 * 
+	 * @param maximum
+	 *            the maximum rows.
+	 */
+	public void setMaximumView(int maximum) {
+		this.maximumView = maximum;
 	}
 
 	/**
 	 * Sets the icon size of the tool-bar buttons.
-	 *
+	 * 
 	 * @param size
 	 *            the {@link IconSize}.
 	 */
@@ -348,6 +366,7 @@ public class FreechartXYChartPanel implements Serializable {
 				rangeValueListener);
 		scrollModel.addPropertyChangeListener(VALUE_PROPERTY,
 				viewScrollValueListener);
+		setMaximumView(maximumView / model.getColumnCount());
 	}
 
 	private void removeOldScrollModel(GraphScrollModel model) {
