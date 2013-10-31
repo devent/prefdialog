@@ -1,5 +1,7 @@
 package com.anrisoftware.prefdialog.miscswing.chart.model;
 
+import static com.anrisoftware.prefdialog.miscswing.chart.model.ChartModelEvent.EventType.UPDATED;
+
 import java.util.EventObject;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -46,6 +48,17 @@ public class ChartModelEvent extends EventObject {
 	private final int column;
 
 	private final int offset;
+
+	/**
+	 * Event that the whole chart model have been changed.
+	 * 
+	 * @param model
+	 *            the {@link ChartModel}.
+	 */
+	public ChartModelEvent(ChartModel model) {
+		this(model, UPDATED, 0, model.getMaximumRowCount() - 1, ALL_COLUMNS,
+				model.getOffset());
+	}
 
 	/**
 	 * The data values from the first row to the last row in the specified

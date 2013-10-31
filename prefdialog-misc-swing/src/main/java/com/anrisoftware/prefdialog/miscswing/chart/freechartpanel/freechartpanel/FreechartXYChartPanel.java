@@ -17,6 +17,8 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 import com.anrisoftware.globalpom.textposition.TextPosition;
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
+import com.anrisoftware.prefdialog.miscswing.chart.model.AbstractChartModel;
+import com.anrisoftware.prefdialog.miscswing.chart.model.AxisNegative;
 import com.anrisoftware.prefdialog.miscswing.chart.model.ChartModel;
 import com.anrisoftware.prefdialog.miscswing.chart.model.ChartModelEvent;
 import com.anrisoftware.prefdialog.miscswing.chart.model.ChartModelListener;
@@ -54,7 +56,9 @@ public class FreechartXYChartPanel implements Serializable {
 
 	private PlotOrientation orientation;
 
-	private int negative;
+	private int negativeFactor;
+
+	private AxisNegative negative;
 
 	/**
 	 * @see FreechartXYChartPanelFactory#create()
@@ -65,6 +69,12 @@ public class FreechartXYChartPanel implements Serializable {
 	}
 
 	private Object resolveObject() {
+		if (negative == null) {
+			negative = AxisNegative.POSITIVE;
+		}
+		if (orientation == null) {
+			orientation = PlotOrientation.VERTICAL;
+		}
 		this.chartModelListener = new ChartModelListener() {
 
 			@Override
@@ -293,7 +303,40 @@ public class FreechartXYChartPanel implements Serializable {
 	 */
 	@OnAwt
 	public void setPlotOrientation(PlotOrientation orientation) {
+		PlotOrientation oldValue = this.orientation;
+		if (oldValue == orientation) {
+			return;
+		}
 		panel.setPlotOrientation(orientation);
+		this.orientation = orientation;
+	}
+
+	/**
+	 * Sets the domain axis to be negative.
+	 * <p>
+	 * <h2>AWT Thread</h2>
+	 * <p>
+	 * Should be called in the AWT thread.
+	 * 
+	 * @param negative
+	 *            the {@link AxisNegative}.
+	 */
+	@OnAwt
+	public void setDomainAxisNegative(AxisNegative negative) {
+		AxisNegative oldValue = this.negative;
+		if (oldValue == negative) {
+			return;
+		}
+		switch (negative) {
+		case NEGATIVE:
+			this.negativeFactor = -1;
+			break;
+		case POSITIVE:
+			this.negativeFactor = 1;
+			break;
+		}
+		this.negative = negative;
+		fireChartChanged();
 	}
 
 	private void setupNewModel() {
@@ -360,7 +403,7 @@ public class FreechartXYChartPanel implements Serializable {
 		for (int col = 0; col < series.getSeriesCount(); col++) {
 			XYSeries xyseries = series.getSeries(col);
 			for (int row = row0; row <= row1; row++) {
-				x = row * negative;
+				x = row * negativeFactor;
 				xyseries.add(x, model.getValueAt(row, col), false);
 			}
 			xyseries.fireSeriesChanged();
@@ -369,6 +412,13 @@ public class FreechartXYChartPanel implements Serializable {
 
 	private XYSeriesCollection getCategory() {
 		return (XYSeriesCollection) panel.getChart().getXYPlot().getDataset();
+	}
+
+	private void fireChartChanged() {
+		if (model instanceof AbstractChartModel) {
+			ChartModelEvent e = new ChartModelEvent(model);
+			((AbstractChartModel) model).fireChartChanged(e);
+		}
 	}
 
 }
