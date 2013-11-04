@@ -25,7 +25,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import javax.swing.JFrame;
 import javax.swing.event.ChangeListener;
+
+import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 
 /**
  * Layouts the child windows inside and outside the working area.
@@ -33,8 +36,8 @@ import javax.swing.event.ChangeListener;
  * Example:
  * 
  * <pre>
- * dock = dock.withFrame(frame);
- * frame.add(dock.getComponent(), BorderLayout.CENTER);
+ * dock = dock.createDock(frame);
+ * frame.add(dock.getAWTComponent(), BorderLayout.CENTER);
  * dock.applyLayout(defaultLayout);
  * dock.addViewDock(viewDock);
  * dock.addEditorDock(editor);
@@ -45,6 +48,21 @@ import javax.swing.event.ChangeListener;
  * @since 3.0
  */
 public interface Dock {
+
+	/**
+	 * Creates the dock with the specified frame.
+	 * <p>
+	 * <h2>AWT Thread</h2>
+	 * <p>
+	 * Should be called in the AWT thread.
+	 * 
+	 * @param frame
+	 *            the {@link JFrame} or {@code null}.
+	 * 
+	 * @return this {@link Dock}.
+	 */
+	@OnAwt
+	Dock createDock(JFrame frame);
 
 	/**
 	 * Returns the AWT component of the dock to be added in a container.

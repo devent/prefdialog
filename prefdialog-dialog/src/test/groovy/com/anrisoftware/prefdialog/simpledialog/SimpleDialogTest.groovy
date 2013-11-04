@@ -21,18 +21,21 @@ package com.anrisoftware.prefdialog.simpledialog
 import static com.anrisoftware.globalpom.utils.TestUtils.*
 import static com.anrisoftware.prefdialog.simpledialog.SimpleDialogBean.*
 
+import java.awt.Component
+
 import javax.swing.JDialog
 import javax.swing.JPanel
 
-import org.fest.swing.fixture.FrameFixture
-import org.junit.Before
+import org.fest.swing.fixture.DialogFixture
 import org.junit.BeforeClass
 import org.junit.Test
 
-import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.globalpom.utils.TestUtils
-import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
+import com.anrisoftware.globalpom.utils.frametesting.DialogTestingFactory
+import com.anrisoftware.globalpom.utils.frametesting.FrameTestingModule
+import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwtCheckerModule
 import com.anrisoftware.prefdialog.simpledialog.SimpleDialog.Status
+import com.anrisoftware.prefdialog.simpledialog.SimpleDialogModule.SingletonHolder
 import com.anrisoftware.resources.texts.api.Texts
 import com.anrisoftware.resources.texts.api.TextsFactory
 import com.anrisoftware.resources.texts.defaults.TextsResourcesDefaultModule
@@ -49,64 +52,48 @@ class SimpleDialogTest {
 
 	@Test
 	void "cancel dialog"() {
-		def title = "$NAME::cancel dialog"
-		def fieldName = NULL_VALUE
-		def frame = new TestFrameUtil(title: title, component: new JPanel())
-		def dialog
-		def simpleDialog
-		def dialogFix
-		def panel
-		frame.withFixture({
-			panel = new JPanel()
-			dialog = new JDialog(frame.frame, title)
-			simpleDialog = SimpleDialog.decorate(dialog, panel, texts, injector).createDialog()
-			dialog.pack()
-			dialog.setLocationRelativeTo(frame.frame)
-			simpleDialog.openDialog()
-		}, { FrameFixture fix ->
+		def title = "$NAME/cancel dialog"
+		def simpleDialog = factory.create()
+		def testing = testingFactory.create([title: title, setupDialog: { JDialog dialog, Component component ->
+				simpleDialog.setFieldsPanel new JPanel()
+				simpleDialog.setDialog dialog
+				simpleDialog.setTexts texts
+				simpleDialog.createDialog()
+			}])()
+		testing.withFixture({ DialogFixture fix ->
 			fix.button "cancelButton" click()
-			assert simpleDialog.status == Status.CANCELED
 		})
+		assert simpleDialog.status == Status.CANCELED
 	}
 
 	@Test
 	void "approve dialog"() {
-		def title = "$NAME::approve dialog"
-		def fieldName = NULL_VALUE
-		def frame = new TestFrameUtil(title: title, component: new JPanel())
-		def dialog
-		def simpleDialog
-		def dialogFix
-		def panel
-		frame.withFixture({
-			panel = new JPanel()
-			dialog = new JDialog(frame.frame, title)
-			simpleDialog = SimpleDialog.decorate(dialog, panel, texts, injector).createDialog()
-			dialog.pack()
-			dialog.setLocationRelativeTo(frame.frame)
-			simpleDialog.openDialog()
-		}, { FrameFixture fix ->
+		def title = "$NAME/approve dialog"
+		def simpleDialog = factory.create()
+		def testing = testingFactory.create([title: title, setupDialog: { JDialog dialog, Component component ->
+				simpleDialog.setFieldsPanel new JPanel()
+				simpleDialog.setDialog dialog
+				simpleDialog.setTexts texts
+				simpleDialog.createDialog()
+			}])()
+		testing.withFixture({ DialogFixture fix ->
 			fix.button "approveButton" click()
-			assert simpleDialog.status == Status.APPROVED
 		})
+		assert simpleDialog.status == Status.APPROVED
 	}
 
 	//@Test
-	void "manually decorate"() {
-		def title = "$NAME::manually decorate"
-		def fieldName = NULL_VALUE
-		def frame = new TestFrameUtil(title: title, component: new JPanel())
-		def dialog
-		def simpleDialog
-		def panel
-		frame.withFixture({
-			panel = new JPanel()
-			dialog = new JDialog(frame.frame, title)
-			simpleDialog = SimpleDialog.decorate(dialog, panel, texts, injector).createDialog()
-			dialog.pack()
-			dialog.setLocationRelativeTo(frame.frame)
-			simpleDialog.openDialog()
-			Thread.sleep 60 * 1000l
+	void "manually"() {
+		def title = "$NAME/manually"
+		def simpleDialog = factory.create()
+		def testing = testingFactory.create([title: title, setupDialog: { JDialog dialog, Component component ->
+				simpleDialog.setFieldsPanel new JPanel()
+				simpleDialog.setDialog dialog
+				simpleDialog.setTexts texts
+				simpleDialog.createDialog()
+			}])()
+		testing.withFixture({
+			Thread.sleep 60000
 			assert false : "manually test"
 		})
 	}
@@ -115,23 +102,30 @@ class SimpleDialogTest {
 
 	static final String NAME = SimpleDialogTest.class.simpleName
 
+	static DialogTestingFactory testingFactory
+
+	static SimpleDialogFactory factory
+
 	static TextsFactory textsFactory
 
 	static Texts texts
 
-	SimpleDialogBean bean
-
 	@BeforeClass
 	static void setupFactories() {
 		TestUtils.toStringStyle
-		injector = Guice.createInjector(new CoreFieldComponentModule())
+		injector = createInjector()
+		testingFactory = injector.getInstance DialogTestingFactory
+		factory = injector.getInstance SimpleDialogFactory
 		textsFactory = injector.createChildInjector(
 				new TextsResourcesDefaultModule()).getInstance(TextsFactory)
 		texts = textsFactory.create(SimpleDialog.class.getSimpleName())
 	}
 
-	@Before
-	void setupBean() {
-		bean = new SimpleDialogBean()
+	private static createInjector() {
+		Guice.createInjector([
+			SingletonHolder.modules,
+			new FrameTestingModule(),
+			new OnAwtCheckerModule()
+		].flatten())
 	}
 }

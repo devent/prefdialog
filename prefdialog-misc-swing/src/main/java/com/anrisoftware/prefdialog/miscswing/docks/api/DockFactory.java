@@ -18,8 +18,6 @@
  */
 package com.anrisoftware.prefdialog.miscswing.docks.api;
 
-import javax.swing.JFrame;
-
 /**
  * Factory for dock layout.
  * 
@@ -29,19 +27,10 @@ import javax.swing.JFrame;
 public interface DockFactory {
 
 	/**
-	 * Creates the dock without a main window specified.
+	 * Creates the dock.
 	 * 
 	 * @return the {@link Dock}.
 	 */
 	Dock create();
 
-	/**
-	 * Creates the dock.
-	 * 
-	 * @param frame
-	 *            the main window {@link JFrame}.
-	 * 
-	 * @return the {@link Dock}.
-	 */
-	Dock create(JFrame frame);
 }

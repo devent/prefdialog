@@ -96,6 +96,8 @@ public class CsvImportDialogModule extends AbstractModule {
 		install(new CsvImportPanelModule());
 		install(new FactoryModuleBuilder().implement(CsvImportDialog.class,
 				CsvImportDialog.class).build(CsvImportDialogFactory.class));
+		install(new FactoryModuleBuilder().implement(PropertiesWorker.class,
+				PropertiesWorker.class).build(PropertiesWorkerFactory.class));
 	}
 
 }

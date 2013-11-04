@@ -21,16 +21,10 @@ package com.anrisoftware.prefdialog.miscswing.docks.dockingframes
 import static com.anrisoftware.prefdialog.miscswing.docks.api.DockPosition.*
 import static java.awt.Color.*
 
-import java.awt.BorderLayout
 import java.awt.Color
-import java.awt.Dimension
 
-import javax.swing.JFrame
-import javax.swing.JPanel
-
-import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.globalpom.utils.TestUtils
-import com.anrisoftware.prefdialog.miscswing.docks.api.DockFactory
+import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwtCheckerModule
 import com.anrisoftware.prefdialog.miscswing.docks.api.LayoutTask
 import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.core.DockingFramesModule
 import com.anrisoftware.prefdialog.miscswing.docks.docktesting.DockTestingModule
@@ -38,22 +32,13 @@ import com.anrisoftware.prefdialog.miscswing.docks.layouts.dockingframes.Default
 import com.google.inject.Guice
 import com.google.inject.Injector
 
+/**
+ * Creates view and editor docks.
+ *
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 3.0
+ */
 class DocksTestBase {
-
-	TestFrameUtil withFrame(String title, DockFactory factory, def setupDock) {
-		new TestFrameUtil(title, new JPanel(), size) {
-					protected createFrame(String titlea, def component) {
-						def frame = new JFrame(titlea)
-						def dock = factory.create frame
-						frame.setPreferredSize frameSize
-						frame.add dock.getAWTComponent(), BorderLayout.CENTER
-						setupDock(dock)
-						frame
-					}
-				}
-	}
-
-	static Dimension size = new Dimension(800, 640)
 
 	static viewDocks = [
 		new ColorViewDock("view_a", "View West A", WEST, BLUE),
@@ -79,10 +64,10 @@ class DocksTestBase {
 
 	static Injector createInjector() {
 		TestUtils.toStringStyle
-		Guice.createInjector(new DockingFramesModule(), new DockTestingModule())
+		Guice.createInjector(new DockingFramesModule(), new DockTestingModule(), new OnAwtCheckerModule())
 	}
 
-	static LayoutTask createDefaultPerspective(Injector injector, name) {
+	static LayoutTask createDefaultPerspective(Injector injector, String name) {
 		LayoutTask task = injector.getInstance(DefaultLayoutTask)
 		task.setName name
 		return task

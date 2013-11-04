@@ -30,9 +30,11 @@ import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 
+import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
+
 /**
  * Simple dialog panel with approval, restore and cancel buttons.
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
@@ -46,7 +48,8 @@ class UiDialogPanel extends JPanel {
 	/**
 	 * Create the dialog.
 	 */
-	public UiDialogPanel() {
+	@OnAwt
+	UiDialogPanel() {
 		setLayout(new MigLayout("", "[grow,fill]", "[grow,fill][]"));
 
 		JPanel buttonsPanel = new JPanel();

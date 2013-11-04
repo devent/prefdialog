@@ -19,8 +19,6 @@
  */
 package com.anrisoftware.prefdialog.csvimportdialog.dialog;
 
-import javax.swing.JFrame;
-
 import com.anrisoftware.globalpom.dataimport.CsvImportProperties;
 
 /**
@@ -34,13 +32,10 @@ public interface CsvImportDialogFactory {
 	/**
 	 * Creates the import dialog for the specified frame.
 	 * 
-	 * @param frame
-	 *            the {@link JFrame} for the dialog.
-	 * 
 	 * @param properties
 	 *            the {@link CsvImportProperties}.
 	 * 
 	 * @return the {@link CsvImportDialog}.
 	 */
-	CsvImportDialog create(JFrame frame, CsvImportProperties properties);
+	CsvImportDialog create(CsvImportProperties properties);
 }

@@ -52,6 +52,7 @@ import bibliothek.gui.dock.util.DirectWindowProvider;
 import bibliothek.gui.dock.util.NullWindowProvider;
 import bibliothek.gui.dock.util.WindowProvider;
 
+import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 import com.anrisoftware.prefdialog.miscswing.docks.api.Dock;
 import com.anrisoftware.prefdialog.miscswing.docks.api.DockFactory;
 import com.anrisoftware.prefdialog.miscswing.docks.api.EditorDockWindow;
@@ -63,8 +64,6 @@ import com.anrisoftware.prefdialog.miscswing.docks.api.ViewDockWindow;
 import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.layoutloader.LoadLayoutWorkerFactory;
 import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.layoutsaver.SaveLayoutWorkerFactory;
 import com.anrisoftware.prefdialog.miscswing.docks.layouts.dockingframes.DefaultLayoutTask;
-import com.google.inject.assistedinject.Assisted;
-import com.google.inject.assistedinject.AssistedInject;
 
 /**
  * Docking frames docks.
@@ -76,58 +75,40 @@ public class DockingFramesDock implements Dock {
 
 	private static final String WORK_AREA_ID = "work";
 
-	private final DockingFramesDockLogger log;
-
-	private final SaveLayoutWorkerFactory saveFactory;
-
 	private final EventListenerSupport<LayoutListener> layoutListeners;
 
 	private final Map<String, ViewDockWindow> viewDocks;
 
 	private final Map<MultipleCDockable, EditorDockWindow> editorDocks;
 
-	private final LoadLayoutWorkerFactory loadFactory;
-
 	private final EventListenerSupport<ChangeListener> changeListeners;
-
-	private final CControl control;
-
-	private final CWorkingArea workingArea;
-
-	private DockingFramesLayoutTask currentLayout;
 
 	private final CDockableLocationListener editorsLocationListener;
 
 	private final CFocusListener editorsFocusListener;
 
+	@Inject
+	private DockingFramesDockLogger log;
+
+	@Inject
+	private SaveLayoutWorkerFactory saveFactory;
+
+	@Inject
+	private LoadLayoutWorkerFactory loadFactory;
+
+	@Inject
+	private DefaultLayoutTask defaultLayoutTask;
+
+	private CControl control;
+
+	private CWorkingArea workingArea;
+
+	private DockingFramesLayoutTask currentLayout;
+
 	/**
 	 * @see DockFactory#create()
 	 */
-	@AssistedInject
-	DockingFramesDock(DockingFramesDockLogger logger,
-			SaveLayoutWorkerFactory saveFactory,
-			LoadLayoutWorkerFactory loadFactory) {
-		this(logger, saveFactory, loadFactory, new NullWindowProvider());
-	}
-
-	/**
-	 * @see DockFactory#create(JFrame)
-	 */
-	@AssistedInject
-	DockingFramesDock(DockingFramesDockLogger logger,
-			SaveLayoutWorkerFactory saveFactory,
-			LoadLayoutWorkerFactory loadFactory, @Assisted JFrame frame) {
-		this(logger, saveFactory, loadFactory, new DirectWindowProvider(frame));
-	}
-
-	private DockingFramesDock(DockingFramesDockLogger logger,
-			SaveLayoutWorkerFactory saveFactory,
-			LoadLayoutWorkerFactory loadFactory, WindowProvider window) {
-		this.log = logger;
-		this.control = new CControl(window);
-		this.workingArea = control.createWorkingArea(WORK_AREA_ID);
-		this.saveFactory = saveFactory;
-		this.loadFactory = loadFactory;
+	DockingFramesDock() {
 		this.layoutListeners = new EventListenerSupport<LayoutListener>(
 				LayoutListener.class);
 		this.viewDocks = new ConcurrentHashMap<String, ViewDockWindow>();
@@ -175,10 +156,19 @@ public class DockingFramesDock implements Dock {
 				new ShowingChangedEvent(editor, event.getNewShowing()));
 	}
 
-	@Inject
-	public void setDefaultLayout(DefaultLayoutTask layout) {
-		this.currentLayout = layout;
-		currentLayout.setupLayout(control, workingArea, viewDocks);
+	@OnAwt
+	@Override
+	public Dock createDock(JFrame frame) {
+		WindowProvider provider;
+		if (frame == null) {
+			provider = new NullWindowProvider();
+		} else {
+			provider = new DirectWindowProvider(frame);
+		}
+		this.control = new CControl(provider);
+		this.workingArea = control.createWorkingArea(WORK_AREA_ID);
+		applyLayout(defaultLayoutTask);
+		return this;
 	}
 
 	/**
@@ -197,12 +187,14 @@ public class DockingFramesDock implements Dock {
 	}
 
 	@Override
+	@OnAwt
 	public void addViewDock(ViewDockWindow dock) {
 		viewDocks.put(dock.getId(), dock);
 		currentLayout.addView(control, dock);
 	}
 
 	@Override
+	@OnAwt
 	public void addEditorDock(EditorDockWindow dock) {
 		MultipleCDockable dockable = currentLayout.addEditor(workingArea, dock);
 		editorDocks.put(dockable, dock);
@@ -216,6 +208,7 @@ public class DockingFramesDock implements Dock {
 	 *             {@link DockingFramesLayoutTask}.
 	 */
 	@Override
+	@OnAwt
 	public synchronized void applyLayout(LayoutTask layout) {
 		this.currentLayout = (DockingFramesLayoutTask) layout;
 		currentLayout.setupLayout(control, workingArea, viewDocks);

@@ -37,9 +37,6 @@ import com.google.inject.assistedinject.Assisted
  */
 public class DockTesting extends FrameTesting {
 
-	@Inject
-	private DockFactory dockFactory
-
 	private Dock dock
 
 	/**
@@ -48,6 +45,11 @@ public class DockTesting extends FrameTesting {
 	@Inject
 	DockTesting(@Assisted Map args) {
 		super(args)
+	}
+
+	@Inject
+	void setDockFactory(DockFactory factory) {
+		this.dock = factory.create()
 	}
 
 	@Override
@@ -59,7 +61,7 @@ public class DockTesting extends FrameTesting {
 	 * Creates the dock with the specified frame.
 	 */
 	Component createComponent(JFrame frame) {
-		def dock = dockFactory.create(frame)
+		def dock = dock.createDock(frame)
 		this.dock = dock
 		dock.getAWTComponent()
 	}

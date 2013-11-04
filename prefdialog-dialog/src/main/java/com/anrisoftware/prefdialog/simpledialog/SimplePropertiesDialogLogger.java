@@ -18,6 +18,11 @@
  */
 package com.anrisoftware.prefdialog.simpledialog;
 
+import static com.anrisoftware.prefdialog.simpledialog.SimplePropertiesDialogLogger._.parent_null;
+import static com.anrisoftware.prefdialog.simpledialog.SimplePropertiesDialogLogger._.service_found;
+import static com.anrisoftware.prefdialog.simpledialog.SimplePropertiesDialogLogger._.service_found_message;
+import static org.apache.commons.lang3.Validate.notNull;
+
 import javax.inject.Singleton;
 
 import com.anrisoftware.globalpom.log.AbstractLogger;
@@ -31,8 +36,26 @@ import com.anrisoftware.globalpom.log.AbstractLogger;
 @Singleton
 class SimplePropertiesDialogLogger extends AbstractLogger {
 
-	private static final String SERVICE_FOUND1 = "No preference panel service found '{}' for dialog {}.";
-	private static final String SERVICE_FOUND = "No preference panel service found";
+	enum _ {
+
+		service_found_message(
+				"No preference panel service found '{}' for dialog {}."),
+
+		service_found("No preference panel service found"),
+
+		parent_null("Parent dependencies cannot be null");
+
+		private String name;
+
+		private _(String name) {
+			this.name = name;
+		}
+
+		@Override
+		public String toString() {
+			return name;
+		}
+	}
 
 	/**
 	 * Creates a logger for {@link SimplePropertiesDialog}.
@@ -42,7 +65,12 @@ class SimplePropertiesDialogLogger extends AbstractLogger {
 	}
 
 	IllegalStateException errorFindService(SimpleDialog dialog, String name) {
-		return logException(new IllegalStateException(SERVICE_FOUND),
-				SERVICE_FOUND1, name, dialog);
+		return logException(
+				new IllegalStateException(service_found.toString()),
+				service_found_message, name, dialog);
+	}
+
+	void checkParent(SimplePropertiesDialog dialog, Object parent) {
+		notNull(parent, parent_null.toString(), dialog);
 	}
 }

@@ -12,6 +12,8 @@ interface DockTestingFactory {
 	 * Creates a new dock testing with the specified arguments.
 	 *
 	 * @return the {@link DockTesting}.
+	 *
+	 * @see FrameTestingFactory#create(Map)
 	 */
 	DockTesting create(Map args)
 }

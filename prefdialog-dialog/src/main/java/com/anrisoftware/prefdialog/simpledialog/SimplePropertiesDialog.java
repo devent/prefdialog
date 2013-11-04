@@ -50,59 +50,53 @@ public class SimplePropertiesDialog extends SimpleDialog {
 
 	/**
 	 * Decorates the dialog.
+	 * <p>
+	 * <h2>AWT Thread</h2>
+	 * <p>
+	 * Should be called in the AWT thread.
 	 * 
 	 * @param dialog
 	 *            the {@link JDialog}.
-	 * 
-	 * @param texts
-	 *            the {@link Texts} resources.
-	 * 
-	 * @param parent
-	 *            the parent {@link Injector}.
 	 * 
 	 * @see SimplePropertiesDialogFactory#create(Object, String)
 	 * 
 	 * @return the {@link CsvImportDialog}.
 	 */
+	@OnAwt
 	public static SimplePropertiesDialog decorate(JDialog dialog,
-			Object properties, String panelFieldName, Texts texts,
-			Injector parent) {
-		SimplePropertiesDialog simpleDialog = getSimplePropertiesDialogFactory(
-				parent).create(properties, panelFieldName);
-		simpleDialog.setParent(parent);
-		simpleDialog.setTexts(texts);
+			Object properties, String panelFieldName) {
+		SimplePropertiesDialog simpleDialog = getSimplePropertiesDialogFactory()
+				.create(properties, panelFieldName);
 		simpleDialog.setDialog(dialog);
-		return simpleDialog;
+		return simpleDialog.createDialog();
 	}
 
 	private static final String PREFERENCES_PANEL_NAME = "VerticalPreferencesPanel";
-
-	private SimplePropertiesDialogLogger log;
 
 	private final Object properties;
 
 	private final String panelFieldName;
 
-	private VerticalPreferencesPanelField panel;
-
+	@Inject
 	private Injector parent;
+
+	@Inject
+	private SimplePropertiesDialogLogger log;
+
+	private VerticalPreferencesPanelField panel;
 
 	/**
 	 * @see SimplePropertiesDialogFactory#create(Object, String)
 	 */
 	@Inject
-	protected SimplePropertiesDialog(@Assisted Object properties,
-			@Assisted String panelFieldName) {
+	protected SimplePropertiesDialog(@Assisted("properties") Object properties,
+			@Assisted("panelFieldName") String panelFieldName) {
 		this.properties = properties;
 		this.panelFieldName = panelFieldName;
 	}
 
-	@Inject
-	void setSimplePropertiesDialogLogger(SimplePropertiesDialogLogger logger) {
-		this.log = logger;
-	}
-
 	@Override
+	@OnAwt
 	public void setTexts(Texts texts) {
 		super.setTexts(texts);
 		if (panel != null) {
@@ -111,6 +105,7 @@ public class SimplePropertiesDialog extends SimpleDialog {
 	}
 
 	@Override
+	@OnAwt
 	public void setImages(Images images) {
 		super.setImages(images);
 		if (panel != null) {
@@ -119,6 +114,7 @@ public class SimplePropertiesDialog extends SimpleDialog {
 	}
 
 	@Override
+	@OnAwt
 	public void setLocale(Locale locale) {
 		super.setLocale(locale);
 		if (panel != null) {
@@ -154,9 +150,13 @@ public class SimplePropertiesDialog extends SimpleDialog {
 	 * Sets the parent dependencies.
 	 * 
 	 * @param parent
-	 *            the parent dependencies or {@code null}.
+	 *            the parent dependencies.
+	 * 
+	 * @throws NullPointerException
+	 *             if the specified parent is {@code null}.
 	 */
 	public void setParent(Object parent) {
+		log.checkParent(this, parent);
 		this.parent = (Injector) parent;
 	}
 
@@ -179,13 +179,18 @@ public class SimplePropertiesDialog extends SimpleDialog {
 	}
 
 	@Override
-	public SimpleDialog createDialog() {
+	public SimplePropertiesDialog createDialog() {
+		System.out.println("createDialog() " + this);// TODO println
 		this.panel = createPanel();
 		panel.createPanel(parent);
-		panel.setTexts(getTexts());
-		panel.setImages(getImages());
+		if (getTexts() != null) {
+			panel.setTexts(getTexts());
+		}
+		if (getImages() != null) {
+			panel.setImages(getImages());
+		}
 		setFieldsPanel(panel.getAWTComponent());
-		return super.createDialog();
+		return (SimplePropertiesDialog) super.createDialog();
 	}
 
 	private VerticalPreferencesPanelField createPanel() {
@@ -208,12 +213,15 @@ public class SimplePropertiesDialog extends SimpleDialog {
 	}
 
 	@Override
+	@OnAwt
 	public void openDialog() {
+		System.out.println("openDialog() " + this);// TODO println
 		panel.requestFocus();
 		super.openDialog();
 	}
 
 	@Override
+	@OnAwt
 	public void restoreDialog() {
 		try {
 			panel.restoreInput();

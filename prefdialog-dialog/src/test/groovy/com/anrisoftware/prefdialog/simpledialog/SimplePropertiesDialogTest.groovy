@@ -21,17 +21,22 @@ package com.anrisoftware.prefdialog.simpledialog
 import static com.anrisoftware.globalpom.utils.TestUtils.*
 import static com.anrisoftware.prefdialog.simpledialog.SimpleDialogBean.*
 
+import java.awt.Component
+
 import javax.swing.JDialog
 import javax.swing.JPanel
 
-import org.fest.swing.fixture.FrameFixture
+import org.fest.swing.fixture.DialogFixture
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 
 import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.globalpom.utils.TestUtils
-import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
+import com.anrisoftware.globalpom.utils.frametesting.DialogTestingFactory
+import com.anrisoftware.globalpom.utils.frametesting.FrameTestingModule
+import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwtCheckerModule
+import com.anrisoftware.prefdialog.simpledialog.SimpleDialogModule.SingletonHolder
 import com.anrisoftware.resources.texts.api.Texts
 import com.anrisoftware.resources.texts.api.TextsFactory
 import com.anrisoftware.resources.texts.defaults.TextsResourcesDefaultModule
@@ -48,25 +53,21 @@ class SimplePropertiesDialogTest {
 
 	@Test
 	void "restore dialog"() {
-		def title = "$NAME::restore dialog"
+		def title = "$NAME/restore dialog"
 		def fieldName = NULL_VALUE
-		def frame = new TestFrameUtil(title: title, component: new JPanel())
-		def dialog
-		def simpleDialog
-		def dialogFix
-		frame.withFixture({
-			dialog = new JDialog(frame.frame, title)
-			simpleDialog = SimplePropertiesDialog.decorate(
-					dialog, bean, fieldName, texts, injector).createDialog()
-			dialog.pack()
-			dialog.setLocationRelativeTo(frame.frame)
-			simpleDialog.openDialog()
-		}, { FrameFixture fix ->
+		def simpleDialog = factory.create(bean, fieldName)
+		def testing = testingFactory.create([title: title, setupDialog: { JDialog dialog, Component component ->
+				simpleDialog.setFieldsPanel new JPanel()
+				simpleDialog.setDialog dialog
+				simpleDialog.setTexts texts
+				simpleDialog.createDialog()
+			}])()
+		testing.withFixture({ DialogFixture fix ->
 			fix.textBox "childAName" selectAll()
 			fix.textBox "childAName" enterText "Some"
 			fix.button "restoreButton" click()
-			assert bean.childA.childAName == "Child A"
 		})
+		assert bean.childA.childAName == "Child A"
 	}
 
 	//@Test
@@ -92,6 +93,10 @@ class SimplePropertiesDialogTest {
 
 	static final String NAME = SimplePropertiesDialogTest.class.simpleName
 
+	static DialogTestingFactory testingFactory
+
+	static SimplePropertiesDialogFactory factory
+
 	static TextsFactory textsFactory
 
 	static Texts texts
@@ -101,10 +106,20 @@ class SimplePropertiesDialogTest {
 	@BeforeClass
 	static void setupFactories() {
 		TestUtils.toStringStyle
-		injector = Guice.createInjector(new CoreFieldComponentModule())
+		injector = createInjector()
+		testingFactory = injector.getInstance DialogTestingFactory
+		factory = injector.getInstance SimplePropertiesDialogFactory
 		textsFactory = injector.createChildInjector(
 				new TextsResourcesDefaultModule()).getInstance(TextsFactory)
 		texts = textsFactory.create(SimpleDialog.class.getSimpleName())
+	}
+
+	private static createInjector() {
+		Guice.createInjector([
+			SingletonHolder.modules,
+			new FrameTestingModule(),
+			new OnAwtCheckerModule()
+		].flatten())
 	}
 
 	@Before

@@ -19,6 +19,7 @@
 package com.anrisoftware.prefdialog.simpledialog;
 
 import com.anrisoftware.prefdialog.verticalpanel.VerticalPreferencesPanel;
+import com.google.inject.assistedinject.Assisted;
 
 /**
  * Factory to create a simple dialog.
@@ -42,5 +43,6 @@ public interface SimplePropertiesDialogFactory {
 	 * 
 	 * @return the {@link SimplePropertiesDialog}.
 	 */
-	SimplePropertiesDialog create(Object properties, String panelFieldName);
+	SimplePropertiesDialog create(@Assisted("properties") Object properties,
+			@Assisted("panelFieldName") String panelFieldName);
 }

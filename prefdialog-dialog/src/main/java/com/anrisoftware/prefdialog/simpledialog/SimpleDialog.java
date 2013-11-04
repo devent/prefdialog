@@ -38,9 +38,9 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JRootPane;
 
+import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 import com.anrisoftware.resources.images.api.Images;
 import com.anrisoftware.resources.texts.api.Texts;
-import com.google.inject.Injector;
 
 /**
  * Simple dialog with approve, restore and cancel buttons.
@@ -71,6 +71,10 @@ public class SimpleDialog {
 
 	/**
 	 * Decorates the dialog.
+	 * <p>
+	 * <h2>AWT Thread</h2>
+	 * <p>
+	 * Should be called in the AWT thread.
 	 * 
 	 * @param dialog
 	 *            the {@link JDialog}.
@@ -85,13 +89,12 @@ public class SimpleDialog {
 	 * 
 	 * @return the {@link SimpleDialog}.
 	 */
-	public static SimpleDialog decorate(JDialog dialog, Component fieldsPanel,
-			Texts texts, Injector parent) {
-		SimpleDialog simpleDialog = getSimpleDialogFactory(parent).create();
+	@OnAwt
+	public static SimpleDialog decorate(JDialog dialog, Component fieldsPanel) {
+		SimpleDialog simpleDialog = getSimpleDialogFactory().create();
 		simpleDialog.setFieldsPanel(fieldsPanel);
-		simpleDialog.setTexts(texts);
 		simpleDialog.setDialog(dialog);
-		return simpleDialog;
+		return simpleDialog.createDialog();
 	}
 
 	/**
@@ -122,13 +125,16 @@ public class SimpleDialog {
 
 	static final String RESTORE_ACTION_NAME = "restore_action";
 
+	private final VetoableChangeSupport vetoableSupport;
+
+	@Inject
+	private UiDialogPanelFactory panelFactory;
+
 	private CancelAction cancelAction;
 
 	private ApproveAction approveAction;
 
 	private UiDialogPanel dialogPanel;
-
-	private final VetoableChangeSupport vetoableSupport;
 
 	private RestoreAction restoreAction;
 
@@ -151,11 +157,6 @@ public class SimpleDialog {
 	protected SimpleDialog() {
 		this.vetoableSupport = new VetoableChangeSupport(this);
 		this.locale = Locale.getDefault();
-	}
-
-	@Inject
-	void setDialogPanel(UiDialogPanel panel) {
-		this.dialogPanel = panel;
 	}
 
 	@Inject
@@ -281,14 +282,17 @@ public class SimpleDialog {
 
 	/**
 	 * Sets the dialog.
+	 * <p>
+	 * <h2>AWT Thread</h2>
+	 * <p>
+	 * Should be called in the AWT thread.
 	 * 
 	 * @param dialog
 	 *            the {@link JDialog}.
 	 */
+	@OnAwt
 	public void setDialog(JDialog dialog) {
 		this.dialog = dialog;
-		dialog.add(getAWTComponent());
-		setupDialog();
 	}
 
 	/**
@@ -300,24 +304,6 @@ public class SimpleDialog {
 		return dialog;
 	}
 
-	private void setupDialog() {
-		setupKeyboardActions();
-		dialog.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		dialog.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				cancelAction.actionPerformed(null);
-			}
-		});
-	}
-
-	private void setupKeyboardActions() {
-		JRootPane rootPane = dialog.getRootPane();
-		rootPane.setDefaultButton(getApprovalButton());
-		rootPane.registerKeyboardAction(cancelAction,
-				getKeyStroke(VK_ESCAPE, 0), WHEN_IN_FOCUSED_WINDOW);
-	}
-
 	/**
 	 * Creates the simple dialog and all child fields.
 	 * <p>
@@ -327,10 +313,29 @@ public class SimpleDialog {
 	 * 
 	 * @return this {@link SimpleDialog}.
 	 */
+	@OnAwt
 	public SimpleDialog createDialog() {
-		dialogPanel.add(fieldsPanel, "cell 0 0");
+		setupPanel();
 		setupActions();
+		setupDialog();
+		setupKeyboardActions();
 		return this;
+	}
+
+	private void setupDialog() {
+		dialog.add(getAWTComponent());
+		dialog.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		dialog.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				cancelAction.actionPerformed(null);
+			}
+		});
+	}
+
+	private void setupPanel() {
+		this.dialogPanel = panelFactory.create();
+		dialogPanel.add(fieldsPanel, "cell 0 0");
 	}
 
 	private void setupActions() {
@@ -344,6 +349,13 @@ public class SimpleDialog {
 		getCancelButton().setAction(cancelAction);
 		getApprovalButton().setAction(approveAction);
 		getRestoreButton().setAction(restoreAction);
+	}
+
+	private void setupKeyboardActions() {
+		JRootPane rootPane = dialog.getRootPane();
+		rootPane.setDefaultButton(getApprovalButton());
+		rootPane.registerKeyboardAction(cancelAction,
+				getKeyStroke(VK_ESCAPE, 0), WHEN_IN_FOCUSED_WINDOW);
 	}
 
 	/**

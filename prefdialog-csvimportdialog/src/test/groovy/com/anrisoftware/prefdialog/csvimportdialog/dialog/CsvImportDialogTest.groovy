@@ -24,16 +24,19 @@ import static com.anrisoftware.prefdialog.csvimportdialog.dialog.CsvImportDialog
 import static com.anrisoftware.prefdialog.csvimportdialog.dialog.CsvImportDialogModule.*
 import static com.anrisoftware.prefdialog.fields.textfield.TextFieldBean.*
 
+import java.awt.Component
 import java.awt.Dimension
 
 import javax.swing.JDialog
-import javax.swing.JPanel
 
 import org.junit.BeforeClass
 import org.junit.Test
 
-import com.anrisoftware.globalpom.utils.TestFrameUtil
+import com.anrisoftware.globalpom.utils.frametesting.DialogTestingFactory
+import com.anrisoftware.globalpom.utils.frametesting.FrameTestingModule
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelPropertiesFactory
+import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwtCheckerModule
+import com.google.inject.Injector
 
 /**
  * @see CsvImportDialog
@@ -45,34 +48,24 @@ class CsvImportDialogTest {
 
 	@Test
 	void "show dialog"() {
-		def title = "$NAME::show dialog"
-		def dialog
-		def importDialog
+		def title = "$NAME/show dialog"
 		def bean = propertiesFactory.create()
-		def frame = new TestFrameUtil(title: title, component: new JPanel())
-		frame.withFixture({
-			dialog = new JDialog(frame.frame, title)
-			importDialog = decorateCsvImportDialog(dialog, frame.frame, bean).createDialog()
-			dialog.pack()
-			dialog.setLocationRelativeTo(frame.frame)
-			importDialog.openDialog()
-		})
+		def importDialog
+		def testing = testingFactory.create([title: title, size: size, setupDialog: { JDialog dialog, Component component ->
+				importDialog = decorateCsvImportDialog(bean, dialog, null)
+			}])()
+		testing.withFixture({})
 	}
 
 	//@Test
-	void "manually decorate"() {
-		def title = "$NAME::manually decorate"
-		def dialog
-		def importDialog
+	void "manually"() {
+		def title = "$NAME/manually"
 		def bean = propertiesFactory.create()
-		def frame = new TestFrameUtil(title: title, component: new JPanel())
-		frame.withFixture({
-			dialog = new JDialog(frame.frame, title)
-			importDialog = decorateCsvImportDialog(dialog, frame.frame, bean).createDialog()
-			dialog.pack()
-			dialog.setLocationRelativeTo(frame.frame)
-			importDialog.openDialog()
-		}, {
+		def importDialog
+		def testing = testingFactory.create([title: title, size: size, setupDialog: { JDialog dialog, Component component ->
+				importDialog = decorateCsvImportDialog(bean, dialog, null)
+			}])()
+		testing.withFixture({
 			Thread.sleep 60*1000
 			assert false : "deactivate manually test"
 		})
@@ -80,15 +73,22 @@ class CsvImportDialogTest {
 
 	static final String NAME = CsvImportDialogTest.class.simpleName
 
+	static Injector injector
+
 	static CsvImportDialogFactory factory
 
 	static CsvPanelPropertiesFactory propertiesFactory
+
+	static DialogTestingFactory testingFactory
 
 	static size = new Dimension(400, 362)
 
 	@BeforeClass
 	static void setupFactories() {
-		factory = getCsvImportDialogFactory()
-		propertiesFactory = getCsvImportPropertiesFactory()
+		injector = SingletonHolder.injector.createChildInjector(
+				new FrameTestingModule(), new OnAwtCheckerModule())
+		factory = injector.getInstance CsvImportDialogFactory
+		propertiesFactory = injector.getInstance CsvPanelPropertiesFactory
+		testingFactory = injector.getInstance DialogTestingFactory
 	}
 }
