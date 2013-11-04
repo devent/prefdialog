@@ -180,7 +180,6 @@ public class SimplePropertiesDialog extends SimpleDialog {
 
 	@Override
 	public SimplePropertiesDialog createDialog() {
-		System.out.println("createDialog() " + this);// TODO println
 		this.panel = createPanel();
 		panel.createPanel(parent);
 		if (getTexts() != null) {
@@ -215,7 +214,6 @@ public class SimplePropertiesDialog extends SimpleDialog {
 	@Override
 	@OnAwt
 	public void openDialog() {
-		System.out.println("openDialog() " + this);// TODO println
 		panel.requestFocus();
 		super.openDialog();
 	}
