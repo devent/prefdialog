@@ -18,11 +18,11 @@
  */
 package com.anrisoftware.prefdialog.miscswing.problemspane;
 
+import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.swing.JPanel;
 
 import org.jdesktop.swingx.treetable.DefaultTreeTableModel;
 
@@ -84,6 +84,7 @@ public class ProblemsPane {
 	private final List<MessageNode> messages;
 
 	@Inject
+	@OnAwt
 	ProblemsPane(UiPane pane, RootNode rootNode) {
 		this.pane = pane;
 		this.root = rootNode;
@@ -93,11 +94,16 @@ public class ProblemsPane {
 
 	/**
 	 * Sets the columns of the problems pane.
+	 * <p>
+	 * <h2>AWT Thread</h2>
+	 * <p>
+	 * Should be called in the AWT thread.
 	 * 
 	 * @param columnNames
 	 *            the column names.
 	 */
-	public void setColumns(final List<Object> columnNames) {
+	@OnAwt
+	public void setColumns(List<Object> columnNames) {
 		root.setName("root");
 		root.setColumnCount(columnNames.size());
 		this.columnNames = columnNames;
@@ -112,10 +118,15 @@ public class ProblemsPane {
 	/**
 	 * Sets the texts resources for the category. The name is looked up in the
 	 * resources.
+	 * <p>
+	 * <h2>AWT Thread</h2>
+	 * <p>
+	 * Should be called in the AWT thread.
 	 * 
 	 * @param texts
 	 *            the {@link Texts}.
 	 */
+	@OnAwt
 	public void setTexts(Texts texts) {
 		this.texts = texts;
 		updateTextsResource();
@@ -143,10 +154,26 @@ public class ProblemsPane {
 		this.pane.getProblemsTable().setTreeTableModel(model);
 	}
 
-	public JPanel getAwtComponent() {
+	/**
+	 * Returns the pane component.
+	 * 
+	 * @return the {@link Component}.
+	 */
+	public Component getAwtComponent() {
 		return pane;
 	}
 
+	/**
+	 * Adds a new category to the problems pane.
+	 * <p>
+	 * <h2>AWT Thread</h2>
+	 * <p>
+	 * Should be called in the AWT thread.
+	 * 
+	 * @param category
+	 *            the {@link CategoryNode}.
+	 */
+	@OnAwt
 	public void addCategory(CategoryNode category) {
 		categories.add(category);
 		category.setColumnCount(root.getColumnCount());
