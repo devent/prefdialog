@@ -27,6 +27,7 @@ import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanelMod
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelPropertiesFactory;
 import com.anrisoftware.prefdialog.miscswing.comboboxhistory.ComboBoxHistoryModule;
 import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.core.DockingFramesModule;
+import com.anrisoftware.prefdialog.simpledialog.SimpleDialogModule;
 import com.anrisoftware.resources.texts.defaults.TextsResourcesDefaultModule;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
@@ -80,7 +81,8 @@ public class CsvImportDialogModule extends AbstractModule {
 	private static class SingletonHolder {
 
 		public static final Injector injector = Guice.createInjector(
-				new CsvImportDialogModule(), new CoreFieldComponentModule(),
+                new CsvImportDialogModule(), new SimpleDialogModule(),
+                new CoreFieldComponentModule(),
 				new ComboBoxHistoryModule(), new DockingFramesModule(),
 				new CsvImportModule(), new TextsResourcesDefaultModule());
 

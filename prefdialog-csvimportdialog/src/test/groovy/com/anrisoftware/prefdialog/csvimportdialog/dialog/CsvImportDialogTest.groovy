@@ -46,49 +46,49 @@ import com.google.inject.Injector
  */
 class CsvImportDialogTest {
 
-	@Test
-	void "show dialog"() {
-		def title = "$NAME/show dialog"
-		def bean = propertiesFactory.create()
-		def importDialog
-		def testing = testingFactory.create([title: title, size: size, setupDialog: { JDialog dialog, Component component ->
-				importDialog = decorateCsvImportDialog(bean, dialog, null)
-			}])()
-		testing.withFixture({})
-	}
+    @Test
+    void "show dialog"() {
+        def title = "$NAME/show dialog"
+        def bean = propertiesFactory.create()
+        def importDialog
+        def testing = testingFactory.create([title: title, size: size, setupDialog: { JDialog dialog, Component component ->
+                importDialog = decorateCsvImportDialog(bean, dialog, null)
+            }])()
+        testing.withFixture({})
+    }
 
-	//@Test
-	void "manually"() {
-		def title = "$NAME/manually"
-		def bean = propertiesFactory.create()
-		def importDialog
-		def testing = testingFactory.create([title: title, size: size, setupDialog: { JDialog dialog, Component component ->
-				importDialog = decorateCsvImportDialog(bean, dialog, null)
-			}])()
-		testing.withFixture({
-			Thread.sleep 60*1000
-			assert false : "deactivate manually test"
-		})
-	}
+    @Test
+    void "manually"() {
+        def title = "$NAME/manually"
+        def bean = propertiesFactory.create()
+        def importDialog
+        def testing = testingFactory.create([title: title, size: size, setupDialog: { JDialog dialog, Component component ->
+                importDialog = decorateCsvImportDialog(bean, dialog, null)
+            }])()
+        testing.withFixture({
+            Thread.sleep 60*1000
+            assert false : "deactivate manually test"
+        })
+    }
 
-	static final String NAME = CsvImportDialogTest.class.simpleName
+    static final String NAME = CsvImportDialogTest.class.simpleName
 
-	static Injector injector
+    static Injector injector
 
-	static CsvImportDialogFactory factory
+    static CsvImportDialogFactory factory
 
-	static CsvPanelPropertiesFactory propertiesFactory
+    static CsvPanelPropertiesFactory propertiesFactory
 
-	static DialogTestingFactory testingFactory
+    static DialogTestingFactory testingFactory
 
-	static size = new Dimension(400, 362)
+    static size = new Dimension(400, 362)
 
-	@BeforeClass
-	static void setupFactories() {
-		injector = SingletonHolder.injector.createChildInjector(
-				new FrameTestingModule(), new OnAwtCheckerModule())
-		factory = injector.getInstance CsvImportDialogFactory
-		propertiesFactory = injector.getInstance CsvPanelPropertiesFactory
-		testingFactory = injector.getInstance DialogTestingFactory
-	}
+    @BeforeClass
+    static void setupFactories() {
+        injector = SingletonHolder.injector.createChildInjector(
+                new FrameTestingModule(), new OnAwtCheckerModule())
+        factory = injector.getInstance CsvImportDialogFactory
+        propertiesFactory = injector.getInstance CsvPanelPropertiesFactory
+        testingFactory = injector.getInstance DialogTestingFactory
+    }
 }
