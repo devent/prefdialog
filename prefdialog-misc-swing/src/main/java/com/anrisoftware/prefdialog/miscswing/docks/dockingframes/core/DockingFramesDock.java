@@ -1,18 +1,18 @@
 /*
  * Copyright 2013-2013 Erwin Müller <erwin.mueller@deventm.org>
- * 
+ *
  * This file is part of prefdialog-misc-swing.
- * 
+ *
  * prefdialog-misc-swing is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- * 
+ *
  * prefdialog-misc-swing is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-misc-swing. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -41,6 +41,7 @@ import org.apache.commons.lang3.event.EventListenerSupport;
 import bibliothek.gui.dock.common.CControl;
 import bibliothek.gui.dock.common.CWorkingArea;
 import bibliothek.gui.dock.common.MultipleCDockable;
+import bibliothek.gui.dock.common.SingleCDockable;
 import bibliothek.gui.dock.common.event.CDockableLocationEvent;
 import bibliothek.gui.dock.common.event.CDockableLocationListener;
 import bibliothek.gui.dock.common.event.CFocusListener;
@@ -73,264 +74,266 @@ import com.anrisoftware.prefdialog.miscswing.docks.layouts.dockingframes.Default
  */
 public class DockingFramesDock implements Dock {
 
-	private static final String WORK_AREA_ID = "work";
+    private static final String WORK_AREA_ID = "work";
 
-	private final EventListenerSupport<LayoutListener> layoutListeners;
+    private final EventListenerSupport<LayoutListener> layoutListeners;
 
-	private final Map<String, ViewDockWindow> viewDocks;
+    private final Map<SingleCDockable, ViewDockWindow> viewDocks;
 
-	private final Map<MultipleCDockable, EditorDockWindow> editorDocks;
+    private final Map<MultipleCDockable, EditorDockWindow> editorDocks;
 
-	private final EventListenerSupport<ChangeListener> changeListeners;
+    private final EventListenerSupport<ChangeListener> changeListeners;
 
-	private final CDockableLocationListener editorsLocationListener;
+    private final CDockableLocationListener editorsLocationListener;
 
-	private final CFocusListener editorsFocusListener;
+    private final CFocusListener editorsFocusListener;
 
-	@Inject
-	private DockingFramesDockLogger log;
+    @Inject
+    private DockingFramesDockLogger log;
 
-	@Inject
-	private SaveLayoutWorkerFactory saveFactory;
+    @Inject
+    private SaveLayoutWorkerFactory saveFactory;
 
-	@Inject
-	private LoadLayoutWorkerFactory loadFactory;
+    @Inject
+    private LoadLayoutWorkerFactory loadFactory;
 
-	@Inject
-	private DefaultLayoutTask defaultLayoutTask;
+    @Inject
+    private DefaultLayoutTask defaultLayoutTask;
 
-	private CControl control;
+    private CControl control;
 
-	private CWorkingArea workingArea;
+    private CWorkingArea workingArea;
 
-	private DockingFramesLayoutTask currentLayout;
+    private DockingFramesLayoutTask currentLayout;
 
-	/**
-	 * @see DockFactory#create()
-	 */
-	DockingFramesDock() {
-		this.layoutListeners = new EventListenerSupport<LayoutListener>(
-				LayoutListener.class);
-		this.viewDocks = new ConcurrentHashMap<String, ViewDockWindow>();
-		this.editorDocks = new ConcurrentHashMap<MultipleCDockable, EditorDockWindow>();
-		this.changeListeners = new EventListenerSupport<ChangeListener>(
-				ChangeListener.class);
-		this.editorsLocationListener = new CDockableLocationListener() {
+    /**
+     * @see DockFactory#create()
+     */
+    DockingFramesDock() {
+        this.layoutListeners = new EventListenerSupport<LayoutListener>(
+                LayoutListener.class);
+        this.viewDocks = new ConcurrentHashMap<SingleCDockable, ViewDockWindow>();
+        this.editorDocks = new ConcurrentHashMap<MultipleCDockable, EditorDockWindow>();
+        this.changeListeners = new EventListenerSupport<ChangeListener>(
+                ChangeListener.class);
+        this.editorsLocationListener = new CDockableLocationListener() {
 
-			@Override
-			public void changed(CDockableLocationEvent event) {
-				if (event.isShowingChanged()) {
-					fireEditorDockShowingChanged(event);
-				}
-			}
-		};
-		this.editorsFocusListener = new CFocusListener() {
+            @Override
+            public void changed(CDockableLocationEvent event) {
+                if (event.isShowingChanged()) {
+                    fireEditorDockShowingChanged(event);
+                }
+            }
+        };
+        this.editorsFocusListener = new CFocusListener() {
 
-			@Override
-			public void focusLost(CDockable dockable) {
-				fireEditorDockFocusLost(dockable);
-			}
+            @Override
+            public void focusLost(CDockable dockable) {
+                fireEditorDockFocusLost(dockable);
+            }
 
-			@Override
-			public void focusGained(CDockable dockable) {
-				fireEditorDockFocusGained(dockable);
-			}
-		};
-	}
+            @Override
+            public void focusGained(CDockable dockable) {
+                fireEditorDockFocusGained(dockable);
+            }
+        };
+    }
 
-	private void fireEditorDockFocusGained(CDockable dockable) {
-		EditorDockWindow editor = editorDocks.get(dockable);
-		changeListeners.fire()
-				.stateChanged(new FocusChangedEvent(editor, true));
-	}
+    private void fireEditorDockFocusGained(CDockable dockable) {
+        EditorDockWindow editor = editorDocks.get(dockable);
+        changeListeners.fire()
+                .stateChanged(new FocusChangedEvent(editor, true));
+    }
 
-	private void fireEditorDockFocusLost(CDockable dockable) {
-		EditorDockWindow editor = editorDocks.get(dockable);
-		changeListeners.fire().stateChanged(
-				new FocusChangedEvent(editor, false));
-	}
+    private void fireEditorDockFocusLost(CDockable dockable) {
+        EditorDockWindow editor = editorDocks.get(dockable);
+        changeListeners.fire().stateChanged(
+                new FocusChangedEvent(editor, false));
+    }
 
-	private void fireEditorDockShowingChanged(CDockableLocationEvent event) {
-		EditorDockWindow editor = editorDocks.get(event.getDockable());
-		changeListeners.fire().stateChanged(
-				new ShowingChangedEvent(editor, event.getNewShowing()));
-	}
+    private void fireEditorDockShowingChanged(CDockableLocationEvent event) {
+        EditorDockWindow editor = editorDocks.get(event.getDockable());
+        changeListeners.fire().stateChanged(
+                new ShowingChangedEvent(editor, event.getNewShowing()));
+    }
 
-	@OnAwt
-	@Override
-	public Dock createDock(JFrame frame) {
-		WindowProvider provider;
-		if (frame == null) {
-			provider = new NullWindowProvider();
-		} else {
-			provider = new DirectWindowProvider(frame);
-		}
-		this.control = new CControl(provider);
-		this.workingArea = control.createWorkingArea(WORK_AREA_ID);
-		applyLayout(defaultLayoutTask);
-		return this;
-	}
+    @OnAwt
+    @Override
+    public Dock createDock(JFrame frame) {
+        WindowProvider provider;
+        if (frame == null) {
+            provider = new NullWindowProvider();
+        } else {
+            provider = new DirectWindowProvider(frame);
+        }
+        this.control = new CControl(provider);
+        this.workingArea = control.createWorkingArea(WORK_AREA_ID);
+        applyLayout(defaultLayoutTask);
+        return this;
+    }
 
-	/**
-	 * Returns the theme manager so the user interface of the dock can be
-	 * modified.
-	 * 
-	 * @return the {@link ThemeManager}.
-	 */
-	public ThemeManager getThemeManager() {
-		return control.getController().getThemeManager();
-	}
+    /**
+     * Returns the theme manager so the user interface of the dock can be
+     * modified.
+     * 
+     * @return the {@link ThemeManager}.
+     */
+    public ThemeManager getThemeManager() {
+        return control.getController().getThemeManager();
+    }
 
-	@Override
-	public Component getAWTComponent() {
-		return control.getContentArea();
-	}
+    @Override
+    public Component getAWTComponent() {
+        return control.getContentArea();
+    }
 
-	@Override
-	@OnAwt
-	public void addViewDock(ViewDockWindow dock) {
-		viewDocks.put(dock.getId(), dock);
-		currentLayout.addView(control, dock);
-	}
+    @Override
+    @OnAwt
+    public void addViewDock(ViewDockWindow dock) {
+        SingleCDockable dockable = currentLayout.addView(control, dock);
+        dock.setDockable(dockable);
+        viewDocks.put(dockable, dock);
+    }
 
-	@Override
-	@OnAwt
-	public void addEditorDock(EditorDockWindow dock) {
-		MultipleCDockable dockable = currentLayout.addEditor(workingArea, dock);
-		editorDocks.put(dockable, dock);
-		dockable.addCDockableLocationListener(editorsLocationListener);
-		dockable.addFocusListener(editorsFocusListener);
-	}
+    @Override
+    @OnAwt
+    public void addEditorDock(EditorDockWindow dock) {
+        MultipleCDockable dockable = currentLayout.addEditor(workingArea, dock);
+        dock.setDockable(dockable);
+        editorDocks.put(dockable, dock);
+        dockable.addCDockableLocationListener(editorsLocationListener);
+        dockable.addFocusListener(editorsFocusListener);
+    }
 
-	/**
-	 * @throws ClassCastException
-	 *             if the specified task is not of type
-	 *             {@link DockingFramesLayoutTask}.
-	 */
-	@Override
-	@OnAwt
-	public synchronized void applyLayout(LayoutTask layout) {
-		this.currentLayout = (DockingFramesLayoutTask) layout;
-		currentLayout.setupLayout(control, workingArea, viewDocks);
-	}
+    /**
+     * @throws ClassCastException
+     *             if the specified task is not of type
+     *             {@link DockingFramesLayoutTask}.
+     */
+    @Override
+    @OnAwt
+    public synchronized void applyLayout(LayoutTask layout) {
+        this.currentLayout = (DockingFramesLayoutTask) layout;
+        currentLayout.setupLayout(control, workingArea, viewDocks);
+    }
 
-	@Override
-	public synchronized void saveLayout(String name, File file)
-			throws IOException {
-		FileOutputStream stream = new FileOutputStream(file);
-		saveLayout(name, stream);
-		log.layoutSaved(this, name, file);
-	}
+    @Override
+    public synchronized void saveLayout(String name, File file)
+            throws IOException {
+        FileOutputStream stream = new FileOutputStream(file);
+        saveLayout(name, stream);
+        log.layoutSaved(this, name, file);
+    }
 
-	@Override
-	public synchronized void saveLayout(String name, OutputStream stream)
-			throws IOException {
-		try {
-			SwingWorker<OutputStream, OutputStream> worker = saveFactory
-					.create(layoutListeners, this, name, control, stream);
-			worker.execute();
-			worker.get();
-		} catch (InterruptedException e) {
-			throw log.saveLayoutInterrupted(this, name);
-		} catch (ExecutionException e) {
-			throw log.saveLayoutError(this, name, e.getCause());
-		}
-	}
+    @Override
+    public synchronized void saveLayout(String name, OutputStream stream)
+            throws IOException {
+        try {
+            SwingWorker<OutputStream, OutputStream> worker = saveFactory
+                    .create(layoutListeners, this, name, control, stream);
+            worker.execute();
+            worker.get();
+        } catch (InterruptedException e) {
+            throw log.saveLayoutInterrupted(this, name);
+        } catch (ExecutionException e) {
+            throw log.saveLayoutError(this, name, e.getCause());
+        }
+    }
 
-	@Override
-	public synchronized void loadLayout(String name, File file,
-			PropertyChangeListener... listeners) throws IOException {
-		FileInputStream stream = new FileInputStream(file);
-		loadLayout(name, stream, listeners);
-		log.layoutLoaded(this, name, file);
-	}
+    @Override
+    public synchronized void loadLayout(String name, File file,
+            PropertyChangeListener... listeners) throws IOException {
+        FileInputStream stream = new FileInputStream(file);
+        loadLayout(name, stream, listeners);
+        log.layoutLoaded(this, name, file);
+    }
 
-	@Override
-	public synchronized void loadLayout(String name, InputStream stream,
-			PropertyChangeListener... listeners) throws IOException {
-		try {
-			SwingWorker<InputStream, InputStream> worker = loadFactory.create(
-					layoutListeners, this, name, control, stream);
-			for (PropertyChangeListener l : listeners) {
-				worker.addPropertyChangeListener(l);
-			}
-			worker.execute();
-			worker.get();
-		} catch (InterruptedException e) {
-			throw log.loadLayoutInterrupted(this, name);
-		} catch (ExecutionException e) {
-			throw log.loadLayoutError(this, name, e.getCause());
-		}
-	}
+    @Override
+    public synchronized void loadLayout(String name, InputStream stream,
+            PropertyChangeListener... listeners) throws IOException {
+        try {
+            SwingWorker<InputStream, InputStream> worker = loadFactory.create(
+                    layoutListeners, this, name, control, stream);
+            for (PropertyChangeListener l : listeners) {
+                worker.addPropertyChangeListener(l);
+            }
+            worker.execute();
+            worker.get();
+        } catch (InterruptedException e) {
+            throw log.loadLayoutInterrupted(this, name);
+        } catch (ExecutionException e) {
+            throw log.loadLayoutError(this, name, e.getCause());
+        }
+    }
 
-	@Override
-	public LayoutTask getCurrentLayout() {
-		return currentLayout;
-	}
+    @Override
+    public LayoutTask getCurrentLayout() {
+        return currentLayout;
+    }
 
-	@Override
-	public void requestFocus(EditorDockWindow dock) {
-		MultipleCDockable dockable = findDockable(dock);
-		if (dockable == null) {
-			return;
-		}
-		if (dockable instanceof AbstractCDockable) {
-			((AbstractCDockable) dockable).toFront();
-		}
-	}
+    @Override
+    public void requestFocus(EditorDockWindow dock) {
+        MultipleCDockable dockable = findDockable(dock);
+        if (dockable == null) {
+            return;
+        }
+        if (dockable instanceof AbstractCDockable) {
+            ((AbstractCDockable) dockable).toFront();
+        }
+    }
 
-	private MultipleCDockable findDockable(EditorDockWindow dock) {
-		for (Map.Entry<MultipleCDockable, EditorDockWindow> entry : editorDocks
-				.entrySet()) {
-			if (entry.getValue().getId().equals(dock.getId())) {
-				return entry.getKey();
-			}
-		}
-		return null;
-	}
+    private MultipleCDockable findDockable(EditorDockWindow dock) {
+        for (Map.Entry<MultipleCDockable, EditorDockWindow> entry : editorDocks
+                .entrySet()) {
+            if (entry.getValue().getId().equals(dock.getId())) {
+                return entry.getKey();
+            }
+        }
+        return null;
+    }
 
-	/**
-	 * Sets the current layout without applying it.
-	 * 
-	 * @param currentLayout
-	 *            the new current layout.
-	 * 
-	 * @throws ClassCastException
-	 *             if the specified task is not of type
-	 *             {@link DockingFramesLayoutTask}.
-	 */
-	public void setCurrentLayout(LayoutTask currentLayout) {
-		this.currentLayout = (DockingFramesLayoutTask) currentLayout;
-	}
+    /**
+     * Sets the current layout without applying it.
+     * 
+     * @param currentLayout
+     *            the new current layout.
+     * 
+     * @throws ClassCastException
+     *             if the specified task is not of type
+     *             {@link DockingFramesLayoutTask}.
+     */
+    public void setCurrentLayout(LayoutTask currentLayout) {
+        this.currentLayout = (DockingFramesLayoutTask) currentLayout;
+    }
 
-	@Override
-	public void setTheme(final String name) {
-		ThemeMap themes = control.getThemes();
-		themes.select(name);
-	}
+    @Override
+    public void setTheme(final String name) {
+        ThemeMap themes = control.getThemes();
+        themes.select(name);
+    }
 
-	@Override
-	public void addLayoutListener(LayoutListener listener) {
-		layoutListeners.addListener(listener);
-	}
+    @Override
+    public void addLayoutListener(LayoutListener listener) {
+        layoutListeners.addListener(listener);
+    }
 
-	@Override
-	public void removeLayoutListener(LayoutListener listener) {
-		layoutListeners.removeListener(listener);
-	}
+    @Override
+    public void removeLayoutListener(LayoutListener listener) {
+        layoutListeners.removeListener(listener);
+    }
 
-	@Override
-	public void addStateChangedListener(ChangeListener listener) {
-		changeListeners.addListener(listener);
-	}
+    @Override
+    public void addStateChangedListener(ChangeListener listener) {
+        changeListeners.addListener(listener);
+    }
 
-	@Override
-	public void removeStateChangedListener(ChangeListener listener) {
-		changeListeners.removeListener(listener);
-	}
+    @Override
+    public void removeStateChangedListener(ChangeListener listener) {
+        changeListeners.removeListener(listener);
+    }
 
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this).toString();
-	}
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).toString();
+    }
 }

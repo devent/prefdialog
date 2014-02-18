@@ -24,6 +24,7 @@ import java.util.Map;
 import bibliothek.gui.dock.common.CControl;
 import bibliothek.gui.dock.common.CWorkingArea;
 import bibliothek.gui.dock.common.MultipleCDockable;
+import bibliothek.gui.dock.common.SingleCDockable;
 
 import com.anrisoftware.prefdialog.miscswing.docks.api.EditorDockWindow;
 import com.anrisoftware.prefdialog.miscswing.docks.api.LayoutTask;
@@ -37,55 +38,57 @@ import com.anrisoftware.prefdialog.miscswing.docks.api.ViewDockWindow;
  */
 public interface DockingFramesLayoutTask extends LayoutTask, Serializable {
 
-	/**
-	 * Sets the layout.
-	 * <p>
-	 * <h2>AWT Threading</h2>
-	 * <p>
-	 * Should be done in the AWT thread.
-	 * 
-	 * @param control
-	 *            the {@link CControl}.
-	 * 
-	 * @param workingArea
-	 *            the {@link CWorkingArea}.
-	 * 
-	 * @param docks
-	 *            the {@link Map} of the docks that are outside of the work
-	 *            area.
-	 */
-	void setupLayout(CControl control, CWorkingArea workingArea,
-			Map<String, ViewDockWindow> docks);
+    /**
+     * Sets the layout.
+     * 
+     * <h2>AWT Threading</h2>
+     * <p>
+     * Should be done in the AWT thread.
+     * 
+     * @param control
+     *            the {@link CControl}.
+     * 
+     * @param workingArea
+     *            the {@link CWorkingArea}.
+     * 
+     * @param docks
+     *            the {@link Map} of the docks that are outside of the work
+     *            area.
+     */
+    void setupLayout(CControl control, CWorkingArea workingArea,
+            Map<SingleCDockable, ViewDockWindow> docks);
 
-	/**
-	 * Adds a new editor dock window.
-	 * <p>
-	 * <h2>AWT Threading</h2>
-	 * <p>
-	 * Should be done in the AWT thread.
-	 * 
-	 * @param control
-	 *            the {@link CControl} where to add the dock.
-	 * 
-	 * @param dock
-	 *            the {@link EditorDockWindow} dock.
-	 * 
-	 * @return the {@link MultipleCDockable} of the editor dock.
-	 */
-	MultipleCDockable addEditor(CWorkingArea workingArea, EditorDockWindow dock);
+    /**
+     * Adds a new editor dock window.
+     * 
+     * <h2>AWT Threading</h2>
+     * <p>
+     * Should be done in the AWT thread.
+     * 
+     * @param control
+     *            the {@link CControl} where to add the dock.
+     * 
+     * @param dock
+     *            the {@link EditorDockWindow} dock.
+     * 
+     * @return the {@link MultipleCDockable} of the editor dock.
+     */
+    MultipleCDockable addEditor(CWorkingArea workingArea, EditorDockWindow dock);
 
-	/**
-	 * Adds a new view dock window.
-	 * <p>
-	 * <h2>AWT Threading</h2>
-	 * <p>
-	 * Should be done in the AWT thread.
-	 * 
-	 * @param control
-	 *            the {@link CControl} where to add the dock.
-	 * 
-	 * @param dock
-	 *            the {@link ViewDockWindow} dock.
-	 */
-	void addView(CControl control, ViewDockWindow dock);
+    /**
+     * Adds a new view dock window.
+     * 
+     * <h2>AWT Threading</h2>
+     * <p>
+     * Should be done in the AWT thread.
+     * 
+     * @param control
+     *            the {@link CControl} where to add the dock.
+     * 
+     * @param dock
+     *            the {@link ViewDockWindow} dock.
+     * 
+     * @return the {@link SingleCDockable} of the view dock.
+     */
+    SingleCDockable addView(CControl control, ViewDockWindow dock);
 }

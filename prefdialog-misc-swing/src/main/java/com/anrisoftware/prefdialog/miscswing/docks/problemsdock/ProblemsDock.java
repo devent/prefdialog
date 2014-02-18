@@ -1,18 +1,18 @@
 /*
  * Copyright 2013-2013 Erwin Müller <erwin.mueller@deventm.org>
- * 
+ *
  * This file is part of prefdialog-misc-swing.
- * 
+ *
  * prefdialog-misc-swing is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- * 
+ *
  * prefdialog-misc-swing is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-misc-swing. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -22,6 +22,8 @@ import java.awt.Component;
 import java.util.List;
 
 import javax.inject.Inject;
+
+import bibliothek.gui.dock.common.SingleCDockable;
 
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 import com.anrisoftware.prefdialog.miscswing.docks.api.DockPosition;
@@ -41,89 +43,105 @@ import com.anrisoftware.resources.texts.api.Texts;
  */
 public class ProblemsDock implements ViewDockWindow {
 
-	private final ProblemsPane pane;
+    private final ProblemsPane pane;
 
-	private String title;
+    private String title;
 
-	@Inject
-	ProblemsDock(ProblemsPane pane) {
-		this.pane = pane;
-	}
+    private SingleCDockable dockable;
 
-	@Override
-	public String getId() {
-		return "problems-dock";
-	}
+    @Inject
+    @OnAwt
+    ProblemsDock(ProblemsPane pane) {
+        this.pane = pane;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    @Override
+    public void setDockable(Object dockable) {
+        this.dockable = (SingleCDockable) dockable;
+    }
 
-	@Override
-	public String getTitle() {
-		return title;
-	}
+    @Override
+    public Object getDockable() {
+        return dockable;
+    }
 
-	public void setColumns(List<Object> columnNames) {
-		pane.setColumns(columnNames);
-	}
+    @Override
+    public String getId() {
+        return "problems-dock";
+    }
 
-	public void setTexts(Texts texts) {
-		pane.setTexts(texts);
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public void addCategory(CategoryNode category) {
-		pane.addCategory(category);
-	}
+    @Override
+    public String getTitle() {
+        return title;
+    }
 
-	/**
-	 * Adds the message to the list of problems.
-	 * <p>
-	 * <h2>AWT Thread</h2>
-	 * <p>
-	 * Should be called in the AWT thread.
-	 * 
-	 * @param message
-	 *            the {@link MessageNode}.
-	 */
-	@OnAwt
-	public void addMessage(MessageNode message) {
-		pane.addMessage(message);
-	}
+    @OnAwt
+    public void setColumns(List<Object> columnNames) {
+        pane.setColumns(columnNames);
+    }
 
-	@Override
-	public Component getComponent() {
-		return pane.getAwtComponent();
-	}
+    @OnAwt
+    public void setTexts(Texts texts) {
+        pane.setTexts(texts);
+    }
 
-	@Override
-	public DockPosition getPosition() {
-		return DockPosition.SOUTH;
-	}
+    @OnAwt
+    public void addCategory(CategoryNode category) {
+        pane.addCategory(category);
+    }
 
-	@Override
-	public boolean isCloseable() {
-		return true;
-	}
+    /**
+     * Adds the message to the list of problems.
+     * <p>
+     * <h2>AWT Thread</h2>
+     * <p>
+     * Should be called in the AWT thread.
+     * 
+     * @param message
+     *            the {@link MessageNode}.
+     */
+    @OnAwt
+    public void addMessage(MessageNode message) {
+        pane.addMessage(message);
+    }
 
-	@Override
-	public boolean isExternalizable() {
-		return true;
-	}
+    @Override
+    public Component getComponent() {
+        return pane.getAwtComponent();
+    }
 
-	@Override
-	public boolean isMaximizable() {
-		return true;
-	}
+    @Override
+    public DockPosition getPosition() {
+        return DockPosition.SOUTH;
+    }
 
-	@Override
-	public boolean isMinimizable() {
-		return true;
-	}
+    @Override
+    public boolean isCloseable() {
+        return true;
+    }
 
-	@Override
-	public boolean isStackable() {
-		return true;
-	}
+    @Override
+    public boolean isExternalizable() {
+        return true;
+    }
+
+    @Override
+    public boolean isMaximizable() {
+        return true;
+    }
+
+    @Override
+    public boolean isMinimizable() {
+        return true;
+    }
+
+    @Override
+    public boolean isStackable() {
+        return true;
+    }
 
 }

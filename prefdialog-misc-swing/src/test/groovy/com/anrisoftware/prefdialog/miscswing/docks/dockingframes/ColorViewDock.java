@@ -23,75 +23,95 @@ import java.awt.Component;
 
 import javax.swing.JPanel;
 
+import bibliothek.gui.dock.common.SingleCDockable;
+
 import com.anrisoftware.prefdialog.miscswing.docks.api.DockPosition;
 import com.anrisoftware.prefdialog.miscswing.docks.api.ViewDockWindow;
 
+/**
+ * Color view dock.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 1.0
+ */
 public class ColorViewDock implements ViewDockWindow {
 
-	private String id;
+    private String id;
 
-	private String title;
+    private String title;
 
-	private DockPosition position;
+    private DockPosition position;
 
-	private Color color;
+    private Color color;
 
-	public ColorViewDock() {
-	}
+    private SingleCDockable dockable;
 
-	public ColorViewDock(String id, String title, DockPosition position,
-			Color color) {
-		this.id = id;
-		this.title = title;
-		this.position = position;
-		this.color = color;
-	}
+    public ColorViewDock() {
+    }
 
-	@Override
-	public String getId() {
-		return id;
-	}
+    public ColorViewDock(String id, String title, DockPosition position,
+            Color color) {
+        this.id = id;
+        this.title = title;
+        this.position = position;
+        this.color = color;
+    }
 
-	@Override
-	public String getTitle() {
-		return title;
-	}
+    @Override
+    public void setDockable(Object dockable) {
+        this.dockable = (SingleCDockable) dockable;
+    }
 
-	@Override
-	public Component getComponent() {
-		JPanel panel = new JPanel();
-		panel.setBackground(color);
-		return panel;
-	}
+    @Override
+    public Object getDockable() {
+        return dockable;
+    }
 
-	@Override
-	public DockPosition getPosition() {
-		return position;
-	}
+    @Override
+    public String getId() {
+        return id;
+    }
 
-	@Override
-	public boolean isCloseable() {
-		return true;
-	}
+    @Override
+    public String getTitle() {
+        return title;
+    }
 
-	@Override
-	public boolean isExternalizable() {
-		return true;
-	}
+    @Override
+    public Component getComponent() {
+        JPanel panel = new JPanel();
+        panel.setBackground(color);
+        return panel;
+    }
 
-	@Override
-	public boolean isMaximizable() {
-		return false;
-	}
+    @Override
+    public DockPosition getPosition() {
+        return position;
+    }
 
-	@Override
-	public boolean isMinimizable() {
-		return true;
-	}
+    @Override
+    public boolean isCloseable() {
+        return true;
+    }
 
-	@Override
-	public boolean isStackable() {
-		return true;
-	}
+    @Override
+    public boolean isExternalizable() {
+        return true;
+    }
+
+    @Override
+    public boolean isMaximizable() {
+        return false;
+    }
+
+    @Override
+    public boolean isMinimizable() {
+        return true;
+    }
+
+    @Override
+    public boolean isStackable() {
+        return true;
+    }
 
 }

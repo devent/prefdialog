@@ -23,75 +23,95 @@ import java.awt.Component;
 
 import javax.swing.JPanel;
 
-import com.anrisoftware.prefdialog.miscswing.docks.api.EditorDockWindow;
-import com.anrisoftware.prefdialog.miscswing.docks.api.DockPosition;
+import bibliothek.gui.dock.common.MultipleCDockable;
 
+import com.anrisoftware.prefdialog.miscswing.docks.api.DockPosition;
+import com.anrisoftware.prefdialog.miscswing.docks.api.EditorDockWindow;
+
+/**
+ * Color editor dock.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 1.0
+ */
 public class ColorEditorDock implements EditorDockWindow {
 
-	private String id;
+    private String id;
 
-	private String title;
+    private String title;
 
-	private DockPosition position;
+    private DockPosition position;
 
-	private Color color;
+    private Color color;
 
-	public ColorEditorDock() {
-	}
+    private MultipleCDockable dockable;
 
-	public ColorEditorDock(String id, String title,
-			DockPosition position, Color color) {
-		this.id = id;
-		this.title = title;
-		this.position = position;
-		this.color = color;
-	}
+    public ColorEditorDock() {
+    }
 
-	@Override
-	public String getId() {
-		return id;
-	}
+    public ColorEditorDock(String id, String title, DockPosition position,
+            Color color) {
+        this.id = id;
+        this.title = title;
+        this.position = position;
+        this.color = color;
+    }
 
-	@Override
-	public String getTitle() {
-		return title;
-	}
+    @Override
+    public void setDockable(Object dockable) {
+        this.dockable = (MultipleCDockable) dockable;
+    }
 
-	@Override
-	public Component getComponent() {
-		JPanel panel = new JPanel();
-		panel.setBackground(color);
-		return panel;
-	}
+    @Override
+    public Object getDockable() {
+        return dockable;
+    }
 
-	@Override
-	public DockPosition getPosition() {
-		return position;
-	}
+    @Override
+    public String getId() {
+        return id;
+    }
 
-	@Override
-	public boolean isCloseable() {
-		return true;
-	}
+    @Override
+    public String getTitle() {
+        return title;
+    }
 
-	@Override
-	public boolean isExternalizable() {
-		return true;
-	}
+    @Override
+    public Component getComponent() {
+        JPanel panel = new JPanel();
+        panel.setBackground(color);
+        return panel;
+    }
 
-	@Override
-	public boolean isMaximizable() {
-		return true;
-	}
+    @Override
+    public DockPosition getPosition() {
+        return position;
+    }
 
-	@Override
-	public boolean isMinimizable() {
-		return true;
-	}
+    @Override
+    public boolean isCloseable() {
+        return true;
+    }
 
-	@Override
-	public boolean isStackable() {
-		return true;
-	}
+    @Override
+    public boolean isExternalizable() {
+        return true;
+    }
+
+    @Override
+    public boolean isMaximizable() {
+        return true;
+    }
+
+    @Override
+    public boolean isMinimizable() {
+        return true;
+    }
+
+    @Override
+    public boolean isStackable() {
+        return true;
+    }
 
 }

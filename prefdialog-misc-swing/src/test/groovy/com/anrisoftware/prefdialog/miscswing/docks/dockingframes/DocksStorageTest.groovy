@@ -22,87 +22,93 @@ import static com.anrisoftware.prefdialog.miscswing.docks.api.DockPosition.*
 import static javax.swing.SwingUtilities.*
 import groovy.util.logging.Slf4j
 
-import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 
 import bibliothek.gui.dock.common.theme.ThemeMap
 
-import com.anrisoftware.prefdialog.miscswing.docks.api.Dock
 import com.anrisoftware.prefdialog.miscswing.docks.api.LayoutTask
+import com.anrisoftware.prefdialog.miscswing.docks.docktesting.DockTestingFactory
 import com.google.inject.Injector
 
+/**
+ * Layout save and load test.
+ *
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 1.0
+ */
 @Slf4j
 class DocksStorageTest extends DocksTestBase {
 
-	@Test
-	void "set layout, store and load layout"() {
-		File tmp = File.createTempFile("docks", "layout")
-		//tmp.deleteOnExit()
-		int number = 0
-		String title = "PerspectiveManuallyTest::set layout, store and load layout"
-		String name = "test"
-		withFrame(title, { //
-			dock.applyLayout defaultPerspective }
-		).withFixture( {
-			dock.addViewDock createViewDock(number++, NORTH)
-			dock.addViewDock createViewDock(number++, WEST)
-			dock.addViewDock createViewDock(number++, SOUTH)
-			dock.addViewDock createViewDock(number++, EAST)
-			dock.addEditorDock createEditorDock(number++)
-			dock.addEditorDock createEditorDock(number++)
-		}, {
-			log.info "Store your layout."
-			dock.saveLayout(name, tmp)
-		},{
-			log.info "Load your layout."
-			dock.loadLayout(name, tmp)
-		},
-		{ Thread.sleep 3*1000 })
-	}
+    @Test
+    void "set layout, store and load layout"() {
+        File tmp = File.createTempFile("docks", "layout")
+        int number = 0
+        String title = "Docks"
+        String name = "test"
+        def testing = testingFactory.create([title: title])()
+        testing.withFixture({
+            invokeAndWait {
+                testing.dock.applyLayout defaultLayout
+                testing.dock.setTheme ThemeMap.KEY_ECLIPSE_THEME
+            }
+        }, {
+            invokeAndWait { testing.dock.addViewDock createViewDock(number++, NORTH) }
+            invokeAndWait { testing.dock.addViewDock createViewDock(number++, WEST) }
+            invokeAndWait { testing.dock.addViewDock createViewDock(number++, SOUTH) }
+            invokeAndWait { testing.dock.addEditorDock createEditorDock(number++) }
+            invokeAndWait { testing.dock.addEditorDock createEditorDock(number++) }
+        }, {
+            log.info "Store your layout."
+            testing.dock.saveLayout(name, tmp)
+        },{
+            log.info "Load your layout."
+            testing.dock.loadLayout(name, tmp)
+        },
+        { Thread.sleep 3*1000 })
+    }
 
-	@Test
-	void "manually store and load layout"() {
-		File tmp = File.createTempFile("docks-storane", null)
-		tmp.deleteOnExit()
-		String title = "PerspectiveManuallyTest::manually store and load layout"
-		int number = 0
-		String name = "test"
-		withFrame(title, {
-			dock.applyLayout defaultPerspective
-			dock.setTheme(ThemeMap.KEY_ECLIPSE_THEME)
-		}).withFixture({
-			dock.addViewDock createViewDock(number++, NORTH)
-			dock.addViewDock createViewDock(number++, WEST)
-			dock.addViewDock createViewDock(number++, SOUTH)
-			dock.addViewDock createViewDock(number++, EAST)
-			dock.addEditorDock createEditorDock(number++)
-			dock.addEditorDock createEditorDock(number++)
-			Thread.sleep 10*1000
-			log.info "Store your layout."
-			dock.saveLayout(name, tmp)
-		},{
-			Thread.sleep 10*1000
-			log.info "Load your layout."
-			dock.loadLayout(name, tmp)
-		},
-		{ Thread.sleep 60*1000 })
-	}
+    @Test
+    void "manually store and load layout"() {
+        File tmp = File.createTempFile("docks-storane", null)
+        tmp.deleteOnExit()
+        String title = "Docks"
+        int number = 0
+        String name = "test"
+        def testing = testingFactory.create([title: title])()
+        testing.withFixture({
+            invokeAndWait {
+                testing.dock.applyLayout defaultLayout
+                testing.dock.setTheme ThemeMap.KEY_ECLIPSE_THEME
+            }
+        }, {
+            invokeAndWait { testing.dock.addViewDock createViewDock(number++, NORTH) }
+            invokeAndWait { testing.dock.addViewDock createViewDock(number++, WEST) }
+            invokeAndWait { testing.dock.addViewDock createViewDock(number++, SOUTH) }
+            invokeAndWait { testing.dock.addEditorDock createEditorDock(number++) }
+            invokeAndWait { testing.dock.addEditorDock createEditorDock(number++) }
+        }, {
+            Thread.sleep 10*1000
+            log.info "Store your layout."
+            testing.dock.saveLayout(name, tmp)
+        },{
+            Thread.sleep 10*1000
+            log.info "Load your layout."
+            testing.dock.loadLayout(name, tmp)
+        },
+        { Thread.sleep 3*1000 })
+    }
 
-	static Injector injector
+    static Injector injector
 
-	static LayoutTask defaultPerspective
+    static DockTestingFactory testingFactory
 
-	@BeforeClass
-	static void setup() {
-		injector = createInjector()
-		defaultPerspective = createDefaultPerspective(injector, "default")
-	}
+    static LayoutTask defaultLayout
 
-	Dock dock
-
-	@Before
-	void setupDock() {
-		dock = createDock(injector)
-	}
+    @BeforeClass
+    static void setup() {
+        injector = createInjector()
+        defaultLayout = createDefaultPerspective(injector, "default")
+        testingFactory = injector.getInstance DockTestingFactory
+    }
 }

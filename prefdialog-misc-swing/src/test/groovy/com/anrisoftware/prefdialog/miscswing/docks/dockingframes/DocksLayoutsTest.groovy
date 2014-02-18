@@ -22,52 +22,58 @@ import static com.anrisoftware.prefdialog.miscswing.docks.api.DockPosition.*
 import static javax.swing.SwingUtilities.*
 import groovy.util.logging.Slf4j
 
-import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 
 import bibliothek.gui.dock.common.theme.ThemeMap
 
-import com.anrisoftware.prefdialog.miscswing.docks.api.Dock
 import com.anrisoftware.prefdialog.miscswing.docks.api.LayoutTask
+import com.anrisoftware.prefdialog.miscswing.docks.docktesting.DockTestingFactory
 import com.google.inject.Injector
 
+/**
+ * Dock layout.
+ *
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 1.0
+ */
 @Slf4j
 class DocksLayoutsTest extends DocksTestBase {
 
-	@Test
-	void "set two layouts"() {
-		String title = "DocksTest::set two layouts"
-		int number = 0
-		withFrame(title, {
-			dock.applyLayout defaultPerspective
-			dock.setTheme(ThemeMap.KEY_ECLIPSE_THEME)
-		}).withFixture({
-			dock.addViewDock createViewDock(number++, EAST)
-			dock.addViewDock createViewDock(number++, EAST)
-			dock.addViewDock createViewDock(number++, EAST)
-			dock.addEditorDock createEditorDock(number++)
-			dock.addEditorDock createEditorDock(number++)
-		}, {
-			log.info "Set new layout"
-			dock.applyLayout defaultPerspective
-		})
-	}
+    @Test
+    void "set two layouts"() {
+        String title = "DocksTest::set two layouts"
+        int number = 0
+        def testing = testingFactory.create([title: title])()
+        testing.withFixture({
+            invokeAndWait {
+                testing.dock.applyLayout defaultLayout
+                testing.dock.setTheme(ThemeMap.KEY_ECLIPSE_THEME)
+            }
+        }, {
+            invokeAndWait {
+                testing.dock.addViewDock createViewDock(number++, EAST)
+                testing.dock.addViewDock createViewDock(number++, EAST)
+                testing.dock.addViewDock createViewDock(number++, EAST)
+                testing.dock.addEditorDock createEditorDock(number++)
+                testing.dock.addEditorDock createEditorDock(number++)
+            }
+        }, {
+            log.info "Set new layout"
+            invokeAndWait { testing.dock.applyLayout defaultLayout }
+        })
+    }
 
-	static Injector injector
+    static Injector injector
 
-	static LayoutTask defaultPerspective
+    static LayoutTask defaultLayout
 
-	@BeforeClass
-	static void setup() {
-		injector = createInjector()
-		defaultPerspective = createDefaultPerspective(injector, "default")
-	}
+    static DockTestingFactory testingFactory
 
-	Dock dock
-
-	@Before
-	void setupDock() {
-		dock = createDock(injector)
-	}
+    @BeforeClass
+    static void setup() {
+        injector = createInjector()
+        defaultLayout = createDefaultPerspective(injector, "default")
+        testingFactory = injector.getInstance DockTestingFactory
+    }
 }

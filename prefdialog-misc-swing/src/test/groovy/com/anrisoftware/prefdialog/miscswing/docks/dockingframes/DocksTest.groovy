@@ -41,72 +41,72 @@ import com.google.inject.Injector
 @Slf4j
 class DocksTest extends DocksTestBase {
 
-	@Test
-	void "flat theme"() {
-		def title = "$NAME/flat theme"
-		def testing = testingFactory.create([title: title])()
-		testing.withFixture({
-			invokeAndWait {
-				viewDocks.each { testing.dock.addViewDock(it) }
-				testing.dock.addEditorDock editorDocks[0]
-				testing.dock.addEditorDock editorDocks[1]
-				testing.dock.setTheme ThemeMap.KEY_FLAT_THEME
-			}
-		})
-	}
+    @Test
+    void "flat theme"() {
+        def title = "$NAME/flat theme"
+        def testing = testingFactory.create([title: title])()
+        testing.withFixture({
+            invokeAndWait {
+                viewDocks.each { testing.dock.addViewDock(it) }
+                testing.dock.addEditorDock editorDocks[0]
+                testing.dock.addEditorDock editorDocks[1]
+                testing.dock.setTheme ThemeMap.KEY_FLAT_THEME
+            }
+        })
+    }
 
-	@Test
-	void "basic theme, no border modifier"() {
-		def title = "$NAME/basic theme, no border modifier"
-		def testing = testingFactory.create([title: title])()
-		testing.withFixture({
-			invokeAndWait {
-				viewDocks.each { testing.dock.addViewDock(it) }
-				testing.dock.addEditorDock editorDocks[0]
-				testing.dock.addEditorDock editorDocks[1]
-				testing.dock.setTheme ThemeMap.KEY_FLAT_THEME
-				testing.dock.getThemeManager().setBorderModifierBridge(
-						DisplayerDockBorder.KIND, new NoBorderModifierBridge())
-			}
-		})
-	}
+    @Test
+    void "basic theme, no border modifier"() {
+        def title = "$NAME/basic theme, no border modifier"
+        def testing = testingFactory.create([title: title])()
+        testing.withFixture({
+            invokeAndWait {
+                viewDocks.each { testing.dock.addViewDock(it) }
+                testing.dock.addEditorDock editorDocks[0]
+                testing.dock.addEditorDock editorDocks[1]
+                testing.dock.setTheme ThemeMap.KEY_FLAT_THEME
+                testing.dock.getThemeManager().setBorderModifierBridge(
+                        DisplayerDockBorder.KIND, new NoBorderModifierBridge())
+            }
+        })
+    }
 
-	@Test
-	void "no editors"() {
-		def title = "$NAME/no editors"
-		def testing = testingFactory.create([title: title])()
-		testing.withFixture({
-			invokeAndWait {
-				viewDocks.each { testing.dock.addViewDock(it) }
-			}
-		}, {
-			invokeAndWait { testing.dock.setTheme(ThemeMap.KEY_ECLIPSE_THEME) }
-		}, {
-			invokeAndWait { testing.dock.setTheme(ThemeMap.KEY_BUBBLE_THEME) }
-		}, {
-			invokeAndWait { testing.dock.setTheme(ThemeMap.KEY_SMOOTH_THEME) }
-		}, {
-			invokeAndWait { testing.dock.setTheme(ThemeMap.KEY_BASIC_THEME) }
-		}, {
-			invokeAndWait {
-				testing.dock.getThemeManager().setBorderModifierBridge(
-						DisplayerDockBorder.KIND, new NoBorderModifierBridge())
-			}
-		})
-	}
+    @Test
+    void "no editors"() {
+        def title = "$NAME/no editors"
+        def testing = testingFactory.create([title: title])()
+        testing.withFixture({
+            invokeAndWait {
+                viewDocks.each { testing.dock.addViewDock(it) }
+            }
+        }, {
+            invokeAndWait { testing.dock.setTheme(ThemeMap.KEY_ECLIPSE_THEME) }
+        }, {
+            invokeAndWait { testing.dock.setTheme(ThemeMap.KEY_BUBBLE_THEME) }
+        }, {
+            invokeAndWait { testing.dock.setTheme(ThemeMap.KEY_SMOOTH_THEME) }
+        }, {
+            invokeAndWait { testing.dock.setTheme(ThemeMap.KEY_BASIC_THEME) }
+        }, {
+            invokeAndWait {
+                testing.dock.getThemeManager().setBorderModifierBridge(
+                        DisplayerDockBorder.KIND, new NoBorderModifierBridge())
+            }
+        })
+    }
 
-	static final String NAME = DocksTest.class.simpleName
+    static final String NAME = DocksTest.class.simpleName
 
-	static Injector injector
+    static Injector injector
 
-	static DockTestingFactory testingFactory
+    static DockTestingFactory testingFactory
 
-	static LayoutTask defaultLayout
+    static LayoutTask defaultLayout
 
-	@BeforeClass
-	static void setup() {
-		injector = createInjector()
-		testingFactory = injector.getInstance DockTestingFactory
-		defaultLayout = createDefaultPerspective(injector, "default")
-	}
+    @BeforeClass
+    static void setup() {
+        injector = createInjector()
+        testingFactory = injector.getInstance DockTestingFactory
+        defaultLayout = createDefaultPerspective(injector, "default")
+    }
 }

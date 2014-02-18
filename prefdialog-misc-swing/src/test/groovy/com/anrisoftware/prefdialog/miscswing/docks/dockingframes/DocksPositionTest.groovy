@@ -22,78 +22,87 @@ import static com.anrisoftware.prefdialog.miscswing.docks.api.DockPosition.*
 import static javax.swing.SwingUtilities.*
 import groovy.util.logging.Slf4j
 
-import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 
-import com.anrisoftware.prefdialog.miscswing.docks.api.Dock
 import com.anrisoftware.prefdialog.miscswing.docks.api.LayoutTask
+import com.anrisoftware.prefdialog.miscswing.docks.docktesting.DockTestingFactory
 import com.google.inject.Injector
 
+/**
+ * Dock position.
+ *
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 1.0
+ */
 @Slf4j
 class DocksPositionTest extends DocksTestBase {
 
-	@Test
-	void "add docks to N,W,S,E"() {
-		String title = "DocksTest::add docks to N,W,S,E"
-		int number = 0
-		withFrame(title, { //
-			dock.applyLayout defaultPerspective }
-		).withFixture( {
-			dock.addViewDock createViewDock(number++, NORTH)
-		}, {
-			dock.addViewDock createViewDock(number++, WEST)
-		}, {
-			dock.addViewDock createViewDock(number++, SOUTH)
-		}, {
-			dock.addViewDock createViewDock(number++, EAST)
-		}, { Thread.sleep 5*1000 })
-	}
+    @Test
+    void "add docks to N,W,S,E"() {
+        String title = "DocksTest::add docks to N,W,S,E"
+        int number = 0
+        def testing = testingFactory.create([title: title])()
+        testing.withFixture({
+            invokeAndWait { testing.dock.applyLayout defaultLayout }
+        }, {
+            invokeAndWait { testing.dock.addViewDock createViewDock(number++, NORTH) }
+            invokeAndWait { testing.dock.addViewDock createViewDock(number++, WEST) }
+            invokeAndWait { testing.dock.addViewDock createViewDock(number++, SOUTH) }
+            invokeAndWait { testing.dock.addViewDock createViewDock(number++, EAST) }
+        }, {
+            log.info "Set new layout"
+            invokeAndWait { testing.dock.applyLayout defaultLayout }
+        })
+    }
 
-	@Test
-	void "add 2x docks to N"() {
-		String title = "DocksTest::add 2x docks to N"
-		int number = 0
-		withFrame(title, { //
-			dock.applyLayout defaultPerspective }
-		).withFixture( {
-			dock.addViewDock createViewDock(number++, NORTH)
-		}, {
-			dock.addViewDock createViewDock(number++, NORTH)
-		}, { Thread.sleep 5*1000 })
-	}
+    @Test
+    void "add 2x docks to N"() {
+        String title = "DocksTest::add 2x docks to N"
+        int number = 0
+        def testing = testingFactory.create([title: title])()
+        testing.withFixture({
+            invokeAndWait { testing.dock.applyLayout defaultLayout }
+        }, {
+            invokeAndWait { testing.dock.addViewDock createViewDock(number++, NORTH) }
+            invokeAndWait { testing.dock.addViewDock createViewDock(number++, NORTH) }
+        }, {
+            log.info "Set new layout"
+            invokeAndWait { testing.dock.applyLayout defaultLayout }
+        })
+    }
 
-	@Test
-	void "add 2x docks to W, add 2x edit"() {
-		String title = "DocksTest::add 2x docks to W, add 2x edit"
-		int number = 0
-		withFrame(title, { //
-			dock.applyLayout defaultPerspective }
-		).withFixture( {
-			dock.addViewDock createViewDock(number++, WEST)
-		}, {
-			dock.addViewDock createViewDock(number++, WEST)
-		}, {
-			dock.addEditorDock createEditorDock(number++)
-		}, {
-			dock.addEditorDock createEditorDock(number++)
-		}, { Thread.sleep 5*1000 })
-	}
+    @Test
+    void "add 2x docks to W, add 2x edit"() {
+        String title = "DocksTest::add 2x docks to W, add 2x edit"
+        int number = 0
+        def testing = testingFactory.create([title: title])()
+        testing.withFixture({
+            invokeAndWait { testing.dock.applyLayout defaultLayout }
+        }, {
+            invokeAndWait { testing.dock.addViewDock createViewDock(number++, WEST) }
+            invokeAndWait { testing.dock.addViewDock createViewDock(number++, WEST) }
+        }, {
+            invokeAndWait {
+                testing.dock.addEditorDock createEditorDock(number++)
+                testing.dock.addEditorDock createEditorDock(number++)
+            }
+        }, {
+            log.info "Set new layout"
+            invokeAndWait { testing.dock.applyLayout defaultLayout }
+        })
+    }
 
-	static Injector injector
+    static Injector injector
 
-	static LayoutTask defaultPerspective
+    static LayoutTask defaultLayout
 
-	@BeforeClass
-	static void setup() {
-		injector = createInjector()
-		defaultPerspective = createDefaultPerspective(injector, "default")
-	}
+    static DockTestingFactory testingFactory
 
-	Dock dock
-
-	@Before
-	void setupDock() {
-		dock = createDock(injector)
-	}
+    @BeforeClass
+    static void setup() {
+        injector = createInjector()
+        defaultLayout = createDefaultPerspective(injector, "default")
+        testingFactory = injector.getInstance DockTestingFactory
+    }
 }
