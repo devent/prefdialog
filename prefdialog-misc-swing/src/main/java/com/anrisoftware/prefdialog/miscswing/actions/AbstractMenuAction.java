@@ -36,12 +36,12 @@ import com.anrisoftware.prefdialog.miscswing.resourcesaction.AbstractResourcesAc
  * &#064;SuppressWarnings(&quot;serial&quot;)
  * class ExitAction extends AbstractMenuAction {
  * 
- * 	private static final String NAME = &quot;exit_action&quot;;
+ *     private static final String NAME = &quot;exit_action&quot;;
  * 
- * 	ExitAction() {
- * 		super(NAME);
- * 		setEnabled(true);
- * 	}
+ *     ExitAction() {
+ *         super(NAME);
+ *         setEnabled(true);
+ *     }
  * }
  * </pre>
  * 
@@ -50,41 +50,41 @@ import com.anrisoftware.prefdialog.miscswing.resourcesaction.AbstractResourcesAc
  */
 @SuppressWarnings("serial")
 public abstract class AbstractMenuAction extends AbstractResourcesAction
-		implements MenuAction {
+        implements MenuAction {
 
-	private Actions actions;
+    private Actions actions;
 
-	/**
-	 * @see AbstractResourcesAction#AbstractResourcesAction(String)
-	 */
-	protected AbstractMenuAction(String name) {
-		super(name);
-	}
+    /**
+     * @see AbstractResourcesAction#AbstractResourcesAction(String)
+     */
+    protected AbstractMenuAction(String name) {
+        super(name);
+    }
 
-	/**
-	 * Injects the application actions to submit actions to.
-	 * 
-	 * @param actions
-	 *            the {@link Actions}.
-	 */
-	@Inject
-	void setActions(Actions actions) {
-		this.actions = actions;
-	}
+    /**
+     * Injects the application actions to submit actions to.
+     * 
+     * @param actions
+     *            the {@link Actions}.
+     */
+    @Inject
+    void setActions(Actions actions) {
+        this.actions = actions;
+    }
 
-	@Override
-	public void addAction(Callable<?> action,
-			PropertyChangeListener... listeners) {
-		actions.addAction(getName(), action, listeners);
-	}
+    @Override
+    public void addAction(Callable<?> action,
+            PropertyChangeListener... listeners) {
+        actions.addAction(getName(), action, listeners);
+    }
 
-	@Override
-	public void addAWTAction(Runnable action) {
-		actions.addAWTAction(getName(), action);
-	}
+    @Override
+    public void addAWTAction(Runnable action) {
+        actions.addAWTAction(getName(), action);
+    }
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		actions.executeActions(getName());
-	}
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        actions.executeActions(getName());
+    }
 }

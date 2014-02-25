@@ -40,33 +40,33 @@ import com.anrisoftware.resources.texts.api.Texts;
  * &#064;Singleton
  * public class FileMenuActions extends AbstractMenuActions {
  * 
- * 	public static final String FILE_MENU_NAME = &quot;fileMenuMenu&quot;;
- * 	public static final String EXIT_NAME = &quot;exitMenu&quot;;
+ *     public static final String FILE_MENU_NAME = &quot;fileMenuMenu&quot;;
+ *     public static final String EXIT_NAME = &quot;exitMenu&quot;;
  * 
- * 	&#064;Inject
- * 	private ExitAction exitAction;
+ *     &#064;Inject
+ *     private ExitAction exitAction;
  * 
- * 	private Map&lt;String, MenuAction&gt; actions;
+ *     private Map&lt;String, MenuAction&gt; actions;
  * 
- * 	&#064;Inject
- * 	void setTexts(TextsProvider texts) {
- * 		super.setTexts(texts);
- * 	}
+ *     &#064;Inject
+ *     void setTexts(TextsProvider texts) {
+ *         super.setTexts(texts);
+ *     }
  * 
- * 	&#064;Override
- * 	public Map&lt;String, MenuAction&gt; getActions() {
- * 		if (actions == null) {
- * 			actions = createActions();
- * 		}
- * 		return actions;
- * 	}
+ *     &#064;Override
+ *     public Map&lt;String, MenuAction&gt; getActions() {
+ *         if (actions == null) {
+ *             actions = createActions();
+ *         }
+ *         return actions;
+ *     }
  * 
- * 	private Map&lt;String, MenuAction&gt; createActions() {
- * 		actions = new HashMap&lt;String, MenuAction&gt;();
- * 		actions.put(FILE_MENU_NAME, dataAction);
- * 		actions.put(EXIT_NAME, originalDataAction);
- * 		return actions;
- * 	}
+ *     private Map&lt;String, MenuAction&gt; createActions() {
+ *         actions = new HashMap&lt;String, MenuAction&gt;();
+ *         actions.put(FILE_MENU_NAME, dataAction);
+ *         actions.put(EXIT_NAME, originalDataAction);
+ *         return actions;
+ *     }
  * }
  * </pre>
  * 
@@ -75,111 +75,115 @@ import com.anrisoftware.resources.texts.api.Texts;
  */
 public abstract class AbstractMenuActions {
 
-	/**
-	 * Sets the texts resource for the actions.
-	 * 
-	 * @see AbstractResourcesAction#setTexts(Texts)
-	 */
-	public void setTexts(Texts texts) {
-		for (MenuAction action : getActions().values()) {
-			((AbstractResourcesAction) action).setTexts(texts);
-		}
-	}
+    /**
+     * Sets the texts resource for the actions.
+     * 
+     * @see AbstractResourcesAction#setTexts(Texts)
+     */
+    public void setTexts(Texts texts) {
+        for (MenuAction action : getActions().values()) {
+            ((AbstractResourcesAction) action).setTexts(texts);
+        }
+    }
 
-	/**
-	 * Sets the images resource for the actions.
-	 * 
-	 * @see AbstractResourcesAction#setImages(Images)
-	 */
-	public void setImages(Images images) {
-		for (MenuAction action : getActions().values()) {
-			AbstractResourcesAction a = (AbstractResourcesAction) action;
-			a.setImages(images);
-		}
-	}
+    /**
+     * Sets the images resource for the actions.
+     * 
+     * @see AbstractResourcesAction#setImages(Images)
+     */
+    public void setImages(Images images) {
+        for (MenuAction action : getActions().values()) {
+            AbstractResourcesAction a = (AbstractResourcesAction) action;
+            a.setImages(images);
+        }
+    }
 
-	/**
-	 * Adds the action to be executed for the specified menu entry.
-	 * 
-	 * @param name
-	 *            the name of the action.
-	 * 
-	 * @param action
-	 *            the {@link Callable} action.
-	 * 
-	 * @param listeners
-	 *            optional the {@link PropertyChangeListener} listeners that are
-	 *            called when the action has finished.
-	 * 
-	 * @see MenuAction#addAction(Callable, PropertyChangeListener...)
-	 */
-	public void addAction(String name, Callable<?> action,
-			PropertyChangeListener... listeners) {
-		getActions().get(name).addAction(action, listeners);
-	}
+    /**
+     * Adds the action to be executed for the specified menu entry.
+     * 
+     * @param name
+     *            the name of the action.
+     * 
+     * @param action
+     *            the {@link Callable} action.
+     * 
+     * @param listeners
+     *            optional the {@link PropertyChangeListener} listeners that are
+     *            called when the action has finished.
+     * 
+     * @see MenuAction#addAction(Callable, PropertyChangeListener...)
+     */
+    public void addAction(String name, Callable<?> action,
+            PropertyChangeListener... listeners) {
+        getActions().get(name).addAction(action, listeners);
+    }
 
-	/**
-	 * Adds the action to be executed on the AWT thread for the specified menu
-	 * entry.
-	 * 
-	 * @param name
-	 *            the name of the action.
-	 * 
-	 * @param action
-	 *            the {@link Runnable} action.
-	 * 
-	 * @see MenuAction#addAWTAction(Runnable)
-	 */
-	public void addAWTAction(String name, Runnable action) {
-		getActions().get(name).addAWTAction(action);
-	}
+    /**
+     * Adds the action to be executed on the AWT thread for the specified menu
+     * entry.
+     * 
+     * @param name
+     *            the name of the action.
+     * 
+     * @param action
+     *            the {@link Runnable} action.
+     * 
+     * @see MenuAction#addAWTAction(Runnable)
+     */
+    public void addAWTAction(String name, Runnable action) {
+        getActions().get(name).addAWTAction(action);
+    }
 
-	/**
-	 * Enabled or disables the menu action.
-	 * 
-	 * @param name
-	 *            the name of the menu action.
-	 * 
-	 * @param enabled
-	 *            set to {@code true} to enable the action.
-	 */
-	public void setActionEnabled(final String name, final boolean enabled) {
-		invokeLater(new Runnable() {
+    /**
+     * Enabled or disables the menu action.
+     * 
+     * <h2>AWT Thread</h2>
+     * <p>
+     * Should be called <i>outside</i> the AWT thread.
+     * 
+     * @param name
+     *            the name of the menu action.
+     * 
+     * @param enabled
+     *            set to {@code true} to enable the action.
+     */
+    public void setActionEnabled(final String name, final boolean enabled) {
+        invokeLater(new Runnable() {
 
-			@Override
-			public void run() {
-				((Action) getActions().get(name)).setEnabled(enabled);
-			}
-		});
-	}
+            @Override
+            public void run() {
+                ((Action) getActions().get(name)).setEnabled(enabled);
+            }
+        });
+    }
 
-	/**
-	 * Enabled or disables multiple menu actions.
-	 * 
-	 * @param names
-	 *            the names of the menu actions.
-	 * 
-	 * @param enabled
-	 *            set to {@code true} to enable the actions.
-	 */
-	public void setActionsEnabled(final String[] names, final boolean enabled) {
-		invokeLater(new Runnable() {
+    /**
+     * Enabled or disables multiple menu actions.
+     * 
+     * @param names
+     *            the names of the menu actions.
+     * 
+     * @param enabled
+     *            set to {@code true} to enable the actions.
+     */
+    public void setActionsEnabled(final String[] names, final boolean enabled) {
+        invokeLater(new Runnable() {
 
-			@Override
-			public void run() {
-				for (String name : names) {
-					((Action) getActions().get(name)).setEnabled(enabled);
-				}
-			}
-		});
-	}
+            @Override
+            public void run() {
+                for (String name : names) {
+                    ((Action) getActions().get(name)).setEnabled(enabled);
+                }
+            }
+        });
+    }
 
-	/**
-	 * Returns the actions.
-	 * 
-	 * @return the {@link Map} of the actions, where the key is the action name
-	 *         and the value is the {@link MenuAction}.
-	 */
-	public abstract Map<String, MenuAction> getActions();
+    /**
+     * Returns the actions.
+     * 
+     * @return the {@link Map} of the actions, where the key is the action name
+     *         and the value is the {@link MenuAction}.
+     */
+    public abstract Map<String, MenuAction> getActions();
 
 }

@@ -43,283 +43,310 @@ import com.anrisoftware.prefdialog.simpledialog.SimpleDialog;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-public abstract class AbstractDialogAction<Value, Dialog extends SimpleDialog>
-		implements Callable<Value> {
+public abstract class AbstractDialogAction<ValueType, DialogType extends SimpleDialog>
+        implements Callable<ValueType> {
 
-	private static final Duration WAIT_DURATION = Duration.parse("PT3S");
+    private static final Duration WAIT_DURATION = Duration.parse("PT3S");
 
-	private final Runnable openDialog;
+    private final Runnable openDialog;
 
-	@Inject
-	private AbstractDialogActionLogger log;
+    @Inject
+    private AbstractDialogActionLogger log;
 
-	private JFrame frame;
+    private JFrame frame;
 
-	private Dialog createdDialog;
+    private DialogType createdDialog;
 
-	private SwingWorker<Value, Runnable> worker;
+    private SwingWorker<ValueType, Runnable> worker;
 
-	private Dialog dialog;
+    private DialogType dialog;
 
-	private boolean creatingDialog;
+    private boolean creatingDialog;
 
-	private boolean createAutomatic;
+    private boolean createAutomatic;
 
-	protected AbstractDialogAction() {
-		this.creatingDialog = false;
-		this.createdDialog = null;
-		this.createAutomatic = true;
-		this.openDialog = new Runnable() {
+    private Object dialogFactory;
 
-			@Override
-			public void run() {
-				openDialog();
-			}
+    protected AbstractDialogAction() {
+        this.creatingDialog = false;
+        this.createdDialog = null;
+        this.createAutomatic = true;
+        this.openDialog = new Runnable() {
 
-		};
-	}
+            @Override
+            public void run() {
+                openDialog();
+            }
 
-	/**
-	 * Sets to create the dialog as soon as every dependency is set.
-	 *
-	 * @param automatic
-	 *            set to {@code true} to create the dialog as soon as every
-	 *            dependency is set.
-	 *
-	 * @see #canCreateDialog()
-	 */
-	public void setCreateAutomatic(boolean automatic) {
-		this.createAutomatic = automatic;
-	}
+        };
+    }
 
-	/**
-	 * Returns that the dialog shoud be created as soon as every dependency is
-	 * set.
-	 *
-	 * @return {@code true} if the dialog should be created soon as every
-	 *         dependency is set.
-	 */
-	public boolean isCreateAutomatic() {
-		return createAutomatic;
-	}
+    /**
+     * Sets to create the dialog as soon as every dependency is set.
+     * 
+     * @param automatic
+     *            set to {@code true} to create the dialog as soon as every
+     *            dependency is set.
+     * 
+     * @see #canCreateDialog()
+     */
+    public void setCreateAutomatic(boolean automatic) {
+        this.createAutomatic = automatic;
+    }
 
-	/**
-	 * Sets the parent frame for the dialog.
-	 *
-	 * @param frame
-	 *            the {@link JFrame} parent.
-	 */
-	public void setFrame(JFrame frame) {
-		this.frame = frame;
-		if (createAutomatic) {
-			createDialog();
-		}
-	}
+    /**
+     * Returns that the dialog shoud be created as soon as every dependency is
+     * set.
+     * 
+     * @return {@code true} if the dialog should be created soon as every
+     *         dependency is set.
+     */
+    public boolean isCreateAutomatic() {
+        return createAutomatic;
+    }
 
-	/**
-	 * Returns the parent frame for the dialog.
-	 *
-	 * @return the {@link JFrame} parent.
-	 */
-	public JFrame getFrame() {
-		return frame;
-	}
+    /**
+     * Sets the parent frame for the dialog.
+     * 
+     * @param frame
+     *            the {@link JFrame} parent.
+     */
+    public void setFrame(JFrame frame) {
+        this.frame = frame;
+        if (createAutomatic) {
+            createDialog();
+        }
+    }
 
-	/**
-	 * Sets the dialog that should be created.
-	 *
-	 * @param dialog
-	 *            the {@link SimpleDialog}.
-	 *
-	 * @see SimpleDialog#createDialog()
-	 */
-	public void setDialog(Dialog dialog) {
-		this.dialog = dialog;
-		if (createAutomatic) {
-			createDialog();
-		}
-	}
+    /**
+     * Returns the parent frame for the dialog.
+     * 
+     * @return the {@link JFrame} parent.
+     */
+    public JFrame getFrame() {
+        return frame;
+    }
 
-	/**
-	 * Returns the not yet created dialog.
-	 *
-	 * @return the {@link SimpleDialog}.
-	 */
-	public Dialog getNotCreatedDialog() {
-		return dialog;
-	}
+    /**
+     * Sets the dialog that should be created.
+     * 
+     * @param dialog
+     *            the {@link SimpleDialog}.
+     * 
+     * @see SimpleDialog#createDialog()
+     */
+    public void setDialog(DialogType dialog) {
+        this.dialog = dialog;
+        if (createAutomatic) {
+            createDialog();
+        }
+    }
 
-	/**
-	 * Waits for the dialog to be created and opens the dialog. Waits until the
-	 * user either canceled or approved the dialog. After the dialog was
-	 * approved a value is created and returned.
-	 *
-	 * @see #createValue(SimpleDialog)
-	 */
-	@Override
-	public Value call() throws Exception {
-		worker = new SwingWorker<Value, Runnable>() {
+    /**
+     * Sets the dialog factory that creates the dialog.
+     * 
+     * @param dialogFactory
+     *            the {@link Object} dialog factory.
+     * 
+     * @see SimpleDialog#createDialog()
+     */
+    public void setDialogFactory(Object dialogFactory) {
+        this.dialogFactory = dialogFactory;
+        if (createAutomatic) {
+            createDialog();
+        }
+    }
 
-			@Override
-			protected Value doInBackground() throws Exception {
-				publish(openDialog);
-				waitForDialog();
-				return createValue();
-			}
+    /**
+     * Returns the dialog factory that creates the dialog.
+     * 
+     * @return the {@link Object} dialog factory.
+     */
+    @SuppressWarnings("unchecked")
+    public <T> T getDialogFactory() {
+        return (T) dialogFactory;
+    }
 
-			@Override
-			protected void process(List<Runnable> chunks) {
-				for (Runnable runnable : chunks) {
-					runnable.run();
-				}
-			}
+    /**
+     * Returns the not yet created dialog.
+     * 
+     * @return the {@link SimpleDialog}.
+     */
+    public DialogType getNotCreatedDialog() {
+        return dialog;
+    }
 
-		};
-		worker.execute();
-		return worker.get();
-	}
+    /**
+     * Waits for the dialog to be created and opens the dialog. Waits until the
+     * user either canceled or approved the dialog. After the dialog was
+     * approved a value is created and returned.
+     * 
+     * @see #createValue(SimpleDialog)
+     */
+    @Override
+    public ValueType call() throws Exception {
+        worker = new SwingWorker<ValueType, Runnable>() {
 
-	private void openDialog() {
-		Dialog dialog = getDialog();
-		dialog.getDialog().pack();
-		dialog.getDialog().setLocationRelativeTo(frame);
-		dialog.openDialog();
-		synchronized (worker) {
-			worker.notify();
-		}
-	}
+            @Override
+            protected ValueType doInBackground() throws Exception {
+                publish(openDialog);
+                waitForDialog();
+                return createValue();
+            }
 
-	private void waitForDialog() throws InterruptedException {
-		synchronized (worker) {
-			worker.wait();
-		}
-	}
+            @Override
+            protected void process(List<Runnable> chunks) {
+                for (Runnable runnable : chunks) {
+                    runnable.run();
+                }
+            }
 
-	/**
-	 * Creates the dialog. The dialog is only created if all dependencies are
-	 * set.
-	 *
-	 * @see #canCreateDialog()
-	 */
-	public final void createDialog() {
-		boolean creatingDialog = this.creatingDialog;
-		if (!canCreateDialog() || creatingDialog) {
-			return;
-		}
-		this.creatingDialog = true;
-		try {
-			createDialog0();
-		} catch (InvocationTargetException e) {
-			throw log.errorCreateDialog(this, e);
-		} catch (InterruptedException e) {
-			throw log.errorCreateDialogInterrupted(this, e);
-		}
-	}
+        };
+        worker.execute();
+        return worker.get();
+    }
 
-	/**
-	 * Returns if all dependencies are set to create the dialog.
-	 * 
-	 * @return {@code true} if the dialog can be created.
-	 */
-	protected boolean canCreateDialog() {
-		return log.checkCanCreateDialog(this);
-	}
+    private void openDialog() {
+        DialogType dialog = getDialog();
+        dialog.getDialog().setLocationRelativeTo(frame);
+        dialog.openDialog();
+        synchronized (worker) {
+            worker.notify();
+        }
+    }
 
-	private void createDialog0() throws InterruptedException,
-			InvocationTargetException {
-		invokeAndWait(new Runnable() {
+    private void waitForDialog() throws InterruptedException {
+        synchronized (worker) {
+            worker.wait();
+        }
+    }
 
-			@Override
-			public void run() {
-				Dialog d = doCreateDialog(dialog);
-				dialogCreated(d);
-			}
-		});
-	}
+    /**
+     * Creates the dialog. The dialog is only created if all dependencies are
+     * set.
+     * 
+     * @see #canCreateDialog()
+     */
+    public final void createDialog() {
+        boolean creatingDialog = this.creatingDialog;
+        if (!canCreateDialog() || creatingDialog) {
+            return;
+        }
+        this.creatingDialog = true;
+        try {
+            createDialog0();
+        } catch (InvocationTargetException e) {
+            throw log.errorCreateDialog(this, e);
+        } catch (InterruptedException e) {
+            throw log.errorCreateDialogInterrupted(this, e);
+        }
+    }
 
-	/**
-	 * Creates the dialog in a background thread. The dialog is only created if
-	 * all dependencies are set.
-	 * <p>
-	 * <h2>AWT Thread</h2>
-	 * <p>
-	 * Is called in the AWT thread.
-	 * 
-	 * @param dialog
-	 *            the {@link SimpleDialog}.
-	 * 
-	 * @return the created {@link SimpleDialog}.
-	 */
-	@OnAwt
-	protected Dialog doCreateDialog(Dialog dialog) {
-		dialog.createDialog();
-		dialog.getDialog().pack();
-		return dialog;
-	}
+    /**
+     * Returns if all dependencies are set to create the dialog.
+     * 
+     * @return {@code true} if the dialog can be created.
+     */
+    protected boolean canCreateDialog() {
+        return log.checkCanCreateDialog(this);
+    }
 
-	private void dialogCreated(Dialog dialog) {
-		this.createdDialog = dialog;
-		synchronized (this) {
-			notify();
-		}
-	}
+    private void createDialog0() throws InterruptedException,
+            InvocationTargetException {
+        invokeAndWait(new Runnable() {
 
-	/**
-	 * Waits for the dialog to be created and returns it.
-	 *
-	 * @return the {@link SimpleDialog}.
-	 *
-	 * @see #createDialog()
-	 */
-	public Dialog getDialog() {
-		if (!createAutomatic) {
-			createDialog();
-		}
-		while (createdDialog == null) {
-			waitDialogCreated();
-		}
-		return createdDialog;
-	}
+            @Override
+            public void run() {
+                DialogType d = doCreateDialog(dialog);
+                dialogCreated(d);
+            }
+        });
+    }
 
-	private void waitDialogCreated() {
-		try {
-			synchronized (this) {
-				wait(getDialogWaitDuration().getMillis());
-			}
-			log.checkDialogCreated(this, createdDialog);
-		} catch (InterruptedException e) {
-			throw new RuntimeException(e);
-		}
-	}
+    /**
+     * Creates the dialog in a background thread. The dialog is only created if
+     * all dependencies are set.
+     * <p>
+     * <h2>AWT Thread</h2>
+     * <p>
+     * Is called in the AWT thread.
+     * 
+     * @param dialog
+     *            the {@link SimpleDialog}.
+     * 
+     * @return the created {@link SimpleDialog}.
+     */
+    @OnAwt
+    protected DialogType doCreateDialog(DialogType dialog) {
+        dialog.createDialog();
+        dialog.getDialog().pack();
+        return dialog;
+    }
 
-	/**
-	 * Returns the time duration to wait for the dialog to be created.
-	 *
-	 * @return the time {@link Duration}.
-	 */
-	protected Duration getDialogWaitDuration() {
-		return WAIT_DURATION;
-	}
+    private void dialogCreated(DialogType dialog) {
+        this.createdDialog = dialog;
+        synchronized (this) {
+            notify();
+        }
+    }
 
-	private Value createValue() throws Exception {
-		if (createdDialog.getStatus() == CANCELED) {
-			return null;
-		}
-		return createValue(createdDialog);
-	}
+    /**
+     * Waits for the dialog to be created and returns it.
+     * 
+     * @return the {@link SimpleDialog}.
+     * 
+     * @see #createDialog()
+     */
+    public DialogType getDialog() {
+        if (!createAutomatic) {
+            createDialog();
+        }
+        while (createdDialog == null) {
+            waitDialogCreated();
+        }
+        return createdDialog;
+    }
 
-	/**
-	 * Created the value if the dialog was approved.
-	 *
-	 * @param dialog
-	 *            the {@link SimpleDialog}.
-	 *
-	 * @return the value.
-	 */
-	protected abstract Value createValue(Dialog dialog) throws Exception;
+    private void waitDialogCreated() {
+        try {
+            synchronized (this) {
+                wait(getDialogWaitDuration().getMillis());
+            }
+            log.checkDialogCreated(this, createdDialog);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this).toString();
-	}
+    /**
+     * Returns the time duration to wait for the dialog to be created.
+     * 
+     * @return the time {@link Duration}.
+     */
+    protected Duration getDialogWaitDuration() {
+        return WAIT_DURATION;
+    }
+
+    private ValueType createValue() throws Exception {
+        if (createdDialog.getStatus() == CANCELED) {
+            return null;
+        }
+        return createValue(createdDialog);
+    }
+
+    /**
+     * Created the value if the dialog was approved.
+     * 
+     * @param dialog
+     *            the {@link SimpleDialog}.
+     * 
+     * @return the value.
+     */
+    protected abstract ValueType createValue(DialogType dialog)
+            throws Exception;
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).toString();
+    }
 }

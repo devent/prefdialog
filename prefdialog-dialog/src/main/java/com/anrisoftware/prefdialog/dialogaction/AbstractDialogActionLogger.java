@@ -1,18 +1,18 @@
 /*
  * Copyright 2012-2013 Erwin Müller <erwin.mueller@deventm.org>
- * 
+ *
  * This file is part of prefdialog-dialog.
- * 
+ *
  * prefdialog-dialog is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
  * Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- * 
+ *
  * prefdialog-dialog is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-dialog. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -43,79 +43,80 @@ import com.anrisoftware.globalpom.log.AbstractLogger;
 @Singleton
 class AbstractDialogActionLogger extends AbstractLogger {
 
-	enum _ {
+    enum _ {
 
-		can_create("Can create dialog for {}."),
+        can_create("Can create dialog for {}."),
 
-		dialog_null("Dialog was not created for %s."),
+        dialog_null("Dialog was not created for %s."),
 
-		no_dialog("No dialog set for {}."),
+        no_dialog("No dialog set for {}."),
 
-		no_frame("No parent frame set for {}."),
+        no_frame("No parent frame set for {}."),
 
-		ERROR_DIALOG("Error while creating dialog: {}."),
+        ERROR_DIALOG("Error while creating dialog: {}."),
 
-		INTERRUPTED_DIALOG("Interrupted while creating dialog."),
+        INTERRUPTED_DIALOG("Interrupted while creating dialog."),
 
-		error_create_dialog("Error while creating dialog"),
+        error_create_dialog("Error while creating dialog"),
 
-		error_create_dialog_message("Error while creating dialog: {}"),
+        error_create_dialog_message("Error while creating dialog: {}"),
 
-		action("dialog action"),
+        action("dialog action"),
 
-		create_dialog_interrupted("Creating dialog interrupted"),
+        create_dialog_interrupted("Creating dialog interrupted"),
 
-		create_dialog_interrupted_message("Creating dialog interrupted: {}");
+        create_dialog_interrupted_message("Creating dialog interrupted: {}");
 
-		private String name;
+        private String name;
 
-		private _(String name) {
-			this.name = name;
-		}
+        private _(String name) {
+            this.name = name;
+        }
 
-		@Override
-		public String toString() {
-			return name;
-		}
-	}
+        @Override
+        public String toString() {
+            return name;
+        }
+    }
 
-	/**
-	 * Creates a logger for {@link AbstractDialogAction}.
-	 */
-	public AbstractDialogActionLogger() {
-		super(AbstractDialogAction.class);
-	}
+    /**
+     * Creates a logger for {@link AbstractDialogAction}.
+     */
+    public AbstractDialogActionLogger() {
+        super(AbstractDialogAction.class);
+    }
 
-	boolean checkCanCreateDialog(AbstractDialogAction<?, ?> action) {
-		if (action.getFrame() == null) {
-			debug(no_frame, action);
-			return false;
-		}
-		if (action.getNotCreatedDialog() == null) {
-			debug(no_dialog, action);
-			return false;
-		}
-		debug(can_create, action);
-		return true;
-	}
+    boolean checkCanCreateDialog(AbstractDialogAction<?, ?> action) {
+        if (action.getFrame() == null) {
+            debug(no_frame, action);
+            return false;
+        }
+        if (action.getDialogFactory() == null
+                && action.getNotCreatedDialog() == null) {
+            debug(no_dialog, action);
+            return false;
+        }
+        debug(can_create, action);
+        return true;
+    }
 
-	void checkDialogCreated(AbstractDialogAction<?, ?> action, Object dialog) {
-		notNull(dialog, dialog_null.toString(), action);
-	}
+    void checkDialogCreated(AbstractDialogAction<?, ?> action, Object dialog) {
+        notNull(dialog, dialog_null.toString(), action);
+    }
 
-	DialogActionException errorCreateDialog(AbstractDialogAction<?, ?> action,
-			InvocationTargetException e) {
-		Throwable cause = e.getCause();
-		return logException(new DialogActionException(error_create_dialog,
-				cause).add(action, action), error_create_dialog_message,
-				cause.getLocalizedMessage());
-	}
+    DialogActionException errorCreateDialog(AbstractDialogAction<?, ?> action,
+            InvocationTargetException e) {
+        Throwable cause = e.getCause();
+        return logException(new DialogActionException(error_create_dialog,
+                cause).add(action, action), error_create_dialog_message,
+                cause.getLocalizedMessage());
+    }
 
-	DialogActionException errorCreateDialogInterrupted(
-			AbstractDialogAction<?, ?> action, InterruptedException e) {
-		return logException(
-				new DialogActionException(create_dialog_interrupted).add(
-						action, action), create_dialog_interrupted_message,
-				e.getLocalizedMessage());
-	}
+    DialogActionException errorCreateDialogInterrupted(
+            AbstractDialogAction<?, ?> action, InterruptedException e) {
+        return logException(
+                new DialogActionException(create_dialog_interrupted).add(
+                        action, action), create_dialog_interrupted_message,
+                e.getLocalizedMessage());
+    }
 }
