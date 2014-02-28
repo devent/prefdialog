@@ -1,18 +1,18 @@
 /*
  * Copyright 2013-2013 Erwin Müller <erwin.mueller@deventm.org>
- * 
+ *
  * This file is part of prefdialog-csvimportdialog.
- * 
+ *
  * prefdialog-csvimportdialog is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
- * 
+ *
  * prefdialog-csvimportdialog is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
  * Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-csvimportdialog. If not, see
  * <http://www.gnu.org/licenses/>.
@@ -42,133 +42,145 @@ import com.google.inject.Injector;
  */
 public class ImportPanelDock implements EditorDockWindow {
 
-	public static final String ID = "importPanelDock";
+    public static final String ID = "importPanelDock";
 
-	@Inject
-	private transient CsvImportPanelFactory panelFactory;
+    @Inject
+    private transient CsvImportPanelFactory panelFactory;
 
-	private JPanel panel;
+    private JPanel panel;
 
-	private CsvImportPanel importPanel;
+    private CsvImportPanel importPanel;
 
-	/**
-	 * Sets the CSV import properties.
-	 * <p>
-	 * <h2>AWT Thread</h2>
-	 * <p>
-	 * Should be called in the AWT thread.
-	 * 
-	 * @param injector
-	 *            the parent {@link Injector}.
-	 * 
-	 * @param properties
-	 *            the {@link CsvImportProperties}.
-	 * 
-	 * @return this {@link ImportPanelDock}.
-	 */
-	@OnAwt
-	public ImportPanelDock createPanel(Injector injector,
-			CsvImportProperties properties) {
-		this.panel = new JPanel();
-		importPanel = panelFactory.create(panel, properties);
-		importPanel.createPanel(injector);
-		return this;
-	}
+    private Object dockable;
 
-	/**
-	 * Returns the CSV import panel.
-	 * 
-	 * @return the {@link CsvImportPanel}.
-	 */
-	public CsvImportPanel getImportPanel() {
-		return importPanel;
-	}
+    /**
+     * Sets the CSV import properties.
+     * <p>
+     * <h2>AWT Thread</h2>
+     * <p>
+     * Should be called in the AWT thread.
+     * 
+     * @param injector
+     *            the parent {@link Injector}.
+     * 
+     * @param properties
+     *            the {@link CsvImportProperties}.
+     * 
+     * @return this {@link ImportPanelDock}.
+     */
+    @OnAwt
+    public ImportPanelDock createPanel(Injector injector,
+            CsvImportProperties properties) {
+        this.panel = new JPanel();
+        importPanel = panelFactory.create(panel, properties);
+        importPanel.createPanel(injector);
+        return this;
+    }
 
-	/**
-	 * Restores the input of the panel to default values.
-	 * 
-	 * @throws PropertyVetoException
-	 *             if the old user input is not valid.
-	 */
-	public void restoreInput() throws PropertyVetoException {
-		importPanel.retoreInput();
-	}
+    /**
+     * Returns the CSV import panel.
+     * 
+     * @return the {@link CsvImportPanel}.
+     */
+    public CsvImportPanel getImportPanel() {
+        return importPanel;
+    }
 
-	@Override
-	public String getId() {
-		return ID;
-	}
+    /**
+     * Restores the input of the panel to default values.
+     * 
+     * @throws PropertyVetoException
+     *             if the old user input is not valid.
+     */
+    public void restoreInput() throws PropertyVetoException {
+        importPanel.retoreInput();
+    }
 
-	@Override
-	public String getTitle() {
-		return "Import Panel";
-	}
+    @Override
+    public String getId() {
+        return ID;
+    }
 
-	@Override
-	public Component getComponent() {
-		return panel;
-	}
+    @Override
+    public String getTitle() {
+        return "Import Panel";
+    }
 
-	@Override
-	public DockPosition getPosition() {
-		return DockPosition.EAST;
-	}
+    @Override
+    public Component getComponent() {
+        return panel;
+    }
 
-	@Override
-	public boolean isCloseable() {
-		return false;
-	}
+    @Override
+    public DockPosition getPosition() {
+        return DockPosition.EAST;
+    }
 
-	@Override
-	public boolean isExternalizable() {
-		return false;
-	}
+    @Override
+    public boolean isCloseable() {
+        return false;
+    }
 
-	@Override
-	public boolean isMaximizable() {
-		return false;
-	}
+    @Override
+    public boolean isExternalizable() {
+        return false;
+    }
 
-	@Override
-	public boolean isMinimizable() {
-		return false;
-	}
+    @Override
+    public boolean isMaximizable() {
+        return false;
+    }
 
-	@Override
-	public boolean isStackable() {
-		return false;
-	}
+    @Override
+    public boolean isMinimizable() {
+        return false;
+    }
 
-	/**
-	 * @see CsvImportPanel#addVetoableChangeListener(VetoableChangeListener)
-	 */
-	public void addVetoableChangeListener(VetoableChangeListener listener) {
-		importPanel.addVetoableChangeListener(listener);
-	}
+    @Override
+    public boolean isStackable() {
+        return false;
+    }
 
-	/**
-	 * @see CsvImportPanel#removeVetoableChangeListener(VetoableChangeListener)
-	 */
-	public void removeVetoableChangeListener(VetoableChangeListener listener) {
-		importPanel.removeVetoableChangeListener(listener);
-	}
+    @Override
+    public void setDockable(Object dockable) {
+        this.dockable = dockable;
+    }
 
-	/**
-	 * @see CsvImportPanel#addVetoableChangeListener(String,
-	 *      VetoableChangeListener)
-	 */
-	public void addVetoableChangeListener(String propertyName,
-			VetoableChangeListener listener) {
-		importPanel.addVetoableChangeListener(propertyName, listener);
-	}
+    @Override
+    public Object getDockable() {
+        return dockable;
+    }
 
-	/**
-	 * @see CsvImportPanel#removeVetoableChangeListener(String,
-	 *      VetoableChangeListener)
-	 */
-	public void removeVetoableChangeListener(String propertyName,
-			VetoableChangeListener listener) {
-		importPanel.removeVetoableChangeListener(propertyName, listener);
-	}
+    /**
+     * @see CsvImportPanel#addVetoableChangeListener(VetoableChangeListener)
+     */
+    public void addVetoableChangeListener(VetoableChangeListener listener) {
+        importPanel.addVetoableChangeListener(listener);
+    }
+
+    /**
+     * @see CsvImportPanel#removeVetoableChangeListener(VetoableChangeListener)
+     */
+    public void removeVetoableChangeListener(VetoableChangeListener listener) {
+        importPanel.removeVetoableChangeListener(listener);
+    }
+
+    /**
+     * @see CsvImportPanel#addVetoableChangeListener(String,
+     *      VetoableChangeListener)
+     */
+    public void addVetoableChangeListener(String propertyName,
+            VetoableChangeListener listener) {
+        importPanel.addVetoableChangeListener(propertyName, listener);
+    }
+
+    /**
+     * @see CsvImportPanel#removeVetoableChangeListener(String,
+     *      VetoableChangeListener)
+     */
+    public void removeVetoableChangeListener(String propertyName,
+            VetoableChangeListener listener) {
+        importPanel.removeVetoableChangeListener(propertyName, listener);
+    }
 
 }
