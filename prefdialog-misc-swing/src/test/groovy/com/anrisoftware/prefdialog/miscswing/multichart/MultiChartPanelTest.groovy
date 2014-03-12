@@ -2,20 +2,30 @@ package com.anrisoftware.prefdialog.miscswing.multichart
 
 import static com.anrisoftware.prefdialog.miscswing.toolbarmenu.ToolbarMenu.*
 
+import org.ejml.simple.SimpleMatrix
 import org.fest.swing.fixture.FrameFixture
 import org.jfree.chart.ChartFactory
 import org.jfree.chart.JFreeChart
 import org.jfree.chart.axis.NumberAxis
 import org.jfree.chart.axis.ValueAxis
-import org.jfree.chart.plot.PlotOrientation
 import org.jfree.chart.plot.XYPlot
 import org.jfree.data.xy.XYSeriesCollection
 import org.junit.BeforeClass
 import org.junit.Test
 
+import com.anrisoftware.globalpom.data.DataModule
+import com.anrisoftware.globalpom.data.DefaultDataBeanFactory
+import com.anrisoftware.globalpom.data.MatrixDataFactory
 import com.anrisoftware.globalpom.mnemonic.MnemonicModule
 import com.anrisoftware.globalpom.utils.frametesting.FrameTestingFactory
 import com.anrisoftware.globalpom.utils.frametesting.FrameTestingModule
+import com.anrisoftware.prefdialog.miscswing.colorpalette.ColorPaletteModule
+import com.anrisoftware.prefdialog.miscswing.multichart.chart.AxisNegative
+import com.anrisoftware.prefdialog.miscswing.multichart.chart.PlotOrientation
+import com.anrisoftware.prefdialog.miscswing.multichart.columnnames.ChartColumnNamesModule
+import com.anrisoftware.prefdialog.miscswing.multichart.databeanmodel.DataBeanChartModel
+import com.anrisoftware.prefdialog.miscswing.multichart.databeanmodel.DataBeanChartModelFactory
+import com.anrisoftware.prefdialog.miscswing.multichart.databeanmodel.DataBeanModelModule
 import com.anrisoftware.prefdialog.miscswing.multichart.freechart.FreechartModule
 import com.anrisoftware.prefdialog.miscswing.multichart.freechart.FreechartXYChartFactory
 import com.anrisoftware.prefdialog.miscswing.multichart.multichartpanel.MultiChartPanel
@@ -74,6 +84,57 @@ class MultiChartPanelTest {
         })
     }
 
+    @Test
+    void "set three graphs data"() {
+        MultiChartPanel panel
+        def charts = []
+        FrameFixture fix
+        def testing = testingFactory.create title: "Multi-Chart", createComponent: { frame ->
+            def chartTitle = "Chart 1"
+            def jchart = createJChart(title: chartTitle)
+            charts[0] = chartFactory.create chartTitle, jchart
+            charts[0].setModel createDataBeanChartModel()
+
+            chartTitle = "Chart 2"
+            jchart = createJChart(title: chartTitle)
+            charts[1] = chartFactory.create chartTitle, jchart
+            charts[1].setModel createDataBeanChartModel()
+
+            chartTitle = "Chart 3"
+            jchart = createJChart(title: chartTitle)
+            charts[2] = chartFactory.create chartTitle, jchart
+            charts[2].setModel createDataBeanChartModel()
+
+            panel = panelFactory.create()
+            panel.texts = texts
+            panel.images = images
+            panel.createPanel()
+
+            panel.addChart charts[0]
+            panel.addChart charts[1]
+            panel.addChart charts[2]
+
+            panel.setIconsOnly true
+            panel.setIconSize IconSize.SMALL
+            panel.setPlotOrientation PlotOrientation.HORIZONTAL
+            panel.setDomainAxisNegative AxisNegative.NEGATIVE
+            panel.getPanel()
+        }
+        testing().withFixture({ fix = it }, {
+            panel.setBlackWhite false
+            panel.setShowShapes true
+            panel.setAntiAliasing false
+        }, {
+            panel.setBlackWhite true
+            panel.setShowShapes false
+            panel.setAntiAliasing true
+        }, {
+            panel.setBlackWhite true
+            panel.setShowShapes true
+            panel.setAntiAliasing true
+        })
+    }
+
     static Injector injector
 
     static FrameTestingFactory testingFactory
@@ -81,6 +142,12 @@ class MultiChartPanelTest {
     static MultiChartPanelFactory panelFactory
 
     static FreechartXYChartFactory chartFactory
+
+    static DataBeanChartModelFactory dataBeanModelFactory
+
+    static DefaultDataBeanFactory dataBeanFactory
+
+    static MatrixDataFactory dataFactory
 
     static images
 
@@ -91,6 +158,10 @@ class MultiChartPanelTest {
         injector = Guice.createInjector(
                 new MultiChartPanelModule(),
                 new FreechartModule(),
+                new ChartColumnNamesModule(),
+                new ColorPaletteModule(),
+                new DataBeanModelModule(),
+                new DataModule(),
                 new MnemonicModule(),
                 new ImagesResourcesModule(),
                 new ResourcesImagesMapsModule(),
@@ -102,13 +173,16 @@ class MultiChartPanelTest {
         chartFactory = injector.getInstance FreechartXYChartFactory
         images = injector.getInstance(ImagesFactory).create("MultiChartPanelImages")
         texts = injector.getInstance(TextsFactory).create("MultiChartPanelTexts")
+        dataBeanModelFactory = injector.getInstance DataBeanChartModelFactory
+        dataBeanFactory = injector.getInstance DefaultDataBeanFactory
+        dataFactory = injector.getInstance MatrixDataFactory
     }
 
     static JFreeChart createJChart(Map args) {
         String xAxisLabel = null;
         String yAxisLabel = null;
         XYSeriesCollection dataset = new XYSeriesCollection();
-        PlotOrientation orientation = PlotOrientation.VERTICAL;
+        org.jfree.chart.plot.PlotOrientation orientation = org.jfree.chart.plot.PlotOrientation.VERTICAL;
         boolean legend = true;
         boolean tooltips = true;
         boolean urls = false;
@@ -136,5 +210,12 @@ class MultiChartPanelTest {
         rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
         NumberAxis domainAxis = (NumberAxis) plot.getDomainAxis();
         domainAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+    }
+
+    static DataBeanChartModel createDataBeanChartModel() {
+        String[] columns = ["Data"]
+        def data = dataBeanFactory.create dataFactory.create(SimpleMatrix.random(512, 1, 1, 100, new Random()).matrix)
+        def model = dataBeanModelFactory.create data, columns
+        return model
     }
 }

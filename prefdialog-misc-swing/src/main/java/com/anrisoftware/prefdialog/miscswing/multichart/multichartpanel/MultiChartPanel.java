@@ -15,7 +15,9 @@ import javax.swing.JPanel;
 
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 import com.anrisoftware.prefdialog.miscswing.multichart.actions.PanelActions;
+import com.anrisoftware.prefdialog.miscswing.multichart.chart.AxisNegative;
 import com.anrisoftware.prefdialog.miscswing.multichart.chart.Chart;
+import com.anrisoftware.prefdialog.miscswing.multichart.chart.PlotOrientation;
 import com.anrisoftware.resources.images.api.IconSize;
 import com.anrisoftware.resources.images.api.Images;
 import com.anrisoftware.resources.texts.api.Texts;
@@ -63,6 +65,89 @@ public class MultiChartPanel {
 
     public Component getPanel() {
         return panel;
+    }
+
+    /**
+     * Sets the domain axis to be negative.
+     * 
+     * <h2>AWT Thread</h2>
+     * <p>
+     * Should be called in the AWT thread.
+     * 
+     * @param negative
+     *            the {@link AxisNegative}.
+     */
+    @OnAwt
+    public void setDomainAxisNegative(AxisNegative negative) {
+        for (Chart chart : charts) {
+            chart.setDomainAxisNegative(negative);
+        }
+    }
+
+    /**
+     * Sets the orientation of the chart.
+     * 
+     * <h2>AWT Thread</h2>
+     * <p>
+     * Should be called in the AWT thread.
+     * 
+     * @param orientation
+     *            the {@link PlotOrientation}.
+     */
+    @OnAwt
+    public void setPlotOrientation(PlotOrientation orientation) {
+        for (Chart chart : charts) {
+            chart.setPlotOrientation(orientation);
+        }
+    }
+
+    /**
+     * Sets to use anti-aliasing in the data graph.
+     * 
+     * <h2>AWT Thread</h2>
+     * <p>
+     * Should be called in the AWT thread.
+     * 
+     * @param flag
+     *            set to {@code true} to enable anti-aliasing.
+     */
+    @OnAwt
+    public void setAntiAliasing(boolean flag) {
+        for (Chart chart : charts) {
+            chart.setAntiAliasing(flag);
+        }
+    }
+
+    /**
+     * Sets black/white or color data graph.
+     * 
+     * <h2>AWT Thread</h2>
+     * <p>
+     * Should be called in the AWT thread.
+     * 
+     * @param flag
+     *            set to {@code true} to enable black/white.
+     */
+    public void setBlackWhite(boolean flag) {
+        for (Chart chart : charts) {
+            chart.setBlackWhite(flag);
+        }
+    }
+
+    /**
+     * Sets show shapes graph.
+     * 
+     * <h2>AWT Thread</h2>
+     * <p>
+     * Should be called in the AWT thread.
+     * 
+     * @param flag
+     *            set to {@code true} to enable black/white.
+     */
+    public void setShowShapes(boolean flag) {
+        for (Chart chart : charts) {
+            chart.setShowShapes(flag);
+        }
     }
 
     @OnAwt
