@@ -23,11 +23,6 @@
 			<artifactId>globalpom-groovytestutils</artifactId>
 			<optional>true</optional>
 		</dependency>
-		<dependency>
-			<groupId>tablelayout</groupId>
-			<artifactId>TableLayout</artifactId>
-			<scope>test</scope>
-		</dependency>
 
 		<!-- compile dependencies -->
 		<dependency>
@@ -108,6 +103,16 @@
 			<artifactId>ejml</artifactId>
 			<optional>true</optional>
 		</dependency>
-
+		<dependency>
+			<groupId>tablelayout</groupId>
+			<artifactId>TableLayout</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>com.anrisoftware.prefdialog</groupId>
+			<artifactId>prefdialog-freepik-basic-application-icons</artifactId>
+			<version>1.0</version>
+            <optional>true</optional>
+		</dependency>
 	</dependencies>
 </project>

@@ -29,7 +29,7 @@ import com.anrisoftware.resources.images.api.IconSize;
 @SuppressWarnings("serial")
 class LargeIconSizeAction extends AbstractIconSizeAction {
 
-	private static final String ACTION_NAME = "small_size_action";
+    private static final String ACTION_NAME = "large_size_action";
 
 	LargeIconSizeAction() {
 		super(ACTION_NAME, IconSize.LARGE);
