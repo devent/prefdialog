@@ -2,41 +2,22 @@ package com.anrisoftware.prefdialog.miscswing.multichart.chart;
 
 import java.awt.Component;
 
-import com.anrisoftware.prefdialog.miscswing.multichart.model.ChartModel;
+import com.anrisoftware.globalpom.threads.api.Threads;
+import com.anrisoftware.resources.images.api.IconSize;
+import com.anrisoftware.resources.images.api.Images;
+import com.anrisoftware.resources.texts.api.Texts;
 
-public interface Chart {
+public interface ChartPanel {
 
-    String getName();
-
-    /**
-     * Sets the chart model.
-     * 
-     * <h2>AWT Thread</h2>
-     * <p>
-     * Should be called in the AWT thread.
-     * 
-     * @param model
-     *            the {@link ChartModel}.
-     */
-    void setModel(ChartModel model);
-
-    ChartModel getModel();
-
-    /**
-     * Sets the orientation of the chart.
-     * 
-     * <h2>AWT Thread</h2>
-     * <p>
-     * Should be called in the AWT thread.
-     * 
-     * @param orientation
-     *            the {@link PlotOrientation}.
-     */
-    void setPlotOrientation(PlotOrientation orientation);
+    ChartPanel createPanel();
 
     Component getPanel();
 
-    Object getChart();
+    void setThreads(Threads threads);
+
+    void setTexts(Texts texts);
+
+    void setImages(Images images);
 
     /**
      * Sets the domain axis to be negative.
@@ -51,11 +32,16 @@ public interface Chart {
     void setDomainAxisNegative(AxisNegative negative);
 
     /**
-     * Returns the domain axis to be negative.
+     * Sets the orientation of the chart.
      * 
-     * @return the {@link AxisNegative}.
+     * <h2>AWT Thread</h2>
+     * <p>
+     * Should be called in the AWT thread.
+     * 
+     * @param orientation
+     *            the {@link PlotOrientation}.
      */
-    AxisNegative getDomainAxisNegative();
+    void setPlotOrientation(PlotOrientation orientation);
 
     /**
      * Sets to use anti-aliasing in the data graph.
@@ -69,6 +55,8 @@ public interface Chart {
      */
     void setAntiAliasing(boolean flag);
 
+    boolean isAntiAliasing();
+
     /**
      * Sets black/white or color data graph.
      * 
@@ -80,6 +68,8 @@ public interface Chart {
      *            set to {@code true} to enable black/white.
      */
     void setBlackWhite(boolean flag);
+
+    boolean isBlackWhite();
 
     /**
      * Sets show shapes graph.
@@ -93,16 +83,18 @@ public interface Chart {
      */
     void setShowShapes(boolean flag);
 
-    /**
-     * Sets auto zooms of the domain axis.
-     * 
-     * <h2>AWT Thread</h2>
-     * <p>
-     * Should be called in the AWT thread.
-     * 
-     * @param autoZoom
-     *            set to {@code true} for auto zoom.
-     */
+    boolean isShowShapes();
+
+    void addChart(Chart chart);
+
+    void removeChart(Chart chart);
+
+    void setIconsOnly(boolean flag);
+
+    void setTextOnly(boolean flag);
+
+    void setIconSize(IconSize size);
+
     void setAutoZoomDomain(boolean flag);
 
     /**

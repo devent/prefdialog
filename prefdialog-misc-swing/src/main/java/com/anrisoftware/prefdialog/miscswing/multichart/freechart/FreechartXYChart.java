@@ -24,12 +24,17 @@ import com.anrisoftware.prefdialog.miscswing.colorpalette.PaletteFactory;
 import com.anrisoftware.prefdialog.miscswing.multichart.chart.AxisNegative;
 import com.anrisoftware.prefdialog.miscswing.multichart.chart.Chart;
 import com.anrisoftware.prefdialog.miscswing.multichart.chart.PlotOrientation;
-import com.anrisoftware.prefdialog.miscswing.multichart.model.AbstractChartModel;
 import com.anrisoftware.prefdialog.miscswing.multichart.model.ChartModel;
 import com.anrisoftware.prefdialog.miscswing.multichart.model.ChartModelEvent;
 import com.anrisoftware.prefdialog.miscswing.multichart.model.ChartModelListener;
 import com.google.inject.assistedinject.Assisted;
 
+/**
+ * {@link XYSeries} chart.
+ * 
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 3.0
+ */
 public class FreechartXYChart implements Chart {
 
     private static final String NAME = "name";
@@ -165,17 +170,8 @@ public class FreechartXYChart implements Chart {
         }
     }
 
-    /**
-     * Sets auto zooms of the domain axis.
-     * <p>
-     * <h2>AWT Thread</h2>
-     * <p>
-     * Should be called in the AWT thread.
-     * 
-     * @param autoZoom
-     *            set to {@code true} for auto zoom.
-     */
     @OnAwt
+    @Override
     public void setAutoZoomDomain(boolean autoZoom) {
         if (!autoZoom) {
             return;
@@ -188,17 +184,8 @@ public class FreechartXYChart implements Chart {
         setViewMaximum(size);
     }
 
-    /**
-     * Zooms the domain axis.
-     * <p>
-     * <h2>AWT Thread</h2>
-     * <p>
-     * Should be called in the AWT thread.
-     * 
-     * @param factor
-     *            set to 1 to zoom in or -1 to zoom out the domain axis.
-     */
     @OnAwt
+    @Override
     public void setZoomDomain(int factor) {
         ChartModel model = getModel();
         int size = model.getViewMaximum();
@@ -207,12 +194,7 @@ public class FreechartXYChart implements Chart {
         setViewMaximum(size);
     }
 
-    /**
-     * Sets the maximum rows of the view for auto-zoom.
-     * 
-     * @param maximum
-     *            the maximum rows.
-     */
+    @Override
     public void setMaximumView(int maximum) {
         this.maximumView = maximum;
     }
@@ -233,7 +215,9 @@ public class FreechartXYChart implements Chart {
             break;
         }
         this.negative = negative;
-        fireChartChanged();
+        int oldMax = model.getViewMaximum();
+        setViewMaximum(0);
+        setViewMaximum(oldMax);
     }
 
     @Override
@@ -332,13 +316,6 @@ public class FreechartXYChart implements Chart {
 
     private XYSeriesCollection getCategory() {
         return (XYSeriesCollection) panel.getChart().getXYPlot().getDataset();
-    }
-
-    private void fireChartChanged() {
-        if (model instanceof AbstractChartModel) {
-            ChartModelEvent e = new ChartModelEvent(model);
-            ((AbstractChartModel) model).fireChartChanged(e);
-        }
     }
 
     private org.jfree.chart.plot.PlotOrientation toFreechartOrientation(

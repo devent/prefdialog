@@ -5,15 +5,16 @@
  */
 package com.anrisoftware.prefdialog.miscswing.multichart.actions;
 
+import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 import com.anrisoftware.prefdialog.miscswing.multichart.chart.ChartPanel;
 
 /**
- * Zoom in the domain axis graph.
+ * Sets the use of anti-aliasing in data graphs.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 1.0
+ * @since 3.0
  */
-public class ZoomInAction implements Runnable {
+public class AntiAliasingAction implements Runnable {
 
     private ChartPanel chartPanel;
 
@@ -22,8 +23,9 @@ public class ZoomInAction implements Runnable {
     }
 
 	@Override
+    @OnAwt
 	public void run() {
-        chartPanel.setZoomDomain(1);
+        boolean flag = chartPanel.isAntiAliasing();
+        chartPanel.setAntiAliasing(!flag);
 	}
-
 }

@@ -90,34 +90,7 @@ class MultiChartPanelTest {
         def charts = []
         FrameFixture fix
         def testing = testingFactory.create title: "Multi-Chart", createComponent: { frame ->
-            def chartTitle = "Chart 1"
-            def jchart = createJChart(title: chartTitle)
-            charts[0] = chartFactory.create chartTitle, jchart
-            charts[0].setModel createDataBeanChartModel()
-
-            chartTitle = "Chart 2"
-            jchart = createJChart(title: chartTitle)
-            charts[1] = chartFactory.create chartTitle, jchart
-            charts[1].setModel createDataBeanChartModel()
-
-            chartTitle = "Chart 3"
-            jchart = createJChart(title: chartTitle)
-            charts[2] = chartFactory.create chartTitle, jchart
-            charts[2].setModel createDataBeanChartModel()
-
-            panel = panelFactory.create()
-            panel.texts = texts
-            panel.images = images
-            panel.createPanel()
-
-            panel.addChart charts[0]
-            panel.addChart charts[1]
-            panel.addChart charts[2]
-
-            panel.setIconsOnly true
-            panel.setIconSize IconSize.SMALL
-            panel.setPlotOrientation PlotOrientation.HORIZONTAL
-            panel.setDomainAxisNegative AxisNegative.NEGATIVE
+            panel = createGraphsWithData(charts, panel)
             panel.getPanel()
         }
         testing().withFixture({ fix = it }, {
@@ -133,6 +106,42 @@ class MultiChartPanelTest {
             panel.setShowShapes true
             panel.setAntiAliasing true
         })
+    }
+
+    @Test
+    void "zoom data"() {
+        MultiChartPanel panel
+        def charts = []
+        FrameFixture fix
+        def testing = testingFactory.create title: "Multi-Chart", createComponent: { frame ->
+            panel = createGraphsWithData(charts, panel)
+            panel.getPanel()
+        }
+        testing().withFixture({ fix = it }, {
+            fix.button "graphWindow-zoomInButton" click()
+            fix.button "graphWindow-zoomInButton" click()
+            fix.button "graphWindow-zoomInButton" click()
+        }, {
+            fix.button "graphWindow-autoZoomButton" click()
+            fix.button "graphWindow-autoZoomButton" click()
+        }, {
+            fix.button "graphWindow-zoomOutButton" click()
+            fix.button "graphWindow-zoomOutButton" click()
+            fix.button "graphWindow-zoomOutButton" click()
+            Thread.sleep 1000
+        })
+    }
+
+    @Test
+    void "manually"() {
+        MultiChartPanel panel
+        def charts = []
+        FrameFixture fix
+        def testing = testingFactory.create title: "Multi-Chart", createComponent: { frame ->
+            panel = createGraphsWithData(charts, panel)
+            panel.getPanel()
+        }
+        testing().withFixture({ Thread.sleep 60000 })
     }
 
     static Injector injector
@@ -210,6 +219,40 @@ class MultiChartPanelTest {
         rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
         NumberAxis domainAxis = (NumberAxis) plot.getDomainAxis();
         domainAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+    }
+
+    static MultiChartPanel createGraphsWithData(List charts, MultiChartPanel panel) {
+        def chartTitle = "Chart 1"
+        def jchart = createJChart(title: chartTitle)
+        charts[0] = chartFactory.create chartTitle, jchart
+        charts[0].setModel createDataBeanChartModel()
+
+        chartTitle = "Chart 2"
+        jchart = createJChart(title: chartTitle)
+        charts[1] = chartFactory.create chartTitle, jchart
+        charts[1].setModel createDataBeanChartModel()
+
+        chartTitle = "Chart 3"
+        jchart = createJChart(title: chartTitle)
+        charts[2] = chartFactory.create chartTitle, jchart
+        charts[2].setModel createDataBeanChartModel()
+
+        panel = panelFactory.create()
+        panel.texts = texts
+        panel.images = images
+        panel.createPanel()
+
+        panel.addChart charts[0]
+        panel.addChart charts[1]
+        panel.addChart charts[2]
+
+        panel.setIconsOnly true
+        panel.setIconSize IconSize.SMALL
+        panel.setPlotOrientation PlotOrientation.HORIZONTAL
+        panel.setDomainAxisNegative AxisNegative.NEGATIVE
+        panel.setMaximumView 100
+        panel.setAutoZoomDomain true
+        return panel
     }
 
     static DataBeanChartModel createDataBeanChartModel() {

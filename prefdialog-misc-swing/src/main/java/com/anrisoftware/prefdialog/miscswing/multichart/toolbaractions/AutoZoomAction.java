@@ -1,18 +1,18 @@
 /*
  * Copyright 2013 Erwin Müller <erwin.mueller@deventm.org>
- *
+ * 
  * This file is part of forecast-suite-main. All rights reserved.
  */
-package com.anrisoftware.prefdialog.miscswing.multichart.actions;
+package com.anrisoftware.prefdialog.miscswing.multichart.toolbaractions;
 
 import com.anrisoftware.prefdialog.miscswing.actions.AbstractMenuAction;
 
 @SuppressWarnings("serial")
-class OptionsAction extends AbstractMenuAction {
+class AutoZoomAction extends AbstractMenuAction {
 
-    private static final String NAME = "options_tool_action";
+	private static final String NAME = "zoom_auto_tool_action";
 
-	OptionsAction() {
+	AutoZoomAction() {
 		super(NAME);
 		setEnabled(false);
 	}

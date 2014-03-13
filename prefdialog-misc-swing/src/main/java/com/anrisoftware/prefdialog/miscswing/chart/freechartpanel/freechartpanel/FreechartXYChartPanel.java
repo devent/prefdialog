@@ -18,12 +18,12 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 import com.anrisoftware.globalpom.textposition.TextPosition;
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
-import com.anrisoftware.prefdialog.miscswing.chart.model.AbstractChartModel;
-import com.anrisoftware.prefdialog.miscswing.chart.model.AxisNegative;
-import com.anrisoftware.prefdialog.miscswing.chart.model.ChartModel;
-import com.anrisoftware.prefdialog.miscswing.chart.model.ChartModelEvent;
-import com.anrisoftware.prefdialog.miscswing.chart.model.ChartModelListener;
-import com.anrisoftware.prefdialog.miscswing.chart.model.PlotOrientation;
+import com.anrisoftware.prefdialog.miscswing.multichart.chart.AxisNegative;
+import com.anrisoftware.prefdialog.miscswing.multichart.chart.PlotOrientation;
+import com.anrisoftware.prefdialog.miscswing.multichart.model.AbstractChartModel;
+import com.anrisoftware.prefdialog.miscswing.multichart.model.ChartModel;
+import com.anrisoftware.prefdialog.miscswing.multichart.model.ChartModelEvent;
+import com.anrisoftware.prefdialog.miscswing.multichart.model.ChartModelListener;
 import com.anrisoftware.resources.images.api.IconSize;
 
 /**
@@ -282,22 +282,22 @@ public class FreechartXYChartPanel implements Serializable {
 		setViewMaximum(size);
 	}
 
-	/**
-	 * Sets the maximum rows of the view for auto-zoom.
-	 * 
-	 * @param maximum
-	 *            the maximum rows.
-	 */
+	            /**
+     * Sets the maximum rows of the view for auto-zoom.
+     * 
+     * @param maximum
+     *            the maximum rows.
+     */
 	public void setMaximumView(int maximum) {
 		this.maximumView = maximum;
 	}
 
-	/**
-	 * Sets the icon size of the tool-bar buttons.
-	 * 
-	 * @param size
-	 *            the {@link IconSize}.
-	 */
+	            /**
+     * Sets the icon size of the tool-bar buttons.
+     * 
+     * @param size
+     *            the {@link IconSize}.
+     */
 	@OnAwt
 	public void setIconSize(IconSize size) {
 		// TODO Auto-generated method stub
@@ -325,20 +325,28 @@ public class FreechartXYChartPanel implements Serializable {
 		if (oldValue == orientation) {
 			return;
 		}
+        switch (orientation) {
+        case value:
+
+            break;
+
+        default:
+            break;
+        }
 		panel.setPlotOrientation(orientation);
 		this.orientation = orientation;
 	}
 
-	/**
-	 * Sets the domain axis to be negative.
-	 * <p>
-	 * <h2>AWT Thread</h2>
-	 * <p>
-	 * Should be called in the AWT thread.
-	 * 
-	 * @param negative
-	 *            the {@link AxisNegative}.
-	 */
+	            /**
+     * Sets the domain axis to be negative.
+     * <p>
+     * <h2>AWT Thread</h2>
+     * <p>
+     * Should be called in the AWT thread.
+     * 
+     * @param negative
+     *            the {@link AxisNegative}.
+     */
 	@OnAwt
 	public void setDomainAxisNegative(AxisNegative negative) {
 		AxisNegative oldValue = this.negative;

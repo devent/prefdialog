@@ -13,16 +13,20 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.swing.JPanel;
 
+import com.anrisoftware.globalpom.threads.api.Threads;
+import com.anrisoftware.prefdialog.miscswing.actions.Actions;
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 import com.anrisoftware.prefdialog.miscswing.multichart.actions.PanelActions;
 import com.anrisoftware.prefdialog.miscswing.multichart.chart.AxisNegative;
 import com.anrisoftware.prefdialog.miscswing.multichart.chart.Chart;
+import com.anrisoftware.prefdialog.miscswing.multichart.chart.ChartPanel;
 import com.anrisoftware.prefdialog.miscswing.multichart.chart.PlotOrientation;
+import com.anrisoftware.prefdialog.miscswing.multichart.toolbaractions.ToolbarActions;
 import com.anrisoftware.resources.images.api.IconSize;
 import com.anrisoftware.resources.images.api.Images;
 import com.anrisoftware.resources.texts.api.Texts;
 
-public class MultiChartPanel {
+public class MultiChartPanel implements ChartPanel {
 
     private final Map<String, Chart> chartsMap;
 
@@ -32,7 +36,19 @@ public class MultiChartPanel {
     private UiControlPanel panel;
 
     @Inject
+    private ToolbarActions toolbarActions;
+
+    @Inject
     private PanelActions panelActions;
+
+    @Inject
+    private Actions actions;
+
+    private boolean antiAliasing;
+
+    private boolean blackWhite;
+
+    private boolean showShapes;
 
     @Inject
     @OnAwt
@@ -42,115 +58,125 @@ public class MultiChartPanel {
     }
 
     @OnAwt
-    public MultiChartPanel createPanel() {
-        panel.setAction(panel.getAutoZoomButton(), panelActions);
-        panel.setAction(panel.getZoomInButton(), panelActions);
-        panel.setAction(panel.getZoomOutButton(), panelActions);
-        panel.setAction(panel.getOptionsButton(), panelActions);
+    @Override
+    public ChartPanel createPanel() {
+        panel.setAction(panel.getAutoZoomButton(), toolbarActions);
+        panel.setAction(panel.getZoomInButton(), toolbarActions);
+        panel.setAction(panel.getZoomOutButton(), toolbarActions);
+        panel.setAction(panel.getOptionsButton(), toolbarActions);
         setupGraphsPanel(panel.getGraphsPanel());
+        panelActions.setToolbarActions(toolbarActions);
+        panelActions.setChartPanel(this);
         return this;
     }
 
     @OnAwt
+    @Override
+    public void setThreads(Threads threads) {
+        actions.setThreads(threads);
+    }
+
+    @OnAwt
+    @Override
     public void setTexts(Texts texts) {
-        panelActions.setTexts(texts);
+        toolbarActions.setTexts(texts);
         panel.getToolbarMenu().setTexts(texts);
     }
 
     @OnAwt
+    @Override
     public void setImages(Images images) {
-        panelActions.setImages(images);
+        toolbarActions.setImages(images);
         panel.getToolbarMenu().setImages(images);
     }
 
+    @Override
     public Component getPanel() {
         return panel;
     }
 
-    /**
-     * Sets the domain axis to be negative.
-     * 
-     * <h2>AWT Thread</h2>
-     * <p>
-     * Should be called in the AWT thread.
-     * 
-     * @param negative
-     *            the {@link AxisNegative}.
-     */
     @OnAwt
+    @Override
     public void setDomainAxisNegative(AxisNegative negative) {
         for (Chart chart : charts) {
             chart.setDomainAxisNegative(negative);
         }
     }
 
-    /**
-     * Sets the orientation of the chart.
-     * 
-     * <h2>AWT Thread</h2>
-     * <p>
-     * Should be called in the AWT thread.
-     * 
-     * @param orientation
-     *            the {@link PlotOrientation}.
-     */
     @OnAwt
+    @Override
     public void setPlotOrientation(PlotOrientation orientation) {
         for (Chart chart : charts) {
             chart.setPlotOrientation(orientation);
         }
     }
 
-    /**
-     * Sets to use anti-aliasing in the data graph.
-     * 
-     * <h2>AWT Thread</h2>
-     * <p>
-     * Should be called in the AWT thread.
-     * 
-     * @param flag
-     *            set to {@code true} to enable anti-aliasing.
-     */
     @OnAwt
+    @Override
     public void setAntiAliasing(boolean flag) {
+        this.antiAliasing = flag;
         for (Chart chart : charts) {
             chart.setAntiAliasing(flag);
         }
     }
 
-    /**
-     * Sets black/white or color data graph.
-     * 
-     * <h2>AWT Thread</h2>
-     * <p>
-     * Should be called in the AWT thread.
-     * 
-     * @param flag
-     *            set to {@code true} to enable black/white.
-     */
+    @Override
+    public boolean isAntiAliasing() {
+        return antiAliasing;
+    }
+
+    @Override
+    @OnAwt
     public void setBlackWhite(boolean flag) {
+        this.blackWhite = flag;
         for (Chart chart : charts) {
             chart.setBlackWhite(flag);
         }
     }
 
-    /**
-     * Sets show shapes graph.
-     * 
-     * <h2>AWT Thread</h2>
-     * <p>
-     * Should be called in the AWT thread.
-     * 
-     * @param flag
-     *            set to {@code true} to enable black/white.
-     */
+    @Override
+    public boolean isBlackWhite() {
+        return blackWhite;
+    }
+
+    @Override
+    @OnAwt
     public void setShowShapes(boolean flag) {
+        this.showShapes = flag;
         for (Chart chart : charts) {
             chart.setShowShapes(flag);
         }
     }
 
+    @Override
+    public boolean isShowShapes() {
+        return showShapes;
+    }
+
+    @Override
     @OnAwt
+    public void setAutoZoomDomain(boolean flag) {
+        for (Chart chart : charts) {
+            chart.setAutoZoomDomain(flag);
+        }
+    }
+
+    @Override
+    public void setZoomDomain(int factor) {
+        for (Chart chart : charts) {
+            chart.setZoomDomain(factor);
+        }
+    }
+
+    @Override
+    public void setMaximumView(int maximum) {
+        for (Chart chart : charts) {
+            chart.setMaximumView(maximum);
+        }
+    }
+
+    @OnAwt
+    @Override
     public void addChart(Chart chart) {
         String name = chart.getName();
         if (!chartsMap.containsKey(name)) {
@@ -158,32 +184,36 @@ public class MultiChartPanel {
             charts.add(chart);
             addChartPanel(chart);
             if (chartsMap.size() == 1) {
-                panelActions.setActionsEnabled(true);
+                toolbarActions.setActionsEnabled(true);
             }
         }
     }
 
     @OnAwt
+    @Override
     public void removeChart(Chart chart) {
         if (chartsMap.remove(chart.getName()) != null) {
             removeChartPanel(chart);
             if (chartsMap.size() == 0) {
-                panelActions.setActionsEnabled(false);
+                toolbarActions.setActionsEnabled(false);
             }
         }
     }
 
     @OnAwt
-    public void setIconsOnly(boolean b) {
-        panel.setIconsOnly(b);
+    @Override
+    public void setIconsOnly(boolean flag) {
+        panel.setIconsOnly(flag);
     }
 
     @OnAwt
-    public void setTextOnly(boolean b) {
-        panel.setTextOnly(b);
+    @Override
+    public void setTextOnly(boolean flag) {
+        panel.setTextOnly(flag);
     }
 
     @OnAwt
+    @Override
     public void setIconSize(IconSize size) {
         panel.setIconSize(size);
     }

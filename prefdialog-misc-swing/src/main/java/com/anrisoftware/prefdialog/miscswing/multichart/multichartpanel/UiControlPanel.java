@@ -27,7 +27,7 @@ import javax.swing.border.EtchedBorder;
 import com.anrisoftware.prefdialog.miscswing.actions.AbstractMenuActions;
 import com.anrisoftware.prefdialog.miscswing.actions.MenuAction;
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
-import com.anrisoftware.prefdialog.miscswing.multichart.actions.PanelActions;
+import com.anrisoftware.prefdialog.miscswing.multichart.toolbaractions.ToolbarActions;
 import com.anrisoftware.prefdialog.miscswing.resourcesaction.AbstractResourcesAction;
 import com.anrisoftware.prefdialog.miscswing.toolbarmenu.ToolbarMenu;
 import com.anrisoftware.resources.images.api.IconSize;
@@ -84,7 +84,7 @@ final class UiControlPanel extends JPanel {
         toolBar.add(autoZoomButton);
 
         optionsButton = new JButton("Options");
-        optionsButton.setName(PanelActions.OPTIONS_NAME);
+        optionsButton.setName(ToolbarActions.OPTIONS_NAME);
         toolBar.add(optionsButton);
 
         rangeField = new JFormattedTextField();

@@ -8,12 +8,12 @@ package com.anrisoftware.prefdialog.miscswing.multichart.actions;
 import com.anrisoftware.prefdialog.miscswing.multichart.chart.ChartPanel;
 
 /**
- * Zoom in the domain axis graph.
+ * Sets black/white or color data graph.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 1.0
+ * @since 3.0
  */
-public class ZoomInAction implements Runnable {
+public class BlackWhiteAction implements Runnable {
 
     private ChartPanel chartPanel;
 
@@ -23,7 +23,7 @@ public class ZoomInAction implements Runnable {
 
 	@Override
 	public void run() {
-        chartPanel.setZoomDomain(1);
+        boolean flag = chartPanel.isBlackWhite();
+        chartPanel.setBlackWhite(!flag);
 	}
-
 }
