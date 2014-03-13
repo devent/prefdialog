@@ -1,11 +1,17 @@
 package com.anrisoftware.prefdialog.miscswing.multichart.freechart;
 
+import static com.anrisoftware.prefdialog.miscswing.multichart.chart.ChartProperty.MODEL_PROPERTY;
+import static com.anrisoftware.prefdialog.miscswing.multichart.chart.ChartProperty.OFFSET_PROPERTY;
 import static java.lang.Math.min;
 import static java.lang.Math.round;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.Iterator;
 
 import javax.inject.Inject;
@@ -23,6 +29,7 @@ import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 import com.anrisoftware.prefdialog.miscswing.colorpalette.PaletteFactory;
 import com.anrisoftware.prefdialog.miscswing.multichart.chart.AxisNegative;
 import com.anrisoftware.prefdialog.miscswing.multichart.chart.Chart;
+import com.anrisoftware.prefdialog.miscswing.multichart.chart.ChartProperty;
 import com.anrisoftware.prefdialog.miscswing.multichart.chart.PlotOrientation;
 import com.anrisoftware.prefdialog.miscswing.multichart.model.ChartModel;
 import com.anrisoftware.prefdialog.miscswing.multichart.model.ChartModelEvent;
@@ -51,6 +58,8 @@ public class FreechartXYChart implements Chart {
     @Inject
     private PaletteFactory paletteFactory;
 
+    private PropertyChangeSupport p;
+
     private ChartModel model;
 
     private ChartModelListener modelListener;
@@ -67,6 +76,10 @@ public class FreechartXYChart implements Chart {
 
     private boolean blackWhite;
 
+    private boolean allowMouseScroll;
+
+    private MouseWheelListener mouseScrollListener;
+
     /**
      * @see FreechartXYChartFactory#create(String, JFreeChart)
      */
@@ -82,6 +95,20 @@ public class FreechartXYChart implements Chart {
     }
 
     private Object resolveObject() {
+        this.p = new PropertyChangeSupport(this);
+        this.mouseScrollListener = new MouseWheelListener() {
+
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                if (model == null) {
+                    return;
+                }
+                if (e.getScrollType() == MouseWheelEvent.WHEEL_UNIT_SCROLL) {
+                    int offset = model.getOffset();
+                    setOffset(offset + e.getUnitsToScroll());
+                }
+            }
+        };
         this.modelListener = new ChartModelListener() {
 
             @Override
@@ -105,6 +132,7 @@ public class FreechartXYChart implements Chart {
         }
         model.addChartModelListener(modelListener);
         setupNewModel();
+        p.firePropertyChange(MODEL_PROPERTY.toString(), oldValue, model);
     }
 
     @Override
@@ -133,15 +161,14 @@ public class FreechartXYChart implements Chart {
     @OnAwt
     public void setViewMaximum(int max) {
         model.setViewMaximum(max);
-        // scrollModel.setViewMaximum(max);
     }
 
-    /**
-     * @see ChartModel#setOffset(int)
-     */
     @OnAwt
+    @Override
     public void setOffset(int offset) {
+        int oldValue = model.getOffset();
         model.setOffset(offset);
+        p.firePropertyChange(OFFSET_PROPERTY.toString(), oldValue, offset);
     }
 
     @OnAwt
@@ -235,6 +262,28 @@ public class FreechartXYChart implements Chart {
         this.orientation = orientation;
         XYPlot plot = (XYPlot) chart.getPlot();
         plot.setOrientation(toFreechartOrientation(orientation));
+    }
+
+    @OnAwt
+    @Override
+    public void setAllowMouseScroll(boolean flag) {
+        if (flag) {
+            panel.addMouseWheelListener(mouseScrollListener);
+        } else {
+            panel.removeMouseWheelListener(mouseScrollListener);
+        }
+    }
+
+    @Override
+    public void addPropertyChangeListener(ChartProperty property,
+            PropertyChangeListener listener) {
+        p.addPropertyChangeListener(property.toString(), listener);
+    }
+
+    @Override
+    public void removePropertyChangeListener(ChartProperty property,
+            PropertyChangeListener listener) {
+        p.removePropertyChangeListener(property.toString(), listener);
     }
 
     @Override

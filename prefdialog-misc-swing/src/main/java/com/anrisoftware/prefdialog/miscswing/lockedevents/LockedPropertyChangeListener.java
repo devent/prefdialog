@@ -18,8 +18,9 @@
  */
 package com.anrisoftware.prefdialog.miscswing.lockedevents;
 
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.VetoableChangeListener;
 
 /**
  * The change method is not called if the listener is locked.
@@ -27,13 +28,14 @@ import javax.swing.event.ChangeListener;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-public class LockedChangeListener extends AbstractLockable implements
-        ChangeListener {
+public class LockedPropertyChangeListener extends AbstractLockable implements
+        PropertyChangeListener {
 
     /**
-     * @see #decorate(ChangeListener)
+     * @see #decorate(VetoableChangeListener)
      */
-    public static LockedChangeListener lockedChangeListener(ChangeListener l) {
+    public static LockedPropertyChangeListener lockedPropertyChangeListener(
+            PropertyChangeListener l) {
         return decorate(l);
     }
 
@@ -41,27 +43,27 @@ public class LockedChangeListener extends AbstractLockable implements
      * Decorate the specified listener with locking ability.
      * 
      * @param l
-     *            the {@link ChangeListener}.
+     *            the {@link PropertyChangeListener}.
      * 
-     * @return the {@link LockedChangeListener}.
+     * @return the {@link LockedPropertyChangeListener}.
      */
-    public static LockedChangeListener decorate(ChangeListener l) {
-        return new LockedChangeListener(l);
+    public static LockedPropertyChangeListener decorate(PropertyChangeListener l) {
+        return new LockedPropertyChangeListener(l);
     }
 
-    private final ChangeListener l;
+    private final PropertyChangeListener l;
 
     /**
-     * @see #decorate(ChangeListener)
+     * @see #decorate(PropertyChangeListener)
      */
-    LockedChangeListener(ChangeListener l) {
+    LockedPropertyChangeListener(PropertyChangeListener l) {
         this.l = l;
     }
 
     @Override
-    public void stateChanged(ChangeEvent e) {
+    public void propertyChange(PropertyChangeEvent evt) {
         if (!isLock()) {
-            l.stateChanged(e);
+            l.propertyChange(evt);
         }
     }
 }

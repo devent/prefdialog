@@ -18,7 +18,7 @@
  */
 package com.anrisoftware.prefdialog.miscswing.spreadsheet.navigation;
 
-import static com.anrisoftware.prefdialog.miscswing.lockedevents.LockedChangeListener.lockedChangeListener;
+import static com.anrisoftware.prefdialog.miscswing.lockedevents.LockedPropertyChangeListener.lockedPropertyChangeListener;
 import static com.anrisoftware.prefdialog.miscswing.spreadsheet.navigation.NavigationModel.Property.COLUMN_INDEX_PROPERTY;
 import static com.anrisoftware.prefdialog.miscswing.spreadsheet.navigation.NavigationModel.Property.MAXIMUM_COLUMN_PROPERTY;
 import static com.anrisoftware.prefdialog.miscswing.spreadsheet.navigation.NavigationModel.Property.MAXIMUM_ROW_PROPERTY;
@@ -41,7 +41,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
-import com.anrisoftware.prefdialog.miscswing.lockedevents.LockedChangeListener;
+import com.anrisoftware.prefdialog.miscswing.lockedevents.LockedPropertyChangeListener;
 import com.anrisoftware.prefdialog.miscswing.spreadsheet.table.SpreadsheetTable;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
@@ -79,9 +79,9 @@ public class NavigationPanel {
 
 	private final ListSelectionListener tableSelectionListener;
 
-	private final LockedChangeListener columnIndexListener;
+	private final LockedPropertyChangeListener columnIndexListener;
 
-	private final LockedChangeListener rowIndexListener;
+	private final LockedPropertyChangeListener rowIndexListener;
 
 	private final PropertyChangeListener maximumRowListener;
 
@@ -119,14 +119,14 @@ public class NavigationPanel {
 				updateSelected();
 			}
 		};
-		this.columnIndexListener = lockedChangeListener(new PropertyChangeListener() {
+		this.columnIndexListener = lockedPropertyChangeListener(new PropertyChangeListener() {
 
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				updateSelectedColumn((Integer) evt.getNewValue());
 			}
 		});
-		this.rowIndexListener = lockedChangeListener(new PropertyChangeListener() {
+		this.rowIndexListener = lockedPropertyChangeListener(new PropertyChangeListener() {
 
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {

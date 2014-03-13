@@ -20,7 +20,7 @@
 package com.anrisoftware.prefdialog.csvimportdialog.importpanel;
 
 import static com.anrisoftware.prefdialog.fields.FieldComponent.VALUE_PROPERTY;
-import static com.anrisoftware.prefdialog.miscswing.lockedevents.LockedChangeListener.lockedChangeListener;
+import static com.anrisoftware.prefdialog.miscswing.lockedevents.LockedPropertyChangeListener.lockedPropertyChangeListener;
 import static java.awt.BorderLayout.CENTER;
 
 import java.awt.BorderLayout;
@@ -46,7 +46,7 @@ import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperti
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.separatorproperties.UseCustomSeparatorAction;
 import com.anrisoftware.prefdialog.fields.FieldComponent;
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
-import com.anrisoftware.prefdialog.miscswing.lockedevents.LockedChangeListener;
+import com.anrisoftware.prefdialog.miscswing.lockedevents.LockedPropertyChangeListener;
 import com.anrisoftware.prefdialog.verticalpanel.VerticalPreferencesPanelField;
 import com.anrisoftware.resources.texts.api.Texts;
 import com.anrisoftware.resources.texts.api.TextsFactory;
@@ -67,7 +67,7 @@ public class CsvImportPanel {
 
 	private final CsvPanelProperties properties;
 
-	private final LockedChangeListener valueListener;
+	private final LockedPropertyChangeListener valueListener;
 
 	@Inject
 	private Injector injector;
@@ -95,7 +95,7 @@ public class CsvImportPanel {
 			@Assisted JPanel container, @Assisted CsvImportProperties properties) {
 		this.container = container;
 		this.properties = propertiesFactory.create(properties);
-		this.valueListener = lockedChangeListener(new PropertyChangeListener() {
+		this.valueListener = lockedPropertyChangeListener(new PropertyChangeListener() {
 
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {

@@ -18,7 +18,7 @@
  */
 package com.anrisoftware.prefdialog.miscswing.spreadsheet.navigation;
 
-import static com.anrisoftware.prefdialog.miscswing.lockedevents.LockedChangeListener.lockedChangeListener;
+import static com.anrisoftware.prefdialog.miscswing.lockedevents.LockedPropertyChangeListener.lockedPropertyChangeListener;
 import static com.anrisoftware.prefdialog.miscswing.spreadsheet.navigation.NavigationModel.Property.MAXIMUM_ROW_PROPERTY;
 import static com.anrisoftware.prefdialog.miscswing.spreadsheet.navigation.NavigationModel.Property.MINIMUM_ROW_PROPERTY;
 import static com.anrisoftware.prefdialog.miscswing.spreadsheet.navigation.NavigationModel.Property.ROW_INDEX_PROPERTY;
@@ -28,7 +28,7 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.SpinnerNumberModel;
 
-import com.anrisoftware.prefdialog.miscswing.lockedevents.LockedChangeListener;
+import com.anrisoftware.prefdialog.miscswing.lockedevents.LockedPropertyChangeListener;
 
 @SuppressWarnings("serial")
 class CurrentRowModel extends SpinnerNumberModel {
@@ -37,7 +37,7 @@ class CurrentRowModel extends SpinnerNumberModel {
 
 	private final PropertyChangeListener minimumListener;
 
-	private final LockedChangeListener currentListener;
+	private final LockedPropertyChangeListener currentListener;
 
 	private NavigationModel model;
 
@@ -56,7 +56,7 @@ class CurrentRowModel extends SpinnerNumberModel {
 				setMinimum((Comparable<?>) evt.getNewValue());
 			}
 		};
-		this.currentListener = lockedChangeListener(new PropertyChangeListener() {
+		this.currentListener = lockedPropertyChangeListener(new PropertyChangeListener() {
 
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {

@@ -1,6 +1,8 @@
 package com.anrisoftware.prefdialog.miscswing.multichart.chart;
 
 import java.awt.Component;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 import com.anrisoftware.prefdialog.miscswing.multichart.model.ChartModel;
 
@@ -124,5 +126,45 @@ public interface Chart {
      *            the maximum rows.
      */
     void setMaximumView(int maximum);
+
+    /**
+     * Sets allow scrolling the domain axis by the mouse wheel.
+     * 
+     * <h2>AWT Thread</h2>
+     * <p>
+     * Should be called in the AWT thread.
+     * 
+     * @param flag
+     *            set to {@code true} to allow scrolling.
+     */
+    void setAllowMouseScroll(boolean flag);
+
+    /**
+     * Sets the offset of the data that is shown in the graph.
+     * 
+     * <h2>AWT Thread</h2>
+     * <p>
+     * Should be called in the AWT thread.
+     * 
+     * @param offset
+     *            the offset.
+     */
+    void setOffset(int offset);
+
+    /**
+     * @see PropertyChangeSupport#addPropertyChangeListener(String,
+     *      PropertyChangeListener)
+     * @see ChartProperty
+     */
+    void addPropertyChangeListener(ChartProperty property,
+            PropertyChangeListener listener);
+
+    /**
+     * @see PropertyChangeSupport#removePropertyChangeListener(String,
+     *      PropertyChangeListener)
+     * @see ChartProperty
+     */
+    void removePropertyChangeListener(ChartProperty property,
+            PropertyChangeListener listener);
 
 }

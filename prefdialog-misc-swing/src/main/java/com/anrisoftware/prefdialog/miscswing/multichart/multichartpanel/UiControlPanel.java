@@ -147,6 +147,10 @@ final class UiControlPanel extends JPanel {
         return verticalScrollBar;
     }
 
+    public JScrollBar getHorizontalScrollBar() {
+        return horizontalScrollBar;
+    }
+
     public JPanel getGraphsPanel() {
         return graphsPanel;
     }

@@ -117,4 +117,40 @@ public interface ChartPanel {
      */
     void setMaximumView(int maximum);
 
+    /**
+     * Sets allowing domain axis scroll.
+     * 
+     * <h2>AWT Thread</h2>
+     * <p>
+     * Should be called in the AWT thread.
+     * 
+     * @param flag
+     *            set to {@code true} to enable domain axis scroll.
+     */
+    void setAllowDomainAxisScroll(boolean flag);
+
+    /**
+     * Sets allowing range axis scroll.
+     * 
+     * <h2>AWT Thread</h2>
+     * <p>
+     * Should be called in the AWT thread.
+     * 
+     * @param flag
+     *            set to {@code true} to enable range axis scroll.
+     */
+    void setAllowRangeAxisScroll(boolean flag);
+
+    /**
+     * Sets allow scrolling the domain axis by the mouse wheel.
+     * 
+     * <h2>AWT Thread</h2>
+     * <p>
+     * Should be called in the AWT thread.
+     * 
+     * @param flag
+     *            set to {@code true} to allow scrolling.
+     */
+    void setAllowMouseScroll(boolean flag);
+
 }

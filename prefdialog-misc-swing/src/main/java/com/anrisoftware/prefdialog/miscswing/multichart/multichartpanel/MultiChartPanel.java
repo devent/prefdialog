@@ -1,10 +1,19 @@
 package com.anrisoftware.prefdialog.miscswing.multichart.multichartpanel;
 
+import static com.anrisoftware.prefdialog.miscswing.lockedevents.LockedChangeListener.lockedChangeListener;
+import static com.anrisoftware.prefdialog.miscswing.lockedevents.LockedPropertyChangeListener.lockedPropertyChangeListener;
+import static com.anrisoftware.prefdialog.miscswing.multichart.chart.ChartProperty.MODEL_PROPERTY;
+import static com.anrisoftware.prefdialog.miscswing.multichart.chart.ChartProperty.OFFSET_PROPERTY;
+import static com.anrisoftware.prefdialog.miscswing.multichart.chart.PlotOrientation.HORIZONTAL;
+import static com.anrisoftware.prefdialog.miscswing.multichart.chart.PlotOrientation.VERTICAL;
 import static info.clearthought.layout.TableLayoutConstants.FILL;
+import static java.lang.Math.max;
 import static java.lang.String.format;
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Component;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,15 +21,21 @@ import java.util.Map;
 
 import javax.inject.Inject;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import com.anrisoftware.globalpom.threads.api.Threads;
 import com.anrisoftware.prefdialog.miscswing.actions.Actions;
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
+import com.anrisoftware.prefdialog.miscswing.lockedevents.LockedChangeListener;
+import com.anrisoftware.prefdialog.miscswing.lockedevents.LockedPropertyChangeListener;
 import com.anrisoftware.prefdialog.miscswing.multichart.actions.PanelActions;
 import com.anrisoftware.prefdialog.miscswing.multichart.chart.AxisNegative;
 import com.anrisoftware.prefdialog.miscswing.multichart.chart.Chart;
 import com.anrisoftware.prefdialog.miscswing.multichart.chart.ChartPanel;
 import com.anrisoftware.prefdialog.miscswing.multichart.chart.PlotOrientation;
+import com.anrisoftware.prefdialog.miscswing.multichart.model.ChartModel;
 import com.anrisoftware.prefdialog.miscswing.multichart.toolbaractions.ToolbarActions;
 import com.anrisoftware.resources.images.api.IconSize;
 import com.anrisoftware.resources.images.api.Images;
@@ -50,11 +65,69 @@ public class MultiChartPanel implements ChartPanel {
 
     private boolean showShapes;
 
+    private PlotOrientation plotOrientation;
+
+    private LockedChangeListener horizontalScrollListener;
+
+    private LockedChangeListener verticalScrollListener;
+
+    private PropertyChangeListener chartModelListener;
+
+    private ChartModel chartModel;
+
+    private boolean allowDomainAxisScroll;
+
+    private boolean allowRangeAxisScroll;
+
+    private LockedPropertyChangeListener chartOffsetListener;
+
     @Inject
     @OnAwt
     MultiChartPanel() {
         this.chartsMap = new HashMap<String, Chart>();
         this.charts = new ArrayList<Chart>();
+        this.plotOrientation = PlotOrientation.VERTICAL;
+        this.allowDomainAxisScroll = true;
+        this.allowRangeAxisScroll = true;
+        readResolve();
+    }
+
+    private Object readResolve() {
+        this.chartModelListener = new PropertyChangeListener() {
+
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                updateChartModel((ChartModel) evt.getNewValue());
+            }
+        };
+        this.horizontalScrollListener = lockedChangeListener(new ChangeListener() {
+
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                updateHorizontalScroll(e);
+            }
+        });
+        this.verticalScrollListener = lockedChangeListener(new ChangeListener() {
+
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                updateVerticalScroll(e);
+            }
+        });
+        this.chartOffsetListener = lockedPropertyChangeListener(new PropertyChangeListener() {
+
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                chartOffsetListener.lock();
+                horizontalScrollListener.lock();
+                verticalScrollListener.lock();
+                updateChartOffset((Integer) evt.getNewValue());
+                verticalScrollListener.unlock();
+                horizontalScrollListener.unlock();
+                chartOffsetListener.unlock();
+            }
+        });
+        return this;
     }
 
     @OnAwt
@@ -67,6 +140,7 @@ public class MultiChartPanel implements ChartPanel {
         setupGraphsPanel(panel.getGraphsPanel());
         panelActions.setToolbarActions(toolbarActions);
         panelActions.setChartPanel(this);
+        setupScrollBars();
         return this;
     }
 
@@ -106,6 +180,7 @@ public class MultiChartPanel implements ChartPanel {
     @OnAwt
     @Override
     public void setPlotOrientation(PlotOrientation orientation) {
+        this.plotOrientation = orientation;
         for (Chart chart : charts) {
             chart.setPlotOrientation(orientation);
         }
@@ -159,19 +234,62 @@ public class MultiChartPanel implements ChartPanel {
         for (Chart chart : charts) {
             chart.setAutoZoomDomain(flag);
         }
+        updateDomainAxisMaximum();
     }
 
     @Override
+    @OnAwt
     public void setZoomDomain(int factor) {
         for (Chart chart : charts) {
             chart.setZoomDomain(factor);
         }
+        updateDomainAxisMaximum();
     }
 
     @Override
+    @OnAwt
     public void setMaximumView(int maximum) {
         for (Chart chart : charts) {
             chart.setMaximumView(maximum);
+        }
+        getDomainAxisScroll().setMaximum(maximum);
+    }
+
+    @Override
+    @OnAwt
+    public void setAllowDomainAxisScroll(boolean flag) {
+        this.allowDomainAxisScroll = flag;
+        JScrollBar scroll = getDomainAxisScroll();
+        scroll.setVisible(flag);
+    }
+
+    @Override
+    @OnAwt
+    public void setAllowRangeAxisScroll(boolean flag) {
+        this.allowRangeAxisScroll = flag;
+        JScrollBar scroll = getRangeAxisScroll();
+        scroll.setVisible(flag);
+    }
+
+    public JScrollBar getRangeAxisScroll() {
+        switch (plotOrientation) {
+        case HORIZONTAL:
+            return panel.getHorizontalScrollBar();
+        case VERTICAL:
+            return panel.getVerticalScrollBar();
+        default:
+            return null;
+        }
+    }
+
+    public JScrollBar getDomainAxisScroll() {
+        switch (plotOrientation) {
+        case HORIZONTAL:
+            return panel.getVerticalScrollBar();
+        case VERTICAL:
+            return panel.getHorizontalScrollBar();
+        default:
+            return null;
         }
     }
 
@@ -182,6 +300,8 @@ public class MultiChartPanel implements ChartPanel {
         if (!chartsMap.containsKey(name)) {
             chartsMap.put(name, chart);
             charts.add(chart);
+            addChartPropertyChangeListeners(chart);
+            chartModel = chart.getModel();
             addChartPanel(chart);
             if (chartsMap.size() == 1) {
                 toolbarActions.setActionsEnabled(true);
@@ -194,8 +314,10 @@ public class MultiChartPanel implements ChartPanel {
     public void removeChart(Chart chart) {
         if (chartsMap.remove(chart.getName()) != null) {
             removeChartPanel(chart);
+            removeChartPropertyChangeListeners(chart);
             if (chartsMap.size() == 0) {
                 toolbarActions.setActionsEnabled(false);
+                chartModel = null;
             }
         }
     }
@@ -218,10 +340,73 @@ public class MultiChartPanel implements ChartPanel {
         panel.setIconSize(size);
     }
 
+    @OnAwt
+    @Override
+    public void setAllowMouseScroll(boolean flag) {
+        for (Chart chart : charts) {
+            chart.setAllowMouseScroll(flag);
+        }
+    }
+
     private void setupGraphsPanel(JPanel panel) {
         double[] cols = { FILL };
         double[] rows = { FILL };
         panel.setLayout(new TableLayout(cols, rows));
+    }
+
+    private void setupScrollBars() {
+        panel.getHorizontalScrollBar().getModel().setExtent(0);
+        panel.getHorizontalScrollBar().getModel()
+                .addChangeListener(horizontalScrollListener);
+        panel.getVerticalScrollBar().getModel().setExtent(0);
+        panel.getVerticalScrollBar().getModel()
+                .addChangeListener(verticalScrollListener);
+    }
+
+    private void updateChartModel(ChartModel model) {
+        this.chartModel = model;
+    }
+
+    private void updateVerticalScroll(ChangeEvent e) {
+        if (plotOrientation == HORIZONTAL && allowDomainAxisScroll) {
+            updateModelOffset();
+        }
+    }
+
+    private void updateHorizontalScroll(ChangeEvent e) {
+        if (plotOrientation == VERTICAL && allowDomainAxisScroll) {
+            updateModelOffset();
+        }
+    }
+
+    private void updateModelOffset() {
+        JScrollBar scroll = getDomainAxisScroll();
+        int extent = scroll.getModel().getExtent();
+        for (Chart chart : charts) {
+            chart.getModel().setOffset(scroll.getValue() + extent);
+        }
+    }
+
+    private void updateDomainAxisMaximum() {
+        getDomainAxisScroll().setMaximum(
+                max(chartModel.getRowCount() - chartModel.getViewMaximum(), 0));
+    }
+
+    private void updateChartOffset(int offset) {
+        for (Chart chart : charts) {
+            chart.setOffset(offset);
+        }
+        getDomainAxisScroll().setValue(offset);
+    }
+
+    private void addChartPropertyChangeListeners(Chart chart) {
+        chart.addPropertyChangeListener(MODEL_PROPERTY, chartModelListener);
+        chart.addPropertyChangeListener(OFFSET_PROPERTY, chartOffsetListener);
+    }
+
+    private void removeChartPropertyChangeListeners(Chart chart) {
+        chart.removePropertyChangeListener(MODEL_PROPERTY, chartModelListener);
+        chart.removePropertyChangeListener(OFFSET_PROPERTY, chartOffsetListener);
     }
 
     private void addChartPanel(Chart chart) {

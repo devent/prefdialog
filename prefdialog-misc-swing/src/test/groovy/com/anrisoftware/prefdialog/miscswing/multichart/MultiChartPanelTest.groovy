@@ -139,6 +139,8 @@ class MultiChartPanelTest {
         FrameFixture fix
         def testing = testingFactory.create title: "Multi-Chart", createComponent: { frame ->
             panel = createGraphsWithData(charts, panel)
+            panel.setAllowRangeAxisScroll false
+            panel.setAllowMouseScroll true
             panel.getPanel()
         }
         testing().withFixture({ Thread.sleep 60000 })
