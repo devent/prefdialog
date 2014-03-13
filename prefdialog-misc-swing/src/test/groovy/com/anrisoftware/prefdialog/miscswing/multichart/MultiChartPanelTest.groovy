@@ -20,7 +20,6 @@ import com.anrisoftware.globalpom.mnemonic.MnemonicModule
 import com.anrisoftware.globalpom.utils.frametesting.FrameTestingFactory
 import com.anrisoftware.globalpom.utils.frametesting.FrameTestingModule
 import com.anrisoftware.prefdialog.miscswing.colorpalette.ColorPaletteModule
-import com.anrisoftware.prefdialog.miscswing.multichart.chart.AxisNegative
 import com.anrisoftware.prefdialog.miscswing.multichart.chart.PlotOrientation
 import com.anrisoftware.prefdialog.miscswing.multichart.columnnames.ChartColumnNamesModule
 import com.anrisoftware.prefdialog.miscswing.multichart.databeanmodel.DataBeanChartModel
@@ -221,6 +220,7 @@ class MultiChartPanelTest {
         rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
         NumberAxis domainAxis = (NumberAxis) plot.getDomainAxis();
         domainAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+        domainAxis.setInverted true
     }
 
     static MultiChartPanel createGraphsWithData(List charts, MultiChartPanel panel) {
@@ -251,7 +251,6 @@ class MultiChartPanelTest {
         panel.setIconsOnly true
         panel.setIconSize IconSize.SMALL
         panel.setPlotOrientation PlotOrientation.HORIZONTAL
-        panel.setDomainAxisNegative AxisNegative.NEGATIVE
         panel.setMaximumView 100
         panel.setAutoZoomDomain true
         return panel

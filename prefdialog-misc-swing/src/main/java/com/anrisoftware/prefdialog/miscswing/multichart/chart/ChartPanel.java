@@ -20,18 +20,6 @@ public interface ChartPanel {
     void setImages(Images images);
 
     /**
-     * Sets the domain axis to be negative.
-     * 
-     * <h2>AWT Thread</h2>
-     * <p>
-     * Should be called in the AWT thread.
-     * 
-     * @param negative
-     *            the {@link AxisNegative}.
-     */
-    void setDomainAxisNegative(AxisNegative negative);
-
-    /**
      * Sets the orientation of the chart.
      * 
      * <h2>AWT Thread</h2>

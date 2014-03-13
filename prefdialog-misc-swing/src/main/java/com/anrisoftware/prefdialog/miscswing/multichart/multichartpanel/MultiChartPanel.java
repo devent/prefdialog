@@ -31,7 +31,6 @@ import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 import com.anrisoftware.prefdialog.miscswing.lockedevents.LockedChangeListener;
 import com.anrisoftware.prefdialog.miscswing.lockedevents.LockedPropertyChangeListener;
 import com.anrisoftware.prefdialog.miscswing.multichart.actions.PanelActions;
-import com.anrisoftware.prefdialog.miscswing.multichart.chart.AxisNegative;
 import com.anrisoftware.prefdialog.miscswing.multichart.chart.Chart;
 import com.anrisoftware.prefdialog.miscswing.multichart.chart.ChartPanel;
 import com.anrisoftware.prefdialog.miscswing.multichart.chart.PlotOrientation;
@@ -167,14 +166,6 @@ public class MultiChartPanel implements ChartPanel {
     @Override
     public Component getPanel() {
         return panel;
-    }
-
-    @OnAwt
-    @Override
-    public void setDomainAxisNegative(AxisNegative negative) {
-        for (Chart chart : charts) {
-            chart.setDomainAxisNegative(negative);
-        }
     }
 
     @OnAwt

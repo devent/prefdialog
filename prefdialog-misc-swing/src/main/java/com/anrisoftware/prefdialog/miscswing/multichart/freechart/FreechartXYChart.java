@@ -27,7 +27,6 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 import com.anrisoftware.prefdialog.miscswing.colorpalette.PaletteFactory;
-import com.anrisoftware.prefdialog.miscswing.multichart.chart.AxisNegative;
 import com.anrisoftware.prefdialog.miscswing.multichart.chart.Chart;
 import com.anrisoftware.prefdialog.miscswing.multichart.chart.ChartProperty;
 import com.anrisoftware.prefdialog.miscswing.multichart.chart.PlotOrientation;
@@ -64,10 +63,6 @@ public class FreechartXYChart implements Chart {
 
     private ChartModelListener modelListener;
 
-    private AxisNegative negative;
-
-    private int negativeFactor;
-
     private int maximumView;
 
     private PlotOrientation orientation;
@@ -75,8 +70,6 @@ public class FreechartXYChart implements Chart {
     private boolean showShapes;
 
     private boolean blackWhite;
-
-    private boolean allowMouseScroll;
 
     private MouseWheelListener mouseScrollListener;
 
@@ -89,8 +82,6 @@ public class FreechartXYChart implements Chart {
         this.name = name;
         this.panel = new ChartPanel(chart);
         this.chart = chart;
-        this.negative = AxisNegative.POSITIVE;
-        this.negativeFactor = 1;
         resolveObject();
     }
 
@@ -228,32 +219,6 @@ public class FreechartXYChart implements Chart {
 
     @OnAwt
     @Override
-    public void setDomainAxisNegative(AxisNegative negative) {
-        AxisNegative oldValue = this.negative;
-        if (oldValue == negative) {
-            return;
-        }
-        switch (negative) {
-        case NEGATIVE:
-            this.negativeFactor = -1;
-            break;
-        case POSITIVE:
-            this.negativeFactor = 1;
-            break;
-        }
-        this.negative = negative;
-        int oldMax = model.getViewMaximum();
-        setViewMaximum(0);
-        setViewMaximum(oldMax);
-    }
-
-    @Override
-    public AxisNegative getDomainAxisNegative() {
-        return negative;
-    }
-
-    @OnAwt
-    @Override
     public void setPlotOrientation(PlotOrientation orientation) {
         PlotOrientation oldValue = this.orientation;
         if (oldValue == orientation) {
@@ -351,13 +316,11 @@ public class FreechartXYChart implements Chart {
 
     private void updateInsertData(int row0, int row1, int offset) {
         ChartModel model = this.model;
-        int x;
         XYSeriesCollection series = getCategory();
         for (int col = 0; col < series.getSeriesCount(); col++) {
             XYSeries xyseries = series.getSeries(col);
             for (int row = row0; row <= row1; row++) {
-                x = row * negativeFactor;
-                xyseries.add(x, model.getValueAt(row, col), false);
+                xyseries.add(row, model.getValueAt(row, col), false);
             }
             xyseries.fireSeriesChanged();
         }

@@ -41,25 +41,6 @@ public interface Chart {
     Object getChart();
 
     /**
-     * Sets the domain axis to be negative.
-     * 
-     * <h2>AWT Thread</h2>
-     * <p>
-     * Should be called in the AWT thread.
-     * 
-     * @param negative
-     *            the {@link AxisNegative}.
-     */
-    void setDomainAxisNegative(AxisNegative negative);
-
-    /**
-     * Returns the domain axis to be negative.
-     * 
-     * @return the {@link AxisNegative}.
-     */
-    AxisNegative getDomainAxisNegative();
-
-    /**
      * Sets to use anti-aliasing in the data graph.
      * 
      * <h2>AWT Thread</h2>
