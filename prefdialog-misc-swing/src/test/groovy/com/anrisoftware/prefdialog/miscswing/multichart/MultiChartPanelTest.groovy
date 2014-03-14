@@ -250,7 +250,7 @@ class MultiChartPanelTest {
         panel.addChart charts[2]
 
         panel.setIconsOnly true
-        panel.setIconSize IconSize.SMALL
+        panel.setIconSize IconSize.MEDIUM
         panel.setPlotOrientation PlotOrientation.HORIZONTAL
         panel.setMaximumView 100
         panel.setAutoZoomDomain true

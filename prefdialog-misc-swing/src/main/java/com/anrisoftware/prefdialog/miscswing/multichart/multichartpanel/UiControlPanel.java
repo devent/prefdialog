@@ -172,6 +172,11 @@ final class UiControlPanel extends JPanel {
     }
 
     @OnAwt
+    public void setTextAlongsideIcons(boolean flag) {
+        toolbarMenu.setTextAlongsideIcons(flag);
+    }
+
+    @OnAwt
     public void setIconSize(IconSize size) {
         toolbarMenu.setIconSize(size);
     }

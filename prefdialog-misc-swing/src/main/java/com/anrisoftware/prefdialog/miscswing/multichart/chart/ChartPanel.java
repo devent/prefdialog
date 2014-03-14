@@ -81,6 +81,8 @@ public interface ChartPanel {
 
     void setTextOnly(boolean flag);
 
+    void setTextAlongsideIcons(boolean flag);
+
     void setIconSize(IconSize size);
 
     void setAutoZoomDomain(boolean flag);

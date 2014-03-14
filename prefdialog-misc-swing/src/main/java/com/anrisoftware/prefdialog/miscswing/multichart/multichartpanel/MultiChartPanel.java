@@ -335,6 +335,12 @@ public class MultiChartPanel implements ChartPanel {
 
     @OnAwt
     @Override
+    public void setTextAlongsideIcons(boolean flag) {
+        panel.setTextAlongsideIcons(flag);
+    }
+
+    @OnAwt
+    @Override
     public void setIconSize(IconSize size) {
         panel.setIconSize(size);
     }
