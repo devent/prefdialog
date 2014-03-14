@@ -83,10 +83,22 @@ public interface Chart {
      * <p>
      * Should be called in the AWT thread.
      * 
-     * @param autoZoom
+     * @param flag
      *            set to {@code true} for auto zoom.
      */
     void setAutoZoomDomain(boolean flag);
+
+    /**
+     * Sets auto zooms of the range axis.
+     * 
+     * <h2>AWT Thread</h2>
+     * <p>
+     * Should be called in the AWT thread.
+     * 
+     * @param flag
+     *            set to {@code true} for auto zoom.
+     */
+    void setAutoZoomRange(boolean flag);
 
     /**
      * Zooms the domain axis.

@@ -85,6 +85,8 @@ public interface ChartPanel {
 
     void setAutoZoomDomain(boolean flag);
 
+    void setAutoZoomRange(boolean flag);
+
     /**
      * Zooms the domain axis.
      * 

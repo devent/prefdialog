@@ -5,7 +5,8 @@
  */
 package com.anrisoftware.prefdialog.miscswing.multichart.actions;
 
-import static com.anrisoftware.prefdialog.miscswing.multichart.toolbaractions.ToolbarActions.AUTO_ZOOM_NAME;
+import static com.anrisoftware.prefdialog.miscswing.multichart.toolbaractions.ToolbarActions.AUTO_ZOOM_DOMAIN_NAME;
+import static com.anrisoftware.prefdialog.miscswing.multichart.toolbaractions.ToolbarActions.AUTO_ZOOM_RANGE_NAME;
 import static com.anrisoftware.prefdialog.miscswing.multichart.toolbaractions.ToolbarActions.ZOOM_IN_NAME;
 import static com.anrisoftware.prefdialog.miscswing.multichart.toolbaractions.ToolbarActions.ZOOM_OUT_NAME;
 
@@ -26,7 +27,10 @@ public class PanelActions {
     private AntiAliasingAction antiAliasingAction;
 
     @Inject
-    private AutoZoomAction autoZoomAction;
+    private AutoZoomDomainAction autoZoomDomainAction;
+
+    @Inject
+    private AutoZoomRangeAction autoZoomRangeAction;
 
     @Inject
     private BlackWhiteAction blackWhiteAction;
@@ -47,14 +51,16 @@ public class PanelActions {
      *            the {@link ToolbarActions}.
      */
     public void setToolbarActions(ToolbarActions actions) {
-        actions.addAWTAction(AUTO_ZOOM_NAME, autoZoomAction);
+        actions.addAWTAction(AUTO_ZOOM_DOMAIN_NAME, autoZoomDomainAction);
+        actions.addAWTAction(AUTO_ZOOM_RANGE_NAME, autoZoomRangeAction);
         actions.addAWTAction(ZOOM_IN_NAME, zoomInAction);
         actions.addAWTAction(ZOOM_OUT_NAME, zoomOutAction);
     }
 
     public void setChartPanel(ChartPanel panel) {
         antiAliasingAction.setChartPanel(panel);
-        autoZoomAction.setChartPanel(panel);
+        autoZoomDomainAction.setChartPanel(panel);
+        autoZoomRangeAction.setChartPanel(panel);
         blackWhiteAction.setChartPanel(panel);
         showShapesAction.setChartPanel(panel);
         zoomInAction.setChartPanel(panel);

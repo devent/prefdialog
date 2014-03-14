@@ -5,7 +5,7 @@
  */
 package com.anrisoftware.prefdialog.miscswing.chart.freechartpanel.freechartpanel;
 
-import static com.anrisoftware.prefdialog.miscswing.chart.freechartpanel.actions.GraphWindowActions.AUTO_ZOOM_NAME;
+import static com.anrisoftware.prefdialog.miscswing.chart.freechartpanel.actions.GraphWindowActions.AUTO_ZOOM_DOMAIN_NAME;
 import static com.anrisoftware.prefdialog.miscswing.chart.freechartpanel.actions.GraphWindowActions.HORIZONTAL_SCROLLBAR_NAME;
 import static com.anrisoftware.prefdialog.miscswing.chart.freechartpanel.actions.GraphWindowActions.VERTICAL_SCROLLBAR_NAME;
 import static com.anrisoftware.prefdialog.miscswing.chart.freechartpanel.actions.GraphWindowActions.ZOOM_IN_NAME;
@@ -124,7 +124,7 @@ class UiGraphPanel extends JPanel {
         toolBar.add(zoomOutButton);
 
         autoZoomButton = new JButton("Auto Zoom");
-        autoZoomButton.setName(AUTO_ZOOM_NAME);
+        autoZoomButton.setName(AUTO_ZOOM_DOMAIN_NAME);
         toolBar.add(autoZoomButton);
 
         optionsButton = new JButton("Options");

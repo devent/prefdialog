@@ -132,7 +132,8 @@ public class MultiChartPanel implements ChartPanel {
     @OnAwt
     @Override
     public ChartPanel createPanel() {
-        panel.setAction(panel.getAutoZoomButton(), toolbarActions);
+        panel.setAction(panel.getAutoZoomDomainButton(), toolbarActions);
+        panel.setAction(panel.getAutoZoomRangeButton(), toolbarActions);
         panel.setAction(panel.getZoomInButton(), toolbarActions);
         panel.setAction(panel.getZoomOutButton(), toolbarActions);
         panel.setAction(panel.getOptionsButton(), toolbarActions);
@@ -226,6 +227,13 @@ public class MultiChartPanel implements ChartPanel {
             chart.setAutoZoomDomain(flag);
         }
         updateDomainAxisMaximum();
+    }
+
+    @Override
+    public void setAutoZoomRange(boolean flag) {
+        for (Chart chart : charts) {
+            chart.setAutoZoomRange(flag);
+        }
     }
 
     @Override

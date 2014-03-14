@@ -5,12 +5,6 @@
  */
 package com.anrisoftware.prefdialog.miscswing.multichart.multichartpanel;
 
-import static com.anrisoftware.prefdialog.miscswing.chart.freechartpanel.actions.GraphWindowActions.AUTO_ZOOM_NAME;
-import static com.anrisoftware.prefdialog.miscswing.chart.freechartpanel.actions.GraphWindowActions.HORIZONTAL_SCROLLBAR_NAME;
-import static com.anrisoftware.prefdialog.miscswing.chart.freechartpanel.actions.GraphWindowActions.VERTICAL_SCROLLBAR_NAME;
-import static com.anrisoftware.prefdialog.miscswing.chart.freechartpanel.actions.GraphWindowActions.ZOOM_IN_NAME;
-import static com.anrisoftware.prefdialog.miscswing.chart.freechartpanel.actions.GraphWindowActions.ZOOM_OUT_NAME;
-
 import java.awt.BorderLayout;
 
 import javax.inject.Inject;
@@ -51,7 +45,7 @@ final class UiControlPanel extends JPanel {
 
     private final JButton zoomOutButton;
 
-    private final JButton autoZoomButton;
+    private final JButton autoZoomDomainButton;
 
     private final JButton optionsButton;
 
@@ -60,6 +54,7 @@ final class UiControlPanel extends JPanel {
     private final JPanel graphsPanel;
 
     private ToolbarMenu toolbarMenu;
+    private final JButton autoZoomRangeButton;
 
     /**
      * Create the panel.
@@ -72,16 +67,20 @@ final class UiControlPanel extends JPanel {
         add(toolBar, BorderLayout.NORTH);
 
         zoomInButton = new JButton("Zoom In");
-        zoomInButton.setName(ZOOM_IN_NAME);
+        zoomInButton.setName(ToolbarActions.ZOOM_IN_NAME);
         toolBar.add(zoomInButton);
 
         zoomOutButton = new JButton("Zoom Out");
-        zoomOutButton.setName(ZOOM_OUT_NAME);
+        zoomOutButton.setName(ToolbarActions.ZOOM_OUT_NAME);
         toolBar.add(zoomOutButton);
 
-        autoZoomButton = new JButton("Auto Zoom");
-        autoZoomButton.setName(AUTO_ZOOM_NAME);
-        toolBar.add(autoZoomButton);
+        autoZoomDomainButton = new JButton("Auto Domain");
+        autoZoomDomainButton.setName(ToolbarActions.AUTO_ZOOM_DOMAIN_NAME);
+        toolBar.add(autoZoomDomainButton);
+
+        autoZoomRangeButton = new JButton("Auto Range");
+        autoZoomRangeButton.setName(ToolbarActions.AUTO_ZOOM_RANGE_NAME);
+        toolBar.add(autoZoomRangeButton);
 
         optionsButton = new JButton("Options");
         optionsButton.setName(ToolbarActions.OPTIONS_NAME);
@@ -94,11 +93,11 @@ final class UiControlPanel extends JPanel {
 
         verticalScrollBar = new JScrollBar();
         add(verticalScrollBar, BorderLayout.EAST);
-        verticalScrollBar.setName(VERTICAL_SCROLLBAR_NAME);
+        verticalScrollBar.setName(ToolbarActions.VERTICAL_SCROLLBAR_NAME);
 
         this.horizontalScrollBar = new JScrollBar();
         add(horizontalScrollBar, BorderLayout.SOUTH);
-        horizontalScrollBar.setName(HORIZONTAL_SCROLLBAR_NAME);
+        horizontalScrollBar.setName(ToolbarActions.HORIZONTAL_SCROLLBAR_NAME);
         horizontalScrollBar.setOrientation(JScrollBar.HORIZONTAL);
 
         graphsPanel = new JPanel();
@@ -123,8 +122,8 @@ final class UiControlPanel extends JPanel {
         return rangeField;
     }
 
-    public JButton getAutoZoomButton() {
-        return autoZoomButton;
+    public JButton getAutoZoomDomainButton() {
+        return autoZoomDomainButton;
     }
 
     public JButton getZoomInButton() {
@@ -177,4 +176,7 @@ final class UiControlPanel extends JPanel {
         toolbarMenu.setIconSize(size);
     }
 
+    public JButton getAutoZoomRangeButton() {
+        return autoZoomRangeButton;
+    }
 }

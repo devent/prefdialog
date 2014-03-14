@@ -202,8 +202,8 @@ public class FreechartXYChart implements Chart {
 
     @OnAwt
     @Override
-    public void setAutoZoomDomain(boolean autoZoom) {
-        if (!autoZoom) {
+    public void setAutoZoomDomain(boolean flag) {
+        if (!flag) {
             return;
         }
         ChartModel model = getModel();
@@ -212,6 +212,16 @@ public class FreechartXYChart implements Chart {
         int size = model.getRowCount();
         size = min(size / 4, maximumView);
         setViewMaximum(size);
+    }
+
+    @OnAwt
+    @Override
+    public void setAutoZoomRange(boolean flag) {
+        if (!flag) {
+            return;
+        }
+        ChartPanel panel = this.panel;
+        panel.restoreAutoRangeBounds();
     }
 
     @OnAwt
