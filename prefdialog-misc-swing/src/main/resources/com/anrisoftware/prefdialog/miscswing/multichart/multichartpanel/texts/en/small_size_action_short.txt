@@ -1,0 +1,1 @@
+Small icon size (16x16).
