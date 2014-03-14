@@ -3,6 +3,7 @@ package com.anrisoftware.prefdialog.miscswing.multichart.chart;
 import java.awt.Component;
 import java.util.Map;
 
+import com.anrisoftware.globalpom.textposition.TextPosition;
 import com.anrisoftware.globalpom.threads.api.Threads;
 import com.anrisoftware.resources.images.api.IconSize;
 import com.anrisoftware.resources.images.api.Images;
@@ -94,6 +95,8 @@ public interface ChartPanel {
 
     void setIconSize(IconSize size);
 
+    void setTextPosition(TextPosition position);
+
     void setAutoZoomDomain(boolean flag);
 
     void setAutoZoomRange(boolean flag);
@@ -153,4 +156,5 @@ public interface ChartPanel {
      *            set to {@code true} to allow scrolling.
      */
     void setAllowMouseScroll(boolean flag);
+
 }

@@ -30,6 +30,7 @@ import javax.inject.Inject;
 import javax.swing.JPopupMenu;
 import javax.swing.JToolBar;
 
+import com.anrisoftware.globalpom.textposition.TextPosition;
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 import com.anrisoftware.prefdialog.miscswing.resourcesaction.AbstractResourcesAction;
 import com.anrisoftware.resources.images.api.IconSize;
@@ -289,6 +290,32 @@ public class ToolbarMenu {
             action.setShowLargeIcon(b);
         }
         menu.getTextAlongsideIconsMenu().setSelected(b);
+    }
+
+    /**
+     * Sets text position for actions.
+     * <p>
+     * <h2>AWT Thread</h2>
+     * <p>
+     * Should be called in the AWT thread.
+     * 
+     * @param position
+     *            the {@link TextPosition}.
+     */
+    @OnAwt
+    public void setTextPosition(TextPosition position) {
+        switch (position) {
+        case ICON_ONLY:
+            setIconsOnly(true);
+            break;
+        case TEXT_ONLY:
+            setTextOnly(true);
+            break;
+        case TEXT_ALONGSIDE_ICON:
+            setTextAlongsideIcons(true);
+            break;
+        default:
+        }
     }
 
     /**

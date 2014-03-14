@@ -26,6 +26,7 @@ import javax.swing.JScrollBar;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import com.anrisoftware.globalpom.textposition.TextPosition;
 import com.anrisoftware.globalpom.threads.api.Threads;
 import com.anrisoftware.prefdialog.miscswing.actions.Actions;
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
@@ -309,6 +310,12 @@ public class MultiChartPanel implements ChartPanel {
     @Override
     public void setTextAlongsideIcons(boolean flag) {
         panel.setTextAlongsideIcons(flag);
+    }
+
+    @Override
+    @OnAwt
+    public void setTextPosition(TextPosition position) {
+        panel.setTextPosition(position);
     }
 
     @OnAwt
