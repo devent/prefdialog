@@ -1,6 +1,7 @@
 package com.anrisoftware.prefdialog.miscswing.multichart.chart;
 
 import java.awt.Component;
+import java.util.Map;
 
 import com.anrisoftware.globalpom.threads.api.Threads;
 import com.anrisoftware.resources.images.api.IconSize;
@@ -18,6 +19,18 @@ public interface ChartPanel {
     void setTexts(Texts texts);
 
     void setImages(Images images);
+
+    void addChart(Chart chart);
+
+    void removeChart(Chart chart);
+
+    /**
+     * Returns the charts in the panel.
+     * 
+     * @return the {@link Map} of {@link Chart} charts with the chart name as
+     *         the key.
+     */
+    Map<String, Chart> getCharts();
 
     /**
      * Sets the orientation of the chart.
@@ -72,10 +85,6 @@ public interface ChartPanel {
     void setShowShapes(boolean flag);
 
     boolean isShowShapes();
-
-    void addChart(Chart chart);
-
-    void removeChart(Chart chart);
 
     void setIconsOnly(boolean flag);
 
@@ -144,5 +153,4 @@ public interface ChartPanel {
      *            set to {@code true} to allow scrolling.
      */
     void setAllowMouseScroll(boolean flag);
-
 }

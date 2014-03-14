@@ -38,6 +38,12 @@ public interface Chart {
 
     Component getPanel();
 
+    /**
+     * Returns the chart. The return value must be casted to the specific chart
+     * type.
+     * 
+     * @return the {@link Object} chart.
+     */
     Object getChart();
 
     /**

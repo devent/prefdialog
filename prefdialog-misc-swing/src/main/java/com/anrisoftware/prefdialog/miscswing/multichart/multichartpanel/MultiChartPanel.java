@@ -9,6 +9,7 @@ import static com.anrisoftware.prefdialog.miscswing.multichart.chart.PlotOrienta
 import static info.clearthought.layout.TableLayoutConstants.FILL;
 import static java.lang.Math.max;
 import static java.lang.String.format;
+import static java.util.Collections.unmodifiableMap;
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Component;
@@ -294,35 +295,6 @@ public class MultiChartPanel implements ChartPanel {
 
     @OnAwt
     @Override
-    public void addChart(Chart chart) {
-        String name = chart.getName();
-        if (!chartsMap.containsKey(name)) {
-            chartsMap.put(name, chart);
-            charts.add(chart);
-            addChartPropertyChangeListeners(chart);
-            chartModel = chart.getModel();
-            addChartPanel(chart);
-            if (chartsMap.size() == 1) {
-                toolbarActions.setActionsEnabled(true);
-            }
-        }
-    }
-
-    @OnAwt
-    @Override
-    public void removeChart(Chart chart) {
-        if (chartsMap.remove(chart.getName()) != null) {
-            removeChartPanel(chart);
-            removeChartPropertyChangeListeners(chart);
-            if (chartsMap.size() == 0) {
-                toolbarActions.setActionsEnabled(false);
-                chartModel = null;
-            }
-        }
-    }
-
-    @OnAwt
-    @Override
     public void setIconsOnly(boolean flag) {
         panel.setIconsOnly(flag);
     }
@@ -351,6 +323,40 @@ public class MultiChartPanel implements ChartPanel {
         for (Chart chart : charts) {
             chart.setAllowMouseScroll(flag);
         }
+    }
+
+    @OnAwt
+    @Override
+    public void addChart(Chart chart) {
+        String name = chart.getName();
+        if (!chartsMap.containsKey(name)) {
+            chartsMap.put(name, chart);
+            charts.add(chart);
+            addChartPropertyChangeListeners(chart);
+            chartModel = chart.getModel();
+            addChartPanel(chart);
+            if (chartsMap.size() == 1) {
+                toolbarActions.setActionsEnabled(true);
+            }
+        }
+    }
+
+    @OnAwt
+    @Override
+    public void removeChart(Chart chart) {
+        if (chartsMap.remove(chart.getName()) != null) {
+            removeChartPanel(chart);
+            removeChartPropertyChangeListeners(chart);
+            if (chartsMap.size() == 0) {
+                toolbarActions.setActionsEnabled(false);
+                chartModel = null;
+            }
+        }
+    }
+
+    @Override
+    public Map<String, Chart> getCharts() {
+        return unmodifiableMap(chartsMap);
     }
 
     private void setupGraphsPanel(JPanel panel) {
