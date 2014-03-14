@@ -19,6 +19,8 @@ import javax.inject.Inject;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.NumberTickUnit;
 import org.jfree.chart.event.RendererChangeEvent;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
@@ -57,6 +59,9 @@ public class FreechartXYChart implements Chart {
     @Inject
     private PaletteFactory paletteFactory;
 
+    @Inject
+    private DefaultOffsetNumberTickUnitFactory tickUnitFactory;
+
     private PropertyChangeSupport p;
 
     private ChartModel model;
@@ -72,6 +77,8 @@ public class FreechartXYChart implements Chart {
     private boolean blackWhite;
 
     private MouseWheelListener mouseScrollListener;
+
+    private OffsetTickUnit domainTickUnit;
 
     /**
      * @see FreechartXYChartFactory#create(String, JFreeChart)
@@ -114,14 +121,19 @@ public class FreechartXYChart implements Chart {
     @Override
     public void setModel(ChartModel model) {
         ChartModel oldValue = this.model;
-        this.model = model;
         if (oldValue == model) {
             return;
         }
         if (oldValue != null) {
             oldValue.removeChartModelListener(modelListener);
         }
+        this.model = model;
+        this.domainTickUnit = tickUnitFactory
+                .create(model.getViewMaximum() / 10);
         model.addChartModelListener(modelListener);
+        XYPlot plot = (XYPlot) chart.getPlot();
+        NumberAxis domainAxis = (NumberAxis) plot.getDomainAxis();
+        domainAxis.setTickUnit((NumberTickUnit) domainTickUnit);
         setupNewModel();
         p.firePropertyChange(MODEL_PROPERTY.toString(), oldValue, model);
     }
@@ -277,6 +289,7 @@ public class FreechartXYChart implements Chart {
         int row1 = e.getLastRow();
         int offset = e.getOffset();
         log.chartChanged(this, e);
+        domainTickUnit.setOffset(model.getOffset());
         switch (e.getType()) {
         case INSERTED:
             updateInsertData(row0, row1, offset);

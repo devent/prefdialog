@@ -209,6 +209,7 @@ class MultiChartPanelTest {
         plot.setRangePannable(true);
         plot.setDomainZeroBaselineVisible(true);
         plot.setRangeZeroBaselineVisible(true);
+        plot.getRenderer().setBaseToolTipGenerator(null);
         ValueAxis rangeAxis = plot.getRangeAxis();
         rangeAxis.setAutoRange(true);
         return plot;
