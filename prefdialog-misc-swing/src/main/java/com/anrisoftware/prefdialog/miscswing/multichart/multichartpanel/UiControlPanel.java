@@ -18,9 +18,9 @@ import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 
+import com.anrisoftware.globalpom.textposition.TextPosition;
 import com.anrisoftware.prefdialog.miscswing.actions.AbstractMenuActions;
 import com.anrisoftware.prefdialog.miscswing.actions.MenuAction;
-import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 import com.anrisoftware.prefdialog.miscswing.multichart.toolbaractions.ToolbarActions;
 import com.anrisoftware.prefdialog.miscswing.resourcesaction.AbstractResourcesAction;
 import com.anrisoftware.prefdialog.miscswing.toolbarmenu.ToolbarMenu;
@@ -54,6 +54,7 @@ final class UiControlPanel extends JPanel {
     private final JPanel graphsPanel;
 
     private ToolbarMenu toolbarMenu;
+
     private final JButton autoZoomRangeButton;
 
     /**
@@ -161,22 +162,22 @@ final class UiControlPanel extends JPanel {
         toolbarMenu.addAction((AbstractResourcesAction) menuAction);
     }
 
-    @OnAwt
     public void setIconsOnly(boolean b) {
         toolbarMenu.setIconsOnly(b);
     }
 
-    @OnAwt
     public void setTextOnly(boolean b) {
         toolbarMenu.setTextOnly(b);
     }
 
-    @OnAwt
     public void setTextAlongsideIcons(boolean flag) {
         toolbarMenu.setTextAlongsideIcons(flag);
     }
 
-    @OnAwt
+    public void setTextPosition(TextPosition position) {
+        toolbarMenu.setTextPosition(position);
+    }
+
     public void setIconSize(IconSize size) {
         toolbarMenu.setIconSize(size);
     }
@@ -184,4 +185,5 @@ final class UiControlPanel extends JPanel {
     public JButton getAutoZoomRangeButton() {
         return autoZoomRangeButton;
     }
+
 }

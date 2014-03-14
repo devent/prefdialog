@@ -1,5 +1,6 @@
 package com.anrisoftware.prefdialog.miscswing.multichart.databeanmodel;
 
+import com.anrisoftware.prefdialog.miscswing.multichart.model.ChartModel;
 import com.google.inject.AbstractModule;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 
@@ -15,7 +16,7 @@ public class DataBeanModelModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        install(new FactoryModuleBuilder().implement(DataBeanChartModel.class,
+        install(new FactoryModuleBuilder().implement(ChartModel.class,
                 DataBeanChartModel.class)
                 .build(DataBeanChartModelFactory.class));
     }

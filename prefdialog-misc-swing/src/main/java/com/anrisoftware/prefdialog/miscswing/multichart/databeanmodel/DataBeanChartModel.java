@@ -19,7 +19,7 @@ import com.google.inject.assistedinject.AssistedInject;
  * @since 3.0
  */
 @SuppressWarnings("serial")
-public final class DataBeanChartModel extends AbstractChartModel {
+public class DataBeanChartModel extends AbstractChartModel {
 
     private final DataBean data;
 

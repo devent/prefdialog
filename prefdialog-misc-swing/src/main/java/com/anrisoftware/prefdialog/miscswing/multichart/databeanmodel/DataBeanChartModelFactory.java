@@ -1,6 +1,7 @@
 package com.anrisoftware.prefdialog.miscswing.multichart.databeanmodel;
 
 import com.anrisoftware.globalpom.data.DataBean;
+import com.anrisoftware.prefdialog.miscswing.multichart.model.ChartModel;
 import com.anrisoftware.prefdialog.miscswing.multichart.model.ColumnNames;
 
 /**
@@ -20,9 +21,9 @@ public interface DataBeanChartModelFactory {
      * @param columnNames
      *            the column names.
      * 
-     * @return the {@link DataBeanChartModel}.
+     * @return the {@link ChartModel}.
      */
-    DataBeanChartModel create(DataBean data, String[] columnNames);
+    ChartModel create(DataBean data, String[] columnNames);
 
     /**
      * Creates the chart model for the data.
@@ -33,7 +34,7 @@ public interface DataBeanChartModelFactory {
      * @param columnNames
      *            the column names {@link ColumnNames}.
      * 
-     * @return the {@link DataBeanChartModel}.
+     * @return the {@link ChartModel}.
      */
-    DataBeanChartModel create(DataBean data, ColumnNames columnNames);
+    ChartModel create(DataBean data, ColumnNames columnNames);
 }
