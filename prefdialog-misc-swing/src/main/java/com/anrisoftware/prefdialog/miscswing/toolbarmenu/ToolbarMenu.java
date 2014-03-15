@@ -18,8 +18,16 @@
  */
 package com.anrisoftware.prefdialog.miscswing.toolbarmenu;
 
+import static com.anrisoftware.globalpom.textposition.TextPosition.ICON_ONLY;
+import static com.anrisoftware.globalpom.textposition.TextPosition.TEXT_ALONGSIDE_ICON;
+import static com.anrisoftware.globalpom.textposition.TextPosition.TEXT_ONLY;
+import static com.anrisoftware.prefdialog.miscswing.toolbarmenu.ToolbarMenuProperty.ICON_SIZE_PROPERTY;
+import static com.anrisoftware.prefdialog.miscswing.toolbarmenu.ToolbarMenuProperty.TEXT_POSITION_PROPERTY;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -87,12 +95,21 @@ public class ToolbarMenu {
 
     private final Map<String, AbstractResourcesAction> menuActions;
 
+    private final PropertyChangeSupport p;
+
     @Inject
     private UiMenu menu;
 
+    private TextPosition textPosition;
+
+    private IconSize iconSize;
+
     ToolbarMenu() {
+        this.p = new PropertyChangeSupport(this);
         this.menuActions = new HashMap<String, AbstractResourcesAction>();
         this.actions = new ArrayList<AbstractResourcesAction>();
+        this.textPosition = TextPosition.TEXT_ALONGSIDE_ICON;
+        this.iconSize = IconSize.SMALL;
         this.mouseListener = new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -252,7 +269,10 @@ public class ToolbarMenu {
         for (AbstractResourcesAction action : actions) {
             action.setShowText(!b);
         }
-        menu.getIconsOnlyMenu().setSelected(b);
+        if (b) {
+            menu.getIconsOnlyMenu().setSelected(b);
+            updateTextPosition(ICON_ONLY);
+        }
     }
 
     /**
@@ -270,7 +290,10 @@ public class ToolbarMenu {
         for (AbstractResourcesAction action : actions) {
             action.setShowLargeIcon(!b);
         }
-        menu.getTextOnlyMenu().setSelected(b);
+        if (b) {
+            updateTextPosition(TEXT_ONLY);
+            menu.getTextOnlyMenu().setSelected(b);
+        }
     }
 
     /**
@@ -289,7 +312,10 @@ public class ToolbarMenu {
             action.setShowText(b);
             action.setShowLargeIcon(b);
         }
-        menu.getTextAlongsideIconsMenu().setSelected(b);
+        if (b) {
+            updateTextPosition(TEXT_ALONGSIDE_ICON);
+            menu.getTextAlongsideIconsMenu().setSelected(b);
+        }
     }
 
     /**
@@ -304,6 +330,7 @@ public class ToolbarMenu {
      */
     @OnAwt
     public void setTextPosition(TextPosition position) {
+        this.textPosition = position;
         switch (position) {
         case ICON_ONLY:
             setIconsOnly(true);
@@ -316,6 +343,15 @@ public class ToolbarMenu {
             break;
         default:
         }
+    }
+
+    /**
+     * Returns the text position of the actions.
+     * 
+     * @return the {@link TextPosition}.
+     */
+    public TextPosition getTextPosition() {
+        return textPosition;
     }
 
     /**
@@ -348,12 +384,67 @@ public class ToolbarMenu {
             menu.getSmallMenu().setSelected(true);
             break;
         }
+        IconSize oldValue = this.iconSize;
+        this.iconSize = size;
+        p.firePropertyChange(ICON_SIZE_PROPERTY.toString(), oldValue, size);
+    }
+
+    /**
+     * Returns the icon size of the actions.
+     * 
+     * @return the {@link IconSize}.
+     */
+    public IconSize getIconSize() {
+        return iconSize;
+    }
+
+    /**
+     * @see PropertyChangeSupport#addPropertyChangeListener(PropertyChangeListener)
+     * @see ToolbarMenuProperty
+     */
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        p.addPropertyChangeListener(listener);
+    }
+
+    /**
+     * @see PropertyChangeSupport#removePropertyChangeListener(PropertyChangeListener)
+     * @see ToolbarMenuProperty
+     */
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        p.removePropertyChangeListener(listener);
+    }
+
+    /**
+     * @see PropertyChangeSupport#addPropertyChangeListener(String,
+     *      PropertyChangeListener)
+     * @see ToolbarMenuProperty
+     */
+    public void addPropertyChangeListener(ToolbarMenuProperty property,
+            PropertyChangeListener listener) {
+        p.addPropertyChangeListener(property.toString(), listener);
+    }
+
+    /**
+     * @see PropertyChangeSupport#removePropertyChangeListener(String,
+     *      PropertyChangeListener)
+     * @see ToolbarMenuProperty
+     */
+    public void removePropertyChangeListener(ToolbarMenuProperty property,
+            PropertyChangeListener listener) {
+        p.removePropertyChangeListener(property.toString(), listener);
     }
 
     private void maybeShowPopup(MouseEvent e) {
         if (e.isPopupTrigger()) {
             menu.show(e.getComponent(), e.getX(), e.getY());
         }
+    }
+
+    private void updateTextPosition(TextPosition position) {
+        TextPosition oldValue = this.textPosition;
+        this.textPosition = position;
+        p.firePropertyChange(TEXT_POSITION_PROPERTY.toString(), oldValue,
+                position);
     }
 
 }

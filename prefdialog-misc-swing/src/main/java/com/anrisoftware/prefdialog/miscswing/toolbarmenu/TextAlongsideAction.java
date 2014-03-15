@@ -49,6 +49,7 @@ class TextAlongsideAction extends AbstractResourcesAction {
 	public void actionPerformed(ActionEvent e) {
 		toolbar.setIconsOnly(false);
 		toolbar.setTextOnly(false);
+        toolbar.setTextAlongsideIcons(true);
 	}
 
 }

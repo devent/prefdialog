@@ -38,6 +38,7 @@ import com.anrisoftware.prefdialog.miscswing.multichart.chart.ChartPanel;
 import com.anrisoftware.prefdialog.miscswing.multichart.chart.PlotOrientation;
 import com.anrisoftware.prefdialog.miscswing.multichart.model.ChartModel;
 import com.anrisoftware.prefdialog.miscswing.multichart.toolbaractions.ToolbarActions;
+import com.anrisoftware.prefdialog.miscswing.toolbarmenu.ToolbarMenuProperty;
 import com.anrisoftware.resources.images.api.IconSize;
 import com.anrisoftware.resources.images.api.Images;
 import com.anrisoftware.resources.texts.api.Texts;
@@ -294,34 +295,26 @@ public class MultiChartPanel implements ChartPanel {
         }
     }
 
-    @OnAwt
-    @Override
-    public void setIconsOnly(boolean flag) {
-        panel.setIconsOnly(flag);
-    }
-
-    @OnAwt
-    @Override
-    public void setTextOnly(boolean flag) {
-        panel.setTextOnly(flag);
-    }
-
-    @OnAwt
-    @Override
-    public void setTextAlongsideIcons(boolean flag) {
-        panel.setTextAlongsideIcons(flag);
-    }
-
     @Override
     @OnAwt
     public void setTextPosition(TextPosition position) {
-        panel.setTextPosition(position);
+        panel.getToolbarMenu().setTextPosition(position);
+    }
+
+    @Override
+    public TextPosition getTextPosition() {
+        return panel.getToolbarMenu().getTextPosition();
     }
 
     @OnAwt
     @Override
     public void setIconSize(IconSize size) {
-        panel.setIconSize(size);
+        panel.getToolbarMenu().setIconSize(size);
+    }
+
+    @Override
+    public IconSize getIconSize() {
+        return panel.getToolbarMenu().getIconSize();
     }
 
     @OnAwt
@@ -364,6 +357,18 @@ public class MultiChartPanel implements ChartPanel {
     @Override
     public Map<String, Chart> getCharts() {
         return unmodifiableMap(chartsMap);
+    }
+
+    @Override
+    public void addPropertyChangeListener(ToolbarMenuProperty property,
+            PropertyChangeListener listener) {
+        panel.getToolbarMenu().addPropertyChangeListener(property, listener);
+    }
+
+    @Override
+    public void removePropertyChangeListener(ToolbarMenuProperty property,
+            PropertyChangeListener listener) {
+        panel.getToolbarMenu().removePropertyChangeListener(property, listener);
     }
 
     private void setupGraphsPanel(JPanel panel) {

@@ -18,13 +18,11 @@ import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 
-import com.anrisoftware.globalpom.textposition.TextPosition;
 import com.anrisoftware.prefdialog.miscswing.actions.AbstractMenuActions;
 import com.anrisoftware.prefdialog.miscswing.actions.MenuAction;
 import com.anrisoftware.prefdialog.miscswing.multichart.toolbaractions.ToolbarActions;
 import com.anrisoftware.prefdialog.miscswing.resourcesaction.AbstractResourcesAction;
 import com.anrisoftware.prefdialog.miscswing.toolbarmenu.ToolbarMenu;
-import com.anrisoftware.resources.images.api.IconSize;
 
 /**
  * Panel containing the forecast data graph.
@@ -160,26 +158,6 @@ final class UiControlPanel extends JPanel {
         MenuAction menuAction = actions.getActions().get(name);
         button.setAction((Action) menuAction);
         toolbarMenu.addAction((AbstractResourcesAction) menuAction);
-    }
-
-    public void setIconsOnly(boolean b) {
-        toolbarMenu.setIconsOnly(b);
-    }
-
-    public void setTextOnly(boolean b) {
-        toolbarMenu.setTextOnly(b);
-    }
-
-    public void setTextAlongsideIcons(boolean flag) {
-        toolbarMenu.setTextAlongsideIcons(flag);
-    }
-
-    public void setTextPosition(TextPosition position) {
-        toolbarMenu.setTextPosition(position);
-    }
-
-    public void setIconSize(IconSize size) {
-        toolbarMenu.setIconSize(size);
     }
 
     public JButton getAutoZoomRangeButton() {
