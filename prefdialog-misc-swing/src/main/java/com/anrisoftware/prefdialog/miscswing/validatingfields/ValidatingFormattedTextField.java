@@ -45,197 +45,197 @@ import com.anrisoftware.prefdialog.miscswing.tooltip.ToolTipShower;
 @SuppressWarnings("serial")
 public class ValidatingFormattedTextField extends JFormattedTextField {
 
-	private InputVerifier verifier;
+    private InputVerifier verifier;
 
-	private ActionListener validateAction;
+    private ActionListener validateAction;
 
-	private InputVerifier parentVerifier;
+    private InputVerifier parentVerifier;
 
-	private ValidatingComponent validating;
+    private ValidatingComponent validating;
 
-	/**
-	 * @see JFormattedTextField#JFormattedTextField()
-	 */
-	public ValidatingFormattedTextField() {
-		super();
-		setupField();
-	}
+    /**
+     * @see JFormattedTextField#JFormattedTextField()
+     */
+    public ValidatingFormattedTextField() {
+        super();
+        setupField();
+    }
 
-	/**
-	 * @see JFormattedTextField#JFormattedTextField(AbstractFormatter)
-	 */
-	public ValidatingFormattedTextField(AbstractFormatter formatter) {
-		super(formatter);
-		setupField();
-	}
+    /**
+     * @see JFormattedTextField#JFormattedTextField(AbstractFormatter)
+     */
+    public ValidatingFormattedTextField(AbstractFormatter formatter) {
+        super(formatter);
+        setupField();
+    }
 
-	/**
-	 * @see JFormattedTextField#JFormattedTextField(AbstractFormatterFactory,
-	 *      Object)
-	 */
-	public ValidatingFormattedTextField(AbstractFormatterFactory factory,
-			Object currentValue) {
-		super(factory, currentValue);
-		setupField();
-	}
+    /**
+     * @see JFormattedTextField#JFormattedTextField(AbstractFormatterFactory,
+     *      Object)
+     */
+    public ValidatingFormattedTextField(AbstractFormatterFactory factory,
+            Object currentValue) {
+        super(factory, currentValue);
+        setupField();
+    }
 
-	/**
-	 * @see JFormattedTextField#JFormattedTextField(AbstractFormatterFactory)
-	 */
-	public ValidatingFormattedTextField(AbstractFormatterFactory factory) {
-		super(factory);
-		setupField();
-	}
+    /**
+     * @see JFormattedTextField#JFormattedTextField(AbstractFormatterFactory)
+     */
+    public ValidatingFormattedTextField(AbstractFormatterFactory factory) {
+        super(factory);
+        setupField();
+    }
 
-	/**
-	 * @see JFormattedTextField#JFormattedTextField(Format)
-	 */
-	public ValidatingFormattedTextField(Format format) {
-		super(format);
-		setupField();
-	}
+    /**
+     * @see JFormattedTextField#JFormattedTextField(Format)
+     */
+    public ValidatingFormattedTextField(Format format) {
+        super(format);
+        setupField();
+    }
 
-	/**
-	 * @see JFormattedTextField#JFormattedTextField(Object)
-	 */
-	public ValidatingFormattedTextField(Object value) {
-		super(value);
-		setupField();
-	}
+    /**
+     * @see JFormattedTextField#JFormattedTextField(Object)
+     */
+    public ValidatingFormattedTextField(Object value) {
+        super(value);
+        setupField();
+    }
 
-	private void setupField() {
-		this.validating = new ValidatingComponent(this, new ToolTipShower(this));
-		this.parentVerifier = new InputVerifier() {
+    private void setupField() {
+        this.validating = new ValidatingComponent(this, new ToolTipShower(this));
+        this.parentVerifier = new InputVerifier() {
 
-			@Override
-			public boolean verify(JComponent input) {
-				return validating.isValid();
-			}
-		};
-		this.verifier = new InputVerifier() {
+            @Override
+            public boolean verify(JComponent input) {
+                return validating.isValid();
+            }
+        };
+        this.verifier = new InputVerifier() {
 
-			@Override
-			public boolean verify(JComponent input) {
-				JFormattedTextField field = ValidatingFormattedTextField.this;
-				boolean valid = verifyField(parentVerifier, field);
-				setValidInAWT(valid);
-				return valid;
-			}
+            @Override
+            public boolean verify(JComponent input) {
+                JFormattedTextField field = ValidatingFormattedTextField.this;
+                boolean valid = verifyField(parentVerifier, field);
+                setValidInAWT(valid);
+                return valid;
+            }
 
-		};
-		this.validateAction = new ActionListener() {
+        };
+        this.validateAction = new ActionListener() {
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				verifyField();
-			}
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                verifyField();
+            }
 
-		};
-		setInputVerifier(verifier);
-		addActionListener(validateAction);
-	}
+        };
+        setInputVerifier(verifier);
+        addActionListener(validateAction);
+    }
 
-	/**
-	 * Verify the field from an external event.
-	 */
-	protected void verifyField() {
-		verifier.shouldYieldFocus(this);
-	}
+    /**
+     * Verify the field from an external event.
+     */
+    protected void verifyField() {
+        verifier.shouldYieldFocus(this);
+    }
 
-	/**
-	 * Verifies the field.
-	 * 
-	 * @param verifier
-	 *            the {@link InputVerifier} that verifiers the input.
-	 * 
-	 * @param input
-	 *            the {@link JTextFormattedField}.
-	 * 
-	 * @return {@code true} if the input is valid and the focus can be yield.
-	 */
-	protected boolean verifyField(InputVerifier verifier,
-			JFormattedTextField input) {
-		try {
-			input.commitEdit();
-			return verifier.verify(input);
-		} catch (ParseException e) {
-			return false;
-		}
-	}
+    /**
+     * Verifies the field.
+     * 
+     * @param verifier
+     *            the {@link InputVerifier} that verifiers the input.
+     * 
+     * @param input
+     *            the {@link JTextFormattedField}.
+     * 
+     * @return {@code true} if the input is valid and the focus can be yield.
+     */
+    protected boolean verifyField(InputVerifier verifier,
+            JFormattedTextField input) {
+        try {
+            input.commitEdit();
+            return verifier.verify(input);
+        } catch (ParseException e) {
+            return false;
+        }
+    }
 
-	private void setValidInAWT(final boolean valid) {
-		invokeLater(new Runnable() {
+    private void setValidInAWT(final boolean valid) {
+        invokeLater(new Runnable() {
 
-			@Override
-			public void run() {
-				setInputValid(valid);
-			}
-		});
-	}
+            @Override
+            public void run() {
+                setInputValid(valid);
+            }
+        });
+    }
 
-	/**
-	 * Sets the input verifier that validated the input.
-	 * 
-	 * @param verifier
-	 *            the {@link InputVerifier}.
-	 */
-	public void setVerifier(InputVerifier verifier) {
-		this.parentVerifier = verifier;
-	}
+    /**
+     * Sets the input verifier that validated the input.
+     * 
+     * @param verifier
+     *            the {@link InputVerifier}.
+     */
+    public void setVerifier(InputVerifier verifier) {
+        this.parentVerifier = verifier;
+    }
 
-	/**
-	 * Returns the input verifier that validated the input.
-	 * 
-	 * @return the {@link InputVerifier}.
-	 */
-	public InputVerifier getVerifier() {
-		return parentVerifier;
-	}
+    /**
+     * Returns the input verifier that validated the input.
+     * 
+     * @return the {@link InputVerifier}.
+     */
+    public InputVerifier getVerifier() {
+        return parentVerifier;
+    }
 
-	/**
-	 * @see ValidatingComponent#setInvalidBackground(Color)
-	 */
-	public void setInvalidBackground(Color color) {
-		validating.setInvalidBackground(color);
-	}
+    /**
+     * @see ValidatingComponent#setInvalidBackground(Color)
+     */
+    public void setInvalidBackground(Color color) {
+        validating.setInvalidBackground(color);
+    }
 
-	/**
-	 * @see ValidatingComponent#getInvalidBackground()
-	 */
-	public Color getInvalidBackground() {
-		return validating.getInvalidBackground();
-	}
+    /**
+     * @see ValidatingComponent#getInvalidBackground()
+     */
+    public Color getInvalidBackground() {
+        return validating.getInvalidBackground();
+    }
 
-	/**
-	 * @see ValidatingComponent#setValid(boolean)
-	 */
-	public void setInputValid(boolean valid) {
-		validating.setValid(valid);
-	}
+    /**
+     * @see ValidatingComponent#setValid(boolean)
+     */
+    public void setInputValid(boolean valid) {
+        validating.setValid(valid);
+    }
 
-	/**
-	 * @see ValidatingComponent#isValid()
-	 */
-	public boolean isInputValid() {
-		return validating.isValid();
-	}
+    /**
+     * @see ValidatingComponent#isValid()
+     */
+    public boolean isInputValid() {
+        return validating.isValid();
+    }
 
-	/**
-	 * @see ValidatingComponent#setInvalidText(String)
-	 */
-	public void setInvalidText(String text) {
-		validating.setInvalidText(text);
-	}
+    /**
+     * @see ValidatingComponent#setInvalidText(String)
+     */
+    public void setInvalidText(String text) {
+        validating.setInvalidText(text);
+    }
 
-	@Override
-	public void paint(Graphics g) {
-		super.paint(g);
-		validating.paint(g);
-	}
+    @Override
+    public void paint(Graphics g) {
+        super.paint(g);
+        validating.paint(g);
+    }
 
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this).appendSuper(super.toString())
-				.toString();
-	}
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).appendSuper(super.toString())
+                .toString();
+    }
 }

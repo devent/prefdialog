@@ -20,6 +20,8 @@ package com.anrisoftware.prefdialog.fields.formattedtextfield;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.beans.PropertyVetoException;
 import java.lang.annotation.Annotation;
 
@@ -41,88 +43,105 @@ import com.google.inject.assistedinject.Assisted;
 @SuppressWarnings("serial")
 public class FormattedTextField extends AbstractTitleField<JFormattedTextField> {
 
-	private static final String EDITABLE_ELEMENT = "editable";
+    private static final String EDITABLE_ELEMENT = "editable";
 
-	private static final Class<? extends Annotation> ANNOTATION_CLASS = com.anrisoftware.prefdialog.annotations.FormattedTextField.class;
+    private static final Class<? extends Annotation> ANNOTATION_CLASS = com.anrisoftware.prefdialog.annotations.FormattedTextField.class;
 
-	private final FormattedTextFieldLogger log;
+    private final FormattedTextFieldLogger log;
 
-	private final ValidatingFormattedTextField validating;
+    private final ValidatingFormattedTextField validating;
 
-	private final ActionListener textAction;
+    private final ActionListener textAction;
 
-	private AnnotationAccess fieldAnnotation;
+    private final FocusListener focusListener;
 
-	/**
-	 * @see FormattedTextFieldFactory#create(Object, String)
-	 */
-	@Inject
-	FormattedTextField(FormattedTextFieldLogger logger,
-			@Assisted Object parentObject, @Assisted String fieldName) {
-		super(new ValidatingFormattedTextField(), parentObject, fieldName);
-		this.log = logger;
-		this.validating = (ValidatingFormattedTextField) getComponent();
-		this.textAction = new ActionListener() {
+    private AnnotationAccess fieldAnnotation;
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try {
-					setValue(getComponent().getValue());
-				} catch (PropertyVetoException e1) {
-				}
-			}
-		};
-	}
+    /**
+     * @see FormattedTextFieldFactory#create(Object, String)
+     */
+    @Inject
+    FormattedTextField(FormattedTextFieldLogger logger,
+            @Assisted Object parentObject, @Assisted String fieldName) {
+        super(new ValidatingFormattedTextField(), parentObject, fieldName);
+        this.log = logger;
+        this.validating = (ValidatingFormattedTextField) getComponent();
+        this.textAction = new ActionListener() {
 
-	@Inject
-	void setupFormattedTextField(AnnotationAccessFactory annotationAccessFactory) {
-		this.fieldAnnotation = annotationAccessFactory.create(ANNOTATION_CLASS,
-				getAccessibleObject());
-		setupEditable();
-		setupTextField();
-	}
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    setValue(getComponent().getValue());
+                } catch (PropertyVetoException e1) {
+                }
+            }
+        };
+        this.focusListener = new FocusListener() {
 
-	private void setupTextField() {
-		getComponent().addActionListener(textAction);
-	}
+            @Override
+            public void focusLost(FocusEvent e) {
+                try {
+                    setValue(getComponent().getValue());
+                } catch (PropertyVetoException e1) {
+                }
+            }
 
-	private void setupEditable() {
-		boolean editable = fieldAnnotation.getValue(EDITABLE_ELEMENT);
-		setEditable(editable);
-	}
+            @Override
+            public void focusGained(FocusEvent e) {
+            }
+        };
+    }
 
-	@Override
-	public void setValue(Object value) throws PropertyVetoException {
-		try {
-			super.setValue(value);
-			validating.setInputValid(true);
-			getComponent().setValue(value);
-		} catch (PropertyVetoException e) {
-			validating.setInputValid(false);
-			throw e;
-		}
-	}
+    @Inject
+    void setupFormattedTextField(AnnotationAccessFactory annotationAccessFactory) {
+        this.fieldAnnotation = annotationAccessFactory.create(ANNOTATION_CLASS,
+                getAccessibleObject());
+        setupEditable();
+        setupTextField();
+    }
 
-	/**
-	 * Sets if the field should be editable.
-	 * 
-	 * @param editable
-	 *            {@code true} if the text field should be editable or
-	 *            {@code false} if not.
-	 */
-	public void setEditable(boolean editable) {
-		getComponent().setEditable(editable);
-		log.editableSet(this, editable);
-	}
+    private void setupTextField() {
+        getComponent().addActionListener(textAction);
+        getComponent().addFocusListener(focusListener);
+    }
 
-	/**
-	 * Returns if the field should is editable.
-	 * 
-	 * @return {@code true} if the text field is editable or {@code false} if
-	 *         not.
-	 */
-	public boolean isEditable() {
-		return getComponent().isEditable();
-	}
+    private void setupEditable() {
+        boolean editable = fieldAnnotation.getValue(EDITABLE_ELEMENT);
+        setEditable(editable);
+    }
+
+    @Override
+    public void setValue(Object value) throws PropertyVetoException {
+        try {
+            super.setValue(value);
+            validating.setInputValid(true);
+            getComponent().setValue(value);
+        } catch (PropertyVetoException e) {
+            validating.setInputValid(false);
+            throw e;
+        }
+    }
+
+    /**
+     * Sets if the field should be editable.
+     * 
+     * @param editable
+     *            {@code true} if the text field should be editable or
+     *            {@code false} if not.
+     */
+    public void setEditable(boolean editable) {
+        getComponent().setEditable(editable);
+        log.editableSet(this, editable);
+    }
+
+    /**
+     * Returns if the field should is editable.
+     * 
+     * @return {@code true} if the text field is editable or {@code false} if
+     *         not.
+     */
+    public boolean isEditable() {
+        return getComponent().isEditable();
+    }
 
 }
