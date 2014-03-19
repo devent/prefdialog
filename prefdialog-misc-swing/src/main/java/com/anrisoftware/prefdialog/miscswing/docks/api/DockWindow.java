@@ -20,6 +20,8 @@ package com.anrisoftware.prefdialog.miscswing.docks.api;
 
 import java.awt.Component;
 
+import javax.swing.event.ChangeListener;
+
 /**
  * Child window that is docked.
  * 
@@ -110,4 +112,43 @@ public interface DockWindow {
      * @return the {@link Object} dockable.
      */
     Object getDockable();
+
+    /**
+     * Returns that the dock window is visible.
+     * 
+     * <h1>State Changed Listener</h1>
+     * <p>
+     * The state change listener is informed of the visible state change.
+     * 
+     * @return {@code true} if the dock window is visible.
+     */
+    boolean isVisible();
+
+    /**
+     * Returns that the dock window have the focus.
+     * 
+     * <h1>State Changed Listener</h1>
+     * <p>
+     * The state change listener is informed of the focus state change.
+     * 
+     * @return {@code true} if the dock window have the focus.
+     */
+    boolean isFocus();
+
+    /**
+     * Adds the specified state changed listener.
+     * 
+     * @param listener
+     *            the {@link ChangeListener}.
+     */
+    void addStateChangedListener(ChangeListener listener);
+
+    /**
+     * Removes the specified state changed listener.
+     * 
+     * @param listener
+     *            the {@link ChangeListener}.
+     */
+    void removeStateChangedListener(ChangeListener listener);
+
 }

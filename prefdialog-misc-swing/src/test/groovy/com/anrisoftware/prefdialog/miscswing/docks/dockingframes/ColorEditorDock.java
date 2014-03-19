@@ -23,10 +23,8 @@ import java.awt.Component;
 
 import javax.swing.JPanel;
 
-import bibliothek.gui.dock.common.MultipleCDockable;
-
 import com.anrisoftware.prefdialog.miscswing.docks.api.DockPosition;
-import com.anrisoftware.prefdialog.miscswing.docks.api.EditorDockWindow;
+import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.dock.AbstractEditorDockWindow;
 
 /**
  * Color editor dock.
@@ -34,17 +32,14 @@ import com.anrisoftware.prefdialog.miscswing.docks.api.EditorDockWindow;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
  */
-public class ColorEditorDock implements EditorDockWindow {
+@SuppressWarnings("serial")
+public class ColorEditorDock extends AbstractEditorDockWindow {
 
     private String id;
-
-    private String title;
 
     private DockPosition position;
 
     private Color color;
-
-    private MultipleCDockable dockable;
 
     public ColorEditorDock() {
     }
@@ -52,29 +47,14 @@ public class ColorEditorDock implements EditorDockWindow {
     public ColorEditorDock(String id, String title, DockPosition position,
             Color color) {
         this.id = id;
-        this.title = title;
         this.position = position;
         this.color = color;
-    }
-
-    @Override
-    public void setDockable(Object dockable) {
-        this.dockable = (MultipleCDockable) dockable;
-    }
-
-    @Override
-    public Object getDockable() {
-        return dockable;
+        setTitle(title);
     }
 
     @Override
     public String getId() {
         return id;
-    }
-
-    @Override
-    public String getTitle() {
-        return title;
     }
 
     @Override

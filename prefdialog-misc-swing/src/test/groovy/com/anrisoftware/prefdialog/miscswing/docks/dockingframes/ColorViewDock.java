@@ -23,10 +23,8 @@ import java.awt.Component;
 
 import javax.swing.JPanel;
 
-import bibliothek.gui.dock.common.SingleCDockable;
-
 import com.anrisoftware.prefdialog.miscswing.docks.api.DockPosition;
-import com.anrisoftware.prefdialog.miscswing.docks.api.ViewDockWindow;
+import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.dock.AbstractViewDockWindow;
 
 /**
  * Color view dock.
@@ -34,17 +32,14 @@ import com.anrisoftware.prefdialog.miscswing.docks.api.ViewDockWindow;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
  */
-public class ColorViewDock implements ViewDockWindow {
+@SuppressWarnings("serial")
+public class ColorViewDock extends AbstractViewDockWindow {
 
     private String id;
-
-    private String title;
 
     private DockPosition position;
 
     private Color color;
-
-    private SingleCDockable dockable;
 
     public ColorViewDock() {
     }
@@ -52,29 +47,14 @@ public class ColorViewDock implements ViewDockWindow {
     public ColorViewDock(String id, String title, DockPosition position,
             Color color) {
         this.id = id;
-        this.title = title;
         this.position = position;
         this.color = color;
-    }
-
-    @Override
-    public void setDockable(Object dockable) {
-        this.dockable = (SingleCDockable) dockable;
-    }
-
-    @Override
-    public Object getDockable() {
-        return dockable;
+        setTitle(title);
     }
 
     @Override
     public String getId() {
         return id;
-    }
-
-    @Override
-    public String getTitle() {
-        return title;
     }
 
     @Override

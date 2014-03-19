@@ -23,11 +23,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import bibliothek.gui.dock.common.SingleCDockable;
-
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 import com.anrisoftware.prefdialog.miscswing.docks.api.DockPosition;
-import com.anrisoftware.prefdialog.miscswing.docks.api.ViewDockWindow;
+import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.dock.AbstractViewDockWindow;
 import com.anrisoftware.prefdialog.miscswing.problemspane.CategoryNode;
 import com.anrisoftware.prefdialog.miscswing.problemspane.MessageNode;
 import com.anrisoftware.prefdialog.miscswing.problemspane.ProblemsPane;
@@ -41,13 +39,10 @@ import com.anrisoftware.resources.texts.api.Texts;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-public class ProblemsDock implements ViewDockWindow {
+@SuppressWarnings("serial")
+public class ProblemsDock extends AbstractViewDockWindow {
 
     private final ProblemsPane pane;
-
-    private String title;
-
-    private SingleCDockable dockable;
 
     @Inject
     @OnAwt
@@ -56,27 +51,8 @@ public class ProblemsDock implements ViewDockWindow {
     }
 
     @Override
-    public void setDockable(Object dockable) {
-        this.dockable = (SingleCDockable) dockable;
-    }
-
-    @Override
-    public Object getDockable() {
-        return dockable;
-    }
-
-    @Override
     public String getId() {
         return "problems-dock";
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    @Override
-    public String getTitle() {
-        return title;
     }
 
     @OnAwt

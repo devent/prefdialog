@@ -68,7 +68,7 @@ class DocksStorageTest extends DocksTestBase {
         { Thread.sleep 3*1000 })
     }
 
-    @Test
+    //@Test
     void "manually store and load layout"() {
         File tmp = File.createTempFile("docks-storane", null)
         tmp.deleteOnExit()
