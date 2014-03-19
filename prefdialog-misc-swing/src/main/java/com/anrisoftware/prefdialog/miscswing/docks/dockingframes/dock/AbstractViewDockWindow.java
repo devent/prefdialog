@@ -44,7 +44,7 @@ public abstract class AbstractViewDockWindow implements ViewDockWindow,
         readResolve();
     }
 
-    public final Object readResolve() {
+    private Object readResolve() {
         this.changeSupport = new EventListenerSupport<ChangeListener>(
                 ChangeListener.class);
         this.stateListener = new CDockableStateListener() {
@@ -119,13 +119,20 @@ public abstract class AbstractViewDockWindow implements ViewDockWindow,
         return new ToStringBuilder(this).append(title).toString();
     }
 
+    /**
+     * Fire state changed.
+     */
+    protected void fireStateChanged() {
+        changeSupport.fire().stateChanged(new ChangeEvent(this));
+    }
+
     private void updateVisible(boolean visible) {
         this.visible = visible;
-        changeSupport.fire().stateChanged(new ChangeEvent(this));
+        fireStateChanged();
     }
 
     private void updateFocus(boolean focus) {
         this.focus = focus;
-        changeSupport.fire().stateChanged(new ChangeEvent(this));
+        fireStateChanged();
     }
 }

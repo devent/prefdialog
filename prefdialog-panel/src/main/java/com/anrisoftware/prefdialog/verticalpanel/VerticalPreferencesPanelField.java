@@ -1,18 +1,18 @@
 /*
  * Copyright 2012-2013 Erwin Müller <erwin.mueller@deventm.org>
- * 
+ *
  * This file is part of prefdialog-panel.
- * 
+ *
  * prefdialog-panel is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
  * Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- * 
+ *
  * prefdialog-panel is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-panel. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -27,6 +27,7 @@ import info.clearthought.layout.TableLayout;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Container;
 import java.beans.PropertyVetoException;
 import java.lang.reflect.AccessibleObject;
 import java.util.Collection;
@@ -62,196 +63,221 @@ import com.google.inject.assistedinject.AssistedInject;
  */
 @SuppressWarnings("serial")
 public class VerticalPreferencesPanelField extends
-		AbstractFieldComponent<JPanel> {
+        AbstractFieldComponent<JPanel> {
 
-	/**
-	 * Suffix for the children panel that contains the children preference
-	 * panel. The name of the panel will be {@code <name>-childrenPanel},
-	 * {@code <name>} is the name of the field.
-	 */
-	public static final String CHILDREN_PANEL_SUFFIX = "childrenPanel";
+    /**
+     * Suffix for the children panel that contains the children preference
+     * panel. The name of the panel will be {@code <name>-childrenPanel},
+     * {@code <name>} is the name of the field.
+     */
+    public static final String CHILDREN_PANEL_SUFFIX = "childrenPanel";
 
-	private final VerticalPreferencesPanelFieldLogger log;
+    private final VerticalPreferencesPanelFieldLogger log;
 
-	private final TableLayout layout;
+    private final TableLayout layout;
 
-	private final JScrollPane scrollPane;
+    private final JScrollPane scrollPane;
 
-	private final JPanel childenPanel;
+    private final JPanel childenPanel;
 
-	private transient BeanField beanField;
+    private transient BeanField beanField;
 
-	private transient AnnotationDiscoveryFactory discoveryFactory;
+    private transient AnnotationDiscoveryFactory discoveryFactory;
 
-	private transient AnnotationSetFilterFactory filterFactory;
+    private transient AnnotationSetFilterFactory filterFactory;
 
-	private transient FieldService preferencesPanelService;
+    private transient FieldService preferencesPanelService;
 
-	/**
-	 * @see VerticalPreferencesPanelFieldFactory#create(Object, String,
-	 *      Object...)
-	 */
-	@AssistedInject
-	VerticalPreferencesPanelField(VerticalPreferencesPanelFieldLogger logger,
-			@Assisted Object parentObject, @Assisted String fieldName) {
-		super(new JPanel(), parentObject, fieldName);
-		this.log = logger;
-		this.layout = createLayout();
-		this.childenPanel = new JPanel(layout);
-		this.scrollPane = new JScrollPane();
-		setupPanel();
-		setupScrollPane();
-	}
+    private boolean enabled;
 
-	private TableLayout createLayout() {
-		double[] col = { FILL };
-		double[] row = { FILL };
-		TableLayout layout = new TableLayout(col, row);
-		layout.setVGap(10);
-		return layout;
-	}
+    /**
+     * @see VerticalPreferencesPanelFieldFactory#create(Object, String,
+     *      Object...)
+     */
+    @AssistedInject
+    VerticalPreferencesPanelField(VerticalPreferencesPanelFieldLogger logger,
+            @Assisted Object parentObject, @Assisted String fieldName) {
+        super(new JPanel(), parentObject, fieldName);
+        this.log = logger;
+        this.enabled = true;
+        this.layout = createLayout();
+        this.childenPanel = new JPanel(layout);
+        this.scrollPane = new JScrollPane();
+        setupPanel();
+        setupScrollPane();
+    }
 
-	private void setupPanel() {
-		JPanel panel = getComponent();
-		panel.removeAll();
-		panel.setLayout(new BorderLayout());
-		panel.add(scrollPane, CENTER);
-	}
+    private TableLayout createLayout() {
+        double[] col = { FILL };
+        double[] row = { FILL };
+        TableLayout layout = new TableLayout(col, row);
+        layout.setVGap(10);
+        return layout;
+    }
 
-	private void setupScrollPane() {
-		scrollPane.setViewportView(childenPanel);
-	}
+    private void setupPanel() {
+        JPanel panel = getComponent();
+        panel.removeAll();
+        panel.setLayout(new BorderLayout());
+        panel.add(scrollPane, CENTER);
+    }
 
-	@Inject
-	void setupVerticalPreferencesPanelField(
-			FieldService preferencesPanelService,
-			AnnotationDiscoveryFactory discoveryFactory,
-			AnnotationSetFilterFactory filterFactory, BeanField beanField) {
-		this.preferencesPanelService = preferencesPanelService;
-		this.discoveryFactory = discoveryFactory;
-		this.filterFactory = filterFactory;
-		this.beanField = beanField;
-	}
+    private void setupScrollPane() {
+        scrollPane.setViewportView(childenPanel);
+    }
 
-	/**
-	 * Creates the vertical preferences panel and all child fields.
-	 * <p>
-	 * <h2>AWT Thread</h2>
-	 * <p>
-	 * Should be called in the AWT thread.
-	 * 
-	 * @param injector
-	 *            the parent Guice {@link Injector} with the dependent modules.
-	 * 
-	 * @return this {@link VerticalPreferencesPanelField}.
-	 */
-	public VerticalPreferencesPanelField createPanel(Injector injector) {
-		discoverChildren(injector);
-		return this;
-	}
+    @Inject
+    void setupVerticalPreferencesPanelField(
+            FieldService preferencesPanelService,
+            AnnotationDiscoveryFactory discoveryFactory,
+            AnnotationSetFilterFactory filterFactory, BeanField beanField) {
+        this.preferencesPanelService = preferencesPanelService;
+        this.discoveryFactory = discoveryFactory;
+        this.filterFactory = filterFactory;
+        this.beanField = beanField;
+    }
 
-	private void discoverChildren(Injector injector) {
-		AnnotationFilter filter = filterFactory.create(Child.class);
-		Collection<AnnotationBean> fields = createChildDiscovery(
-				discoveryFactory, filter).call();
-		FieldComponent<? extends Component> field;
-		for (AnnotationBean bean : fields) {
-			field = loadField(bean, injector);
-			addField(field);
-		}
-	}
+    /**
+     * Creates the vertical preferences panel and all child fields.
+     * <p>
+     * <h2>AWT Thread</h2>
+     * <p>
+     * Should be called in the AWT thread.
+     * 
+     * @param injector
+     *            the parent Guice {@link Injector} with the dependent modules.
+     * 
+     * @return this {@link VerticalPreferencesPanelField}.
+     */
+    public VerticalPreferencesPanelField createPanel(Injector injector) {
+        discoverChildren(injector);
+        return this;
+    }
 
-	private FieldComponent<? extends Component> loadField(AnnotationBean bean,
-			Injector injector) {
-		AccessibleObject field = bean.getMember();
-		String fieldName = beanField.toFieldName(field);
-		Object object = getParentObject();
-		PreferencesPanelField panelField = (PreferencesPanelField) preferencesPanelService
-				.getFactory(injector).create(object, fieldName);
-		panelField.createPanel(injector);
-		return panelField;
-	}
+    private void discoverChildren(Injector injector) {
+        AnnotationFilter filter = filterFactory.create(Child.class);
+        Collection<AnnotationBean> fields = createChildDiscovery(
+                discoveryFactory, filter).call();
+        FieldComponent<? extends Component> field;
+        for (AnnotationBean bean : fields) {
+            field = loadField(bean, injector);
+            addField(field);
+        }
+    }
 
-	private AnnotationDiscovery createChildDiscovery(
-			AnnotationDiscoveryFactory discoveryFactory,
-			AnnotationFilter childFilter) {
-		return discoveryFactory.create(getParentObject(), childFilter);
-	}
+    private FieldComponent<? extends Component> loadField(AnnotationBean bean,
+            Injector injector) {
+        AccessibleObject field = bean.getMember();
+        String fieldName = beanField.toFieldName(field);
+        Object object = getParentObject();
+        PreferencesPanelField panelField = (PreferencesPanelField) preferencesPanelService
+                .getFactory(injector).create(object, fieldName);
+        panelField.createPanel(injector);
+        return panelField;
+    }
 
-	@Override
-	public void setComponent(JPanel component) {
-		super.setComponent(component);
-		setupPanel();
-	}
+    private AnnotationDiscovery createChildDiscovery(
+            AnnotationDiscoveryFactory discoveryFactory,
+            AnnotationFilter childFilter) {
+        return discoveryFactory.create(getParentObject(), childFilter);
+    }
 
-	@Override
-	public void setName(String name) {
-		super.setName(name);
-		childenPanel.setName(format("%s-%s", name, CHILDREN_PANEL_SUFFIX));
-	}
+    @Override
+    public void setComponent(JPanel component) {
+        super.setComponent(component);
+        setupPanel();
+    }
 
-	@Override
-	public void addField(FieldComponent<?> field) {
-		setupFirstField(field);
-		super.addField(field);
-		invokeLater(new Runnable() {
+    @Override
+    public void setName(String name) {
+        super.setName(name);
+        childenPanel.setName(format("%s-%s", name, CHILDREN_PANEL_SUFFIX));
+    }
 
-			@Override
-			public void run() {
-				updateChildrenPanel();
-			}
+    @Override
+    public void addField(FieldComponent<?> field) {
+        setupFirstField(field);
+        super.addField(field);
+        invokeLater(new Runnable() {
 
-		});
-	}
+            @Override
+            public void run() {
+                updateChildrenPanel();
+            }
 
-	private void updateChildrenPanel() {
-		childenPanel.removeAll();
-		int rowIndex = layout.getNumRow() - 1;
-		insertRow(rowIndex);
-		insertFields();
-	}
+        });
+    }
 
-	private void insertFields() {
-		int i = 0;
-		Iterable<FieldComponent<?>> fields = getFields();
-		for (FieldComponent<?> field : fields) {
-			Component component = field.getAWTComponent();
-			childenPanel.add(component, format("%d,%d", 0, i++));
-		}
-		layout.layoutContainer(childenPanel);
-		childenPanel.repaint();
-	}
+    private void updateChildrenPanel() {
+        childenPanel.removeAll();
+        int rowIndex = layout.getNumRow() - 1;
+        insertRow(rowIndex);
+        insertFields();
+    }
 
-	private void setupFirstField(FieldComponent<?> field) {
-		if (getFieldsCount() > 0) {
-			return;
-		}
-		try {
-			setValue(field.getValue());
-		} catch (PropertyVetoException e) {
-			log.propertyVeto(this, e);
-		}
-	}
+    private void insertFields() {
+        int i = 0;
+        Iterable<FieldComponent<?>> fields = getFields();
+        for (FieldComponent<?> field : fields) {
+            Component component = field.getAWTComponent();
+            childenPanel.add(component, format("%d,%d", 0, i++));
+        }
+        setEnabled(enabled);
+        layout.layoutContainer(childenPanel);
+        childenPanel.repaint();
+    }
 
-	private void insertRow(int rowIndex) {
-		layout.insertRow(rowIndex, PREFERRED);
-	}
+    private void setupFirstField(FieldComponent<?> field) {
+        if (getFieldsCount() > 0) {
+            return;
+        }
+        try {
+            setValue(field.getValue());
+        } catch (PropertyVetoException e) {
+            log.propertyVeto(this, e);
+        }
+    }
 
-	/**
-	 * Returns the scroll pane of the children.
-	 * 
-	 * @return the {@link JScrollPane}.
-	 */
-	public JScrollPane getScrollPane() {
-		return scrollPane;
-	}
+    private void insertRow(int rowIndex) {
+        layout.insertRow(rowIndex, PREFERRED);
+    }
 
-	/**
-	 * Returns the panel of the children.
-	 * 
-	 * @return the {@link JPanel}.
-	 */
-	public JPanel getChildenPanel() {
-		return childenPanel;
-	}
+    /**
+     * Returns the scroll pane of the children.
+     * 
+     * @return the {@link JScrollPane}.
+     */
+    public JScrollPane getScrollPane() {
+        return scrollPane;
+    }
+
+    /**
+     * Returns the panel of the children.
+     * 
+     * @return the {@link JPanel}.
+     */
+    public JPanel getChildenPanel() {
+        return childenPanel;
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+        super.setEnabled(enabled);
+        for (FieldComponent<?> field : getFields()) {
+            field.setEnabled(enabled);
+        }
+        updateEnabledRecursive(childenPanel, enabled);
+    }
+
+    private void updateEnabledRecursive(Container container, boolean enabled) {
+        container.setEnabled(enabled);
+        for (Component c : container.getComponents()) {
+            if (c instanceof Container) {
+                container = (Container) c;
+                updateEnabledRecursive(container, enabled);
+            }
+            c.setEnabled(enabled);
+        }
+    }
 }
