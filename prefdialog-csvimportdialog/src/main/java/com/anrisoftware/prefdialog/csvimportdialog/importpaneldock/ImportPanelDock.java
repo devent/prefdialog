@@ -30,7 +30,7 @@ import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanel;
 import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanelFactory;
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 import com.anrisoftware.prefdialog.miscswing.docks.api.DockPosition;
-import com.anrisoftware.prefdialog.miscswing.docks.api.EditorDockWindow;
+import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.dock.AbstractEditorDockWindow;
 import com.google.inject.Injector;
 
 /**
@@ -39,7 +39,8 @@ import com.google.inject.Injector;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-public class ImportPanelDock implements EditorDockWindow {
+@SuppressWarnings("serial")
+public class ImportPanelDock extends AbstractEditorDockWindow {
 
     public static final String ID = "importPanelDock";
 
@@ -49,8 +50,6 @@ public class ImportPanelDock implements EditorDockWindow {
     private JPanel panel;
 
     private CsvImportPanel importPanel;
-
-    private Object dockable;
 
     /**
      * Sets the CSV import properties.
@@ -138,16 +137,6 @@ public class ImportPanelDock implements EditorDockWindow {
     @Override
     public boolean isStackable() {
         return false;
-    }
-
-    @Override
-    public void setDockable(Object dockable) {
-        this.dockable = dockable;
-    }
-
-    @Override
-    public Object getDockable() {
-        return dockable;
     }
 
     /**

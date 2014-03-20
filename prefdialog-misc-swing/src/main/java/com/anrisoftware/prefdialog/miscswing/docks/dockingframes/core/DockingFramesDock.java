@@ -42,8 +42,7 @@ import bibliothek.gui.dock.common.CControl;
 import bibliothek.gui.dock.common.CWorkingArea;
 import bibliothek.gui.dock.common.MultipleCDockable;
 import bibliothek.gui.dock.common.SingleCDockable;
-import bibliothek.gui.dock.common.event.CDockableLocationEvent;
-import bibliothek.gui.dock.common.event.CDockableLocationListener;
+import bibliothek.gui.dock.common.event.CControlListener;
 import bibliothek.gui.dock.common.event.CFocusListener;
 import bibliothek.gui.dock.common.intern.AbstractCDockable;
 import bibliothek.gui.dock.common.intern.CDockable;
@@ -60,7 +59,6 @@ import com.anrisoftware.prefdialog.miscswing.docks.api.EditorDockWindow;
 import com.anrisoftware.prefdialog.miscswing.docks.api.FocusChangedEvent;
 import com.anrisoftware.prefdialog.miscswing.docks.api.LayoutListener;
 import com.anrisoftware.prefdialog.miscswing.docks.api.LayoutTask;
-import com.anrisoftware.prefdialog.miscswing.docks.api.ShowingChangedEvent;
 import com.anrisoftware.prefdialog.miscswing.docks.api.ViewDockWindow;
 import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.layoutloader.LoadLayoutWorkerFactory;
 import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.layoutsaver.SaveLayoutWorkerFactory;
@@ -84,9 +82,9 @@ public class DockingFramesDock implements Dock {
 
     private final EventListenerSupport<ChangeListener> changeListeners;
 
-    private final CDockableLocationListener editorsLocationListener;
-
     private final CFocusListener editorsFocusListener;
+
+    private final CControlListener controlListener;
 
     @Inject
     private DockingFramesDockLogger log;
@@ -116,15 +114,6 @@ public class DockingFramesDock implements Dock {
         this.editorDocks = new ConcurrentHashMap<MultipleCDockable, EditorDockWindow>();
         this.changeListeners = new EventListenerSupport<ChangeListener>(
                 ChangeListener.class);
-        this.editorsLocationListener = new CDockableLocationListener() {
-
-            @Override
-            public void changed(CDockableLocationEvent event) {
-                if (event.isShowingChanged()) {
-                    fireEditorDockShowingChanged(event);
-                }
-            }
-        };
         this.editorsFocusListener = new CFocusListener() {
 
             @Override
@@ -137,24 +126,37 @@ public class DockingFramesDock implements Dock {
                 fireEditorDockFocusGained(dockable);
             }
         };
+        this.controlListener = new CControlListener() {
+
+            @Override
+            public void removed(CControl control, CDockable dockable) {
+                editorDocks.remove(dockable);
+            }
+
+            @Override
+            public void opened(CControl control, CDockable dockable) {
+            }
+
+            @Override
+            public void closed(CControl control, CDockable dockable) {
+            }
+
+            @Override
+            public void added(CControl control, CDockable dockable) {
+            }
+        };
     }
 
     private void fireEditorDockFocusGained(CDockable dockable) {
         EditorDockWindow editor = editorDocks.get(dockable);
-        changeListeners.fire()
-                .stateChanged(new FocusChangedEvent(editor, true));
+        FocusChangedEvent e = new FocusChangedEvent(editor, true);
+        changeListeners.fire().stateChanged(e);
     }
 
     private void fireEditorDockFocusLost(CDockable dockable) {
         EditorDockWindow editor = editorDocks.get(dockable);
-        changeListeners.fire().stateChanged(
-                new FocusChangedEvent(editor, false));
-    }
-
-    private void fireEditorDockShowingChanged(CDockableLocationEvent event) {
-        EditorDockWindow editor = editorDocks.get(event.getDockable());
-        changeListeners.fire().stateChanged(
-                new ShowingChangedEvent(editor, event.getNewShowing()));
+        FocusChangedEvent e = new FocusChangedEvent(editor, false);
+        changeListeners.fire().stateChanged(e);
     }
 
     @OnAwt
@@ -169,6 +171,7 @@ public class DockingFramesDock implements Dock {
         this.control = new CControl(provider);
         this.workingArea = control.createWorkingArea(WORK_AREA_ID);
         applyLayout(defaultLayoutTask);
+        control.addControlListener(controlListener);
         return this;
     }
 
@@ -201,7 +204,6 @@ public class DockingFramesDock implements Dock {
         MultipleCDockable dockable = currentLayout.addEditor(workingArea, dock);
         dock.setDockable(dockable);
         editorDocks.put(dockable, dock);
-        dockable.addCDockableLocationListener(editorsLocationListener);
         dockable.addFocusListener(editorsFocusListener);
     }
 
