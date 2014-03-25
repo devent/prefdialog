@@ -18,6 +18,8 @@
  */
 package com.anrisoftware.prefdialog.miscswing.multichart.toolbaractions;
 
+import static java.lang.String.format;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +39,7 @@ import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
  */
 public class ToolbarActions extends AbstractMenuActions {
 
+    private static final String ID_PATTERN = "%s-%s";
     public static final String AUTO_ZOOM_DOMAIN_NAME = "graphWindow-autoZoomDomainButton";
     public static final String AUTO_ZOOM_RANGE_NAME = "graphWindow-autoZoomRangeButton";
     public static final String ZOOM_IN_NAME = "graphWindow-zoomInButton";
@@ -61,6 +64,15 @@ public class ToolbarActions extends AbstractMenuActions {
     private OptionsAction optionsAction;
 
     private Map<String, MenuAction> actions;
+
+    public void setId(String id) {
+        autoZoomDomainAction
+                .setId(format(ID_PATTERN, AUTO_ZOOM_DOMAIN_NAME, id));
+        autoZoomRangeAction.setId(format(ID_PATTERN, AUTO_ZOOM_RANGE_NAME, id));
+        zoomInAction.setId(format(ID_PATTERN, ZOOM_IN_NAME, id));
+        zoomOutAction.setId(format(ID_PATTERN, ZOOM_OUT_NAME, id));
+        optionsAction.setId(format(ID_PATTERN, OPTIONS_NAME, id));
+    }
 
     /**
      * Enables the graph window actions.

@@ -105,6 +105,8 @@ public class MultiChartPanel implements ChartPanel {
 
     private boolean allowMouseScroll;
 
+    private String name;
+
     @Inject
     @OnAwt
     MultiChartPanel() {
@@ -198,6 +200,24 @@ public class MultiChartPanel implements ChartPanel {
     @Override
     public Component getPanel() {
         return panel;
+    }
+
+    /**
+     * Sets the name of the panel.
+     * 
+     * @param name
+     *            the {@link String} name.
+     */
+    @Override
+    @OnAwt
+    public void setName(String name) {
+        this.name = name;
+        toolbarActions.setId(name);
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
     @OnAwt

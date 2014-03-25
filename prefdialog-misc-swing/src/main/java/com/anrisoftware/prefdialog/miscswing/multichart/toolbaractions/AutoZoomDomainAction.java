@@ -18,6 +18,8 @@
  */
 package com.anrisoftware.prefdialog.miscswing.multichart.toolbaractions;
 
+import java.awt.event.ActionEvent;
+
 import com.anrisoftware.prefdialog.miscswing.actions.AbstractMenuAction;
 
 @SuppressWarnings("serial")
@@ -29,4 +31,9 @@ class AutoZoomDomainAction extends AbstractMenuAction {
 		super(NAME);
 		setEnabled(false);
 	}
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        super.actionPerformed(e);
+    }
 }

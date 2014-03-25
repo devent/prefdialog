@@ -54,11 +54,14 @@ public abstract class AbstractMenuAction extends AbstractResourcesAction
 
     private Actions actions;
 
+    private String id;
+
     /**
      * @see AbstractResourcesAction#AbstractResourcesAction(String)
      */
     protected AbstractMenuAction(String name) {
         super(name);
+        this.id = name;
     }
 
     /**
@@ -72,19 +75,27 @@ public abstract class AbstractMenuAction extends AbstractResourcesAction
         this.actions = actions;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
+    }
+
     @Override
     public void addAction(Callable<?> action,
             PropertyChangeListener... listeners) {
-        actions.addAction(getName(), action, listeners);
+        actions.addAction(getId(), action, listeners);
     }
 
     @Override
     public void addAWTAction(Runnable action) {
-        actions.addAWTAction(getName(), action);
+        actions.addAWTAction(getId(), action);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        actions.executeActions(getName());
+        actions.executeActions(getId());
     }
 }

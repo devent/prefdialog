@@ -42,6 +42,10 @@ public interface ChartPanel {
 
     void setImages(Images images);
 
+    void setName(String name);
+
+    String getName();
+
     void addChart(Chart chart);
 
     void removeChart(Chart chart);
