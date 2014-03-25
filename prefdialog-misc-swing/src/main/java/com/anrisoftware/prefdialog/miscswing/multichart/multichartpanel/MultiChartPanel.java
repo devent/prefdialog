@@ -101,6 +101,10 @@ public class MultiChartPanel implements ChartPanel {
 
     private LockedPropertyChangeListener chartOffsetListener;
 
+    private int maximumView;
+
+    private boolean allowMouseScroll;
+
     @Inject
     @OnAwt
     MultiChartPanel() {
@@ -269,6 +273,7 @@ public class MultiChartPanel implements ChartPanel {
     @Override
     @OnAwt
     public void setMaximumView(int maximum) {
+        this.maximumView = maximum;
         for (Chart chart : charts) {
             chart.setMaximumView(maximum);
         }
@@ -338,6 +343,7 @@ public class MultiChartPanel implements ChartPanel {
     @OnAwt
     @Override
     public void setAllowMouseScroll(boolean flag) {
+        this.allowMouseScroll = flag;
         for (Chart chart : charts) {
             chart.setAllowMouseScroll(flag);
         }
@@ -347,15 +353,22 @@ public class MultiChartPanel implements ChartPanel {
     @Override
     public void addChart(Chart chart) {
         String name = chart.getName();
-        if (!chartsMap.containsKey(name)) {
-            chartsMap.put(name, chart);
-            charts.add(chart);
-            addChartPropertyChangeListeners(chart);
-            chartModel = chart.getModel();
-            addChartPanel(chart);
-            if (chartsMap.size() == 1) {
-                toolbarActions.setActionsEnabled(true);
-            }
+        if (chartsMap.containsKey(name)) {
+            return;
+        }
+        chart.setAllowMouseScroll(allowMouseScroll);
+        chart.setPlotOrientation(plotOrientation);
+        chart.setMaximumView(maximumView);
+        chart.setAntiAliasing(antiAliasing);
+        chart.setBlackWhite(blackWhite);
+        chart.setShowShapes(showShapes);
+        chartsMap.put(name, chart);
+        charts.add(chart);
+        addChartPropertyChangeListeners(chart);
+        chartModel = chart.getModel();
+        addChartPanel(chart);
+        if (chartsMap.size() == 1) {
+            toolbarActions.setActionsEnabled(true);
         }
     }
 
