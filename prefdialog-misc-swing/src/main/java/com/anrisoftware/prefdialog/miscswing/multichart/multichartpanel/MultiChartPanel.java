@@ -79,6 +79,16 @@ public class MultiChartPanel implements ChartPanel {
     @Inject
     private Actions actions;
 
+    private LockedChangeListener horizontalScrollListener;
+
+    private LockedChangeListener verticalScrollListener;
+
+    private PropertyChangeListener chartModelListener;
+
+    private LockedPropertyChangeListener chartOffsetListener;
+
+    private ChartModel chartModel;
+
     private boolean antiAliasing;
 
     private boolean blackWhite;
@@ -87,19 +97,9 @@ public class MultiChartPanel implements ChartPanel {
 
     private PlotOrientation plotOrientation;
 
-    private LockedChangeListener horizontalScrollListener;
-
-    private LockedChangeListener verticalScrollListener;
-
-    private PropertyChangeListener chartModelListener;
-
-    private ChartModel chartModel;
-
     private boolean allowDomainAxisScroll;
 
     private boolean allowRangeAxisScroll;
-
-    private LockedPropertyChangeListener chartOffsetListener;
 
     private int maximumView;
 
@@ -111,8 +111,14 @@ public class MultiChartPanel implements ChartPanel {
         this.chartsMap = new HashMap<String, Chart>();
         this.charts = new ArrayList<Chart>();
         this.plotOrientation = PlotOrientation.VERTICAL;
+        this.antiAliasing = true;
+        this.blackWhite = false;
+        this.showShapes = true;
+        this.plotOrientation = VERTICAL;
         this.allowDomainAxisScroll = true;
         this.allowRangeAxisScroll = true;
+        this.allowMouseScroll = true;
+        this.maximumView = 100;
         readResolve();
     }
 
@@ -369,6 +375,7 @@ public class MultiChartPanel implements ChartPanel {
         addChartPanel(chart);
         if (chartsMap.size() == 1) {
             toolbarActions.setActionsEnabled(true);
+            setAutoZoomDomain(true);
         }
     }
 
