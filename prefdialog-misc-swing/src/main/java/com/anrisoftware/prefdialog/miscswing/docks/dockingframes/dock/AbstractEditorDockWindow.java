@@ -83,7 +83,7 @@ public abstract class AbstractEditorDockWindow implements EditorDockWindow,
     }
 
     @Override
-    public Object getDockable() {
+    public DefaultMultipleCDockable getDockable() {
         return dockable;
     }
 
