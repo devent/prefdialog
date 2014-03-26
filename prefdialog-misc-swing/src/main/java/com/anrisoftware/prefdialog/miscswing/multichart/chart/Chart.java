@@ -21,12 +21,15 @@ package com.anrisoftware.prefdialog.miscswing.multichart.chart;
 import java.awt.Component;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.concurrent.ExecutorService;
 
 import com.anrisoftware.prefdialog.miscswing.multichart.model.ChartModel;
 
 public interface Chart {
 
     String getName();
+
+    void setThreadPool(ExecutorService pool);
 
     /**
      * Sets the chart model.
@@ -167,6 +170,7 @@ public interface Chart {
      *            the offset.
      */
     void setOffset(int offset);
+
 
     /**
      * @see PropertyChangeSupport#addPropertyChangeListener(String,

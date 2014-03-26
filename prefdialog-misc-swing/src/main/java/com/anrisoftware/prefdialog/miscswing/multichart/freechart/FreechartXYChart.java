@@ -31,6 +31,9 @@ import java.awt.event.MouseWheelListener;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.Iterator;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.RecursiveAction;
 
 import javax.inject.Inject;
 
@@ -98,6 +101,10 @@ public class FreechartXYChart implements Chart {
 
     private OffsetTickUnit domainTickUnit;
 
+    private final int forkLimitCount;
+
+    private ExecutorService pool;
+
     /**
      * @see FreechartXYChartFactory#create(String, JFreeChart)
      */
@@ -107,6 +114,7 @@ public class FreechartXYChart implements Chart {
         this.name = name;
         this.panel = new ChartPanel(chart);
         this.chart = chart;
+        this.forkLimitCount = 256;
         resolveObject();
     }
 
@@ -133,6 +141,11 @@ public class FreechartXYChart implements Chart {
             }
         };
         return this;
+    }
+
+    @Override
+    public void setThreadPool(ExecutorService pool) {
+        this.pool = pool;
     }
 
     @OnAwt
@@ -332,6 +345,19 @@ public class FreechartXYChart implements Chart {
     }
 
     private void updateData(int row0, int row1, int offset) {
+        if (row0 >= model.getViewMaximum() || row0 >= model.getRowCount()) {
+            return;
+        }
+        XYSeriesCollection series = getCategory();
+        int max = series.getSeriesCount() * (row1 - row0);
+        if (pool != null && max > forkLimitCount) {
+            updateDataThread(row0, row1, offset, max);
+        } else {
+            updateData0(row0, row1, offset);
+        }
+    }
+
+    private void updateData0(int row0, int row1, int offset) {
         ChartModel model = this.model;
         XYSeriesCollection series = getCategory();
         int col0 = 0;
@@ -343,6 +369,43 @@ public class FreechartXYChart implements Chart {
                 xyseries.updateByIndex(row, value);
             }
         }
+    }
+
+    private void updateDataThread(int row0, int row1, int offset, int max) {
+        ((ForkJoinPool) pool)
+                .invoke(new UpdateDataTask(row0, row1, offset, max));
+    }
+
+    @SuppressWarnings("serial")
+    private class UpdateDataTask extends RecursiveAction {
+
+        private final int row0;
+
+        private final int row1;
+
+        private final int offset;
+
+        private final int max;
+
+        public UpdateDataTask(int row0, int row1, int offset, int max) {
+            this.row0 = row0;
+            this.row1 = row1;
+            this.offset = offset;
+            this.max = max;
+        }
+
+        @Override
+        protected void compute() {
+            if (max < 256) {
+                updateData0(row0, row1, offset);
+            } else {
+                int max = this.max / 2;
+                int half = (row1 - row0) / 2;
+                invokeAll(new UpdateDataTask(row0, row0 + half, offset, max),
+                        new UpdateDataTask(row0 + half + 1, row1, offset, max));
+            }
+        }
+
     }
 
     private void updateDeletedData(int row0, int row1, int offset) {

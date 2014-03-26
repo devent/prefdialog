@@ -22,6 +22,8 @@ import static com.anrisoftware.prefdialog.miscswing.lockedevents.LockedChangeLis
 import static com.anrisoftware.prefdialog.miscswing.lockedevents.LockedPropertyChangeListener.lockedPropertyChangeListener;
 import static com.anrisoftware.prefdialog.miscswing.multichart.chart.ChartProperty.MODEL_PROPERTY;
 import static com.anrisoftware.prefdialog.miscswing.multichart.chart.ChartProperty.OFFSET_PROPERTY;
+import static com.anrisoftware.prefdialog.miscswing.multichart.chart.ChartUtils.FORK_JOIN_POOL_CLASS;
+import static com.anrisoftware.prefdialog.miscswing.multichart.chart.ChartUtils.haveClass;
 import static com.anrisoftware.prefdialog.miscswing.multichart.chart.PlotOrientation.HORIZONTAL;
 import static com.anrisoftware.prefdialog.miscswing.multichart.chart.PlotOrientation.VERTICAL;
 import static info.clearthought.layout.TableLayoutConstants.FILL;
@@ -37,6 +39,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ForkJoinPool;
 
 import javax.inject.Inject;
 import javax.swing.JPanel;
@@ -107,6 +111,8 @@ public class MultiChartPanel implements ChartPanel {
 
     private String name;
 
+    private ExecutorService threadPool;
+
     @Inject
     @OnAwt
     MultiChartPanel() {
@@ -121,6 +127,9 @@ public class MultiChartPanel implements ChartPanel {
         this.allowRangeAxisScroll = true;
         this.allowMouseScroll = true;
         this.maximumView = 100;
+        if (haveClass(FORK_JOIN_POOL_CLASS)) {
+            this.threadPool = new ForkJoinPool();
+        }
         readResolve();
     }
 
@@ -388,6 +397,9 @@ public class MultiChartPanel implements ChartPanel {
         chart.setAntiAliasing(antiAliasing);
         chart.setBlackWhite(blackWhite);
         chart.setShowShapes(showShapes);
+        if (threadPool != null) {
+            chart.setThreadPool(threadPool);
+        }
         chartsMap.put(name, chart);
         charts.add(chart);
         addChartPropertyChangeListeners(chart);
