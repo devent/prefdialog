@@ -144,4 +144,19 @@ public class FormattedTextField extends AbstractTitleField<JFormattedTextField> 
         return getComponent().isEditable();
     }
 
+    /**
+     * Sets that the input is valid. The component is repaint when the state
+     * changed.
+     * <p>
+     * <h2>AWT Thread</h2>
+     * <p>
+     * Should be called on the AWT thread.
+     * 
+     * @param valid
+     *            set to {@code true} if the current input is valid.
+     */
+    public void setInputValid(boolean valid) {
+        validating.setInputValid(valid);
+    }
+
 }
