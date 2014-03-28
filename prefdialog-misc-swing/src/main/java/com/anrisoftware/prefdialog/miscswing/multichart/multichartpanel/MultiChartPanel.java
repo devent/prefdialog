@@ -35,8 +35,8 @@ import info.clearthought.layout.TableLayout;
 import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -117,7 +117,7 @@ public class MultiChartPanel implements ChartPanel {
     @OnAwt
     MultiChartPanel() {
         this.chartsMap = new HashMap<String, Chart>();
-        this.charts = new ArrayList<Chart>();
+        this.charts = new LinkedList<Chart>();
         this.plotOrientation = PlotOrientation.VERTICAL;
         this.antiAliasing = true;
         this.blackWhite = false;
@@ -517,6 +517,7 @@ public class MultiChartPanel implements ChartPanel {
     private void removeChartPanel(Chart chart) {
         JPanel graphsPanel = panel.getGraphsPanel();
         int index = charts.indexOf(chart);
+        charts.remove(index);
         graphsPanel.remove(index);
         TableLayout layout = (TableLayout) graphsPanel.getLayout();
         layout.deleteColumn(index);
