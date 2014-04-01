@@ -33,48 +33,55 @@ import net.miginfocom.swing.MigLayout;
 @SuppressWarnings("serial")
 class UiPanel extends JPanel {
 
-	private JComponent fileField;
+    private JComponent fileField;
 
-	private final JButton openFileChooser;
+    private final JButton openFileChooser;
 
-	private String name;
+    private String name;
 
-	/**
-	 * Create the panel.
-	 */
-	UiPanel() {
-		setLayout(new MigLayout("", "0[grow][]0", "0[]0"));
+    /**
+     * Create the panel.
+     */
+    UiPanel() {
+        setLayout(new MigLayout("", "0[grow][]0", "0[]0"));
 
-		fileField = new JTextField();
-		fileField.setName(FileChooserField.FILE_FIELD_NAME);
-		add(fileField, "cell 0 0,growx");
+        fileField = new JTextField();
+        fileField.setName(FileChooserField.FILE_FIELD_NAME);
+        add(fileField, "cell 0 0,growx");
 
-		openFileChooser = new JButton("...");
-		openFileChooser.setName(OPEN_FILE_CHOOSER_NAME);
-		add(openFileChooser, "cell 1 0");
+        openFileChooser = new JButton("...");
+        openFileChooser.setName(OPEN_FILE_CHOOSER_NAME);
+        add(openFileChooser, "cell 1 0");
 
-	}
+    }
 
-	@Override
-	public void setName(String name) {
-		super.setName(format("%s-%s", name, FILE_FIELD_PANEL_NAME));
-		this.name = name;
-		fileField.setName(format("%s-%s", name, FILE_FIELD_NAME));
-		openFileChooser.setName(format("%s-%s", name, OPEN_FILE_CHOOSER_NAME));
-	}
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        fileField.setEnabled(enabled);
+        openFileChooser.setEnabled(enabled);
+    }
 
-	public void setFileField(JComponent field) {
-		field.setName(format("%s-%s", name, FILE_FIELD_NAME));
-		remove(fileField);
-		add(field, "cell 0 0,growx");
-		this.fileField = field;
-	}
+    @Override
+    public void setName(String name) {
+        super.setName(format("%s-%s", name, FILE_FIELD_PANEL_NAME));
+        this.name = name;
+        fileField.setName(format("%s-%s", name, FILE_FIELD_NAME));
+        openFileChooser.setName(format("%s-%s", name, OPEN_FILE_CHOOSER_NAME));
+    }
 
-	public JComponent getFileField() {
-		return fileField;
-	}
+    public void setFileField(JComponent field) {
+        field.setName(format("%s-%s", name, FILE_FIELD_NAME));
+        remove(fileField);
+        add(field, "cell 0 0,growx");
+        this.fileField = field;
+    }
 
-	public JButton getOpenFileChooser() {
-		return openFileChooser;
-	}
+    public JComponent getFileField() {
+        return fileField;
+    }
+
+    public JButton getOpenFileChooser() {
+        return openFileChooser;
+    }
 }
