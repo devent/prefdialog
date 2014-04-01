@@ -36,13 +36,13 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import com.anrisoftware.prefdialog.annotations.FileChooserModel;
 
 /**
- * Opens the file open chooser dialog.
+ * Opens the file save chooser dialog.
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
 @SuppressWarnings("serial")
-public class OpenFileDialogModel implements FileChooserModel {
+public class SaveFileDialogModel implements FileChooserModel {
 
     private final VetoableChangeSupport vetoableChange;
 
@@ -54,7 +54,7 @@ public class OpenFileDialogModel implements FileChooserModel {
 
     private FileFilter fileFilter;
 
-    public OpenFileDialogModel() {
+    public SaveFileDialogModel() {
         this.vetoableChange = new VetoableChangeSupport(this);
         this.propertySupport = new PropertyChangeSupport(this);
     }
@@ -80,7 +80,7 @@ public class OpenFileDialogModel implements FileChooserModel {
 
     @Override
     public void openDialog(Component parent) throws PropertyVetoException {
-        int result = chooser.showOpenDialog(parent);
+        int result = chooser.showSaveDialog(parent);
         if (result == JFileChooser.APPROVE_OPTION) {
             setFileFilter(chooser.getFileFilter());
             setFile(chooser.getSelectedFile());
