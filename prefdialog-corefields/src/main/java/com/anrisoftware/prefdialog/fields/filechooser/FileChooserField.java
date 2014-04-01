@@ -105,6 +105,8 @@ public class FileChooserField extends AbstractTitleField<JPanel> {
 
     private final ActionListener fileAction;
 
+    private final LockedPropertyChangeListener fileTextFieldValueListener;
+
     private transient AnnotationClassFactory annotationClassFactory;
 
     private String buttonTextResource;
@@ -130,8 +132,6 @@ public class FileChooserField extends AbstractTitleField<JPanel> {
     private Icon buttonIcon;
 
     private IconSize buttonIconSize;
-
-    private final LockedPropertyChangeListener fileTextFieldValueListener;
 
     /**
      * @see FileChooserFieldFactory#create(Object, String)

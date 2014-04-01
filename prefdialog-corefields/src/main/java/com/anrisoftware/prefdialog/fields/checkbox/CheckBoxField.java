@@ -39,35 +39,48 @@ import com.google.inject.assistedinject.Assisted;
 @SuppressWarnings("serial")
 public class CheckBoxField extends AbstractFieldButtonField<JCheckBox> {
 
-	private final CheckBoxFieldLogger log;
+    private final CheckBoxFieldLogger log;
 
-	/**
-	 * @see CheckBoxFieldFactory#create(Object, String)
-	 */
-	@Inject
-	CheckBoxField(CheckBoxFieldLogger logger, @Assisted Object parentObject,
-			@Assisted String fieldName) {
-		super(new JCheckBox(), parentObject, fieldName);
-		this.log = logger;
-	}
+    /**
+     * @see CheckBoxFieldFactory#create(Object, String)
+     */
+    @Inject
+    CheckBoxField(CheckBoxFieldLogger logger, @Assisted Object parentObject,
+            @Assisted String fieldName) {
+        super(new JCheckBox(), parentObject, fieldName);
+        this.log = logger;
+    }
 
-	/**
-	 * Sets the boolean value for the check-box.
-	 * 
-	 * @param value
-	 *            the new boolean value. {@code true} for a checked check-box
-	 *            and {@code false} for unchecked.
-	 * 
-	 * @throws PropertyVetoException
-	 *             if the user input is not valid.
-	 * 
-	 * @throws IllegalArgumentException
-	 *             if the value is not a boolean value.
-	 */
-	@Override
-	public void setValue(Object value) throws PropertyVetoException {
-		super.setValue(value);
-		log.checkValue(this, value);
-		getComponent().setSelected((Boolean) value);
-	}
+    /**
+     * Sets the boolean value for the check-box.
+     * 
+     * @param value
+     *            the new boolean value. {@code true} for a checked check-box
+     *            and {@code false} for unchecked.
+     * 
+     * @throws PropertyVetoException
+     *             if the user input is not valid.
+     * 
+     * @throws IllegalArgumentException
+     *             if the value is not a boolean value.
+     */
+    @Override
+    public void setValue(Object value) throws PropertyVetoException {
+        super.setValue(value);
+        log.checkValue(this, value);
+        getComponent().setSelected((Boolean) value);
+    }
+
+    /**
+     * Sets the check-box selected.
+     * 
+     * @param flag
+     *            set to {@code true} to select the check-box.
+     * 
+     * @throws PropertyVetoException
+     *             if the user input is not valid.
+     */
+    public void setSelected(boolean flag) throws PropertyVetoException {
+        setValue(flag);
+    }
 }
