@@ -195,6 +195,11 @@ public class FreechartXYChart implements Chart {
     @OnAwt
     public void setViewMaximum(int max) {
         model.setViewMaximum(max);
+        this.domainTickUnit = tickUnitFactory.create(max / 10);
+        XYPlot plot = (XYPlot) chart.getPlot();
+        NumberAxis domainAxis = (NumberAxis) plot.getDomainAxis();
+        domainAxis.setTickUnit((NumberTickUnit) domainTickUnit);
+        domainTickUnit.setOffset(model.getOffset());
     }
 
     @OnAwt
@@ -330,7 +335,7 @@ public class FreechartXYChart implements Chart {
         int row1 = e.getLastRow();
         int offset = e.getOffset();
         log.chartChanged(this, e);
-        domainTickUnit.setOffset(model.getOffset());
+        domainTickUnit.setOffset(offset);
         switch (e.getType()) {
         case INSERTED:
             updateInsertData(row0, row1, offset);
