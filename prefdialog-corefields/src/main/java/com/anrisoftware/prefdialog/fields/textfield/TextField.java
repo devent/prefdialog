@@ -119,24 +119,24 @@ public class TextField extends AbstractTitleField<JTextField> {
 		}
 	}
 
-	/**
-	 * Sets if the field should be editable.
-	 * 
-	 * @param editable
-	 *            {@code true} if the text field should be editable or
-	 *            {@code false} if not.
-	 */
+	    /**
+     * Sets if the field should be editable.
+     * 
+     * @param editable
+     *            {@code true} if the text field should be editable or
+     *            {@code false} if not.
+     */
 	public void setEditable(boolean editable) {
 		getComponent().setEditable(editable);
 		log.editableSet(this, editable);
 	}
 
-	/**
-	 * Returns if the field should is editable.
-	 * 
-	 * @return {@code true} if the text field is editable or {@code false} if
-	 *         not.
-	 */
+	    /**
+     * Returns if the field should is editable.
+     * 
+     * @return {@code true} if the text field is editable or {@code false} if
+     *         not.
+     */
 	public boolean isEditable() {
 		return getComponent().isEditable();
 	}
