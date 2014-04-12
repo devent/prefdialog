@@ -171,7 +171,6 @@ public interface Chart {
      */
     void setOffset(int offset);
 
-
     /**
      * @see PropertyChangeSupport#addPropertyChangeListener(String,
      *      PropertyChangeListener)

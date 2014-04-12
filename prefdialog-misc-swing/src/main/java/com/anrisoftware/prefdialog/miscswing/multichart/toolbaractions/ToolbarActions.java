@@ -20,9 +20,7 @@ package com.anrisoftware.prefdialog.miscswing.multichart.toolbaractions;
 
 import static java.lang.String.format;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -86,13 +84,8 @@ public class ToolbarActions extends AbstractMenuActions {
      */
     @OnAwt
     public void setActionsEnabled(boolean enabled) {
-        List<String> enable = new ArrayList<String>();
-        enable.add(AUTO_ZOOM_DOMAIN_NAME);
-        enable.add(AUTO_ZOOM_RANGE_NAME);
-        enable.add(ZOOM_IN_NAME);
-        enable.add(ZOOM_OUT_NAME);
-        enable.add(OPTIONS_NAME);
-        setActionsEnabled(enable.toArray(new String[0]), enabled);
+        setActionEnabled(enabled, AUTO_ZOOM_DOMAIN_NAME, AUTO_ZOOM_RANGE_NAME,
+                ZOOM_IN_NAME, ZOOM_OUT_NAME, OPTIONS_NAME);
     }
 
     @Override

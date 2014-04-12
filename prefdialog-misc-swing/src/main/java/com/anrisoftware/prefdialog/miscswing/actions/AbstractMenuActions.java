@@ -135,44 +135,25 @@ public abstract class AbstractMenuActions {
     }
 
     /**
-     * Enabled or disables the menu action.
+     * Enabled or disables menu action(s).
      * 
      * <h2>AWT Thread</h2>
      * <p>
      * Should be called <i>outside</i> the AWT thread.
      * 
+     * @param enabled
+     *            set to {@code true} to enable the action(s).
+     * 
      * @param name
-     *            the name of the menu action.
-     * 
-     * @param enabled
-     *            set to {@code true} to enable the action.
+     *            the name(s) of the menu action(s).
      */
-    public void setActionEnabled(final String name, final boolean enabled) {
+    public void setActionEnabled(final boolean enabled, final String... name) {
         invokeLater(new Runnable() {
 
             @Override
             public void run() {
-                ((Action) getActions().get(name)).setEnabled(enabled);
-            }
-        });
-    }
-
-    /**
-     * Enabled or disables multiple menu actions.
-     * 
-     * @param names
-     *            the names of the menu actions.
-     * 
-     * @param enabled
-     *            set to {@code true} to enable the actions.
-     */
-    public void setActionsEnabled(final String[] names, final boolean enabled) {
-        invokeLater(new Runnable() {
-
-            @Override
-            public void run() {
-                for (String name : names) {
-                    ((Action) getActions().get(name)).setEnabled(enabled);
+                for (String n : name) {
+                    ((Action) getActions().get(n)).setEnabled(enabled);
                 }
             }
         });
