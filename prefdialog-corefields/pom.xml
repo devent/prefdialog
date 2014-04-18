@@ -16,6 +16,21 @@
 	<url>https://www.anr-institute.com/projects/projects/prefdialog-corefields</url>
 	<inceptionYear>2013</inceptionYear>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.anrisoftware.prefdialog</groupId>
+				<artifactId>prefdialog-core</artifactId>
+				<version>3.0-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.anrisoftware.prefdialog</groupId>
+				<artifactId>prefdialog-misc-swing</artifactId>
+				<version>3.0-SNAPSHOT</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<dependencies>
 
 		<!-- test dependencies -->
@@ -29,8 +44,11 @@
 		<dependency>
 			<groupId>com.anrisoftware.prefdialog</groupId>
 			<artifactId>prefdialog-core</artifactId>
-			<version>3.0-SNAPSHOT</version>
 		</dependency>
+        <dependency>
+            <groupId>com.anrisoftware.prefdialog</groupId>
+            <artifactId>prefdialog-misc-swing</artifactId>
+        </dependency>
 
 		<!-- compile dependencies -->
 		<dependency>
@@ -47,7 +65,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.anrisoftware.globalpom</groupId>
-			<artifactId>globalpom-utils</artifactId>
+			<artifactId>globalpomutils-core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.mangosdk</groupId>
@@ -55,9 +73,8 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>com.anrisoftware.prefdialog</groupId>
-			<artifactId>prefdialog-misc-swing</artifactId>
-			<version>3.0-SNAPSHOT</version>
+			<groupId>com.miglayout</groupId>
+			<artifactId>miglayout-swing</artifactId>
 		</dependency>
 	</dependencies>
 

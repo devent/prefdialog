@@ -27,12 +27,36 @@
 		<url>https://www.anr-institute.com/gitpublic/prefdialog.git/</url>
 	</scm>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.anrisoftware.prefdialog</groupId>
+				<artifactId>prefdialog-corefields</artifactId>
+				<version>3.0-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.anrisoftware.prefdialog</groupId>
+				<artifactId>prefdialog-api</artifactId>
+				<version>3.0-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.anrisoftware.prefdialog</groupId>
+				<artifactId>prefdialog-panel</artifactId>
+				<version>3.0-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.anrisoftware.prefdialog</groupId>
+				<artifactId>prefdialog-misc-swing</artifactId>
+				<version>3.0-SNAPSHOT</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<dependencies>
 		<!-- test dependencies -->
 		<dependency>
 			<groupId>com.anrisoftware.prefdialog</groupId>
 			<artifactId>prefdialog-corefields</artifactId>
-			<version>3.0-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -45,17 +69,14 @@
 		<dependency>
 			<groupId>com.anrisoftware.prefdialog</groupId>
 			<artifactId>prefdialog-api</artifactId>
-			<version>3.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.anrisoftware.prefdialog</groupId>
 			<artifactId>prefdialog-panel</artifactId>
-			<version>3.0-SNAPSHOT</version>
 		</dependency>
         <dependency>
             <groupId>com.anrisoftware.prefdialog</groupId>
             <artifactId>prefdialog-misc-swing</artifactId>
-            <version>3.0-SNAPSHOT</version>
         </dependency>
 
 		<!-- compile dependencies -->

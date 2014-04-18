@@ -15,13 +15,23 @@
 	<description>Miscellaneous swing components.</description>
 	<inceptionYear>2013</inceptionYear>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.anrisoftware.prefdialog</groupId>
+				<artifactId>prefdialog-freepik-basic-application-icons</artifactId>
+				<version>1.0</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<dependencies>
 		<!-- test dependencies -->
 		<dependency>
 			<!-- for dock testing -->
 			<groupId>com.anrisoftware.globalpom</groupId>
 			<artifactId>globalpom-groovytestutils</artifactId>
-			<optional>true</optional>
+			<scope>test</scope>
 		</dependency>
 
 		<!-- compile dependencies -->
@@ -35,7 +45,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.anrisoftware.globalpom</groupId>
-			<artifactId>globalpom-utils</artifactId>
+			<artifactId>globalpomutils-core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.miglayout</groupId>
@@ -68,6 +78,11 @@
 		<dependency>
 			<groupId>com.anrisoftware.resources</groupId>
 			<artifactId>resources-images</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>com.anrisoftware.globalpom</groupId>
+			<artifactId>globalpomutils-threads</artifactId>
 			<optional>true</optional>
 		</dependency>
 
@@ -111,8 +126,13 @@
 		<dependency>
 			<groupId>com.anrisoftware.prefdialog</groupId>
 			<artifactId>prefdialog-freepik-basic-application-icons</artifactId>
-			<version>1.0</version>
-            <optional>true</optional>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>com.anrisoftware.globalpom</groupId>
+			<artifactId>globalpomutils-data</artifactId>
+			<optional>true</optional>
 		</dependency>
 	</dependencies>
+
 </project>

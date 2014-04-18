@@ -32,76 +32,71 @@ import com.anrisoftware.prefdialog.annotations.ListBox
  */
 class ListBoxBean {
 
-	static final ARRAY_ELEMENTS = "arrayElementsBoxNullValue"
+    static final ARRAY_ELEMENTS = "arrayElementsBoxNullValue"
 
-	static final ARRAY_ELEMENTS_SECOND = "arrayElementsBoxValueSecond"
+    static final ARRAY_ELEMENTS_SECOND = "arrayElementsBoxValueSecond"
 
-	static final LIST_ELEMENTS = "listElementsBoxNullValue"
+    static final LIST_ELEMENTS = "listElementsBoxNullValue"
 
-	static final CUSTOM_MODEL_FIELD = "customModelFieldNullValue"
+    static final CUSTOM_MODEL_FIELD = "customModelFieldNullValue"
 
-	static final CUSTOM_MODEL_FIELD_NULL = "customModelFieldNull"
+    static final CUSTOM_MODEL_FIELD_NULL = "customModelFieldNull"
 
-	static final CUSTOM_RENDERER_FIELD = "customRendererField"
+    static final CUSTOM_RENDERER_FIELD = "customRendererField"
 
-	static final CUSTOM_RENDERER_FIELD_NULL = "customRendererFieldNull"
+    static final CUSTOM_RENDERER_FIELD_NULL = "customRendererFieldNull"
 
-	static final CUSTOM_MODEL_CLASS = "customModelClass"
+    static final CUSTOM_MODEL_CLASS = "customModelClass"
 
-	static final CUSTOM_RENDERER_CLASS = "customRendererClass"
+    static final CUSTOM_RENDERER_CLASS = "customRendererClass"
 
-	static final EDITABLE = "editable"
+    static final EDITABLE = "editable"
 
-	@FieldComponent
-	@ListBox(elements = "arrayElements")
-	public String arrayElementsBoxNullValue
+    @FieldComponent
+    @ListBox(elements = "arrayElements")
+    public String arrayElementsBoxNullValue
 
-	@FieldComponent
-	@ListBox(elements = "arrayElements")
-	public String arrayElementsBoxValueSecond = "Two"
+    @FieldComponent
+    @ListBox(elements = "arrayElements")
+    public String arrayElementsBoxValueSecond = "Two"
 
-	public String[] arrayElements = ["One", "Two", "Three"]
+    public String[] arrayElements = ["One", "Two", "Three"]
 
-	@FieldComponent
-	@ListBox(elements = "listElements")
-	public String listElementsBoxNullValue
+    @FieldComponent
+    @ListBox(elements = "listElements")
+    public String listElementsBoxNullValue
 
-	public List listElements = ["One", "Two", "Three"]
+    public List listElements = ["One", "Two", "Three"]
 
-	@FieldComponent
-	@ListBox(model = "modelField")
-	public String customModelFieldNullValue
+    @FieldComponent
+    @ListBox(model = "modelField")
+    public String customModelFieldNullValue
 
-	public ListModel modelField = new CustomListModel()
+    public ListModel modelField = new CustomListModel()
 
-	@FieldComponent
-	@ListBox(model = "modelFieldNull")
-	public String customModelFieldNull
+    @FieldComponent
+    @ListBox(model = "modelFieldNull")
+    public String customModelFieldNull
 
-	public CustomListModel modelFieldNull
+    public CustomListModel modelFieldNull
 
-	@FieldComponent
-	@ListBox(elements = "listElements", renderer = "rendererField")
-	public String customRendererField
+    @FieldComponent
+    @ListBox(elements = "listElements", renderer = "rendererField")
+    public String customRendererField
 
-	public ListCellRenderer rendererField = new CustomCellRenderer()
+    public ListCellRenderer rendererField = new CustomCellRenderer()
 
-	@FieldComponent
-	@ListBox(elements = "listElements", renderer = "rendererFieldNull")
-	public String customRendererFieldNull
+    @FieldComponent
+    @ListBox(elements = "listElements", renderer = "rendererFieldNull")
+    public String customRendererFieldNull
 
-	public CustomCellRenderer rendererFieldNull
+    public CustomCellRenderer rendererFieldNull
 
-	@FieldComponent
-	@ListBox(modelClass = CustomListModel.class)
-	public String customModelClass
+    @FieldComponent
+    @ListBox(modelClass = CustomListModel.class)
+    public String customModelClass
 
-	@FieldComponent
-	@ListBox(elements = "listElements", rendererClass = CustomCellRenderer.class)
-	public String customRendererClass
-
-	@FieldComponent
-	@ListBox(model = "modelField", editable = true)
-	public String editable
+    @FieldComponent
+    @ListBox(elements = "listElements", rendererClass = CustomCellRenderer.class)
+    public String customRendererClass
 }
-
