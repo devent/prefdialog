@@ -36,10 +36,10 @@ import com.anrisoftware.prefdialog.miscswing.resourcesaction.AbstractResourcesAc
  * &#064;SuppressWarnings(&quot;serial&quot;)
  * class ExitAction extends AbstractMenuAction {
  * 
- *     private static final String NAME = &quot;exit_action&quot;;
+ *     private static final String ACTION_NAME = &quot;exit_action&quot;;
  * 
  *     ExitAction() {
- *         super(NAME);
+ *         super(ACTION_NAME);
  *         setEnabled(true);
  *     }
  * }
@@ -71,7 +71,7 @@ public abstract class AbstractMenuAction extends AbstractResourcesAction
      *            the {@link Actions}.
      */
     @Inject
-    void setActions(Actions actions) {
+    public void setActions(Actions actions) {
         this.actions = actions;
     }
 

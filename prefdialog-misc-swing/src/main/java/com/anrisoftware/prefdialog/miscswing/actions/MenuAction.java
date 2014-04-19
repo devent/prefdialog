@@ -29,24 +29,24 @@ import java.util.concurrent.Callable;
  */
 public interface MenuAction {
 
-	/**
-	 * Adds the action to be run.
-	 * 
-	 * @param action
-	 *            the {@link Callable} action.
-	 * 
-	 * @param listeners
-	 *            the {@link PropertyChangeListener} listeners that are informed
-	 *            when the status of the action have changed.
-	 */
-	void addAction(Callable<?> action, PropertyChangeListener... listeners);
+    /**
+     * Adds the action to be run.
+     * 
+     * @param action
+     *            the {@link Callable} action.
+     * 
+     * @param listeners
+     *            the {@link PropertyChangeListener} listeners that are informed
+     *            when the status of the action have changed.
+     */
+    void addAction(Callable<?> action, PropertyChangeListener... listeners);
 
-	/**
-	 * Adds the action to be run on the AWT thread.
-	 * 
-	 * @param action
-	 *            the {@link Runnable} action.
-	 */
-	void addAWTAction(Runnable action);
+    /**
+     * Adds the action to be run on the AWT thread.
+     * 
+     * @param action
+     *            the {@link Runnable} action.
+     */
+    void addAWTAction(Runnable action);
 
 }

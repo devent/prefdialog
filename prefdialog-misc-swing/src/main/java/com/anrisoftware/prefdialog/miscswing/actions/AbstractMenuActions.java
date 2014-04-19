@@ -37,7 +37,6 @@ import com.anrisoftware.resources.texts.api.Texts;
  * <p>
  * 
  * <pre>
- * &#064;Singleton
  * public class FileMenuActions extends AbstractMenuActions {
  * 
  *     public static final String FILE_MENU_NAME = &quot;fileMenuMenu&quot;;
@@ -48,7 +47,6 @@ import com.anrisoftware.resources.texts.api.Texts;
  * 
  *     private Map&lt;String, MenuAction&gt; actions;
  * 
- *     &#064;Inject
  *     void setTexts(TextsProvider texts) {
  *         super.setTexts(texts);
  *     }
