@@ -133,6 +133,12 @@
 			<artifactId>globalpomutils-data</artifactId>
 			<optional>true</optional>
 		</dependency>
+
+        <!-- for status bar -->
+		<dependency>
+			<groupId>org.antlr</groupId>
+			<artifactId>ST4</artifactId>
+		</dependency>
 	</dependencies>
 
 </project>
