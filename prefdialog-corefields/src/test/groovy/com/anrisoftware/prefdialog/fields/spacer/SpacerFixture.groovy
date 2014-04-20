@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2013 Erwin Müller <erwin.mueller@deventm.org>
+ * Copyright 2013-2014 Erwin Müller <erwin.mueller@deventm.org>
  *
  * This file is part of prefdialog-corefields.
  *
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-corefields. If not, see <http://www.gnu.org/licenses/>.
  */
-
 
 package com.anrisoftware.prefdialog.fields.spacer
 
