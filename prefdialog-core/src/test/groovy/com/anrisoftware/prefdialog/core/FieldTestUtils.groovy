@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2013 Erwin Müller <erwin.mueller@deventm.org>
+ * Copyright 2012-2014 Erwin Müller <erwin.mueller@deventm.org>
  *
  * This file is part of prefdialog-core.
  *
@@ -26,8 +26,6 @@ import javax.swing.JLabel
 import javax.swing.JPanel
 import javax.swing.JTextField
 
-import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule
-import com.anrisoftware.globalpom.reflection.beans.BeansModule
 import com.anrisoftware.globalpom.utils.TestUtils
 import com.anrisoftware.prefdialog.fields.FieldComponent
 import com.anrisoftware.resources.images.api.Images
@@ -50,68 +48,68 @@ import com.google.inject.Injector
  */
 class FieldTestUtils {
 
-	static {
-		TestUtils.toStringStyle
-	}
+    static {
+        TestUtils.toStringStyle
+    }
 
-	static Injector createInjector() {
-		Guice.createInjector new MockModule(), new AnnotationsModule(), new BeansModule()
-	}
+    static Injector createInjector() {
+        Guice.createInjector new MockModule(), new CoreFieldComponentModule()
+    }
 
-	static Texts createTextsResource(Injector injector) {
-		Injector childInjector = injector.createChildInjector(
-				new TextsResourcesDefaultModule())
-		TextsFactory factory = childInjector.getInstance TextsFactory
-		factory.create "Texts"
-	}
+    static Texts createTextsResource(Injector injector) {
+        Injector childInjector = injector.createChildInjector(
+                new TextsResourcesDefaultModule())
+        TextsFactory factory = childInjector.getInstance TextsFactory
+        factory.create "Texts"
+    }
 
-	static Images createImagesResource(Injector injector) {
-		Injector childInjector = injector.createChildInjector(
-				new ImagesResourcesModule(),
-				new ResourcesImagesMapsModule(),
-				new ResourcesSmoothScalingModule())
-		ImagesFactory factory = childInjector.getInstance ImagesFactory
-		factory.create "Icons"
-	}
+    static Images createImagesResource(Injector injector) {
+        Injector childInjector = injector.createChildInjector(
+                new ImagesResourcesModule(),
+                new ResourcesImagesMapsModule(),
+                new ResourcesSmoothScalingModule())
+        ImagesFactory factory = childInjector.getInstance ImagesFactory
+        factory.create "Icons"
+    }
 
-	static assertField(Map attributes, FieldComponent field) {
-		Map map = [
-			showTitle: true,
-			toolTip: null,
-			titlePosition: TEXT_ONLY,
-			readOnly: false,
-			width: -1.0d,
-			icon: { },
-			iconSize: SMALL,
-			locale: Locale.getDefault()
-		]
-		map.putAll attributes
-		assert field.name == map.name
-		assert field.title == map.title
-		assert field.showTitle == map.showTitle
-		assert field.toolTipText == map.toolTip
-		assert field.titlePosition == map.titlePosition
-		assert field.enabled == !map.readOnly
-		assert field.width == map.width
-		map.icon(field.icon)
-		assert field.iconSize == map.iconSize
-		assert field.locale == map.locale
-	}
+    static assertField(Map attributes, FieldComponent field) {
+        Map map = [
+            showTitle: true,
+            toolTip: null,
+            titlePosition: TEXT_ONLY,
+            readOnly: false,
+            width: -2.0d,
+            icon: { },
+            iconSize: SMALL,
+            locale: Locale.getDefault()
+        ]
+        map.putAll attributes
+        assert field.name == map.name
+        assert field.title == map.title
+        assert field.showTitle == map.showTitle
+        assert field.toolTipText == map.toolTip
+        assert field.titlePosition == map.titlePosition
+        assert field.enabled == !map.readOnly
+        assert field.width == map.width
+        map.icon(field.icon)
+        assert field.iconSize == map.iconSize
+        assert field.locale == map.locale
+    }
 
-	static JLabel createLabel() {
-		def label = new JLabel()
-		label.setBorder BorderFactory.createEtchedBorder()
-		return label
-	}
+    static JLabel createLabel() {
+        def label = new JLabel()
+        label.setBorder BorderFactory.createEtchedBorder()
+        return label
+    }
 
-	static createTextField() {
-		def field = new JTextField()
-		return field
-	}
+    static createTextField() {
+        def field = new JTextField()
+        return field
+    }
 
-	static JPanel createContainer() {
-		def panel = new JPanel()
-		panel.setBorder BorderFactory.createEtchedBorder()
-		return panel
-	}
+    static JPanel createContainer() {
+        def panel = new JPanel()
+        panel.setBorder BorderFactory.createEtchedBorder()
+        return panel
+    }
 }
