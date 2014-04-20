@@ -7,6 +7,7 @@
 		<groupId>com.anrisoftware.prefdialog</groupId>
 		<artifactId>prefdialog-parent</artifactId>
 		<version>3.0-SNAPSHOT</version>
+		<relativePath>../prefdialog-parent</relativePath>
 	</parent>
 
 	<artifactId>prefdialog-api</artifactId>
