@@ -20,7 +20,7 @@
 			<dependency>
 				<groupId>com.anrisoftware.prefdialog</groupId>
 				<artifactId>prefdialog-freepik-basic-application-icons</artifactId>
-				<version>1.0</version>
+				<version>3.0-SNAPSHOT</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

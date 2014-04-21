@@ -34,26 +34,26 @@ import com.anrisoftware.globalpom.utils.TestFrameUtil
 
 class GradientBackgroundPanelTest {
 
-	@Test
-	void "gray gradient panel"() {
-		String title = "GradientBackgroundPanelTest::gray gradient panel"
-		def panel = new JPanel()
-		panel.setUI new GradientBackgroundPanelUi()
-		def frame = createFrame title, panel
-		frame.withFixture { Thread.sleep 60 * 1000 }
-	}
+    @Test
+    void "gray gradient panel"() {
+        String title = "GradientBackgroundPanelTest::gray gradient panel"
+        def panel = new JPanel()
+        panel.setUI new GradientBackgroundPanelUi()
+        def frame = createFrame title, panel
+        frame.withFixture { }
+    }
 
-	TestFrameUtil createFrame(String title, JPanel panel) {
-		panel.setLayout new BorderLayout()
-		def someStuff = new JPanel()
-		someStuff.opaque = false
-		someStuff.setLayout new MigLayout()
-		someStuff.add new JLabel("Hello"), "wrap"
-		someStuff.add new JButton("Hello"), "wrap"
-		someStuff.add new JTextField("Hello"), "wrap"
-		panel.add someStuff
-		def frame = new TestFrameUtil(title, panel)
-		frame.frameSize = new Dimension(480, 360)
-		frame
-	}
+    TestFrameUtil createFrame(String title, JPanel panel) {
+        panel.setLayout new BorderLayout()
+        def someStuff = new JPanel()
+        someStuff.opaque = false
+        someStuff.setLayout new MigLayout()
+        someStuff.add new JLabel("Hello"), "wrap"
+        someStuff.add new JButton("Hello"), "wrap"
+        someStuff.add new JTextField("Hello"), "wrap"
+        panel.add someStuff
+        def frame = new TestFrameUtil(title, panel)
+        frame.frameSize = new Dimension(480, 360)
+        frame
+    }
 }
