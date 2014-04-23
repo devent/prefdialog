@@ -25,6 +25,7 @@ import info.clearthought.layout.TableLayout;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dimension;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -40,71 +41,97 @@ import javax.swing.JScrollPane;
  */
 @SuppressWarnings("serial")
 public abstract class AbstractTitleScrollField<ComponentType extends Component>
-		extends AbstractTitleField<ComponentType> {
+        extends AbstractTitleField<ComponentType> {
 
-	private static final String FIELD_SCROLL_NAME = "scrollpane";
+    private static final String FIELD_SCROLL_NAME = "scrollpane";
 
-	private final JScrollPane fieldScroll;
+    private final JScrollPane fieldScroll;
 
-	private final TableLayout layout;
+    private final TableLayout layout;
 
-	/**
-	 * @see AbstractContainerField#AbstractContainerField(Component, Object,
-	 *      String)
-	 */
-	protected AbstractTitleScrollField(ComponentType component,
-			Object parentObject, String fieldName) {
-		super(component, parentObject, fieldName);
-		this.fieldScroll = new JScrollPane();
-		this.layout = createLayout();
-		setup();
-	}
+    /**
+     * @see AbstractContainerField#AbstractContainerField(Component, Object,
+     *      String)
+     */
+    protected AbstractTitleScrollField(ComponentType component,
+            Object parentObject, String fieldName) {
+        super(component, parentObject, fieldName);
+        this.fieldScroll = new JScrollPane();
+        this.layout = createLayout();
+        setup();
+    }
 
-	private void setup() {
-		setupContainer();
-		setupFieldScroll();
-	}
+    private void setup() {
+        setupContainer();
+        setupFieldScroll();
+    }
 
-	private TableLayout createLayout() {
-		double[] col = { FILL };
-		double[] row = { PREFERRED, PREFERRED };
-		return new TableLayout(col, row);
-	}
+    private TableLayout createLayout() {
+        double[] col = { FILL };
+        double[] row = { PREFERRED, PREFERRED };
+        return new TableLayout(col, row);
+    }
 
-	private void setupFieldScroll() {
-		fieldScroll.setViewportView(getComponent());
-	}
+    private void setupFieldScroll() {
+        fieldScroll.setViewportView(getComponent());
+    }
 
-	@Override
-	public void setName(String name) {
-		super.setName(name);
-		fieldScroll.setName(format("%s-%s", name, FIELD_SCROLL_NAME));
-	}
+    @Override
+    public void setName(String name) {
+        super.setName(name);
+        fieldScroll.setName(format("%s-%s", name, FIELD_SCROLL_NAME));
+    }
 
-	@Override
-	public void setEnabled(boolean enabled) {
-		super.setEnabled(enabled);
-		fieldScroll.setEnabled(enabled);
-	}
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        fieldScroll.setEnabled(enabled);
+    }
 
-	@Override
-	public void setContainer(JPanel container) {
-		super.setContainer(container);
-		setupContainer();
-	}
+    @Override
+    public void setContainer(JPanel container) {
+        super.setContainer(container);
+        setupContainer();
+    }
 
-	@Override
-	public void setComponent(ComponentType component) {
-		super.setComponent(component);
-		setupContainer();
-	}
+    @Override
+    public void setComponent(ComponentType component) {
+        super.setComponent(component);
+        setupContainer();
+    }
 
-	private void setupContainer() {
-		Container container = getContainer();
-		container.removeAll();
-		container.setLayout(layout);
-		container.add(getTitleLabel(), "0, 0");
-		container.add(fieldScroll, "0, 1");
-	}
+    @Override
+    public void setWidth(Number width) {
+        super.setWidth(width);
+        int w = width.intValue();
+        if (w == PREFERRED || w == FILL) {
+            return;
+        }
+        int height = fieldScroll.getPreferredSize().height;
+        fieldScroll.setPreferredSize(new Dimension(w, height));
+    }
+
+    @Override
+    public void setHeight(Number height) {
+        super.setHeight(height);
+        int h = height.intValue();
+        if (h == PREFERRED || h == FILL) {
+            return;
+        }
+        int width = fieldScroll.getPreferredSize().width;
+        fieldScroll.setPreferredSize(new Dimension(width, h));
+    }
+
+    public JScrollPane getFieldScroll() {
+        return fieldScroll;
+    }
+
+    private void setupContainer() {
+        Container container = getContainer();
+        container.removeAll();
+        container.setLayout(layout);
+        container.add(getTitleLabel(), "0, 0");
+        container.add(fieldScroll, "0, 1");
+    }
 
 }
