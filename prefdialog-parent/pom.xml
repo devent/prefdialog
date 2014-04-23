@@ -103,12 +103,12 @@
 			<dependency>
 				<groupId>org.dockingframes</groupId>
 				<artifactId>docking-frames-core</artifactId>
-				<version>1.1.2-p8d</version>
+				<version>1.1.2-p10g</version>
 			</dependency>
 			<dependency>
 				<groupId>org.dockingframes</groupId>
 				<artifactId>docking-frames-common</artifactId>
-				<version>1.1.2-p8d</version>
+				<version>1.1.2-p10g</version>
 			</dependency>
 			<dependency>
 				<groupId>com.anrisoftware.globalpom</groupId>

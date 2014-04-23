@@ -87,9 +87,6 @@ class DocksPositionTest extends DocksTestBase {
                 testing.dock.addEditorDock createEditorDock(number++)
                 testing.dock.addEditorDock createEditorDock(number++)
             }
-        }, {
-            log.info "Set new layout"
-            invokeAndWait { testing.dock.applyLayout defaultLayout }
         })
     }
 
