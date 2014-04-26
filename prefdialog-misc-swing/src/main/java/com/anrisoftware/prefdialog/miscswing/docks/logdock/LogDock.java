@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-misc-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.miscswing.docks.problemsdock;
+package com.anrisoftware.prefdialog.miscswing.docks.logdock;
 
 import java.awt.Component;
 import java.util.List;
@@ -26,27 +26,27 @@ import javax.inject.Inject;
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 import com.anrisoftware.prefdialog.miscswing.docks.api.DockPosition;
 import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.dock.AbstractViewDockWindow;
-import com.anrisoftware.prefdialog.miscswing.problemspane.CategoryNode;
-import com.anrisoftware.prefdialog.miscswing.problemspane.MessageNode;
-import com.anrisoftware.prefdialog.miscswing.problemspane.ProblemsPane;
+import com.anrisoftware.prefdialog.miscswing.logpane.CategoryNode;
+import com.anrisoftware.prefdialog.miscswing.logpane.LogPane;
+import com.anrisoftware.prefdialog.miscswing.logpane.MessageNode;
 import com.anrisoftware.resources.texts.api.Texts;
 
 /**
- * Problems dock. Uses a tree table to display messages ordered in categories.
+ * Log dock. Uses a tree table to display messages ordered in categories.
  * 
- * @see ProblemsPane
+ * @see LogPane
  * 
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
 @SuppressWarnings("serial")
-public class ProblemsDock extends AbstractViewDockWindow {
+public class LogDock extends AbstractViewDockWindow {
 
-    private final ProblemsPane pane;
+    private final LogPane pane;
 
     @Inject
     @OnAwt
-    ProblemsDock(ProblemsPane pane) {
+    LogDock(LogPane pane) {
         this.pane = pane;
     }
 
@@ -87,7 +87,7 @@ public class ProblemsDock extends AbstractViewDockWindow {
 
     @Override
     public Component getComponent() {
-        return pane.getAwtComponent();
+        return pane.getComponent();
     }
 
     @Override
