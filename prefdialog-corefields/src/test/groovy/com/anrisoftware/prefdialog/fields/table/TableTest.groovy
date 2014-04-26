@@ -126,6 +126,20 @@ class TableTest extends FieldTestUtils {
         })
     }
 
+    @Test
+    void "custom string editor class"() {
+        def title = "$NAME::custom string editor class"
+        def fieldName = "stringDefaultEditorClass"
+        def field = factory.create(bean, fieldName)
+        def container = field.getAWTComponent()
+
+        frameTestingFactory.create(createComponent: { frame -> container })().withFixture({ //.
+            FrameFixture fix ->
+            fix.table fieldName requireColumnCount(4)
+            fix.table fieldName requireRowCount(4)
+        })
+    }
+
     static final String NAME = TableTest.class.simpleName
 
     static Injector injector

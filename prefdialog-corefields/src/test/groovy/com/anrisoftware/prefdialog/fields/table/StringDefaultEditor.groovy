@@ -18,44 +18,39 @@
  */
 package com.anrisoftware.prefdialog.fields.table
 
-import javax.swing.table.DefaultTableModel
+import java.awt.Component
+
+import javax.swing.DefaultCellEditor
+import javax.swing.JTable
+import javax.swing.JTextField
+import javax.swing.table.TableCellEditor
+
+import org.apache.commons.lang3.StringUtils
+
+import com.anrisoftware.prefdialog.annotations.TypedTableCellEditor
 
 /**
- * Custom table model with a public standard constructor.
+ * Custom table column editor with a public standard constructor.
  *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-class MyTableModel extends DefaultTableModel {
+class StringDefaultEditor implements TypedTableCellEditor {
 
-    MyTableModel() {
-        super([
-            "One",
-            "Two",
-            "Three",
-            "Four"] as Object[], 0)
-        addRow(["aaa1", "bbb1", 1/5, false] as Object[])
-        addRow(["aaa2", "bbb2", 1/4, true] as Object[])
-        addRow(["aaa3", "bbb3", 1/3, false] as Object[])
-        addRow(["aaa4", "bbb4", 1/2, true] as Object[])
+    @Override
+    Class<?> getType() {
+        return String.class;
     }
 
     @Override
-    Class<?> getColumnClass(int column) {
-        switch (column) {
-            case 0:
-                return String.class;
-            case 1:
-                return String.class;
-            case 2:
-                return Double.class;
-            case 3:
-                return Boolean.class;
-        }
-    }
-
-    @Override
-    boolean isCellEditable(int row, int column) {
-        return true
+    public TableCellEditor getEditor() {
+        return new DefaultCellEditor(new JTextField()) {
+            Component getTableCellEditorComponent(JTable table, Object value,
+                    boolean isSelected, int row, int column) {
+                def v = StringUtils.upperCase(value.toString())
+                def component = super.getTableCellEditorComponent(table, v, isSelected, row, column)
+                return component
+            };
+        };
     }
 }

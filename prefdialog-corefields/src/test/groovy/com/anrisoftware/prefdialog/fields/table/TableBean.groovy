@@ -63,4 +63,14 @@ class TableBean {
     @FieldComponent
     @Table(modelClass = MyTableModel.class, rendererClasses = [StringDefaultRenderer.class, DoubleDefaultRenderer.class])
     public Object multipleDefaultRendererClasses
+
+    @Inject
+    public StringDefaultEditor stringDefaultEditor
+
+    @Inject
+    public DoubleDefaultEditor doubleDefaultEditor
+
+    @FieldComponent
+    @Table(modelClass = MyTableModel.class, editorClasses = StringDefaultEditor.class)
+    public Object stringDefaultEditorClass
 }

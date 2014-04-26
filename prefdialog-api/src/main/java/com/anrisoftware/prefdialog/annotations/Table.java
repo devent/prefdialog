@@ -92,22 +92,21 @@ public @interface Table {
     Class<? extends TypedTableCellRenderer>[] rendererClasses() default {};
 
     /**
-     * The name of the field name to use for the custom
-     * {@link TypedTableCellEditor}. The table cell editor is set for the
-     * returned cell type. Defaults to an empty name which means no field is
-     * set.
+     * The names of the field names to use for the custom
+     * {@link TypedTableCellEditor} default cell editors. The table cell editors
+     * are set for the returned cell type.
      * 
      * @see DefaultTypedTableCellEditor
      */
-    String editor() default "";
+    String[] editors() default {};
 
     /**
-     * The custom {@link TypedTableCellEditor} to use with this table field. The
-     * table cell editor is set for the returned cell type. The editor must have
-     * the default constructor available for instantiation.
+     * The custom {@link TypedTableCellEditor} editors to use with this table
+     * field. The table cell editors are set for the returned cell type. The
+     * editors must have the default constructor available for instantiation.
      * 
      * @see DefaultTypedTableCellEditor
      */
-    Class<? extends TypedTableCellEditor>[] editorClass() default {};
+    Class<? extends TypedTableCellEditor>[] editorClasses() default {};
 
 }

@@ -60,7 +60,9 @@ public abstract class AbstractTableField<ComponentType extends JTable> extends
 
     private static final String MODEL_ELEMENT = "model";
 
-    private static final String EDITOR_ELEMENT = "editor";
+    private static final String EDITORS_ELEMENT = "editors";
+
+    private static final String EDITOR_CLASSES_ELEMENT = "editorClasses";
 
     private AbstractTableFieldLogger log;
 
@@ -108,7 +110,8 @@ public abstract class AbstractTableField<ComponentType extends JTable> extends
         setupModel();
         setupRenderersFields();
         setupRenderersClasses();
-        setupEditor();
+        setupEditorsFields();
+        setupEditorsClasses();
     }
 
     private AnnotationClass<?> createAnnotationClass(
@@ -129,14 +132,6 @@ public abstract class AbstractTableField<ComponentType extends JTable> extends
         setModel(model);
     }
 
-    private void setupEditor() {
-        TypedTableCellEditor editor = (TypedTableCellEditor) annotationClass
-                .forAttribute(EDITOR_ELEMENT).build();
-        if (editor != null) {
-            setDefaultEditor(editor.getType(), editor.getEditor());
-        }
-    }
-
     private void setupRenderersFields() {
         String[] renderers = annotationAccess.getValue(RENDERERS_ELEMENT);
         for (String name : renderers) {
@@ -154,6 +149,26 @@ public abstract class AbstractTableField<ComponentType extends JTable> extends
         for (Class<? extends TypedTableCellRenderer> type : renderers) {
             TypedTableCellRenderer renderer = getBeanFactory().create(type);
             setDefaultRenderer(renderer.getType(), renderer.getRenderer());
+        }
+    }
+
+    private void setupEditorsFields() {
+        String[] editors = annotationAccess.getValue(EDITORS_ELEMENT);
+        for (String name : editors) {
+            BeanAccess access = beanAccessFactory.create(name,
+                    getParentObject());
+            TypedTableCellEditor editor = access.getValue();
+            log.checkRenderer(this, editor, name);
+            setDefaultEditor(editor.getType(), editor.getEditor());
+        }
+    }
+
+    private void setupEditorsClasses() {
+        Class<? extends TypedTableCellEditor>[] editors = annotationAccess
+                .getValue(EDITOR_CLASSES_ELEMENT);
+        for (Class<? extends TypedTableCellEditor> type : editors) {
+            TypedTableCellEditor editor = getBeanFactory().create(type);
+            setDefaultEditor(editor.getType(), editor.getEditor());
         }
     }
 
