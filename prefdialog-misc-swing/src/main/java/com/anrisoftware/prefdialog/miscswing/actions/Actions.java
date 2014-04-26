@@ -20,14 +20,20 @@ package com.anrisoftware.prefdialog.miscswing.actions;
 
 import static javax.swing.SwingUtilities.invokeLater;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 import com.anrisoftware.globalpom.threads.api.Threads;
 
@@ -60,11 +66,30 @@ public class Actions {
 
     private final Map<String, List<Runnable>> awtActions;
 
+    private final PropertyChangeListener actionListener;
+
+    @Inject
+    private ActionsLogger log;
+
     private Threads threads;
 
     Actions() {
         this.actions = new HashMap<String, List<ActionEntry>>();
         this.awtActions = new HashMap<String, List<Runnable>>();
+        this.actionListener = new PropertyChangeListener() {
+
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                Future<?> future = (Future<?>) evt.getSource();
+                try {
+                    future.get();
+                } catch (InterruptedException e) {
+                    log.taskInterrupted(future, e);
+                } catch (ExecutionException e) {
+                    log.taskError(future, e.getCause());
+                }
+            }
+        };
     }
 
     /**
@@ -116,7 +141,8 @@ public class Actions {
     public void executeActions(String name) {
         if (actions.containsKey(name)) {
             for (ActionEntry entry : actionEntries(name)) {
-                threads.submit(entry.action, entry.listeners);
+                threads.submit(entry.action,
+                        appendActionListener(entry.listeners));
             }
         } else {
             executeActionsonAWT(name);
@@ -152,4 +178,10 @@ public class Actions {
         }
         return entries;
     }
+
+    private PropertyChangeListener[] appendActionListener(
+            PropertyChangeListener[] listeners) {
+        return ArrayUtils.add(listeners, actionListener);
+    }
+
 }
