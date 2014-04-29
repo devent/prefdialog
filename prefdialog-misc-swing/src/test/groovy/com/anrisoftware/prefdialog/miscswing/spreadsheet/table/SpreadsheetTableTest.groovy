@@ -42,64 +42,64 @@ import com.google.inject.Injector
  */
 class SpreadsheetTableTest {
 
-	@Test
-	void "show"() {
-		def title = "$NAME::show"
-		def model = new NumbersModel(3, 128)
-		def table
-		def spreadsheet
-		def panel
-		invokeAndWait {
-			table = new SheetTable(model)
-			spreadsheet = factory.create(table)
-			panel = createTablePanel(table)
-		}
-		new TestFrameUtil(title, panel).withFixture({})
-	}
+    @Test
+    void "show"() {
+        def title = "$NAME::show"
+        def model = new NumbersModel(3, 128)
+        def table
+        def spreadsheet
+        def panel
+        invokeAndWait {
+            table = new SheetTable(model)
+            spreadsheet = factory.create(table)
+            panel = createTablePanel(table)
+        }
+        new TestFrameUtil(title, panel).withFixture({})
+    }
 
-	@Test
-	void "manually"() {
-		//setLookAndFeel GTK_LOOK_AND_FEEL
-		//setLookAndFeel SUBSTANCE_BUSINESS_LOOK_AND_FEEL
-		//setLookAndFeel NIMBUS_LOOK_AND_FEEL
-		def title = "$NAME::manually"
-		def model = new NumbersModel(3, 128)
-		def table
-		def spreadsheet
-		def panel
-		invokeAndWait {
-			table = new SheetTable(model)
-			table.setCellSelectionEnabled(true)
-			table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION)
-			spreadsheet = factory.create(table)
-			panel = createTablePanel(table)
-		}
-		new TestFrameUtil(title, panel).withFixture({
-			Thread.sleep 60*1000
-			assert false : "Deactivate manually test"
-		})
-	}
+    //@Test
+    void "manually"() {
+        //setLookAndFeel GTK_LOOK_AND_FEEL
+        //setLookAndFeel SUBSTANCE_BUSINESS_LOOK_AND_FEEL
+        //setLookAndFeel NIMBUS_LOOK_AND_FEEL
+        def title = "$NAME::manually"
+        def model = new NumbersModel(3, 128)
+        def table
+        def spreadsheet
+        def panel
+        invokeAndWait {
+            table = new SheetTable(model)
+            table.setCellSelectionEnabled(true)
+            table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION)
+            spreadsheet = factory.create(table)
+            panel = createTablePanel(table)
+        }
+        new TestFrameUtil(title, panel).withFixture({
+            Thread.sleep 60*1000
+            assert false : "Deactivate manually test"
+        })
+    }
 
-	static Injector injector
+    static Injector injector
 
-	static SpreadsheetTableFactory factory
+    static SpreadsheetTableFactory factory
 
-	static final String NAME = SpreadsheetTableTest.class.simpleName
+    static final String NAME = SpreadsheetTableTest.class.simpleName
 
-	@BeforeClass
-	static void createFactories() {
-		injector = createInjector()
-		factory = injector.getInstance SpreadsheetTableFactory
-	}
+    @BeforeClass
+    static void createFactories() {
+        injector = createInjector()
+        factory = injector.getInstance SpreadsheetTableFactory
+    }
 
-	static Injector createInjector() {
-		Guice.createInjector(new SpreadsheetTableModule())
-	}
+    static Injector createInjector() {
+        Guice.createInjector(new SpreadsheetTableModule())
+    }
 
-	static JPanel createTablePanel(def table) {
-		def panel = new JPanel(new BorderLayout())
-		def scroll = new JScrollPane(table)
-		panel.add scroll, BorderLayout.CENTER
-		panel
-	}
+    static JPanel createTablePanel(def table) {
+        def panel = new JPanel(new BorderLayout())
+        def scroll = new JScrollPane(table)
+        panel.add scroll, BorderLayout.CENTER
+        panel
+    }
 }
