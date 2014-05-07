@@ -45,6 +45,7 @@ import org.jfree.chart.axis.NumberTickUnit;
 import org.jfree.chart.event.RendererChangeEvent;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.data.Range;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
@@ -105,6 +106,8 @@ public class FreechartXYChart implements Chart {
 
     private ExecutorService pool;
 
+    private Range rangeAxis;
+
     /**
      * @see FreechartXYChartFactory#create(String, JFreeChart)
      */
@@ -115,6 +118,7 @@ public class FreechartXYChart implements Chart {
         this.panel = new ChartPanel(chart);
         this.chart = chart;
         this.forkLimitCount = 256;
+        this.rangeAxis = null;
         resolveObject();
     }
 
@@ -258,6 +262,9 @@ public class FreechartXYChart implements Chart {
         }
         ChartPanel panel = this.panel;
         panel.restoreAutoRangeBounds();
+        if (rangeAxis != null) {
+            chart.getXYPlot().getRangeAxis().setRange(rangeAxis);
+        }
     }
 
     @OnAwt
@@ -268,6 +275,13 @@ public class FreechartXYChart implements Chart {
         float zoom = factor < 0 ? 1.25f : 0.75f;
         size = round(size * zoom);
         setViewMaximum(size);
+    }
+
+    @Override
+    @OnAwt
+    public void setRangeAxisRange(double lower, double upper) {
+        this.rangeAxis = new Range(lower, upper);
+        setAutoZoomRange(true);
     }
 
     @Override

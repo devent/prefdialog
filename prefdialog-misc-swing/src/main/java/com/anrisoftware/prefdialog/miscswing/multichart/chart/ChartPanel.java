@@ -182,6 +182,22 @@ public interface ChartPanel {
     void setZoomDomain(int factor);
 
     /**
+     * Sets the range of the range axis. If the range is set then the zoom will
+     * not exceed it.
+     * 
+     * <h2>AWT Thread</h2>
+     * <p>
+     * Should be called in the AWT thread.
+     * 
+     * @param min
+     *            the minimum value.
+     * 
+     * @param max
+     *            the maximum value.
+     */
+    void setRangeAxisRange(double lower, double upper);
+
+    /**
      * Sets the maximum rows of the view for auto-zoom.
      * 
      * @param maximum

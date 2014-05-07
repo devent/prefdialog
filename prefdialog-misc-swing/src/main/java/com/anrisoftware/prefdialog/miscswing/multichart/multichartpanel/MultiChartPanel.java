@@ -282,6 +282,14 @@ public class MultiChartPanel implements ChartPanel {
 
     @Override
     @OnAwt
+    public void setRangeAxisRange(double lower, double upper) {
+        for (Chart chart : charts) {
+            chart.setRangeAxisRange(lower, upper);
+        }
+    }
+
+    @Override
+    @OnAwt
     public void setAutoZoomDomain(boolean flag) {
         for (Chart chart : charts) {
             chart.setAutoZoomDomain(flag);
