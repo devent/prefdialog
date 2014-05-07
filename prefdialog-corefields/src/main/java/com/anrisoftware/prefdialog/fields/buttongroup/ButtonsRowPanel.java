@@ -44,145 +44,154 @@ import javax.swing.event.ListDataListener;
 @SuppressWarnings("serial")
 public class ButtonsRowPanel extends JPanel {
 
-	private TableLayout layout;
+    private TableLayout layout;
 
-	private String name;
+    private String name;
 
-	private final ListDataListener actionsListener;
+    private final ListDataListener actionsListener;
 
-	private final List<JButton> buttons;
+    private final List<JButton> buttons;
 
-	private ListModel<Action> model;
+    private ListModel<Action> model;
 
-	/**
-	 * Create the {@link JPanel} and sets a one-row {@link TableLayout}.
-	 */
-	ButtonsRowPanel() {
-		this.name = "";
-		this.buttons = new ArrayList<JButton>();
-		this.actionsListener = new ListDataListener() {
+    /**
+     * Create the {@link JPanel} and sets a one-row {@link TableLayout}.
+     */
+    ButtonsRowPanel() {
+        this.name = "";
+        this.buttons = new ArrayList<JButton>();
+        this.actionsListener = new ListDataListener() {
 
-			@Override
-			public void intervalRemoved(ListDataEvent e) {
-				removeInterval(e.getIndex0(), e.getIndex1());
-			}
+            @Override
+            public void intervalRemoved(ListDataEvent e) {
+                removeInterval(e.getIndex0(), e.getIndex1());
+            }
 
-			@Override
-			public void intervalAdded(ListDataEvent e) {
-				addInterval(e.getIndex0(), e.getIndex1());
-			}
+            @Override
+            public void intervalAdded(ListDataEvent e) {
+                addInterval(e.getIndex0(), e.getIndex1());
+            }
 
-			@Override
-			public void contentsChanged(ListDataEvent e) {
-				replaceInterval(e.getIndex0(), e.getIndex1());
-			}
-		};
-		setup();
-	}
+            @Override
+            public void contentsChanged(ListDataEvent e) {
+                replaceInterval(e.getIndex0(), e.getIndex1());
+            }
+        };
+        setup();
+    }
 
-	private void setup() {
-		double[] col = {};
-		double[] row = { TableLayout.PREFERRED };
-		layout = new TableLayout(col, row);
-		layout.setHGap(3);
-		setLayout(layout);
-	}
+    private void setup() {
+        double[] col = {};
+        double[] row = { TableLayout.PREFERRED };
+        layout = new TableLayout(col, row);
+        layout.setHGap(3);
+        setLayout(layout);
+    }
 
-	private void removeInterval(int index0, int index1) {
-		for (int i = index0; i < index1; i++) {
-			JButton button = buttons.get(i);
-			remove(button);
-			buttons.remove(i);
-			layout.deleteColumn(i);
-		}
-		updateButtonNames();
-		updateLayout();
-	}
+    private void removeInterval(int index0, int index1) {
+        for (int i = index0; i < index1; i++) {
+            JButton button = buttons.get(i);
+            remove(button);
+            buttons.remove(i);
+            layout.deleteColumn(i);
+        }
+        updateButtonNames();
+        updateLayout();
+    }
 
-	private void addInterval(int index0, int index1) {
-		for (int i = index0; i < index1; i++) {
-			layout.insertColumn(i, PREFERRED);
-			JButton button = new JButton(model.getElementAt(i));
-			add(button, format("%d, 0", i));
-			buttons.add(button);
-		}
-		updateButtonNames();
-		updateLayout();
-	}
+    private void addInterval(int index0, int index1) {
+        for (int i = index0; i < index1; i++) {
+            layout.insertColumn(i, PREFERRED);
+            JButton button = new JButton(model.getElementAt(i));
+            add(button, format("%d, 0", i));
+            buttons.add(button);
+        }
+        updateButtonNames();
+        updateLayout();
+    }
 
-	private void replaceInterval(int index0, int index1) {
-		for (int i = index0; i < index1; i++) {
-			JButton button = buttons.get(i);
-			remove(button);
-			button = new JButton(model.getElementAt(i));
-			add(button, format("%d, 0", i));
-			buttons.set(i, button);
-		}
-		updateButtonNames();
-		updateLayout();
-	}
+    private void replaceInterval(int index0, int index1) {
+        for (int i = index0; i < index1; i++) {
+            JButton button = buttons.get(i);
+            remove(button);
+            button = new JButton(model.getElementAt(i));
+            add(button, format("%d, 0", i));
+            buttons.set(i, button);
+        }
+        updateButtonNames();
+        updateLayout();
+    }
 
-	private void updateLayout() {
-		layout.layoutContainer(this);
-		repaint();
-	}
+    private void updateLayout() {
+        layout.layoutContainer(this);
+        repaint();
+    }
 
-	/**
-	 * Sets the model that contains the button actions.
-	 * 
-	 * @param newModel
-	 *            the {@link ListModel}.
-	 * 
-	 * @throws NullPointerException
-	 *             if the specified model is {@code null}.
-	 */
-	public void setModel(ListModel<Action> newModel) {
-		notNull(newModel, "The model cannot be null.");
-		if (model == newModel) {
-			return;
-		}
-		replaceModel(newModel);
-	}
+    /**
+     * Sets the model that contains the button actions.
+     * 
+     * @param newModel
+     *            the {@link ListModel}.
+     * 
+     * @throws NullPointerException
+     *             if the specified model is {@code null}.
+     */
+    public void setModel(ListModel<Action> newModel) {
+        notNull(newModel, "The model cannot be null.");
+        if (model == newModel) {
+            return;
+        }
+        replaceModel(newModel);
+    }
 
-	private void replaceModel(ListModel<Action> newModel) {
-		if (model != null) {
-			model.removeListDataListener(actionsListener);
-			int oldSize = model.getSize();
-			removeInterval(0, oldSize);
-		}
-		model = newModel;
-		addInterval(0, model.getSize());
-	}
+    /**
+     * Returns the model that contains the button actions.
+     * 
+     * @return the {@link ListModel} of {@link Action} actions.
+     */
+    public ListModel<Action> getModel() {
+        return model;
+    }
 
-	/**
-	 * Sets the name of this buttons panel and the name of all buttons.
-	 */
-	@Override
-	public void setName(String name) {
-		super.setName(format("%s-%s", name, BUTTONS_ROW_NAME));
-		this.name = name;
-		updateButtonNames();
-	}
+    private void replaceModel(ListModel<Action> newModel) {
+        if (model != null) {
+            model.removeListDataListener(actionsListener);
+            int oldSize = model.getSize();
+            removeInterval(0, oldSize);
+        }
+        model = newModel;
+        addInterval(0, model.getSize());
+    }
 
-	private void updateButtonNames() {
-		for (int i = 0; i < buttons.size(); i++) {
-			buttons.get(i).setName(format("%s-%d-%s", name, i, BUTTON_NAME));
-		}
-	}
+    /**
+     * Sets the name of this buttons panel and the name of all buttons.
+     */
+    @Override
+    public void setName(String name) {
+        super.setName(format("%s-%s", name, BUTTONS_ROW_NAME));
+        this.name = name;
+        updateButtonNames();
+    }
 
-	/**
-	 * Returns the button in this buttons row panel with the specified index.
-	 * 
-	 * @param index
-	 *            the index.
-	 * 
-	 * @return the {@link JButton} with the index.
-	 * 
-	 * @throws IndexOutOfBoundsException
-	 *             if the index is out of range.
-	 */
-	public JButton getButton(int index) {
-		return buttons.get(index);
-	}
+    private void updateButtonNames() {
+        for (int i = 0; i < buttons.size(); i++) {
+            buttons.get(i).setName(format("%s-%d-%s", name, i, BUTTON_NAME));
+        }
+    }
+
+    /**
+     * Returns the button in this buttons row panel with the specified index.
+     * 
+     * @param index
+     *            the index.
+     * 
+     * @return the {@link JButton} with the index.
+     * 
+     * @throws IndexOutOfBoundsException
+     *             if the index is out of range.
+     */
+    public JButton getButton(int index) {
+        return buttons.get(index);
+    }
 
 }

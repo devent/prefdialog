@@ -27,7 +27,9 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.swing.AbstractListModel;
 import javax.swing.Action;
+import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.ListModel;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -120,6 +122,30 @@ public class ButtonGroupField extends AbstractTitleField<JPanel> {
      */
     public HorizontalAlignment getHorizontalAlignment() {
         return buttonsGroupPanel.getHorizontalAlignment();
+    }
+
+    /**
+     * Returns the model that contains the button actions.
+     * 
+     * @return the {@link ListModel} of {@link Action} actions.
+     */
+    public ListModel<Action> getModel() {
+        return buttonsRowPanel.getModel();
+    }
+
+    /**
+     * Returns the button in this buttons row panel with the specified index.
+     * 
+     * @param index
+     *            the index.
+     * 
+     * @return the {@link JButton} with the index.
+     * 
+     * @throws IndexOutOfBoundsException
+     *             if the index is out of range.
+     */
+    public JButton getButton(int index) {
+        return buttonsRowPanel.getButton(index);
     }
 
     private void setupHorizontalAlignment() {
