@@ -81,8 +81,7 @@ public class FreechartXYChart implements Chart {
     @Inject
     private PaletteFactory paletteFactory;
 
-    @Inject
-    private DefaultOffsetNumberTickUnitFactory tickUnitFactory;
+    private TickUnitFactory tickUnitFactory;
 
     private PropertyChangeSupport p;
 
@@ -147,6 +146,16 @@ public class FreechartXYChart implements Chart {
         return this;
     }
 
+    @Inject
+    public void setDefaultOffsetNumberTickUnitFactory(
+            DefaultOffsetNumberTickUnitFactory factory) {
+        this.tickUnitFactory = factory;
+    }
+
+    public void setTickUnitFactory(TickUnitFactory factory) {
+        this.tickUnitFactory = factory;
+    }
+
     @Override
     public void setThreadPool(ExecutorService pool) {
         this.pool = pool;
@@ -163,8 +172,8 @@ public class FreechartXYChart implements Chart {
             oldValue.removeChartModelListener(modelListener);
         }
         this.model = model;
-        this.domainTickUnit = tickUnitFactory
-                .create(model.getViewMaximum() / 10);
+        this.domainTickUnit = tickUnitFactory.create(model,
+                model.getViewMaximum() / 10);
         model.addChartModelListener(modelListener);
         XYPlot plot = (XYPlot) chart.getPlot();
         NumberAxis domainAxis = (NumberAxis) plot.getDomainAxis();
@@ -199,7 +208,7 @@ public class FreechartXYChart implements Chart {
     @OnAwt
     public void setViewMaximum(int max) {
         model.setViewMaximum(max);
-        this.domainTickUnit = tickUnitFactory.create(max / 10);
+        this.domainTickUnit = tickUnitFactory.create(model, max / 10);
         XYPlot plot = (XYPlot) chart.getPlot();
         NumberAxis domainAxis = (NumberAxis) plot.getDomainAxis();
         domainAxis.setTickUnit((NumberTickUnit) domainTickUnit);
@@ -338,6 +347,7 @@ public class FreechartXYChart implements Chart {
         ChartModel model = this.model;
         int cols = model.getColumnCount();
         XYSeriesCollection dataset = getCategory();
+        dataset.removeAllSeries();
         for (int i = 0; i < cols; i++) {
             XYSeries series = new XYSeries(model.getColumnName(i), false, false);
             dataset.addSeries(series);

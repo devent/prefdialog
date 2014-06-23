@@ -18,7 +18,6 @@
  */
 package com.anrisoftware.prefdialog.miscswing.multichart.freechart;
 
-public interface DefaultOffsetNumberTickUnitFactory {
+public interface DefaultOffsetNumberTickUnitFactory extends TickUnitFactory {
 
-    OffsetTickUnit create(double size);
 }

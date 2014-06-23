@@ -24,6 +24,7 @@ import javax.inject.Inject;
 
 import org.jfree.chart.axis.NumberTickUnit;
 
+import com.anrisoftware.prefdialog.miscswing.multichart.model.ChartModel;
 import com.google.inject.assistedinject.Assisted;
 
 @SuppressWarnings("serial")
@@ -32,19 +33,21 @@ public final class DefaultOffsetNumberTickUnit extends NumberTickUnit implements
 
     private double offset;
 
-    DefaultOffsetNumberTickUnit(double size, NumberFormat formatter, int minorTickCount) {
+    public DefaultOffsetNumberTickUnit(double size, NumberFormat formatter,
+            int minorTickCount) {
         super(size, formatter, minorTickCount);
     }
 
-    DefaultOffsetNumberTickUnit(double size, NumberFormat formatter) {
+    public DefaultOffsetNumberTickUnit(double size, NumberFormat formatter) {
         super(size, formatter);
     }
 
     /**
-     * @see DefaultOffsetNumberTickUnitFactory#create(double)
+     * @see DefaultOffsetNumberTickUnitFactory#create(ChartModel, double)
      */
     @Inject
-    DefaultOffsetNumberTickUnit(@Assisted double size) {
+    DefaultOffsetNumberTickUnit(@Assisted ChartModel model,
+            @Assisted double size) {
         super(size);
     }
 
