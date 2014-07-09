@@ -28,68 +28,70 @@ import javax.swing.event.ListSelectionListener;
  * @since 1.0
  */
 public class LockedListSelectionListener extends AbstractLockable implements
-		ListSelectionListener {
+        ListSelectionListener {
 
-	/**
-	 * @see #decorate(ListSelectionListener)
-	 */
-	public static LockedListSelectionListener lockedListSelectionListener(
-			ListSelectionListener l) {
-		return decorate(l);
-	}
+    /**
+     * @see #decorate(ListSelectionListener)
+     */
+    public static LockedListSelectionListener lockedListSelectionListener(
+            ListSelectionListener l) {
+        return decorate(l);
+    }
 
-	/**
-	 * @see #decorate(boolean, ListSelectionListener)
-	 */
-	public static LockedListSelectionListener lockedListSelectionListener(
-			boolean skipAdjusting, ListSelectionListener l) {
-		return decorate(skipAdjusting, l);
-	}
+    /**
+     * @see #decorate(boolean, ListSelectionListener)
+     */
+    public static LockedListSelectionListener lockedListSelectionListener(
+            boolean skipAdjusting, ListSelectionListener l) {
+        return decorate(skipAdjusting, l);
+    }
 
-	/**
-	 * Decorate the specified listener with locking ability and skip value
-	 * adjusting events.
-	 * 
-	 * @param l
-	 *            the {@link ListSelectionListener}.
-	 * 
-	 * @return the {@link LockedListSelectionListener}.
-	 */
-	public static LockedListSelectionListener decorate(ListSelectionListener l) {
-		return new LockedListSelectionListener(true, l);
-	}
+    /**
+     * Decorate the specified listener with locking ability and skip value
+     * adjusting events.
+     * 
+     * @param l
+     *            the {@link ListSelectionListener}.
+     * 
+     * @return the {@link LockedListSelectionListener}.
+     */
+    public static LockedListSelectionListener decorate(ListSelectionListener l) {
+        return new LockedListSelectionListener(true, l);
+    }
 
-	/**
-	 * Decorate the specified listener with locking ability.
-	 * 
-	 * @param skipAdjusting
-	 *            set to {@code true} to skip value adjusting events.
-	 * 
-	 * @param l
-	 *            the {@link ListSelectionListener}.
-	 * 
-	 * @return the {@link LockedListSelectionListener}.
-	 */
-	public static LockedListSelectionListener decorate(boolean skipAdjusting,
-			ListSelectionListener l) {
-		return new LockedListSelectionListener(skipAdjusting, l);
-	}
+    /**
+     * Decorate the specified listener with locking ability.
+     * 
+     * @param skipAdjusting
+     *            set to {@code true} to skip value adjusting events.
+     * 
+     * @param l
+     *            the {@link ListSelectionListener}.
+     * 
+     * @return the {@link LockedListSelectionListener}.
+     */
+    public static LockedListSelectionListener decorate(boolean skipAdjusting,
+            ListSelectionListener l) {
+        return new LockedListSelectionListener(skipAdjusting, l);
+    }
 
-	private final ListSelectionListener l;
+    private final ListSelectionListener l;
 
-	private final boolean skipAdjusting;
+    private final boolean skipAdjusting;
 
-	LockedListSelectionListener(boolean skipAdjusting, ListSelectionListener l) {
-		this.skipAdjusting = skipAdjusting;
-		this.l = l;
-	}
+    LockedListSelectionListener(boolean skipAdjusting, ListSelectionListener l) {
+        this.skipAdjusting = skipAdjusting;
+        this.l = l;
+    }
 
-	@Override
-	public void valueChanged(ListSelectionEvent e) {
-		if (!isLock()) {
-			if (skipAdjusting && (!skipAdjusting || !e.getValueIsAdjusting())) {
-				l.valueChanged(e);
-			}
-		}
-	}
+    @Override
+    public void valueChanged(ListSelectionEvent e) {
+        if (isLock()) {
+            return;
+        }
+        if (skipAdjusting && e.getValueIsAdjusting()) {
+            return;
+        }
+        l.valueChanged(e);
+    }
 }
