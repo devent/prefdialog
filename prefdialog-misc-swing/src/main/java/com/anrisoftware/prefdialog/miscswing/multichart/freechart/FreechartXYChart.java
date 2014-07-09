@@ -116,7 +116,7 @@ public class FreechartXYChart implements Chart {
         this.name = name;
         this.panel = new ChartPanel(chart);
         this.chart = chart;
-        this.forkLimitCount = 256;
+        this.forkLimitCount = 2048;
         this.rangeAxis = null;
         resolveObject();
     }
