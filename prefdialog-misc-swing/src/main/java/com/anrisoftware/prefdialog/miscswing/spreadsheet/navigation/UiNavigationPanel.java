@@ -66,7 +66,7 @@ class UiNavigationPanel extends JPanel {
 		maximumColumn = new JFormattedTextField();
 		maximumColumn.setHorizontalAlignment(SwingConstants.TRAILING);
 		maximumColumn.setEditable(false);
-		panel.add(maximumColumn, "cell 1 0,growx");
+        panel.add(maximumColumn, "cell 1 0,grow");
 
 		seperatorLabel = new JLabel("-");
 		panel.add(seperatorLabel, "cell 2 0,alignx center");
@@ -79,7 +79,7 @@ class UiNavigationPanel extends JPanel {
 		maximumRow = new JFormattedTextField();
 		maximumRow.setHorizontalAlignment(SwingConstants.TRAILING);
 		maximumRow.setEditable(false);
-		panel.add(maximumRow, "cell 4 0,growx");
+        panel.add(maximumRow, "cell 4 0,grow");
 	}
 
 	@Inject
