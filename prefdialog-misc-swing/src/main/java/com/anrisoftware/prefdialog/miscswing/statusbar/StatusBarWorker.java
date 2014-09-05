@@ -19,6 +19,7 @@
 package com.anrisoftware.prefdialog.miscswing.statusbar;
 
 import static com.anrisoftware.prefdialog.miscswing.statusbar.EndItem.endItem;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
@@ -57,41 +58,32 @@ class StatusBarWorker extends SwingWorker<Void, StatusBarItem> {
         if (oldItem == null) {
             log.addItem(item);
             queue.offer(item);
-            notifyThis();
             return;
         }
         if (oldItem.equals(item)
                 && (item.getTime() - oldItem.getTime() > timeout)) {
             log.addItem(oldItem, item);
             queue.offer(item);
-            notifyThis();
             return;
         }
         if (!oldItem.equals(item)) {
             log.addItem(oldItem, item);
             queue.offer(item);
-            notifyThis();
             return;
         }
     }
 
     public void stop() {
         queue.offer(endItem);
-        notifyThis();
-    }
-
-    private synchronized void notifyThis() {
-        notify();
     }
 
     @Override
     protected Void doInBackground() throws Exception {
         StatusBarItem item;
-        while ((item = queue.take()) != endItem) {
+        while ((item = queue.poll(timeout, MILLISECONDS)) != endItem) {
             oldItem = item;
-            publish(item);
-            synchronized (this) {
-                wait(timeout);
+            if (item != null) {
+                publish(item);
             }
         }
         log.timerEnd(item);
