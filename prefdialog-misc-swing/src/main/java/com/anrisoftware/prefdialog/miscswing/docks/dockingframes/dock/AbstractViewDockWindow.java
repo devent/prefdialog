@@ -94,6 +94,7 @@ public abstract class AbstractViewDockWindow implements ViewDockWindow,
     @Override
     public void setDockable(Object dock) {
         this.dockable = (DefaultSingleCDockable) dock;
+        this.visible = dockable.isVisible();
         dockable.addCDockableStateListener(stateListener);
         dockable.addFocusListener(focusListener);
     }
