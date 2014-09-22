@@ -10,8 +10,9 @@
 		<relativePath />
 	</parent>
 
+	<groupId>com.anrisoftware.prefdialog</groupId>
 	<artifactId>prefdialog-icons-reflectionskde4</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0</version>
 	<name>Prefdialog :: Icons :: Reflections KDE4</name>
 	<url>https://anrisoftware.com/projects/projects/prefdialog-icons-reflectionskde4</url>
 	<inceptionYear>2013</inceptionYear>
