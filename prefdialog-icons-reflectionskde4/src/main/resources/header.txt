@@ -1,0 +1,7 @@
+Copyright 2014 linuxfever <linuxfever@yahoo.gr>
+Copyright ${project.year} ${project.user.name} <${project.user.email}>
+
+This file is part of ${project.name}.
+
+Attribution-ShareAlike 3.0 Unported
+Attribution-NonCommercial-ShareAlike 3.0 Unported

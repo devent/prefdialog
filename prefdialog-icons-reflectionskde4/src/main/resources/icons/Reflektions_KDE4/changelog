@@ -32,3 +32,13 @@ v1.45: added: systray:printer, systray:ktorrent, systray:kget,
 v1.46: kalarm, audacity, bluefish, filezilla, linuxdcpp, opera-browser, virtualbox, systray:kalarm, systray:clementine
 v1.47: telepathy-kde + few app icons, smplayer, clementine systray is now black
 v1.48: message-rfc822, select-rectangular, juk, page-zoom
+v1.49: distribute-horizontal-x, knotes_alarm, sort-name, sort-presence, digikam, internet-telephony, kbugbuster, kchart, preferences-kcalc-constants, kde-windows, utilities-desktop-extra, tagua,
+	strigi, kgpg, fontforge, graphics-viewer-document, kcolorchooser, kjournal, office-address-book, xpdf, gaupol
+v1.50: utilities-log-viewer, menu_new, kmail2, kmplayer, akonadiconsole, ghex, ktouch, 0ad, virt-manager, cmake-gui, cmake-gui2, CMakeSetup32
+v1.51: widgets:ativities, application-javascript, application-xml, kdevelop, kteatime, systray:kteatime
+v1.52: rsibreak0-4, rsibreakx, rsibreak, duringbreaks, timings, ark
+v1.53: application-x-mswinurl, view-services-amazon-amarok, view-services-scripted-amarok, view-services-jamendo-amarok, view-services-ampache-amarok, view-services-gpodder-amarok, checkbox, photos-amarok, systray:kteatime, systray:notification, changed script for creating plasma theme based on existing one
+v1.54: libreoffice-spreadsheet, libreoffice-drawing, krusader icons, korg-todo
+v1.55: konversation, okular-archive, changed dropbox script
+v1.56: love-amarok, kde-gtk-config, improved plasma_theme script to show only valid themes
+v1.57: plasma-networkmanagement for systray 4.12, baloo

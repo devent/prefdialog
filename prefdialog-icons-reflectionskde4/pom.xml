@@ -4,16 +4,22 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>com.anrisoftware.prefdialog</groupId>
-		<artifactId>prefdialog-parent</artifactId>
-		<version>3.0-SNAPSHOT</version>
-		<relativePath>../prefdialog-parent</relativePath>
+		<groupId>com.anrisoftware.globalpom</groupId>
+		<artifactId>globalpom-parent</artifactId>
+		<version>1.35</version>
+		<relativePath />
 	</parent>
 
 	<artifactId>prefdialog-icons-reflectionskde4</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Prefdialog :: Icons :: Reflections KDE4</name>
-	<description>This icon theme is a compilation of a few icon themes and a few sparse icons
+	<url>https://anrisoftware.com/projects/projects/prefdialog-icons-reflectionskde4</url>
+	<inceptionYear>2013</inceptionYear>
+	<description>Reflections KDE4 Icons.
+	
+http://kde-look.org/content/show.php/?content=110944
+
+This icon theme is a compilation of a few icon themes and a few sparse icons
 found on www.deviantart.com and www.kde-look.org. It is by no means complete
 but hopefully (in time) it will be. The theme is mostly based on the reflection
 icon set by styrizo (http://styrizo.deviantart.com) and has been enhanced with
@@ -30,13 +36,54 @@ The juk icon is a modification from Bespin.
 The above creative authors have produced and keep doing an amazing work so I
 wish to thank them and express my gratitude for granting me their permission to
 create and share this compilation
-theme. Thank you!
-    </description>
+theme. Thank you!</description>
 
-	<dependencies>
-		<dependency>
-			<groupId>com.anrisoftware.resources</groupId>
-			<artifactId>resources-images</artifactId>
-		</dependency>
-	</dependencies>
+	<licenses>
+		<license>
+			<!-- http://linuxfever.deviantart.com/art/Reflektions-KDE4-v1-57-134739465 -->
+			<name>CC BY-NC-SA 3.0</name>
+			<url>http://creativecommons.org/licenses/by-nc-sa/3.0/</url>
+			<distribution>repo</distribution>
+		</license>
+		<license>
+			<!-- http://kde-look.org/content/show.php/Reflektions_KDE4?content=110944 -->
+			<name>CC BY-SA 3.0</name>
+			<url>http://creativecommons.org/licenses/by-sa/3.0/</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<id>devent</id>
+			<name>Erwin Mueller</name>
+			<email>erwin.mueller@deventm.org</email>
+			<url>http://anr-institute.com</url>
+			<roles>
+				<role>Owner</role>
+				<role>Developer</role>
+			</roles>
+			<timezone>Europe/Berlin</timezone>
+		</developer>
+		<developer>
+			<id>linuxfever</id>
+			<email>linuxfever@yahoo.gr</email>
+			<url>http://linuxfever.deviantart.com/art/Reflektions-KDE4-v1-57-134739465</url>
+			<roles>
+				<role>Author</role>
+			</roles>
+		</developer>
+	</developers>
+
+	<issueManagement>
+		<system>Redmine</system>
+		<url>https://anrisoftware.com/projects/projects/prefdialog-icons-reflectionskde4</url>
+	</issueManagement>
+
+	<scm>
+		<connection>scm:git:${gitpublic.repository.root}prefdialog.git</connection>
+		<developerConnection>scm:git:${gitpublic.repository.root}prefdialog.git</developerConnection>
+		<url>https://www.anr-institute.com/gitpublic/prefdialog.git/</url>
+	</scm>
+
 </project>
