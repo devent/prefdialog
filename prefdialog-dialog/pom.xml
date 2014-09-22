@@ -12,19 +12,19 @@
 
 	<artifactId>prefdialog-dialog</artifactId>
 	<name>Prefdialog :: Dialog</name>
-	<url>https://www.anr-institute.com/projects/projects/prefdialog-dialog</url>
+	<url>https://anrisoftware.com/projects/prefdialog-dialog</url>
 	<description>Dialogs that are containing the annotated field components.</description>
 	<inceptionYear>2012</inceptionYear>
 
 	<issueManagement>
 		<system>Redmine</system>
-		<url>https://www.anr-institute.com/projects/projects/prefdialog-panel</url>
+		<url>https://anrisoftware.com/projects/projects/prefdialog-panel</url>
 	</issueManagement>
 
 	<scm>
 		<connection>scm:git:${gitpublic.repository.root}prefdialog.git</connection>
 		<developerConnection>scm:git:${gitpublic.repository.root}prefdialog.git</developerConnection>
-		<url>https://www.anr-institute.com/gitpublic/prefdialog.git/</url>
+		<url>https://anrisoftware.com/prefdialog.git/</url>
 	</scm>
 
 	<dependencyManagement>

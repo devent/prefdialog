@@ -13,7 +13,7 @@
 	<artifactId>prefdialog-corefields</artifactId>
 	<name>Prefdialog :: Core Fields</name>
 	<description>Core fields.</description>
-	<url>https://www.anr-institute.com/projects/projects/prefdialog-corefields</url>
+	<url>https://anrisoftware.com/projects/prefdialog-corefields</url>
 	<inceptionYear>2013</inceptionYear>
 
 	<dependencyManagement>
