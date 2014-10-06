@@ -213,7 +213,7 @@ public class MultiChartPanel implements ChartPanel {
 
     /**
      * Sets the name of the panel.
-     * 
+     *
      * @param name
      *            the {@link String} name.
      */
@@ -294,7 +294,9 @@ public class MultiChartPanel implements ChartPanel {
         for (Chart chart : charts) {
             chart.setAutoZoomDomain(flag);
         }
-        updateDomainAxisMaximum();
+        if (chartModel != null) {
+            updateDomainAxisMaximum();
+        }
     }
 
     @Override
@@ -310,7 +312,9 @@ public class MultiChartPanel implements ChartPanel {
         for (Chart chart : charts) {
             chart.setZoomDomain(factor);
         }
-        updateDomainAxisMaximum();
+        if (chartModel != null) {
+            updateDomainAxisMaximum();
+        }
     }
 
     @Override

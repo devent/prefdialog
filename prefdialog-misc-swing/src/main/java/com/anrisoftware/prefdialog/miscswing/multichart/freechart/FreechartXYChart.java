@@ -61,7 +61,7 @@ import com.google.inject.assistedinject.Assisted;
 
 /**
  * {@link XYSeries} chart.
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
@@ -207,6 +207,9 @@ public class FreechartXYChart implements Chart {
      */
     @OnAwt
     public void setViewMaximum(int max) {
+        if (model == null) {
+            return;
+        }
         model.setViewMaximum(max);
         this.domainTickUnit = tickUnitFactory.create(model, max / 10);
         XYPlot plot = (XYPlot) chart.getPlot();
@@ -218,6 +221,9 @@ public class FreechartXYChart implements Chart {
     @OnAwt
     @Override
     public void setOffset(int offset) {
+        if (model == null) {
+            return;
+        }
         int oldValue = model.getOffset();
         model.setOffset(offset);
         p.firePropertyChange(OFFSET_PROPERTY.toString(), oldValue, offset);
@@ -258,7 +264,7 @@ public class FreechartXYChart implements Chart {
         ChartModel model = getModel();
         ChartPanel panel = this.panel;
         panel.restoreAutoDomainBounds();
-        int size = model.getRowCount();
+        int size = model == null ? 0 : model.getRowCount();
         size = min(size / 4, maximumView);
         setViewMaximum(size);
     }
@@ -481,7 +487,7 @@ public class FreechartXYChart implements Chart {
         renderer.setBaseShapesVisible(true);
         renderer.setBaseShapesFilled(true);
         renderer.setDrawOutlines(true);
-        int columns = model.getColumnCount();
+        int columns = model == null ? 1 : model.getColumnCount();
         if (blackWhite) {
             for (int i = 0; i < columns; i++) {
                 renderer.setSeriesPaint(i, Color.black, false);

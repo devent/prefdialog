@@ -32,7 +32,7 @@
 			<!-- for dock testing -->
 			<groupId>com.anrisoftware.globalpom</groupId>
 			<artifactId>globalpom-groovytestutils</artifactId>
-			<scope>test</scope>
+            <optional>true</optional>
 		</dependency>
 
 		<!-- compile dependencies -->

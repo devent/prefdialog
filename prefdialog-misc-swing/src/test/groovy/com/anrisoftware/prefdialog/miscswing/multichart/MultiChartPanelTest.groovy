@@ -35,6 +35,7 @@ import com.anrisoftware.globalpom.data.DataModule
 import com.anrisoftware.globalpom.data.DefaultDataBeanFactory
 import com.anrisoftware.globalpom.data.MatrixDataFactory
 import com.anrisoftware.globalpom.mnemonic.MnemonicModule
+import com.anrisoftware.globalpom.textposition.TextPosition
 import com.anrisoftware.globalpom.utils.frametesting.FrameTestingFactory
 import com.anrisoftware.globalpom.utils.frametesting.FrameTestingModule
 import com.anrisoftware.prefdialog.miscswing.colorpalette.ColorPaletteModule
@@ -96,7 +97,7 @@ class MultiChartPanelTest {
             panel.getPanel()
         }
         testing().withFixture({ fix = it }, {
-            panel.setIconsOnly true
+            panel.setTextPosition TextPosition.ICON_ONLY
             panel.setIconSize IconSize.SMALL
         })
     }
@@ -139,8 +140,8 @@ class MultiChartPanelTest {
             fix.button "graphWindow-zoomInButton" click()
             fix.button "graphWindow-zoomInButton" click()
         }, {
-            fix.button "graphWindow-autoZoomButton" click()
-            fix.button "graphWindow-autoZoomButton" click()
+            fix.button "graphWindow-autoZoomDomainButton" click()
+            fix.button "graphWindow-autoZoomDomainButton" click()
         }, {
             fix.button "graphWindow-zoomOutButton" click()
             fix.button "graphWindow-zoomOutButton" click()
@@ -149,7 +150,7 @@ class MultiChartPanelTest {
         })
     }
 
-    @Test
+    //@Test
     void "manually"() {
         MultiChartPanel panel
         def charts = []
@@ -267,7 +268,7 @@ class MultiChartPanelTest {
         panel.addChart charts[1]
         panel.addChart charts[2]
 
-        panel.setIconsOnly true
+        panel.setTextPosition TextPosition.ICON_ONLY
         panel.setIconSize IconSize.MEDIUM
         panel.setPlotOrientation PlotOrientation.HORIZONTAL
         panel.setMaximumView 100
