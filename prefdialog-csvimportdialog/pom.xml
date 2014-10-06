@@ -14,11 +14,11 @@
 	<name>Prefdialog :: CSV Import Dialog</name>
 	<description>Dialog to import formatted text data in a comma separated format. The comma can also be a tab, space, semicolon or any other character.</description>
 	<inceptionYear>2013</inceptionYear>
-	<url>https://anrisoftware.com/projects/prefdialog-csvimportdailog</url>
+	<url>https://anrisoftware.com/projects/projects/prefdialog-csvimportdailog</url>
 
 	<issueManagement>
 		<system>Redmine</system>
-		<url>https://anrisoftware.com/projects/prefdialog-csvimportdailog</url>
+		<url>https://anrisoftware.com/projects/projects/prefdialog-csvimportdailog</url>
 	</issueManagement>
 
 	<dependencyManagement>

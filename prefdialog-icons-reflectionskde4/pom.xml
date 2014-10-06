@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.anrisoftware.globalpom</groupId>
 		<artifactId>globalpom-parent</artifactId>
-		<version>1.35</version>
+		<version>1.38</version>
 		<relativePath />
 	</parent>
 
@@ -17,7 +17,7 @@
 	<url>https://anrisoftware.com/projects/projects/prefdialog-icons-reflectionskde4</url>
 	<inceptionYear>2013</inceptionYear>
 	<description>Reflections KDE4 Icons.
-	
+
 http://kde-look.org/content/show.php/?content=110944
 
 This icon theme is a compilation of a few icon themes and a few sparse icons
@@ -86,5 +86,16 @@ theme. Thank you!</description>
 		<developerConnection>scm:git:${gitpublic.repository.root}prefdialog.git</developerConnection>
 		<url>https://www.anr-institute.com/gitpublic/prefdialog.git/</url>
 	</scm>
+
+    <distributionManagement>
+        <repository>
+            <id>${custom.repository.anrispublic.id}</id>
+            <url>${custom.repository.root}${custom.repository.anrispublic.path}</url>
+        </repository>
+        <snapshotRepository>
+            <id>${custom.repository.anrispublicsnapshots.id}</id>
+            <url>${custom.repository.root}${custom.repository.anrispublicsnapshots.path}</url>
+        </snapshotRepository>
+    </distributionManagement>
 
 </project>

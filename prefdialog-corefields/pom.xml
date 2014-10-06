@@ -13,7 +13,7 @@
 	<artifactId>prefdialog-corefields</artifactId>
 	<name>Prefdialog :: Core Fields</name>
 	<description>Core fields.</description>
-	<url>https://anrisoftware.com/projects/prefdialog-corefields</url>
+	<url>https://anrisoftware.com/projects/projects/prefdialog-corefields</url>
 	<inceptionYear>2013</inceptionYear>
 
 	<dependencyManagement>
@@ -68,7 +68,7 @@
 			<artifactId>globalpomutils-core</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.mangosdk</groupId>
+			<groupId>org.mangosdk.spi</groupId>
 			<artifactId>spi</artifactId>
 			<optional>true</optional>
 		</dependency>

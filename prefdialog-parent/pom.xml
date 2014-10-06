@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.anrisoftware.globalpom</groupId>
 		<artifactId>globalpom-groovy</artifactId>
-		<version>1.22</version>
+		<version>1.24</version>
 		<relativePath />
 	</parent>
 
@@ -16,7 +16,7 @@
 	<packaging>pom</packaging>
 	<name>Prefdialog :: Parent POM</name>
 	<description>Manages the dependencies for the modules.</description>
-	<url>https://www.anr-institute.com/projects/projects/prefdialog-parent</url>
+	<url>https://anrisoftware.com/projects/projects/prefdialog-parent</url>
 	<inceptionYear>2010</inceptionYear>
 
 	<licenses>
@@ -43,7 +43,7 @@
 
 	<issueManagement>
 		<system>Redmine</system>
-		<url>https://www.anr-institute.com/projects/projects/prefdialog-parent</url>
+		<url>https://anrisoftware.com/projects/projects/prefdialog-parent</url>
 	</issueManagement>
 
 	<scm>
@@ -53,14 +53,14 @@
 	</scm>
 
 	<distributionManagement>
-		<repository>
-			<id>${custom.repository.anrispublic.id}</id>
-			<url>${custom.repository.root}${custom.repository.anrispublic.path}</url>
-		</repository>
-		<snapshotRepository>
-			<id>${custom.repository.anrispublicsnapshots.id}</id>
-			<url>${custom.repository.root}${custom.repository.anrispublicsnapshots.path}</url>
-		</snapshotRepository>
+        <repository>
+            <id>osssonatype</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+        </repository>
+        <snapshotRepository>
+            <id>osssonatype_snapshots</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
 	</distributionManagement>
 
 	<dependencyManagement>
@@ -68,58 +68,65 @@
 			<dependency>
 				<groupId>com.anrisoftware.globalpom</groupId>
 				<artifactId>globalpom-groovytestutils</artifactId>
-				<version>1.23</version>
+				<version>1.24</version>
 			</dependency>
 			<dependency>
 				<groupId>com.anrisoftware.resources</groupId>
 				<artifactId>resources-images</artifactId>
-				<version>1.13</version>
+				<version>1.14</version>
 			</dependency>
 			<dependency>
 				<groupId>com.anrisoftware.resources</groupId>
 				<artifactId>resources-texts</artifactId>
-				<version>1.13</version>
+				<version>1.14</version>
 			</dependency>
 			<dependency>
 				<groupId>com.anrisoftware.globalpom</groupId>
 				<artifactId>globalpom-log</artifactId>
-				<version>1.17</version>
+				<version>1.18</version>
 			</dependency>
 			<dependency>
 				<groupId>com.anrisoftware.globalpom</groupId>
 				<artifactId>globalpomutils-core</artifactId>
-				<version>2.1</version>
+				<version>2.2</version>
 			</dependency>
 			<dependency>
 				<groupId>com.anrisoftware.globalpom</groupId>
 				<artifactId>globalpomutils-reflection</artifactId>
-				<version>2.1</version>
+				<version>2.2</version>
 			</dependency>
 			<dependency>
 				<groupId>com.anrisoftware.globalpom</groupId>
 				<artifactId>globalpomutils-data</artifactId>
-				<version>2.1</version>
+				<version>2.2</version>
 			</dependency>
 			<dependency>
 				<groupId>com.anrisoftware.globalpom</groupId>
 				<artifactId>globalpomutils-threads</artifactId>
-				<version>2.1</version>
+				<version>2.2</version>
 			</dependency>
 			<dependency>
 				<groupId>com.anrisoftware.propertiesutils</groupId>
 				<artifactId>propertiesutils-contextproperties</artifactId>
-				<version>1.11</version>
+				<version>1.12</version>
 			</dependency>
 			<dependency>
 				<groupId>org.dockingframes</groupId>
 				<artifactId>docking-frames-core</artifactId>
-				<version>1.1.2-p10g</version>
+				<version>1.1.2-p12e</version>
 			</dependency>
 			<dependency>
 				<groupId>org.dockingframes</groupId>
 				<artifactId>docking-frames-common</artifactId>
-				<version>1.1.2-p10g</version>
+				<version>1.1.2-p12e</version>
 			</dependency>
+            <!-- spi -->
+            <dependency>
+                <!-- Apache 2.0 -->
+                <groupId>org.mangosdk.spi</groupId>
+                <artifactId>spi</artifactId>
+                <version>0.2.7.r52822d</version>
+            </dependency>
 		</dependencies>
 	</dependencyManagement>
 

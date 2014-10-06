@@ -12,13 +12,13 @@
 
 	<artifactId>prefdialog-dialog</artifactId>
 	<name>Prefdialog :: Dialog</name>
-	<url>https://anrisoftware.com/projects/prefdialog-dialog</url>
+	<url>https://anrisoftware.com/projects/projects/prefdialog-dialog</url>
 	<description>Dialogs that are containing the annotated field components.</description>
 	<inceptionYear>2012</inceptionYear>
 
 	<issueManagement>
 		<system>Redmine</system>
-		<url>https://anrisoftware.com/projects/projects/prefdialog-panel</url>
+		<url>https://anrisoftware.com/projects/projects/prefdialog-dialog</url>
 	</issueManagement>
 
 	<scm>

@@ -4,17 +4,20 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>com.anrisoftware.prefdialog</groupId>
-		<artifactId>prefdialog-parent</artifactId>
-		<version>3.0-SNAPSHOT</version>
-		<relativePath>../prefdialog-parent</relativePath>
+		<groupId>com.anrisoftware.globalpom</groupId>
+		<artifactId>globalpom-parent</artifactId>
+		<version>1.38</version>
+		<relativePath />
 	</parent>
 
+	<groupId>com.anrisoftware.prefdialog</groupId>
 	<artifactId>prefdialog-freepik-basic-application-icons</artifactId>
 	<name>Prefdialog :: Freepik Basic Application Icons</name>
+	<version>1.0</version>
 	<description>Basic application icons by Freepik www.freepik.com
 License Creative Commons 3.0
 from http://www.flaticon.com/packs/basic-application/</description>
+	<inceptionYear>2013</inceptionYear>
 
 	<licenses>
 		<license>
@@ -23,5 +26,21 @@ from http://www.flaticon.com/packs/basic-application/</description>
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
+
+	<issueManagement>
+		<system>Redmine</system>
+		<url>https://anrisoftware.com/projects/projects/prefdialog-icons-reflectionskde4</url>
+	</issueManagement>
+
+	<distributionManagement>
+		<repository>
+			<id>${custom.repository.anrispublic.id}</id>
+			<url>${custom.repository.root}${custom.repository.anrispublic.path}</url>
+		</repository>
+		<snapshotRepository>
+			<id>${custom.repository.anrispublicsnapshots.id}</id>
+			<url>${custom.repository.root}${custom.repository.anrispublicsnapshots.path}</url>
+		</snapshotRepository>
+	</distributionManagement>
 
 </project>

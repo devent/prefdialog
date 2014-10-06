@@ -13,16 +13,12 @@
 	<artifactId>prefdialog-api</artifactId>
 	<name>Prefdialog :: API</name>
 	<description>Preferences dialog public application interface.</description>
-	<url>https://anrisoftware.com/projects/prefdialog-public</url>
+	<url>https://anrisoftware.com/projects/projects/prefdialog-public</url>
 	<inceptionYear>2013</inceptionYear>
-
-	<properties>
-		<project.custom.year>${project.inceptionYear}</project.custom.year>
-	</properties>
 
 	<issueManagement>
 		<system>Redmine</system>
-		<url>https://anrisoftware.com/projects/prefdialog-public</url>
+		<url>https://anrisoftware.com/projects/projects/prefdialog-public</url>
 	</issueManagement>
 
 	<dependencies>
