@@ -30,6 +30,8 @@ import javax.inject.Inject;
 import javax.swing.AbstractButton;
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import com.anrisoftware.globalpom.reflection.annotationclass.AnnotationClass;
 import com.anrisoftware.globalpom.reflection.annotationclass.AnnotationClassFactory;
@@ -41,279 +43,325 @@ import com.anrisoftware.resources.texts.api.Texts;
 
 /**
  * Abstract button field.
- * 
+ *
  * @see FieldButton
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
 @SuppressWarnings("serial")
 public class AbstractFieldButtonField<ComponentType extends AbstractButton>
-		extends AbstractTitleField<ComponentType> {
+        extends AbstractTitleField<ComponentType> {
 
-	private static final Class<? extends Annotation> ANNOTATION_TYPE = FieldButton.class;
+    private static final Class<? extends Annotation> ANNOTATION_TYPE = FieldButton.class;
 
-	private static final String TEXT_ELEMENT = "text";
+    private static final String TEXT_ELEMENT = "text";
 
-	private static final String SHOW_TEXT_ELEMENT = "showText";
+    private static final String SHOW_TEXT_ELEMENT = "showText";
 
-	private static final String ACTION_ELEMENT = "action";
+    private static final String ACTION_ELEMENT = "action";
 
-	private static final String GROUP_ELEMENT = "group";
+    private static final String GROUP_ELEMENT = "group";
 
-	private final ActionListener valueAction;
+    private transient ActionListener valueAction;
 
-	private transient AnnotationAccess fieldAnnotation;
+    private transient ChangeListener changeListener;
 
-	private transient AnnotationClass<?> annotationClass;
+    private transient AnnotationAccess fieldAnnotation;
 
-	private AbstractFieldButtonFieldLogger log;
+    private transient AnnotationClass<?> annotationClass;
 
-	private String textResource;
+    private AbstractFieldButtonFieldLogger log;
 
-	private String text;
+    private String textResource;
 
-	private boolean showText;
+    private String text;
 
-	private ButtonGroup buttonGroup;
+    private boolean showText;
 
-	/**
-	 * Sets the dependencies of the field button.
-	 * 
-	 * @see AbstractTitleField#AbstractTitleField(java.awt.Component, Object,
-	 *      String)
-	 */
-	protected AbstractFieldButtonField(ComponentType component,
-			Object parentObject, String fieldName) {
-		super(component, parentObject, fieldName);
-		this.valueAction = new ActionListener() {
+    private ButtonGroup buttonGroup;
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try {
-					setValue(getComponent().isSelected());
-				} catch (PropertyVetoException e1) {
-				}
-			}
-		};
-	}
+    /**
+     * Sets the dependencies of the field button.
+     *
+     * @see AbstractTitleField#AbstractTitleField(java.awt.Component, Object,
+     *      String)
+     */
+    protected AbstractFieldButtonField(ComponentType component,
+            Object parentObject, String fieldName) {
+        super(component, parentObject, fieldName);
+        readResolve();
+    }
 
-	@Inject
-	void setupAbstractFieldButton(AbstractFieldButtonFieldLogger logger,
-			AnnotationAccessFactory annotationAccessFactory,
-			AnnotationClassFactory annotationClassFactory) {
-		this.log = logger;
-		this.fieldAnnotation = annotationAccessFactory.create(ANNOTATION_TYPE,
-				getAccessibleObject());
-		this.annotationClass = annotationClassFactory.create(getParentObject(),
-				ANNOTATION_TYPE, getAccessibleObject());
-		setupText();
-		setupShowText();
-		setupAction();
-		setupGroup();
-		setupButton();
-	}
+    private Object readResolve() {
+        this.valueAction = new ActionListener() {
 
-	private void setupText() {
-		String text = fieldAnnotation.getValue(TEXT_ELEMENT);
-		text = isEmpty(text) ? getFieldName() : text;
-		setText(text);
-	}
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    setValue(getComponent().isSelected());
+                } catch (PropertyVetoException e1) {
+                }
+            }
+        };
+        this.changeListener = new ChangeListener() {
 
-	private void setupShowText() {
-		boolean show = fieldAnnotation.getValue(SHOW_TEXT_ELEMENT);
-		setShowText(show);
-	}
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                try {
+                    setValue(getComponent().isSelected());
+                } catch (PropertyVetoException e1) {
+                }
+            }
+        };
+        return this;
+    }
 
-	private void setupAction() {
-		ActionListener action = (ActionListener) annotationClass.forAttribute(
-				ACTION_ELEMENT).build();
-		if (action == null) {
-			return;
-		}
-		if (action instanceof Action) {
-			setAction((Action) action);
-		} else {
-			addActionListener(action);
-		}
-	}
+    @Inject
+    void setupAbstractFieldButton(AbstractFieldButtonFieldLogger logger,
+            AnnotationAccessFactory annotationAccessFactory,
+            AnnotationClassFactory annotationClassFactory) {
+        this.log = logger;
+        this.fieldAnnotation = annotationAccessFactory.create(ANNOTATION_TYPE,
+                getAccessibleObject());
+        this.annotationClass = annotationClassFactory.create(getParentObject(),
+                ANNOTATION_TYPE, getAccessibleObject());
+        setupText();
+        setupShowText();
+        setupAction();
+        setupGroup();
+        setupButton();
+    }
 
-	private void setupGroup() {
-		ButtonGroup group = (ButtonGroup) annotationClass.forAttribute(
-				GROUP_ELEMENT).build();
-		if (group != null) {
-			setButtonGroup(group);
-		}
-	}
+    private void setupText() {
+        String text = getFieldButtonAttr(TEXT_ELEMENT);
+        text = isEmpty(text) ? getFieldName() : text;
+        setText(text);
+    }
 
-	private void setupButton() {
-		getComponent().addActionListener(valueAction);
-	}
+    private void setupShowText() {
+        boolean show = getFieldButtonAttr(SHOW_TEXT_ELEMENT);
+        setShowText(show);
+    }
 
-	@Override
-	public void setLocale(Locale locale) {
-		super.setLocale(locale);
-		updateTextsResources();
-	}
+    private void setupAction() {
+        ActionListener action = createFieldButtonAttr(ACTION_ELEMENT);
+        if (action == null) {
+            return;
+        }
+        if (action instanceof Action) {
+            setAction((Action) action);
+        } else {
+            addActionListener(action);
+        }
+    }
 
-	/**
-	 * Sets the text of the check-box. Defaults to the empty string which means
-	 * the field name is used as the text.
-	 * <p>
-	 * The text can also be a resource name that is queried in the supplied
-	 * texts resource.
-	 * 
-	 * @param text
-	 *            the text.
-	 */
-	public void setText(String text) {
-		textResource = text;
-		this.text = text;
-		updateTextResource();
-		log.textSet(this, text);
-	}
+    private void setupGroup() {
+        ButtonGroup group = createFieldButtonAttr(GROUP_ELEMENT);
+        if (group != null) {
+            setButtonGroup(group);
+        }
+    }
 
-	/**
-	 * Returns the text of the check-box.
-	 * 
-	 * @return the text.
-	 */
-	public String getText() {
-		return text;
-	}
+    private void setupButton() {
+        getComponent().addActionListener(valueAction);
+        getComponent().addChangeListener(changeListener);
+    }
 
-	@Override
-	public void setTexts(Texts texts) {
-		super.setTexts(texts);
-		updateTextsResources();
-	}
+    @Override
+    public void setLocale(Locale locale) {
+        super.setLocale(locale);
+        updateTextsResources();
+    }
 
-	private void updateTextsResources() {
-		updateTextResource();
-	}
+    /**
+     * Sets the text of the check-box. Defaults to the empty string which means
+     * the field name is used as the text.
+     * <p>
+     * The text can also be a resource name that is queried in the supplied
+     * texts resource.
+     *
+     * @param text
+     *            the text.
+     */
+    public void setText(String text) {
+        textResource = text;
+        this.text = text;
+        updateTextResource();
+        log.textSet(this, text);
+    }
 
-	private void updateTextResource() {
-		if (haveTextResource(textResource)) {
-			text = getTextResource(textResource, text);
-		}
-		if (showText) {
-			getComponent().setText(text);
-			updateMnemonic();
-		} else {
-			getComponent().setText("");
-		}
-	}
+    /**
+     * Returns the text of the check-box.
+     *
+     * @return the text.
+     */
+    public String getText() {
+        return text;
+    }
 
-	private void updateMnemonic() {
-		if (!showText) {
-			return;
-		}
-		Integer mnemonic = getMnemonic();
-		if (mnemonic != null) {
-			getComponent().setMnemonic(mnemonic);
-		}
-		int index = getMnemonicIndex();
-		if (index != -1) {
-			getComponent().setDisplayedMnemonicIndex(index);
-		}
-	}
+    @Override
+    public void setTexts(Texts texts) {
+        super.setTexts(texts);
+        updateTextsResources();
+    }
 
-	/**
-	 * Sets if the text of the check-box should be visible or not. Defaults to
-	 * {@code true} which means that the text should be visible.
-	 * 
-	 * @param show
-	 *            {@code true} for show the text or {@code false} to not show.
-	 */
-	public void setShowText(boolean show) {
-		this.showText = show;
-		updateTextResource();
-		log.showTextSet(this, show);
-	}
+    private void updateTextsResources() {
+        updateTextResource();
+    }
 
-	/**
-	 * Returns if the text is showing or not.
-	 * 
-	 * @return {@code true} for show the text or {@code false} to not show.
-	 */
-	public boolean getShowText() {
-		return showText;
-	}
+    private void updateTextResource() {
+        if (haveTextResource(textResource)) {
+            text = getTextResource(textResource, text);
+        }
+        if (showText) {
+            getComponent().setText(text);
+            updateMnemonic();
+        } else {
+            getComponent().setText("");
+        }
+    }
 
-	/**
-	 * Adds the action listener to the radio button.
-	 * 
-	 * @param listener
-	 *            the {@link ActionListener}.
-	 * 
-	 * @throws NullPointerException
-	 *             if the specified listener is {@code null}.
-	 */
-	public void addActionListener(ActionListener listener) {
-		log.checkActionListener(this, listener);
-		getComponent().addActionListener(listener);
-		log.actionAdded(this, listener);
-	}
+    private void updateMnemonic() {
+        if (!showText) {
+            return;
+        }
+        Integer mnemonic = getMnemonic();
+        if (mnemonic != null) {
+            getComponent().setMnemonic(mnemonic);
+        }
+        int index = getMnemonicIndex();
+        if (index != -1) {
+            getComponent().setDisplayedMnemonicIndex(index);
+        }
+    }
 
-	/**
-	 * Removed the action listener to the radio button.
-	 * 
-	 * @param listener
-	 *            the {@link ActionListener}.
-	 * 
-	 * @throws NullPointerException
-	 *             if the specified listener is {@code null}.
-	 */
-	public void removeActionListener(ActionListener listener) {
-		log.checkActionListener(this, listener);
-		getComponent().removeActionListener(listener);
-		log.actionRemoved(this, listener);
-	}
+    /**
+     * Sets if the text of the check-box should be visible or not. Defaults to
+     * {@code true} which means that the text should be visible.
+     *
+     * @param show
+     *            {@code true} for show the text or {@code false} to not show.
+     */
+    public void setShowText(boolean show) {
+        this.showText = show;
+        updateTextResource();
+        log.showTextSet(this, show);
+    }
 
-	/**
-	 * Sets the action for the radio button.
-	 * 
-	 * @param action
-	 *            the {@link Action} or {@code null}.
-	 */
-	public void setAction(Action action) {
-		getComponent().setAction(action);
-		log.actionSet(this, action);
-	}
+    /**
+     * Returns if the text is showing or not.
+     *
+     * @return {@code true} for show the text or {@code false} to not show.
+     */
+    public boolean getShowText() {
+        return showText;
+    }
 
-	/**
-	 * Returns the action for the radio button.
-	 * 
-	 * @return the {@link Action} or {@code null}.
-	 */
-	public Action getAction() {
-		return getComponent().getAction();
-	}
+    /**
+     * Adds the action listener to the radio button.
+     *
+     * @param listener
+     *            the {@link ActionListener}.
+     *
+     * @throws NullPointerException
+     *             if the specified listener is {@code null}.
+     */
+    public void addActionListener(ActionListener listener) {
+        log.checkActionListener(this, listener);
+        getComponent().addActionListener(listener);
+        log.actionAdded(this, listener);
+    }
 
-	/**
-	 * Sets the button group for this radio button. The button is added to the
-	 * specified group.
-	 * 
-	 * @param group
-	 *            the {@link ButtonGroup}.
-	 * 
-	 * @throws NullPointerException
-	 *             if the specified group is {@code null}.
-	 */
-	public void setButtonGroup(ButtonGroup group) {
-		log.checkButtonGroup(this, group);
-		this.buttonGroup = group;
-		group.add(getComponent());
-		log.buttonGroupSet(this, group);
-	}
+    /**
+     * Removed the action listener to the radio button.
+     *
+     * @param listener
+     *            the {@link ActionListener}.
+     *
+     * @throws NullPointerException
+     *             if the specified listener is {@code null}.
+     */
+    public void removeActionListener(ActionListener listener) {
+        log.checkActionListener(this, listener);
+        getComponent().removeActionListener(listener);
+        log.actionRemoved(this, listener);
+    }
 
-	/**
-	 * Returns the button group of this radio button.
-	 * 
-	 * @return the {@link ButtonGroup} or {@code null} if the button does not
-	 *         belong to any group.
-	 */
-	public ButtonGroup getButtonGroup() {
-		return buttonGroup;
-	}
+    /**
+     * Sets the action for the radio button.
+     *
+     * @param action
+     *            the {@link Action} or {@code null}.
+     */
+    public void setAction(Action action) {
+        getComponent().setAction(action);
+        log.actionSet(this, action);
+    }
+
+    /**
+     * Returns the action for the radio button.
+     *
+     * @return the {@link Action} or {@code null}.
+     */
+    public Action getAction() {
+        return getComponent().getAction();
+    }
+
+    /**
+     * Sets the button group for this radio button. The button is added to the
+     * specified group.
+     *
+     * @param group
+     *            the {@link ButtonGroup}.
+     *
+     * @throws NullPointerException
+     *             if the specified group is {@code null}.
+     */
+    public void setButtonGroup(ButtonGroup group) {
+        log.checkButtonGroup(this, group);
+        this.buttonGroup = group;
+        group.add(getComponent());
+        log.buttonGroupSet(this, group);
+    }
+
+    /**
+     * Returns the button group of this radio button.
+     *
+     * @return the {@link ButtonGroup} or {@code null} if the button does not
+     *         belong to any group.
+     */
+    public ButtonGroup getButtonGroup() {
+        return buttonGroup;
+    }
+
+    /**
+     * Instantiate the class of the field button annotation attribute.
+     *
+     * @see FieldButton
+     *
+     * @param name
+     *            the {@link String} name of the attribute.
+     *
+     * @return the {@link Object} or {@code null}.
+     */
+    @SuppressWarnings("unchecked")
+    protected final <T> T createFieldButtonAttr(String name) {
+        return (T) annotationClass.forAttribute(name).build();
+    }
+
+    /**
+     * Returns the value of the field button annotation attribute.
+     *
+     * @see FieldButton
+     *
+     * @param name
+     *            the {@link String} name of the attribute.
+     *
+     * @return the {@link Object} value or {@code null}.
+     */
+    protected final <T> T getFieldButtonAttr(String name) {
+        return fieldAnnotation.getValue(name);
+    }
+
 }
