@@ -27,6 +27,7 @@ import org.junit.BeforeClass
 import org.junit.Test
 
 import com.anrisoftware.globalpom.utils.TestFrameUtil
+import com.anrisoftware.globalpom.utils.TestUtils
 import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
 import com.anrisoftware.prefdialog.fields.checkbox.CheckBoxFieldFactory
 import com.anrisoftware.prefdialog.fields.checkbox.CheckBoxModule
@@ -41,95 +42,96 @@ import com.google.inject.Injector
  */
 class ChildTest {
 
-	@Test
-	void "title"() {
-		def title = "$NAME::title"
-		def fieldName = NULL_VALUE
-		def separatorName = "$fieldName-$TITLE_SEPARATOR_NAME"
-		def field = factory.create(bean, fieldName)
-		def container = field.getAWTComponent()
-		def checkBoxFieldName = CHECKBOX
-		def checkBox = checkBoxfactory.create(bean.nullValue, checkBoxFieldName)
+    @Test
+    void "title"() {
+        def title = "$NAME::title"
+        def fieldName = NULL_VALUE
+        def separatorName = "$fieldName-$TITLE_SEPARATOR_NAME"
+        def field = factory.create(bean, fieldName)
+        def container = field.getAWTComponent()
+        def checkBoxFieldName = CHECKBOX
+        def checkBox = checkBoxfactory.create(bean.nullValue, checkBoxFieldName)
 
-		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
-			field.addField checkBox
-			fixture.panel fieldName requireVisible()
-			fixture.checkBox checkBoxFieldName requireVisible()
-		})
-	}
+        new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+            field.addField checkBox
+            fixture.panel fieldName requireVisible()
+            fixture.checkBox checkBoxFieldName requireVisible()
+        })
+    }
 
-	@Test
-	void "no title"() {
-		def title = "ChildTest::no title"
-		def fieldName = NO_TITLE
-		def separatorName = "$fieldName-$TITLE_SEPARATOR_NAME"
-		def field = factory.create(bean, fieldName)
-		def container = field.getAWTComponent()
-		def checkBoxFieldName = CHECKBOX
-		def checkBox = checkBoxfactory.create(bean.noTitle, checkBoxFieldName)
+    @Test
+    void "no title"() {
+        def title = "ChildTest::no title"
+        def fieldName = NO_TITLE
+        def separatorName = "$fieldName-$TITLE_SEPARATOR_NAME"
+        def field = factory.create(bean, fieldName)
+        def container = field.getAWTComponent()
+        def checkBoxFieldName = CHECKBOX
+        def checkBox = checkBoxfactory.create(bean.noTitle, checkBoxFieldName)
 
-		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
-			field.addField checkBox
-			fixture.panel fieldName requireVisible()
-			fixture.checkBox checkBoxFieldName requireVisible()
-		})
-	}
+        new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+            field.addField checkBox
+            fixture.panel fieldName requireVisible()
+            fixture.checkBox checkBoxFieldName requireVisible()
+        })
+    }
 
-	@Test
-	void "order children"() {
-		def title = "$NAME::order children"
-		def fieldName = NULL_VALUE
-		def separatorName = "$fieldName-$TITLE_SEPARATOR_NAME"
-		def field = factory.create(bean, fieldName)
-		def container = field.getAWTComponent()
-		def checkBoxA = checkBoxfactory.create(bean.nullValue, CHECKBOX)
-		def checkBoxB = checkBoxfactory.create(bean.nullValue, CHECKBOX_ORDER)
+    @Test
+    void "order children"() {
+        def title = "$NAME::order children"
+        def fieldName = NULL_VALUE
+        def separatorName = "$fieldName-$TITLE_SEPARATOR_NAME"
+        def field = factory.create(bean, fieldName)
+        def container = field.getAWTComponent()
+        def checkBoxA = checkBoxfactory.create(bean.nullValue, CHECKBOX)
+        def checkBoxB = checkBoxfactory.create(bean.nullValue, CHECKBOX_ORDER)
 
-		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
-			field.addField checkBoxA
-			field.addField checkBoxB
-		})
-	}
+        new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+            field.addField checkBoxA
+            field.addField checkBoxB
+        })
+    }
 
-	//@Test
-	void "manually"() {
-		def title = "$NAME::manually"
-		def fieldName = NULL_VALUE
-		def field = factory.create(bean, fieldName)
-		def container = field.getAWTComponent()
-		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
-			Thread.sleep 60*1000
-			assert false : "manually test"
-		})
-	}
+    //@Test
+    void "manually"() {
+        def title = "$NAME::manually"
+        def fieldName = NULL_VALUE
+        def field = factory.create(bean, fieldName)
+        def container = field.getAWTComponent()
+        new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+            Thread.sleep 60*1000
+            assert false : "manually test"
+        })
+    }
 
-	static final String NAME = ChildTest.class.simpleName
+    static final String NAME = ChildTest.class.simpleName
 
-	static Injector injector
+    static Injector injector
 
-	static ChildFieldFactory factory
+    static ChildFieldFactory factory
 
-	static CheckBoxFieldFactory checkBoxfactory
+    static CheckBoxFieldFactory checkBoxfactory
 
-	ChildBean bean
+    ChildBean bean
 
-	@BeforeClass
-	static void setupFactories() {
-		injector = Guice.createInjector(new CoreFieldComponentModule())
-		factory = createChildFieldFactory injector
-		checkBoxfactory = createCheckBoxFieldFactory injector
-	}
+    @BeforeClass
+    static void setupFactories() {
+        TestUtils.toStringStyle
+        this.injector = Guice.createInjector(new CoreFieldComponentModule())
+        this.factory = createChildFieldFactory injector
+        this.checkBoxfactory = createCheckBoxFieldFactory injector
+    }
 
-	static ChildFieldFactory createChildFieldFactory(Injector injector) {
-		injector.createChildInjector(new ChildModule()).getInstance(ChildFieldFactory)
-	}
+    static ChildFieldFactory createChildFieldFactory(Injector injector) {
+        injector.createChildInjector(new ChildModule()).getInstance(ChildFieldFactory)
+    }
 
-	static CheckBoxFieldFactory createCheckBoxFieldFactory(Injector injector) {
-		injector.createChildInjector(new CheckBoxModule()).getInstance(CheckBoxFieldFactory)
-	}
+    static CheckBoxFieldFactory createCheckBoxFieldFactory(Injector injector) {
+        injector.createChildInjector(new CheckBoxModule()).getInstance(CheckBoxFieldFactory)
+    }
 
-	@Before
-	void setupBean() {
-		bean = new ChildBean()
-	}
+    @Before
+    void setupBean() {
+        this.bean = new ChildBean()
+    }
 }

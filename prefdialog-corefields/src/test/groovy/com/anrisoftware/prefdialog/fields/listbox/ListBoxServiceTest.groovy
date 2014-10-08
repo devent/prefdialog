@@ -19,9 +19,9 @@
 package com.anrisoftware.prefdialog.fields.listbox
 
 import static com.anrisoftware.prefdialog.core.AbstractTitleField.*
-import static com.anrisoftware.prefdialog.core.FieldTestUtils.*
-import static com.anrisoftware.prefdialog.fields.combobox.ComboBoxBean.*
-import static com.anrisoftware.prefdialog.fields.combobox.ComboBoxService.*
+import static com.anrisoftware.prefdialog.fields.listbox.ListBoxBean.*
+import static com.anrisoftware.prefdialog.fields.listbox.ListBoxService.*
+import static com.anrisoftware.prefdialog.fields.utils.FieldTestUtils.*
 
 import org.junit.Before
 import org.junit.BeforeClass
@@ -40,29 +40,29 @@ import com.google.inject.Guice
  */
 class ListBoxServiceTest {
 
-	@Test
-	void "service"() {
-		def title = "$NAME::service"
-		def fieldName = ARRAY_ELEMENTS
-		def field = factory.create(bean, fieldName)
-		def container = field.getAWTComponent()
-		new TestFrameUtil(title, container).withFixture({})
-	}
+    @Test
+    void "service"() {
+        def title = "$NAME::service"
+        def fieldName = ARRAY_ELEMENTS
+        def field = factory.create(bean, fieldName)
+        def container = field.getAWTComponent()
+        new TestFrameUtil(title, container).withFixture({})
+    }
 
-	static final String NAME = ListBoxServiceTest.class.simpleName
+    static final String NAME = ListBoxServiceTest.class.simpleName
 
-	static ListBoxFieldFactory factory
+    static ListBoxFieldFactory factory
 
-	ListBoxBean bean
+    ListBoxBean bean
 
-	@BeforeClass
-	static void setupFactories() {
-		def injector = Guice.createInjector(new CoreFieldComponentModule())
-		factory = findService(INFO).getFactory(injector)
-	}
+    @BeforeClass
+    static void setupFactories() {
+        def injector = Guice.createInjector(new CoreFieldComponentModule())
+        this.factory = findService(INFO).getFactory(injector)
+    }
 
-	@Before
-	void setupBean() {
-		bean = new ListBoxBean()
-	}
+    @Before
+    void setupBean() {
+        this.bean = new ListBoxBean()
+    }
 }

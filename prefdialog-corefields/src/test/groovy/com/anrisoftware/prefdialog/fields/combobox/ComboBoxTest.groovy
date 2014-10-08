@@ -31,8 +31,9 @@ import org.junit.BeforeClass
 import org.junit.Test
 
 import com.anrisoftware.globalpom.utils.TestFrameUtil
+import com.anrisoftware.globalpom.utils.TestUtils
 import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
-import com.anrisoftware.prefdialog.core.FieldTestUtils
+import com.anrisoftware.prefdialog.fields.utils.FieldTestUtils
 import com.google.inject.Guice
 import com.google.inject.Injector
 
@@ -45,230 +46,231 @@ import com.google.inject.Injector
  */
 class ComboBoxTest extends FieldTestUtils {
 
-	@Test
-	void "array elements with null value"() {
-		def title = "$NAME::array elements with null value"
-		def fieldName = ARRAY_ELEMENTS
-		def field = factory.create(bean, fieldName)
-		def container = field.getAWTComponent()
+    @Test
+    void "array elements with null value"() {
+        def title = "$NAME::array elements with null value"
+        def fieldName = ARRAY_ELEMENTS
+        def field = factory.create(bean, fieldName)
+        def container = field.getAWTComponent()
 
-		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
-			fixture.comboBox fieldName requireSelection "One"
-			fixture.comboBox fieldName selectItem 1
-			assert bean."$fieldName" == "Two"
-			fixture.comboBox fieldName selectItem 2
-			assert bean."$fieldName" == "Three"
-		})
-	}
+        new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+            fixture.comboBox fieldName requireSelection "One"
+            fixture.comboBox fieldName selectItem 1
+            assert bean."$fieldName" == "Two"
+            fixture.comboBox fieldName selectItem 2
+            assert bean."$fieldName" == "Three"
+        })
+    }
 
-	@Test
-	void "restore input"() {
-		def title = "$NAME::restore input"
-		def fieldName = ARRAY_ELEMENTS_SECOND
-		def field = factory.create(bean, fieldName)
-		def container = field.getAWTComponent()
+    @Test
+    void "restore input"() {
+        def title = "$NAME::restore input"
+        def fieldName = ARRAY_ELEMENTS_SECOND
+        def field = factory.create(bean, fieldName)
+        def container = field.getAWTComponent()
 
-		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
-			fixture.comboBox fieldName selectItem 0
-			fixture.comboBox fieldName selectItem 2
-			field.restoreInput()
-			fixture.comboBox fieldName requireSelection "Two"
-			assert bean."$fieldName" == "Two"
-		})
-	}
+        new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+            fixture.comboBox fieldName selectItem 0
+            fixture.comboBox fieldName selectItem 2
+            field.restoreInput()
+            fixture.comboBox fieldName requireSelection "Two"
+            assert bean."$fieldName" == "Two"
+        })
+    }
 
-	@Test
-	void "array elements with second value selected"() {
-		def title = "$NAME::array elements with second value selected"
-		def fieldName = ARRAY_ELEMENTS_SECOND
-		def field = factory.create(bean, fieldName)
-		def container = field.getAWTComponent()
+    @Test
+    void "array elements with second value selected"() {
+        def title = "$NAME::array elements with second value selected"
+        def fieldName = ARRAY_ELEMENTS_SECOND
+        def field = factory.create(bean, fieldName)
+        def container = field.getAWTComponent()
 
-		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
-			fixture.comboBox fieldName requireSelection "Two"
-		})
-	}
+        new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+            fixture.comboBox fieldName requireSelection "Two"
+        })
+    }
 
-	@Test
-	void "list elements with null value"() {
-		def title = "$NAME::list elements with null value"
-		def fieldName = LIST_ELEMENTS
-		def field = factory.create(bean, fieldName)
-		def container = field.getAWTComponent()
+    @Test
+    void "list elements with null value"() {
+        def title = "$NAME::list elements with null value"
+        def fieldName = LIST_ELEMENTS
+        def field = factory.create(bean, fieldName)
+        def container = field.getAWTComponent()
 
-		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
-			fixture.comboBox fieldName requireSelection "One"
-			fixture.comboBox fieldName selectItem 1
-			assert bean."$fieldName" == "Two"
-			fixture.comboBox fieldName selectItem 2
-			assert bean."$fieldName" == "Three"
-		})
-	}
+        new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+            fixture.comboBox fieldName requireSelection "One"
+            fixture.comboBox fieldName selectItem 1
+            assert bean."$fieldName" == "Two"
+            fixture.comboBox fieldName selectItem 2
+            assert bean."$fieldName" == "Three"
+        })
+    }
 
-	@Test
-	void "custom model field"() {
-		def title = "$NAME::custom model field"
-		def fieldName = CUSTOM_MODEL_FIELD
-		def field = factory.create(bean, fieldName)
-		def container = field.getAWTComponent()
+    @Test
+    void "custom model field"() {
+        def title = "$NAME::custom model field"
+        def fieldName = CUSTOM_MODEL_FIELD
+        def field = factory.create(bean, fieldName)
+        def container = field.getAWTComponent()
 
-		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
-			fixture.comboBox fieldName requireSelection "Eins"
-			fixture.comboBox fieldName selectItem 1
-			assert bean."$fieldName" == "Zwei"
-			fixture.comboBox fieldName selectItem 2
-			assert bean."$fieldName" == "Drei"
-		})
-	}
+        new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+            fixture.comboBox fieldName requireSelection "Eins"
+            fixture.comboBox fieldName selectItem 1
+            assert bean."$fieldName" == "Zwei"
+            fixture.comboBox fieldName selectItem 2
+            assert bean."$fieldName" == "Drei"
+        })
+    }
 
-	@Test
-	void "custom model field null"() {
-		def title = "$NAME::custom model field null"
-		def fieldName = CUSTOM_MODEL_FIELD_NULL
-		def field = factory.create(bean, fieldName)
-		def container = field.getAWTComponent()
+    @Test
+    void "custom model field null"() {
+        def title = "$NAME::custom model field null"
+        def fieldName = CUSTOM_MODEL_FIELD_NULL
+        def field = factory.create(bean, fieldName)
+        def container = field.getAWTComponent()
 
-		assert bean.modelFieldNull != null
-		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
-			fixture.comboBox fieldName requireSelection "Eins"
-			fixture.comboBox fieldName selectItem 1
-			assert bean."$fieldName" == "Zwei"
-			fixture.comboBox fieldName selectItem 2
-			assert bean."$fieldName" == "Drei"
-		})
-	}
+        assert bean.modelFieldNull != null
+        new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+            fixture.comboBox fieldName requireSelection "Eins"
+            fixture.comboBox fieldName selectItem 1
+            assert bean."$fieldName" == "Zwei"
+            fixture.comboBox fieldName selectItem 2
+            assert bean."$fieldName" == "Drei"
+        })
+    }
 
-	@Test
-	void "custom renderer field"() {
-		def title = "$NAME::custom renderer field"
-		def fieldName = CUSTOM_RENDERER_FIELD
-		def field = factory.create(bean, fieldName)
-		def container = field.getAWTComponent()
+    @Test
+    void "custom renderer field"() {
+        def title = "$NAME::custom renderer field"
+        def fieldName = CUSTOM_RENDERER_FIELD
+        def field = factory.create(bean, fieldName)
+        def container = field.getAWTComponent()
 
-		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
-			fixture.comboBox fieldName requireSelection "ONE"
-			fixture.comboBox fieldName selectItem 1
-			fixture.comboBox fieldName requireSelection "TWO"
-			assert bean."$fieldName" == "Two"
-			fixture.comboBox fieldName selectItem 2
-			fixture.comboBox fieldName requireSelection "THREE"
-			assert bean."$fieldName" == "Three"
-		})
-	}
+        new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+            fixture.comboBox fieldName requireSelection "ONE"
+            fixture.comboBox fieldName selectItem 1
+            fixture.comboBox fieldName requireSelection "TWO"
+            assert bean."$fieldName" == "Two"
+            fixture.comboBox fieldName selectItem 2
+            fixture.comboBox fieldName requireSelection "THREE"
+            assert bean."$fieldName" == "Three"
+        })
+    }
 
-	@Test
-	void "custom renderer field null"() {
-		def title = "$NAME::custom renderer field null"
-		def fieldName = CUSTOM_RENDERER_FIELD_NULL
-		def field = factory.create(bean, fieldName)
-		def container = field.getAWTComponent()
+    @Test
+    void "custom renderer field null"() {
+        def title = "$NAME::custom renderer field null"
+        def fieldName = CUSTOM_RENDERER_FIELD_NULL
+        def field = factory.create(bean, fieldName)
+        def container = field.getAWTComponent()
 
-		assert bean.rendererFieldNull != null
-		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
-			fixture.comboBox fieldName requireSelection "ONE"
-			fixture.comboBox fieldName selectItem 1
-			fixture.comboBox fieldName requireSelection "TWO"
-			assert bean."$fieldName" == "Two"
-			fixture.comboBox fieldName selectItem 2
-			fixture.comboBox fieldName requireSelection "THREE"
-			assert bean."$fieldName" == "Three"
-		})
-	}
+        assert bean.rendererFieldNull != null
+        new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+            fixture.comboBox fieldName requireSelection "ONE"
+            fixture.comboBox fieldName selectItem 1
+            fixture.comboBox fieldName requireSelection "TWO"
+            assert bean."$fieldName" == "Two"
+            fixture.comboBox fieldName selectItem 2
+            fixture.comboBox fieldName requireSelection "THREE"
+            assert bean."$fieldName" == "Three"
+        })
+    }
 
-	@Test
-	void "custom model class"() {
-		def title = "$NAME::custom model class"
-		def fieldName = CUSTOM_MODEL_CLASS
-		def field = factory.create(bean, fieldName)
-		def container = field.getAWTComponent()
+    @Test
+    void "custom model class"() {
+        def title = "$NAME::custom model class"
+        def fieldName = CUSTOM_MODEL_CLASS
+        def field = factory.create(bean, fieldName)
+        def container = field.getAWTComponent()
 
-		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
-			fixture.comboBox fieldName requireSelection "Eins"
-			fixture.comboBox fieldName selectItem 1
-			assert bean."$fieldName" == "Zwei"
-			fixture.comboBox fieldName selectItem 2
-			assert bean."$fieldName" == "Drei"
-		})
-	}
+        new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+            fixture.comboBox fieldName requireSelection "Eins"
+            fixture.comboBox fieldName selectItem 1
+            assert bean."$fieldName" == "Zwei"
+            fixture.comboBox fieldName selectItem 2
+            assert bean."$fieldName" == "Drei"
+        })
+    }
 
-	@Test
-	void "custom renderer class"() {
-		def title = "$NAME::custom renderer class"
-		def fieldName = CUSTOM_RENDERER_CLASS
-		def field = factory.create(bean, fieldName)
-		def container = field.getAWTComponent()
+    @Test
+    void "custom renderer class"() {
+        def title = "$NAME::custom renderer class"
+        def fieldName = CUSTOM_RENDERER_CLASS
+        def field = factory.create(bean, fieldName)
+        def container = field.getAWTComponent()
 
-		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
-			fixture.comboBox fieldName requireSelection "ONE"
-			fixture.comboBox fieldName selectItem 1
-			fixture.comboBox fieldName requireSelection "TWO"
-			assert bean."$fieldName" == "Two"
-			fixture.comboBox fieldName selectItem 2
-			fixture.comboBox fieldName requireSelection "THREE"
-			assert bean."$fieldName" == "Three"
-		})
-	}
+        new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+            fixture.comboBox fieldName requireSelection "ONE"
+            fixture.comboBox fieldName selectItem 1
+            fixture.comboBox fieldName requireSelection "TWO"
+            assert bean."$fieldName" == "Two"
+            fixture.comboBox fieldName selectItem 2
+            fixture.comboBox fieldName requireSelection "THREE"
+            assert bean."$fieldName" == "Three"
+        })
+    }
 
-	@Test
-	void "editable"() {
-		def title = "$NAME::editable"
-		def fieldName = EDITABLE
-		def field = factory.create(bean, fieldName)
-		def container = field.getAWTComponent()
-		def text = "Zwei"
+    @Test
+    void "editable"() {
+        def title = "$NAME::editable"
+        def fieldName = EDITABLE
+        def field = factory.create(bean, fieldName)
+        def container = field.getAWTComponent()
+        def text = "Zwei"
 
-		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
-			fixture.comboBox fieldName replaceText text
-			fixture.comboBox fieldName pressAndReleaseKeys KeyEvent.VK_ENTER
-			fixture.comboBox fieldName requireSelection text
-			assert bean."$fieldName" == text
-		})
-	}
+        new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+            fixture.comboBox fieldName replaceText text
+            fixture.comboBox fieldName pressAndReleaseKeys KeyEvent.VK_ENTER
+            fixture.comboBox fieldName requireSelection text
+            assert bean."$fieldName" == text
+        })
+    }
 
-	@Test
-	void "editable, veto value"() {
-		def title = "$NAME::editable, veto value"
-		def fieldName = EDITABLE
-		def field = factory.create(bean, fieldName)
-		def container = field.getAWTComponent()
-		def l = {
-			if (it.newValue != "Valid") {
-				throw new PropertyVetoException("Not valid", it)
-			}
-		} as VetoableChangeListener
-		field.addVetoableChangeListener(l)
-		def comboBox
+    @Test
+    void "editable, veto value"() {
+        def title = "$NAME::editable, veto value"
+        def fieldName = EDITABLE
+        def field = factory.create(bean, fieldName)
+        def container = field.getAWTComponent()
+        def l = {
+            if (it.newValue != "Valid") {
+                throw new PropertyVetoException("Not valid", it)
+            }
+        } as VetoableChangeListener
+        field.addVetoableChangeListener(l)
+        def comboBox
 
-		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
-			comboBox = fixture.comboBox fieldName
-			comboBox.replaceText "Some"
-			comboBox.pressAndReleaseKeys KeyEvent.VK_ENTER
-			assert bean."$fieldName" == null
-		}, {
-			comboBox.replaceText "Valid"
-			comboBox.pressAndReleaseKeys KeyEvent.VK_ENTER
-			assert bean."$fieldName" == "Valid"
-		}, {
-			// Thread.sleep 60000
-		})
-	}
+        new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+            comboBox = fixture.comboBox fieldName
+            comboBox.replaceText "Some"
+            comboBox.pressAndReleaseKeys KeyEvent.VK_ENTER
+            assert bean."$fieldName" == null
+        }, {
+            comboBox.replaceText "Valid"
+            comboBox.pressAndReleaseKeys KeyEvent.VK_ENTER
+            assert bean."$fieldName" == "Valid"
+        }, {
+            // Thread.sleep 60000
+        })
+    }
 
-	static final String NAME = ComboBoxTest.class.simpleName
+    static final String NAME = ComboBoxTest.class.simpleName
 
-	static Injector injector
+    static Injector injector
 
-	static ComboBoxFieldFactory factory
+    static ComboBoxFieldFactory factory
 
-	ComboBoxBean bean
+    ComboBoxBean bean
 
-	@BeforeClass
-	static void setupFactories() {
-		injector = Guice.createInjector(new CoreFieldComponentModule(), new ComboBoxModule())
-		factory = injector.getInstance ComboBoxFieldFactory
-	}
+    @BeforeClass
+    static void setupFactories() {
+        TestUtils.toStringStyle
+        this.injector = Guice.createInjector(new CoreFieldComponentModule(), new ComboBoxModule())
+        this.factory = injector.getInstance ComboBoxFieldFactory
+    }
 
-	@Before
-	void setupBean() {
-		bean = new ComboBoxBean()
-	}
+    @Before
+    void setupBean() {
+        this.bean = new ComboBoxBean()
+    }
 }

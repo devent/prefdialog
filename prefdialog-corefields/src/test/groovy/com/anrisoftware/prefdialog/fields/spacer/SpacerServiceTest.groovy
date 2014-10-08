@@ -19,9 +19,9 @@
 package com.anrisoftware.prefdialog.fields.spacer
 
 import static com.anrisoftware.prefdialog.core.AbstractTitleField.*
-import static com.anrisoftware.prefdialog.core.FieldTestUtils.*
 import static com.anrisoftware.prefdialog.fields.spacer.SpacerBean.*
 import static com.anrisoftware.prefdialog.fields.spacer.SpacerService.*
+import static com.anrisoftware.prefdialog.fields.utils.FieldTestUtils.*
 
 import org.junit.Before
 import org.junit.BeforeClass
@@ -33,36 +33,36 @@ import com.google.inject.Guice
 
 /**
  * @see SpacerService
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
 class SpacerServiceTest {
 
-	@Test
-	void "service"() {
-		def title = "$NAME::service"
-		def fieldName = SPACER
-		bean.childBeanWithDefaultSpacer = new SpacerBean.ChildBeanWithDefaultSpacer()
-		def field = factory.create(bean.childBeanWithDefaultSpacer, fieldName)
-		def container = field.getAWTComponent()
-		new TestFrameUtil(title, container).withFixture({})
-	}
+    @Test
+    void "service"() {
+        def title = "$NAME::service"
+        def fieldName = SPACER
+        bean.childBeanWithDefaultSpacer = new SpacerBean.ChildBeanWithDefaultSpacer()
+        def field = factory.create(bean.childBeanWithDefaultSpacer, fieldName)
+        def container = field.getAWTComponent()
+        new TestFrameUtil(title, container).withFixture({})
+    }
 
-	static final String NAME = SpacerServiceTest.class.simpleName
+    static final String NAME = SpacerServiceTest.class.simpleName
 
-	static SpacerFieldFactory factory
+    static SpacerFieldFactory factory
 
-	SpacerBean bean
+    SpacerBean bean
 
-	@BeforeClass
-	static void setupFactories() {
-		def injector = Guice.createInjector(new CoreFieldComponentModule())
-		factory = findService(INFO).getFactory(injector)
-	}
+    @BeforeClass
+    static void setupFactories() {
+        def injector = Guice.createInjector(new CoreFieldComponentModule())
+        this.factory = findService(INFO).getFactory(injector)
+    }
 
-	@Before
-	void setupBean() {
-		bean = new SpacerBean()
-	}
+    @Before
+    void setupBean() {
+        this.bean = new SpacerBean()
+    }
 }

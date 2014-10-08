@@ -19,7 +19,6 @@
 package com.anrisoftware.prefdialog.fields.colorbutton
 
 import static com.anrisoftware.globalpom.utils.TestUtils.*
-import static com.anrisoftware.prefdialog.core.FieldTestUtils.*
 import static com.anrisoftware.prefdialog.fields.buttongroup.ButtonGroupService.*
 import static com.anrisoftware.prefdialog.fields.colorbutton.ColorButtonBean.*
 import groovy.util.logging.Slf4j
@@ -34,8 +33,8 @@ import org.junit.Test
 
 import com.anrisoftware.globalpom.reflection.exceptions.ReflectionError
 import com.anrisoftware.globalpom.utils.TestFrameUtil
+import com.anrisoftware.globalpom.utils.TestUtils
 import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
-import com.anrisoftware.prefdialog.core.FieldTestUtils
 import com.google.inject.Guice
 import com.google.inject.Injector
 
@@ -46,110 +45,111 @@ import com.google.inject.Injector
  * @since 3.0
  */
 @Slf4j
-class ColorButtonTest extends FieldTestUtils {
+class ColorButtonTest {
 
-	@Test
-	void "with null value"() {
-		def fieldName = COLOR_NULL_VALUE
-		shouldFailWith(ReflectionError) {
-			def field = factory.create(bean, fieldName)
-		}
-	}
+    @Test
+    void "with null value"() {
+        def fieldName = COLOR_NULL_VALUE
+        shouldFailWith(ReflectionError) {
+            def field = factory.create(bean, fieldName)
+        }
+    }
 
-	@Test
-	void "apply user input"() {
-		def title = "$NAME::apply user input"
-		def fieldName = COLOR_BLACK
-		def field = factory.create(bean, fieldName)
-		def container = field.getAWTComponent()
-		def buttonName = "$fieldName-0-$BUTTON_NAME"
+    @Test
+    void "apply user input"() {
+        def title = "$NAME::apply user input"
+        def fieldName = COLOR_BLACK
+        def field = factory.create(bean, fieldName)
+        def container = field.getAWTComponent()
+        def buttonName = "$fieldName-0-$BUTTON_NAME"
 
-		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
-			fixture.button buttonName click()
-			fixture.dialog().pressAndReleaseKeys KeyEvent.VK_ENTER
-		}, { FrameFixture fixture ->
-			assert bean.colorBlack == Color.BLACK
-		})
-	}
+        new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+            fixture.button buttonName click()
+            fixture.dialog().pressAndReleaseKeys KeyEvent.VK_ENTER
+        }, { FrameFixture fixture ->
+            assert bean.colorBlack == Color.BLACK
+        })
+    }
 
-	@Test
-	void "restore user input"() {
-		def title = "$NAME::restore user input"
-		def fieldName = COLOR_BLACK
-		def field = factory.create(bean, fieldName)
-		def container = field.getAWTComponent()
-		def buttonName = "$fieldName-0-$BUTTON_NAME"
+    @Test
+    void "restore user input"() {
+        def title = "$NAME::restore user input"
+        def fieldName = COLOR_BLACK
+        def field = factory.create(bean, fieldName)
+        def container = field.getAWTComponent()
+        def buttonName = "$fieldName-0-$BUTTON_NAME"
 
-		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
-			fixture.button buttonName click()
-			fixture.dialog().pressAndReleaseKeys KeyEvent.VK_ENTER
-			field.restoreInput()
-		}, { FrameFixture fixture ->
-			assert bean.colorBlack == Color.BLACK
-		})
-	}
+        new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+            fixture.button buttonName click()
+            fixture.dialog().pressAndReleaseKeys KeyEvent.VK_ENTER
+            field.restoreInput()
+        }, { FrameFixture fixture ->
+            assert bean.colorBlack == Color.BLACK
+        })
+    }
 
-	@Test
-	void "with right alignment"() {
-		def title = "$NAME::with right alignment"
-		def fieldName = COLOR_RIGHT
-		def field = factory.create(bean, fieldName)
-		def container = field.getAWTComponent()
-		def buttonName = "$fieldName-0-$BUTTON_NAME"
+    @Test
+    void "with right alignment"() {
+        def title = "$NAME::with right alignment"
+        def fieldName = COLOR_RIGHT
+        def field = factory.create(bean, fieldName)
+        def container = field.getAWTComponent()
+        def buttonName = "$fieldName-0-$BUTTON_NAME"
 
-		new TestFrameUtil(title, container).withFixture({ })
-	}
+        new TestFrameUtil(title, container).withFixture({ })
+    }
 
-	@Test
-	void "with center alignment"() {
-		def title = "$NAME::with center alignment"
-		def fieldName = COLOR_MIDDLE
-		def field = factory.create(bean, fieldName)
-		def container = field.getAWTComponent()
-		def buttonName = "$fieldName-0-$BUTTON_NAME"
+    @Test
+    void "with center alignment"() {
+        def title = "$NAME::with center alignment"
+        def fieldName = COLOR_MIDDLE
+        def field = factory.create(bean, fieldName)
+        def container = field.getAWTComponent()
+        def buttonName = "$fieldName-0-$BUTTON_NAME"
 
-		new TestFrameUtil(title, container).withFixture({ })
-	}
+        new TestFrameUtil(title, container).withFixture({ })
+    }
 
-	@Test
-	void "with left alignment"() {
-		def title = "$NAME::with left alignment"
-		def fieldName = COLOR_LEFT
-		def field = factory.create(bean, fieldName)
-		def container = field.getAWTComponent()
-		def buttonName = "$fieldName-0-$BUTTON_NAME"
+    @Test
+    void "with left alignment"() {
+        def title = "$NAME::with left alignment"
+        def fieldName = COLOR_LEFT
+        def field = factory.create(bean, fieldName)
+        def container = field.getAWTComponent()
+        def buttonName = "$fieldName-0-$BUTTON_NAME"
 
-		new TestFrameUtil(title, container).withFixture({ })
-	}
+        new TestFrameUtil(title, container).withFixture({ })
+    }
 
-	//@Test
-	void "manually"() {
-		def title = "$NAME::manually"
-		def fieldName = COLOR_BLACK
-		def field = factory.create(bean, fieldName)
-		def container = field.getAWTComponent()
-		new TestFrameUtil(title, container).withFixture({
-			Thread.sleep 60*1000
-			assert false : "Deactivate manually test."
-		})
-	}
+    //@Test
+    void "manually"() {
+        def title = "$NAME::manually"
+        def fieldName = COLOR_BLACK
+        def field = factory.create(bean, fieldName)
+        def container = field.getAWTComponent()
+        new TestFrameUtil(title, container).withFixture({
+            Thread.sleep 60*1000
+            assert false : "Deactivate manually test."
+        })
+    }
 
-	static final String NAME = ColorButtonTest.class.simpleName
+    static final String NAME = ColorButtonTest.class.simpleName
 
-	static Injector injector
+    static Injector injector
 
-	static ColorButtonFieldFactory factory
+    static ColorButtonFieldFactory factory
 
-	ColorButtonBean bean
+    ColorButtonBean bean
 
-	@BeforeClass
-	static void setupFactories() {
-		injector = Guice.createInjector(new CoreFieldComponentModule(), new ColorButtonModule())
-		factory = injector.getInstance ColorButtonFieldFactory
-	}
+    @BeforeClass
+    static void setupFactories() {
+        TestUtils.toStringStyle
+        this.injector = Guice.createInjector(new CoreFieldComponentModule(), new ColorButtonModule())
+        this.factory = injector.getInstance ColorButtonFieldFactory
+    }
 
-	@Before
-	void setupBean() {
-		bean = new ColorButtonBean()
-	}
+    @Before
+    void setupBean() {
+        this.bean = new ColorButtonBean()
+    }
 }

@@ -19,9 +19,9 @@
 package com.anrisoftware.prefdialog.fields.textfield
 
 import static com.anrisoftware.prefdialog.core.AbstractTitleField.*
-import static com.anrisoftware.prefdialog.core.FieldTestUtils.*
 import static com.anrisoftware.prefdialog.fields.textfield.TextFieldBean.*
 import static com.anrisoftware.prefdialog.fields.textfield.TextFieldService.*
+import static com.anrisoftware.prefdialog.fields.utils.FieldTestUtils.*
 
 import org.junit.Before
 import org.junit.BeforeClass
@@ -33,35 +33,35 @@ import com.google.inject.Guice
 
 /**
  * @see TextFieldService
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
 class TextFieldServiceTest {
 
-	@Test
-	void "service"() {
-		def title = "$NAME::service"
-		def fieldName = NULL_VALUE
-		def field = factory.create(bean, fieldName)
-		def container = field.getAWTComponent()
-		new TestFrameUtil(title, container).withFixture({})
-	}
+    @Test
+    void "service"() {
+        def title = "$NAME::service"
+        def fieldName = NULL_VALUE
+        def field = factory.create(bean, fieldName)
+        def container = field.getAWTComponent()
+        new TestFrameUtil(title, container).withFixture({})
+    }
 
-	static final String NAME = TextFieldServiceTest.class.simpleName
+    static final String NAME = TextFieldServiceTest.class.simpleName
 
-	static TextFieldFactory factory
+    static TextFieldFactory factory
 
-	TextFieldBean bean
+    TextFieldBean bean
 
-	@BeforeClass
-	static void setupFactories() {
-		def injector = Guice.createInjector(new CoreFieldComponentModule())
-		factory = findService(INFO).getFactory(injector)
-	}
+    @BeforeClass
+    static void setupFactories() {
+        def injector = Guice.createInjector(new CoreFieldComponentModule())
+        this.factory = findService(INFO).getFactory(injector)
+    }
 
-	@Before
-	void setupBean() {
-		bean = new TextFieldBean()
-	}
+    @Before
+    void setupBean() {
+        this.bean = new TextFieldBean()
+    }
 }

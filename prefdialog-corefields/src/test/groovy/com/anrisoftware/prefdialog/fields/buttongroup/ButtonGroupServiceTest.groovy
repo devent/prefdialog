@@ -19,9 +19,9 @@
 package com.anrisoftware.prefdialog.fields.buttongroup
 
 import static com.anrisoftware.prefdialog.core.AbstractTitleField.*
-import static com.anrisoftware.prefdialog.core.FieldTestUtils.*
 import static com.anrisoftware.prefdialog.fields.buttongroup.ButtonGroupBean.*
 import static com.anrisoftware.prefdialog.fields.buttongroup.ButtonGroupService.*
+import static com.anrisoftware.prefdialog.fields.utils.FieldTestUtils.*
 
 import java.awt.Container
 
@@ -37,37 +37,37 @@ import com.google.inject.Guice
 
 /**
  * Test the button group field as a service.
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
 class ButtonGroupServiceTest {
 
-	@Test
-	void "service"() {
-		def title = "$NAME::service"
-		def fieldName = BUTTONS
-		def field = factory.create(bean, fieldName)
-		new TestFrameUtil(title, field.AWTComponent).withFixture({})
-	}
+    @Test
+    void "service"() {
+        def title = "$NAME::service"
+        def fieldName = BUTTONS
+        def field = factory.create(bean, fieldName)
+        new TestFrameUtil(title, field.AWTComponent).withFixture({})
+    }
 
-	static final String NAME = ButtonGroupTest.class.simpleName
+    static final String NAME = ButtonGroupTest.class.simpleName
 
-	static ButtonGroupFieldFactory factory
+    static ButtonGroupFieldFactory factory
 
-	ButtonGroupBean bean
+    ButtonGroupBean bean
 
-	Container container
+    Container container
 
-	@BeforeClass
-	static void setupFactories() {
-		def injector = Guice.createInjector(new CoreFieldComponentModule())
-		factory = findService(INFO).getFactory(injector)
-	}
+    @BeforeClass
+    static void setupFactories() {
+        def injector = Guice.createInjector(new CoreFieldComponentModule())
+        this.factory = findService(INFO).getFactory(injector)
+    }
 
-	@Before
-	void setupBean() {
-		bean = new ButtonGroupBean()
-		container = new JPanel()
-	}
+    @Before
+    void setupBean() {
+        this.bean = new ButtonGroupBean()
+        this.container = new JPanel()
+    }
 }

@@ -19,8 +19,8 @@
 package com.anrisoftware.prefdialog.fields.formattedtextfield
 
 import static com.anrisoftware.globalpom.utils.TestUtils.*
-import static com.anrisoftware.prefdialog.core.FieldTestUtils.*
 import static com.anrisoftware.prefdialog.fields.formattedtextfield.FormattedTextFieldBean.*
+import static com.anrisoftware.prefdialog.fields.utils.FieldTestUtils.*
 
 import java.awt.event.KeyEvent
 
@@ -43,131 +43,131 @@ import com.google.inject.Injector
  */
 class FormattedTextFieldTest {
 
-	@Test
-	void "null value"() {
-		def title = "$NAME::null value string"
-		def fieldName = NULL_VALUE
-		def field = factory.create(bean, fieldName)
-		def fieldFix
-		def container = field.getAWTComponent()
-		def textA = "Text A"
-		def textB = "Text B"
+    @Test
+    void "null value"() {
+        def title = "$NAME::null value string"
+        def fieldName = NULL_VALUE
+        def field = factory.create(bean, fieldName)
+        def fieldFix
+        def container = field.getAWTComponent()
+        def textA = "Text A"
+        def textB = "Text B"
 
-		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
-			fieldFix = fixture.textBox fieldName
-			fieldFix.requireVisible()
-			fieldFix.requireText ""
-		}, {
-			fieldFix.enterText textA
-			fieldFix.pressAndReleaseKeys KeyEvent.VK_ENTER
-			assert bean.nullStringValue == textA
-		}, {
-			fieldFix.deleteText()
-			fieldFix.enterText textB
-			fieldFix.pressAndReleaseKeys KeyEvent.VK_ENTER
-			field.restoreInput()
-			fieldFix.requireText ""
-			assert bean.nullStringValue == ""
-		})
-	}
+        new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+            fieldFix = fixture.textBox fieldName
+            fieldFix.requireVisible()
+            fieldFix.requireText ""
+        }, {
+            fieldFix.enterText textA
+            fieldFix.pressAndReleaseKeys KeyEvent.VK_ENTER
+            assert bean.nullStringValue == textA
+        }, {
+            fieldFix.deleteText()
+            fieldFix.enterText textB
+            fieldFix.pressAndReleaseKeys KeyEvent.VK_ENTER
+            field.restoreInput()
+            fieldFix.requireText ""
+            assert bean.nullStringValue == ""
+        })
+    }
 
-	@Test
-	void "with initial value"() {
-		def title = "$NAME::with initial value"
-		def fieldName = INITIAL_VALUE
-		def field = factory.create(bean, fieldName)
-		def fieldFix
-		def container = field.getAWTComponent()
-		def textB = "Text B"
+    @Test
+    void "with initial value"() {
+        def title = "$NAME::with initial value"
+        def fieldName = INITIAL_VALUE
+        def field = factory.create(bean, fieldName)
+        def fieldFix
+        def container = field.getAWTComponent()
+        def textB = "Text B"
 
-		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
-			fieldFix = fixture.textBox fieldName
-			fieldFix.requireVisible()
-			fieldFix.requireText "Text"
-		}, {
-			fieldFix.deleteText()
-			fieldFix.enterText textB
-			fieldFix.pressAndReleaseKeys KeyEvent.VK_ENTER
-			field.restoreInput()
-			fieldFix.requireText "Text"
-			assert bean.initialStringValue == "Text"
-		})
-	}
+        new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+            fieldFix = fixture.textBox fieldName
+            fieldFix.requireVisible()
+            fieldFix.requireText "Text"
+        }, {
+            fieldFix.deleteText()
+            fieldFix.enterText textB
+            fieldFix.pressAndReleaseKeys KeyEvent.VK_ENTER
+            field.restoreInput()
+            fieldFix.requireText "Text"
+            assert bean.initialStringValue == "Text"
+        })
+    }
 
-	@Test
-	void "not editable"() {
-		def title = "$NAME::not editable"
-		def fieldName = NOT_EDITABLE
-		def field = factory.create(bean, fieldName)
-		def fieldFix
-		def container = field.getAWTComponent()
+    @Test
+    void "not editable"() {
+        def title = "$NAME::not editable"
+        def fieldName = NOT_EDITABLE
+        def field = factory.create(bean, fieldName)
+        def fieldFix
+        def container = field.getAWTComponent()
 
-		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
-			fieldFix = fixture.textBox fieldName
-			fieldFix.requireVisible()
-			fieldFix.requireNotEditable()
-			fieldFix.requireText "Not Editable"
-		}, { FrameFixture fixture ->
-			field.setEditable true
-			fieldFix.requireEditable()
-		}, { FrameFixture fixture ->
-			field.setEditable false
-			fieldFix.requireNotEditable()
-		})
-	}
+        new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+            fieldFix = fixture.textBox fieldName
+            fieldFix.requireVisible()
+            fieldFix.requireNotEditable()
+            fieldFix.requireText "Not Editable"
+        }, { FrameFixture fixture ->
+            field.setEditable true
+            fieldFix.requireEditable()
+        }, { FrameFixture fixture ->
+            field.setEditable false
+            fieldFix.requireNotEditable()
+        })
+    }
 
-	@Test
-	void "validated"() {
-		def title = "$NAME::validated"
-		def fieldName = VALIDATED
-		def field = factory.create(bean, fieldName)
-		def fieldFix
-		def container = field.getAWTComponent()
+    @Test
+    void "validated"() {
+        def title = "$NAME::validated"
+        def fieldName = VALIDATED
+        def field = factory.create(bean, fieldName)
+        def fieldFix
+        def container = field.getAWTComponent()
 
-		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
-			fieldFix = fixture.textBox fieldName
-			fieldFix.requireVisible()
-			fieldFix.requireText VALIDATED_VALID_VALUE
-		}, {
-			fieldFix.deleteText()
-			fieldFix.enterText VALIDATED_VALID_VALUE
-			fieldFix.pressAndReleaseKeys KeyEvent.VK_ENTER
-			fieldFix.requireText VALIDATED_VALID_VALUE
-			assert bean.validated == VALIDATED_VALID_VALUE
-		}, {
-			fieldFix.deleteText()
-			fieldFix.enterText VALIDATED_INVALID_VALUE
-			fieldFix.pressAndReleaseKeys KeyEvent.VK_ENTER
-			fieldFix.requireText VALIDATED_INVALID_VALUE
-			assert bean.validated == VALIDATED_VALID_VALUE
-		}, {
-			fieldFix.deleteText()
-			fieldFix.enterText VALIDATED_VALID_VALUE
-			fieldFix.pressAndReleaseKeys KeyEvent.VK_ENTER
-			fieldFix.requireText VALIDATED_VALID_VALUE
-			assert bean.validated == VALIDATED_VALID_VALUE
-		})
-	}
+        new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+            fieldFix = fixture.textBox fieldName
+            fieldFix.requireVisible()
+            fieldFix.requireText VALIDATED_VALID_VALUE
+        }, {
+            fieldFix.deleteText()
+            fieldFix.enterText VALIDATED_VALID_VALUE
+            fieldFix.pressAndReleaseKeys KeyEvent.VK_ENTER
+            fieldFix.requireText VALIDATED_VALID_VALUE
+            assert bean.validated == VALIDATED_VALID_VALUE
+        }, {
+            fieldFix.deleteText()
+            fieldFix.enterText VALIDATED_INVALID_VALUE
+            fieldFix.pressAndReleaseKeys KeyEvent.VK_ENTER
+            fieldFix.requireText VALIDATED_INVALID_VALUE
+            assert bean.validated == VALIDATED_VALID_VALUE
+        }, {
+            fieldFix.deleteText()
+            fieldFix.enterText VALIDATED_VALID_VALUE
+            fieldFix.pressAndReleaseKeys KeyEvent.VK_ENTER
+            fieldFix.requireText VALIDATED_VALID_VALUE
+            assert bean.validated == VALIDATED_VALID_VALUE
+        })
+    }
 
-	static Injector injector
+    static Injector injector
 
-	static FormattedTextFieldFactory factory
+    static FormattedTextFieldFactory factory
 
-	static Texts texts
+    static Texts texts
 
-	static final String NAME = FormattedTextFieldTest.class.simpleName
+    static final String NAME = FormattedTextFieldTest.class.simpleName
 
-	FormattedTextFieldBean bean
+    FormattedTextFieldBean bean
 
-	@BeforeClass
-	static void setupFactories() {
-		injector = Guice.createInjector(new CoreFieldComponentModule(), new FormattedTextFieldModule())
-		factory = injector.getInstance FormattedTextFieldFactory
-		texts = createTextsResource(injector)
-	}
+    @BeforeClass
+    static void setupFactories() {
+        this.injector = Guice.createInjector(new CoreFieldComponentModule(), new FormattedTextFieldModule())
+        this.factory = injector.getInstance FormattedTextFieldFactory
+        this.texts = createTextsResource(injector)
+    }
 
-	@Before
-	void setupBean() {
-		bean = new FormattedTextFieldBean()
-	}
+    @Before
+    void setupBean() {
+        this.bean = new FormattedTextFieldBean()
+    }
 }

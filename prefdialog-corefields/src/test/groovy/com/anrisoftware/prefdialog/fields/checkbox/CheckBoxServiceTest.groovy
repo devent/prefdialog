@@ -19,9 +19,9 @@
 package com.anrisoftware.prefdialog.fields.checkbox
 
 import static com.anrisoftware.prefdialog.core.AbstractTitleField.*
-import static com.anrisoftware.prefdialog.core.FieldTestUtils.*
 import static com.anrisoftware.prefdialog.fields.checkbox.CheckBoxBean.*
 import static com.anrisoftware.prefdialog.fields.checkbox.CheckBoxService.*
+import static com.anrisoftware.prefdialog.fields.utils.FieldTestUtils.*
 
 import org.junit.Before
 import org.junit.BeforeClass
@@ -33,35 +33,35 @@ import com.google.inject.Guice
 
 /**
  * Test the check box field as a service.
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
 class CheckBoxServiceTest {
 
-	@Test
-	void "service"() {
-		def title = "$NAME::service"
-		def fieldName = NO_TEXT
-		def field = factory.create(bean, fieldName)
-		def container = field.getAWTComponent()
-		new TestFrameUtil(title, container).withFixture({})
-	}
+    @Test
+    void "service"() {
+        def title = "$NAME::service"
+        def fieldName = NO_TEXT
+        def field = factory.create(bean, fieldName)
+        def container = field.getAWTComponent()
+        new TestFrameUtil(title, container).withFixture({})
+    }
 
-	static final String NAME = CheckBoxServiceTest.class.simpleName
+    static final String NAME = CheckBoxServiceTest.class.simpleName
 
-	static CheckBoxFieldFactory factory
+    static CheckBoxFieldFactory factory
 
-	CheckBoxBean bean
+    CheckBoxBean bean
 
-	@BeforeClass
-	static void setupFactories() {
-		def injector = Guice.createInjector(new CoreFieldComponentModule())
-		factory = findService(INFO).getFactory(injector)
-	}
+    @BeforeClass
+    static void setupFactories() {
+        def injector = Guice.createInjector(new CoreFieldComponentModule())
+        this.factory = findService(INFO).getFactory(injector)
+    }
 
-	@Before
-	void setupBean() {
-		bean = new CheckBoxBean()
-	}
+    @Before
+    void setupBean() {
+        this.bean = new CheckBoxBean()
+    }
 }

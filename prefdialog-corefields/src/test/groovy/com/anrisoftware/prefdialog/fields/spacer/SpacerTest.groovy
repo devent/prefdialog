@@ -19,9 +19,9 @@
 package com.anrisoftware.prefdialog.fields.spacer
 
 import static com.anrisoftware.globalpom.utils.TestUtils.*
-import static com.anrisoftware.prefdialog.core.FieldTestUtils.*
 import static com.anrisoftware.prefdialog.fields.spacer.SpacerBean.*
 import static com.anrisoftware.prefdialog.fields.spacer.SpacerFixture.*
+import static com.anrisoftware.prefdialog.fields.utils.FieldTestUtils.*
 
 import org.fest.swing.fixture.FrameFixture
 import org.junit.Before
@@ -46,96 +46,96 @@ import com.google.inject.Injector
  */
 class SpacerTest {
 
-	@Test
-	void "default spacer"() {
-		def title = "$NAME::default spacer"
-		def fieldName = SPACER
-		def childField = childFactory.create(bean, CHILD_BEAN)
-		def childBean = bean.childBeanWithDefaultSpacer
-		def container = childField.getAWTComponent()
-		childField.addField textFactory.create(childBean, TOP)
-		childField.addField spacerFactory.create(childBean, fieldName)
-		childField.addField textFactory.create(childBean, BOTTOM)
+    @Test
+    void "default spacer"() {
+        def title = "$NAME::default spacer"
+        def fieldName = SPACER
+        def childField = childFactory.create(bean, CHILD_BEAN)
+        def childBean = bean.childBeanWithDefaultSpacer
+        def container = childField.getAWTComponent()
+        childField.addField textFactory.create(childBean, TOP)
+        childField.addField spacerFactory.create(childBean, fieldName)
+        childField.addField textFactory.create(childBean, BOTTOM)
 
-		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
-			def spacer = spacerFixture(fixture, fieldName)
-			assert spacer.target.visible
-		})
-	}
+        new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+            def spacer = spacerFixture(fixture, fieldName)
+            assert spacer.target.visible
+        })
+    }
 
-	@Test
-	void "fixed spacer"() {
-		def title = "$NAME::fixed spacer"
-		def fieldName = SPACER
-		def childField = childFactory.create(bean, CHILD_BEAN_FIXED_SPACER)
-		def childBean = bean.childBeanWithFixedSpacer
-		def container = childField.getAWTComponent()
-		childField.addField textFactory.create(childBean, TOP)
-		childField.addField spacerFactory.create(childBean, fieldName)
-		childField.addField textFactory.create(childBean, BOTTOM)
+    @Test
+    void "fixed spacer"() {
+        def title = "$NAME::fixed spacer"
+        def fieldName = SPACER
+        def childField = childFactory.create(bean, CHILD_BEAN_FIXED_SPACER)
+        def childBean = bean.childBeanWithFixedSpacer
+        def container = childField.getAWTComponent()
+        childField.addField textFactory.create(childBean, TOP)
+        childField.addField spacerFactory.create(childBean, fieldName)
+        childField.addField textFactory.create(childBean, BOTTOM)
 
-		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
-			def spacer = spacerFixture(fixture, fieldName)
-			assert spacer.target.visible
-			assert spacer.target.height == 100
-		})
-	}
+        new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+            def spacer = spacerFixture(fixture, fieldName)
+            assert spacer.target.visible
+            assert spacer.target.height == 100
+        })
+    }
 
-	//@Test
-	void "manually"() {
-		def title = "$NAME::manually"
-		def fieldName = SPACER
-		def childField = childFactory.create(bean, CHILD_BEAN)
-		def container = childField.getAWTComponent()
-		def childBean = bean.childBeanWithDefaultSpacer
-		childField.addField textFactory.create(childBean, TOP)
-		childField.addField spacerFactory.create(childBean, fieldName)
-		childField.addField textFactory.create(childBean, BOTTOM)
+    //@Test
+    void "manually"() {
+        def title = "$NAME::manually"
+        def fieldName = SPACER
+        def childField = childFactory.create(bean, CHILD_BEAN)
+        def container = childField.getAWTComponent()
+        def childBean = bean.childBeanWithDefaultSpacer
+        childField.addField textFactory.create(childBean, TOP)
+        childField.addField spacerFactory.create(childBean, fieldName)
+        childField.addField textFactory.create(childBean, BOTTOM)
 
-		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
-			Thread.sleep 60 * 1000l
-			assert false : "Deactivate manually test"
-		})
-	}
+        new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+            Thread.sleep 60 * 1000l
+            assert false : "Deactivate manually test"
+        })
+    }
 
-	static final String NAME = SpacerTest.class.simpleName
+    static final String NAME = SpacerTest.class.simpleName
 
-	static Injector injector
+    static Injector injector
 
-	static SpacerFieldFactory spacerFactory
+    static SpacerFieldFactory spacerFactory
 
-	static childFactory
+    static childFactory
 
-	static textFactory
+    static textFactory
 
-	SpacerBean bean
+    SpacerBean bean
 
-	@BeforeClass
-	static void setupFactories() {
-		TestUtils.toStringStyle
-		injector = Guice.createInjector(new CoreFieldComponentModule())
-		spacerFactory = createSpacerFieldFactory injector
-		childFactory = createChildFieldFactory injector
-		textFactory = createTextFieldFactory injector
-	}
+    @BeforeClass
+    static void setupFactories() {
+        TestUtils.toStringStyle
+        this.injector = Guice.createInjector(new CoreFieldComponentModule())
+        this.spacerFactory = createSpacerFieldFactory injector
+        this.childFactory = createChildFieldFactory injector
+        this.textFactory = createTextFieldFactory injector
+    }
 
-	@Before
-	void setupBean() {
-		bean = new SpacerBean()
-	}
+    @Before
+    void setupBean() {
+        this.bean = new SpacerBean()
+    }
 
-	static ChildFieldFactory createChildFieldFactory(Injector injector) {
-		injector.createChildInjector(new ChildModule()).getInstance(
-				ChildFieldFactory)
-	}
+    static ChildFieldFactory createChildFieldFactory(Injector injector) {
+        injector.createChildInjector(new ChildModule()).getInstance(
+                ChildFieldFactory)
+    }
 
-	static TextFieldFactory createTextFieldFactory(Injector injector) {
-		injector.createChildInjector(new TextFieldModule()).getInstance(
-				TextFieldFactory)
-	}
+    static TextFieldFactory createTextFieldFactory(Injector injector) {
+        injector.createChildInjector(new TextFieldModule()).getInstance(
+                TextFieldFactory)
+    }
 
-	static SpacerFieldFactory createSpacerFieldFactory(Injector injector) {
-		injector.createChildInjector(new SpacerModule()).getInstance(
-				SpacerFieldFactory)
-	}
+    static SpacerFieldFactory createSpacerFieldFactory(Injector injector) {
+        injector.createChildInjector(new SpacerModule()).getInstance(
+                SpacerFieldFactory)
+    }
 }

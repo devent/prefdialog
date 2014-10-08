@@ -19,53 +19,52 @@
 package com.anrisoftware.prefdialog.fields.formattedtextfield
 
 import static com.anrisoftware.prefdialog.core.AbstractTitleField.*
-import static com.anrisoftware.prefdialog.core.FieldTestUtils.*
 import static com.anrisoftware.prefdialog.fields.formattedtextfield.FormattedTextFieldBean.*
 import static com.anrisoftware.prefdialog.fields.formattedtextfield.FormattedTextFieldService.*
+import static com.anrisoftware.prefdialog.fields.utils.FieldTestUtils.*
 
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 
-import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule
-import com.anrisoftware.globalpom.reflection.beans.BeansModule
 import com.anrisoftware.globalpom.utils.TestFrameUtil
+import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
 import com.google.inject.Guice
 import com.google.inject.Injector
 
 /**
  * @see FormattedTextFieldService
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
 class FormattedTextFieldServiceTest {
 
-	@Test
-	void "with defaults"() {
-		def title = "$NAME :: with defaults"
-		def fieldName = NULL_VALUE
-		def field = factory.create(bean, fieldName)
-		def container = field.getAWTComponent()
-		new TestFrameUtil(title, container).withFixture({})
-	}
+    @Test
+    void "with defaults"() {
+        def title = "$NAME :: with defaults"
+        def fieldName = NULL_VALUE
+        def field = factory.create(bean, fieldName)
+        def container = field.getAWTComponent()
+        new TestFrameUtil(title, container).withFixture({})
+    }
 
-	static Injector injector
+    static Injector injector
 
-	static FormattedTextFieldFactory factory
+    static FormattedTextFieldFactory factory
 
-	static final String NAME = FormattedTextFieldServiceTest.class.simpleName
+    static final String NAME = FormattedTextFieldServiceTest.class.simpleName
 
-	FormattedTextFieldBean bean
+    FormattedTextFieldBean bean
 
-	@BeforeClass
-	static void setupFactories() {
-		injector = Guice.createInjector(new AnnotationsModule(), new BeansModule())
-		factory = findService(INFO).getFactory(injector)
-	}
+    @BeforeClass
+    static void setupFactories() {
+        this.injector = Guice.createInjector(new CoreFieldComponentModule())
+        this.factory = findService(INFO).getFactory(injector)
+    }
 
-	@Before
-	void setupBean() {
-		bean = new FormattedTextFieldBean()
-	}
+    @Before
+    void setupBean() {
+        this.bean = new FormattedTextFieldBean()
+    }
 }

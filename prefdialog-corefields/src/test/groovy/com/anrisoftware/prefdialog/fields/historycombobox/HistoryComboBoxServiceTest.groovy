@@ -19,9 +19,9 @@
 package com.anrisoftware.prefdialog.fields.historycombobox
 
 import static com.anrisoftware.prefdialog.core.AbstractTitleField.*
-import static com.anrisoftware.prefdialog.core.FieldTestUtils.*
 import static com.anrisoftware.prefdialog.fields.historycombobox.HistoryComboBoxBean.*
 import static com.anrisoftware.prefdialog.fields.historycombobox.HistoryComboBoxService.*
+import static com.anrisoftware.prefdialog.fields.utils.FieldTestUtils.*
 
 import org.junit.Before
 import org.junit.BeforeClass
@@ -35,36 +35,36 @@ import com.google.inject.Guice
 /**
  * @see HistoryComboBox
  * @see HistoryComboBoxService
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
 class HistoryComboBoxServiceTest {
 
-	@Test
-	void "service"() {
-		def title = "$NAME::service"
-		def fieldName = LIST_ELEMENTS
-		def field = factory.create(bean, fieldName)
-		def container = field.getAWTComponent()
-		new TestFrameUtil(title, container).withFixture({})
-	}
+    @Test
+    void "service"() {
+        def title = "$NAME::service"
+        def fieldName = LIST_ELEMENTS
+        def field = factory.create(bean, fieldName)
+        def container = field.getAWTComponent()
+        new TestFrameUtil(title, container).withFixture({})
+    }
 
-	static final String NAME = HistoryComboBoxServiceTest.class.simpleName
+    static final String NAME = HistoryComboBoxServiceTest.class.simpleName
 
-	static HistoryComboBoxFactory factory
+    static HistoryComboBoxFactory factory
 
-	HistoryComboBoxBean bean
+    HistoryComboBoxBean bean
 
-	@BeforeClass
-	static void setupFactories() {
-		def injector = Guice.createInjector(
-				new CoreFieldComponentModule(), new ComboBoxHistoryModule())
-		factory = findService(INFO).getFactory(injector)
-	}
+    @BeforeClass
+    static void setupFactories() {
+        def injector = Guice.createInjector(
+                new CoreFieldComponentModule(), new ComboBoxHistoryModule())
+        this.factory = findService(INFO).getFactory(injector)
+    }
 
-	@Before
-	void setupBean() {
-		bean = new HistoryComboBoxBean()
-	}
+    @Before
+    void setupBean() {
+        this.bean = new HistoryComboBoxBean()
+    }
 }

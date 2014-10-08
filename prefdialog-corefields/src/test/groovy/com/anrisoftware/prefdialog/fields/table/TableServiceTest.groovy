@@ -19,9 +19,9 @@
 package com.anrisoftware.prefdialog.fields.table
 
 import static com.anrisoftware.prefdialog.core.AbstractTitleField.*
-import static com.anrisoftware.prefdialog.core.FieldTestUtils.*
 import static com.anrisoftware.prefdialog.fields.table.TableBean.*
 import static com.anrisoftware.prefdialog.fields.table.TableFieldService.*
+import static com.anrisoftware.prefdialog.fields.utils.FieldTestUtils.*
 
 import org.junit.Before
 import org.junit.BeforeClass
@@ -58,11 +58,11 @@ class TableServiceTest {
     @BeforeClass
     static void setupFactories() {
         def injector = Guice.createInjector(new CoreFieldComponentModule())
-        factory = findService(INFO).getFactory(injector)
+        this.factory = findService(INFO).getFactory(injector)
     }
 
     @Before
     void setupBean() {
-        bean = new TableBean()
+        this.bean = new TableBean()
     }
 }

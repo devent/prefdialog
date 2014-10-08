@@ -16,13 +16,11 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-corefields. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.core
+package com.anrisoftware.prefdialog.fields.utils
 
 import java.beans.PropertyVetoException
 import java.beans.VetoableChangeListener
 
-import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule
-import com.anrisoftware.globalpom.reflection.beans.BeansModule
 import com.anrisoftware.globalpom.utils.TestUtils
 import com.anrisoftware.prefdialog.fields.FieldComponent
 import com.anrisoftware.prefdialog.fields.FieldService
@@ -34,52 +32,46 @@ import com.anrisoftware.resources.images.scaling.ResourcesSmoothScalingModule
 import com.anrisoftware.resources.texts.api.Texts
 import com.anrisoftware.resources.texts.api.TextsFactory
 import com.anrisoftware.resources.texts.defaults.TextsResourcesDefaultModule
-import com.google.inject.Guice
 import com.google.inject.Injector
 
 /**
- * Creates the injector and the field component factory; Create the texts
- * and images resource.
+ * Various utils to test the fields.
  *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
 class FieldTestUtils {
 
-	static {
-		TestUtils.toStringStyle
-	}
+    static {
+        TestUtils.toStringStyle
+    }
 
-	static Injector createInjector() {
-		Guice.createInjector new MockModule(), new AnnotationsModule(), new BeansModule()
-	}
+    static Texts createTextsResource(Injector injector) {
+        Injector childInjector = injector.createChildInjector(
+                new TextsResourcesDefaultModule())
+        TextsFactory factory = childInjector.getInstance TextsFactory
+        factory.create "Texts"
+    }
 
-	static Texts createTextsResource(Injector injector) {
-		Injector childInjector = injector.createChildInjector(
-				new TextsResourcesDefaultModule())
-		TextsFactory factory = childInjector.getInstance TextsFactory
-		factory.create "Texts"
-	}
+    static Images createImagesResource(Injector injector) {
+        Injector childInjector = injector.createChildInjector(
+                new ImagesResourcesModule(),
+                new ResourcesImagesMapsModule(),
+                new ResourcesSmoothScalingModule())
+        ImagesFactory factory = childInjector.getInstance ImagesFactory
+        factory.create "Icons"
+    }
 
-	static Images createImagesResource(Injector injector) {
-		Injector childInjector = injector.createChildInjector(
-				new ImagesResourcesModule(),
-				new ResourcesImagesMapsModule(),
-				new ResourcesSmoothScalingModule())
-		ImagesFactory factory = childInjector.getInstance ImagesFactory
-		factory.create "Icons"
-	}
+    static FieldService findService(def info) {
+        ServiceLoader.load(FieldService).find { it.info == info }
+    }
 
-	static def findService(def info) {
-		ServiceLoader.load(FieldService).find { it.info == info }
-	}
-
-	static setupVetoableListener(FieldComponent field, List validValues) {
-		def l = {
-			if (!validValues.contains(it.newValue)) {
-				throw new PropertyVetoException("Not valid", it)
-			}
-		} as VetoableChangeListener
-		field.addVetoableChangeListener(l)
-	}
+    static setupVetoableListener(FieldComponent field, List validValues) {
+        def l = {
+            if (!validValues.contains(it.newValue)) {
+                throw new PropertyVetoException("Not valid", it)
+            }
+        } as VetoableChangeListener
+        field.addVetoableChangeListener(l)
+    }
 }

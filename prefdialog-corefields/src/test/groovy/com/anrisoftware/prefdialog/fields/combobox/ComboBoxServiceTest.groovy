@@ -19,9 +19,9 @@
 package com.anrisoftware.prefdialog.fields.combobox
 
 import static com.anrisoftware.prefdialog.core.AbstractTitleField.*
-import static com.anrisoftware.prefdialog.core.FieldTestUtils.*
 import static com.anrisoftware.prefdialog.fields.combobox.ComboBoxBean.*
 import static com.anrisoftware.prefdialog.fields.combobox.ComboBoxService.*
+import static com.anrisoftware.prefdialog.fields.utils.FieldTestUtils.*
 
 import org.junit.Before
 import org.junit.BeforeClass
@@ -34,35 +34,35 @@ import com.google.inject.Guice
 /**
  * @see ComboBox
  * @see ComboBoxService
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
 class ComboBoxServiceTest {
 
-	@Test
-	void "service"() {
-		def title = "$NAME::service"
-		def fieldName = ARRAY_ELEMENTS
-		def field = factory.create(bean, fieldName)
-		def container = field.getAWTComponent()
-		new TestFrameUtil(title, container).withFixture({})
-	}
+    @Test
+    void "service"() {
+        def title = "$NAME::service"
+        def fieldName = ARRAY_ELEMENTS
+        def field = factory.create(bean, fieldName)
+        def container = field.getAWTComponent()
+        new TestFrameUtil(title, container).withFixture({})
+    }
 
-	static final String NAME = ComboBoxServiceTest.class.simpleName
+    static final String NAME = ComboBoxServiceTest.class.simpleName
 
-	static ComboBoxFieldFactory factory
+    static ComboBoxFieldFactory factory
 
-	ComboBoxBean bean
+    ComboBoxBean bean
 
-	@BeforeClass
-	static void setupFactories() {
-		def injector = Guice.createInjector(new CoreFieldComponentModule())
-		factory = findService(INFO).getFactory(injector)
-	}
+    @BeforeClass
+    static void setupFactories() {
+        def injector = Guice.createInjector(new CoreFieldComponentModule())
+        this.factory = findService(INFO).getFactory(injector)
+    }
 
-	@Before
-	void setupBean() {
-		bean = new ComboBoxBean()
-	}
+    @Before
+    void setupBean() {
+        this.bean = new ComboBoxBean()
+    }
 }

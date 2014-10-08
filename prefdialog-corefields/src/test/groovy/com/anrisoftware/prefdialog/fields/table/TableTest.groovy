@@ -29,7 +29,7 @@ import org.junit.Test
 import com.anrisoftware.globalpom.utils.frametesting.FrameTestingFactory
 import com.anrisoftware.globalpom.utils.frametesting.FrameTestingModule
 import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
-import com.anrisoftware.prefdialog.core.FieldTestUtils
+import com.anrisoftware.prefdialog.fields.utils.FieldTestUtils
 import com.google.inject.Guice
 import com.google.inject.Injector
 
@@ -152,16 +152,16 @@ class TableTest extends FieldTestUtils {
 
     @BeforeClass
     static void setupFactories() {
-        injector = Guice.createInjector(
+        this.injector = Guice.createInjector(
                 new CoreFieldComponentModule(),
                 new TableFieldModule(),
                 new FrameTestingModule())
-        factory = injector.getInstance TableFieldFactory
-        frameTestingFactory = injector.getInstance FrameTestingFactory
+        this.factory = injector.getInstance TableFieldFactory
+        this.frameTestingFactory = injector.getInstance FrameTestingFactory
     }
 
     @Before
     void setupBean() {
-        bean = injector.getInstance TableBean
+        this.bean = injector.getInstance TableBean
     }
 }
