@@ -17,8 +17,6 @@
         <module>prefdialog-dialog</module>
         <module>prefdialog-misc-swing</module>
         <module>prefdialog-panel</module>
-        <module>prefdialog-freepik-basic-application-icons</module>
-        <module>prefdialog-icons-reflectionskde4</module>
     </modules>
 
 </project>
