@@ -54,229 +54,232 @@ import com.google.inject.assistedinject.Assisted;
 
 /**
  * CSV file import panel.
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
 public class CsvImportPanel {
 
-	private static final String PANEL_BEAN = "importPanel";
+    private static final String PANEL_BEAN = "importPanel";
 
-	private final JPanel container;
+    private final JPanel container;
 
-	private final CsvPanelProperties properties;
+    private final CsvPanelProperties properties;
 
-	private final LockedPropertyChangeListener valueListener;
+    private final LockedPropertyChangeListener valueListener;
 
-	@Inject
-	private Injector injector;
+    @Inject
+    private Injector injector;
 
-	@Inject
-	private CsvImportPanelLogger log;
+    @Inject
+    private CsvImportPanelLogger log;
 
-	@Inject
-	private VerticalPreferencesPanelFieldProvider fieldService;
+    @Inject
+    private VerticalPreferencesPanelFieldProvider fieldService;
 
-	@Inject
-	private CsvImporterFactory importerFactory;
+    @Inject
+    private CsvImporterFactory importerFactory;
 
-	private Texts texts;
+    private Texts texts;
 
-	private VerticalPreferencesPanelField propertiesPanel;
+    private VerticalPreferencesPanelField propertiesPanel;
 
-	private FieldComponent<Component> numberColumnsField;
+    private FieldComponent<Component> numberColumnsField;
 
-	/**
-	 * @see CsvImportPanelFactory#create(JPanel, CsvImportProperties)
-	 */
-	@Inject
-	CsvImportPanel(CsvPanelPropertiesFactory propertiesFactory,
-			@Assisted JPanel container, @Assisted CsvImportProperties properties) {
-		this.container = container;
-		this.properties = propertiesFactory.create(properties);
-		this.valueListener = lockedPropertyChangeListener(new PropertyChangeListener() {
+    /**
+     * @see CsvImportPanelFactory#create(JPanel, CsvImportProperties)
+     */
+    @Inject
+    CsvImportPanel(CsvPanelPropertiesFactory propertiesFactory,
+            @Assisted JPanel container, @Assisted CsvImportProperties properties) {
+        this.container = container;
+        this.properties = propertiesFactory.create(properties);
+        this.valueListener = lockedPropertyChangeListener(new PropertyChangeListener() {
 
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				valueListener.lock();
-				updateColumns();
-				valueListener.unlock();
-			}
-		});
-	}
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                valueListener.lock();
+                updateColumns();
+                valueListener.unlock();
+            }
+        });
+    }
 
-	@Inject
-	void setTextsFactory(TextsFactory factory) {
-		this.texts = factory.create(CsvImportPanel.class.getSimpleName());
-	}
+    @Inject
+    void setTextsFactory(TextsFactory factory) {
+        this.texts = factory.create(CsvImportPanel.class.getSimpleName());
+    }
 
-	/**
-	 * @see #createPanel(Injector)
-	 */
-	@OnAwt
-	public CsvImportPanel createPanel() {
-		return createPanel(injector);
-	}
+    /**
+     * @see #createPanel(Injector)
+     */
+    @OnAwt
+    public CsvImportPanel createPanel() {
+        return createPanel(injector);
+    }
 
-	    /**
+    /**
      * Creates the panel from the parent Guice injector.
      * <p>
      * <h2>AWT Thread</h2>
      * <p>
      * Should be called in the AWT thread.
-     * 
+     *
      * @param parent
      *            the parent {@link Injector}.
-     * 
+     *
      * @return this {@link CsvImportPanel}.
      */
-	@OnAwt
-	public CsvImportPanel createPanel(Injector parent) {
-		this.propertiesPanel = (VerticalPreferencesPanelField) fieldService
-				.get().getFactory(parent).create(properties, PANEL_BEAN);
-		propertiesPanel.createPanel(parent);
-		propertiesPanel
-				.addPropertyChangeListener(VALUE_PROPERTY, valueListener);
-		setupPanel();
-		setupActions();
-		return this;
-	}
+    @OnAwt
+    public CsvImportPanel createPanel(Injector parent) {
+        this.propertiesPanel = (VerticalPreferencesPanelField) fieldService
+                .get().getFactory(parent).create(properties, PANEL_BEAN);
+        propertiesPanel.createPanel(parent);
+        propertiesPanel
+                .addPropertyChangeListener(VALUE_PROPERTY, valueListener);
+        setupPanel();
+        setupActions();
+        return this;
+    }
 
-	private void setupActions() {
-		UseCustomSeparatorAction useCustomSeparatorAction = properties
-				.getSeparatorProperties().getUseCustomSeparatorAction();
-		useCustomSeparatorAction.setCustomSeparatorCharField(propertiesPanel
-				.findField("customSeparatorChar"));
-		useCustomSeparatorAction.setSeparatorCharField(propertiesPanel
-				.findField("separatorChar"));
-		UseCustomQuoteAction useCustomQuoteAction = properties
-				.getAdvancedProperties().getUseCustomQuoteAction();
-		useCustomQuoteAction.setQuoteField(propertiesPanel
-				.findField("quoteChar"));
-		useCustomQuoteAction.setCustomQuoteField(propertiesPanel
-				.findField("customQuoteChar"));
-	}
+    private void setupActions() {
+        UseCustomSeparatorAction useCustomSeparatorAction = properties
+                .getSeparatorProperties().getUseCustomSeparatorAction();
+        useCustomSeparatorAction.setCustomSeparatorCharField(propertiesPanel
+                .findField("customSeparatorChar"));
+        useCustomSeparatorAction.setSeparatorCharField(propertiesPanel
+                .findField("separatorChar"));
+        UseCustomQuoteAction useCustomQuoteAction = properties
+                .getAdvancedProperties().getUseCustomQuoteAction();
+        useCustomQuoteAction.setQuoteField(propertiesPanel
+                .findField("quoteChar"));
+        useCustomQuoteAction.setCustomQuoteField(propertiesPanel
+                .findField("customQuoteChar"));
+    }
 
-	private void setupPanel() {
-		propertiesPanel.setTexts(texts);
-		container.setLayout(new BorderLayout());
-		container.add(propertiesPanel.getAWTComponent(), CENTER);
-		numberColumnsField = propertiesPanel.findField("numberColumns");
-	}
+    private void setupPanel() {
+        propertiesPanel.setTexts(texts);
+        container.setLayout(new BorderLayout());
+        container.add(propertiesPanel.getAWTComponent(), CENTER);
+        numberColumnsField = propertiesPanel.findField("numberColumns");
+    }
 
-	public Component getAWTComponent() {
-		return container;
-	}
+    public Component getAWTComponent() {
+        return container;
+    }
 
-	    /**
+    /**
      * Returns the CSV properties of the panel.
-     * 
+     *
      * @return the {@link CsvImportProperties}.
      */
-	public CsvImportProperties getProperties() {
-		return properties;
-	}
+    public CsvImportProperties getProperties() {
+        return properties;
+    }
 
-	    /**
+    /**
      * Returns the created vertical preferences panel.
-     * 
+     *
      * @return the {@link VerticalPreferencesPanelField}.
      */
-	public VerticalPreferencesPanelField getPanel() {
-		return propertiesPanel;
-	}
+    public VerticalPreferencesPanelField getPanel() {
+        return propertiesPanel;
+    }
 
-	/**
-	 * Sets the focus on the CSV import panel.
-	 * <p>
-	 * <h2>AWT Thread</h2>
-	 * <p>
-	 * Should be called in the AWT thread.
-	 */
-	@OnAwt
-	public void requestFocus() {
-		FieldComponent<Component> file = propertiesPanel.findField("file");
-		file.requestFocus();
-	}
+    /**
+     * Sets the focus on the CSV import panel.
+     * <p>
+     * <h2>AWT Thread</h2>
+     * <p>
+     * Should be called in the AWT thread.
+     */
+    @OnAwt
+    public void requestFocus() {
+        FieldComponent<Component> file = propertiesPanel.findField("file");
+        file.requestFocus();
+    }
 
-	    /**
+    /**
      * Restores the input of the panel to default values.
      * <p>
      * <h2>AWT Thread</h2>
      * <p>
      * Should be called in the AWT thread.
-     * 
+     *
      * @throws PropertyVetoException
      *             if the old user input is not valid.
      */
-	public void retoreInput() throws PropertyVetoException {
-		propertiesPanel.restoreInput();
-	}
+    public void retoreInput() throws PropertyVetoException {
+        propertiesPanel.restoreInput();
+    }
 
-	private void updateColumns() {
-		URI uri = properties.getFile();
-		if (uri == null) {
-			setNumberColumns(0);
-			return;
-		}
-		File file = new File(uri);
-		if (!file.isFile()) {
-			setNumberColumns(0);
-			return;
-		}
-		try {
-			CsvImporter importer = importerFactory.create(properties);
-			readNumberColumns(importer);
-		} catch (CsvImportException e) {
-			log.errorRead(this, e);
-		}
-	}
+    private void updateColumns() {
+        URI uri = properties.getFile();
+        if (uri == null) {
+            setNumberColumns(0);
+            return;
+        }
+        File file = new File(uri);
+        if (!file.isFile()) {
+            setNumberColumns(0);
+            return;
+        }
+        try {
+            CsvImporter importer = importerFactory.create(properties);
+            readNumberColumns(importer);
+        } catch (CsvImportException e) {
+            log.errorRead(this, e);
+        }
+    }
 
-	private void readNumberColumns(CsvImporter importer)
-			throws CsvImportException {
+    private void readNumberColumns(CsvImporter importer)
+            throws CsvImportException {
         List<String> values = importer.call().getValues();
-		if (values != null) {
-			setNumberColumns(values.size());
-		}
-	}
+        if (values != null) {
+            setNumberColumns(values.size());
+        }
+    }
 
-	private void setNumberColumns(int size) {
-		try {
-			numberColumnsField.setValue(size);
-		} catch (PropertyVetoException e) {
-		}
-	}
+    private void setNumberColumns(int size) {
+        if (numberColumnsField == null) {
+            return;
+        }
+        try {
+            numberColumnsField.setValue(size);
+        } catch (PropertyVetoException e) {
+        }
+    }
 
-	/**
-	 * @see FieldComponent#addVetoableChangeListener(VetoableChangeListener)
-	 */
-	public void addVetoableChangeListener(VetoableChangeListener listener) {
-		propertiesPanel.addVetoableChangeListener(listener);
-	}
+    /**
+     * @see FieldComponent#addVetoableChangeListener(VetoableChangeListener)
+     */
+    public void addVetoableChangeListener(VetoableChangeListener listener) {
+        propertiesPanel.addVetoableChangeListener(listener);
+    }
 
-	/**
-	 * @see FieldComponent#removeVetoableChangeListener(VetoableChangeListener)
-	 */
-	public void removeVetoableChangeListener(VetoableChangeListener listener) {
-		propertiesPanel.removeVetoableChangeListener(listener);
-	}
+    /**
+     * @see FieldComponent#removeVetoableChangeListener(VetoableChangeListener)
+     */
+    public void removeVetoableChangeListener(VetoableChangeListener listener) {
+        propertiesPanel.removeVetoableChangeListener(listener);
+    }
 
-	/**
-	 * @see FieldComponent#addVetoableChangeListener(String,
-	 *      VetoableChangeListener)
-	 */
-	public void addVetoableChangeListener(String propertyName,
-			VetoableChangeListener listener) {
-		propertiesPanel.addVetoableChangeListener(propertyName, listener);
-	}
+    /**
+     * @see FieldComponent#addVetoableChangeListener(String,
+     *      VetoableChangeListener)
+     */
+    public void addVetoableChangeListener(String propertyName,
+            VetoableChangeListener listener) {
+        propertiesPanel.addVetoableChangeListener(propertyName, listener);
+    }
 
-	/**
-	 * @see FieldComponent#removeVetoableChangeListener(String,
-	 *      VetoableChangeListener)
-	 */
-	public void removeVetoableChangeListener(String propertyName,
-			VetoableChangeListener listener) {
-		propertiesPanel.removeVetoableChangeListener(propertyName, listener);
-	}
+    /**
+     * @see FieldComponent#removeVetoableChangeListener(String,
+     *      VetoableChangeListener)
+     */
+    public void removeVetoableChangeListener(String propertyName,
+            VetoableChangeListener listener) {
+        propertiesPanel.removeVetoableChangeListener(propertyName, listener);
+    }
 
 }

@@ -33,30 +33,40 @@ import org.aopalliance.intercept.MethodInvocation;
 /**
  * Checks the invocation of methods and constructors if they are called on the
  * AWT thread.
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
 class OnAwtChecker implements MethodInterceptor, ConstructorInterceptor {
 
-	@Inject
-	private OnAwtCheckerLogger log;
+    @Inject
+    private OnAwtCheckerLogger log;
 
-	@Override
-	public Object invoke(MethodInvocation invocation) throws Throwable {
-		Method method = invocation.getMethod();
-		if (!isEventDispatchThread()) {
-			log.errorAWT(method);
-		}
-		return invocation.proceed();
-	}
+    @Override
+    public Object invoke(MethodInvocation invocation) throws Throwable {
+        Method method = invocation.getMethod();
+        if (!isEventDispatchThread()) {
+            log.errorAWT(method);
+        }
+        try {
+            return invocation.proceed();
+        } catch (Throwable e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
 
-	@Override
-	public Object construct(ConstructorInvocation invocation) throws Throwable {
-		Constructor<?> ctor = invocation.getConstructor();
-		if (!isEventDispatchThread()) {
-			log.errorAWT(ctor);
-		}
-		return invocation.proceed();
-	}
+    @Override
+    public Object construct(ConstructorInvocation invocation) throws Throwable {
+        Constructor<?> ctor = invocation.getConstructor();
+        if (!isEventDispatchThread()) {
+            log.errorAWT(ctor);
+        }
+        try {
+            return invocation.proceed();
+        } catch (Throwable e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
 }
