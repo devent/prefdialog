@@ -57,7 +57,7 @@ class CsvImportDialogTest {
         testing.withFixture({})
     }
 
-    @Test
+    //@Test
     void "manually"() {
         def title = "$NAME/manually"
         def bean = propertiesFactory.create()

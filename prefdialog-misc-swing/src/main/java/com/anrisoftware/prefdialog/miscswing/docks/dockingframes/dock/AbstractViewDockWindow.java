@@ -32,6 +32,7 @@ import bibliothek.gui.dock.common.event.CFocusListener;
 import bibliothek.gui.dock.common.intern.CDockable;
 import bibliothek.gui.dock.common.mode.ExtendedMode;
 
+import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 import com.anrisoftware.prefdialog.miscswing.docks.api.ViewDockWindow;
 
 /**
@@ -104,8 +105,12 @@ public abstract class AbstractViewDockWindow implements ViewDockWindow,
         return dockable;
     }
 
+    @OnAwt
     public void setTitle(String title) {
         this.title = title;
+        if (this.dockable != null) {
+            dockable.setTitleText(title);
+        }
     }
 
     @Override

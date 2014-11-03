@@ -48,53 +48,53 @@ import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperti
  */
 class CsvImportPanelTest {
 
-	@Test
-	void "show"() {
-		def title = "$NAME::show"
-		def p = propertiesFactory.create()
-		def field = factory.create(new JPanel(), p).createPanel()
-		def container = field.getAWTComponent()
-		new TestFrameUtil(title, container, size).withFixture({
-		})
-	}
+    @Test
+    void "show"() {
+        def title = "$NAME::show"
+        def p = propertiesFactory.create()
+        def field = factory.create(new JPanel(), p).createPanel()
+        def container = field.getAWTComponent()
+        new TestFrameUtil(title, container, size).withFixture({
+        })
+    }
 
-	//@Test
-	void "manually"() {
-		def title = "$NAME::manually"
-		def p = propertiesFactory.create()
-		def field = factory.create(new JPanel(), p).createPanel()
-		def container = field.getAWTComponent()
-		new TestFrameUtil(title, container, size).withFixture({ FrameFixture fixture ->
-			Thread.sleep 60*1000
-			assert false : "manually test"
-		})
-	}
+    @Test
+    void "manually"() {
+        def title = "$NAME::manually"
+        def p = propertiesFactory.create()
+        def field = factory.create(new JPanel(), p).createPanel()
+        def container = field.getAWTComponent()
+        new TestFrameUtil(title, container, size).withFixture({ FrameFixture fixture ->
+            Thread.sleep 60*1000
+            assert false : "manually test"
+        })
+    }
 
-	@Rule
-	public TemporaryFolder tmp = new TemporaryFolder()
+    @Rule
+    public TemporaryFolder tmp = new TemporaryFolder()
 
-	static final String NAME = CsvImportPanelTest.class.simpleName
+    static final String NAME = CsvImportPanelTest.class.simpleName
 
-	static URL LOTTO = CsvImportPanelTest.class.getResource("/com/anrisoftware/prefdialog/csvimportdialog/csvimport/lotto_2001.csv")
+    static URL LOTTO = CsvImportPanelTest.class.getResource("/com/anrisoftware/prefdialog/csvimportdialog/csvimport/lotto_2001.csv")
 
-	static CsvImportPanelFactory factory
+    static CsvImportPanelFactory factory
 
-	static size = new Dimension(400, 566)
+    static size = new Dimension(400, 566)
 
-	static CsvPanelPropertiesFactory propertiesFactory
+    static CsvPanelPropertiesFactory propertiesFactory
 
-	File lotto
+    File lotto
 
-	@BeforeClass
-	static void setupFactories() {
-		TestUtils.toStringStyle
-		factory = getCsvImportPanelFactory()
-		propertiesFactory = getCsvImportPropertiesFactory()
-	}
+    @BeforeClass
+    static void setupFactories() {
+        TestUtils.toStringStyle
+        factory = getCsvImportPanelFactory()
+        propertiesFactory = getCsvImportPropertiesFactory()
+    }
 
-	@Before
-	void setupData() {
-		lotto = tmp.newFile("lotto")
-		FileUtils.copyURLToFile LOTTO, lotto
-	}
+    @Before
+    void setupData() {
+        lotto = tmp.newFile("lotto")
+        FileUtils.copyURLToFile LOTTO, lotto
+    }
 }

@@ -81,6 +81,7 @@ public class CsvPanelProperties implements CsvImportProperties {
 			return;
 		}
 		fileProperties.setFile(new File(properties.getFile()));
+        importProperties.setHaveHeader(properties.isHaveHeader());
 		importProperties.setCharset(properties.getCharset());
 		importProperties.setLocale(properties.getLocale());
 		importProperties.setStartRow(properties.getStartRow());
@@ -129,6 +130,11 @@ public class CsvPanelProperties implements CsvImportProperties {
 	}
 
 	@Override
+    public boolean isHaveHeader() {
+        return importProperties.isHaveHeader();
+    }
+
+    @Override
 	public Charset getCharset() {
 		return importProperties.getCharset();
 	}

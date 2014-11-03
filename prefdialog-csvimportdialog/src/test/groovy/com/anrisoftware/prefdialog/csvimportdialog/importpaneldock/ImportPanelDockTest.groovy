@@ -35,9 +35,9 @@ import org.junit.Test
 import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
 import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanelModule
-import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelProperties;
-import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelPropertiesFactory;
-import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelPropertiesModule;
+import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelProperties
+import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelPropertiesFactory
+import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelPropertiesModule
 import com.anrisoftware.prefdialog.miscswing.comboboxhistory.ComboBoxHistoryModule
 import com.anrisoftware.prefdialog.miscswing.docks.api.Dock
 import com.anrisoftware.prefdialog.miscswing.docks.api.DockFactory
@@ -55,71 +55,71 @@ import com.google.inject.Injector
  */
 class ImportPanelDockTest {
 
-	@Test
-	void "show"() {
-		def title = "$NAME::show"
-		def field = factory.create(new JPanel(), properties)
-		field.createPanel injector
-		def container = field.getAWTComponent()
-		new TestFrameUtil(title, container, size).withFixture({
-		})
-	}
+    @Test
+    void "show"() {
+        def title = "$NAME::show"
+        def field = factory.create(new JPanel(), properties)
+        field.createPanel injector
+        def container = field.getAWTComponent()
+        new TestFrameUtil(title, container, size).withFixture({
+        })
+    }
 
-	@Test
-	void "manually"() {
-		def title = "$NAME::manually"
-		ImportPanelDock panelDock = panelInjector.getInstance(ImportPanelDock)
-		panelDock.createPanel injector, properties
-		JFrame frame
-		Dock dock
-		def util = new TestFrameUtil(title, null, size) {
-					protected def createFrame(String titlea, arg1) {
-						frame = new JFrame(titlea)
-						dock = dockFactory.create(frame)
-						frame.add dock.getAWTComponent()
-						dock.applyLayout defaultLayout
-						dock.addEditorDock panelDock
-						return frame
-					}
-				}
-		util.withFixture({
-			Thread.sleep 60*1000
-			assert false : "manually test"
-		})
-	}
+    //@Test
+    void "manually"() {
+        def title = "$NAME::manually"
+        ImportPanelDock panelDock = panelInjector.getInstance(ImportPanelDock)
+        panelDock.createPanel injector, properties
+        JFrame frame
+        Dock dock
+        def util = new TestFrameUtil(title, null, size) {
+                    protected def createFrame(String titlea, arg1) {
+                        frame = new JFrame(titlea)
+                        dock = dockFactory.create(frame)
+                        frame.add dock.getAWTComponent()
+                        dock.applyLayout defaultLayout
+                        dock.addEditorDock panelDock
+                        return frame
+                    }
+                }
+        util.withFixture({
+            Thread.sleep 60*1000
+            assert false : "manually test"
+        })
+    }
 
-	static final String NAME = ImportPanelDockTest.class.simpleName
+    static final String NAME = ImportPanelDockTest.class.simpleName
 
-	static Injector injector
+    static Injector injector
 
-	static Injector panelInjector
+    static Injector panelInjector
 
-	static size = new Dimension(400, 362)
+    static size = new Dimension(400, 362)
 
-	static CsvPanelPropertiesFactory propertiesFactory
+    static CsvPanelPropertiesFactory propertiesFactory
 
-	static DockFactory dockFactory
+    static DockFactory dockFactory
 
-	static defaultLayout
+    static defaultLayout
 
-	CsvPanelProperties properties
+    CsvPanelProperties properties
 
-	@BeforeClass
-	static void setupFactories() {
-		injector = Guice.createInjector(
-				new CoreFieldComponentModule(),
-				new TextsResourcesDefaultModule(),
-				new CsvPanelPropertiesModule(),
-				new ComboBoxHistoryModule(),
-				new DockingFramesModule())
-		panelInjector = injector.createChildInjector(new CsvImportPanelModule())
-		dockFactory = panelInjector.getInstance(DockFactory)
-		propertiesFactory = injector.getInstance(CsvPanelPropertiesFactory)
-		defaultLayout = injector.getInstance(DefaultLayoutTask)
-	}
+    @BeforeClass
+    static void setupFactories() {
+        injector = Guice.createInjector(
+                new CoreFieldComponentModule(),
+                new TextsResourcesDefaultModule(),
+                new CsvPanelPropertiesModule(),
+                new ComboBoxHistoryModule(),
+                new DockingFramesModule())
+        panelInjector = injector.createChildInjector(new CsvImportPanelModule())
+        dockFactory = panelInjector.getInstance(DockFactory)
+        propertiesFactory = injector.getInstance(CsvPanelPropertiesFactory)
+        defaultLayout = injector.getInstance(DefaultLayoutTask)
+    }
 
-	@Before
-	void setupBean() {
-		properties = propertiesFactory.create()
-	}
+    @Before
+    void setupBean() {
+        properties = propertiesFactory.create()
+    }
 }

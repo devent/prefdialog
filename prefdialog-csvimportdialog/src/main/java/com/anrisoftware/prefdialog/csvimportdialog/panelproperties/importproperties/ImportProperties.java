@@ -27,97 +27,114 @@ import java.util.Locale;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.anrisoftware.prefdialog.annotations.CheckBox;
 import com.anrisoftware.prefdialog.annotations.ComboBox;
+import com.anrisoftware.prefdialog.annotations.FieldButton;
 import com.anrisoftware.prefdialog.annotations.FieldComponent;
 import com.anrisoftware.prefdialog.annotations.Spinner;
 import com.anrisoftware.prefdialog.fields.historycombobox.HistoryComboBox;
 
 public class ImportProperties {
 
-	private Charset charset;
+    private Charset charset;
 
-	private final CharsetModel charsetModel;
+    private final CharsetModel charsetModel;
 
-	private final Collection<Charset> charsetDefaults;
+    private final Collection<Charset> charsetDefaults;
 
-	private final List<Charset> charsetsHistory;
+    private final List<Charset> charsetsHistory;
 
-	private final CharsetEditor charsetEditor;
+    private final CharsetEditor charsetEditor;
 
-	private Locale locale;
+    private Locale locale;
 
-	private final LocaleModel localeModel;
+    private final LocaleModel localeModel;
 
-	private int startRow;
+    private int startRow;
 
-	private final StartRowModel startRowModel;
+    private final StartRowModel startRowModel;
 
-	@Inject
-	ImportProperties(CharsetModel charsetModel, CharsetEditor charsetEditor,
-			@Named("charsetDefaults") Collection<Charset> charsetDefaults,
-			LocaleModel localeModel, StartRowModel startRowModel) {
-		this.charset = Charset.defaultCharset();
-		this.charsetModel = charsetModel;
-		this.charsetDefaults = charsetDefaults;
-		this.charsetsHistory = new ArrayList<Charset>();
-		this.charsetEditor = charsetEditor;
-		this.locale = Locale.getDefault();
-		this.localeModel = localeModel;
-		this.startRow = (Integer) startRowModel.getValue();
-		this.startRowModel = startRowModel;
-	}
+    private boolean haveHeader;
 
-	public void setCharset(Charset charset) {
-		this.charset = charset;
-	}
+    @Inject
+    ImportProperties(CharsetModel charsetModel, CharsetEditor charsetEditor,
+            @Named("charsetDefaults") Collection<Charset> charsetDefaults,
+            LocaleModel localeModel, StartRowModel startRowModel) {
+        this.haveHeader = false;
+        this.charset = Charset.defaultCharset();
+        this.charsetModel = charsetModel;
+        this.charsetDefaults = charsetDefaults;
+        this.charsetsHistory = new ArrayList<Charset>();
+        this.charsetEditor = charsetEditor;
+        this.locale = Locale.getDefault();
+        this.localeModel = localeModel;
+        this.startRow = (Integer) startRowModel.getValue();
+        this.startRowModel = startRowModel;
+    }
 
-	@FieldComponent(order = 0, invalidText = "charset_unknown")
-	@HistoryComboBox(editable = true, model = "charsetModel", editor = "charsetEditor", history = "charsetsHistory", defaultItems = "charsetDefaults")
-	public Charset getCharset() {
-		return charset;
-	}
+    public void setHaveHeader(boolean haveHeader) {
+        this.haveHeader = haveHeader;
+    }
 
-	public CharsetModel getCharsetModel() {
-		return charsetModel;
-	}
+    @FieldComponent(order = 0, showTitle = false)
+    @FieldButton
+    @CheckBox
+    public boolean isHaveHeader() {
+        return haveHeader;
+    }
 
-	public Collection<Charset> getCharsetDefaults() {
-		return charsetDefaults;
-	}
+    public void setCharset(Charset charset) {
+        this.charset = charset;
+    }
 
-	public List<Charset> getCharsetsHistory() {
-		return charsetsHistory;
-	}
+    @FieldComponent(order = 1, invalidText = "charset_unknown")
+    @HistoryComboBox(editable = true, model = "charsetModel", editor = "charsetEditor", history = "charsetsHistory", defaultItems = "charsetDefaults")
+    public Charset getCharset() {
+        return charset;
+    }
 
-	public CharsetEditor getCharsetEditor() {
-		return charsetEditor;
-	}
+    public CharsetModel getCharsetModel() {
+        return charsetModel;
+    }
 
-	public void setLocale(Locale locale) {
-		this.locale = locale;
-	}
+    public Collection<Charset> getCharsetDefaults() {
+        return charsetDefaults;
+    }
 
-	@FieldComponent(order = 1)
-	@ComboBox(model = "localeModel", rendererClass = LocaleRenderer.class)
-	public Locale getLocale() {
-		return locale;
-	}
+    public List<Charset> getCharsetsHistory() {
+        return charsetsHistory;
+    }
 
-	public LocaleModel getLocaleModel() {
-		return localeModel;
-	}
+    public CharsetEditor getCharsetEditor() {
+        return charsetEditor;
+    }
 
-	@FieldComponent(order = 2)
-	@Spinner(model = "startRowModel")
-	public int getStartRow() {
-		return startRow;
-	}
+    public void setLocale(Locale locale) {
+        this.locale = locale;
+    }
 
-	public void setStartRow(int startRow) {
-		this.startRow = startRow;
-	}
+    @FieldComponent(order = 2)
+    @ComboBox(model = "localeModel", rendererClass = LocaleRenderer.class)
+    public Locale getLocale() {
+        return locale;
+    }
 
-	public StartRowModel getStartRowModel() {
-		return startRowModel;
-	}
+    public LocaleModel getLocaleModel() {
+        return localeModel;
+    }
+
+    @FieldComponent(order = 3)
+    @Spinner(model = "startRowModel")
+    public int getStartRow() {
+        return startRow;
+    }
+
+    public void setStartRow(int startRow) {
+        this.startRow = startRow;
+    }
+
+    public StartRowModel getStartRowModel() {
+        return startRowModel;
+    }
+
 }
