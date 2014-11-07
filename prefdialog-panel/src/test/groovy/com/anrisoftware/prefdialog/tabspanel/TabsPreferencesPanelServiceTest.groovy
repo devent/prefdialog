@@ -28,37 +28,41 @@ import org.junit.BeforeClass
 import org.junit.Test
 
 import com.anrisoftware.globalpom.utils.TestFrameUtil
+import com.google.inject.Injector
 
 /**
  * @see TabsPreferencesPanelService
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
 class TabsPreferencesPanelServiceTest {
 
-	@Test
-	void "with defaults"() {
-		def title = "$NAME :: with defaults"
-		def fieldName = NULL_VALUE
-		def field = factory.create(bean, fieldName)
-		def container = field.getAWTComponent()
-		new TestFrameUtil(title, container).withFixture({})
-	}
+    @Test
+    void "with defaults"() {
+        def title = "$NAME :: with defaults"
+        def fieldName = NULL_VALUE
+        def field = factory.create(bean, fieldName)
+        def container = field.getAWTComponent()
+        new TestFrameUtil(title, container).withFixture({})
+    }
 
-	static final String NAME = TabsPreferencesPanelServiceTest.class.simpleName
+    static final String NAME = TabsPreferencesPanelServiceTest.class.simpleName
 
-	static TabsPreferencesPanelFieldFactory factory
+    static Injector injector
 
-	TabsPreferencesPanelBean bean
+    static TabsPreferencesPanelFieldFactory factory
 
-	@BeforeClass
-	static void setupFactories() {
-		factory = findService(INFO).getFactory()
-	}
+    TabsPreferencesPanelBean bean
 
-	@Before
-	void setupBean() {
-		bean = new TabsPreferencesPanelBean()
-	}
+    @BeforeClass
+    static void setupFactories() {
+        injector = createInjector()
+        factory = findService(INFO).getFactory(injector)
+    }
+
+    @Before
+    void setupBean() {
+        bean = new TabsPreferencesPanelBean()
+    }
 }

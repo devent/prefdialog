@@ -27,45 +27,42 @@ import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 
-import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule
-import com.anrisoftware.globalpom.reflection.beans.BeansModule
 import com.anrisoftware.globalpom.utils.TestFrameUtil
-import com.google.inject.Guice
 import com.google.inject.Injector
 
 /**
  * Test the check box field as a service.
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
 class PreferencesPanelServiceTest {
 
-	@Test
-	void "with defaults"() {
-		def title = "$NAME :: with defaults"
-		def fieldName = CHILD
-		def field = factory.create(bean, fieldName)
-		def container = field.getAWTComponent()
-		new TestFrameUtil(title, container).withFixture({})
-	}
+    @Test
+    void "with defaults"() {
+        def title = "$NAME :: with defaults"
+        def fieldName = CHILD
+        def field = factory.create(bean, fieldName)
+        def container = field.getAWTComponent()
+        new TestFrameUtil(title, container).withFixture({})
+    }
 
-	static final String NAME = PreferencesPanelServiceTest.class.simpleName
+    static final String NAME = PreferencesPanelServiceTest.class.simpleName
 
-	static Injector injector
+    static Injector injector
 
-	static PreferencesPanelFieldFactory factory
+    static PreferencesPanelFieldFactory factory
 
-	PreferencesPanelBean bean
+    PreferencesPanelBean bean
 
-	@BeforeClass
-	static void setupFactories() {
-		injector = Guice.createInjector(new AnnotationsModule(), new BeansModule())
-		factory = findService(INFO).getFactory(injector)
-	}
+    @BeforeClass
+    static void setupFactories() {
+        injector = createInjector()
+        factory = findService(INFO).getFactory(injector)
+    }
 
-	@Before
-	void setupBean() {
-		bean = new PreferencesPanelBean()
-	}
+    @Before
+    void setupBean() {
+        bean = new PreferencesPanelBean()
+    }
 }

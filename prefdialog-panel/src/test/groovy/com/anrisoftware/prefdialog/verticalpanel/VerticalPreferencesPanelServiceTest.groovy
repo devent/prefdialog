@@ -28,37 +28,41 @@ import org.junit.BeforeClass
 import org.junit.Test
 
 import com.anrisoftware.globalpom.utils.TestFrameUtil
+import com.google.inject.Injector
 
 /**
  * @see VerticalPreferencesPanelService
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
 class VerticalPreferencesPanelServiceTest {
 
-	@Test
-	void "service"() {
-		def title = "$NAME::service"
-		def fieldName = NULL_VALUE
-		def field = factory.create(bean, fieldName)
-		def container = field.getAWTComponent()
-		new TestFrameUtil(title, container).withFixture({})
-	}
+    @Test
+    void "service"() {
+        def title = "$NAME::service"
+        def fieldName = NULL_VALUE
+        def field = factory.create(bean, fieldName)
+        def container = field.getAWTComponent()
+        new TestFrameUtil(title, container).withFixture({})
+    }
 
-	static final String NAME = VerticalPreferencesPanelServiceTest.class.simpleName
+    static final String NAME = VerticalPreferencesPanelServiceTest.class.simpleName
 
-	static VerticalPreferencesPanelFieldFactory factory
+    static Injector injector
 
-	VerticalPreferencesPanelBean bean
+    static VerticalPreferencesPanelFieldFactory factory
 
-	@BeforeClass
-	static void setupFactories() {
-		factory = findService(INFO).getFactory()
-	}
+    VerticalPreferencesPanelBean bean
 
-	@Before
-	void setupBean() {
-		bean = new VerticalPreferencesPanelBean()
-	}
+    @BeforeClass
+    static void setupFactories() {
+        injector = createInjector()
+        factory = findService(INFO).getFactory(injector)
+    }
+
+    @Before
+    void setupBean() {
+        bean = new VerticalPreferencesPanelBean()
+    }
 }

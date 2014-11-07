@@ -19,10 +19,9 @@
 package com.anrisoftware.prefdialog.csvimportdialog.dialog
 
 import static com.anrisoftware.globalpom.utils.TestUtils.*
-import static com.anrisoftware.prefdialog.core.FieldTestUtils.*
+import static com.anrisoftware.prefdialog.csvimportdialog.core.FieldTestUtils.*
 import static com.anrisoftware.prefdialog.csvimportdialog.dialog.CsvImportDialog.*
 import static com.anrisoftware.prefdialog.csvimportdialog.dialog.CsvImportDialogModule.*
-import static com.anrisoftware.prefdialog.fields.textfield.TextFieldBean.*
 
 import java.awt.Component
 import java.awt.Dimension

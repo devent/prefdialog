@@ -19,9 +19,8 @@
 package com.anrisoftware.prefdialog.csvimportdialog.panel
 
 import static com.anrisoftware.globalpom.utils.TestUtils.*
-import static com.anrisoftware.prefdialog.core.FieldTestUtils.*
+import static com.anrisoftware.prefdialog.csvimportdialog.core.FieldTestUtils.*
 import static com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanelModule.*
-import static com.anrisoftware.prefdialog.fields.textfield.TextFieldBean.*
 
 import java.awt.Dimension
 
@@ -58,7 +57,7 @@ class CsvImportPanelTest {
         })
     }
 
-    @Test
+    //@Test
     void "manually"() {
         def title = "$NAME::manually"
         def p = propertiesFactory.create()

@@ -19,18 +19,15 @@
 package com.anrisoftware.prefdialog.csvimportdialog.importpaneldock
 
 import static com.anrisoftware.globalpom.utils.TestUtils.*
-import static com.anrisoftware.prefdialog.core.FieldTestUtils.*
-import static com.anrisoftware.prefdialog.fields.textfield.TextFieldBean.*
+import static com.anrisoftware.prefdialog.csvimportdialog.core.FieldTestUtils.*
 
 import java.awt.Dimension
 
 import javax.swing.JFrame
-import javax.swing.JPanel
 
 import org.fest.swing.fixture.FrameFixture
 import org.junit.Before
 import org.junit.BeforeClass
-import org.junit.Test
 
 import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.prefdialog.core.CoreFieldComponentModule
@@ -54,16 +51,6 @@ import com.google.inject.Injector
  * @since 3.0
  */
 class ImportPanelDockTest {
-
-    @Test
-    void "show"() {
-        def title = "$NAME::show"
-        def field = factory.create(new JPanel(), properties)
-        field.createPanel injector
-        def container = field.getAWTComponent()
-        new TestFrameUtil(title, container, size).withFixture({
-        })
-    }
 
     //@Test
     void "manually"() {
