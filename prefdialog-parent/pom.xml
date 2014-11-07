@@ -98,7 +98,7 @@
 			<dependency>
 				<groupId>com.anrisoftware.globalpom</groupId>
 				<artifactId>globalpomutils-data</artifactId>
-				<version>2.3-SNAPSHOT</version>
+				<version>2.3</version>
 			</dependency>
 			<dependency>
 				<groupId>com.anrisoftware.globalpom</groupId>
