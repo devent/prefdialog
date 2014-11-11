@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.anrisoftware.prefdialog</groupId>
 		<artifactId>prefdialog-parent</artifactId>
-		<version>3.0-SNAPSHOT</version>
+		<version>3.0</version>
 		<relativePath>../prefdialog-parent</relativePath>
 	</parent>
 
@@ -15,16 +15,6 @@
 	<description>Miscellaneous swing components.</description>
 	<inceptionYear>2013</inceptionYear>
 	<url>https://anrisoftware.com/projects/projects/prefdialog-misc-swing</url>
-
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>com.anrisoftware.prefdialog</groupId>
-				<artifactId>prefdialog-freepik-basic-application-icons</artifactId>
-				<version>1.0</version>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 
 	<dependencies>
 		<!-- test dependencies -->
