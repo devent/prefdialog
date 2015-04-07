@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2014 Erwin Müller <erwin.mueller@deventm.org>
+ * Copyright 2013-2015 Erwin Müller <erwin.mueller@deventm.org>
  *
  * This file is part of prefdialog-corefields.
  *
@@ -28,7 +28,7 @@ import javax.swing.DefaultComboBoxModel
  */
 class CustomComboBoxModel extends DefaultComboBoxModel {
 
-	CustomComboBoxModel() {
-		super(["Eins", "Zwei", "Drei"])
-	}
+    CustomComboBoxModel() {
+        super(["Eins", "Zwei", "Drei"] as Object[])
+    }
 }

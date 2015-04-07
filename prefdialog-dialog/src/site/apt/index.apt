@@ -1,0 +1,42 @@
+~~
+~~ Copyright 2012-2015 Erwin Müller <erwin.mueller@deventm.org>
+~~
+~~ This file is part of prefdialog-dialog.
+~~
+~~ prefdialog-dialog is free software: you can redistribute it and/or modify it
+~~ under the terms of the GNU Lesser General Public License as published by the
+~~ Free Software Foundation, either version 3 of the License, or (at your
+~~ option) any later version.
+~~
+~~ prefdialog-dialog is distributed in the hope that it will be useful, but
+~~ WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+~~ FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+~~ details.
+~~
+~~ You should have received a copy of the GNU Lesser General Public License
+~~ along with prefdialog-dialog. If not, see <http://www.gnu.org/licenses/>.
+~~
+
+Description
+
+  Dialogs that are containing the annotated field components.
+
+SCM
+
+  * {{{https://anrisoftware.com/projects/projects/prefdialog-dialog/repository}Main Repository}}
+
+  * git@anrisoftware.com:prefdialog.git
+
+  * {{{https://github.com/devent/prefdialog}Github Mirror Repository}}
+
+  * git@anrisoftware.com:prefdialog.git
+
+Maven
+
+---
+<dependency>
+    <groupId>com.anrisoftware.prefdialog</groupId>
+    <artifactId>prefdialog-dialog</artifactId>
+    <version>3.1</version>
+</dependency>
+---

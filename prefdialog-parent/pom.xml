@@ -6,16 +6,16 @@
 	<parent>
 		<groupId>com.anrisoftware.globalpom</groupId>
 		<artifactId>globalpom-groovy</artifactId>
-		<version>1.24</version>
+		<version>1.25</version>
 		<relativePath />
 	</parent>
 
 	<groupId>com.anrisoftware.prefdialog</groupId>
 	<artifactId>prefdialog-parent</artifactId>
-	<version>3.0</version>
+	<version>3.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Prefdialog :: Parent POM</name>
-	<description>Manages the dependencies for the modules.</description>
+	<description>Manages the dependencies for the Prefdialog modules.</description>
 	<url>https://anrisoftware.com/projects/projects/prefdialog-parent</url>
 	<inceptionYear>2010</inceptionYear>
 
@@ -29,15 +29,17 @@
 
 	<developers>
 		<developer>
-			<id>devent</id>
-			<name>Erwin Mueller</name>
+			<id>EM</id>
+			<name>Erwin Müller</name>
 			<email>erwin.mueller@deventm.org</email>
-			<url>http://anr-institute.com</url>
+			<url>http://www.mueller-public.de/</url>
+			<timezone>Europe/Berlin</timezone>
+			<organization>Advanced Natural Research Institute</organization>
+			<organizationUrl>https://anrisoftware.com</organizationUrl>
 			<roles>
 				<role>Owner</role>
 				<role>Developer</role>
 			</roles>
-			<timezone>Europe/Berlin</timezone>
 		</developer>
 	</developers>
 
@@ -47,12 +49,16 @@
 	</issueManagement>
 
 	<scm>
-		<connection>scm:git:${gitpublic.repository.root}prefdialog.git</connection>
-		<developerConnection>scm:git:${gitpublic.repository.root}prefdialog.git</developerConnection>
-		<url>https://www.anr-institute.com/gitpublic/prefdialog.git/</url>
+		<connection>scm:git:git@anrisoftware.com:prefdialog.git</connection>
+		<developerConnection>scm:git:git@anrisoftware.com:prefdialog.git</developerConnection>
+		<url>https://anrisoftware.com/projects/projects/prefdialog-parent/repository</url>
 	</scm>
 
 	<distributionManagement>
+		<site>
+			<id>anrisoftware</id>
+			<url>dav:https://anrisoftware.com/javadoc/${project.groupId}/${project.artifactId}</url>
+		</site>
 		<repository>
 			<id>osssonatype</id>
 			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
@@ -68,61 +74,49 @@
 			<dependency>
 				<groupId>com.anrisoftware.globalpom</groupId>
 				<artifactId>globalpom-groovytestutils</artifactId>
-				<version>1.24</version>
+				<version>1.25</version>
 			</dependency>
 			<dependency>
 				<groupId>com.anrisoftware.resources</groupId>
 				<artifactId>resources-images</artifactId>
-				<version>1.14</version>
+				<version>1.15</version>
 			</dependency>
 			<dependency>
 				<groupId>com.anrisoftware.resources</groupId>
 				<artifactId>resources-texts</artifactId>
-				<version>1.14</version>
+				<version>1.15</version>
 			</dependency>
 			<dependency>
 				<groupId>com.anrisoftware.globalpom</groupId>
 				<artifactId>globalpom-log</artifactId>
-				<version>1.18</version>
+				<version>1.20</version>
 			</dependency>
 			<dependency>
 				<groupId>com.anrisoftware.globalpom</groupId>
 				<artifactId>globalpomutils-core</artifactId>
-				<version>2.2</version>
+				<version>2.4</version>
 			</dependency>
 			<dependency>
 				<groupId>com.anrisoftware.globalpom</groupId>
 				<artifactId>globalpomutils-reflection</artifactId>
-				<version>2.2</version>
-			</dependency>
-			<dependency>
-				<groupId>com.anrisoftware.globalpom</groupId>
-				<artifactId>globalpomutils-data</artifactId>
 				<version>2.3</version>
 			</dependency>
 			<dependency>
 				<groupId>com.anrisoftware.globalpom</groupId>
+				<artifactId>globalpomutils-data</artifactId>
+				<version>2.4</version>
+			</dependency>
+			<dependency>
+				<groupId>com.anrisoftware.globalpom</groupId>
 				<artifactId>globalpomutils-threads</artifactId>
-				<version>2.2</version>
+				<version>2.3</version>
 			</dependency>
 			<dependency>
 				<groupId>com.anrisoftware.propertiesutils</groupId>
 				<artifactId>propertiesutils-contextproperties</artifactId>
-				<version>1.12</version>
+				<version>1.13</version>
 			</dependency>
 			<dependency>
-				<groupId>org.dockingframes</groupId>
-				<artifactId>docking-frames-core</artifactId>
-				<version>1.1.2-p12e</version>
-			</dependency>
-			<dependency>
-				<groupId>org.dockingframes</groupId>
-				<artifactId>docking-frames-common</artifactId>
-				<version>1.1.2-p12e</version>
-			</dependency>
-			<!-- spi -->
-			<dependency>
-				<!-- Apache 2.0 -->
 				<groupId>org.mangosdk.spi</groupId>
 				<artifactId>spi</artifactId>
 				<version>0.2.7.r52822d</version>
@@ -131,48 +125,48 @@
 			<dependency>
 				<groupId>com.anrisoftware.prefdialog</groupId>
 				<artifactId>prefdialog-api</artifactId>
-				<version>3.0</version>
+				<version>3.1-SNAPSHOT</version>
 			</dependency>
-            <dependency>
-                <groupId>com.anrisoftware.prefdialog</groupId>
-                <artifactId>prefdialog-core</artifactId>
-                <version>3.0</version>
-            </dependency>
-            <dependency>
-                <groupId>com.anrisoftware.prefdialog</groupId>
-                <artifactId>prefdialog-corefields</artifactId>
-                <version>3.0</version>
-            </dependency>
-            <dependency>
-                <groupId>com.anrisoftware.prefdialog</groupId>
-                <artifactId>prefdialog-csvimportdialog</artifactId>
-                <version>3.0</version>
-            </dependency>
-            <dependency>
-                <groupId>com.anrisoftware.prefdialog</groupId>
-                <artifactId>prefdialog-dialog</artifactId>
-                <version>3.0</version>
-            </dependency>
-            <dependency>
-                <groupId>com.anrisoftware.prefdialog</groupId>
-                <artifactId>prefdialog-freepik-basic-application-icons</artifactId>
-                <version>1.0</version>
-            </dependency>
-            <dependency>
-                <groupId>com.anrisoftware.prefdialog</groupId>
-                <artifactId>prefdialog-icons-reflectionkde4</artifactId>
-                <version>1.0</version>
-            </dependency>
-            <dependency>
-                <groupId>com.anrisoftware.prefdialog</groupId>
-                <artifactId>prefdialog-misc-swing</artifactId>
-                <version>3.0</version>
-            </dependency>
-            <dependency>
-                <groupId>com.anrisoftware.prefdialog</groupId>
-                <artifactId>prefdialog-panel</artifactId>
-                <version>3.0</version>
-            </dependency>
+			<dependency>
+				<groupId>com.anrisoftware.prefdialog</groupId>
+				<artifactId>prefdialog-core</artifactId>
+				<version>3.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.anrisoftware.prefdialog</groupId>
+				<artifactId>prefdialog-corefields</artifactId>
+				<version>3.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.anrisoftware.prefdialog</groupId>
+				<artifactId>prefdialog-csvimportdialog</artifactId>
+				<version>3.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.anrisoftware.prefdialog</groupId>
+				<artifactId>prefdialog-dialog</artifactId>
+				<version>3.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.anrisoftware.prefdialog</groupId>
+				<artifactId>prefdialog-freepik-basic-application-icons</artifactId>
+				<version>1.0</version>
+			</dependency>
+			<dependency>
+				<groupId>com.anrisoftware.prefdialog</groupId>
+				<artifactId>prefdialog-icons-reflectionkde4</artifactId>
+				<version>1.0</version>
+			</dependency>
+			<dependency>
+				<groupId>com.anrisoftware.prefdialog</groupId>
+				<artifactId>prefdialog-misc-swing</artifactId>
+				<version>3.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.anrisoftware.prefdialog</groupId>
+				<artifactId>prefdialog-panel</artifactId>
+				<version>3.1-SNAPSHOT</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
