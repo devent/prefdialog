@@ -22,11 +22,19 @@ Description
 [./images/csvimportdialog1.png] CSV Import Dialog
 
   Dialog to import formatted text data in a comma separated format. The
-comma can also be a tab, space, semicolon or any other character.
+comma can also be a tab, space, semicolon or any other character. It uses
+the {{{http://dock.javaforge.com/}Docking Frames}} framework to present the
+import properties panel and a preview panel. The preview panel loads a part
+of the data from the specified file and shows a preview how the data would
+be imported.
 
 * Usage
 
   * {{{./opencsvimportdialog_example.html}Open CSV Import Dialog Example}} for the use of the CSV import dialog.
+
+  * {{{./settheme_example.html}Set Theme Example}} for how to set different docker themes.
+
+  * {{{./layout_example.html}Load and Save Layout Example}} for how to set the docker layout.
 
 SCM
 

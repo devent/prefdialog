@@ -24,6 +24,10 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import javax.inject.Inject;
 import javax.swing.JDialog;
@@ -39,6 +43,7 @@ import com.anrisoftware.prefdialog.fields.FieldComponent;
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 import com.anrisoftware.prefdialog.miscswing.docks.api.Dock;
 import com.anrisoftware.prefdialog.miscswing.docks.api.DockFactory;
+import com.anrisoftware.prefdialog.miscswing.docks.api.LayoutTask;
 import com.anrisoftware.prefdialog.simpledialog.SimpleDialog;
 import com.anrisoftware.resources.texts.api.Texts;
 import com.anrisoftware.resources.texts.api.TextsFactory;
@@ -241,6 +246,52 @@ public class CsvImportDialog extends SimpleDialog {
      */
     public FieldComponent<JPanel> getImportPanelField() {
         return importPanelDock.getImportPanel().getPanel();
+    }
+
+    /**
+     * @see Dock#saveLayout(String, File)
+     */
+    public void saveLayout(String name, File file) throws IOException {
+        dock.saveLayout(name, file);
+    }
+
+    /**
+     * @see Dock#saveLayout(String, OutputStream)
+     */
+    public void saveLayout(String name, OutputStream stream) throws IOException {
+        dock.saveLayout(name, stream);
+    }
+
+    /**
+     * @see Dock#loadLayout(String, File, PropertyChangeListener...)
+     */
+    public void loadLayout(String name, File file,
+            PropertyChangeListener... listeners) throws IOException {
+        dock.loadLayout(name, file, listeners);
+        dock.addEditorDock(importPanelDock);
+    }
+
+    /**
+     * @see Dock#loadLayout(String, InputStream, PropertyChangeListener...)
+     */
+    public void loadLayout(String name, InputStream stream,
+            PropertyChangeListener... listeners) throws IOException {
+        dock.loadLayout(name, stream, listeners);
+        dock.addEditorDock(importPanelDock);
+    }
+
+    /**
+     * @see Dock#getCurrentLayout()
+     */
+    public LayoutTask getCurrentLayout() {
+        return dock.getCurrentLayout();
+    }
+
+    /**
+     * @see Dock#setTheme(String)
+     */
+    public void setTheme(String name) {
+        dock.setTheme(name);
     }
 
     @Override

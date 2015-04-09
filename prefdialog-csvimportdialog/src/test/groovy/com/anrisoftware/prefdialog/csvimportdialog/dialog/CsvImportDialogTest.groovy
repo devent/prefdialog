@@ -31,6 +31,8 @@ import javax.swing.JDialog
 import org.junit.BeforeClass
 import org.junit.Test
 
+import bibliothek.gui.dock.common.theme.ThemeMap
+
 import com.anrisoftware.globalpom.utils.frametesting.DialogTestingFactory
 import com.anrisoftware.globalpom.utils.frametesting.FrameTestingModule
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelPropertiesFactory
@@ -54,6 +56,52 @@ class CsvImportDialogTest {
                 importDialog = decorateCsvImportDialog(bean, dialog, null)
             }])()
         testing.withFixture({})
+    }
+
+    @Test
+    void "set theme"() {
+        def title = "$NAME/set theme"
+        def bean = propertiesFactory.create()
+        def importDialog
+        def testing = testingFactory.create([title: title, size: size, setupDialog: { JDialog dialog, Component component ->
+                importDialog = decorateCsvImportDialog(bean, dialog, null)
+                importDialog.setTheme ThemeMap.KEY_ECLIPSE_THEME
+            }])()
+        testing.withFixture({
+            //
+            importDialog.setTheme ThemeMap.KEY_SMOOTH_THEME
+        }, {
+            //
+            importDialog.setTheme ThemeMap.KEY_BUBBLE_THEME
+        }, {
+            //
+            importDialog.setTheme ThemeMap.KEY_BASIC_THEME
+            Thread.sleep 10000
+        }, {
+            //
+            importDialog.setTheme ThemeMap.KEY_FLAT_THEME
+            Thread.sleep 10000
+        })
+    }
+
+    @Test
+    void "save load layout"() {
+        def title = "$NAME/save load layout"
+        def bean = propertiesFactory.create()
+        def importDialog
+        def ostream = new ByteArrayOutputStream()
+        def layoutName = "default"
+        def testing = testingFactory.create([title: title, size: size, setupDialog: { JDialog dialog, Component component ->
+                importDialog = decorateCsvImportDialog(bean, dialog, null)
+                importDialog.setTheme ThemeMap.KEY_ECLIPSE_THEME
+            }])()
+        testing.withFixture({
+            //
+            importDialog.saveLayout layoutName, ostream
+        }, {
+            //
+            importDialog.loadLayout layoutName, new ByteArrayInputStream(ostream.toByteArray())
+        })
     }
 
     //@Test
