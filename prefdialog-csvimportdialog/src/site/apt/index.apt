@@ -19,8 +19,14 @@
 
 Description
 
+[./images/csvimportdialog1.png] CSV Import Dialog
+
   Dialog to import formatted text data in a comma separated format. The
 comma can also be a tab, space, semicolon or any other character.
+
+* Usage
+
+  * {{{./opencsvimportdialog_example.html}Open CSV Import Dialog Example}} for the use of the CSV import dialog.
 
 SCM
 

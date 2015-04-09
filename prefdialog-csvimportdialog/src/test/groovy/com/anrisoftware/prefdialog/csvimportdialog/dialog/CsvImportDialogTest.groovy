@@ -80,7 +80,7 @@ class CsvImportDialogTest {
 
     static DialogTestingFactory testingFactory
 
-    static size = new Dimension(400, 362)
+    static size = new Dimension(600, 362)
 
     @BeforeClass
     static void setupFactories() {

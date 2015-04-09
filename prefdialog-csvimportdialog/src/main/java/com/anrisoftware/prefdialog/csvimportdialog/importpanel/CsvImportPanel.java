@@ -106,7 +106,7 @@ public class CsvImportPanel {
     }
 
     @Inject
-    void setTextsFactory(TextsFactory factory) {
+    public void setTextsFactory(TextsFactory factory) {
         this.texts = factory.create(CsvImportPanel.class.getSimpleName());
     }
 
@@ -280,6 +280,38 @@ public class CsvImportPanel {
     public void removeVetoableChangeListener(String propertyName,
             VetoableChangeListener listener) {
         propertiesPanel.removeVetoableChangeListener(propertyName, listener);
+    }
+
+    /**
+     * @see FieldComponent#addPropertyChangeListener(PropertyChangeListener)
+     */
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        propertiesPanel.addPropertyChangeListener(listener);
+    }
+
+    /**
+     * @see FieldComponent#removePropertyChangeListener(PropertyChangeListener)
+     */
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        propertiesPanel.removePropertyChangeListener(listener);
+    }
+
+    /**
+     * @see FieldComponent#addPropertyChangeListener(String,
+     *      PropertyChangeListener)
+     */
+    public void addPropertyChangeListener(String propertyName,
+            PropertyChangeListener listener) {
+        propertiesPanel.addPropertyChangeListener(propertyName, listener);
+    }
+
+    /**
+     * @see FieldComponent#removePropertyChangeListener(String,
+     *      PropertyChangeListener)
+     */
+    public void removePropertyChangeListener(String propertyName,
+            PropertyChangeListener listener) {
+        propertiesPanel.removePropertyChangeListener(propertyName, listener);
     }
 
 }

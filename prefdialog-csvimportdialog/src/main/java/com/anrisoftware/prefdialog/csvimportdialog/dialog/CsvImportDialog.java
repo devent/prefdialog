@@ -20,6 +20,8 @@ package com.anrisoftware.prefdialog.csvimportdialog.dialog;
 
 import static com.anrisoftware.prefdialog.csvimportdialog.dialog.CsvImportDialogModule.getFactory;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
 
@@ -27,18 +29,16 @@ import javax.inject.Inject;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import com.anrisoftware.globalpom.dataimport.CsvImportProperties;
 import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanel;
 import com.anrisoftware.prefdialog.csvimportdialog.importpaneldock.ImportPanelDock;
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelProperties;
+import com.anrisoftware.prefdialog.csvimportdialog.previewpaneldock.PreviewPanelDock;
 import com.anrisoftware.prefdialog.fields.FieldComponent;
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 import com.anrisoftware.prefdialog.miscswing.docks.api.Dock;
 import com.anrisoftware.prefdialog.miscswing.docks.api.DockFactory;
-import com.anrisoftware.prefdialog.miscswing.docks.api.FocusChangedEvent;
 import com.anrisoftware.prefdialog.simpledialog.SimpleDialog;
 import com.anrisoftware.resources.texts.api.Texts;
 import com.anrisoftware.resources.texts.api.TextsFactory;
@@ -53,252 +53,257 @@ import com.google.inject.assistedinject.Assisted;
  */
 public class CsvImportDialog extends SimpleDialog {
 
-	private static final String IMPORT_ACTION_NAME = "import_action";
+    private static final String IMPORT_ACTION_NAME = "import_action";
 
-	/**
-	 * @see #decorate(CsvImportProperties, JDialog, JFrame)
-	 */
-	public static CsvImportDialog decorateCsvImportDialog(
-			CsvImportProperties properties, JDialog dialog, JFrame frame) {
-		return decorate(properties, dialog, frame);
-	}
+    /**
+     * @see #decorate(CsvImportProperties, JDialog, JFrame)
+     */
+    public static CsvImportDialog decorateCsvImportDialog(
+            CsvImportProperties properties, JDialog dialog, JFrame frame) {
+        return decorate(properties, dialog, frame);
+    }
 
-	/**
-	 * Decorates the dialog with the CSV import panel and dialog actions.
-	 * 
-	 * @param properties
-	 *            the {@link CsvImportProperties}.
-	 * 
-	 * @param dialog
-	 *            the {@link JDialog}.
-	 * 
-	 * @param frame
-	 *            the {@link JFrame} owner or {@code null}.
-	 * 
-	 * @return the {@link CsvImportDialog}.
-	 * 
-	 * @see CsvImportDialogFactory#create(CsvImportProperties)
-	 */
-	@OnAwt
-	public static CsvImportDialog decorate(CsvImportProperties properties,
-			JDialog dialog, JFrame frame) {
-		CsvImportDialog importDialog;
-		importDialog = getFactory().create(properties);
-		importDialog.setDialog(dialog);
-		importDialog.createDialog(frame);
-		return importDialog;
-	}
+    /**
+     * Decorates the dialog with the CSV import panel and dialog actions.
+     *
+     * @param properties
+     *            the {@link CsvImportProperties}.
+     *
+     * @param dialog
+     *            the {@link JDialog}.
+     *
+     * @param frame
+     *            the {@link JFrame} owner or {@code null}.
+     *
+     * @return the {@link CsvImportDialog}.
+     *
+     * @see CsvImportDialogFactory#create(CsvImportProperties)
+     */
+    @OnAwt
+    public static CsvImportDialog decorate(CsvImportProperties properties,
+            JDialog dialog, JFrame frame) {
+        CsvImportDialog importDialog;
+        importDialog = getFactory().create(properties);
+        importDialog.setDialog(dialog);
+        importDialog.createDialog(frame);
+        return importDialog;
+    }
 
-	private final CsvImportProperties properties;
+    private final CsvImportProperties properties;
 
-	private final ChangeListener requestFocusListener;
+    private final PropertyChangeListener propertyChangeListener;
 
-	private final Dock dock;
+    private final Dock dock;
 
-	@Inject
-	private ImportPanelDock importPanelDock;
+    @Inject
+    private ImportPanelDock importPanelDock;
 
-	@Inject
-	private Injector parent;
+    @Inject
+    private PreviewPanelDock previewPanelDock;
 
-	@Inject
-	private ValidListener validListener;
+    @Inject
+    private Injector parent;
 
-	@Inject
-	private PropertiesWorkerFactory propertiesWorkerFactory;
+    @Inject
+    private ValidListener validListener;
 
-	private Texts texts;
+    @Inject
+    private PropertiesWorkerFactory propertiesWorkerFactory;
 
-	/**
-	 * @see CsvImportDialogFactory#create(CsvImportProperties)
-	 */
-	@Inject
-	CsvImportDialog(DockFactory dockFactory,
-			@Assisted CsvImportProperties properties) {
-		this.dock = dockFactory.create();
-		this.properties = properties;
-		this.requestFocusListener = new ChangeListener() {
+    private Texts texts;
 
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				if (e instanceof FocusChangedEvent) {
-					dock.requestFocus(importPanelDock);
-					importPanelDock.getImportPanel().requestFocus();
-				}
-			}
-		};
-		setupDock();
-	}
+    /**
+     * @see CsvImportDialogFactory#create(CsvImportProperties)
+     */
+    @Inject
+    CsvImportDialog(DockFactory dockFactory,
+            @Assisted CsvImportProperties properties) {
+        this.dock = dockFactory.create();
+        this.properties = properties;
+        this.propertyChangeListener = new PropertyChangeListener() {
 
-	@Inject
-	void setTextsFactory(TextsFactory factory) {
-		this.texts = factory.create(CsvImportDialog.class.getSimpleName());
-	}
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                previewPanelDock.setProperties(importPanelDock.getProperties());
+            }
+        };
+        setupDock();
+    }
 
-	/**
-	 * Sets the parent dependency modules.
-	 * 
-	 * @param parent
-	 *            the parent {@link Inject}.
-	 */
-	public void setParent(Injector parent) {
-		this.parent = parent;
-	}
+    @Inject
+    void setTextsFactory(TextsFactory factory) {
+        this.texts = factory.create(CsvImportDialog.class.getSimpleName());
+    }
 
-	@Override
-	@OnAwt
-	public CsvImportDialog createDialog() {
-		return createDialog(null);
-	}
+    /**
+     * Sets the parent dependency modules.
+     *
+     * @param parent
+     *            the parent {@link Inject}.
+     */
+    public void setParent(Injector parent) {
+        this.parent = parent;
+    }
 
-	/**
-	 * @see #createDialog()
-	 * 
-	 * @param frame
-	 *            the parent {@link JFrame} owner or {@code null}.
-	 */
-	@OnAwt
-	public CsvImportDialog createDialog(JFrame frame) {
-		dock.createDock(frame);
-		setApproveActionName(IMPORT_ACTION_NAME);
-		importPanelDock.createPanel(parent, properties);
-		setFieldsPanel(dock.getAWTComponent());
-		dock.addEditorDock(importPanelDock);
-		setTexts(texts);
-		validListener.installDialog(this);
-		return (CsvImportDialog) super.createDialog();
-	}
+    @Override
+    @OnAwt
+    public CsvImportDialog createDialog() {
+        return createDialog(null);
+    }
 
-	/**
-	 * Returns the dock.
-	 *
-	 * @return the {@link Dock}.
-	 */
-	public Dock getDock() {
-		return dock;
-	}
+    /**
+     * @see #createDialog()
+     *
+     * @param frame
+     *            the parent {@link JFrame} owner or {@code null}.
+     */
+    @OnAwt
+    public CsvImportDialog createDialog(JFrame frame) {
+        dock.createDock(frame);
+        setApproveActionName(IMPORT_ACTION_NAME);
+        importPanelDock.createPanel(parent, properties);
+        importPanelDock.addPropertyChangeListener(propertyChangeListener);
+        setFieldsPanel(dock.getAWTComponent());
+        previewPanelDock.createPanel(parent);
+        previewPanelDock.setProperties(properties);
+        dock.addViewDock(previewPanelDock);
+        dock.addEditorDock(importPanelDock);
+        setTexts(texts);
+        validListener.installDialog(this);
+        return (CsvImportDialog) super.createDialog();
+    }
 
-	/**
-	 * Sets the properties to the dialog fields.
-	 * 
-	 * @param properties
-	 *            the {@link CsvImportProperties}.
-	 * 
-	 * @throws PropertyVetoException
-	 *             if one of the values of the properties are vetoed.
-	 */
-	@OnAwt
-	public void setProperties(CsvImportProperties properties)
-			throws PropertyVetoException {
-		FieldComponent<?> field = getImportPanelField();
-		CsvPanelProperties p = (CsvPanelProperties) getProperties();
-		propertiesWorkerFactory.create(field, p).setProperties(properties);
-	}
+    /**
+     * Returns the dock.
+     *
+     * @return the {@link Dock}.
+     */
+    public Dock getDock() {
+        return dock;
+    }
 
-	/**
-	 * Sets the properties to the dialog fields. if one of the values of the
-	 * properties is vetoed the value is skipped.
-	 * 
-	 * @param properties
-	 *            the {@link CsvImportProperties}.
-	 */
-	@OnAwt
-	public void setPropertiesNoChecks(CsvImportProperties properties) {
-		FieldComponent<?> field = getImportPanelField();
-		CsvPanelProperties p = (CsvPanelProperties) getProperties();
-		propertiesWorkerFactory.create(field, p).setPropertiesNoChecks(
-				properties);
-	}
+    /**
+     * Sets the properties to the dialog fields.
+     *
+     * @param properties
+     *            the {@link CsvImportProperties}.
+     *
+     * @throws PropertyVetoException
+     *             if one of the values of the properties are vetoed.
+     */
+    @OnAwt
+    public void setProperties(CsvImportProperties properties)
+            throws PropertyVetoException {
+        FieldComponent<?> field = getImportPanelField();
+        CsvPanelProperties p = (CsvPanelProperties) getProperties();
+        propertiesWorkerFactory.create(field, p).setProperties(properties);
+        previewPanelDock.setProperties(properties);
+    }
 
-	/**
-	 * Returns the CSV import properties.
-	 * 
-	 * @return the {@link CsvImportProperties}.
-	 */
-	public CsvImportProperties getProperties() {
-		return importPanelDock.getImportPanel().getProperties();
-	}
+    /**
+     * Sets the properties to the dialog fields. if one of the values of the
+     * properties is vetoed the value is skipped.
+     *
+     * @param properties
+     *            the {@link CsvImportProperties}.
+     */
+    @OnAwt
+    public void setPropertiesNoChecks(CsvImportProperties properties) {
+        FieldComponent<?> field = getImportPanelField();
+        CsvPanelProperties p = (CsvPanelProperties) getProperties();
+        propertiesWorkerFactory.create(field, p).setPropertiesNoChecks(
+                properties);
+        previewPanelDock.setProperties(properties);
+    }
 
-	/**
-	 * Returns the import panel dock.
-	 *
-	 * @return the {@link ImportPanelDock}.
-	 */
-	public ImportPanelDock getImportPanelDock() {
-		return importPanelDock;
-	}
+    /**
+     * Returns the CSV import properties.
+     *
+     * @return the {@link CsvImportProperties}.
+     */
+    public CsvImportProperties getProperties() {
+        return importPanelDock.getImportPanel().getProperties();
+    }
 
-	/**
-	 * Returns the CSV import panel field.
-	 *
-	 * @return the {@link FieldComponent}.
-	 */
-	public FieldComponent<JPanel> getImportPanelField() {
-		return importPanelDock.getImportPanel().getPanel();
-	}
+    /**
+     * Returns the import panel dock.
+     *
+     * @return the {@link ImportPanelDock}.
+     */
+    public ImportPanelDock getImportPanelDock() {
+        return importPanelDock;
+    }
 
-	@Override
-	public void openDialog() {
-		importPanelDock.getImportPanel().requestFocus();
-		super.openDialog();
-	}
+    /**
+     * Returns the CSV import panel field.
+     *
+     * @return the {@link FieldComponent}.
+     */
+    public FieldComponent<JPanel> getImportPanelField() {
+        return importPanelDock.getImportPanel().getPanel();
+    }
 
-	@Override
-	public void restoreDialog() {
-		try {
-			importPanelDock.restoreInput();
-		} catch (PropertyVetoException e) {
-		}
-	}
+    @Override
+    public void openDialog() {
+        importPanelDock.getImportPanel().requestFocus();
+        super.openDialog();
+    }
 
-	private void setupDock() {
-		dock.addStateChangedListener(requestFocusListener);
-	}
+    @Override
+    public void restoreDialog() {
+        try {
+            importPanelDock.restoreInput();
+        } catch (PropertyVetoException e) {
+        }
+    }
 
-	/**
-	 * @see CsvImportPanel#addVetoableChangeListener(VetoableChangeListener)
-	 * @see SimpleDialog#addVetoableChangeListener(VetoableChangeListener)
-	 */
-	@Override
-	public void addVetoableChangeListener(VetoableChangeListener listener) {
-		importPanelDock.addVetoableChangeListener(listener);
-		super.addVetoableChangeListener(listener);
-	}
+    private void setupDock() {
+    }
 
-	/**
-	 * @see CsvImportPanel#removeVetoableChangeListener(VetoableChangeListener)
-	 * @see SimpleDialog#removeVetoableChangeListener(VetoableChangeListener)
-	 */
-	@Override
-	public void removeVetoableChangeListener(VetoableChangeListener listener) {
-		importPanelDock.removeVetoableChangeListener(listener);
-		super.removeVetoableChangeListener(listener);
-	}
+    /**
+     * @see CsvImportPanel#addVetoableChangeListener(VetoableChangeListener)
+     * @see SimpleDialog#addVetoableChangeListener(VetoableChangeListener)
+     */
+    @Override
+    public void addVetoableChangeListener(VetoableChangeListener listener) {
+        importPanelDock.addVetoableChangeListener(listener);
+        super.addVetoableChangeListener(listener);
+    }
 
-	/**
-	 * @see CsvImportPanel#addVetoableChangeListener(String,
-	 *      VetoableChangeListener)
-	 * @see SimpleDialog#addVetoableChangeListener(String,
-	 *      VetoableChangeListener)
-	 */
-	@Override
-	public void addVetoableChangeListener(String propertyName,
-			VetoableChangeListener listener) {
-		importPanelDock.addVetoableChangeListener(propertyName, listener);
-		super.addVetoableChangeListener(propertyName, listener);
-	}
+    /**
+     * @see CsvImportPanel#removeVetoableChangeListener(VetoableChangeListener)
+     * @see SimpleDialog#removeVetoableChangeListener(VetoableChangeListener)
+     */
+    @Override
+    public void removeVetoableChangeListener(VetoableChangeListener listener) {
+        importPanelDock.removeVetoableChangeListener(listener);
+        super.removeVetoableChangeListener(listener);
+    }
 
-	/**
-	 * @see CsvImportPanel#removeVetoableChangeListener(String,
-	 *      VetoableChangeListener)
-	 * @see SimpleDialog#removeVetoableChangeListener(String,
-	 *      VetoableChangeListener)
-	 */
-	@Override
-	public void removeVetoableChangeListener(String propertyName,
-			VetoableChangeListener listener) {
-		importPanelDock.removeVetoableChangeListener(propertyName, listener);
-		super.removeVetoableChangeListener(propertyName, listener);
-	}
+    /**
+     * @see CsvImportPanel#addVetoableChangeListener(String,
+     *      VetoableChangeListener)
+     * @see SimpleDialog#addVetoableChangeListener(String,
+     *      VetoableChangeListener)
+     */
+    @Override
+    public void addVetoableChangeListener(String propertyName,
+            VetoableChangeListener listener) {
+        importPanelDock.addVetoableChangeListener(propertyName, listener);
+        super.addVetoableChangeListener(propertyName, listener);
+    }
+
+    /**
+     * @see CsvImportPanel#removeVetoableChangeListener(String,
+     *      VetoableChangeListener)
+     * @see SimpleDialog#removeVetoableChangeListener(String,
+     *      VetoableChangeListener)
+     */
+    @Override
+    public void removeVetoableChangeListener(String propertyName,
+            VetoableChangeListener listener) {
+        importPanelDock.removeVetoableChangeListener(propertyName, listener);
+        super.removeVetoableChangeListener(propertyName, listener);
+    }
 
 }

@@ -16,11 +16,11 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-csvimportdialog. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.csvimportdialog.panel
+package com.anrisoftware.prefdialog.csvimportdialog.previewpanel
 
 import static com.anrisoftware.globalpom.utils.TestUtils.*
 import static com.anrisoftware.prefdialog.csvimportdialog.core.FieldTestUtils.*
-import static com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanelModule.*
+import static com.anrisoftware.prefdialog.csvimportdialog.previewpanel.PreviewPanelModule.*
 
 import java.awt.Dimension
 
@@ -34,27 +34,31 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
 
+import com.anrisoftware.globalpom.dataimport.DefaultCsvImportPropertiesFactory
 import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.globalpom.utils.TestUtils
-import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanelFactory
-import com.anrisoftware.prefdialog.csvimportdialog.panel.CsvImportPanelTest;
-import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelPropertiesFactory
+import com.google.inject.Injector
 
 /**
- * @see CsvImportPanel
+ * @see PreviewPanel
  *
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 3.0
+ * @since 3.1
  */
-class CsvImportPanelTest {
+class PreviewPanelTest {
 
     @Test
     void "show"() {
         def title = "$NAME::show"
-        def p = propertiesFactory.create()
-        def field = factory.create(new JPanel(), p).createPanel()
+        def properties = defaultPropertiesFactory.create()
+        properties.file = lotto.toURI()
+        properties.haveHeader = true
+        def field = factory.create().createPanel()
         def container = field.getAWTComponent()
-        new TestFrameUtil(title, container, size).withFixture({
+        new TestFrameUtil(title, container, size).withFixture({ //
+            field.setProperties properties //
+        }, { //
+            field.setProperties null //
         })
     }
 
@@ -73,23 +77,26 @@ class CsvImportPanelTest {
     @Rule
     public TemporaryFolder tmp = new TemporaryFolder()
 
-    static final String NAME = CsvImportPanelTest.class.simpleName
+    static final String NAME = PreviewPanelTest.class.simpleName
 
-    static URL LOTTO = CsvImportPanelTest.class.getResource("/com/anrisoftware/prefdialog/csvimportdialog/csvimport/lotto_2001.csv")
+    static URL LOTTO = PreviewPanelTest.class.getResource("/com/anrisoftware/prefdialog/csvimportdialog/csvimport/lotto_2001.csv")
 
-    static CsvImportPanelFactory factory
+    static Injector injector
+
+    static PreviewPanelFactory factory
 
     static size = new Dimension(400, 566)
 
-    static CsvPanelPropertiesFactory propertiesFactory
+    static DefaultCsvImportPropertiesFactory defaultPropertiesFactory
 
     File lotto
 
     @BeforeClass
     static void setupFactories() {
         TestUtils.toStringStyle
-        factory = getCsvImportPanelFactory()
-        propertiesFactory = getCsvImportPropertiesFactory()
+        injector = SingletonHolder.injector
+        factory = getPreviewPanelFactory()
+        defaultPropertiesFactory = injector.getInstance DefaultCsvImportPropertiesFactory
     }
 
     @Before

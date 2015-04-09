@@ -24,6 +24,7 @@ import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanel;
 import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanelFactory;
 import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanelModule;
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelPropertiesFactory;
+import com.anrisoftware.prefdialog.csvimportdialog.previewpanel.PreviewPanelModule;
 import com.anrisoftware.prefdialog.miscswing.comboboxhistory.ComboBoxHistoryModule;
 import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.core.DockingFramesModule;
 import com.anrisoftware.prefdialog.simpledialog.SimpleDialogModule;
@@ -35,11 +36,11 @@ import com.google.inject.assistedinject.FactoryModuleBuilder;
 
 /**
  * Installs CSV import dialog factory and dependent modules.
- * 
+ *
  * @see CsvImportPanel
  * @see CsvImportPanelFactory
  * @see CsvImportDialogModule
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
@@ -52,14 +53,30 @@ public class CsvImportDialogModule extends AbstractModule {
 		return getFactory();
 	}
 
-	/**
-	 * Returns the CSV import dialog factory.
-	 * 
-	 * @return the {@link CsvImportDialogFactory}.
-	 */
+	    /**
+     * Returns the CSV import dialog factory.
+     *
+     * @return the {@link CsvImportDialogFactory}.
+     */
 	public static CsvImportDialogFactory getFactory() {
 		return SingletonHolder.factory;
 	}
+
+    /**
+     * @see #getInjector()
+     */
+    public static Injector getCsvImportDialogInjector() {
+        return getInjector();
+    }
+
+    /**
+     * Returns the CSV import dialog Guice injector.
+     *
+     * @return the {@link Injector}.
+     */
+    public static Injector getInjector() {
+        return SingletonHolder.injector;
+    }
 
 	/**
 	 * @see #getPropertiesFactory()
@@ -68,11 +85,11 @@ public class CsvImportDialogModule extends AbstractModule {
 		return getPropertiesFactory();
 	}
 
-	/**
-	 * Creates and returns the panel properties factory.
-	 * 
-	 * @return the {@link CsvPanelPropertiesFactory}.
-	 */
+	    /**
+     * Creates and returns the panel properties factory.
+     *
+     * @return the {@link CsvPanelPropertiesFactory}.
+     */
 	public static CsvPanelPropertiesFactory getPropertiesFactory() {
 		return SingletonHolder.propertiesFactory;
 	}
@@ -95,6 +112,7 @@ public class CsvImportDialogModule extends AbstractModule {
 	@Override
 	protected void configure() {
 		install(new CsvImportPanelModule());
+        install(new PreviewPanelModule());
 		install(new FactoryModuleBuilder().implement(CsvImportDialog.class,
 				CsvImportDialog.class).build(CsvImportDialogFactory.class));
 		install(new FactoryModuleBuilder().implement(PropertiesWorker.class,

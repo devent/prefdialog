@@ -19,6 +19,7 @@
 package com.anrisoftware.prefdialog.csvimportdialog.importpaneldock;
 
 import java.awt.Component;
+import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
 
@@ -31,11 +32,13 @@ import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanelFac
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 import com.anrisoftware.prefdialog.miscswing.docks.api.DockPosition;
 import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.dock.AbstractEditorDockWindow;
+import com.anrisoftware.resources.texts.api.Texts;
+import com.anrisoftware.resources.texts.api.TextsFactory;
 import com.google.inject.Injector;
 
 /**
  * Dock containing the CSV import panel.
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
@@ -51,25 +54,33 @@ public class ImportPanelDock extends AbstractEditorDockWindow {
 
     private CsvImportPanel importPanel;
 
+    private Texts texts;
+
+    @Inject
+    public void setTextsFactory(TextsFactory factory) {
+        this.texts = factory.create(ImportPanelDock.class.getSimpleName());
+    }
+
     /**
      * Sets the CSV import properties.
      * <p>
      * <h2>AWT Thread</h2>
      * <p>
      * Should be called in the AWT thread.
-     * 
+     *
      * @param injector
      *            the parent {@link Injector}.
-     * 
+     *
      * @param properties
      *            the {@link CsvImportProperties}.
-     * 
+     *
      * @return this {@link ImportPanelDock}.
      */
     @OnAwt
     public ImportPanelDock createPanel(Injector injector,
             CsvImportProperties properties) {
         this.panel = new JPanel();
+        setTexts(texts);
         importPanel = panelFactory.create(panel, properties);
         importPanel.createPanel(injector);
         return this;
@@ -77,7 +88,7 @@ public class ImportPanelDock extends AbstractEditorDockWindow {
 
     /**
      * Returns the CSV import panel.
-     * 
+     *
      * @return the {@link CsvImportPanel}.
      */
     public CsvImportPanel getImportPanel() {
@@ -86,7 +97,7 @@ public class ImportPanelDock extends AbstractEditorDockWindow {
 
     /**
      * Restores the input of the panel to default values.
-     * 
+     *
      * @throws PropertyVetoException
      *             if the old user input is not valid.
      */
@@ -94,14 +105,29 @@ public class ImportPanelDock extends AbstractEditorDockWindow {
         importPanel.retoreInput();
     }
 
-    @Override
-    public String getId() {
-        return ID;
+    public CsvImportProperties getProperties() {
+        return importPanel.getProperties();
+    }
+
+    /**
+     * Sets the localized texts resources. The texts must contain the following
+     * resources:
+     *
+     * <ul>
+     * <li>{@code "import_panel_dock_title"}</li>
+     * </ul>
+     *
+     * @param texts
+     *            the {@link Texts}.
+     */
+    @OnAwt
+    public void setTexts(Texts texts) {
+        setTitle(texts.getResource("import_panel_dock_title").getText());
     }
 
     @Override
-    public String getTitle() {
-        return "Import Panel";
+    public String getId() {
+        return ID;
     }
 
     @Override
@@ -126,7 +152,7 @@ public class ImportPanelDock extends AbstractEditorDockWindow {
 
     @Override
     public boolean isMaximizable() {
-        return false;
+        return true;
     }
 
     @Override
@@ -169,6 +195,38 @@ public class ImportPanelDock extends AbstractEditorDockWindow {
     public void removeVetoableChangeListener(String propertyName,
             VetoableChangeListener listener) {
         importPanel.removeVetoableChangeListener(propertyName, listener);
+    }
+
+    /**
+     * @see CsvImportPanel#addPropertyChangeListener(PropertyChangeListener)
+     */
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        importPanel.addPropertyChangeListener(listener);
+    }
+
+    /**
+     * @see CsvImportPanel#removePropertyChangeListener(PropertyChangeListener)
+     */
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        importPanel.removePropertyChangeListener(listener);
+    }
+
+    /**
+     * @see CsvImportPanel#addPropertyChangeListener(String,
+     *      PropertyChangeListener)
+     */
+    public void addPropertyChangeListener(String propertyName,
+            PropertyChangeListener listener) {
+        importPanel.addPropertyChangeListener(propertyName, listener);
+    }
+
+    /**
+     * @see CsvImportPanel#removePropertyChangeListener(String,
+     *      PropertyChangeListener)
+     */
+    public void removePropertyChangeListener(String propertyName,
+            PropertyChangeListener listener) {
+        importPanel.removePropertyChangeListener(propertyName, listener);
     }
 
 }
