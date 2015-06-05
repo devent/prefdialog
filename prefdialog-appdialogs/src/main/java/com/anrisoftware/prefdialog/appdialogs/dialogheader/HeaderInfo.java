@@ -30,7 +30,7 @@ import com.anrisoftware.resources.texts.api.Texts;
  * The header information text.
  *
  * @author Erwin Müller, erwin.mueller@deventm.de
- * @since 3.1
+ * @since 1.0
  */
 final class HeaderInfo {
 

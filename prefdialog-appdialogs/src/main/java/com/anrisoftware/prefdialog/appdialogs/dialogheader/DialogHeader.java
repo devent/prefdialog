@@ -37,7 +37,7 @@ import com.anrisoftware.resources.texts.api.Texts;
  * Headers contains the logo image and the application text.
  *
  * @author Erwin Müller, erwin.mueller@deventm.de
- * @since 3.1
+ * @since 1.0
  */
 public class DialogHeader {
 

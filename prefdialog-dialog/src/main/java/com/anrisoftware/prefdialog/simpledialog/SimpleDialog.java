@@ -251,9 +251,15 @@ public class SimpleDialog {
      * Sets the approval action name. The action name is used to look up the
      * action resources.
      *
+     * <p>
+     * <h2>AWT Thread</h2>
+     * <p>
+     * Should be called in the AWT thread.
+     *
      * @param name
      *            the action name {@link String}.
      */
+    @OnAwt
     public void setApproveActionName(String name) {
         approveAction.setActionName(name);
     }
@@ -262,9 +268,15 @@ public class SimpleDialog {
      * Sets the cancel action name. The action name is used to look up the
      * action resources.
      *
+     * <p>
+     * <h2>AWT Thread</h2>
+     * <p>
+     * Should be called in the AWT thread.
+     *
      * @param name
      *            the action name {@link String}.
      */
+    @OnAwt
     public void setCancelActionName(String name) {
         cancelAction.setActionName(name);
     }
@@ -273,9 +285,15 @@ public class SimpleDialog {
      * Sets the restore action name. The action name is used to look up the
      * action resources.
      *
+     * <p>
+     * <h2>AWT Thread</h2>
+     * <p>
+     * Should be called in the AWT thread.
+     *
      * @param name
      *            the action name {@link String}.
      */
+    @OnAwt
     public void setRestoreActionName(String name) {
         restoreAction.setActionName(name);
     }

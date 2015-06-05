@@ -24,7 +24,7 @@ import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
  * Factory to create the dialog header.
  *
  * @author Erwin Müller, erwin.mueller@deventm.de
- * @since 3.1
+ * @since 1.0
  */
 public interface DialogHeaderFactory {
 

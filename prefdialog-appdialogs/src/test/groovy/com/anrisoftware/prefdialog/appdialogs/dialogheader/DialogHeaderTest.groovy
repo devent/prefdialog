@@ -31,6 +31,7 @@ import org.junit.Test
 import com.anrisoftware.globalpom.utils.TestUtils
 import com.anrisoftware.globalpom.utils.frametesting.DialogTestingFactory
 import com.anrisoftware.globalpom.utils.frametesting.FrameTestingModule
+import com.anrisoftware.prefdialog.appdialogs.dialog.UiPanel;
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwtCheckerModule
 import com.anrisoftware.resources.images.api.ImageScalingWorkerFactory
 import com.anrisoftware.resources.images.api.Images
@@ -175,9 +176,9 @@ class DialogHeaderTest {
 
     static ImageScalingWorkerFactory imageScalingWorkerFactory
 
-    private static final URL LOGO_A_RESOURCE = UiRegistrationDialog.class.getResource("/com/anrisoftware/prefdialog/appdialogs/dialogheader/resources/images/en/mdpi/iref_logo_transparent_128.png");
+    private static final URL LOGO_A_RESOURCE = UiPanel.class.getResource("/com/anrisoftware/prefdialog/appdialogs/dialogheader/resources/images/en/mdpi/iref_logo_transparent_128.png");
 
-    private static final URL LOGO_B_RESOURCE = UiRegistrationDialog.class.getResource("/com/anrisoftware/prefdialog/appdialogs/dialogheader/resources/images/en/mdpi/iref_logo_changed_128.png");
+    private static final URL LOGO_B_RESOURCE = UiPanel.class.getResource("/com/anrisoftware/prefdialog/appdialogs/dialogheader/resources/images/en/mdpi/iref_logo_changed_128.png");
 
     @BeforeClass
     static void setupFactories() {

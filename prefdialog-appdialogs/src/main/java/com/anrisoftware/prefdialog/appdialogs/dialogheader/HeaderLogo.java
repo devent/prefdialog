@@ -33,7 +33,7 @@ import com.anrisoftware.resources.images.api.Images;
  * The header logo image.
  *
  * @author Erwin Müller, erwin.mueller@deventm.de
- * @since 3.1
+ * @since 1.0
  */
 final class HeaderLogo {
 
