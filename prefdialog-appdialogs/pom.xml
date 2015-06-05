@@ -1,0 +1,104 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<artifactId>prefdialog-parent</artifactId>
+		<groupId>com.anrisoftware.prefdialog</groupId>
+		<version>3.1-SNAPSHOT</version>
+		<relativePath>../prefdialog-parent</relativePath>
+	</parent>
+
+	<artifactId>prefdialog-appdialogs</artifactId>
+	<name>Prefdialog :: Application Dialogs</name>
+	<url>https://anrisoftware.com/projects/projects/prefdialog-appdialogs</url>
+	<description>Dialogs for the application to display information to the user.</description>
+	<inceptionYear>2015</inceptionYear>
+
+	<properties>
+		<project.custom.year>${project.inceptionYear}</project.custom.year>
+	</properties>
+
+	<issueManagement>
+		<system>Redmine</system>
+		<url>https://anrisoftware.com/projects/projects/prefdialog-appdialogs</url>
+	</issueManagement>
+
+	<scm>
+		<connection>scm:git:git@anrisoftware.com:prefdialog.git</connection>
+		<developerConnection>scm:git:git@anrisoftware.com:prefdialog.git</developerConnection>
+		<url>https://anrisoftware.com/projects/projects/prefdialog-appdialogs/repository</url>
+	</scm>
+
+	<distributionManagement>
+		<site>
+			<id>anrisoftware</id>
+			<url>dav:https://anrisoftware.com/javadoc/${project.groupId}/${project.artifactId}</url>
+		</site>
+		<repository>
+			<id>osssonatype</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+		</repository>
+		<snapshotRepository>
+			<id>osssonatype_snapshots</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+	<dependencies>
+		<!-- test dependencies -->
+		<dependency>
+			<groupId>com.anrisoftware.prefdialog</groupId>
+			<artifactId>prefdialog-corefields</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.anrisoftware.globalpom</groupId>
+			<artifactId>globalpom-groovytestutils</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- own modules dependencies -->
+		<dependency>
+			<groupId>com.anrisoftware.prefdialog</groupId>
+			<artifactId>prefdialog-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.anrisoftware.prefdialog</groupId>
+			<artifactId>prefdialog-panel</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.anrisoftware.prefdialog</groupId>
+			<artifactId>prefdialog-misc-swing</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.anrisoftware.prefdialog</groupId>
+			<artifactId>prefdialog-dialog</artifactId>
+		</dependency>
+
+		<!-- compile dependencies -->
+		<dependency>
+			<groupId>com.anrisoftware.globalpom</groupId>
+			<artifactId>globalpom-log</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.miglayout</groupId>
+			<artifactId>miglayout-swing</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.swinglabs</groupId>
+			<artifactId>swingx</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+		<dependency>
+			<groupId>tablelayout</groupId>
+			<artifactId>TableLayout</artifactId>
+		</dependency>
+	</dependencies>
+
+</project>
