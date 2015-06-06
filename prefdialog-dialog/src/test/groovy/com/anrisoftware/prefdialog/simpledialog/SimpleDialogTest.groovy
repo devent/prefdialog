@@ -20,6 +20,7 @@ package com.anrisoftware.prefdialog.simpledialog
 
 import static com.anrisoftware.globalpom.utils.TestUtils.*
 import static com.anrisoftware.prefdialog.simpledialog.SimpleDialogBean.*
+import static javax.swing.SwingUtilities.invokeAndWait
 
 import java.awt.Component
 
@@ -50,82 +51,107 @@ import com.google.inject.Injector
  */
 class SimpleDialogTest {
 
-	@Test
-	void "cancel dialog"() {
-		def title = "$NAME/cancel dialog"
-		def simpleDialog = factory.create()
-		def testing = testingFactory.create([title: title, setupDialog: { JDialog dialog, Component component ->
-				simpleDialog.setFieldsPanel new JPanel()
-				simpleDialog.setDialog dialog
-				simpleDialog.setTexts texts
-				simpleDialog.createDialog()
-			}])()
-		testing.withFixture({ DialogFixture fix ->
-			fix.button "cancelButton" click()
-		})
-		assert simpleDialog.status == Status.CANCELED
-	}
+    @Test
+    void "cancel dialog"() {
+        def title = "$NAME/cancel dialog"
+        def simpleDialog = factory.create()
+        def testing = testingFactory.create([title: title, setupDialog: { JDialog dialog, Component component ->
+                simpleDialog.setFieldsPanel new JPanel()
+                simpleDialog.setDialog dialog
+                simpleDialog.setTexts texts
+                simpleDialog.createDialog()
+            }])()
+        testing.withFixture({ DialogFixture fix ->
+            fix.button "cancelButton" click()
+        })
+        assert simpleDialog.status == Status.CANCELED
+    }
 
-	@Test
-	void "approve dialog"() {
-		def title = "$NAME/approve dialog"
-		def simpleDialog = factory.create()
-		def testing = testingFactory.create([title: title, setupDialog: { JDialog dialog, Component component ->
-				simpleDialog.setFieldsPanel new JPanel()
-				simpleDialog.setDialog dialog
-				simpleDialog.setTexts texts
-				simpleDialog.createDialog()
-			}])()
-		testing.withFixture({ DialogFixture fix ->
-			fix.button "approveButton" click()
-		})
-		assert simpleDialog.status == Status.APPROVED
-	}
+    @Test
+    void "approve dialog"() {
+        def title = "$NAME/approve dialog"
+        def simpleDialog = factory.create()
+        def testing = testingFactory.create([title: title, setupDialog: { JDialog dialog, Component component ->
+                simpleDialog.setFieldsPanel new JPanel()
+                simpleDialog.setDialog dialog
+                simpleDialog.setTexts texts
+                simpleDialog.createDialog()
+            }])()
+        testing.withFixture({ DialogFixture fix ->
+            fix.button "approveButton" click()
+        })
+        assert simpleDialog.status == Status.APPROVED
+    }
 
-	//@Test
-	void "manually"() {
-		def title = "$NAME/manually"
-		def simpleDialog = factory.create()
-		def testing = testingFactory.create([title: title, setupDialog: { JDialog dialog, Component component ->
-				simpleDialog.setFieldsPanel new JPanel()
-				simpleDialog.setDialog dialog
-				simpleDialog.setTexts texts
-				simpleDialog.createDialog()
-			}])()
-		testing.withFixture({
-			Thread.sleep 60000
-			assert false : "manually test"
-		})
-	}
+    @Test
+    void "hide restore button"() {
+        def title = "$NAME/hide restore button"
+        def simpleDialog = factory.create()
+        def testing = testingFactory.create([title: title, setupDialog: { JDialog dialog, Component component ->
+                simpleDialog.setFieldsPanel new JPanel()
+                simpleDialog.setDialog dialog
+                simpleDialog.setTexts texts
+                simpleDialog.setShowRestoreButton(false)
+                simpleDialog.createDialog()
+            }])()
+        testing.withFixture({
+            invokeAndWait {
+                simpleDialog.setShowRestoreButton(true) //.
+            }
+        }, {
+            invokeAndWait {
+                simpleDialog.setShowRestoreButton(false) //.
+            }
+        }, { DialogFixture fix ->
+            fix.button "approveButton" click()
+        })
+        assert simpleDialog.status == Status.APPROVED
+    }
 
-	static Injector injector
+    //@Test
+    void "manually"() {
+        def title = "$NAME/manually"
+        def simpleDialog = factory.create()
+        def testing = testingFactory.create([title: title, setupDialog: { JDialog dialog, Component component ->
+                simpleDialog.setFieldsPanel new JPanel()
+                simpleDialog.setDialog dialog
+                simpleDialog.setTexts texts
+                simpleDialog.createDialog()
+            }])()
+        testing.withFixture({
+            Thread.sleep 60000
+            assert false : "manually test"
+        })
+    }
 
-	static final String NAME = SimpleDialogTest.class.simpleName
+    static Injector injector
 
-	static DialogTestingFactory testingFactory
+    static final String NAME = SimpleDialogTest.class.simpleName
 
-	static SimpleDialogFactory factory
+    static DialogTestingFactory testingFactory
 
-	static TextsFactory textsFactory
+    static SimpleDialogFactory factory
 
-	static Texts texts
+    static TextsFactory textsFactory
 
-	@BeforeClass
-	static void setupFactories() {
-		TestUtils.toStringStyle
-		injector = createInjector()
-		testingFactory = injector.getInstance DialogTestingFactory
-		factory = injector.getInstance SimpleDialogFactory
-		textsFactory = injector.createChildInjector(
-				new TextsResourcesDefaultModule()).getInstance(TextsFactory)
-		texts = textsFactory.create(SimpleDialog.class.getSimpleName())
-	}
+    static Texts texts
 
-	private static createInjector() {
-		Guice.createInjector([
-			SingletonHolder.modules,
-			new FrameTestingModule(),
-			new OnAwtCheckerModule()
-		].flatten())
-	}
+    @BeforeClass
+    static void setupFactories() {
+        TestUtils.toStringStyle
+        injector = createInjector()
+        testingFactory = injector.getInstance DialogTestingFactory
+        factory = injector.getInstance SimpleDialogFactory
+        textsFactory = injector.createChildInjector(
+                new TextsResourcesDefaultModule()).getInstance(TextsFactory)
+        texts = textsFactory.create(SimpleDialog.class.getSimpleName())
+    }
+
+    private static createInjector() {
+        Guice.createInjector([
+            SingletonHolder.modules,
+            new FrameTestingModule(),
+            new OnAwtCheckerModule()
+        ].flatten())
+    }
 }

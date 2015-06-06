@@ -23,6 +23,8 @@ import static com.anrisoftware.prefdialog.simpledialog.SimpleDialog.CANCEL_BUTTO
 import static com.anrisoftware.prefdialog.simpledialog.SimpleDialog.RESTORE_BUTTON_NAME;
 import static javax.swing.BoxLayout.LINE_AXIS;
 
+import java.awt.Component;
+
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -39,11 +41,14 @@ import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
  * @since 3.0
  */
 @SuppressWarnings("serial")
-class UiDialogPanel extends JPanel {
+final class UiDialogPanel extends JPanel {
 
 	private final JButton cancelButton;
 	private final JButton restoreButton;
 	private final JButton approveButton;
+    private final JPanel buttonsPanel;
+    private final Component approveStrut;
+    private final Component restoreStrut;
 
 	/**
 	 * Create the dialog.
@@ -52,7 +57,7 @@ class UiDialogPanel extends JPanel {
 	UiDialogPanel() {
 		setLayout(new MigLayout("", "[grow,fill]", "[grow,fill][]"));
 
-		JPanel buttonsPanel = new JPanel();
+        buttonsPanel = new JPanel();
 		add(buttonsPanel, "cell 0 1,growx,aligny top");
 		buttonsPanel.setLayout(new BoxLayout(buttonsPanel, LINE_AXIS));
 		buttonsPanel.add(Box.createHorizontalGlue());
@@ -61,18 +66,24 @@ class UiDialogPanel extends JPanel {
 		approveButton.setName(APPROVE_BUTTON_NAME);
 		buttonsPanel.add(approveButton);
 
-		buttonsPanel.add(Box.createHorizontalStrut(4));
+        approveStrut = Box.createHorizontalStrut(4);
+        buttonsPanel.add(approveStrut);
 
 		restoreButton = new JButton("Reset");
 		restoreButton.setName(RESTORE_BUTTON_NAME);
 		buttonsPanel.add(restoreButton);
 
-		buttonsPanel.add(Box.createHorizontalStrut(4));
+        restoreStrut = Box.createHorizontalStrut(4);
+        buttonsPanel.add(restoreStrut);
 
 		cancelButton = new JButton("Cancel");
 		cancelButton.setName(CANCEL_BUTTON_NAME);
 		buttonsPanel.add(cancelButton);
 	}
+
+    public JPanel getButtonsPanel() {
+        return buttonsPanel;
+    }
 
 	public JButton getCancelButton() {
 		return cancelButton;
@@ -86,4 +97,11 @@ class UiDialogPanel extends JPanel {
 		return approveButton;
 	}
 
+    public Component getApproveStrut() {
+        return approveStrut;
+    }
+
+    public Component getRestoreStrut() {
+        return restoreStrut;
+    }
 }

@@ -36,6 +36,7 @@ import java.util.Locale;
 import javax.inject.Inject;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JPanel;
 import javax.swing.JRootPane;
 
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
@@ -150,6 +151,8 @@ public class SimpleDialog {
 
     private Images images;
 
+    private boolean showRestoreButton;
+
     /**
      * @see SimpleDialogFactory#create()
      */
@@ -157,6 +160,7 @@ public class SimpleDialog {
     protected SimpleDialog() {
         this.vetoableSupport = new VetoableChangeSupport(this);
         this.locale = Locale.getDefault();
+        this.showRestoreButton = true;
     }
 
     @Inject
@@ -245,6 +249,33 @@ public class SimpleDialog {
      */
     public Locale getLocale() {
         return locale;
+    }
+
+    /**
+     * Sets to show the restore button.
+     *
+     * <h2>AWT Thread</h2>
+     * <p>
+     * Should be called in the AWT thread.
+     * </p>
+     *
+     * @param show
+     *            set to {@code true} to show the restore button.
+     *
+     * @since 3.1
+     */
+    @OnAwt
+    public void setShowRestoreButton(boolean show) {
+        boolean oldValue = this.showRestoreButton;
+        this.showRestoreButton = show;
+        if (oldValue && !show) {
+            if (dialogPanel != null) {
+                removeRestoreButton();
+            }
+        }
+        if (!oldValue && show) {
+            readdRestoreButton();
+        }
     }
 
     /**
@@ -361,19 +392,13 @@ public class SimpleDialog {
         approveAction.setTexts(texts);
         cancelAction.setDialog(this);
         cancelAction.setTexts(texts);
-        restoreAction.setDialog(this);
-        restoreAction.setTexts(texts);
-        cancelAction.setTexts(texts);
         getCancelButton().setAction(cancelAction);
         getApprovalButton().setAction(approveAction);
-        getRestoreButton().setAction(restoreAction);
-    }
-
-    private void setupKeyboardActions() {
-        JRootPane rootPane = dialog.getRootPane();
-        rootPane.setDefaultButton(getApprovalButton());
-        rootPane.registerKeyboardAction(cancelAction,
-                getKeyStroke(VK_ESCAPE, 0), WHEN_IN_FOCUSED_WINDOW);
+        if (showRestoreButton) {
+            addRestoreButton();
+        } else {
+            removeRestoreButton();
+        }
     }
 
     /**
@@ -550,6 +575,45 @@ public class SimpleDialog {
     public void removeVetoableChangeListener(String propertyName,
             VetoableChangeListener listener) {
         vetoableSupport.removeVetoableChangeListener(propertyName, listener);
+    }
+
+    private void setupKeyboardActions() {
+        JRootPane rootPane = dialog.getRootPane();
+        rootPane.setDefaultButton(getApprovalButton());
+        rootPane.registerKeyboardAction(cancelAction,
+                getKeyStroke(VK_ESCAPE, 0), WHEN_IN_FOCUSED_WINDOW);
+    }
+
+    private void addRestoreButton() {
+        JButton restoreButton = getRestoreButton();
+        restoreAction.setDialog(this);
+        restoreAction.setTexts(texts);
+        restoreButton.setVisible(true);
+        restoreButton.setAction(restoreAction);
+    }
+
+    private void readdRestoreButton() {
+        JButton cancelButton = getCancelButton();
+        JButton restoreButton = getRestoreButton();
+        JPanel buttonsPanel = dialogPanel.getButtonsPanel();
+        restoreAction.setDialog(this);
+        restoreAction.setTexts(texts);
+        restoreButton.setVisible(true);
+        restoreButton.setAction(restoreAction);
+        buttonsPanel.remove(cancelButton);
+        buttonsPanel.add(restoreButton);
+        buttonsPanel.add(dialogPanel.getRestoreStrut());
+        buttonsPanel.add(cancelButton);
+        buttonsPanel.validate();
+    }
+
+    private void removeRestoreButton() {
+        JPanel buttonsPanel = dialogPanel.getButtonsPanel();
+        JButton restoreButton = getRestoreButton();
+        buttonsPanel.remove(restoreButton);
+        buttonsPanel.remove(dialogPanel.getRestoreStrut());
+        restoreButton.setVisible(false);
+        buttonsPanel.validate();
     }
 
 }
