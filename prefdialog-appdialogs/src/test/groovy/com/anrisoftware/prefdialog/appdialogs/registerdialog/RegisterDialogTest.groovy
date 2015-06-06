@@ -1,24 +1,4 @@
-/*
- * Copyright 2015 Erwin Müller <erwin.mueller@deventm.org>
- *
- * This file is part of prefdialog-appdialogs.
- *
- * prefdialog-appdialogs is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
- *
- * prefdialog-appdialogs is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with prefdialog-appdialogs. If not, see <http://www.gnu.org/licenses/>.
- */
-package com.anrisoftware.prefdialog.appdialogs.dialog
-
-import static javax.swing.SwingUtilities.invokeAndWait
+package com.anrisoftware.prefdialog.appdialogs.registerdialog
 
 import java.awt.Color
 import java.awt.Component
@@ -34,6 +14,8 @@ import org.junit.Test
 import com.anrisoftware.globalpom.utils.TestUtils
 import com.anrisoftware.globalpom.utils.frametesting.DialogTestingFactory
 import com.anrisoftware.globalpom.utils.frametesting.FrameTestingModule
+import com.anrisoftware.prefdialog.appdialogs.dialog.AppDialogTest
+import com.anrisoftware.prefdialog.appdialogs.dialog.UiPanel
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwtCheckerModule
 import com.anrisoftware.resources.images.api.ImageScalingWorkerFactory
 import com.anrisoftware.resources.images.api.Images
@@ -41,23 +23,20 @@ import com.anrisoftware.resources.images.api.ImagesFactory
 import com.anrisoftware.resources.images.images.ImagesResourcesModule
 import com.anrisoftware.resources.images.maps.ResourcesImagesMapsModule
 import com.anrisoftware.resources.images.scaling.ResourcesSmoothScalingModule
-import com.anrisoftware.resources.texts.api.Texts
-import com.anrisoftware.resources.texts.api.TextsFactory
-import com.anrisoftware.resources.texts.defaults.TextsResourcesDefaultModule
 import com.google.inject.Injector
 
 /**
- * @see AppDialog
+ * @see RegisterDialog
  *
  * @author Erwin Müller, erwin.mueller@deventm.de
  * @since 1.0
  */
-class AppDialogTest {
+class RegisterDialogTest {
 
     @Test
     void "show dialog"() {
         def title = "$NAME/show dialog"
-        def size = new Dimension(450, 380)
+        def size = new Dimension(520, 400)
         def content
         def dialog
         def testing = testingFactory.create([title: title, size: size, setupDialog: { JDialog jdialog, Component component ->
@@ -65,11 +44,9 @@ class AppDialogTest {
                 content.setBorder BorderFactory.createLineBorder(Color.RED)
                 dialog = dialogFactory.create()
                 dialog.setDialog jdialog
-                dialog.setContent content
                 dialog.createDialog()
             }])()
-        testing.withFixture({
-        })
+        testing.withFixture({ Thread.sleep 60000 })
     }
 
     static final String NAME = AppDialogTest.class.simpleName
@@ -78,11 +55,7 @@ class AppDialogTest {
 
     static DialogTestingFactory testingFactory
 
-    static AppDialogFactory dialogFactory
-
-    static TextsFactory textsFactory
-
-    static Texts texts
+    static RegisterDialogFactory dialogFactory
 
     static ImagesFactory imagesFactory
 
@@ -97,15 +70,11 @@ class AppDialogTest {
     @BeforeClass
     static void setupFactories() {
         TestUtils.toStringStyle
-        this.injector = AppDialogModule.SingletonHolder.injector.createChildInjector(
+        this.injector = RegisterDialogModule.SingletonHolder.injector.createChildInjector(
                 new OnAwtCheckerModule(),
                 new FrameTestingModule())
         this.testingFactory = injector.getInstance DialogTestingFactory
-        this.dialogFactory = injector.getInstance AppDialogFactory
-        this.textsFactory = injector.createChildInjector(
-                new TextsResourcesDefaultModule()).
-                getInstance(TextsFactory)
-        this.texts = textsFactory.create(AppDialogTest.class.getSimpleName())
+        this.dialogFactory = injector.getInstance RegisterDialogFactory
         this.imagesFactory = injector.createChildInjector(
                 new ImagesResourcesModule(),
                 new ResourcesImagesMapsModule(),

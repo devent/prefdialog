@@ -55,6 +55,17 @@ public final class AppDialog {
     AppDialog() {
     }
 
+    /**
+     * Injects and creates the simple dialog.
+     *
+     * <h2>AWT Thread</h2>
+     * <p>
+     * Should be called in the AWT thread.
+     * </p>
+     *
+     * @param factory
+     *            the {@link SimpleDialogFactory}.
+     */
     @Inject
     @OnAwt
     void setSimpleDialogFactory(SimpleDialogFactory factory) {
@@ -295,6 +306,13 @@ public final class AppDialog {
     @OnAwt
     public void setVisible(boolean visible) {
         simpleDialog.setVisible(visible);
+    }
+
+    /**
+     * @see SimpleDialog#setShowRestoreButton(boolean)
+     */
+    public void setShowRestoreButton(boolean show) {
+        simpleDialog.setShowRestoreButton(show);
     }
 
     /**

@@ -1,0 +1,5 @@
+registrationText(args) ::= <%
+<! - args.daysLeft - !>
+<! - args.dayUnit - !>
+\<html\>This is a demo version of this program. You have still \<em\><args.daysLeft> <args.dayUnit>\</em\> left for a registration. Please send the key to the E-Mail address below. Shortly you will receive a code to register this product, Please fill the fields \<em\>name\</em\> and \<em\>code\</em\> with your name and the received code, respectively, to register.\</html\>
+%>

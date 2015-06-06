@@ -45,7 +45,7 @@ final class UiHeader extends JPanel {
     private static final String INFO_TEXT = "<html>\nGlobal Scaling Software<br/>\nVersion 1.0<br/>\nCopyright © 2015<br/>\nAdvanced Natural Research Institute<br/>\nErwin Müller\n</html>";
 
     private static final URL LOGO_RESOURCE = UiHeader.class
-            .getResource("/com/anrisoftware/prefdialog/registrationdialog/iref_logo_transparent_128.png");
+            .getResource("/com/anrisoftware/prefdialog/appdialogs/registerdialog/resources/images/mdpi/iref_logo.png");
 
     private JLabel logoLabel;
 
