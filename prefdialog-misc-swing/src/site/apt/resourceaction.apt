@@ -1,0 +1,87 @@
+~~
+~~ Copyright 2013-2015 Erwin Müller <erwin.mueller@deventm.org>
+~~
+~~ This file is part of prefdialog-misc-swing.
+~~
+~~ prefdialog-misc-swing is free software: you can redistribute it and/or modify it
+~~ under the terms of the GNU Lesser General Public License as published by the
+~~ Free Software Foundation, either version 3 of the License, or (at your
+~~ option) any later version.
+~~
+~~ prefdialog-misc-swing is distributed in the hope that it will be useful, but
+~~ WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+~~ FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+~~ details.
+~~
+~~ You should have received a copy of the GNU Lesser General Public License
+~~ along with prefdialog-misc-swing. If not, see <http://www.gnu.org/licenses/>.
+~~
+
+Resource Actions
+
+    * <<<com.anrisoftware.prefdialog.miscswing.resourcesaction.AbstractResourcesAction>>>
+
+    Sets the action name and mnemonic from text resource. It is expected that
+the user extends the <<<AbstractResourcesAction>>> in her own action class
+and sets the texts and images resources. The name of the action is used to
+look-up the resources for the action text, short text, mnemonic, accelerator,
+small and large icon images.
+
+    []
+
+    The following suffixes are used to look-up the resources for the action,
+attached to the action name.
+
+    * <<<name>>> the action name as the action text;
+
+    * <<<name_short>>> the short text of the action;
+
+    * <<<name_mnemonic>>> the mnemonic of the action;
+
+    * <<<name_accelerator>>> the accelerator key of the action;
+
+    * <<<name_small_icon>>> the small icon image of the action;
+
+    * <<<name_large_icon>>> the large icon image of the action;
+
+Examples
+
+    For example, if the action is named "cancel" then the following resource
+should be used:
+
+    <<<AppResources.properties>>>
+
+---
+cancel = com/anrisoftware/app/resources/texts/en/cancel_action.txt
+cancel_short = com/anrisoftware/app/resources/texts/en/cancel_action_short.txt
+cancel_mnemonic = com/anrisoftware/app/resources/texts/en/cancel_action_mnemonic.txt
+cancel_accelerator = com/anrisoftware/app/resources/texts/en/cancel_action_accelerator.txt
+cancel_small_icon = com/anrisoftware/app/resources/images/%s/cancel_action_small.png
+cancel_large_icon = com/anrisoftware/app/resources/images/%s/cancel_action_large.png
+---
+
+---
+@SuppressWarnings("serial")
+class CancelAction extends AbstractResourcesAction {
+
+    private SimpleDialog dialog;
+
+    CancelAction() {
+        super(CANCEL_ACTION_NAME);
+    }
+
+    public void setDialog(SimpleDialog dialog) {
+        this.dialog = dialog;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent evt) {
+        try {
+            dialog.setStatus(CANCELED);
+            dialog.closeDialog();
+        } catch (PropertyVetoException e) {
+        }
+    }
+
+}
+---

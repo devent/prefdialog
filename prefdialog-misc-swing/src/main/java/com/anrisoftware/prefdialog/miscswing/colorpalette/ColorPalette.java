@@ -21,8 +21,8 @@ package com.anrisoftware.prefdialog.miscswing.colorpalette;
 import java.awt.Color;
 
 /**
- * Color palette. Iterates over the palette and returns the colors.
- * 
+ * Color palate. Iterates over the palate and returns the colors.
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */

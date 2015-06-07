@@ -19,7 +19,94 @@
 
 Description
 
-  Miscellaneous swing components.
+  Offers various utilities for various tasks.
+
+  * Actions <<<com.anrisoftware.prefdialog.miscswing.actions>>>
+
+  Executes actions tasks either on the worker thread or the AWT thread. It is
+intended to be a singleton instance so that all menu actions have the same
+tasks and threads pool available.;
+
+  * {{{./awtchecker.html}AWT-Checker}} <<<com.anrisoftware.prefdialog.miscswing.awtcheck>>>
+
+  Marks a method or constructor to be checked that it is run on the AWT thread.
+
+  * <<<com.anrisoftware.prefdialog.miscswing.colorpalette>>>
+
+  Color palate. Iterates over the palate and returns the colors.
+
+  * <<<com.anrisoftware.prefdialog.miscswing.comboboxhistory>>>
+
+  Decorate a combo box as the history combo box. That is a combo box that
+retains a history of added items in the model.
+
+  * <<<com.anrisoftware.prefdialog.miscswing.components.menu>>>
+
+  Decorates a component to open the pop-up menu if the user clicks on it.
+
+  * <<<com.anrisoftware.prefdialog.miscswing.docks>>>
+
+  Layouts the child windows inside and outside the working area.
+
+  * <<<com.anrisoftware.prefdialog.miscswing.fadingpane>>>
+
+  Layer on top of a window that can be faded away. Useful to hide temporal
+changes from the user.
+
+  * <<<com.anrisoftware.prefdialog.miscswing.filetextfield>>>
+
+  Custom text field for a file. The FontMetrics in the paint method is
+used to calculate the viewable characters for the file path.
+
+  * <<<com.anrisoftware.prefdialog.miscswing.lists>>>
+
+  Decorates a swing list so that the added action listeners are informed if the
+user select an item. The action listeners can be informed multiple time with
+the same list item, so caution must be taken.
+
+  * <<<com.anrisoftware.prefdialog.miscswing.lockedevents>>>
+
+  Lock listener so that the methods are not called until the listener is
+unlocked.
+
+  * <<<com.anrisoftware.prefdialog.miscswing.logpane>>>
+
+  Uses a tree table to display messages ordered in categories.
+
+  * <<<com.anrisoftware.prefdialog.miscswing.multichart>>>
+
+  Displays multiple charts side by side.
+
+  * <<<com.anrisoftware.prefdialog.miscswing.panels>>>
+
+  Sets a gradient paint after the KDE4 Oxygen theme.
+
+  * {{{./resourceaction.html}Resource Action}} <<<com.anrisoftware.prefdialog.miscswing.resourcesaction>>>
+
+  Extends the Swing Action to pull the action's properties from the resources.
+
+  * <<<com.anrisoftware.prefdialog.miscswing.spreadsheet>>>
+
+  Spreadsheet like table.
+
+  * <<<com.anrisoftware.prefdialog.miscswing.statusbar>>>
+
+  Status bar for the application.
+
+  * <<<com.anrisoftware.prefdialog.miscswing.toolbarmenu>>>
+
+  Creates a pop-up menu to set text position and icon size of the added
+actions.
+
+  * <<<com.anrisoftware.prefdialog.miscswing.tooltip>>>
+
+  Shows an artificial tool-tip for a component. The text of the tool-tip can be
+set independently of the original tool-tip.
+
+  * <<<com.anrisoftware.prefdialog.miscswing.validatingfields>>>
+
+  Using an input verifier to verify the input on focus lost and input enter.
+Mark the field and show a tool-tip text if the input is not valid.
 
 SCM
 
