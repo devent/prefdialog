@@ -1,4 +1,4 @@
 emailText(args) ::= <%
 <! - args.email - !>
-\<html\>\<a href=\"email:<args.email>\"\><args.email>\</a\>\</html\>
+\<html>\<a href="email:<args.email>"><args.email>\</a>\</html>
 %>

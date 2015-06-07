@@ -15,14 +15,7 @@ import com.anrisoftware.globalpom.utils.TestUtils
 import com.anrisoftware.globalpom.utils.frametesting.DialogTestingFactory
 import com.anrisoftware.globalpom.utils.frametesting.FrameTestingModule
 import com.anrisoftware.prefdialog.appdialogs.dialog.AppDialogTest
-import com.anrisoftware.prefdialog.appdialogs.dialog.UiPanel
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwtCheckerModule
-import com.anrisoftware.resources.images.api.ImageScalingWorkerFactory
-import com.anrisoftware.resources.images.api.Images
-import com.anrisoftware.resources.images.api.ImagesFactory
-import com.anrisoftware.resources.images.images.ImagesResourcesModule
-import com.anrisoftware.resources.images.maps.ResourcesImagesMapsModule
-import com.anrisoftware.resources.images.scaling.ResourcesSmoothScalingModule
 import com.google.inject.Injector
 
 /**
@@ -44,6 +37,10 @@ class RegisterDialogTest {
                 content.setBorder BorderFactory.createLineBorder(Color.RED)
                 dialog = dialogFactory.create()
                 dialog.setDialog jdialog
+                dialog.setDaysLeft 30
+                dialog.setEmail "admin@anrisoftware.com"
+                dialog.setLogoImageName "iref_logo"
+                dialog.setLogoSize(new Dimension(128, 128))
                 dialog.createDialog()
             }])()
         testing.withFixture({ Thread.sleep 60000 })
@@ -57,16 +54,6 @@ class RegisterDialogTest {
 
     static RegisterDialogFactory dialogFactory
 
-    static ImagesFactory imagesFactory
-
-    static Images images
-
-    static ImageScalingWorkerFactory imageScalingWorkerFactory
-
-    private static final URL LOGO_A_RESOURCE = UiPanel.class.getResource("/com/anrisoftware/prefdialog/appdialogs/dialogheader/resources/images/en/mdpi/iref_logo_transparent_128.png");
-
-    private static final URL LOGO_B_RESOURCE = UiPanel.class.getResource("/com/anrisoftware/prefdialog/appdialogs/dialogheader/resources/images/en/mdpi/iref_logo_changed_128.png");
-
     @BeforeClass
     static void setupFactories() {
         TestUtils.toStringStyle
@@ -75,14 +62,5 @@ class RegisterDialogTest {
                 new FrameTestingModule())
         this.testingFactory = injector.getInstance DialogTestingFactory
         this.dialogFactory = injector.getInstance RegisterDialogFactory
-        this.imagesFactory = injector.createChildInjector(
-                new ImagesResourcesModule(),
-                new ResourcesImagesMapsModule(),
-                new ResourcesSmoothScalingModule()).
-                getInstance(ImagesFactory)
-        this.images = imagesFactory.create(AppDialogTest.class.getSimpleName())
-        this.imageScalingWorkerFactory = injector.createChildInjector(
-                new ResourcesSmoothScalingModule()).
-                getInstance(ImageScalingWorkerFactory)
     }
 }

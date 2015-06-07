@@ -1,8 +1,15 @@
 package com.anrisoftware.prefdialog.appdialogs.registerdialog;
 
+import static com.anrisoftware.prefdialog.appdialogs.registerdialog.RegisterDialogResource.day_text;
+import static com.anrisoftware.prefdialog.appdialogs.registerdialog.RegisterDialogResource.days_text;
+import static com.anrisoftware.prefdialog.appdialogs.registerdialog.RegisterDialogResource.email_text;
+import static com.anrisoftware.prefdialog.appdialogs.registerdialog.RegisterDialogResource.registration_text;
+
 import java.awt.Dimension;
 import java.awt.Image;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.swing.JDialog;
@@ -12,6 +19,10 @@ import com.anrisoftware.prefdialog.appdialogs.dialog.AppDialogFactory;
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 import com.anrisoftware.resources.images.api.ImageScalingWorkerFactory;
 import com.anrisoftware.resources.images.api.Images;
+import com.anrisoftware.resources.images.api.ImagesFactory;
+import com.anrisoftware.resources.templates.api.TemplateResource;
+import com.anrisoftware.resources.templates.api.Templates;
+import com.anrisoftware.resources.templates.api.TemplatesFactory;
 import com.anrisoftware.resources.texts.api.Texts;
 import com.anrisoftware.resources.texts.api.TextsFactory;
 
@@ -30,6 +41,14 @@ public final class RegisterDialog {
 
     private Texts texts;
 
+    private Templates templates;
+
+    private int daysLeft;
+
+    private String email;
+
+    private Images images;
+
     @Inject
     @OnAwt
     void setAppDialogFactory(AppDialogFactory factory) {
@@ -42,6 +61,19 @@ public final class RegisterDialog {
     @Inject
     void setTextsFactory(TextsFactory factory) {
         this.texts = factory.create(RegisterDialog.class.getSimpleName());
+        RegisterDialogResource.setTextsResource(texts);
+    }
+
+    @Inject
+    void setTemplatesFactory(TemplatesFactory factory) {
+        this.templates = factory.create(RegisterDialog.class.getSimpleName());
+        RegisterDialogResource.setTemplatesResource(templates);
+    }
+
+    @Inject
+    void setImagesFactory(ImagesFactory factory) {
+        this.images = factory.create(RegisterDialog.class.getSimpleName());
+        RegisterDialogResource.setImagesResource(images);
     }
 
     /**
@@ -57,6 +89,8 @@ public final class RegisterDialog {
     @OnAwt
     public RegisterDialog createDialog() {
         setTexts(texts);
+        setTemplates(templates);
+        setImages(images);
         appDialog.createDialog();
         return this;
     }
@@ -180,5 +214,62 @@ public final class RegisterDialog {
      */
     public Locale getLocale() {
         return appDialog.getLocale();
+    }
+
+    /**
+     * Sets the templates resources for the dialog.
+     *
+     * <h2>AWT Thread</h2>
+     * <p>
+     * Should be called in the AWT thread.
+     * </p>
+     *
+     * @param templates
+     *            the {@link Templates} resources.
+     */
+    @OnAwt
+    public void setTemplates(Templates templates) {
+        this.templates = templates;
+        updateTexts();
+    }
+
+    @OnAwt
+    public void setDaysLeft(int daysLeft) {
+        this.daysLeft = daysLeft;
+        updateTexts();
+    }
+
+    @OnAwt
+    public void setEmail(String email) {
+        this.email = email;
+        updateTexts();
+    }
+
+    private void updateTexts() {
+        updateRegisterText();
+        updateEmailText();
+    }
+
+    private void updateEmailText() {
+        Map<String, Object> args = new HashMap<String, Object>();
+        args.put("email", email);
+        TemplateResource resource = email_text.getTemplateResource();
+        resource.invalidate();
+        String text = resource.getText("emailText", "args", args);
+        panel.getEmailLink().setText(text);
+    }
+
+    private void updateRegisterText() {
+        Map<String, Object> args = new HashMap<String, Object>();
+        args.put("daysLeft", daysLeft);
+        if (daysLeft > 1) {
+            args.put("dayUnit", days_text.getTextResource().getText());
+        } else {
+            args.put("dayUnit", day_text.getTextResource().getText());
+        }
+        TemplateResource resource = registration_text.getTemplateResource();
+        resource.invalidate();
+        String text = resource.getText("registrationText", "args", args);
+        panel.getTextLabel().setText(text);
     }
 }

@@ -99,6 +99,11 @@
 			<groupId>tablelayout</groupId>
 			<artifactId>TableLayout</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.anrisoftware.resources</groupId>
+			<artifactId>resources-st</artifactId>
+			<version>1.15</version>
+		</dependency>
 	</dependencies>
 
 </project>
