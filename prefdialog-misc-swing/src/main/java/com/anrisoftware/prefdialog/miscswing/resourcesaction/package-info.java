@@ -22,7 +22,9 @@
  <h2>Resource Actions<a name="Resource_Actions"></a></h2>
  <ul>
  <li><tt>com.anrisoftware.prefdialog.miscswing.resourcesaction.AbstractResourcesAction</tt>
- <p>Sets the action name and mnemonic from text resource. It is expected that the user extends the <tt>AbstractResourcesAction</tt> in her own action class and sets the texts and images resources. The name of the action is used to look-up the resources for the action text, short text, mnemonic, accelerator, small and large icon images.</p></li></ul>
+ <p>Sets the action name and mnemonic from text resource. It is expected that the user extends the <tt>AbstractResourcesAction</tt> in her own action class and sets the texts and images resources. The name of the action is used to look-up the resources for the action text, short text, mnemonic, accelerator, small and large icon images.</p></li>
+ <li><tt>com.anrisoftware.prefdialog.miscswing.resourcesaction.LabelResourcesAction</tt>
+ <p>Decorates a <tt>JLabel</tt> with the retrieved resources. The label text, icon and mnemonic can be set from the action.</p></li></ul>
  <p>The following suffixes are used to look-up the resources for the action, attached to the action name.</p>
  <ul>
  <li><tt>name</tt> the action name as the action text;</li>
@@ -69,6 +71,7 @@
  *
  * @author Erwin Müller, erwin.mueller@deventm.de
  * @since 3.0
+ * @version 3.1
  */
 package com.anrisoftware.prefdialog.miscswing.resourcesaction;
 

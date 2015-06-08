@@ -27,6 +27,11 @@ and sets the texts and images resources. The name of the action is used to
 look-up the resources for the action text, short text, mnemonic, accelerator,
 small and large icon images.
 
+    * <<<com.anrisoftware.prefdialog.miscswing.resourcesaction.LabelResourcesAction>>>
+
+    Decorates a <<<JLabel>>> with the retrieved resources. The label text,
+icon and mnemonic can be set from the action.
+
     []
 
     The following suffixes are used to look-up the resources for the action,
