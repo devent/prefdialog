@@ -44,6 +44,10 @@ retains a history of added items in the model.
 
   Decorates a component to open the pop-up menu if the user clicks on it.
 
+  * {{{./editcontextmenu.html}Edit Context Menu}} <<<com.anrisoftware.prefdialog.miscswing.editcontextmenu>>>
+
+  Basic text context menu, with the cut, copy and paste menu items.
+
   * <<<com.anrisoftware.prefdialog.miscswing.docks>>>
 
   Layouts the child windows inside and outside the working area.

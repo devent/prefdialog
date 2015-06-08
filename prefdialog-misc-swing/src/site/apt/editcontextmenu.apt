@@ -1,0 +1,73 @@
+~~
+~~ Copyright 2013-2015 Erwin Müller <erwin.mueller@deventm.org>
+~~
+~~ This file is part of prefdialog-misc-swing.
+~~
+~~ prefdialog-misc-swing is free software: you can redistribute it and/or modify it
+~~ under the terms of the GNU Lesser General Public License as published by the
+~~ Free Software Foundation, either version 3 of the License, or (at your
+~~ option) any later version.
+~~
+~~ prefdialog-misc-swing is distributed in the hope that it will be useful, but
+~~ WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+~~ FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+~~ details.
+~~
+~~ You should have received a copy of the GNU Lesser General Public License
+~~ along with prefdialog-misc-swing. If not, see <http://www.gnu.org/licenses/>.
+~~
+
+[./images/edit_context_menu1.png]
+
+Edit Context Menu
+
+    * <<<com.anrisoftware.prefdialog.miscswing.editcontextmenu.EditContextMenu>>>
+
+    Basic text context menu, with the cut, copy and paste menu items.
+
+    * <<<com.anrisoftware.prefdialog.miscswing.editcontextmenu.EditContextMenuFactory>>>
+
+    Factory to create the edit context menu.
+
+    * <<<com.anrisoftware.prefdialog.miscswing.editcontextmenu.EditContextMenuModule>>>
+
+    Installs the edit context menu,
+
+* Example
+
+    The frame suppose to be a <<<JFrame>>> with a panel that contains a
+text field. The edit context menu is installed on the text field and can be
+used by the user.
+
+---
+
+public class Frame {
+
+    private JTextField textField;
+
+    private EditContextMenu editContextMenu;
+
+    @Inject
+    public void setEditContextMenuFactory(EditContextMenuFactory factory) {
+        editContextMenu = factory.create();
+        editContextMenu.setTextField(textField);
+        editContextMenu.createMenu();
+        this.editContextMenu = editContextMenu;
+    }
+}
+
+public class App {
+
+    static void main() {
+        Injector injector = Guice.createInjector(new EditContextMenuModule(), new MnemonicModule(),
+                new TextsResourcesDefaultModule(), new ImagesResourcesModule(),
+                new ResourcesImagesMapsModule(), new ResourcesSmoothScalingModule());
+        SwingUtils.invokeLater(new Runnable() {
+            public void run() {
+                Frame frame = injector.getInstance(Frame.class);
+                frame.setVisible(true);
+            }
+        });
+    }
+}
+---
