@@ -37,6 +37,15 @@ public final class RegisterDialog {
     @Inject
     private UiRegisterPanel panel;
 
+    @Inject
+    private KeyLabelAction keyListAction;
+
+    @Inject
+    private CodeLabelAction codeListAction;
+
+    @Inject
+    private NameLabelAction nameListAction;
+
     private AppDialog appDialog;
 
     private Texts texts;
@@ -48,6 +57,12 @@ public final class RegisterDialog {
     private String email;
 
     private Images images;
+
+    private String key;
+
+    private String code;
+
+    private String name;
 
     @Inject
     @OnAwt
@@ -91,6 +106,9 @@ public final class RegisterDialog {
         setTexts(texts);
         setTemplates(templates);
         setImages(images);
+        keyListAction.setLabel(panel.getKeyLabel());
+        codeListAction.setLabel(panel.getCodeLabel());
+        nameListAction.setLabel(panel.getNameLabel());
         appDialog.createDialog();
         return this;
     }
@@ -160,6 +178,9 @@ public final class RegisterDialog {
      */
     @OnAwt
     public void setTexts(Texts texts) {
+        keyListAction.setTexts(texts);
+        codeListAction.setTexts(texts);
+        nameListAction.setTexts(texts);
         appDialog.setTexts(texts);
     }
 
@@ -245,9 +266,34 @@ public final class RegisterDialog {
         updateTexts();
     }
 
+    @OnAwt
+    public void setKey(String key) {
+        this.key = key;
+        updateTexts();
+    }
+
+    @OnAwt
+    public void setCode(String code) {
+        this.code = code;
+        updateTexts();
+    }
+
+    @OnAwt
+    public void setName(String name) {
+        this.name = name;
+        updateTexts();
+    }
+
     private void updateTexts() {
+        updateLabelsText();
         updateRegisterText();
         updateEmailText();
+        updateKeyText();
+        updateCodeText();
+        updateNameText();
+    }
+
+    private void updateLabelsText() {
     }
 
     private void updateEmailText() {
@@ -271,5 +317,17 @@ public final class RegisterDialog {
         resource.invalidate();
         String text = resource.getText("registrationText", "args", args);
         panel.getTextLabel().setText(text);
+    }
+
+    private void updateKeyText() {
+        panel.getKeyField().setText(key);
+    }
+
+    private void updateCodeText() {
+        panel.getCodeField().setText(code);
+    }
+
+    private void updateNameText() {
+        panel.getNameField().setText(name);
     }
 }

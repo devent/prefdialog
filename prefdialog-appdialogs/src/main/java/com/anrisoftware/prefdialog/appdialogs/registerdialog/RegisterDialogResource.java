@@ -19,6 +19,12 @@ import com.anrisoftware.resources.texts.api.Texts;
  */
 enum RegisterDialogResource {
 
+    key_label,
+
+    name_label,
+
+    code_label,
+
     email_text,
 
     registration_text,
