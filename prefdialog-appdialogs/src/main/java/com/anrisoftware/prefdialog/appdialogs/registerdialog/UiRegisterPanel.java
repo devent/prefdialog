@@ -75,6 +75,7 @@ final class UiRegisterPanel extends JPanel {
         add(nameLabel, "cell 0 4");
 
         nameField = new JTextField();
+        nameField.setName(RegisterDialog.NAME_FIELD_NAME);
         nameField.setHorizontalAlignment(JTextField.CENTER);
         nameLabel.setLabelFor(nameField);
         add(nameField, "cell 1 4,growx");
@@ -84,6 +85,7 @@ final class UiRegisterPanel extends JPanel {
         add(codeLabel, "cell 0 5");
 
         codeField = new JTextField();
+        codeField.setName(RegisterDialog.CODE_FIELD_NAME);
         codeField.setHorizontalAlignment(JTextField.CENTER);
         codeLabel.setLabelFor(codeField);
         add(codeField, "cell 1 5,growx");

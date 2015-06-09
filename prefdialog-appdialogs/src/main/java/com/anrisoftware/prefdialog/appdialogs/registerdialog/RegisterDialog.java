@@ -19,6 +19,7 @@ import com.anrisoftware.prefdialog.appdialogs.dialog.AppDialogFactory;
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 import com.anrisoftware.prefdialog.miscswing.editcontextmenu.EditContextMenu;
 import com.anrisoftware.prefdialog.miscswing.editcontextmenu.EditContextMenuFactory;
+import com.anrisoftware.prefdialog.simpledialog.SimpleDialog.Status;
 import com.anrisoftware.resources.images.api.ImageScalingWorkerFactory;
 import com.anrisoftware.resources.images.api.Images;
 import com.anrisoftware.resources.images.api.ImagesFactory;
@@ -36,6 +37,16 @@ import com.anrisoftware.resources.texts.api.TextsFactory;
  */
 public final class RegisterDialog {
 
+    /**
+     * Name text field name.
+     */
+    public static final String NAME_FIELD_NAME = "nameField";
+
+    /**
+     * Code text field name.
+     */
+    public static final String CODE_FIELD_NAME = "codeField";
+
     @Inject
     private UiRegisterPanel panel;
 
@@ -47,6 +58,15 @@ public final class RegisterDialog {
 
     @Inject
     private NameLabelAction nameListAction;
+
+    @Inject
+    private NameTextListener nameTextListener;
+
+    @Inject
+    private CodeTextListener codeTextListener;
+
+    @Inject
+    private ApprovalActionListener approvalActionListener;
 
     private EditContextMenu editContextMenu;
 
@@ -117,14 +137,19 @@ public final class RegisterDialog {
      */
     @OnAwt
     public RegisterDialog createDialog() {
-        setAppDialogTexts(texts);
+        setRegisterDialogTexts(texts);
         setTemplates(templates);
-        setAppDialogImages(images);
+        setDialogHeaderImages(images);
         keyListAction.setLabel(panel.getKeyLabel());
         codeListAction.setLabel(panel.getCodeLabel());
         nameListAction.setLabel(panel.getNameLabel());
+        nameTextListener.setTextField(panel.getNameField());
+        codeTextListener.setTextField(panel.getCodeField());
         appDialog.createDialog();
         editContextMenu.createMenu();
+        approvalActionListener.setTexts(texts);
+        approvalActionListener.setAppDialog(appDialog);
+        approvalActionListener.setRegisterDialog(this);
         return this;
     }
 
@@ -149,11 +174,17 @@ public final class RegisterDialog {
     }
 
     /**
-     * @see AppDialog#setImages(Images)
+     * @see com.anrisoftware.prefdialog.appdialogs.dialog.AppDialog#setDialogHeaderImages(com.anrisoftware.resources.images.api.Images)
      */
-    @OnAwt
-    public void setAppDialogImages(Images images) {
-        appDialog.setImages(images);
+    public void setDialogHeaderImages(Images images) {
+        appDialog.setDialogHeaderImages(images);
+    }
+
+    /**
+     * @see com.anrisoftware.prefdialog.appdialogs.dialog.AppDialog#setDialogImages(com.anrisoftware.resources.images.api.Images)
+     */
+    public void setDialogImages(Images images) {
+        appDialog.setDialogImages(images);
     }
 
     /**
@@ -198,14 +229,27 @@ public final class RegisterDialog {
     }
 
     /**
+     * @see com.anrisoftware.prefdialog.appdialogs.dialog.AppDialog#setDialogHeadersTexts(com.anrisoftware.resources.texts.api.Texts)
+     */
+    public void setDialogHeadersTexts(Texts texts) {
+        appDialog.setDialogHeadersTexts(texts);
+    }
+
+    /**
+     * @see com.anrisoftware.prefdialog.appdialogs.dialog.AppDialog#setDialogTexts(com.anrisoftware.resources.texts.api.Texts)
+     */
+    public void setDialogTexts(Texts texts) {
+        appDialog.setDialogTexts(texts);
+    }
+
+    /**
      * @see AppDialog#setTexts(Texts)
      */
     @OnAwt
-    public void setAppDialogTexts(Texts texts) {
+    public void setRegisterDialogTexts(Texts texts) {
         keyListAction.setTexts(texts);
         codeListAction.setTexts(texts);
         nameListAction.setTexts(texts);
-        appDialog.setTexts(texts);
     }
 
     /**
@@ -297,9 +341,30 @@ public final class RegisterDialog {
     }
 
     @OnAwt
+    public String getCode() {
+        String code = codeTextListener.getText();
+        this.code = code;
+        return code;
+    }
+
+    @OnAwt
     public void setName(String name) {
         this.name = name;
         updateTexts();
+    }
+
+    @OnAwt
+    public String getName() {
+        String name = nameTextListener.getText();
+        this.name = name;
+        return name;
+    }
+
+    /**
+     * @see com.anrisoftware.prefdialog.appdialogs.dialog.AppDialog#getStatus()
+     */
+    public Status getStatus() {
+        return appDialog.getStatus();
     }
 
     private void updateTexts() {

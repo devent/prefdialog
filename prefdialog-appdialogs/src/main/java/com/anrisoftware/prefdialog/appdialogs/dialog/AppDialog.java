@@ -144,8 +144,15 @@ public final class AppDialog {
      * @see DialogHeader#setImages(com.anrisoftware.resources.images.api.Images)
      */
     @OnAwt
-    public void setImages(Images images) {
+    public void setDialogHeaderImages(Images images) {
         dialogHeader.setImages(images);
+    }
+
+    /**
+     * @see SimpleDialog#setImages(com.anrisoftware.resources.images.api.Images)
+     */
+    @OnAwt
+    public void setDialogImages(Images images) {
         simpleDialog.setImages(images);
     }
 
@@ -186,8 +193,15 @@ public final class AppDialog {
      * @see DialogHeader#setTexts(com.anrisoftware.resources.texts.api.Texts)
      */
     @OnAwt
-    public void setTexts(Texts texts) {
+    public void setDialogHeadersTexts(Texts texts) {
         dialogHeader.setTexts(texts);
+    }
+
+    /**
+     * @see SimpleDialog#setTexts(com.anrisoftware.resources.texts.api.Texts)
+     */
+    @OnAwt
+    public void setDialogTexts(Texts texts) {
         simpleDialog.setTexts(texts);
     }
 
