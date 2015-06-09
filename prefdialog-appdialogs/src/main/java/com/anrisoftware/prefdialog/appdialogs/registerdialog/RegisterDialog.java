@@ -17,6 +17,8 @@ import javax.swing.JDialog;
 import com.anrisoftware.prefdialog.appdialogs.dialog.AppDialog;
 import com.anrisoftware.prefdialog.appdialogs.dialog.AppDialogFactory;
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
+import com.anrisoftware.prefdialog.miscswing.editcontextmenu.EditContextMenu;
+import com.anrisoftware.prefdialog.miscswing.editcontextmenu.EditContextMenuFactory;
 import com.anrisoftware.resources.images.api.ImageScalingWorkerFactory;
 import com.anrisoftware.resources.images.api.Images;
 import com.anrisoftware.resources.images.api.ImagesFactory;
@@ -46,6 +48,8 @@ public final class RegisterDialog {
     @Inject
     private NameLabelAction nameListAction;
 
+    private EditContextMenu editContextMenu;
+
     private AppDialog appDialog;
 
     private Texts texts;
@@ -66,11 +70,21 @@ public final class RegisterDialog {
 
     @Inject
     @OnAwt
-    void setAppDialogFactory(AppDialogFactory factory) {
+    void setAppDialog(AppDialogFactory factory) {
         AppDialog dialog = factory.create();
         dialog.setContent(panel);
         dialog.setShowRestoreButton(false);
         this.appDialog = dialog;
+    }
+
+    @Inject
+    @OnAwt
+    void setEditContextMenu(EditContextMenuFactory factory) {
+        EditContextMenu menu = factory.create();
+        menu.addTextField(panel.getKeyField());
+        menu.addTextField(panel.getCodeField());
+        menu.addTextField(panel.getNameField());
+        this.editContextMenu = menu;
     }
 
     @Inject
@@ -103,13 +117,14 @@ public final class RegisterDialog {
      */
     @OnAwt
     public RegisterDialog createDialog() {
-        setTexts(texts);
+        setAppDialogTexts(texts);
         setTemplates(templates);
-        setImages(images);
+        setAppDialogImages(images);
         keyListAction.setLabel(panel.getKeyLabel());
         codeListAction.setLabel(panel.getCodeLabel());
         nameListAction.setLabel(panel.getNameLabel());
         appDialog.createDialog();
+        editContextMenu.createMenu();
         return this;
     }
 
@@ -134,11 +149,19 @@ public final class RegisterDialog {
     }
 
     /**
-     * @see AppDialog#setImages(com.anrisoftware.resources.images.api.Images)
+     * @see AppDialog#setImages(Images)
      */
     @OnAwt
-    public void setImages(Images images) {
+    public void setAppDialogImages(Images images) {
         appDialog.setImages(images);
+    }
+
+    /**
+     * @see EditContextMenu#setImages(Images)
+     */
+    @OnAwt
+    public void setEditContextMenuImages(Images images) {
+        editContextMenu.setImages(images);
     }
 
     /**
@@ -147,6 +170,7 @@ public final class RegisterDialog {
     @OnAwt
     public void setLocale(Locale locale) {
         appDialog.setLocale(locale);
+        editContextMenu.setLocale(locale);
     }
 
     /**
@@ -174,14 +198,22 @@ public final class RegisterDialog {
     }
 
     /**
-     * @see AppDialog#setTexts(com.anrisoftware.resources.texts.api.Texts)
+     * @see AppDialog#setTexts(Texts)
      */
     @OnAwt
-    public void setTexts(Texts texts) {
+    public void setAppDialogTexts(Texts texts) {
         keyListAction.setTexts(texts);
         codeListAction.setTexts(texts);
         nameListAction.setTexts(texts);
         appDialog.setTexts(texts);
+    }
+
+    /**
+     * @see EditContextMenu#setTexts(Texts)
+     */
+    @OnAwt
+    public void setEditContextMenuTexts(Texts texts) {
+        editContextMenu.setTexts(texts);
     }
 
     /**
@@ -214,20 +246,6 @@ public final class RegisterDialog {
     @OnAwt
     public void setLinkText(String text) {
         appDialog.setLinkText(text);
-    }
-
-    /**
-     * @see AppDialog#getTexts()
-     */
-    public Texts getTexts() {
-        return appDialog.getTexts();
-    }
-
-    /**
-     * @see AppDialog#getImages()
-     */
-    public Images getImages() {
-        return appDialog.getImages();
     }
 
     /**
@@ -285,15 +303,11 @@ public final class RegisterDialog {
     }
 
     private void updateTexts() {
-        updateLabelsText();
         updateRegisterText();
         updateEmailText();
         updateKeyText();
         updateCodeText();
         updateNameText();
-    }
-
-    private void updateLabelsText() {
     }
 
     private void updateEmailText() {

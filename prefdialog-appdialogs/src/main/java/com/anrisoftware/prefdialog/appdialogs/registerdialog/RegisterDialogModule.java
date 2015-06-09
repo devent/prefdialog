@@ -6,6 +6,7 @@ import com.anrisoftware.globalpom.reflection.beans.BeansModule;
 import com.anrisoftware.prefdialog.appdialogs.dialog.AppDialogFactory;
 import com.anrisoftware.prefdialog.appdialogs.dialog.AppDialogModule;
 import com.anrisoftware.prefdialog.appdialogs.dialogheader.DialogHeaderModule;
+import com.anrisoftware.prefdialog.miscswing.editcontextmenu.EditContextMenuModule;
 import com.anrisoftware.prefdialog.simpledialog.SimpleDialogModule;
 import com.anrisoftware.resources.images.images.ImagesResourcesModule;
 import com.anrisoftware.resources.images.maps.ResourcesImagesMapsModule;
@@ -44,6 +45,7 @@ public class RegisterDialogModule extends AbstractModule {
         private static final Module[] modules = new Module[] {
                 new RegisterDialogModule(), new AppDialogModule(),
                 new DialogHeaderModule(), new SimpleDialogModule(),
+                new EditContextMenuModule(),
                 new MnemonicModule(), new AnnotationsModule(),
                 new BeansModule(), new TextsResourcesDefaultModule(),
                 new TemplatesResourcesModule(),

@@ -39,6 +39,7 @@ class RegisterDialogTest {
                 dialog.setDialog jdialog
                 dialog.setDaysLeft 30
                 dialog.setEmail "admin@anrisoftware.com"
+                dialog.setKey "XXXX-XXXX-XXXX-XXXX"
                 dialog.setLogoImageName "iref_logo"
                 dialog.setLogoSize(new Dimension(128, 128))
                 dialog.createDialog()
