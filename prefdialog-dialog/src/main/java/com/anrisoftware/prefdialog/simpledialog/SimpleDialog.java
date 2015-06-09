@@ -24,7 +24,9 @@ import static javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW;
 import static javax.swing.KeyStroke.getKeyStroke;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -34,14 +36,19 @@ import java.beans.VetoableChangeSupport;
 import java.util.Locale;
 
 import javax.inject.Inject;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
 
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
+import com.anrisoftware.resources.images.api.IconSize;
+import com.anrisoftware.resources.images.api.ImageResource;
 import com.anrisoftware.resources.images.api.Images;
+import com.anrisoftware.resources.images.api.ImagesFactory;
 import com.anrisoftware.resources.texts.api.Texts;
+import com.anrisoftware.resources.texts.api.TextsFactory;
 
 /**
  * Simple dialog with approve, restore and cancel buttons.
@@ -58,6 +65,13 @@ public class SimpleDialog {
      * @since 3.0
      */
     public enum Status {
+
+        /**
+         * The dialog was opened. Initial state of the dialog.
+         *
+         * @since 3.1
+         */
+        OPENED,
 
         /**
          * The user approved the dialog.
@@ -120,6 +134,13 @@ public class SimpleDialog {
      */
     public static final String CANCEL_BUTTON_NAME = "cancelButton";
 
+    /**
+     * Error text component name.
+     *
+     * @since 3.1
+     */
+    public static final String ERROR_TEXT_NAME = "errorText";
+
     static final String CANCEL_ACTION_NAME = "cancel_action";
 
     static final String APPROVE_ACTION_NAME = "approve_action";
@@ -153,6 +174,10 @@ public class SimpleDialog {
 
     private boolean showRestoreButton;
 
+    private ImageResource emptyIcon;
+
+    private ImageResource errorIcon;
+
     /**
      * @see SimpleDialogFactory#create()
      */
@@ -161,6 +186,17 @@ public class SimpleDialog {
         this.vetoableSupport = new VetoableChangeSupport(this);
         this.locale = Locale.getDefault();
         this.showRestoreButton = true;
+    }
+
+    @Inject
+    void setTextsFactory(TextsFactory factory) {
+        this.texts = factory.create(SimpleDialog.class.getSimpleName());
+    }
+
+    @Inject
+    void setImagesFactory(ImagesFactory factory) {
+        this.images = factory.create(SimpleDialog.class.getSimpleName());
+        loadImages();
     }
 
     @Inject
@@ -221,6 +257,7 @@ public class SimpleDialog {
      */
     public void setImages(Images images) {
         this.images = images;
+        loadImages();
     }
 
     /**
@@ -368,6 +405,7 @@ public class SimpleDialog {
         setupActions();
         setupDialog();
         setupKeyboardActions();
+        this.status = Status.OPENED;
         return this;
     }
 
@@ -385,6 +423,9 @@ public class SimpleDialog {
     private void setupPanel() {
         this.dialogPanel = panelFactory.create();
         dialogPanel.add(fieldsPanel, "cell 0 0");
+        dialogPanel.getErrorTextLabel().setIcon(
+                new ImageIcon(emptyIcon.getImage()));
+        dialogPanel.getErrorTextLabel().setText(" ");
     }
 
     private void setupActions() {
@@ -548,6 +589,60 @@ public class SimpleDialog {
     }
 
     /**
+     * Sets the error text to show inside the dialog.
+     *
+     * @param text
+     *            the error {@link String} text.
+     *
+     * @since 3.1
+     */
+    public void setErrorText(String text) {
+        if (text != null) {
+            dialogPanel.getErrorTextLabel().setIcon(
+                    new ImageIcon(errorIcon.getImage()));
+            dialogPanel.getErrorTextLabel().setText(text);
+        } else {
+            dialogPanel.getErrorTextLabel().setIcon(
+                    new ImageIcon(emptyIcon.getImage()));
+            dialogPanel.getErrorTextLabel().setText(null);
+        }
+    }
+
+    /**
+     * Sets the error text font.
+     *
+     * <h2>AWT Thread</h2>
+     * <p>
+     * Should be called in the AWT thread.
+     * </p>
+     *
+     * @param font
+     *            the {@link Font}.
+     * @since 3.1
+     */
+    @OnAwt
+    public void setErrorTextFont(Font font) {
+        dialogPanel.getErrorTextLabel().setFont(font);
+    }
+
+    /**
+     * Sets the error text font color.
+     *
+     * <h2>AWT Thread</h2>
+     * <p>
+     * Should be called in the AWT thread.
+     * </p>
+     *
+     * @param color
+     *            the {@link Color}.
+     * @since 3.1
+     */
+    @OnAwt
+    public void setErrorTextFontColor(Color color) {
+        dialogPanel.getErrorTextLabel().setForeground(color);
+    }
+
+    /**
      * @see #STATUS_PROPERTY
      */
     public void addVetoableChangeListener(VetoableChangeListener listener) {
@@ -614,6 +709,13 @@ public class SimpleDialog {
         buttonsPanel.remove(dialogPanel.getRestoreStrut());
         restoreButton.setVisible(false);
         buttonsPanel.validate();
+    }
+
+    private void loadImages() {
+        this.emptyIcon = images.getResource("empty_icon", locale,
+                IconSize.SMALL);
+        this.errorIcon = images.getResource("error_icon", locale,
+                IconSize.SMALL);
     }
 
 }

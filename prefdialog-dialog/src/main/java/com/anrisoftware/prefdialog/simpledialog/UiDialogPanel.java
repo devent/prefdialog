@@ -23,12 +23,17 @@ import static com.anrisoftware.prefdialog.simpledialog.SimpleDialog.CANCEL_BUTTO
 import static com.anrisoftware.prefdialog.simpledialog.SimpleDialog.RESTORE_BUTTON_NAME;
 import static javax.swing.BoxLayout.LINE_AXIS;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -49,16 +54,32 @@ final class UiDialogPanel extends JPanel {
     private final JPanel buttonsPanel;
     private final Component approveStrut;
     private final Component restoreStrut;
+    private final JPanel errorPanel;
+    private final JLabel errorTextLabel;
 
 	/**
 	 * Create the dialog.
 	 */
 	@OnAwt
 	UiDialogPanel() {
-		setLayout(new MigLayout("", "[grow,fill]", "[grow,fill][]"));
+        setLayout(new MigLayout("", "[grow,fill]", "[grow,fill][][]"));
+
+        errorPanel = new JPanel();
+        add(errorPanel, "cell 0 1");
+        errorPanel.setLayout(new BorderLayout(0, 0));
+
+        errorTextLabel = new JLabel("Error");
+        errorTextLabel.setName(SimpleDialog.ERROR_TEXT_NAME);
+        errorTextLabel.setForeground(new Color(178, 34, 34));
+        errorTextLabel
+                .setFont(errorTextLabel.getFont().deriveFont(
+                        errorTextLabel.getFont().getStyle() & ~Font.BOLD
+                                | Font.ITALIC));
+        errorTextLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        errorPanel.add(errorTextLabel);
 
         buttonsPanel = new JPanel();
-		add(buttonsPanel, "cell 0 1,growx,aligny top");
+        add(buttonsPanel, "cell 0 2,growx,aligny top");
 		buttonsPanel.setLayout(new BoxLayout(buttonsPanel, LINE_AXIS));
 		buttonsPanel.add(Box.createHorizontalGlue());
 
@@ -103,5 +124,13 @@ final class UiDialogPanel extends JPanel {
 
     public Component getRestoreStrut() {
         return restoreStrut;
+    }
+
+    public JLabel getErrorTextLabel() {
+        return errorTextLabel;
+    }
+
+    public JPanel getErrorPanel() {
+        return errorPanel;
     }
 }

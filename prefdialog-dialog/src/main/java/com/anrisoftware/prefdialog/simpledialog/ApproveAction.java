@@ -28,30 +28,31 @@ import com.anrisoftware.prefdialog.miscswing.resourcesaction.AbstractResourcesAc
 
 /**
  * Sets the approval state and closes the dialog.
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
 @SuppressWarnings("serial")
 class ApproveAction extends AbstractResourcesAction {
 
-	private SimpleDialog dialog;
+    private SimpleDialog dialog;
 
-	ApproveAction() {
-		super(APPROVE_ACTION_NAME);
-	}
+    ApproveAction() {
+        super(APPROVE_ACTION_NAME);
+    }
 
-	public void setDialog(SimpleDialog dialog) {
-		this.dialog = dialog;
-	}
+    public void setDialog(SimpleDialog dialog) {
+        this.dialog = dialog;
+    }
 
-	@Override
-	public void actionPerformed(ActionEvent evt) {
-		try {
-			dialog.setStatus(APPROVED);
-			dialog.closeDialog();
-		} catch (PropertyVetoException e) {
-		}
-	}
+    @Override
+    public void actionPerformed(ActionEvent evt) {
+        try {
+            dialog.setStatus(APPROVED);
+            dialog.closeDialog();
+        } catch (PropertyVetoException e) {
+            dialog.setErrorText(e.getLocalizedMessage());
+        }
+    }
 
 }
