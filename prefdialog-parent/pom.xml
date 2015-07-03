@@ -79,12 +79,12 @@
 			<dependency>
 				<groupId>com.anrisoftware.resources</groupId>
 				<artifactId>resources-images</artifactId>
-				<version>1.15</version>
+				<version>1.16</version>
 			</dependency>
 			<dependency>
 				<groupId>com.anrisoftware.resources</groupId>
 				<artifactId>resources-texts</artifactId>
-				<version>1.15</version>
+				<version>1.16</version>
 			</dependency>
 			<dependency>
 				<groupId>com.anrisoftware.globalpom</groupId>
@@ -120,52 +120,6 @@
 				<groupId>org.mangosdk.spi</groupId>
 				<artifactId>spi</artifactId>
 				<version>0.2.7.r52822d</version>
-			</dependency>
-			<!-- own modules -->
-			<dependency>
-				<groupId>com.anrisoftware.prefdialog</groupId>
-				<artifactId>prefdialog-api</artifactId>
-				<version>3.1-SNAPSHOT</version>
-			</dependency>
-			<dependency>
-				<groupId>com.anrisoftware.prefdialog</groupId>
-				<artifactId>prefdialog-core</artifactId>
-				<version>3.1-SNAPSHOT</version>
-			</dependency>
-			<dependency>
-				<groupId>com.anrisoftware.prefdialog</groupId>
-				<artifactId>prefdialog-corefields</artifactId>
-				<version>3.1-SNAPSHOT</version>
-			</dependency>
-			<dependency>
-				<groupId>com.anrisoftware.prefdialog</groupId>
-				<artifactId>prefdialog-csvimportdialog</artifactId>
-				<version>3.1-SNAPSHOT</version>
-			</dependency>
-			<dependency>
-				<groupId>com.anrisoftware.prefdialog</groupId>
-				<artifactId>prefdialog-dialog</artifactId>
-				<version>3.1-SNAPSHOT</version>
-			</dependency>
-			<dependency>
-				<groupId>com.anrisoftware.prefdialog</groupId>
-				<artifactId>prefdialog-freepik-basic-application-icons</artifactId>
-				<version>1.0</version>
-			</dependency>
-			<dependency>
-				<groupId>com.anrisoftware.prefdialog</groupId>
-				<artifactId>prefdialog-icons-reflectionkde4</artifactId>
-				<version>1.0</version>
-			</dependency>
-			<dependency>
-				<groupId>com.anrisoftware.prefdialog</groupId>
-				<artifactId>prefdialog-misc-swing</artifactId>
-				<version>3.1-SNAPSHOT</version>
-			</dependency>
-			<dependency>
-				<groupId>com.anrisoftware.prefdialog</groupId>
-				<artifactId>prefdialog-panel</artifactId>
-				<version>3.1-SNAPSHOT</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

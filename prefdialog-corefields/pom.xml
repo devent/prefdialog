@@ -55,10 +55,12 @@
 		<dependency>
 			<groupId>com.anrisoftware.prefdialog</groupId>
 			<artifactId>prefdialog-core</artifactId>
+			<version>3.1-SNAPSHOT</version>
 		</dependency>
         <dependency>
             <groupId>com.anrisoftware.prefdialog</groupId>
             <artifactId>prefdialog-misc-swing</artifactId>
+            <version>3.1-SNAPSHOT</version>
         </dependency>
 
 		<!-- compile dependencies -->

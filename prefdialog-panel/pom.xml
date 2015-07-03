@@ -38,6 +38,7 @@
 		<dependency>
 			<groupId>com.anrisoftware.prefdialog</groupId>
 			<artifactId>prefdialog-corefields</artifactId>
+			<version>3.1-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -45,10 +46,12 @@
 		<dependency>
 			<groupId>com.anrisoftware.prefdialog</groupId>
 			<artifactId>prefdialog-api</artifactId>
+			<version>3.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.anrisoftware.prefdialog</groupId>
 			<artifactId>prefdialog-core</artifactId>
+			<version>3.1-SNAPSHOT</version>
 		</dependency>
 
 		<!-- compile dependencies -->
