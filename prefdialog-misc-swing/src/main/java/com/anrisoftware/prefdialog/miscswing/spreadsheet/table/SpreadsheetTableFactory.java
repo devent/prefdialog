@@ -22,23 +22,23 @@ import javax.swing.JTable;
 
 /**
  * Factory to create a spreadsheet like table.
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
 public interface SpreadsheetTableFactory {
 
-	/**
-	 * Decorates the table to be a spreadsheet like table.
-	 * <p>
-	 * <h2>AWT Thread</h2>
-	 * <p>
-	 * Should be called in the AWT thread.
-	 * 
-	 * @param table
-	 *            the {@link JTable}.
-	 * 
-	 * @return the {@link SpreadsheetTable}.
-	 */
-	SpreadsheetTable create(JTable table);
+    /**
+     * Decorates the table to be a spreadsheet like table.
+     * <p>
+     * <h2>AWT Thread</h2>
+     * <p>
+     * Should be called in the AWT thread.
+     *
+     * @param table
+     *            the {@link JTable}.
+     *
+     * @return the {@link SpreadsheetTable}.
+     */
+    SpreadsheetTable create(JTable table);
 }

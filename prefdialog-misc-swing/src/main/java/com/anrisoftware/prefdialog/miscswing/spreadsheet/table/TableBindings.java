@@ -38,116 +38,136 @@ import javax.swing.table.TableModel;
 
 /**
  * Re-binds keys of the spreadsheet table.
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
 @SuppressWarnings("serial")
-class TableBindings {
+final class TableBindings {
 
-	private final ListSelectionListener nextEditableCellListener;
+    private final ListSelectionListener nextEditableCellListener;
 
-	private final Action tabAction;
+    private final Action tabAction;
 
-	private final Action enterAction;
+    private final Action enterAction;
 
-	private TableColumnModel columnModel;
+    private TableColumnModel columnModel;
 
-	private JTable table;
+    private JTable table;
 
-	private InputMap inputs;
+    private InputMap inputs;
 
-	private ActionMap actions;
+    private ActionMap actions;
 
-	private ListSelectionModel columnSelectionModel;
+    private ListSelectionModel columnSelectionModel;
 
-	TableBindings() {
-		this.enterAction = new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent ae) {
-				TableModel model = getModel();
-				int maxrows = model.getRowCount();
-				int row = table.getSelectedRow() + 1;
-				if (row < maxrows) {
-					table.setRowSelectionInterval(row, row);
-					table.scrollRectToVisible(table.getCellRect(row, 0, true));
-				}
-			}
-		};
-		this.tabAction = new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent ae) {
-				TableModel model = getModel();
-				int maxcolumns = model.getColumnCount();
-				int column = table.getSelectedColumn() + 1;
-				if (column < maxcolumns) {
-					table.setColumnSelectionInterval(column, column);
-				} else {
-					table.setColumnSelectionInterval(0, 0);
-				}
-			}
-		};
-		this.nextEditableCellListener = new ListSelectionListener() {
+    private boolean moveToNextEditable;
 
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
-				int rowIndex = table.getSelectedRow();
-				int index = table.getSelectedColumn();
-				if (rowIndex < 0 || index < 0) {
-					return;
-				}
-				TableModel model = getModel();
-				while (index < model.getColumnCount()
-						&& !model.isCellEditable(rowIndex, index)) {
-					index++;
-				}
-				if (index >= model.getColumnCount()) {
-					index = model.getColumnCount() - 1;
-				}
-				while (index > 0 && !model.isCellEditable(rowIndex, index)) {
-					index--;
-				}
-				table.setColumnSelectionInterval(index, index);
-			}
-		};
-	}
+    TableBindings() {
+        this.moveToNextEditable = true;
+        this.enterAction = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                TableModel model = getModel();
+                int maxrows = model.getRowCount();
+                int row = table.getSelectedRow() + 1;
+                if (row < maxrows) {
+                    table.setRowSelectionInterval(row, row);
+                    table.scrollRectToVisible(table.getCellRect(row, 0, true));
+                }
+            }
+        };
+        this.tabAction = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                TableModel model = getModel();
+                int maxcolumns = model.getColumnCount();
+                int column = table.getSelectedColumn() + 1;
+                if (column < maxcolumns) {
+                    table.setColumnSelectionInterval(column, column);
+                } else {
+                    table.setColumnSelectionInterval(0, 0);
+                }
+            }
+        };
+        this.nextEditableCellListener = new ListSelectionListener() {
 
-	/**
-	 * Sets the bindings for the specified table.
-	 * 
-	 * @param table
-	 *            the {@link JTable}.
-	 */
-	public void setTable(JTable table) {
-		this.table = table;
-		this.columnModel = table.getColumnModel();
-		this.columnSelectionModel = columnModel.getSelectionModel();
-		this.inputs = table.getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-		this.actions = table.getActionMap();
-		setupSelectNextEditableCell();
-		setupEnter();
-		setupTab();
-	}
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                int rowIndex = table.getSelectedRow();
+                int index = table.getSelectedColumn();
+                if (rowIndex < 0 || index < 0) {
+                    return;
+                }
+                TableModel model = getModel();
+                while (index < model.getColumnCount()
+                        && !model.isCellEditable(rowIndex, index)) {
+                    index++;
+                }
+                if (index >= model.getColumnCount()) {
+                    index = model.getColumnCount() - 1;
+                }
+                while (index > 0 && !model.isCellEditable(rowIndex, index)) {
+                    index--;
+                }
+                table.setColumnSelectionInterval(index, index);
+            }
+        };
+    }
 
-	private TableModel getModel() {
-		return table.getModel();
-	}
+    /**
+     * Sets the bindings for the specified table.
+     *
+     * @param table
+     *            the {@link JTable}.
+     */
+    public void setTable(JTable table) {
+        this.table = table;
+        this.columnModel = table.getColumnModel();
+        this.columnSelectionModel = columnModel.getSelectionModel();
+        this.inputs = table.getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        this.actions = table.getActionMap();
+        setupSelectNextEditableCell();
+        setupEnter();
+        setupTab();
+    }
 
-	private void setupSelectNextEditableCell() {
-		if (columnSelectionModel != null) {
-			columnSelectionModel
-					.removeListSelectionListener(nextEditableCellListener);
-		}
-		columnSelectionModel.addListSelectionListener(nextEditableCellListener);
-	}
+    public void setMoveToNextEditable(boolean moveToNextEditable) {
+        boolean oldValue = this.moveToNextEditable;
+        this.moveToNextEditable = moveToNextEditable;
+        ListSelectionModel model = columnSelectionModel;
+        if (oldValue && !moveToNextEditable) {
+            model.removeListSelectionListener(nextEditableCellListener);
+        }
+        if (!oldValue && moveToNextEditable) {
+            model.addListSelectionListener(nextEditableCellListener);
+        }
+    }
 
-	private void setupTab() {
-		inputs.put(KeyStroke.getKeyStroke(VK_TAB, 0), "Tab");
-		actions.put("Tab", tabAction);
-	}
+    public boolean isMoveToNextEditable() {
+        return moveToNextEditable;
+    }
 
-	private void setupEnter() {
-		inputs.put(KeyStroke.getKeyStroke(VK_ENTER, 0), "Enter");
-		actions.put("Enter", enterAction);
-	}
+    private TableModel getModel() {
+        return table.getModel();
+    }
+
+    private void setupSelectNextEditableCell() {
+        ListSelectionModel model = columnSelectionModel;
+        if (model != null) {
+            model.removeListSelectionListener(nextEditableCellListener);
+        }
+        model.addListSelectionListener(nextEditableCellListener);
+    }
+
+    private void setupTab() {
+        inputs.put(KeyStroke.getKeyStroke(VK_TAB, 0), "Tab");
+        actions.put("Tab", tabAction);
+    }
+
+    private void setupEnter() {
+        inputs.put(KeyStroke.getKeyStroke(VK_ENTER, 0), "Enter");
+        actions.put("Enter", enterAction);
+    }
+
 }

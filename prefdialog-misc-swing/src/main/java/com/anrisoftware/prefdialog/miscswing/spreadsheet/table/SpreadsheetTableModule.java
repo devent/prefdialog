@@ -26,33 +26,36 @@ import com.google.inject.assistedinject.FactoryModuleBuilder;
 
 /**
  * Installs spreadsheet table factory.
- * 
+ *
  * @see SpreadsheetTable
  * @see SpreadsheetTableFactory
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-public class SpreadsheetTableModule extends AbstractModule {
+public final class SpreadsheetTableModule extends AbstractModule {
 
-	/**
-	 * Create the spreadsheet table factory.
-	 * 
-	 * @return the {@link SpreadsheetTableFactory}.
-	 */
-	public static SpreadsheetTableFactory getFactory() {
-		return InjectorSingleton.injector
-				.getInstance(SpreadsheetTableFactory.class);
-	}
+    /**
+     * Create the spreadsheet table factory.
+     *
+     * @return the {@link SpreadsheetTableFactory}.
+     */
+    public static SpreadsheetTableFactory getFactory() {
+        return InjectorSingleton.factory;
+    }
 
-	private static class InjectorSingleton {
-		static Injector injector = createInjector(new SpreadsheetTableModule());
-	}
+    private static class InjectorSingleton {
 
-	@Override
-	protected void configure() {
-		install(new FactoryModuleBuilder().implement(SpreadsheetTable.class,
-				SpreadsheetTable.class).build(SpreadsheetTableFactory.class));
-	}
+        static Injector injector = createInjector(new SpreadsheetTableModule());
+
+        static SpreadsheetTableFactory factory = InjectorSingleton.injector
+                .getInstance(SpreadsheetTableFactory.class);
+    }
+
+    @Override
+    protected void configure() {
+        install(new FactoryModuleBuilder().implement(SpreadsheetTable.class,
+                SpreadsheetTable.class).build(SpreadsheetTableFactory.class));
+    }
 
 }

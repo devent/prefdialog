@@ -28,25 +28,25 @@ import javax.swing.table.TableModel;
 
 /**
  * Removes the border around the editor component.
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
 @SuppressWarnings("serial")
-public class SheetTable extends JTable {
+public final class SheetTable extends JTable {
 
-	public SheetTable(TableModel model) {
-		super(model);
-	}
+    public SheetTable(TableModel model) {
+        super(model);
+    }
 
-	@Override
-	public Component prepareEditor(TableCellEditor editor, int row, int column) {
-		Component comp = super.prepareEditor(editor, row, column);
-		if (comp instanceof JComponent) {
-			JComponent jcomp = (JComponent) comp;
-			jcomp.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-		}
-		return comp;
-	}
+    @Override
+    public Component prepareEditor(TableCellEditor editor, int row, int column) {
+        Component comp = super.prepareEditor(editor, row, column);
+        if (comp instanceof JComponent) {
+            JComponent jcomp = (JComponent) comp;
+            jcomp.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        }
+        return comp;
+    }
 
 }

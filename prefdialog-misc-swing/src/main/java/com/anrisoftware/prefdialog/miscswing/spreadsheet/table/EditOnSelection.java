@@ -32,11 +32,11 @@ import javax.swing.event.ListSelectionListener;
 
 /**
  * Starts cell editing on selection.
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-class EditOnSelection {
+final class EditOnSelection {
 
 	private final ListSelectionListener selectionListener;
 
@@ -71,12 +71,12 @@ class EditOnSelection {
 		};
 	}
 
-	/**
-	 * Sets the table.
-	 * 
-	 * @param table
-	 *            the {@link JTable}.
-	 */
+	    /**
+     * Sets the table.
+     *
+     * @param table
+     *            the {@link JTable}.
+     */
 	public void setTable(JTable table) {
 		if (columnSelectionModel != null) {
 			columnSelectionModel.removeListSelectionListener(selectionListener);

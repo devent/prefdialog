@@ -27,61 +27,101 @@ import com.google.inject.assistedinject.Assisted;
 
 /**
  * Spreadsheet like table.
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-public class SpreadsheetTable {
+public final class SpreadsheetTable {
 
-	/**
-	 * Decorate the specified table to be a spreadsheet table.
-	 * <p>
-	 * <h2>AWT Thread</h2>
-	 * <p>
-	 * Should be called in the AWT thread.
-	 * 
-	 * @see SpreadsheetTableFactory#create(JTable)
-	 */
-	public static SpreadsheetTable decorate(JTable table) {
-		return getFactory().create(table);
-	}
+    /**
+     * Decorate the specified table to be a spreadsheet table.
+     * <p>
+     * <h2>AWT Thread</h2>
+     * <p>
+     * Should be called in the AWT thread.
+     *
+     * @see SpreadsheetTableFactory#create(JTable)
+     */
+    public static SpreadsheetTable decorate(JTable table) {
+        return getFactory().create(table);
+    }
 
-	private final JTable table;
+    /**
+     * Decorate the specified table to be a spreadsheet table.
+     * <p>
+     * <h2>AWT Thread</h2>
+     * <p>
+     * Should be called in the AWT thread.
+     *
+     * @see SpreadsheetTableFactory#create(JTable)
+     *
+     * @since 3.1
+     */
+    public static SpreadsheetTable decorateSpreadsheetTable(JTable table) {
+        return getFactory().create(table);
+    }
 
-	private final TableBindings tableBindings;
+    private final JTable table;
 
-	private final EditOnSelection editOnSelection;
+    private final TableBindings tableBindings;
 
-	private final SpreadsheetCellRenderer renderer;
+    private final EditOnSelection editOnSelection;
 
-	/**
-	 * @see SpreadsheetTableFactory#create(JTable)
-	 */
-	@Inject
-	SpreadsheetTable(TableBindings tableBindings,
-			EditOnSelection editOnSelection, SpreadsheetCellRenderer renderer,
-			@Assisted JTable table) {
-		this.tableBindings = tableBindings;
-		this.editOnSelection = editOnSelection;
-		this.renderer = renderer;
-		this.table = table;
-		setupTable();
-	}
+    private final SpreadsheetCellRenderer renderer;
 
-	private void setupTable() {
-		tableBindings.setTable(table);
-		editOnSelection.setTable(table);
-		table.setDefaultRenderer(Object.class, renderer);
-		tableBindings.setTable(table);
-	}
+    /**
+     * @see SpreadsheetTableFactory#create(JTable)
+     */
+    @Inject
+    SpreadsheetTable(TableBindings tableBindings,
+            EditOnSelection editOnSelection, SpreadsheetCellRenderer renderer,
+            @Assisted JTable table) {
+        this.tableBindings = tableBindings;
+        this.editOnSelection = editOnSelection;
+        this.renderer = renderer;
+        this.table = table;
+        setupTable();
+    }
 
-	/**
-	 * Returns the decorated table.
-	 * 
-	 * @return the {@link JTable}.
-	 */
-	public JTable getTable() {
-		return table;
-	}
+    private void setupTable() {
+        tableBindings.setTable(table);
+        editOnSelection.setTable(table);
+        table.setDefaultRenderer(Object.class, renderer);
+        tableBindings.setTable(table);
+    }
+
+    /**
+     * Returns the decorated table.
+     *
+     * @return the {@link JTable}.
+     */
+    public JTable getTable() {
+        return table;
+    }
+
+    /**
+     * Sets if the focus should automatically move to the next editable column
+     * in the table.
+     *
+     * @param moveToNextEditable
+     *            set to {@code true} to automatically move.
+     *
+     * @since 3.1
+     */
+    public void setMoveToNextEditable(boolean moveToNextEditable) {
+        tableBindings.setMoveToNextEditable(moveToNextEditable);
+    }
+
+    /**
+     * Returns if the focus should automatically move to the next editable
+     * column in the table.
+     *
+     * @return {@code true} if automatically move was enabled.
+     *
+     * @since 3.1
+     */
+    public boolean isMoveToNextEditable() {
+        return tableBindings.isMoveToNextEditable();
+    }
 
 }

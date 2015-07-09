@@ -22,24 +22,24 @@ import javax.swing.table.TableModel;
 
 /**
  * Extends the table model for undo functionality.
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
 public interface SpreadsheetModel extends TableModel {
 
-	/**
-	 * Undo the last set value. Other then {@code setValue()} this method will
-	 * not inform the undo manager of the change.
-	 * 
-	 * @param value
-	 *            the value of the cell.
-	 * 
-	 * @param row
-	 *            the row of the cell.
-	 * 
-	 * @param column
-	 *            the column of the cell.
-	 */
-	void undoValue(Object value, int row, int column);
+    /**
+     * Undo the last set value. Other then {@code setValue()} this method will
+     * not inform the undo manager of the change.
+     *
+     * @param value
+     *            the value of the cell.
+     *
+     * @param row
+     *            the row of the cell.
+     *
+     * @param column
+     *            the column of the cell.
+     */
+    void undoValue(Object value, int row, int column);
 }
