@@ -18,8 +18,6 @@
  */
 package com.anrisoftware.prefdialog.miscswing.actions;
 
-import static javax.swing.SwingUtilities.invokeLater;
-
 import java.beans.PropertyChangeListener;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -35,7 +33,7 @@ import com.anrisoftware.resources.texts.api.Texts;
  * <p>
  * <h2>Example</h2>
  * <p>
- * 
+ *
  * <pre>
  * public class FileMenuActions extends AbstractMenuActions {
  * 
@@ -67,7 +65,7 @@ import com.anrisoftware.resources.texts.api.Texts;
  *     }
  * }
  * </pre>
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
@@ -75,7 +73,7 @@ public abstract class AbstractMenuActions {
 
     /**
      * Sets the texts resource for the actions.
-     * 
+     *
      * @see AbstractResourcesAction#setTexts(Texts)
      */
     public void setTexts(Texts texts) {
@@ -86,7 +84,7 @@ public abstract class AbstractMenuActions {
 
     /**
      * Sets the images resource for the actions.
-     * 
+     *
      * @see AbstractResourcesAction#setImages(Images)
      */
     public void setImages(Images images) {
@@ -98,17 +96,17 @@ public abstract class AbstractMenuActions {
 
     /**
      * Adds the action to be executed for the specified menu entry.
-     * 
+     *
      * @param name
      *            the name of the action.
-     * 
+     *
      * @param action
      *            the {@link Callable} action.
-     * 
+     *
      * @param listeners
      *            optional the {@link PropertyChangeListener} listeners that are
      *            called when the action has finished.
-     * 
+     *
      * @see MenuAction#addAction(Callable, PropertyChangeListener...)
      */
     public void addAction(String name, Callable<?> action,
@@ -119,13 +117,13 @@ public abstract class AbstractMenuActions {
     /**
      * Adds the action to be executed on the AWT thread for the specified menu
      * entry.
-     * 
+     *
      * @param name
      *            the name of the action.
-     * 
+     *
      * @param action
      *            the {@link Runnable} action.
-     * 
+     *
      * @see MenuAction#addAWTAction(Runnable)
      */
     public void addAWTAction(String name, Runnable action) {
@@ -134,32 +132,22 @@ public abstract class AbstractMenuActions {
 
     /**
      * Enabled or disables menu action(s).
-     * 
-     * <h2>AWT Thread</h2>
-     * <p>
-     * Should be called <i>outside</i> the AWT thread.
-     * 
+     *
      * @param enabled
      *            set to {@code true} to enable the action(s).
-     * 
+     *
      * @param name
      *            the name(s) of the menu action(s).
      */
     public void setActionEnabled(final boolean enabled, final String... name) {
-        invokeLater(new Runnable() {
-
-            @Override
-            public void run() {
-                for (String n : name) {
-                    ((Action) getActions().get(n)).setEnabled(enabled);
-                }
-            }
-        });
+        for (String n : name) {
+            ((Action) getActions().get(n)).setEnabled(enabled);
+        }
     }
 
     /**
      * Returns the actions.
-     * 
+     *
      * @return the {@link Map} of the actions, where the key is the action name
      *         and the value is the {@link MenuAction}.
      */
