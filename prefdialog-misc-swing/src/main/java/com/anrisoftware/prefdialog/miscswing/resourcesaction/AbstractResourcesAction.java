@@ -50,6 +50,8 @@ import com.anrisoftware.resources.texts.api.Texts;
 @SuppressWarnings("serial")
 public abstract class AbstractResourcesAction extends AbstractAction {
 
+    private static final String LONG_DESCRIPTION_SUFFIX = "long";
+
     private static final String SHORT_DESCRIPTION_SUFFIX = "short";
 
     private static final String SMALL_ICON_SUFFIX = "small_icon";
@@ -240,6 +242,7 @@ public abstract class AbstractResourcesAction extends AbstractAction {
         updateMnemonic();
         updateAcc();
         updateShortDescription();
+        updateLongDescription();
     }
 
     private void updateTitle() {
@@ -278,6 +281,14 @@ public abstract class AbstractResourcesAction extends AbstractAction {
             return;
         }
         putValue(SHORT_DESCRIPTION, resource.getText());
+    }
+
+    private void updateLongDescription() {
+        TextResource resource = loadTextSave(LONG_DESCRIPTION_SUFFIX);
+        if (!log.checkResource(this, resource, LONG_DESCRIPTION_SUFFIX)) {
+            return;
+        }
+        putValue(LONG_DESCRIPTION, resource.getText());
     }
 
     private TextResource loadTextSave(String suffix) {
