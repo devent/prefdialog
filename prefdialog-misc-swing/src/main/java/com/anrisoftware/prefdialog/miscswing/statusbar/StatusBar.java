@@ -30,7 +30,7 @@ import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 
 /**
  * Status bar of the application.
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
@@ -38,11 +38,11 @@ public class StatusBar {
 
     /**
      * Creates the status bar.
-     * 
+     *
      * <h2>AWT Thread</h2>
      * <p>
      * Should be called in the AWT thread.
-     * 
+     *
      * @return the {@link StatusBar}.
      */
     @OnAwt
@@ -78,10 +78,10 @@ public class StatusBar {
 
     /**
      * Adds the attribute renderer to render the status bar messages.
-     * 
+     *
      * @param type
      *            the {@link Class} attribute type.
-     * 
+     *
      * @param renderer
      *            the {@link AttributeRenderer}.
      */
@@ -99,13 +99,13 @@ public class StatusBar {
     /**
      * Sets the message to the status bar. The specified arguments are replaced
      * in the message.
-     * 
+     *
      * @param busy
      *            set to {@code true} to indicate that an operation is on going.
-     * 
+     *
      * @param message
      *            the {@link Object} message.
-     * 
+     *
      * @param args
      *            the {@link Object} arguments.
      */
@@ -128,16 +128,16 @@ public class StatusBar {
     /**
      * Sets the progress message to the status bar with the maximum and already
      * done amount. The specified arguments are replaced in the message.
-     * 
+     *
      * @param max
      *            the maximum amount.
-     * 
+     *
      * @param done
      *            the done amount.
-     * 
+     *
      * @param message
      *            the {@link Object} message.
-     * 
+     *
      * @param args
      *            the {@link Object} arguments.
      */
@@ -156,6 +156,26 @@ public class StatusBar {
                 panel.getProgressBar().setMinimum(0);
                 panel.getProgressBar().setMaximum(max);
                 panel.getProgressBar().setValue(done);
+            }
+        });
+    }
+
+    /**
+     * Sets the message text to the status bar.
+     *
+     * @param text
+     *            the {@link String} text.
+     */
+    public void setMessageText(final String text) {
+        statusBarWorker.add(new StatusBarItem(text) {
+
+            @Override
+            public void run() {
+                panel.getCardLayout().show(panel.getCardPanel(),
+                        BUSY_PANEL_CARD);
+                panel.getMessageLabel().setText(text);
+                panel.getBusyLabel().setVisible(false);
+                panel.getBusyLabel().setBusy(false);
             }
         });
     }
