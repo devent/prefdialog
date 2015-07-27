@@ -149,13 +149,11 @@ public class SimpleDialog {
 
     private final VetoableChangeSupport vetoableSupport;
 
-    @Inject
-    private UiDialogPanelFactory panelFactory;
-
     private CancelAction cancelAction;
 
     private ApproveAction approveAction;
 
+    @Inject
     private UiDialogPanel dialogPanel;
 
     private RestoreAction restoreAction;
@@ -196,7 +194,6 @@ public class SimpleDialog {
     @Inject
     void setImagesFactory(ImagesFactory factory) {
         this.images = factory.create(SimpleDialog.class.getSimpleName());
-        loadImages();
     }
 
     @Inject
@@ -401,6 +398,7 @@ public class SimpleDialog {
      */
     @OnAwt
     public SimpleDialog createDialog() {
+        loadImages();
         setupPanel();
         setupActions();
         setupDialog();
@@ -421,7 +419,6 @@ public class SimpleDialog {
     }
 
     private void setupPanel() {
-        this.dialogPanel = panelFactory.create();
         dialogPanel.add(fieldsPanel, "cell 0 0");
         dialogPanel.getErrorTextLabel().setIcon(
                 new ImageIcon(emptyIcon.getImage()));

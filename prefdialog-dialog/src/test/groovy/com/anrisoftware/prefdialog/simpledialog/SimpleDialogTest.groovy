@@ -142,8 +142,7 @@ class SimpleDialogTest {
         injector = createInjector()
         testingFactory = injector.getInstance DialogTestingFactory
         factory = injector.getInstance SimpleDialogFactory
-        textsFactory = injector.createChildInjector(
-                new TextsResourcesDefaultModule()).getInstance(TextsFactory)
+        textsFactory = injector.getInstance(TextsFactory)
         texts = textsFactory.create(SimpleDialog.class.getSimpleName())
     }
 

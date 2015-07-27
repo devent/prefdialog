@@ -21,6 +21,10 @@ package com.anrisoftware.prefdialog.simpledialog;
 import com.anrisoftware.globalpom.mnemonic.MnemonicModule;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule;
 import com.anrisoftware.globalpom.reflection.beans.BeansModule;
+import com.anrisoftware.resources.images.images.ImagesResourcesModule;
+import com.anrisoftware.resources.images.maps.ResourcesImagesMapsModule;
+import com.anrisoftware.resources.images.scaling.ResourcesSmoothScalingModule;
+import com.anrisoftware.resources.texts.defaults.TextsResourcesDefaultModule;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -29,57 +33,58 @@ import com.google.inject.assistedinject.FactoryModuleBuilder;
 
 /**
  * Installs simple dialog factory and dependent modules.
- * 
+ *
  * @see SimpleDialogFactory
  * @see SimplePropertiesDialogFactory
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
 public class SimpleDialogModule extends AbstractModule {
 
-	/**
-	 * Returns the simple dialog factory.
-	 * 
-	 * @return the {@link SimpleDialogFactory}.
-	 */
-	public static SimpleDialogFactory getSimpleDialogFactory() {
-		return SingletonHolder.dialogFactory;
-	}
+    /**
+     * Returns the simple dialog factory.
+     *
+     * @return the {@link SimpleDialogFactory}.
+     */
+    public static SimpleDialogFactory getSimpleDialogFactory() {
+        return SingletonHolder.dialogFactory;
+    }
 
-	/**
-	 * Returns the simple properties dialog factory.
-	 * 
-	 * @return the {@link SimplePropertiesDialogFactory}.
-	 */
-	public static SimplePropertiesDialogFactory getSimplePropertiesDialogFactory() {
-		return SingletonHolder.propertiesDialogFactory;
-	}
+    /**
+     * Returns the simple properties dialog factory.
+     *
+     * @return the {@link SimplePropertiesDialogFactory}.
+     */
+    public static SimplePropertiesDialogFactory getSimplePropertiesDialogFactory() {
+        return SingletonHolder.propertiesDialogFactory;
+    }
 
-	private static class SingletonHolder {
+    private static class SingletonHolder {
 
-		private static final Module[] modules = new Module[] {
-				new SimpleDialogModule(), new MnemonicModule(),
-				new AnnotationsModule(), new BeansModule() };
+        private static final Module[] modules = new Module[] {
+                new SimpleDialogModule(), new MnemonicModule(),
+                new AnnotationsModule(), new BeansModule(),
+                new TextsResourcesDefaultModule(), new ImagesResourcesModule(),
+                new ResourcesImagesMapsModule(),
+                new ResourcesSmoothScalingModule() };
 
-		public static final Injector injector = Guice.createInjector(modules);
+        public static final Injector injector = Guice.createInjector(modules);
 
-		public static final SimplePropertiesDialogFactory propertiesDialogFactory = injector
-				.getInstance(SimplePropertiesDialogFactory.class);
+        public static final SimplePropertiesDialogFactory propertiesDialogFactory = injector
+                .getInstance(SimplePropertiesDialogFactory.class);
 
-		public static final SimpleDialogFactory dialogFactory = injector
-				.getInstance(SimpleDialogFactory.class);
-	}
+        public static final SimpleDialogFactory dialogFactory = injector
+                .getInstance(SimpleDialogFactory.class);
+    }
 
-	@Override
-	protected void configure() {
-		install(new FactoryModuleBuilder().implement(SimpleDialog.class,
-				SimpleDialog.class).build(SimpleDialogFactory.class));
-		install(new FactoryModuleBuilder().implement(
-				SimplePropertiesDialog.class, SimplePropertiesDialog.class)
-				.build(SimplePropertiesDialogFactory.class));
-		install(new FactoryModuleBuilder().implement(UiDialogPanel.class,
-				UiDialogPanel.class).build(UiDialogPanelFactory.class));
-	}
+    @Override
+    protected void configure() {
+        install(new FactoryModuleBuilder().implement(SimpleDialog.class,
+                SimpleDialog.class).build(SimpleDialogFactory.class));
+        install(new FactoryModuleBuilder().implement(
+                SimplePropertiesDialog.class, SimplePropertiesDialog.class)
+                .build(SimplePropertiesDialogFactory.class));
+    }
 
 }
