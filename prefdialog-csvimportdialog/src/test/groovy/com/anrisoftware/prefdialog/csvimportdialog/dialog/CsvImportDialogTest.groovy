@@ -76,11 +76,9 @@ class CsvImportDialogTest {
         }, {
             //
             importDialog.setTheme ThemeMap.KEY_BASIC_THEME
-            Thread.sleep 10000
         }, {
             //
             importDialog.setTheme ThemeMap.KEY_FLAT_THEME
-            Thread.sleep 10000
         })
     }
 

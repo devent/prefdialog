@@ -28,6 +28,9 @@ import com.anrisoftware.prefdialog.csvimportdialog.previewpanel.PreviewPanelModu
 import com.anrisoftware.prefdialog.miscswing.comboboxhistory.ComboBoxHistoryModule;
 import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.core.DockingFramesModule;
 import com.anrisoftware.prefdialog.simpledialog.SimpleDialogModule;
+import com.anrisoftware.resources.images.images.ImagesResourcesModule;
+import com.anrisoftware.resources.images.maps.ResourcesImagesMapsModule;
+import com.anrisoftware.resources.images.scaling.ResourcesSmoothScalingModule;
 import com.anrisoftware.resources.texts.defaults.TextsResourcesDefaultModule;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
@@ -46,21 +49,21 @@ import com.google.inject.assistedinject.FactoryModuleBuilder;
  */
 public class CsvImportDialogModule extends AbstractModule {
 
-	/**
-	 * @see #getFactory()
-	 */
-	public static CsvImportDialogFactory getCsvImportDialogFactory() {
-		return getFactory();
-	}
+    /**
+     * @see #getFactory()
+     */
+    public static CsvImportDialogFactory getCsvImportDialogFactory() {
+        return getFactory();
+    }
 
-	    /**
+    /**
      * Returns the CSV import dialog factory.
      *
      * @return the {@link CsvImportDialogFactory}.
      */
-	public static CsvImportDialogFactory getFactory() {
-		return SingletonHolder.factory;
-	}
+    public static CsvImportDialogFactory getFactory() {
+        return SingletonHolder.factory;
+    }
 
     /**
      * @see #getInjector()
@@ -78,45 +81,47 @@ public class CsvImportDialogModule extends AbstractModule {
         return SingletonHolder.injector;
     }
 
-	/**
-	 * @see #getPropertiesFactory()
-	 */
-	public static CsvPanelPropertiesFactory getCsvImportPropertiesFactory() {
-		return getPropertiesFactory();
-	}
+    /**
+     * @see #getPropertiesFactory()
+     */
+    public static CsvPanelPropertiesFactory getCsvImportPropertiesFactory() {
+        return getPropertiesFactory();
+    }
 
-	    /**
+    /**
      * Creates and returns the panel properties factory.
      *
      * @return the {@link CsvPanelPropertiesFactory}.
      */
-	public static CsvPanelPropertiesFactory getPropertiesFactory() {
-		return SingletonHolder.propertiesFactory;
-	}
+    public static CsvPanelPropertiesFactory getPropertiesFactory() {
+        return SingletonHolder.propertiesFactory;
+    }
 
-	private static class SingletonHolder {
+    private static class SingletonHolder {
 
-		public static final Injector injector = Guice.createInjector(
+        public static final Injector injector = Guice.createInjector(
                 new CsvImportDialogModule(), new SimpleDialogModule(),
-                new CoreFieldComponentModule(),
-				new ComboBoxHistoryModule(), new DockingFramesModule(),
-				new CsvImportModule(), new TextsResourcesDefaultModule());
+                new CoreFieldComponentModule(), new ComboBoxHistoryModule(),
+                new DockingFramesModule(), new CsvImportModule(),
+                new TextsResourcesDefaultModule(), new ImagesResourcesModule(),
+                new ResourcesImagesMapsModule(),
+                new ResourcesSmoothScalingModule());
 
-		public static final CsvImportDialogFactory factory = injector
-				.getInstance(CsvImportDialogFactory.class);
+        public static final CsvImportDialogFactory factory = injector
+                .getInstance(CsvImportDialogFactory.class);
 
-		public static final CsvPanelPropertiesFactory propertiesFactory = injector
-				.getInstance(CsvPanelPropertiesFactory.class);
-	}
+        public static final CsvPanelPropertiesFactory propertiesFactory = injector
+                .getInstance(CsvPanelPropertiesFactory.class);
+    }
 
-	@Override
-	protected void configure() {
-		install(new CsvImportPanelModule());
+    @Override
+    protected void configure() {
+        install(new CsvImportPanelModule());
         install(new PreviewPanelModule());
-		install(new FactoryModuleBuilder().implement(CsvImportDialog.class,
-				CsvImportDialog.class).build(CsvImportDialogFactory.class));
-		install(new FactoryModuleBuilder().implement(PropertiesWorker.class,
-				PropertiesWorker.class).build(PropertiesWorkerFactory.class));
-	}
+        install(new FactoryModuleBuilder().implement(CsvImportDialog.class,
+                CsvImportDialog.class).build(CsvImportDialogFactory.class));
+        install(new FactoryModuleBuilder().implement(PropertiesWorker.class,
+                PropertiesWorker.class).build(PropertiesWorkerFactory.class));
+    }
 
 }

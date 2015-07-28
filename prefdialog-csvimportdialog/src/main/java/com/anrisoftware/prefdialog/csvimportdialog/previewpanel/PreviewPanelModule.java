@@ -19,7 +19,6 @@
 package com.anrisoftware.prefdialog.csvimportdialog.previewpanel;
 
 import com.anrisoftware.globalpom.dataimport.CsvImportModule;
-import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelPropertiesFactory;
 import com.anrisoftware.resources.texts.defaults.TextsResourcesDefaultModule;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
@@ -53,22 +52,6 @@ public class PreviewPanelModule extends AbstractModule {
         return SingletonHolder.factory;
     }
 
-    /**
-     * @see #getPropertiesFactory()
-     */
-    public static CsvPanelPropertiesFactory getCsvImportPropertiesFactory() {
-        return getPropertiesFactory();
-    }
-
-    /**
-     * Creates and returns the panel properties factory.
-     *
-     * @return the {@link CsvPanelPropertiesFactory}.
-     */
-    public static CsvPanelPropertiesFactory getPropertiesFactory() {
-        return SingletonHolder.propertiesFactory;
-    }
-
     private static class SingletonHolder {
 
         public static final Injector injector = Guice.createInjector(
@@ -78,8 +61,6 @@ public class PreviewPanelModule extends AbstractModule {
         public static final PreviewPanelFactory factory = injector
                 .getInstance(PreviewPanelFactory.class);
 
-        public static final CsvPanelPropertiesFactory propertiesFactory = injector
-                .getInstance(CsvPanelPropertiesFactory.class);
     }
 
     @Override
