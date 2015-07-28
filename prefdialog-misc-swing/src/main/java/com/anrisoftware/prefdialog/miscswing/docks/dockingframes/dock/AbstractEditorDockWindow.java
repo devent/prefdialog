@@ -36,7 +36,7 @@ import com.anrisoftware.prefdialog.miscswing.docks.api.EditorDockWindow;
 
 /**
  * Implements editor dockable listeners.
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
@@ -107,6 +107,9 @@ public abstract class AbstractEditorDockWindow implements EditorDockWindow,
 
     public void setTitle(String title) {
         this.title = title;
+        if (this.dockable != null) {
+            dockable.setTitleText(title);
+        }
     }
 
     @Override
