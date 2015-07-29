@@ -58,6 +58,8 @@ public abstract class AbstractEditorDockWindow implements EditorDockWindow,
 
     private boolean focus;
 
+    private ExtendedMode extendedMode;
+
     protected AbstractEditorDockWindow() {
         readResolve();
     }
@@ -98,6 +100,9 @@ public abstract class AbstractEditorDockWindow implements EditorDockWindow,
         this.focus = dockable.isVisible();
         dockable.addCDockableStateListener(stateListener);
         dockable.addFocusListener(focusListener);
+        if (extendedMode != null) {
+            dockable.setExtendedMode(extendedMode);
+        }
     }
 
     @Override
@@ -115,6 +120,14 @@ public abstract class AbstractEditorDockWindow implements EditorDockWindow,
     @Override
     public String getTitle() {
         return title;
+    }
+
+    public void setExtendedMode(ExtendedMode extendedMode) {
+        this.extendedMode = extendedMode;
+        DefaultMultipleCDockable dock = getDockable();
+        if (dock != null) {
+            dock.setExtendedMode(extendedMode);
+        }
     }
 
     @Override

@@ -59,6 +59,8 @@ public abstract class AbstractViewDockWindow implements ViewDockWindow,
 
     private boolean focus;
 
+    private ExtendedMode extendedMode;
+
     protected AbstractViewDockWindow() {
         readResolve();
     }
@@ -98,6 +100,9 @@ public abstract class AbstractViewDockWindow implements ViewDockWindow,
         this.visible = dockable.isVisible();
         dockable.addCDockableStateListener(stateListener);
         dockable.addFocusListener(focusListener);
+        if (extendedMode != null) {
+            dockable.setExtendedMode(extendedMode);
+        }
     }
 
     @Override
@@ -116,6 +121,14 @@ public abstract class AbstractViewDockWindow implements ViewDockWindow,
     @Override
     public String getTitle() {
         return title;
+    }
+
+    public void setExtendedMode(ExtendedMode extendedMode) {
+        this.extendedMode = extendedMode;
+        DefaultSingleCDockable dock = getDockable();
+        if (dock != null) {
+            dock.setExtendedMode(extendedMode);
+        }
     }
 
     @Override
