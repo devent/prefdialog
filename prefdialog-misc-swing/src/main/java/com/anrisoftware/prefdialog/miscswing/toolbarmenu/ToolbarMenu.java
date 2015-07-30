@@ -48,7 +48,7 @@ import com.anrisoftware.resources.texts.api.Texts;
 /**
  * Creates a pop-up menu to set text position and icon size of the added
  * actions.
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
@@ -182,7 +182,7 @@ public class ToolbarMenu {
 
     /**
      * Sets the pop-up menu for the tool-bar.
-     * 
+     *
      * @param bar
      *            the {@link JToolBar}.
      */
@@ -192,7 +192,7 @@ public class ToolbarMenu {
 
     /**
      * Sets the locale for the resources of the actions.
-     * 
+     *
      * @param locale
      *            the {@link Locale}.
      */
@@ -207,7 +207,7 @@ public class ToolbarMenu {
 
     /**
      * Sets the texts resource for the actions.
-     * 
+     *
      * @param texts
      *            the {@link Texts}.
      */
@@ -222,7 +222,7 @@ public class ToolbarMenu {
 
     /**
      * Sets the images resource for the actions.
-     * 
+     *
      * @param images
      *            the {@link Images}.
      */
@@ -237,21 +237,43 @@ public class ToolbarMenu {
 
     /**
      * Adds the action so the text position and the icon size can be set.
-     * 
+     *
      * @param action
      *            the {@link AbstractResourcesAction}.
      */
     public void addAction(AbstractResourcesAction action) {
         actions.add(action);
+        action.setLargeIconSize(iconSize);
+        action.setSmallIconSize(iconSize);
     }
 
     /**
      * Returns the pop-up menu.
-     * 
+     *
      * @return the {@link JPopupMenu}.
      */
     public JPopupMenu getPopupMenu() {
         return menu;
+    }
+
+    /**
+     * Sets to show the text position menu.
+     * <p>
+     * <h2>AWT Thread</h2>
+     * Should be called in the AWT thread.
+     * </p>
+     *
+     * @param show
+     *            set to {@code true} to show the text position menu or to
+     *            {@code false} to show only the icon sizes menu.
+     *
+     * @since 3.1
+     */
+    @OnAwt
+    public void setShowTextPositionMenu(boolean show) {
+        if (!show) {
+            menu.remove(menu.getTextPositionMenu());
+        }
     }
 
     /**
@@ -260,7 +282,7 @@ public class ToolbarMenu {
      * <h2>AWT Thread</h2>
      * <p>
      * Should be called in the AWT thread.
-     * 
+     *
      * @param b
      *            set to {@code true} to show only icons.
      */
@@ -281,7 +303,7 @@ public class ToolbarMenu {
      * <h2>AWT Thread</h2>
      * <p>
      * Should be called in the AWT thread.
-     * 
+     *
      * @param b
      *            set to {@code true} to show text icons.
      */
@@ -302,7 +324,7 @@ public class ToolbarMenu {
      * <h2>AWT Thread</h2>
      * <p>
      * Should be called in the AWT thread.
-     * 
+     *
      * @param b
      *            set to {@code true} to show text alongside icons.
      */
@@ -324,7 +346,7 @@ public class ToolbarMenu {
      * <h2>AWT Thread</h2>
      * <p>
      * Should be called in the AWT thread.
-     * 
+     *
      * @param position
      *            the {@link TextPosition}.
      */
@@ -347,7 +369,7 @@ public class ToolbarMenu {
 
     /**
      * Returns the text position of the actions.
-     * 
+     *
      * @return the {@link TextPosition}.
      */
     public TextPosition getTextPosition() {
@@ -360,7 +382,7 @@ public class ToolbarMenu {
      * <h2>AWT Thread</h2>
      * <p>
      * Should be called in the AWT thread.
-     * 
+     *
      * @param size
      *            the {@link IconSize}.
      */
@@ -391,7 +413,7 @@ public class ToolbarMenu {
 
     /**
      * Returns the icon size of the actions.
-     * 
+     *
      * @return the {@link IconSize}.
      */
     public IconSize getIconSize() {
