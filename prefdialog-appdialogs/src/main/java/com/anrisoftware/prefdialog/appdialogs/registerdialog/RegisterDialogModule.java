@@ -9,7 +9,7 @@ import com.anrisoftware.prefdialog.appdialogs.dialogheader.DialogHeaderModule;
 import com.anrisoftware.prefdialog.miscswing.editcontextmenu.EditContextMenuModule;
 import com.anrisoftware.prefdialog.simpledialog.SimpleDialogModule;
 import com.anrisoftware.resources.images.images.ImagesResourcesModule;
-import com.anrisoftware.resources.images.maps.ResourcesImagesMapsModule;
+import com.anrisoftware.resources.images.mapcached.ResourcesImagesCachedMapModule;
 import com.anrisoftware.resources.images.scaling.ResourcesSmoothScalingModule;
 import com.anrisoftware.resources.templates.maps.TemplatesDefaultMapsModule;
 import com.anrisoftware.resources.templates.templates.TemplatesResourcesModule;
@@ -45,13 +45,13 @@ public class RegisterDialogModule extends AbstractModule {
         private static final Module[] modules = new Module[] {
                 new RegisterDialogModule(), new AppDialogModule(),
                 new DialogHeaderModule(), new SimpleDialogModule(),
-                new EditContextMenuModule(),
-                new MnemonicModule(), new AnnotationsModule(),
-                new BeansModule(), new TextsResourcesDefaultModule(),
+                new EditContextMenuModule(), new MnemonicModule(),
+                new AnnotationsModule(), new BeansModule(),
+                new TextsResourcesDefaultModule(),
                 new TemplatesResourcesModule(),
                 new TemplatesDefaultMapsModule(), new STWorkerModule(),
                 new STDefaultPropertiesModule(), new ImagesResourcesModule(),
-                new ResourcesImagesMapsModule(),
+                new ResourcesImagesCachedMapModule(),
                 new ResourcesSmoothScalingModule() };
 
         public static final Injector injector = Guice.createInjector(modules);

@@ -39,7 +39,7 @@ import com.anrisoftware.resources.images.api.ImageScalingWorkerFactory
 import com.anrisoftware.resources.images.api.Images
 import com.anrisoftware.resources.images.api.ImagesFactory
 import com.anrisoftware.resources.images.images.ImagesResourcesModule
-import com.anrisoftware.resources.images.maps.ResourcesImagesMapsModule
+import com.anrisoftware.resources.images.mapcached.ResourcesImagesCachedMapModule
 import com.anrisoftware.resources.images.scaling.ResourcesSmoothScalingModule
 import com.anrisoftware.resources.texts.api.Texts
 import com.anrisoftware.resources.texts.api.TextsFactory
@@ -108,7 +108,7 @@ class AppDialogTest {
         this.texts = textsFactory.create(AppDialogTest.class.getSimpleName())
         this.imagesFactory = injector.createChildInjector(
                 new ImagesResourcesModule(),
-                new ResourcesImagesMapsModule(),
+                new ResourcesImagesCachedMapModule(),
                 new ResourcesSmoothScalingModule()).
                 getInstance(ImagesFactory)
         this.images = imagesFactory.create(AppDialogTest.class.getSimpleName())

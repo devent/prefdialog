@@ -22,7 +22,7 @@ import com.anrisoftware.globalpom.mnemonic.MnemonicModule;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule;
 import com.anrisoftware.globalpom.reflection.beans.BeansModule;
 import com.anrisoftware.resources.images.images.ImagesResourcesModule;
-import com.anrisoftware.resources.images.maps.ResourcesImagesMapsModule;
+import com.anrisoftware.resources.images.mapcached.ResourcesImagesCachedMapModule;
 import com.anrisoftware.resources.images.scaling.ResourcesSmoothScalingModule;
 import com.anrisoftware.resources.texts.defaults.TextsResourcesDefaultModule;
 import com.google.inject.AbstractModule;
@@ -66,7 +66,7 @@ public class SimpleDialogModule extends AbstractModule {
                 new SimpleDialogModule(), new MnemonicModule(),
                 new AnnotationsModule(), new BeansModule(),
                 new TextsResourcesDefaultModule(), new ImagesResourcesModule(),
-                new ResourcesImagesMapsModule(),
+                new ResourcesImagesCachedMapModule(),
                 new ResourcesSmoothScalingModule() };
 
         public static final Injector injector = Guice.createInjector(modules);

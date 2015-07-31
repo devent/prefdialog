@@ -39,7 +39,7 @@ import com.anrisoftware.globalpom.utils.frametesting.FrameTestingModule
 import com.anrisoftware.resources.images.api.IconSize
 import com.anrisoftware.resources.images.api.ImagesFactory
 import com.anrisoftware.resources.images.images.ImagesResourcesModule
-import com.anrisoftware.resources.images.maps.ResourcesImagesMapsModule
+import com.anrisoftware.resources.images.mapcached.ResourcesImagesCachedMapModule
 import com.anrisoftware.resources.images.scaling.ResourcesSmoothScalingModule
 import com.anrisoftware.resources.texts.api.TextsFactory
 import com.anrisoftware.resources.texts.defaults.TextsResourcesDefaultModule
@@ -149,7 +149,7 @@ class ToolbarMenuTest {
     static void createResources() {
         injector = Guice.createInjector(
                 new ImagesResourcesModule(),
-                new ResourcesImagesMapsModule(),
+                new ResourcesImagesCachedMapModule(),
                 new ResourcesSmoothScalingModule(),
                 new TextsResourcesDefaultModule(),
                 new MnemonicModule(),

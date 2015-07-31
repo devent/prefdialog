@@ -29,7 +29,7 @@ import com.anrisoftware.prefdialog.miscswing.comboboxhistory.ComboBoxHistoryModu
 import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.core.DockingFramesModule;
 import com.anrisoftware.prefdialog.simpledialog.SimpleDialogModule;
 import com.anrisoftware.resources.images.images.ImagesResourcesModule;
-import com.anrisoftware.resources.images.maps.ResourcesImagesMapsModule;
+import com.anrisoftware.resources.images.mapcached.ResourcesImagesCachedMapModule;
 import com.anrisoftware.resources.images.scaling.ResourcesSmoothScalingModule;
 import com.anrisoftware.resources.texts.defaults.TextsResourcesDefaultModule;
 import com.google.inject.AbstractModule;
@@ -104,7 +104,7 @@ public class CsvImportDialogModule extends AbstractModule {
                 new CoreFieldComponentModule(), new ComboBoxHistoryModule(),
                 new DockingFramesModule(), new CsvImportModule(),
                 new TextsResourcesDefaultModule(), new ImagesResourcesModule(),
-                new ResourcesImagesMapsModule(),
+                new ResourcesImagesCachedMapModule(),
                 new ResourcesSmoothScalingModule());
 
         public static final CsvImportDialogFactory factory = injector

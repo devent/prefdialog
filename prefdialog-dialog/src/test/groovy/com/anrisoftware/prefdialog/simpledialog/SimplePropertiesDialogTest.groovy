@@ -39,7 +39,6 @@ import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwtCheckerModule
 import com.anrisoftware.prefdialog.simpledialog.SimpleDialogModule.SingletonHolder
 import com.anrisoftware.resources.texts.api.Texts
 import com.anrisoftware.resources.texts.api.TextsFactory
-import com.anrisoftware.resources.texts.defaults.TextsResourcesDefaultModule
 import com.google.inject.Guice
 import com.google.inject.Injector
 
@@ -51,79 +50,78 @@ import com.google.inject.Injector
  */
 class SimplePropertiesDialogTest {
 
-	@Test
-	void "restore dialog"() {
-		def title = "$NAME/restore dialog"
-		def fieldName = NULL_VALUE
-		def simpleDialog = factory.create(bean, fieldName)
-		def testing = testingFactory.create([title: title, setupDialog: { JDialog dialog, Component component ->
-				simpleDialog.setFieldsPanel new JPanel()
-				simpleDialog.setDialog dialog
-				simpleDialog.setTexts texts
-				simpleDialog.createDialog()
-			}])()
-		testing.withFixture({ DialogFixture fix ->
-			fix.textBox "childAName" selectAll()
-			fix.textBox "childAName" enterText "Some"
-			fix.button "restoreButton" click()
-		})
-		assert bean.childA.childAName == "Child A"
-	}
+    @Test
+    void "restore dialog"() {
+        def title = "$NAME/restore dialog"
+        def fieldName = NULL_VALUE
+        def simpleDialog = factory.create(bean, fieldName)
+        def testing = testingFactory.create([title: title, setupDialog: { JDialog dialog, Component component ->
+                simpleDialog.setFieldsPanel new JPanel()
+                simpleDialog.setDialog dialog
+                simpleDialog.setTexts texts
+                simpleDialog.createDialog()
+            }])()
+        testing.withFixture({ DialogFixture fix ->
+            fix.textBox "childAName" selectAll()
+            fix.textBox "childAName" enterText "Some"
+            fix.button "restoreButton" click()
+        })
+        assert bean.childA.childAName == "Child A"
+    }
 
-	//@Test
-	void "manually decorate"() {
-		def title = "$NAME::manually decorate"
-		def fieldName = NULL_VALUE
-		def frame = new TestFrameUtil(title: title, component: new JPanel())
-		def dialog
-		def simpleDialog
-		frame.withFixture({
-			dialog = new JDialog(frame.frame, title)
-			simpleDialog = SimplePropertiesDialog.decorate(
-					dialog, bean, fieldName, texts, injector).createDialog()
-			dialog.pack()
-			dialog.setLocationRelativeTo(frame.frame)
-			simpleDialog.openDialog()
-			Thread.sleep 60 * 1000l
-			assert false : "manually test"
-		})
-	}
+    //@Test
+    void "manually decorate"() {
+        def title = "$NAME::manually decorate"
+        def fieldName = NULL_VALUE
+        def frame = new TestFrameUtil(title: title, component: new JPanel())
+        def dialog
+        def simpleDialog
+        frame.withFixture({
+            dialog = new JDialog(frame.frame, title)
+            simpleDialog = SimplePropertiesDialog.decorate(
+                    dialog, bean, fieldName, texts, injector).createDialog()
+            dialog.pack()
+            dialog.setLocationRelativeTo(frame.frame)
+            simpleDialog.openDialog()
+            Thread.sleep 60 * 1000l
+            assert false : "manually test"
+        })
+    }
 
-	static Injector injector
+    static Injector injector
 
-	static final String NAME = SimplePropertiesDialogTest.class.simpleName
+    static final String NAME = SimplePropertiesDialogTest.class.simpleName
 
-	static DialogTestingFactory testingFactory
+    static DialogTestingFactory testingFactory
 
-	static SimplePropertiesDialogFactory factory
+    static SimplePropertiesDialogFactory factory
 
-	static TextsFactory textsFactory
+    static TextsFactory textsFactory
 
-	static Texts texts
+    static Texts texts
 
-	SimpleDialogBean bean
+    SimpleDialogBean bean
 
-	@BeforeClass
-	static void setupFactories() {
-		TestUtils.toStringStyle
-		injector = createInjector()
-		testingFactory = injector.getInstance DialogTestingFactory
-		factory = injector.getInstance SimplePropertiesDialogFactory
-		textsFactory = injector.createChildInjector(
-				new TextsResourcesDefaultModule()).getInstance(TextsFactory)
-		texts = textsFactory.create(SimpleDialog.class.getSimpleName())
-	}
+    @BeforeClass
+    static void setupFactories() {
+        TestUtils.toStringStyle
+        injector = createInjector()
+        testingFactory = injector.getInstance DialogTestingFactory
+        factory = injector.getInstance SimplePropertiesDialogFactory
+        textsFactory = injector.getInstance TextsFactory
+        texts = textsFactory.create(SimpleDialog.class.getSimpleName())
+    }
 
-	private static createInjector() {
-		Guice.createInjector([
-			SingletonHolder.modules,
-			new FrameTestingModule(),
-			new OnAwtCheckerModule()
-		].flatten())
-	}
+    private static createInjector() {
+        Guice.createInjector([
+            SingletonHolder.modules,
+            new FrameTestingModule(),
+            new OnAwtCheckerModule()
+        ].flatten())
+    }
 
-	@Before
-	void setupBean() {
-		bean = new SimpleDialogBean()
-	}
+    @Before
+    void setupBean() {
+        bean = new SimpleDialogBean()
+    }
 }

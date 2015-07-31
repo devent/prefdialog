@@ -27,7 +27,7 @@ import com.anrisoftware.prefdialog.fields.FieldService
 import com.anrisoftware.resources.images.api.Images
 import com.anrisoftware.resources.images.api.ImagesFactory
 import com.anrisoftware.resources.images.images.ImagesResourcesModule
-import com.anrisoftware.resources.images.maps.ResourcesImagesMapsModule
+import com.anrisoftware.resources.images.mapcached.ResourcesImagesCachedMapModule
 import com.anrisoftware.resources.images.scaling.ResourcesSmoothScalingModule
 import com.anrisoftware.resources.texts.api.Texts
 import com.anrisoftware.resources.texts.api.TextsFactory
@@ -56,7 +56,7 @@ class FieldTestUtils {
     static Images createImagesResource(Injector injector) {
         Injector childInjector = injector.createChildInjector(
                 new ImagesResourcesModule(),
-                new ResourcesImagesMapsModule(),
+                new ResourcesImagesCachedMapModule(),
                 new ResourcesSmoothScalingModule())
         ImagesFactory factory = childInjector.getInstance ImagesFactory
         factory.create "Icons"

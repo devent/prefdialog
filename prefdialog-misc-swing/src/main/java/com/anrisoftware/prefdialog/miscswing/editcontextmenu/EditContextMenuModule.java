@@ -20,7 +20,7 @@ package com.anrisoftware.prefdialog.miscswing.editcontextmenu;
 
 import com.anrisoftware.globalpom.mnemonic.MnemonicModule;
 import com.anrisoftware.resources.images.images.ImagesResourcesModule;
-import com.anrisoftware.resources.images.maps.ResourcesImagesMapsModule;
+import com.anrisoftware.resources.images.mapcached.ResourcesImagesCachedMapModule;
 import com.anrisoftware.resources.images.scaling.ResourcesSmoothScalingModule;
 import com.anrisoftware.resources.texts.defaults.TextsResourcesDefaultModule;
 import com.google.inject.AbstractModule;
@@ -52,7 +52,7 @@ public final class EditContextMenuModule extends AbstractModule {
         private static final Module[] modules = new Module[] {
                 new EditContextMenuModule(), new MnemonicModule(),
                 new TextsResourcesDefaultModule(), new ImagesResourcesModule(),
-                new ResourcesImagesMapsModule(),
+                new ResourcesImagesCachedMapModule(),
                 new ResourcesSmoothScalingModule() };
 
         public static final Injector injector = Guice.createInjector(modules);
