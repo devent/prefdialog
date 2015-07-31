@@ -70,6 +70,11 @@ public class ToolbarMenu {
     public static final String TEXT_ALONGSIDE_NAME = "textAlongsideMenu";
 
     /**
+     * Name of the icon size menu.
+     */
+    public static final String ICON_SIZE_NAME = "iconSizeMenu";
+
+    /**
      * Name of the huge icon size menu.
      */
     public static final String HUGE_ICON_SIZE_NAME = "hugeIconSizeMenu";
@@ -146,6 +151,13 @@ public class ToolbarMenu {
         action.setToolbarMenu(this);
         menu.getTextAlongsideIconsMenu().setName(TEXT_ALONGSIDE_NAME);
         menu.getTextAlongsideIconsMenu().setAction(action);
+    }
+
+    @Inject
+    void setIconSizeAction(IconSizeAction action) {
+        menuActions.put(ICON_SIZE_NAME, action);
+        menu.getIconSizeMenu().setName(ICON_SIZE_NAME);
+        menu.getIconSizeMenu().setAction(action);
     }
 
     @Inject
