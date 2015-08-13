@@ -246,12 +246,17 @@ public abstract class AbstractResourcesAction extends AbstractAction {
     }
 
     private void updateTitle() {
-        String text = texts.getResource(name).getText();
+        TextResource resource = loadTextFromName(name);
+        if (!log.checkResource(this, resource, NAME)) {
+            putValue(NAME, name);
+            return;
+        }
+        String text = resource.getText();
         putValue(NAME, text);
     }
 
     private void updateMnemonic() {
-        TextResource resource = loadTextSave(MNEMONIC_SUFFIX);
+        TextResource resource = loadTextWithSuffix(MNEMONIC_SUFFIX);
         if (!log.checkResource(this, resource, MNEMONIC_SUFFIX)) {
             return;
         }
@@ -267,7 +272,7 @@ public abstract class AbstractResourcesAction extends AbstractAction {
     }
 
     private void updateAcc() {
-        TextResource resource = loadTextSave(ACCELERATOR_SUFFIX);
+        TextResource resource = loadTextWithSuffix(ACCELERATOR_SUFFIX);
         if (!log.checkResource(this, resource, ACCELERATOR_SUFFIX)) {
             return;
         }
@@ -276,7 +281,7 @@ public abstract class AbstractResourcesAction extends AbstractAction {
     }
 
     private void updateShortDescription() {
-        TextResource resource = loadTextSave(SHORT_DESCRIPTION_SUFFIX);
+        TextResource resource = loadTextWithSuffix(SHORT_DESCRIPTION_SUFFIX);
         if (!log.checkResource(this, resource, SHORT_DESCRIPTION_SUFFIX)) {
             return;
         }
@@ -284,16 +289,21 @@ public abstract class AbstractResourcesAction extends AbstractAction {
     }
 
     private void updateLongDescription() {
-        TextResource resource = loadTextSave(LONG_DESCRIPTION_SUFFIX);
+        TextResource resource = loadTextWithSuffix(LONG_DESCRIPTION_SUFFIX);
         if (!log.checkResource(this, resource, LONG_DESCRIPTION_SUFFIX)) {
             return;
         }
         putValue(LONG_DESCRIPTION, resource.getText());
     }
 
-    private TextResource loadTextSave(String suffix) {
+    private TextResource loadTextWithSuffix(String suffix) {
+        String resourceName = format("%s_%s", name, suffix);
+        return loadTextFromName(resourceName);
+    }
+
+    private TextResource loadTextFromName(String name) {
         try {
-            return texts.getResource(format("%s_%s", name, suffix));
+            return texts.getResource(name);
         } catch (MissingResourceException e) {
             return null;
         }
