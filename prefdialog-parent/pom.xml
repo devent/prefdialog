@@ -74,22 +74,22 @@
 			<dependency>
 				<groupId>com.anrisoftware.globalpom</groupId>
 				<artifactId>globalpom-groovytestutils</artifactId>
-				<version>1.25</version>
+				<version>1.26</version>
 			</dependency>
 			<dependency>
 				<groupId>com.anrisoftware.resources</groupId>
 				<artifactId>resources-images</artifactId>
-				<version>1.17-SNAPSHOT</version>
+				<version>1.17</version>
 			</dependency>
 			<dependency>
 				<groupId>com.anrisoftware.resources</groupId>
 				<artifactId>resources-texts</artifactId>
-				<version>1.17-SNAPSHOT</version>
+				<version>1.17</version>
 			</dependency>
 			<dependency>
 				<groupId>com.anrisoftware.globalpom</groupId>
 				<artifactId>globalpom-log</artifactId>
-				<version>1.21-SNAPSHOT</version>
+				<version>1.21</version>
 			</dependency>
 			<dependency>
 				<groupId>com.anrisoftware.globalpom</groupId>
