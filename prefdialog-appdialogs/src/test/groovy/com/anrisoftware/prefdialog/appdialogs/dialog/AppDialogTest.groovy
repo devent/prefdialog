@@ -102,18 +102,10 @@ class AppDialogTest {
                 new FrameTestingModule())
         this.testingFactory = injector.getInstance DialogTestingFactory
         this.dialogFactory = injector.getInstance AppDialogFactory
-        this.textsFactory = injector.createChildInjector(
-                new TextsResourcesDefaultModule()).
-                getInstance(TextsFactory)
-        this.texts = textsFactory.create(AppDialogTest.class.getSimpleName())
-        this.imagesFactory = injector.createChildInjector(
-                new ImagesResourcesModule(),
-                new ResourcesImagesCachedMapModule(),
-                new ResourcesSmoothScalingModule()).
-                getInstance(ImagesFactory)
-        this.images = imagesFactory.create(AppDialogTest.class.getSimpleName())
-        this.imageScalingWorkerFactory = injector.createChildInjector(
-                new ResourcesSmoothScalingModule()).
-                getInstance(ImageScalingWorkerFactory)
+        this.textsFactory = injector.getInstance TextsFactory
+        this.texts = textsFactory.create AppDialogTest.class.getSimpleName()
+        this.imagesFactory = injector.getInstance ImagesFactory
+        this.images = imagesFactory.create AppDialogTest.class.getSimpleName()
+        this.imageScalingWorkerFactory = injector.getInstance ImageScalingWorkerFactory
     }
 }

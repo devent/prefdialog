@@ -1,10 +1,37 @@
+/*
+ * Copyright 2015 Erwin Müller <erwin.mueller@deventm.org>
+ *
+ * This file is part of prefdialog-appdialogs.
+ *
+ * prefdialog-appdialogs is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
+ *
+ * prefdialog-appdialogs is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with prefdialog-appdialogs. If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.anrisoftware.prefdialog.appdialogs.dialog;
 
 import com.anrisoftware.globalpom.mnemonic.MnemonicModule;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationsModule;
 import com.anrisoftware.globalpom.reflection.beans.BeansModule;
 import com.anrisoftware.prefdialog.appdialogs.dialogheader.DialogHeaderModule;
+import com.anrisoftware.prefdialog.miscswing.editcontextmenu.EditContextMenuModule;
 import com.anrisoftware.prefdialog.simpledialog.SimpleDialogModule;
+import com.anrisoftware.resources.images.images.ImagesResourcesModule;
+import com.anrisoftware.resources.images.mapcached.ResourcesImagesCachedMapModule;
+import com.anrisoftware.resources.images.scaling.ResourcesSmoothScalingModule;
+import com.anrisoftware.resources.templates.maps.TemplatesDefaultMapsModule;
+import com.anrisoftware.resources.templates.templates.TemplatesResourcesModule;
+import com.anrisoftware.resources.templates.worker.STDefaultPropertiesModule;
+import com.anrisoftware.resources.templates.worker.STWorkerModule;
+import com.anrisoftware.resources.texts.defaults.TextsResourcesDefaultModule;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -33,8 +60,14 @@ public class AppDialogModule extends AbstractModule {
 
         private static final Module[] modules = new Module[] {
                 new AppDialogModule(), new DialogHeaderModule(),
-                new SimpleDialogModule(), new MnemonicModule(),
-                new AnnotationsModule(), new BeansModule() };
+                new SimpleDialogModule(), new EditContextMenuModule(),
+                new MnemonicModule(), new AnnotationsModule(),
+                new BeansModule(), new TextsResourcesDefaultModule(),
+                new TemplatesResourcesModule(),
+                new TemplatesDefaultMapsModule(), new STWorkerModule(),
+                new STDefaultPropertiesModule(), new ImagesResourcesModule(),
+                new ResourcesImagesCachedMapModule(),
+                new ResourcesSmoothScalingModule() };
 
         public static final Injector injector = Guice.createInjector(modules);
 

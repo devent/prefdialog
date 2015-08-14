@@ -29,8 +29,6 @@ import java.awt.event.ComponentEvent;
 import javax.inject.Inject;
 import javax.swing.JPanel;
 
-import org.apache.commons.lang3.event.EventListenerSupport;
-
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 
 /**
@@ -51,8 +49,6 @@ public final class ChangeLayoutBasedOnWidthPanel {
 
     private final ComponentAdapter panelSizeListener;
 
-    private final EventListenerSupport<Object> panelsSupport;
-
     @Inject
     private ChangeLayoutBasedOnWidthPanelUi panel;
 
@@ -67,7 +63,6 @@ public final class ChangeLayoutBasedOnWidthPanel {
     private Object currentVisiblePanel;
 
     ChangeLayoutBasedOnWidthPanel() {
-        this.panelsSupport = new EventListenerSupport<Object>(Object.class);
         this.panelSizeListener = new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -100,11 +95,9 @@ public final class ChangeLayoutBasedOnWidthPanel {
         JPanel oldPanel = this.verticalPanel;
         this.verticalPanel = verticalPanel;
         if (oldPanel != null) {
-            panelsSupport.removeListener(oldPanel);
             panel.remove(oldPanel);
         }
         panel.add(verticalPanel, VERTICAL_PANEL_NAME.name());
-        panelsSupport.addListener(verticalPanel);
         updateLayout();
     }
 
@@ -114,11 +107,9 @@ public final class ChangeLayoutBasedOnWidthPanel {
         JPanel oldPanel = this.horizontalPanel;
         this.horizontalPanel = horizontalPanel;
         if (oldPanel != null) {
-            panelsSupport.removeListener(oldPanel);
             panel.remove(oldPanel);
         }
         panel.add(horizontalPanel, HORIZONTAL_PANEL_NAME.name());
-        panelsSupport.addListener(horizontalPanel);
         updateLayout();
     }
 
@@ -126,11 +117,6 @@ public final class ChangeLayoutBasedOnWidthPanel {
     public void setShowPanel(PanelName panelName) {
         notNull(panelName);
         cardLayout.show(panel, panelName.name());
-    }
-
-    @SuppressWarnings("unchecked")
-    public <T> T getPanels() {
-        return (T) panelsSupport.fire();
     }
 
     @SuppressWarnings("unchecked")

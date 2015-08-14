@@ -11,6 +11,7 @@
     <modules>
         <module>prefdialog-parent</module>
         <module>prefdialog-api</module>
+        <module>prefdialog-appdialogs</module>
         <module>prefdialog-core</module>
         <module>prefdialog-corefields</module>
         <module>prefdialog-csvimportdialog</module>
