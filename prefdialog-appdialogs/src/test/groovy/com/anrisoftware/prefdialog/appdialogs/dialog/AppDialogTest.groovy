@@ -35,15 +35,6 @@ import com.anrisoftware.globalpom.utils.TestUtils
 import com.anrisoftware.globalpom.utils.frametesting.DialogTestingFactory
 import com.anrisoftware.globalpom.utils.frametesting.FrameTestingModule
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwtCheckerModule
-import com.anrisoftware.resources.images.api.ImageScalingWorkerFactory
-import com.anrisoftware.resources.images.api.Images
-import com.anrisoftware.resources.images.api.ImagesFactory
-import com.anrisoftware.resources.images.images.ImagesResourcesModule
-import com.anrisoftware.resources.images.mapcached.ResourcesImagesCachedMapModule
-import com.anrisoftware.resources.images.scaling.ResourcesSmoothScalingModule
-import com.anrisoftware.resources.texts.api.Texts
-import com.anrisoftware.resources.texts.api.TextsFactory
-import com.anrisoftware.resources.texts.defaults.TextsResourcesDefaultModule
 import com.google.inject.Injector
 
 /**
@@ -80,20 +71,6 @@ class AppDialogTest {
 
     static AppDialogFactory dialogFactory
 
-    static TextsFactory textsFactory
-
-    static Texts texts
-
-    static ImagesFactory imagesFactory
-
-    static Images images
-
-    static ImageScalingWorkerFactory imageScalingWorkerFactory
-
-    private static final URL LOGO_A_RESOURCE = UiPanel.class.getResource("/com/anrisoftware/prefdialog/appdialogs/dialogheader/resources/images/en/mdpi/iref_logo_transparent_128.png");
-
-    private static final URL LOGO_B_RESOURCE = UiPanel.class.getResource("/com/anrisoftware/prefdialog/appdialogs/dialogheader/resources/images/en/mdpi/iref_logo_changed_128.png");
-
     @BeforeClass
     static void setupFactories() {
         TestUtils.toStringStyle
@@ -102,10 +79,5 @@ class AppDialogTest {
                 new FrameTestingModule())
         this.testingFactory = injector.getInstance DialogTestingFactory
         this.dialogFactory = injector.getInstance AppDialogFactory
-        this.textsFactory = injector.getInstance TextsFactory
-        this.texts = textsFactory.create AppDialogTest.class.getSimpleName()
-        this.imagesFactory = injector.getInstance ImagesFactory
-        this.images = imagesFactory.create AppDialogTest.class.getSimpleName()
-        this.imageScalingWorkerFactory = injector.getInstance ImageScalingWorkerFactory
     }
 }
