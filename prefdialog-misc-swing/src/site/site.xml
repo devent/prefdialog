@@ -47,7 +47,8 @@ xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0 http://maven.apache
             <item name="Javadoc" href="https://anrisoftware.com/javadoc/com.anrisoftware.prefdialog/prefdialog-misc-swing/apidocs/index.html" />
             <item name="Source code" href="https://anrisoftware.com/l/3q" />
             <item name="Source code (Github)" href="https://github.com/devent/prefdialog" />
-            <item name="Issues" href="https://anrisoftware.com/l/2d" />
+            <item name="Roadmap" href="https://anrisoftware.com/l/4p" />
+            <item name="Issues" href="https://anrisoftware.com/l/4o" />
         </menu>
         <menu ref="parent" />
         <menu ref="modules" />

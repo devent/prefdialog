@@ -19,11 +19,29 @@
 
 Description
 
-  Dialogs that are containing the annotated field components.
+  Application dialogs.
+
+  * Confirmation Dialogs <<<com.anrisoftware.prefdialog.appdialogs.confirmationdialogs>>>
+
+  Confirmation dialogs for user actions. Contains a Ok/Cancel dialog and a
+unsaved resource Save/Discard/Cancel dialog.
+
+  * Application Dialogs <<<com.anrisoftware.prefdialog.appdialogs.dialog>>>
+
+  General application dialog, contains a header panel that shows the
+application logo and application information.
+
+  * Dialog Header <<<com.anrisoftware.prefdialog.appdialogs.dialogheader>>>
+
+  Headers contains the logo image and the application text.
+
+  * Registration Dialog <<<com.anrisoftware.prefdialog.appdialogs.registerdialog>>>
+
+  Registration dialog.
 
 SCM
 
-  * {{{https://anrisoftware.com/projects/projects/prefdialog-dialog/repository}Main Repository}}
+  * {{{https://anrisoftware.com/projects/projects/prefdialog1/repository}Main Repository}}
 
   * git@anrisoftware.com:prefdialog.git
 
@@ -37,6 +55,6 @@ Maven
 <dependency>
     <groupId>com.anrisoftware.prefdialog</groupId>
     <artifactId>prefdialog-dialog</artifactId>
-    <version>3.1</version>
+    <version>3.2</version>
 </dependency>
 ---

@@ -51,7 +51,7 @@ class OnAwtChecker implements MethodInterceptor, ConstructorInterceptor {
         try {
             return invocation.proceed();
         } catch (Throwable e) {
-            e.printStackTrace();
+            log.errorInvokeMethod(method, e);
             throw e;
         }
     }
@@ -65,7 +65,7 @@ class OnAwtChecker implements MethodInterceptor, ConstructorInterceptor {
         try {
             return invocation.proceed();
         } catch (Throwable e) {
-            e.printStackTrace();
+            log.errorInvokeCtor(ctor, e);
             throw e;
         }
     }

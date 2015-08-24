@@ -25,18 +25,19 @@ import com.google.inject.AbstractModule;
 
 /**
  * Binds the check on AWT interceptor.
- * 
+ *
  * @see OnAwt
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
 public class OnAwtCheckerModule extends AbstractModule {
 
-	@Override
-	protected void configure() {
-		OnAwtChecker checker = new OnAwtChecker();
-		requestInjection(checker);
-		bindInterceptor(any(), annotatedWith(OnAwt.class), checker);
-	}
+    @Override
+    protected void configure() {
+        OnAwtChecker checker = new OnAwtChecker();
+        requestInjection(checker);
+        bindInterceptor(annotatedWith(OnAwt.class), any(), checker);
+        bindInterceptor(any(), annotatedWith(OnAwt.class), checker);
+    }
 }

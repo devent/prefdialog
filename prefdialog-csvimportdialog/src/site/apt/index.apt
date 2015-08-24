@@ -38,7 +38,7 @@ be imported.
 
 SCM
 
-  * {{{https://anrisoftware.com/projects/projects/prefdialog-csvimportdailog/repository}Main Repository}}
+  * {{{https://anrisoftware.com/projects/projects/prefdialog1/repository}Main Repository}}
 
   * git@anrisoftware.com:prefdialog.git
 
@@ -52,6 +52,6 @@ Maven
 <dependency>
     <groupId>com.anrisoftware.prefdialog</groupId>
     <artifactId>prefdialog-csvimportdailog</artifactId>
-    <version>3.1</version>
+    <version>3.2</version>
 </dependency>
 ---

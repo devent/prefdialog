@@ -21,7 +21,8 @@ AWT-Checker
 
   * <<<com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt>>>
 
-  Marks a method or constructor to be checked that it is run on the AWT thread.
+  Marks a class, method or constructor to be checked that it is run on
+the AWT thread.
 
   * <<<com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwtCheckerModule>>>
 
@@ -30,9 +31,21 @@ AWT-Checker
 * Example
 
 ---
-
+/**
+* <p>
+* <h2>AWT Thread</h2>
+* Objects of that class should be used in the AWT event dispatch thread.
+* </p>
+*/
+@OnAwt
 public class Foo {
 
+    /**
+    * <p>
+    * <h2>AWT Thread</h2>
+    * Should be called in the AWT event dispatch thread.
+    * </p>
+    */
     @OnAwt
     public void action() {
     }

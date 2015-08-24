@@ -18,6 +18,11 @@
  */
 package com.anrisoftware.prefdialog.miscswing.awtcheck;
 
+import static com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwtCheckerLogger._.ctor_thread;
+import static com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwtCheckerLogger._.error_invoke_ctor;
+import static com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwtCheckerLogger._.error_invoke_method;
+import static com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwtCheckerLogger._.method_thread;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
@@ -27,29 +32,56 @@ import com.anrisoftware.globalpom.log.AbstractLogger;
 
 /**
  * Logging messages for {@link OnAwtChecker}.
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
  */
 @Singleton
 class OnAwtCheckerLogger extends AbstractLogger {
 
-	private static final String AWT_THREAD1 = "Method {}#{} called not on AWT thread";
-	private static final String CTOR_THREAD1 = "Constructor {}#{} called not on AWT thread";
+    enum _ {
 
-	/**
-	 * Creates a logger for {@link OnAwtChecker}.
-	 */
-	public OnAwtCheckerLogger() {
-		super(OnAwtChecker.class);
-	}
+        ctor_thread("Constructor {} called not in event dispatch thread."),
 
-	void errorAWT(Method method) {
-		error(AWT_THREAD1, method.getDeclaringClass(), method.getName());
-	}
+        method_thread("Method {} called not in event dispatch thread."),
 
-	void errorAWT(Constructor<?> ctor) {
-		error(CTOR_THREAD1, ctor.getDeclaringClass(), ctor.getName());
-	}
+        error_invoke_method("Error invoke method {}, {}: {}"),
+
+        error_invoke_ctor("Error invoke contructor {}, {}: {}");
+
+        private String name;
+
+        private _(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
+    }
+
+    /**
+     * Creates a logger for {@link OnAwtChecker}.
+     */
+    public OnAwtCheckerLogger() {
+        super(OnAwtChecker.class);
+    }
+
+    void errorAWT(Method method) {
+        error(method_thread, method);
+    }
+
+    void errorAWT(Constructor<?> ctor) {
+        error(ctor_thread, ctor);
+    }
+
+    void errorInvokeMethod(Method method, Throwable e) {
+        error(error_invoke_method, method, e, e.getLocalizedMessage());
+    }
+
+    void errorInvokeCtor(Constructor<?> ctor, Throwable e) {
+        error(error_invoke_ctor, ctor, e, e.getLocalizedMessage());
+    }
 
 }

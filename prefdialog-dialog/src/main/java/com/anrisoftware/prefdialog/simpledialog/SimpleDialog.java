@@ -53,9 +53,15 @@ import com.anrisoftware.resources.texts.api.TextsFactory;
 /**
  * Simple dialog with approve, restore and cancel buttons.
  *
+ * <p>
+ * <h2>AWT Thread</h2>
+ * Objects of that class should be used in the AWT event dispatch thread.
+ * </p>
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
+@OnAwt
 public class SimpleDialog {
 
     /**
@@ -88,8 +94,8 @@ public class SimpleDialog {
      * Decorates the dialog.
      * <p>
      * <h2>AWT Thread</h2>
-     * <p>
-     * Should be called in the AWT thread.
+     * Should be called in the AWT event dispatch thread.
+     * </p>
      *
      * @param dialog
      *            the {@link JDialog}.
@@ -104,7 +110,6 @@ public class SimpleDialog {
      *
      * @return the {@link SimpleDialog}.
      */
-    @OnAwt
     public static SimpleDialog decorate(JDialog dialog, Component fieldsPanel) {
         SimpleDialog simpleDialog = getSimpleDialogFactory().create();
         simpleDialog.setFieldsPanel(fieldsPanel);
@@ -166,8 +171,6 @@ public class SimpleDialog {
 
     private Texts texts;
 
-    private Locale locale;
-
     private Images images;
 
     private boolean showRestoreButton;
@@ -182,7 +185,6 @@ public class SimpleDialog {
     @Inject
     protected SimpleDialog() {
         this.vetoableSupport = new VetoableChangeSupport(this);
-        this.locale = Locale.getDefault();
         this.showRestoreButton = true;
     }
 
@@ -273,7 +275,16 @@ public class SimpleDialog {
      *            the {@link Locale}.
      */
     public void setLocale(Locale locale) {
-        this.locale = locale;
+        approveAction.setLocale(locale);
+        restoreAction.setLocale(locale);
+        cancelAction.setLocale(locale);
+        dialogPanel.setLocale(locale);
+        if (dialog != null) {
+            dialog.setLocale(locale);
+        }
+        if (fieldsPanel != null) {
+            fieldsPanel.setLocale(locale);
+        }
     }
 
     /**
@@ -282,23 +293,17 @@ public class SimpleDialog {
      * @return the {@link Locale}.
      */
     public Locale getLocale() {
-        return locale;
+        return dialogPanel.getLocale();
     }
 
     /**
      * Sets to show the restore button.
-     *
-     * <h2>AWT Thread</h2>
-     * <p>
-     * Should be called in the AWT thread.
-     * </p>
      *
      * @param show
      *            set to {@code true} to show the restore button.
      *
      * @since 3.1
      */
-    @OnAwt
     public void setShowRestoreButton(boolean show) {
         boolean oldValue = this.showRestoreButton;
         this.showRestoreButton = show;
@@ -316,15 +321,9 @@ public class SimpleDialog {
      * Sets the approval action name. The action name is used to look up the
      * action resources.
      *
-     * <p>
-     * <h2>AWT Thread</h2>
-     * <p>
-     * Should be called in the AWT thread.
-     *
      * @param name
      *            the action name {@link String}.
      */
-    @OnAwt
     public void setApproveActionName(String name) {
         approveAction.setActionName(name);
     }
@@ -333,15 +332,9 @@ public class SimpleDialog {
      * Sets the cancel action name. The action name is used to look up the
      * action resources.
      *
-     * <p>
-     * <h2>AWT Thread</h2>
-     * <p>
-     * Should be called in the AWT thread.
-     *
      * @param name
      *            the action name {@link String}.
      */
-    @OnAwt
     public void setCancelActionName(String name) {
         cancelAction.setActionName(name);
     }
@@ -350,30 +343,19 @@ public class SimpleDialog {
      * Sets the restore action name. The action name is used to look up the
      * action resources.
      *
-     * <p>
-     * <h2>AWT Thread</h2>
-     * <p>
-     * Should be called in the AWT thread.
-     *
      * @param name
      *            the action name {@link String}.
      */
-    @OnAwt
     public void setRestoreActionName(String name) {
         restoreAction.setActionName(name);
     }
 
     /**
      * Sets the dialog.
-     * <p>
-     * <h2>AWT Thread</h2>
-     * <p>
-     * Should be called in the AWT thread.
      *
      * @param dialog
      *            the {@link JDialog}.
      */
-    @OnAwt
     public void setDialog(JDialog dialog) {
         this.dialog = dialog;
     }
@@ -389,14 +371,9 @@ public class SimpleDialog {
 
     /**
      * Creates the simple dialog and all child fields.
-     * <p>
-     * <h2>AWT Thread</h2>
-     * <p>
-     * Should be called in the AWT thread.
      *
      * @return this {@link SimpleDialog}.
      */
-    @OnAwt
     public SimpleDialog createDialog() {
         loadImages();
         setupPanel();
@@ -471,10 +448,6 @@ public class SimpleDialog {
 
     /**
      * Opens or closes the dialog.
-     * <p>
-     * <h2>AWT Thread</h2>
-     * <p>
-     * Should be called in the AWT thread.
      *
      * @param visible
      *            set to {@code true} to open the dialog.
@@ -489,10 +462,6 @@ public class SimpleDialog {
 
     /**
      * Opens the dialog.
-     * <p>
-     * <h2>AWT Thread</h2>
-     * <p>
-     * Should be called in the AWT thread.
      */
     public void openDialog() {
         dialog.setVisible(true);
@@ -500,21 +469,30 @@ public class SimpleDialog {
 
     /**
      * Closes the dialog.
-     * <p>
-     * <h2>AWT Thread</h2>
-     * <p>
-     * Should be called in the AWT thread.
      */
     public void closeDialog() {
         dialog.setVisible(false);
     }
 
     /**
+     * Packs the dialog.
+     */
+    public void packDialog() {
+        dialog.pack();
+    }
+
+    /**
+     * Sets the location of the dialog relative to the owner.
+     *
+     * @param owner
+     *            the {@link Component} owner.
+     */
+    public void setLocationRelativeTo(Component owner) {
+        dialog.setLocationRelativeTo(owner);
+    }
+
+    /**
      * Restores the input of the dialog.
-     * <p>
-     * <h2>AWT Thread</h2>
-     * <p>
-     * Should be called in the AWT thread.
      */
     public void restoreDialog() {
     }
@@ -608,16 +586,10 @@ public class SimpleDialog {
     /**
      * Sets the error text font.
      *
-     * <h2>AWT Thread</h2>
-     * <p>
-     * Should be called in the AWT thread.
-     * </p>
-     *
      * @param font
      *            the {@link Font}.
      * @since 3.1
      */
-    @OnAwt
     public void setErrorTextFont(Font font) {
         dialogPanel.getErrorTextLabel().setFont(font);
     }
@@ -625,16 +597,10 @@ public class SimpleDialog {
     /**
      * Sets the error text font color.
      *
-     * <h2>AWT Thread</h2>
-     * <p>
-     * Should be called in the AWT thread.
-     * </p>
-     *
      * @param color
      *            the {@link Color}.
      * @since 3.1
      */
-    @OnAwt
     public void setErrorTextFontColor(Color color) {
         dialogPanel.getErrorTextLabel().setForeground(color);
     }
@@ -709,6 +675,7 @@ public class SimpleDialog {
     }
 
     private void loadImages() {
+        Locale locale = getLocale();
         this.emptyIcon = images.getResource("empty_icon", locale,
                 IconSize.SMALL);
         this.errorIcon = images.getResource("error_icon", locale,

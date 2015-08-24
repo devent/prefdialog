@@ -12,7 +12,7 @@
 
 	<groupId>com.anrisoftware.prefdialog</groupId>
 	<artifactId>prefdialog-parent</artifactId>
-	<version>3.1</version>
+	<version>v3.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Prefdialog :: Parent POM</name>
 	<description>Manages the dependencies for the Prefdialog modules.</description>

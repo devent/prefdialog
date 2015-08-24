@@ -114,7 +114,7 @@ Mark the field and show a tool-tip text if the input is not valid.
 
 SCM
 
-  * {{{https://anrisoftware.com/projects/projects/prefdialog-misc-swing/repository}Main Repository}}
+  * {{{https://anrisoftware.com/projects/projects/prefdialog1/repository}Main Repository}}
 
   * git@anrisoftware.com:prefdialog.git
 
@@ -128,6 +128,6 @@ Maven
 <dependency>
     <groupId>com.anrisoftware.prefdialog</groupId>
     <artifactId>prefdialog-misc-swing</artifactId>
-    <version>3.1</version>
+    <version>3.2</version>
 </dependency>
 ---
