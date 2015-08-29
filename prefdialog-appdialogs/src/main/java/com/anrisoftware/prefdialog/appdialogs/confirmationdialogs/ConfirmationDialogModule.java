@@ -63,6 +63,15 @@ public final class ConfirmationDialogModule extends AbstractModule {
     }
 
     /**
+     * Returns the overwrite confirmation dialog factory.
+     *
+     * @return the {@link OverwriteConfirmationDialogFactory}.
+     */
+    public static OverwriteConfirmationDialogFactory getOverwriteDialogFactory() {
+        return SingletonHolder.overwriteDialogFactory;
+    }
+
+    /**
      * Returns the Injector with all necessarily modules installed to inject the
      * confirmation dialog.
      *
@@ -91,6 +100,9 @@ public final class ConfirmationDialogModule extends AbstractModule {
 
         public static final UnsavedConfirmationDialogFactory unsavedDialogFactory = injector
                 .getInstance(UnsavedConfirmationDialogFactory.class);
+
+        public static final OverwriteConfirmationDialogFactory overwriteDialogFactory = injector
+                .getInstance(OverwriteConfirmationDialogFactory.class);
     }
 
     @Override
@@ -103,6 +115,10 @@ public final class ConfirmationDialogModule extends AbstractModule {
                 UnsavedConfirmationDialog.class,
                 UnsavedConfirmationDialog.class).build(
                 UnsavedConfirmationDialogFactory.class));
+        install(new FactoryModuleBuilder().implement(
+                OverwriteConfirmationDialog.class,
+                OverwriteConfirmationDialog.class).build(
+                OverwriteConfirmationDialogFactory.class));
     }
 
 }

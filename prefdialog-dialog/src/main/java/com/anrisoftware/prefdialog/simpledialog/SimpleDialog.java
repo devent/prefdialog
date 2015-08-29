@@ -187,6 +187,7 @@ public class SimpleDialog {
     @Inject
     protected SimpleDialog() {
         this.vetoableSupport = new VetoableChangeSupport(this);
+        this.showApproveButton = true;
         this.showRestoreButton = true;
     }
 
