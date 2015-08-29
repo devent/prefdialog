@@ -87,7 +87,7 @@ enum RegisterDialogResource {
      * Sets the images resources.
      *
      * @param images
-     *            the {@link Templates} resources.
+     *            the {@link Images} resources.
      */
     public static void setImagesResource(Images images) {
         RegisterDialogResource[] values = RegisterDialogResource.values();

@@ -179,6 +179,8 @@ public class SimpleDialog {
 
     private ImageResource errorIcon;
 
+    private boolean showApproveButton;
+
     /**
      * @see SimpleDialogFactory#create()
      */
@@ -318,6 +320,27 @@ public class SimpleDialog {
     }
 
     /**
+     * Sets to show the approve button.
+     *
+     * @param show
+     *            set to {@code true} to show the approve button.
+     *
+     * @since 3.2
+     */
+    public void setShowApproveButton(boolean show) {
+        boolean oldValue = this.showApproveButton;
+        this.showApproveButton = show;
+        if (oldValue && !show) {
+            if (dialogPanel != null) {
+                removeApproveButton();
+            }
+        }
+        if (!oldValue && show) {
+            readdApproveButton();
+        }
+    }
+
+    /**
      * Sets the approval action name. The action name is used to look up the
      * action resources.
      *
@@ -408,7 +431,12 @@ public class SimpleDialog {
         cancelAction.setDialog(this);
         cancelAction.setTexts(texts);
         getCancelButton().setAction(cancelAction);
-        getApprovalButton().setAction(approveAction);
+        getApproveButton().setAction(approveAction);
+        if (showApproveButton) {
+            addApproveButton();
+        } else {
+            removeApproveButton();
+        }
         if (showRestoreButton) {
             addRestoreButton();
         } else {
@@ -423,7 +451,7 @@ public class SimpleDialog {
      *            the {@link ActionListener}.
      */
     public void addApprovalAction(ActionListener action) {
-        getApprovalButton().addActionListener(action);
+        getApproveButton().addActionListener(action);
     }
 
     /**
@@ -511,8 +539,10 @@ public class SimpleDialog {
      * Returns the approval dialog button.
      *
      * @return the approval {@link JButton}.
+     *
+     * @since 3.2
      */
-    public JButton getApprovalButton() {
+    public JButton getApproveButton() {
         return dialogPanel.getApproveButton();
     }
 
@@ -637,7 +667,7 @@ public class SimpleDialog {
 
     private void setupKeyboardActions() {
         JRootPane rootPane = dialog.getRootPane();
-        rootPane.setDefaultButton(getApprovalButton());
+        rootPane.setDefaultButton(getApproveButton());
         rootPane.registerKeyboardAction(cancelAction,
                 getKeyStroke(VK_ESCAPE, 0), WHEN_IN_FOCUSED_WINDOW);
     }
@@ -671,6 +701,38 @@ public class SimpleDialog {
         buttonsPanel.remove(restoreButton);
         buttonsPanel.remove(dialogPanel.getRestoreStrut());
         restoreButton.setVisible(false);
+        buttonsPanel.validate();
+    }
+
+    private void addApproveButton() {
+        JButton approveButton = getApproveButton();
+        approveAction.setDialog(this);
+        approveAction.setTexts(texts);
+        approveButton.setVisible(true);
+        approveButton.setAction(approveAction);
+    }
+
+    private void readdApproveButton() {
+        JButton cancelButton = getCancelButton();
+        JButton approveButton = getApproveButton();
+        JPanel buttonsPanel = dialogPanel.getButtonsPanel();
+        approveAction.setDialog(this);
+        approveAction.setTexts(texts);
+        approveButton.setVisible(true);
+        approveButton.setAction(approveAction);
+        buttonsPanel.remove(cancelButton);
+        buttonsPanel.add(approveButton);
+        buttonsPanel.add(dialogPanel.getApproveStrut());
+        buttonsPanel.add(cancelButton);
+        buttonsPanel.validate();
+    }
+
+    private void removeApproveButton() {
+        JPanel buttonsPanel = dialogPanel.getButtonsPanel();
+        JButton approveButton = getApproveButton();
+        buttonsPanel.remove(approveButton);
+        buttonsPanel.remove(dialogPanel.getApproveStrut());
+        approveButton.setVisible(false);
         buttonsPanel.validate();
     }
 

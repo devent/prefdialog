@@ -1,0 +1,45 @@
+delimiters "$", "$"
+
+aboutText(args) ::= <<
+$!-- args.email --!$
+<html>
+<head>
+<style>
+body {
+    font-family: sans-serif;
+    font-style: normal;
+    font-size: 12pt
+    font-weight: normal;
+    width: 100px;
+}
+h1 { font-size: 130%; font-weight: bold; margin-top: 10px; margin-bottom: 1em; }
+h2 { font-size: 120%; font-weight: bold; margin-top: 10px; margin-bottom: 1em; }
+p { margin-bottom: 5px; }
+</style>
+</head>
+<body>
+$if(args.version)$$versionParagraph(args.version)$$endif$
+$if(args.copyright)$$copyrightParagraph(args.copyright)$$endif$
+$if(args.license)$$licenseParagraph(args.license)$$endif$
+</body>
+</html>
+>>
+
+versionParagraph(version) ::= <<
+<p>
+Version: $args.version$
+</p>
+>>
+
+copyrightParagraph(copyright) ::= <<
+<p>
+$args.copyright$
+</p>
+>>
+
+licenseParagraph(license) ::= <<
+<h1>License</h1>
+<p>
+$args.license$
+</p>
+>>

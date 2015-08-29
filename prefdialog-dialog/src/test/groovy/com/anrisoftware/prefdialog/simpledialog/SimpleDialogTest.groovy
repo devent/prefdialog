@@ -39,7 +39,6 @@ import com.anrisoftware.prefdialog.simpledialog.SimpleDialog.Status
 import com.anrisoftware.prefdialog.simpledialog.SimpleDialogModule.SingletonHolder
 import com.anrisoftware.resources.texts.api.Texts
 import com.anrisoftware.resources.texts.api.TextsFactory
-import com.anrisoftware.resources.texts.defaults.TextsResourcesDefaultModule
 import com.google.inject.Guice
 import com.google.inject.Injector
 
@@ -81,6 +80,34 @@ class SimpleDialogTest {
             fix.button "approveButton" click()
         })
         assert simpleDialog.status == Status.APPROVED
+    }
+
+    @Test
+    void "hide approval, restore button"() {
+        def title = "$NAME/hide approval, restore button"
+        def simpleDialog = factory.create()
+        def testing = testingFactory.create([title: title, setupDialog: { JDialog dialog, Component component ->
+                simpleDialog.setFieldsPanel new JPanel()
+                simpleDialog.setDialog dialog
+                simpleDialog.setTexts texts
+                simpleDialog.setShowRestoreButton(false)
+                simpleDialog.setShowApproveButton(false)
+                simpleDialog.createDialog()
+            }])()
+        testing.withFixture({
+            invokeAndWait {
+                simpleDialog.setShowApproveButton(true)
+                simpleDialog.setShowRestoreButton(true)
+            }
+        }, {
+            invokeAndWait {
+                simpleDialog.setShowRestoreButton(false)
+                simpleDialog.setShowApproveButton(false)
+            }
+        }, { DialogFixture fix ->
+            fix.button "cancelButton" click()
+        })
+        assert simpleDialog.status == Status.CANCELED
     }
 
     @Test

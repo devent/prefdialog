@@ -49,7 +49,8 @@ import com.anrisoftware.resources.texts.api.Texts;
  * @author Erwin Müller, erwin.mueller@deventm.de
  * @since 1.0
  */
-public final class AppDialog {
+@OnAwt
+public class AppDialog {
 
     @Inject
     private UiPanel panel;
@@ -62,30 +63,18 @@ public final class AppDialog {
     private Component content;
 
     /**
-     * <h2>AWT Thread</h2>
-     * <p>
-     * Should be called in the AWT thread.
-     * </p>
-     *
      * @see AppDialogFactory#create()
      */
-    @OnAwt
     AppDialog() {
     }
 
     /**
      * Injects and creates the simple dialog.
      *
-     * <h2>AWT Thread</h2>
-     * <p>
-     * Should be called in the AWT thread.
-     * </p>
-     *
      * @param factory
      *            the {@link SimpleDialogFactory}.
      */
     @Inject
-    @OnAwt
     void setSimpleDialogFactory(SimpleDialogFactory factory) {
         SimpleDialog dialog = factory.create();
         dialog.setFieldsPanel(panel);
@@ -95,11 +84,6 @@ public final class AppDialog {
     /**
      * Creates the dialog.
      *
-     * <h2>AWT Thread</h2>
-     * <p>
-     * Should be called in the AWT thread.
-     * </p>
-     *
      * @return this {@link AppDialog}.
      *
      * @throws NullPointerException
@@ -107,7 +91,6 @@ public final class AppDialog {
      *
      * @see #setContent(Component)
      */
-    @OnAwt
     public AppDialog createDialog() {
         notNull(content);
         panel.add(dialogHeader.getComponent(), BorderLayout.NORTH);
@@ -118,14 +101,11 @@ public final class AppDialog {
     }
 
     /**
-     * <h2>AWT Thread</h2>
-     * <p>
-     * Should be called in the AWT thread.
-     * </p>
+     * Sets the dialog.
      *
-     * @see SimpleDialog#setDialog(javax.swing.JDialog)
+     * @param dialog
+     *            the {@link JDialog}.
      */
-    @OnAwt
     public void setDialog(JDialog dialog) {
         simpleDialog.setDialog(dialog);
     }
@@ -134,18 +114,12 @@ public final class AppDialog {
      * Sets the content of the dialog. The content in the center of the dialog,
      * between the header and the buttons.
      *
-     * <h2>AWT Thread</h2>
-     * <p>
-     * Should be called in the AWT thread.
-     * </p>
-     *
      * @param content
      *            the content {@link Component}.
      *
      * @throws NullPointerException
      *             if the specified content is {@code null}.
      */
-    @OnAwt
     public void setContent(Component content) {
         notNull(content);
         this.content = content;
@@ -161,7 +135,6 @@ public final class AppDialog {
     /**
      * @see DialogHeader#setImages(com.anrisoftware.resources.images.api.Images)
      */
-    @OnAwt
     public void setDialogHeaderImages(Images images) {
         dialogHeader.setImages(images);
     }
@@ -169,7 +142,6 @@ public final class AppDialog {
     /**
      * @see SimpleDialog#setImages(com.anrisoftware.resources.images.api.Images)
      */
-    @OnAwt
     public void setDialogImages(Images images) {
         simpleDialog.setImages(images);
     }
@@ -177,7 +149,6 @@ public final class AppDialog {
     /**
      * @see DialogHeader#setLocale(java.util.Locale)
      */
-    @OnAwt
     public void setLocale(Locale locale) {
         dialogHeader.setLocale(locale);
         simpleDialog.setLocale(locale);
@@ -186,7 +157,6 @@ public final class AppDialog {
     /**
      * @see DialogHeader#setLogoImageName(java.lang.String)
      */
-    @OnAwt
     public void setLogoImageName(String name) {
         dialogHeader.setLogoImageName(name);
     }
@@ -194,7 +164,6 @@ public final class AppDialog {
     /**
      * @see DialogHeader#setLogoImage(java.awt.Image)
      */
-    @OnAwt
     public void setLogoImage(Image image) {
         dialogHeader.setLogoImage(image);
     }
@@ -202,7 +171,6 @@ public final class AppDialog {
     /**
      * @see DialogHeader#setLogoSize(java.awt.Dimension)
      */
-    @OnAwt
     public void setLogoSize(Dimension size) {
         dialogHeader.setLogoSize(size);
     }
@@ -210,7 +178,6 @@ public final class AppDialog {
     /**
      * @see DialogHeader#setTexts(com.anrisoftware.resources.texts.api.Texts)
      */
-    @OnAwt
     public void setDialogHeadersTexts(Texts texts) {
         dialogHeader.setTexts(texts);
     }
@@ -218,7 +185,6 @@ public final class AppDialog {
     /**
      * @see SimpleDialog#setTexts(com.anrisoftware.resources.texts.api.Texts)
      */
-    @OnAwt
     public void setDialogTexts(Texts texts) {
         simpleDialog.setTexts(texts);
     }
@@ -226,7 +192,6 @@ public final class AppDialog {
     /**
      * @see DialogHeader#setInfoTextName(java.lang.String)
      */
-    @OnAwt
     public void setInfoTextName(String name) {
         dialogHeader.setInfoTextName(name);
     }
@@ -234,7 +199,6 @@ public final class AppDialog {
     /**
      * @see DialogHeader#setInfoText(java.lang.String)
      */
-    @OnAwt
     public void setInfoText(String text) {
         dialogHeader.setInfoText(text);
     }
@@ -242,7 +206,6 @@ public final class AppDialog {
     /**
      * @see DialogHeader#setLinkTextName(java.lang.String)
      */
-    @OnAwt
     public void setLinkTextName(String name) {
         dialogHeader.setLinkTextName(name);
     }
@@ -279,7 +242,6 @@ public final class AppDialog {
     /**
      * @see SimpleDialog#setApproveActionName(java.lang.String)
      */
-    @OnAwt
     public void setApproveActionName(String name) {
         simpleDialog.setApproveActionName(name);
     }
@@ -287,7 +249,6 @@ public final class AppDialog {
     /**
      * @see SimpleDialog#setCancelActionName(java.lang.String)
      */
-    @OnAwt
     public void setCancelActionName(String name) {
         simpleDialog.setCancelActionName(name);
     }
@@ -295,7 +256,6 @@ public final class AppDialog {
     /**
      * @see SimpleDialog#setRestoreActionName(java.lang.String)
      */
-    @OnAwt
     public void setRestoreActionName(String name) {
         simpleDialog.setRestoreActionName(name);
     }
@@ -303,7 +263,6 @@ public final class AppDialog {
     /**
      * @see SimpleDialog#getDialog()
      */
-    @OnAwt
     public JDialog getDialog() {
         return simpleDialog.getDialog();
     }
@@ -319,7 +278,6 @@ public final class AppDialog {
     /**
      * @see SimpleDialog#addCancelAction(java.awt.event.ActionListener)
      */
-    @OnAwt
     public void addCancelAction(ActionListener action) {
         simpleDialog.addCancelAction(action);
     }
@@ -327,7 +285,6 @@ public final class AppDialog {
     /**
      * @see SimpleDialog#addRestoreAction(java.awt.event.ActionListener)
      */
-    @OnAwt
     public void addRestoreAction(ActionListener action) {
         simpleDialog.addRestoreAction(action);
     }
@@ -335,7 +292,6 @@ public final class AppDialog {
     /**
      * @see SimpleDialog#setVisible(boolean)
      */
-    @OnAwt
     public void setVisible(boolean visible) {
         simpleDialog.setVisible(visible);
     }
@@ -348,9 +304,15 @@ public final class AppDialog {
     }
 
     /**
+     * @see com.anrisoftware.prefdialog.simpledialog.SimpleDialog#setShowApproveButton(boolean)
+     */
+    public void setShowApproveButton(boolean show) {
+        simpleDialog.setShowApproveButton(show);
+    }
+
+    /**
      * @see SimpleDialog#openDialog()
      */
-    @OnAwt
     public void openDialog() {
         simpleDialog.openDialog();
     }
@@ -358,7 +320,6 @@ public final class AppDialog {
     /**
      * @see SimpleDialog#closeDialog()
      */
-    @OnAwt
     public void closeDialog() {
         simpleDialog.closeDialog();
     }
@@ -366,7 +327,6 @@ public final class AppDialog {
     /**
      * @see SimpleDialog#restoreDialog()
      */
-    @OnAwt
     public void restoreDialog() {
         simpleDialog.restoreDialog();
     }
@@ -374,23 +334,20 @@ public final class AppDialog {
     /**
      * @see SimpleDialog#getAWTComponent()
      */
-    @OnAwt
     public Component getAWTComponent() {
         return simpleDialog.getAWTComponent();
     }
 
     /**
-     * @see SimpleDialog#getApprovalButton()
+     * @see SimpleDialog#getApproveButton()
      */
-    @OnAwt
-    public JButton getApprovalButton() {
-        return simpleDialog.getApprovalButton();
+    public JButton getApproveButton() {
+        return simpleDialog.getApproveButton();
     }
 
     /**
      * @see SimpleDialog#getRestoreButton()
      */
-    @OnAwt
     public JButton getRestoreButton() {
         return simpleDialog.getRestoreButton();
     }
@@ -398,7 +355,6 @@ public final class AppDialog {
     /**
      * @see SimpleDialog#getCancelButton()
      */
-    @OnAwt
     public JButton getCancelButton() {
         return simpleDialog.getCancelButton();
     }
@@ -406,7 +362,6 @@ public final class AppDialog {
     /**
      * @see SimpleDialog#setStatus(com.anrisoftware.prefdialog.simpledialog.SimpleDialog.Status)
      */
-    @OnAwt
     public void setStatus(Status status) throws PropertyVetoException {
         simpleDialog.setStatus(status);
     }
@@ -414,7 +369,6 @@ public final class AppDialog {
     /**
      * @see SimpleDialog#getStatus()
      */
-    @OnAwt
     public Status getStatus() {
         return simpleDialog.getStatus();
     }
