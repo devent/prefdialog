@@ -1,0 +1,295 @@
+#!/bin/bash
+
+#This script is based on hammergom's script used for his Ekisho_project (http://hammergom.deviantart.com/art/Ekisho-Project-52819144).
+
+
+# Test for mimetype colour...
+
+# echo  "Please enter the mimetype colour (see screenshot), 1 for white or 2 for black or 3 for the black-white:";
+# konqueror preview.png 2> /dev/null &
+# job=$!;
+# read colour;
+# kill $job 2> /dev/null;
+# if [ $colour -eq 1 ]
+# then
+# mv 128x128/white_mimetypes 128x128/mimetypes
+# elif [ $colour -eq 2 ]
+# then
+# mv 128x128/black_mimetypes 128x128/mimetypes
+# else
+# mv 128x128/bw_mimetypes 128x128/mimetypes
+# fi
+# 
+
+# trap ctrl-c and call ctrl_c()
+# used to clean incomplete directories if script is interrupted by user
+
+
+trap ctrl_c INT
+
+loc=$(pwd);
+function ctrl_c() {
+    echo -ne "\nCaught Ctrl-C. Cleaning...\n"
+    rm -r $loc/8x8 $loc/16x16 $loc/22x22 $loc/32x32 $loc/48x48 $loc/64x64;
+    echo "Done!"
+    exit 0;
+}
+
+
+CONVERT_PATH=
+TAR_PATH=
+BC_PATH=
+
+function checkTar() {
+    echo -ne "Checking for tar... "
+    FOUND=`which tar`
+    if [ "$FOUND" != "" ]; then
+	echo -ne " found $FOUND\n"
+	TAR_PATH=$FOUND
+	return
+    else
+	echo -ne " not found.\n"
+	echo -ne "\nNo tar found in path. Please install tar first.\n"
+	exit 1
+    fi
+}
+
+function checkImg() {
+    echo -ne "Checking for convert... "
+    FOUND=`which convert`
+    if [ "$FOUND" != "" ]; then
+	echo -ne " found $FOUND\n"
+	CONVERT_PATH=$FOUND
+	return
+    else
+	echo -ne " not found.\n"
+	echo -ne "\nNo convert found in path. Please install imagemagick.\n"
+	exit 1
+    fi
+}
+
+
+function checkBC() {
+    echo -ne "Checking for bc... "
+    FOUND=`which bc`
+    if [ "$FOUND" != "" ]; then
+	echo -ne " found $FOUND\n"
+	BC_PATH=$FOUND
+	return
+    else
+	echo -ne " not found.\n"
+	echo -ne "\nNo bc found in path. Please install bc.\n"
+	exit 1
+    fi
+}
+
+
+function printFound() {
+    echo -ne "\nDependencies met - this script is using:\n"
+    echo -ne "\t\t$TAR_PATH as tar path\n"
+    echo -ne "\t\t$CONVERT_PATH as convert path\n"
+    echo -ne "\t\t$BC_PATH as bc path\n"
+}
+
+echo
+echo -ne "Checking for dependencies...\n"
+
+
+checkTar
+checkImg
+checkBC
+printFound
+echo
+
+if test -z $CONVERT_PATH
+then exit 0
+fi
+
+if test -z $TAR_PATH
+then exit 0
+fi
+
+
+
+SIZES="8x8 16x16 22x22 32x32 48x48 64x64"
+DIRS="actions apps categories devices emblems emotes mimetypes places status" 
+PCKNAME="Reflektions_KDE4"
+
+
+#create the dirs
+for size in $SIZES
+do
+    for dir in $DIRS
+    do
+	mkdir -p $size/$dir
+    done
+done
+
+total=$(ls -R 128x128_or/ | wc -l);
+i=0;
+
+
+
+echo -ne "Converting icons...\n"
+for dir in $DIRS
+do
+    cd 128x128_or/$dir
+    for icon in *
+    do
+	# Loop the specified size
+	i=$((i+1));
+	per=$(echo "scale=1; 100 * $i / $total" |bc -l);
+	echo "$per%" $dir/$icon
+	for size in $SIZES
+	do
+	    convert "$icon" -resize $size ../../$size/$dir/"$icon"
+	done
+    done
+# Move from 128x128/$directory to toplevel
+    cd ../../
+done
+
+
+#Move the new dirs into the package main directory
+#mkdir -p $PCKNAME/128x128/;
+#for dir in $DIRS
+#do
+#cp -r 128x128/$dir $PCKNAME/128x128/$dir;
+#done
+
+
+
+# 
+# if [ $colour -eq 1 ]
+# then
+# mkdir -p $PCKNAME\_White/128x128/;
+# PCKNAME=$PCKNAME\_White;
+# elif [ $colour -eq 2 ]
+# then
+# mkdir -p $PCKNAME\_Black/128x128/;
+# PCKNAME=$PCKNAME\_Black;
+# else
+# mkdir -p $PCKNAME\_BW/128x128/;
+# PCKNAME=$PCKNAME\_BW;
+# fi
+
+mkdir -p $PCKNAME/128x128/;
+for dir in $DIRS
+do
+    cp -r 128x128_or/$dir $PCKNAME/128x128/$dir;
+done
+
+
+
+
+
+
+# 
+# 
+# 
+# if [ $colour -eq 1 ]
+# then
+# mv 128x128/mimetypes 128x128/white_mimetypes;
+# elif [ $colour -eq 2 ]
+# then
+# mv 128x128/mimetypes 128x128/black_mimetypes;
+# else
+# mv 128x128/mimetypes 128x128/bw_mimetypes;
+# fi
+
+cp index.theme $PCKNAME;
+for size in $SIZES
+do
+    mv $size $PCKNAME;
+done
+
+cp 64x64_or/actions/* $PCKNAME/64x64/actions/;
+cp 64x64_or/apps/* $PCKNAME/64x64/apps/;
+cp 64x64_or/devices/* $PCKNAME/64x64/devices/;
+cp 64x64_or/mimetypes/* $PCKNAME/64x64/mimetypes/;
+cp 64x64_or/places/* $PCKNAME/64x64/places/;
+cp 64x64_or/status/* $PCKNAME/64x64/status/;
+
+
+cp 48x48_or/actions/* $PCKNAME/48x48/actions/;
+cp 48x48_or/apps/* $PCKNAME/48x48/apps/;
+cp 48x48_or/devices/* $PCKNAME/48x48/devices/;
+cp 48x48_or/mimetypes/* $PCKNAME/48x48/mimetypes/;
+cp 48x48_or/places/* $PCKNAME/48x48/places/;
+cp 48x48_or/status/* $PCKNAME/48x48/status/;
+
+cp 32x32_or/apps/* $PCKNAME/32x32/apps/;
+cp 32x32_or/actions/* $PCKNAME/32x32/actions/;
+cp 32x32_or/places/* $PCKNAME/32x32/places/;
+cp 32x32_or/mimetypes/* $PCKNAME/32x32/mimetypes/;
+cp 32x32_or/categories/* $PCKNAME/32x32/categories/;
+cp 32x32_or/devices/* $PCKNAME/32x32/devices/;
+cp 32x32_or/status/* $PCKNAME/32x32/status/;
+
+cp 22x22_or/actions/* $PCKNAME/22x22/actions/;
+cp 22x22_or/apps/* $PCKNAME/22x22/apps/;
+cp 22x22_or/categories/* $PCKNAME/22x22/categories/;
+cp 22x22_or/devices/* $PCKNAME/22x22/devices/;
+cp 22x22_or/emblems/* $PCKNAME/22x22/emblems/;
+cp 22x22_or/emotes/* $PCKNAME/22x22/emotes/;
+cp 22x22_or/mimetypes/* $PCKNAME/22x22/mimetypes/;
+cp 22x22_or/places/* $PCKNAME/22x22/places/;
+cp 22x22_or/status/* $PCKNAME/22x22/status/;
+
+cp 16x16_or/apps/* $PCKNAME/16x16/apps/;
+cp 16x16_or/actions/* $PCKNAME/16x16/actions/;
+cp 16x16_or/categories/* $PCKNAME/16x16/categories/;
+cp 16x16_or/devices/* $PCKNAME/16x16/devices/;
+cp 16x16_or/places/* $PCKNAME/16x16/places/;
+cp 16x16_or/status/* $PCKNAME/16x16/status/;
+cp 16x16_or/mimetypes/* $PCKNAME/16x16/mimetypes/;
+
+cp 8x8_or/actions/* $PCKNAME/8x8/actions/;
+
+# copy the 24x24 icons into the 22x22 folder
+cp 24x24_or/actions/* $PCKNAME/22x22/actions/;
+cp 24x24_or/apps/* $PCKNAME/22x22/apps/;
+cp 24x24_or/categories/* $PCKNAME/22x22/categories/;
+cp 24x24_or/devices/* $PCKNAME/22x22/devices/;
+cp 24x24_or/emotes/* $PCKNAME/22x22/emotes/;
+cp 24x24_or/places/* $PCKNAME/22x22/places/;
+# cp 24x24_or/mimetypes/* $PCKNAME/22x22/mimetypes/;
+cp 24x24_or/status/* $PCKNAME/22x22/status/;
+
+# 
+# cd $PCKNAME;
+# 
+# if [ $colour -eq 1 ]
+# then
+# sed -i 's/Name=Reflektions/Name=Reflektions_White/' index.theme
+# elif [ $colour -eq 2 ]
+# then
+# sed -i 's/Name=Reflektions/Name=Reflektions_Black/' index.theme
+# else
+# sed -i 's/Name=Reflektions/Name=Reflektions_BW/' index.theme
+# fi
+# 
+# cd ../;
+# 
+
+# KNetworkmanager icons
+
+# cp nm/* $PCKNAME/22x22/actions/; 
+
+#Compress the package
+tar cf $PCKNAME.tar $PCKNAME;
+# tar cf $HOME/$PCKNAME.tar $PCKNAME;
+rm -fr $PCKNAME;
+echo -ne "100% Done! \n"
+
+
+# kwriteconfig --file kdeglobals --group Icons --key Theme Reflektions_KDE4
+# ./install_systray.sh;
+./install_icons.sh;
+./install_ptheme.sh
+./install_dropbox.sh
+
+
+
+
+
