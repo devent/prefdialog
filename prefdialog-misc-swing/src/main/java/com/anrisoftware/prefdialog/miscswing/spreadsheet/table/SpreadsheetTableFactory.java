@@ -32,8 +32,8 @@ public interface SpreadsheetTableFactory {
      * Decorates the table to be a spreadsheet like table.
      * <p>
      * <h2>AWT Thread</h2>
-     * <p>
-     * Should be called in the AWT thread.
+     * Should be called in the AWT event dispatch thread.
+     * </p>
      *
      * @param table
      *            the {@link JTable}.
