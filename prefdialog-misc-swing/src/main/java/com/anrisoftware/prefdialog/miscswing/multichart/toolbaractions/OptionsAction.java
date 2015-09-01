@@ -18,10 +18,10 @@
  */
 package com.anrisoftware.prefdialog.miscswing.multichart.toolbaractions;
 
-import com.anrisoftware.prefdialog.miscswing.actions.AbstractMenuAction;
+import com.anrisoftware.prefdialog.miscswing.actions.AbstractExecuteAction;
 
 @SuppressWarnings("serial")
-class OptionsAction extends AbstractMenuAction {
+class OptionsAction extends AbstractExecuteAction {
 
     private static final String NAME = "options_tool_action";
 

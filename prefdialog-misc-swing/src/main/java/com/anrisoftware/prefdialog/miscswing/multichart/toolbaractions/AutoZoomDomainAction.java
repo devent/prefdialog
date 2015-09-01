@@ -20,10 +20,10 @@ package com.anrisoftware.prefdialog.miscswing.multichart.toolbaractions;
 
 import java.awt.event.ActionEvent;
 
-import com.anrisoftware.prefdialog.miscswing.actions.AbstractMenuAction;
+import com.anrisoftware.prefdialog.miscswing.actions.AbstractExecuteAction;
 
 @SuppressWarnings("serial")
-class AutoZoomDomainAction extends AbstractMenuAction {
+class AutoZoomDomainAction extends AbstractExecuteAction {
 
     private static final String NAME = "zoom_domain_auto_tool_action";
 

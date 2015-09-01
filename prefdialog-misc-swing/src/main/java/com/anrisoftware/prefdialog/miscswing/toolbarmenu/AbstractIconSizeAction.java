@@ -20,7 +20,7 @@ package com.anrisoftware.prefdialog.miscswing.toolbarmenu;
 
 import java.awt.event.ActionEvent;
 
-import com.anrisoftware.prefdialog.miscswing.resourcesaction.AbstractResourcesAction;
+import com.anrisoftware.prefdialog.miscswing.actions.AbstractResourcesAction;
 import com.anrisoftware.resources.images.api.IconSize;
 
 /**

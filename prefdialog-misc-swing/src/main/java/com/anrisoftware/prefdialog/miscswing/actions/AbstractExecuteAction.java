@@ -24,14 +24,12 @@ import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
 
-import com.anrisoftware.prefdialog.miscswing.resourcesaction.AbstractResourcesAction;
-
 /**
  * Sets the action name and mnemonic from text resource.
  * <p>
  * <h2>Example</h2>
  * <p>
- * 
+ *
  * <pre>
  * &#064;SuppressWarnings(&quot;serial&quot;)
  * class ExitAction extends AbstractMenuAction {
@@ -44,13 +42,13 @@ import com.anrisoftware.prefdialog.miscswing.resourcesaction.AbstractResourcesAc
  *     }
  * }
  * </pre>
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 3.0
+ * @since 3.2
  */
 @SuppressWarnings("serial")
-public abstract class AbstractMenuAction extends AbstractResourcesAction
-        implements MenuAction {
+public abstract class AbstractExecuteAction extends AbstractResourcesAction
+        implements ExecuteAction {
 
     private Actions actions;
 
@@ -59,14 +57,14 @@ public abstract class AbstractMenuAction extends AbstractResourcesAction
     /**
      * @see AbstractResourcesAction#AbstractResourcesAction(String)
      */
-    protected AbstractMenuAction(String name) {
+    protected AbstractExecuteAction(String name) {
         super(name);
         this.id = name;
     }
 
     /**
      * Injects the application actions to submit actions to.
-     * 
+     *
      * @param actions
      *            the {@link Actions}.
      */

@@ -73,5 +73,5 @@
  * @since 3.0
  * @version 3.1
  */
-package com.anrisoftware.prefdialog.miscswing.resourcesaction;
+package com.anrisoftware.prefdialog.miscswing.actions;
 

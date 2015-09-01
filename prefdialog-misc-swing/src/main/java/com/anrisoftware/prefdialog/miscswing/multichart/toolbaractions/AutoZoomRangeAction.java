@@ -18,10 +18,10 @@
  */
 package com.anrisoftware.prefdialog.miscswing.multichart.toolbaractions;
 
-import com.anrisoftware.prefdialog.miscswing.actions.AbstractMenuAction;
+import com.anrisoftware.prefdialog.miscswing.actions.AbstractExecuteAction;
 
 @SuppressWarnings("serial")
-class AutoZoomRangeAction extends AbstractMenuAction {
+class AutoZoomRangeAction extends AbstractExecuteAction {
 
     private static final String NAME = "zoom_range_auto_tool_action";
 

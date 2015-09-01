@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-misc-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.miscswing.resourcesaction;
+package com.anrisoftware.prefdialog.miscswing.actions;
 
 import java.awt.event.ActionEvent;
 
@@ -67,6 +67,10 @@ public class LabelResourcesAction extends AbstractResourcesAction {
     @OnAwt
     public void setLabel(JLabel label) {
         label.setText(getValue(NAME).toString());
+        String shortDescription = getShortDescription();
+        if (shortDescription != null) {
+            label.setToolTipText(shortDescription);
+        }
         Integer mnemonic = getMnemonic();
         if (mnemonic != null) {
             label.setDisplayedMnemonic(mnemonic);

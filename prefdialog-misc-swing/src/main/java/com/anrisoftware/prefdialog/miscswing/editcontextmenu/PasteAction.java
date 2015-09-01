@@ -22,7 +22,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.text.JTextComponent;
 
-import com.anrisoftware.prefdialog.miscswing.resourcesaction.AbstractResourcesAction;
+import com.anrisoftware.prefdialog.miscswing.actions.AbstractResourcesAction;
 
 /**
  * Paste text action.

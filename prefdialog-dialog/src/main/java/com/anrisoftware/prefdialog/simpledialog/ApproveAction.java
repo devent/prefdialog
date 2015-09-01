@@ -24,7 +24,7 @@ import static com.anrisoftware.prefdialog.simpledialog.SimpleDialog.Status.APPRO
 import java.awt.event.ActionEvent;
 import java.beans.PropertyVetoException;
 
-import com.anrisoftware.prefdialog.miscswing.resourcesaction.AbstractResourcesAction;
+import com.anrisoftware.prefdialog.miscswing.actions.AbstractResourcesAction;
 
 /**
  * Sets the approval state and closes the dialog.

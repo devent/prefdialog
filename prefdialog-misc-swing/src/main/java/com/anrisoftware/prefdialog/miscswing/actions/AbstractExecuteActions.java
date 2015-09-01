@@ -19,12 +19,12 @@
 package com.anrisoftware.prefdialog.miscswing.actions;
 
 import java.beans.PropertyChangeListener;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
 import javax.swing.Action;
 
-import com.anrisoftware.prefdialog.miscswing.resourcesaction.AbstractResourcesAction;
 import com.anrisoftware.resources.images.api.Images;
 import com.anrisoftware.resources.texts.api.Texts;
 
@@ -67,9 +67,9 @@ import com.anrisoftware.resources.texts.api.Texts;
  * </pre>
  *
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 3.0
+ * @since 3.2
  */
-public abstract class AbstractMenuActions {
+public abstract class AbstractExecuteActions {
 
     /**
      * Sets the texts resource for the actions.
@@ -77,7 +77,7 @@ public abstract class AbstractMenuActions {
      * @see AbstractResourcesAction#setTexts(Texts)
      */
     public void setTexts(Texts texts) {
-        for (MenuAction action : getActions().values()) {
+        for (Action action : getActions().values()) {
             ((AbstractResourcesAction) action).setTexts(texts);
         }
     }
@@ -88,9 +88,19 @@ public abstract class AbstractMenuActions {
      * @see AbstractResourcesAction#setImages(Images)
      */
     public void setImages(Images images) {
-        for (MenuAction action : getActions().values()) {
+        for (Action action : getActions().values()) {
             AbstractResourcesAction a = (AbstractResourcesAction) action;
             a.setImages(images);
+        }
+    }
+
+    /**
+     * Sets the locale for the actions.
+     */
+    public void setLocale(Locale locale) {
+        for (Action action : getActions().values()) {
+            AbstractResourcesAction a = (AbstractResourcesAction) action;
+            a.setLocale(locale);
         }
     }
 
@@ -107,11 +117,11 @@ public abstract class AbstractMenuActions {
      *            optional the {@link PropertyChangeListener} listeners that are
      *            called when the action has finished.
      *
-     * @see MenuAction#addAction(Callable, PropertyChangeListener...)
+     * @see ExecuteAction#addAction(Callable, PropertyChangeListener...)
      */
     public void addAction(String name, Callable<?> action,
             PropertyChangeListener... listeners) {
-        getActions().get(name).addAction(action, listeners);
+        ((ExecuteAction) getActions().get(name)).addAction(action, listeners);
     }
 
     /**
@@ -124,10 +134,10 @@ public abstract class AbstractMenuActions {
      * @param action
      *            the {@link Runnable} action.
      *
-     * @see MenuAction#addAWTAction(Runnable)
+     * @see ExecuteAction#addAWTAction(Runnable)
      */
     public void addAWTAction(String name, Runnable action) {
-        getActions().get(name).addAWTAction(action);
+        ((ExecuteAction) getActions().get(name)).addAWTAction(action);
     }
 
     /**
@@ -141,7 +151,7 @@ public abstract class AbstractMenuActions {
      */
     public void setActionEnabled(final boolean enabled, final String... name) {
         for (String n : name) {
-            ((Action) getActions().get(n)).setEnabled(enabled);
+            getActions().get(n).setEnabled(enabled);
         }
     }
 
@@ -149,8 +159,8 @@ public abstract class AbstractMenuActions {
      * Returns the actions.
      *
      * @return the {@link Map} of the actions, where the key is the action name
-     *         and the value is the {@link MenuAction}.
+     *         and the value is the {@link Action}.
      */
-    public abstract Map<String, MenuAction> getActions();
+    public abstract Map<String, Action> getActions();
 
 }

@@ -24,7 +24,7 @@ import javax.swing.text.JTextComponent;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.anrisoftware.prefdialog.miscswing.resourcesaction.AbstractResourcesAction;
+import com.anrisoftware.prefdialog.miscswing.actions.AbstractResourcesAction;
 
 /**
  * Delete text action.

@@ -39,8 +39,8 @@ import javax.swing.JPopupMenu;
 import javax.swing.JToolBar;
 
 import com.anrisoftware.globalpom.textposition.TextPosition;
+import com.anrisoftware.prefdialog.miscswing.actions.AbstractResourcesAction;
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
-import com.anrisoftware.prefdialog.miscswing.resourcesaction.AbstractResourcesAction;
 import com.anrisoftware.resources.images.api.IconSize;
 import com.anrisoftware.resources.images.api.Images;
 import com.anrisoftware.resources.texts.api.Texts;

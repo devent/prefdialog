@@ -22,19 +22,19 @@ import java.beans.PropertyChangeListener;
 import java.util.concurrent.Callable;
 
 /**
- * Menu action.
- * 
+ * Execute action.
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 3.0
+ * @since 3.2
  */
-public interface MenuAction {
+public interface ExecuteAction {
 
     /**
      * Adds the action to be run.
-     * 
+     *
      * @param action
      *            the {@link Callable} action.
-     * 
+     *
      * @param listeners
      *            the {@link PropertyChangeListener} listeners that are informed
      *            when the status of the action have changed.
@@ -43,7 +43,7 @@ public interface MenuAction {
 
     /**
      * Adds the action to be run on the AWT thread.
-     * 
+     *
      * @param action
      *            the {@link Runnable} action.
      */

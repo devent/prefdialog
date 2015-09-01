@@ -24,18 +24,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.swing.Action;
 
-import com.anrisoftware.prefdialog.miscswing.actions.AbstractMenuActions;
-import com.anrisoftware.prefdialog.miscswing.actions.MenuAction;
+import com.anrisoftware.prefdialog.miscswing.actions.AbstractExecuteActions;
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 
 /**
  * Graph control panel actions.
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-public class ToolbarActions extends AbstractMenuActions {
+public class ToolbarActions extends AbstractExecuteActions {
 
     private static final String ID_PATTERN = "%s-%s";
     public static final String AUTO_ZOOM_DOMAIN_NAME = "graphWindow-autoZoomDomainButton";
@@ -61,7 +61,7 @@ public class ToolbarActions extends AbstractMenuActions {
     @Inject
     private OptionsAction optionsAction;
 
-    private Map<String, MenuAction> actions;
+    private Map<String, Action> actions;
 
     public void setId(String id) {
         autoZoomDomainAction
@@ -78,7 +78,7 @@ public class ToolbarActions extends AbstractMenuActions {
      * <h2>AWT Thread</h2>
      * <p>
      * Should be called in the AWT thread.
-     * 
+     *
      * @param enabled
      *            set to {@code true} to enable the window actions.
      */
@@ -89,15 +89,15 @@ public class ToolbarActions extends AbstractMenuActions {
     }
 
     @Override
-    public Map<String, MenuAction> getActions() {
+    public Map<String, Action> getActions() {
         if (actions == null) {
             actions = createActions();
         }
         return actions;
     }
 
-    private Map<String, MenuAction> createActions() {
-        actions = new HashMap<String, MenuAction>();
+    private Map<String, Action> createActions() {
+        actions = new HashMap<String, Action>();
         actions.put(AUTO_ZOOM_DOMAIN_NAME, autoZoomDomainAction);
         actions.put(AUTO_ZOOM_RANGE_NAME, autoZoomRangeAction);
         actions.put(ZOOM_IN_NAME, zoomInAction);

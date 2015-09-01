@@ -31,15 +31,14 @@ import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 
-import com.anrisoftware.prefdialog.miscswing.actions.AbstractMenuActions;
-import com.anrisoftware.prefdialog.miscswing.actions.MenuAction;
+import com.anrisoftware.prefdialog.miscswing.actions.AbstractExecuteActions;
+import com.anrisoftware.prefdialog.miscswing.actions.AbstractResourcesAction;
 import com.anrisoftware.prefdialog.miscswing.multichart.toolbaractions.ToolbarActions;
-import com.anrisoftware.prefdialog.miscswing.resourcesaction.AbstractResourcesAction;
 import com.anrisoftware.prefdialog.miscswing.toolbarmenu.ToolbarMenu;
 
 /**
  * Panel containing the forecast data graph.
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
  */
@@ -166,10 +165,10 @@ final class UiControlPanel extends JPanel {
         return graphsPanel;
     }
 
-    public void setAction(AbstractButton button, AbstractMenuActions actions) {
+    public void setAction(AbstractButton button, AbstractExecuteActions actions) {
         String name = button.getName();
-        MenuAction menuAction = actions.getActions().get(name);
-        button.setAction((Action) menuAction);
+        Action menuAction = actions.getActions().get(name);
+        button.setAction(menuAction);
         toolbarMenu.addAction((AbstractResourcesAction) menuAction);
     }
 

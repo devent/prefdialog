@@ -18,7 +18,7 @@
  */
 package com.anrisoftware.prefdialog.appdialogs.registerdialog;
 
-import com.anrisoftware.prefdialog.miscswing.resourcesaction.LabelResourcesAction;
+import com.anrisoftware.prefdialog.miscswing.actions.LabelResourcesAction;
 
 /**
  * Name label action.

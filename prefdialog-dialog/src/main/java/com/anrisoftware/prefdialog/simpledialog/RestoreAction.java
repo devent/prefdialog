@@ -22,7 +22,7 @@ import static com.anrisoftware.prefdialog.simpledialog.SimpleDialog.RESTORE_ACTI
 
 import java.awt.event.ActionEvent;
 
-import com.anrisoftware.prefdialog.miscswing.resourcesaction.AbstractResourcesAction;
+import com.anrisoftware.prefdialog.miscswing.actions.AbstractResourcesAction;
 
 /**
  * Restores the input of the dialog.

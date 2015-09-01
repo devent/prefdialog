@@ -18,10 +18,10 @@
  */
 package com.anrisoftware.prefdialog.miscswing.multichart.toolbaractions;
 
-import com.anrisoftware.prefdialog.miscswing.actions.AbstractMenuAction;
+import com.anrisoftware.prefdialog.miscswing.actions.AbstractExecuteAction;
 
 @SuppressWarnings("serial")
-class ZoomInAction extends AbstractMenuAction {
+class ZoomInAction extends AbstractExecuteAction {
 
 	private static final String NAME = "zoom_in_tool_action";
 
