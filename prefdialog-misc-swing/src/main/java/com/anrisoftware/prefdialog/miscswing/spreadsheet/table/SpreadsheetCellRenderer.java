@@ -42,13 +42,20 @@ public final class SpreadsheetCellRenderer extends DefaultTableCellRenderer {
 
     private Color uneditableForeground;
 
+    private boolean showUneditableColumnOnlyFirst;
+
     public SpreadsheetCellRenderer() {
         this.uneditableForeground = null;
         this.uneditableBackground = null;
+        this.showUneditableColumnOnlyFirst = false;
     }
 
     public void setUneditableBackground(Color c) {
         this.uneditableBackground = c;
+    }
+
+    public void setShowUneditableColumnOnlyFirst(boolean b) {
+        this.showUneditableColumnOnlyFirst = b;
     }
 
     @Override
@@ -76,23 +83,42 @@ public final class SpreadsheetCellRenderer extends DefaultTableCellRenderer {
         }
         TableModel model = table.getModel();
         boolean editable = model.isCellEditable(row, column);
-        if (!editable && !isSelected) {
-            super.setBackground(uneditableBackground);
-        } else if (!editable && isSelected) {
+        if (editable) {
+            setupEditable(table, isSelected);
+        }
+        if (!editable) {
+            setupUneditable(table, isSelected, row, column);
+        }
+        return this;
+    }
+
+    private void setupEditable(JTable table, boolean isSelected) {
+        if (isSelected) {
+            super.setForeground(table.getSelectionForeground());
+            super.setBackground(table.getSelectionBackground());
+        } else {
+            super.setForeground(unselectedForeground);
+            super.setBackground(unselectedBackground);
+        }
+    }
+
+    private void setupUneditable(JTable table, boolean isSelected, int row,
+            int column) {
+        if (showUneditableColumnOnlyFirst && column > 0) {
+            setupEditable(table, isSelected);
+            return;
+        }
+        if (isSelected) {
             super.setForeground(unselectedForeground);
             if (uneditableBackground == null) {
                 super.setBackground(unselectedBackground);
             } else {
                 super.setBackground(uneditableBackground);
             }
-        } else if (editable && isSelected) {
-            super.setForeground(table.getSelectionForeground());
-            super.setBackground(table.getSelectionBackground());
-        } else if (editable && !isSelected) {
-            super.setForeground(unselectedForeground);
-            super.setBackground(unselectedBackground);
         }
-        return this;
+        if (!isSelected) {
+            super.setBackground(uneditableBackground);
+        }
     }
 
 }

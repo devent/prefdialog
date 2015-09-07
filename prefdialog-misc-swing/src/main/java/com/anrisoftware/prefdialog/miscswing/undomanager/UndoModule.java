@@ -16,26 +16,20 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-misc-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.miscswing.tables;
-
-import javax.swing.undo.UndoableEdit;
+package com.anrisoftware.prefdialog.miscswing.undomanager;
 
 import com.google.inject.AbstractModule;
-import com.google.inject.assistedinject.FactoryModuleBuilder;
 
 /**
- * Installs the set item undoable action.
+ * Binds the undoable edit factories.
  *
- * @author Erwin Müller, erwin.mueller@deventm.de
- * @since 1.0
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 3.2
  */
-public class SetItemUndoableActionModule extends AbstractModule {
+public class UndoModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        install(new FactoryModuleBuilder().implement(UndoableEdit.class,
-                SetItemUndoableAction.class).build(
-                SetItemUndoableActionFactory.class));
     }
 
 }

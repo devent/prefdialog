@@ -23,6 +23,7 @@ import static java.awt.event.KeyEvent.VK_ESCAPE;
 import static javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW;
 import static javax.swing.KeyStroke.getKeyStroke;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
+import static org.apache.commons.lang3.Validate.notNull;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -420,6 +421,7 @@ public class SimpleDialog {
     }
 
     private void setupPanel() {
+        notNull(fieldsPanel, "fieldsPanel");
         dialogPanel.add(fieldsPanel, "cell 0 0");
         dialogPanel.getErrorTextLabel().setIcon(
                 new ImageIcon(emptyIcon.getImage()));

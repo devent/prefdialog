@@ -124,4 +124,13 @@ public final class SpreadsheetTable {
         return tableBindings.isMoveToNextEditable();
     }
 
+    /**
+     * Sets if only the first column should be shown to be uneditable.
+     *
+     * @since 3.2
+     */
+    public void setShowUneditableColumnOnlyFirst(boolean b) {
+        renderer.setShowUneditableColumnOnlyFirst(b);
+    }
+
 }

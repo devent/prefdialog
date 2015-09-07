@@ -16,26 +16,46 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-misc-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.miscswing.tables;
+package com.anrisoftware.prefdialog.miscswing.undomanager;
+
+import static com.anrisoftware.prefdialog.miscswing.undomanager.UndoManagerLogger._.add_edit;
 
 import javax.swing.undo.UndoableEdit;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.assistedinject.FactoryModuleBuilder;
+import com.anrisoftware.globalpom.log.AbstractLogger;
 
 /**
- * Installs the set item undoable action.
+ * Logging for {@link UndoManager}.
  *
- * @author Erwin Müller, erwin.mueller@deventm.de
- * @since 1.0
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 3.2
  */
-public class SetItemUndoableActionModule extends AbstractModule {
+class UndoManagerLogger extends AbstractLogger {
 
-    @Override
-    protected void configure() {
-        install(new FactoryModuleBuilder().implement(UndoableEdit.class,
-                SetItemUndoableAction.class).build(
-                SetItemUndoableActionFactory.class));
+    enum _ {
+
+        add_edit("Add undoable edit {}");
+
+        private String name;
+
+        private _(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
     }
 
+    /**
+     * Sets the context of the logger to {@link UndoManager}.
+     */
+    public UndoManagerLogger() {
+        super(UndoManager.class);
+    }
+
+    void addEdit(UndoableEdit edit) {
+        debug(add_edit, edit);
+    }
 }
