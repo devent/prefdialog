@@ -24,8 +24,8 @@ import javax.swing.Icon;
 
 import com.anrisoftware.globalpom.log.AbstractLogger;
 import com.anrisoftware.globalpom.textposition.TextPosition;
-import com.anrisoftware.prefdialog.annotations.FileChooserModel;
 import com.anrisoftware.prefdialog.core.AbstractFieldComponent;
+import com.anrisoftware.prefdialog.miscswing.filechoosers.FileChooserModel;
 import com.anrisoftware.resources.images.api.IconSize;
 
 /**

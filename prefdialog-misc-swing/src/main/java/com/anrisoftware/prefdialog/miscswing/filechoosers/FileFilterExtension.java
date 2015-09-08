@@ -1,22 +1,22 @@
 /*
  * Copyright 2013-2015 Erwin Müller <erwin.mueller@deventm.org>
  *
- * This file is part of prefdialog-corefields.
+ * This file is part of prefdialog-misc-swing.
  *
- * prefdialog-corefields is free software: you can redistribute it and/or modify it
+ * prefdialog-misc-swing is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
  * Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
  *
- * prefdialog-corefields is distributed in the hope that it will be useful, but
+ * prefdialog-misc-swing is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with prefdialog-corefields. If not, see <http://www.gnu.org/licenses/>.
+ * along with prefdialog-misc-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.fields.filechooser;
+package com.anrisoftware.prefdialog.miscswing.filechoosers;
 
 import static java.lang.String.format;
 import static org.apache.commons.io.FilenameUtils.isExtension;
@@ -31,7 +31,7 @@ import org.apache.commons.io.FilenameUtils;
  * Returns the extension for the forecast resource file.
  *
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 3,1
+ * @since 3,2
  */
 public abstract class FileFilterExtension extends FileFilter {
 

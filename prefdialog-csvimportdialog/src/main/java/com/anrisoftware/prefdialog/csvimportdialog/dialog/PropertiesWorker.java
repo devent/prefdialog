@@ -25,13 +25,13 @@ import java.net.URI;
 import javax.inject.Inject;
 
 import com.anrisoftware.globalpom.dataimport.CsvImportProperties;
-import com.anrisoftware.prefdialog.annotations.FileChooserModel;
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.advancedproperties.LineEnd;
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.advancedproperties.QuoteCharModel;
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelProperties;
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.separatorproperties.SeparatorCharModel;
 import com.anrisoftware.prefdialog.fields.FieldComponent;
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
+import com.anrisoftware.prefdialog.miscswing.filechoosers.FileChooserModel;
 import com.google.inject.assistedinject.Assisted;
 
 /**

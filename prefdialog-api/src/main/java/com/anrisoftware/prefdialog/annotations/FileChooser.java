@@ -27,6 +27,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import com.anrisoftware.globalpom.textposition.TextPosition;
+import com.anrisoftware.prefdialog.miscswing.filechoosers.FileChooserModel;
 import com.anrisoftware.resources.images.api.IconSize;
 
 /**

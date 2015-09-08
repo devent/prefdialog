@@ -1,23 +1,24 @@
 /*
  * Copyright 2013-2015 Erwin Müller <erwin.mueller@deventm.org>
  *
- * This file is part of prefdialog-corefields.
+ * This file is part of prefdialog-misc-swing.
  *
- * prefdialog-corefields is free software: you can redistribute it and/or modify it
+ * prefdialog-misc-swing is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
  * Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
  *
- * prefdialog-corefields is distributed in the hope that it will be useful, but
+ * prefdialog-misc-swing is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with prefdialog-corefields. If not, see <http://www.gnu.org/licenses/>.
+ * along with prefdialog-misc-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.fields.filechooser;
+package com.anrisoftware.prefdialog.miscswing.filechoosers;
 
+import static com.anrisoftware.prefdialog.miscswing.filechoosers.FileFilterExtension.appendExtensionToFile;
 import static javax.swing.SwingUtilities.invokeLater;
 
 import java.awt.Component;
@@ -30,19 +31,18 @@ import java.io.File;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import com.anrisoftware.prefdialog.annotations.FileChooserModel;
-
 /**
- * Opens the file open chooser dialog.
- * 
+ * Opens the file save chooser dialog.
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 3.0
+ * @since 3.2
  */
 @SuppressWarnings("serial")
-public class OpenFileDialogModel implements FileChooserModel {
+public class SaveFileDialogModel implements FileChooserModel {
 
     private final VetoableChangeSupport vetoableChange;
 
@@ -54,14 +54,17 @@ public class OpenFileDialogModel implements FileChooserModel {
 
     private FileFilter fileFilter;
 
-    public OpenFileDialogModel() {
+    private boolean attachFileExtension;
+
+    public SaveFileDialogModel() {
         this.vetoableChange = new VetoableChangeSupport(this);
         this.propertySupport = new PropertyChangeSupport(this);
+        this.attachFileExtension = true;
     }
 
     /**
      * Sets the file chooser dialog that will be open.
-     * 
+     *
      * @param chooser
      *            the {@link JFileChooser}.
      */
@@ -71,16 +74,29 @@ public class OpenFileDialogModel implements FileChooserModel {
 
     /**
      * Returns the file chooser dialog that will be open.
-     * 
+     *
      * @return the {@link JFileChooser}.
      */
     public JFileChooser getFileChooser() {
         return chooser;
     }
 
+    /**
+     * Attach automatically the selected file extension.
+     *
+     * @param attach
+     *            set to {@code true} to automatically attach the selected file
+     *            extension.
+     *
+     * @since 3.1
+     */
+    public void setAttachFileExtension(boolean attach) {
+        this.attachFileExtension = attach;
+    }
+
     @Override
     public void openDialog(Component parent) throws PropertyVetoException {
-        int result = chooser.showOpenDialog(parent);
+        int result = chooser.showSaveDialog(parent);
         if (result == JFileChooser.APPROVE_OPTION) {
             setFileFilter(chooser.getFileFilter());
             setFile(chooser.getSelectedFile());
@@ -106,9 +122,27 @@ public class OpenFileDialogModel implements FileChooserModel {
     @Override
     public void setFile(File file) throws PropertyVetoException {
         File oldValue = this.file;
-        this.file = file;
+        this.file = attachFileExtension(file);
         updateSelectedFile(file);
         vetoableChange.fireVetoableChange(FILE_PROPERTY, oldValue, file);
+    }
+
+    private File attachFileExtension(File file) {
+        if (file == null || fileFilter == null || !attachFileExtension) {
+            return file;
+        }
+        if (fileFilter instanceof FileFilterExtension) {
+            FileFilterExtension f = (FileFilterExtension) fileFilter;
+            return f.appendExtension(file);
+        }
+        if (fileFilter instanceof FileNameExtensionFilter) {
+            FileNameExtensionFilter f = (FileNameExtensionFilter) fileFilter;
+            if (f.getExtensions().length > 0) {
+                String extension = f.getExtensions()[0];
+                return appendExtensionToFile(file, extension);
+            }
+        }
+        return file;
     }
 
     private void updateSelectedFile(final File file) {

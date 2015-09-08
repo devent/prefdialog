@@ -25,8 +25,8 @@ import javax.swing.JFileChooser;
 
 import com.anrisoftware.prefdialog.annotations.FieldComponent;
 import com.anrisoftware.prefdialog.annotations.FileChooser;
-import com.anrisoftware.prefdialog.annotations.FileChooserModel;
-import com.anrisoftware.prefdialog.fields.filechooser.OpenFileDialogModel;
+import com.anrisoftware.prefdialog.miscswing.filechoosers.FileChooserModel;
+import com.anrisoftware.prefdialog.miscswing.filechoosers.OpenFileDialogModel;
 
 public class FileProperties {
 

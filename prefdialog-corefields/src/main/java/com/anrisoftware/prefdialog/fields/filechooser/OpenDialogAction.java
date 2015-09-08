@@ -23,7 +23,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
 
-import com.anrisoftware.prefdialog.annotations.FileChooserModel;
+import com.anrisoftware.prefdialog.miscswing.filechoosers.FileChooserModel;
 
 /**
  * Opens the file chooser dialog.

@@ -27,7 +27,7 @@ import java.util.concurrent.CountDownLatch;
 import javax.swing.SwingWorker;
 import javax.swing.filechooser.FileFilter;
 
-import com.anrisoftware.prefdialog.annotations.FileChooserModel;
+import com.anrisoftware.prefdialog.miscswing.filechoosers.FileChooserModel;
 
 /**
  * Opens a file chooser dialog in the AWT thread and returns the selected file
