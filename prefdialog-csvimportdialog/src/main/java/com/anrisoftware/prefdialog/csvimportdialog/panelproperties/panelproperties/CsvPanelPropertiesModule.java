@@ -35,11 +35,11 @@ import com.google.inject.assistedinject.FactoryModuleBuilder;
 
 /**
  * Installs the properties factory and provides the default character sets.
- * 
+ *
  * @see CsvImportProperties
  * @see CsvPanelProperties
  * @see CsvPanelPropertiesFactory
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
@@ -52,7 +52,8 @@ public class CsvPanelPropertiesModule extends AbstractModule {
 				.build(CsvPanelPropertiesFactory.class));
 	}
 
-	@Provides
+    @SuppressWarnings("deprecation")
+    @Provides
 	@Singleton
 	@Named("charsetDefaults")
 	Collection<Charset> getCharsetDefaults() {

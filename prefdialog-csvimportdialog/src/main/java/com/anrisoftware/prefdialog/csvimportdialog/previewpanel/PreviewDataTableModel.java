@@ -42,10 +42,13 @@ class PreviewDataTableModel extends AbstractTableModel {
 
     private final int maxPrefiewRows;
 
+    private int columnCount;
+
     PreviewDataTableModel() {
         this.rows = new ArrayList<List<String>>();
         this.headers = new ArrayList<String>();
         this.maxPrefiewRows = 25;
+        this.columnCount = 0;
     }
 
     /**
@@ -66,6 +69,7 @@ class PreviewDataTableModel extends AbstractTableModel {
         if (importer == null) {
             this.rows.clear();
             this.headers.clear();
+            this.columnCount = 0;
             fireTableStructureChanged();
         } else {
             loadData(importer);
@@ -79,9 +83,11 @@ class PreviewDataTableModel extends AbstractTableModel {
         int maxIndex = maxPrefiewRows + rowOffset;
         rows.clear();
         headers.clear();
+        int cols = 0;
         while (true) {
             List<String> values = importer.call().getValues();
             if (values == null || i > maxIndex) {
+                this.columnCount = cols;
                 return;
             }
             if (i == 0 && importer.getProperties().isHaveHeader()) {
@@ -89,6 +95,7 @@ class PreviewDataTableModel extends AbstractTableModel {
             } else {
                 if (i >= rowOffset) {
                     rows.add(values);
+                    cols = Math.max(cols, values.size());
                 }
             }
             i++;
@@ -105,13 +112,13 @@ class PreviewDataTableModel extends AbstractTableModel {
         if (rows.size() == 0) {
             return 0;
         } else {
-            return rows.get(0).size();
+            return columnCount;
         }
     }
 
     @Override
     public String getColumnName(int column) {
-        if (headers.size() > 0) {
+        if (headers.size() > 0 && column < headers.size()) {
             return headers.get(column);
         } else {
             return super.getColumnName(column);
@@ -120,6 +127,13 @@ class PreviewDataTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        return rows.get(rowIndex).get(columnIndex);
+        if (rowIndex >= rows.size()) {
+            return null;
+        }
+        List<String> cols = rows.get(rowIndex);
+        if (columnIndex >= cols.size()) {
+            return null;
+        }
+        return cols.get(columnIndex);
     }
 }

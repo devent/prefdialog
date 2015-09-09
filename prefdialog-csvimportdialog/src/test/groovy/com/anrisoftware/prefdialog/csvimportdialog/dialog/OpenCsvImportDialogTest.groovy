@@ -49,7 +49,7 @@ import com.google.inject.Injector
 @Slf4j
 class OpenCsvImportDialogTest {
 
-    //@Test
+    //@org.junit.Test
     void "show dialog, manually"() {
         String title = "$NAME/show dialog, confirm dialog"
         CsvPanelProperties bean = propertiesFactory.create()
