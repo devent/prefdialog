@@ -97,6 +97,11 @@ unlocked.
 
   Status bar for the application.
 
+  * {{{./tables.html}Tables}} <<<com.anrisoftware.prefdialog.miscswing.tables>>>
+
+  Data resources table models. Implements the <<<DefaultTableModel>>> to show
+the application data.
+
   * <<<com.anrisoftware.prefdialog.miscswing.toolbarmenu>>>
 
   Creates a pop-up menu to set text position and icon size of the added

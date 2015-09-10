@@ -1,0 +1,225 @@
+~~
+~~ Copyright 2013-2015 Erwin Müller <erwin.mueller@deventm.org>
+~~
+~~ This file is part of prefdialog-misc-swing.
+~~
+~~ prefdialog-misc-swing is free software: you can redistribute it and/or modify it
+~~ under the terms of the GNU Lesser General Public License as published by the
+~~ Free Software Foundation, either version 3 of the License, or (at your
+~~ option) any later version.
+~~
+~~ prefdialog-misc-swing is distributed in the hope that it will be useful, but
+~~ WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+~~ FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+~~ details.
+~~
+~~ You should have received a copy of the GNU Lesser General Public License
+~~ along with prefdialog-misc-swing. If not, see <http://www.gnu.org/licenses/>.
+~~
+
+Tables
+
+    * <<<com.anrisoftware.prefdialog.miscswing.tables.DefaultListModelTableModel>>>
+
+    Implements the <<<DefaultTableModel>>> to present items
+from a <<<ListModel>>>.
+
+[./images/tables_defaultlistmodeltablemodel-usecases.svg]
+
+Use Case: Present Items
+
+* Description
+
+    Items in the <<<ListModel>>> are presented as items in the table.
+Changes in the list model are reflected in the table model.
+
+* Preconditions
+
+    A <<<ListModel>>> is available.
+
+* Postconditions
+
+    The table is updated with the items in the <<<ListModel>>>.
+
+* Basic Course of Actions
+
+    The <<<ListModel>>> is set with
+the <<<DefaultListModelTableModel#setListModel()>>> method.
+
+Use Case: Add/Remove/Edit Item
+
+* Description
+
+    The user adds, removes or edits items.
+
+* Preconditions
+
+    The <<<ListModel>>> and the <<<UndoManager>>> are set.
+
+* Postconditions
+
+    The list model is updated and an undo edit event is added to the
+undo manager.
+
+* Basic Course of Actions
+
+    The <<<ListModel>>> is set with
+the <<<DefaultListModelTableModel#setListModel()>>> method.
+The <<<UndoManager>>> is set with
+the <<<DefaultListModelTableModel#setUndoManager()>>> method.
+The user can then add/remove/edit items and the set list model is updated.
+
+Example
+
+---
+@SuppressWarnings("serial")
+@OnAwt
+public class DatasetsTableModel extends DefaultListModelTableModel<Dataset> {
+
+    public static final int SELECT_COLUMN = 0;
+
+    public static final int ROW_COLUMN = 1;
+
+    public static final int TITLE_COLUMN = 2;
+
+    public static final int DATA_COLUMN = 3;
+
+    public static final int TYPE_COLUMN = 4;
+
+    public static final int STYLE_COLUMN = 5;
+
+    private static final String[] COLUMN_NAMES = new String[] {
+
+            // select
+            "datasets_table_column_select",
+
+            // row
+            "datasets_table_column_row",
+
+            // title
+            "datasets_table_column_title",
+
+            // data
+            "datasets_table_column_data",
+
+            // type
+            "datasets_table_column_type",
+
+            // style
+            "datasets_table_column_style",
+
+    };
+
+    private static final Class<?>[] COLUMN_TYPES = new Class<?>[] {
+
+            // select
+            String.class,
+
+            // row
+            Integer.class,
+
+            // title
+            String.class,
+
+            // data
+            String.class,
+
+            // type
+            String.class,
+
+            // style
+            Map.class,
+
+    };
+
+    private static final boolean[] COLUMN_EDITABLE = new boolean[] {
+
+            // select
+            false,
+
+            // row
+            false,
+
+            // title
+            true,
+
+            // data
+            true,
+
+            // type
+            false,
+
+            // style
+            false,
+
+    };
+
+    @Inject
+    private DefaultDatasetFactory datasetFactory;
+
+    @Inject
+    private SetItemUndoableActionFactory setItemUndoableActionFactory;
+
+    DatasetsTableModel() {
+        super(COLUMN_NAMES, COLUMN_TYPES, COLUMN_EDITABLE);
+    }
+
+    @Override
+    protected Object getValue(Dataset item, int row, int column) {
+        switch (column) {
+        case SELECT_COLUMN:
+            return "";
+        case ROW_COLUMN:
+            return row;
+        case TITLE_COLUMN:
+            return item.getTitle();
+        case DATA_COLUMN:
+            return item.getData();
+        case TYPE_COLUMN:
+            return item.getType();
+        case STYLE_COLUMN:
+            return item.getStyles();
+        default:
+            return item;
+        }
+    }
+
+    @Override
+    protected boolean setValueAt(Object value, int row, int column,
+            DefaultListModel<Dataset> model, Dataset oldItem, Dataset newItem) {
+        DefaultDataset item = (DefaultDataset) newItem;
+        switch (column) {
+        case SELECT_COLUMN:
+            return false;
+        case ROW_COLUMN:
+            return false;
+        case TITLE_COLUMN:
+            item.setTitle(value.toString());
+            return !isStringEquals(value, oldItem.getTitle());
+        case DATA_COLUMN:
+            item.setData(value.toString());
+            return !isStringEquals(value, oldItem.getData());
+        case TYPE_COLUMN:
+            return false;
+        case STYLE_COLUMN:
+            return false;
+        default:
+            return false;
+        }
+    }
+
+    @Override
+    protected Dataset createItem(Dataset oldItem) {
+        return datasetFactory.create(oldItem);
+    }
+
+    @Override
+    protected UndoableEdit createUndoableEdit(ItemsWindow<Dataset> itemsWindow,
+            DefaultListModel<Dataset> model, Dataset oldItem, Dataset newItem,
+            int row) {
+        return setItemUndoableActionFactory.create(itemsWindow, model, oldItem,
+                newItem, row);
+    }
+
+}
+---
