@@ -18,24 +18,31 @@
  */
 package com.anrisoftware.prefdialog.miscswing.tables;
 
+import javax.swing.DefaultListModel;
 import javax.swing.undo.UndoableEdit;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.assistedinject.FactoryModuleBuilder;
-
 /**
- * Installs the set item undoable action.
+ * Factory to create the add resource item undoable action.
  *
- * @author Erwin Müller, erwin.mueller@deventm.de
- * @since 1.0
+ * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @since 3.2
  */
-public class SetItemUndoableActionModule extends AbstractModule {
+public interface AddItemUndoableActionFactory {
 
-    @Override
-    protected void configure() {
-        install(new FactoryModuleBuilder().implement(UndoableEdit.class,
-                SetItemUndoableAction.class).build(
-                SetItemUndoableActionFactory.class));
-    }
-
+    /**
+     * Creates the add resource item undoable action.
+     *
+     * @param model
+     *            the {@link DefaultListModel} of the resources.
+     *
+     * @param resource
+     *            the resource that was added.
+     *
+     * @param index
+     *            the index of the resources.
+     *
+     * @return the {@link UndoableEdit}.
+     */
+    UndoableEdit create(@SuppressWarnings("rawtypes") DefaultListModel model,
+            Object resource, int index);
 }
