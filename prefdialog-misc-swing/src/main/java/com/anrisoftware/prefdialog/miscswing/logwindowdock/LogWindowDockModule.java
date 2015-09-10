@@ -16,23 +16,31 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-misc-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.miscswing.filechoosers;
+package com.anrisoftware.prefdialog.miscswing.logwindowdock;
 
-import javax.swing.JFileChooser;
+import com.google.inject.AbstractModule;
+import com.google.inject.assistedinject.FactoryModuleBuilder;
 
 /**
- * Open any file dialog model.
+ * Installs the log window dock factory.
+ *
+ * @see LogWindowDockFactory
+ * @see ErrorNodeFactory
+ * @see InfoNodeFactory
  *
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 3.2
+ * @since 1.0
  */
-@SuppressWarnings("serial")
-public class OpenAnyFileDialogModel extends OpenFileDialogModel {
+public class LogWindowDockModule extends AbstractModule {
 
     @Override
-    public void setFileChooser(JFileChooser chooser) {
-        super.setFileChooser(chooser);
-        chooser.setAcceptAllFileFilterUsed(false);
+    protected void configure() {
+        install(new FactoryModuleBuilder().implement(LogWindowDock.class,
+                LogWindowDock.class).build(LogWindowDockFactory.class));
+        install(new FactoryModuleBuilder().implement(ErrorNode.class,
+                ErrorNode.class).build(ErrorNodeFactory.class));
+        install(new FactoryModuleBuilder().implement(InfoNode.class,
+                InfoNode.class).build(InfoNodeFactory.class));
     }
 
 }

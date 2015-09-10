@@ -16,23 +16,15 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-misc-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.miscswing.filechoosers;
-
-import javax.swing.JFileChooser;
+package com.anrisoftware.prefdialog.miscswing.logwindowdock;
 
 /**
- * Open any file dialog model.
+ * Factory to create the error node.
  *
- * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @author Erwin Müller, erwin.mueller@deventm.de
  * @since 3.2
  */
-@SuppressWarnings("serial")
-public class OpenAnyFileDialogModel extends OpenFileDialogModel {
+public interface ErrorNodeFactory {
 
-    @Override
-    public void setFileChooser(JFileChooser chooser) {
-        super.setFileChooser(chooser);
-        chooser.setAcceptAllFileFilterUsed(false);
-    }
-
+	ErrorNode create(ErrorCategory category);
 }

@@ -20,6 +20,7 @@ package com.anrisoftware.prefdialog.miscswing.logpane;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.jdesktop.swingx.treetable.AbstractMutableTreeTableNode;
 
@@ -28,119 +29,166 @@ import com.anrisoftware.resources.texts.api.Texts;
 
 /**
  * Message that should be added in a category.
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
 public class MessageNode extends AbstractMutableTreeTableNode {
 
-	private CategoryNode category;
+    private CategoryNode category;
 
-	private List<Object> values;
+    private List<Object> values;
 
-	private List<String> resourceNames;
+    private List<String> resourceNames;
 
-	private Texts texts;
+    private Texts texts;
 
-	/**
-	 * The category must be set.
-	 * 
-	 * @see #setCategory(CategoryNode)
-	 */
-	public MessageNode() {
-	}
+    private Locale locale;
 
-	/**
-	 * Sets the category of this message. The message have the same columns as
-	 * the category.
-	 * 
-	 * @param category
-	 *            the {@link CategoryNode}.
-	 */
-	public MessageNode(CategoryNode category) {
-		this.category = category;
-		setColumnCount(category.getColumnCount());
-	}
+    /**
+     * The category must be set.
+     *
+     * @see #setCategory(CategoryNode)
+     */
+    public MessageNode() {
+    }
 
-	/**
-	 * Sets the category of this message.
-	 * 
-	 * @param category
-	 *            the {@link CategoryNode}.
-	 */
-	public void setCategory(CategoryNode category) {
-		this.category = category;
-	}
+    /**
+     * Sets the category of this message. The message have the same columns as
+     * the category.
+     *
+     * @param category
+     *            the {@link CategoryNode}.
+     */
+    public MessageNode(CategoryNode category) {
+        this.category = category;
+        setColumnCount(category.getColumnCount());
+    }
 
-	/**
-	 * Returns the category of this message.
-	 * 
-	 * @return the {@link CategoryNode}.
-	 */
-	public CategoryNode getCategory() {
-		return category;
-	}
+    /**
+     * Sets the category of this message.
+     *
+     * @param category
+     *            the {@link CategoryNode}.
+     */
+    public void setCategory(CategoryNode category) {
+        this.category = category;
+    }
 
-	/**
-	 * Sets the texts resources for the message. The column values are looked up
-	 * in the resources.
-	 * 
-	 * @param texts
-	 *            the {@link Texts}.
-	 */
-	public void setTexts(Texts texts) {
-		this.texts = texts;
-		updateTextsResource();
-	}
+    /**
+     * Returns the category of this message.
+     *
+     * @return the {@link CategoryNode}.
+     */
+    public CategoryNode getCategory() {
+        return category;
+    }
 
-	private void updateTextsResource() {
-		if (texts == null) {
-			return;
-		}
-		for (int i = 0; i < resourceNames.size(); i++) {
-			try {
-				String name = resourceNames.get(i);
-				name = texts.getResource(name).getText();
-				values.set(i, name);
-			} catch (ResourcesException e) {
-			}
-		}
-	}
+    /**
+     * Sets the texts resources for the message. The column values are looked up
+     * in the resources.
+     *
+     * @param texts
+     *            the {@link Texts}.
+     */
+    public void setTexts(Texts texts) {
+        this.texts = texts;
+        updateTextsResource();
+    }
 
-	@Override
-	public void setValueAt(Object value, int column) {
-		if (column >= values.size()) {
-			values.add(value);
-			resourceNames.add(value.toString());
-		} else {
-			values.set(column, value);
-			resourceNames.set(column, value.toString());
-		}
-	}
+    /**
+     * Returns the texts resources for the message.
+     *
+     * @return the {@link Texts}.
+     *
+     * @since 3.2
+     */
+    public Texts getTexts() {
+        return texts;
+    }
 
-	@Override
-	public Object getValueAt(int column) {
-		return values.get(column);
-	}
+    /**
+     * Sets the locale for the message node.
+     *
+     * @param locale
+     *            the {@link Locale}.
+     *
+     * @since 3.2
+     */
+    public void setLocale(Locale locale) {
+        this.locale = locale;
+        updateTextsResource();
+    }
 
-	/**
-	 * Sets the columns of the message. All column values are discarded.
-	 * 
-	 * @param columns
-	 *            the columns count.
-	 */
-	public void setColumnCount(int columns) {
-		this.values = new ArrayList<Object>(columns);
-		this.resourceNames = new ArrayList<String>(columns);
-	}
+    /**
+     * Returns the locale for the message node.
+     *
+     * @return the {@link Locale}.
+     *
+     * @since 3.2
+     */
+    public Locale getLocale() {
+        return locale;
+    }
 
-	@Override
-	public int getColumnCount() {
-		return category.getColumnCount();
-	}
+    private void updateTextsResource() {
+        if (texts == null) {
+            return;
+        }
+        if (locale == null) {
+            return;
+        }
+        doUpdateTextsResource();
+    }
 
-	@Override
-	public boolean isLeaf() {
-		return true;
-	}
+    /**
+     * Updates the texts resources on texts and locale change.
+     */
+    protected void doUpdateTextsResource() {
+        for (int i = 0; i < resourceNames.size(); i++) {
+            try {
+                String name = resourceNames.get(i);
+                name = texts.getResource(name, locale).getText();
+                values.set(i, name);
+            } catch (ResourcesException e) {
+            }
+        }
+    }
+
+    @Override
+    public void setValueAt(Object value, int column) {
+        if (column >= values.size()) {
+            values.add(value);
+            resourceNames.add(value.toString());
+        } else {
+            values.set(column, value);
+            resourceNames.set(column, value.toString());
+        }
+    }
+
+    @Override
+    public Object getValueAt(int column) {
+        return values.get(column);
+    }
+
+    /**
+     * Sets the columns of the message. All column values are discarded.
+     *
+     * @param columns
+     *            the columns count.
+     */
+    public void setColumnCount(int columns) {
+        this.values = new ArrayList<Object>(columns);
+        this.resourceNames = new ArrayList<String>(columns);
+    }
+
+    @Override
+    public int getColumnCount() {
+        return category.getColumnCount();
+    }
+
+    @Override
+    public boolean isLeaf() {
+        return true;
+    }
 }

@@ -16,23 +16,22 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-misc-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.miscswing.filechoosers;
-
-import javax.swing.JFileChooser;
+package com.anrisoftware.prefdialog.miscswing.logwindowdock;
 
 /**
- * Open any file dialog model.
+ * Log window dock resource.
  *
- * @author Erwin Mueller, erwin.mueller@deventm.org
+ * @author Erwin Müller, erwin.mueller@deventm.de
  * @since 3.2
  */
-@SuppressWarnings("serial")
-public class OpenAnyFileDialogModel extends OpenFileDialogModel {
+enum LogWindowDockResource {
 
-    @Override
-    public void setFileChooser(JFileChooser chooser) {
-        super.setFileChooser(chooser);
-        chooser.setAcceptAllFileFilterUsed(false);
-    }
+    logwindow_error_category,
+
+    logwindow_info_category,
+
+    logwindow_exception,
+
+    logwindow_info
 
 }

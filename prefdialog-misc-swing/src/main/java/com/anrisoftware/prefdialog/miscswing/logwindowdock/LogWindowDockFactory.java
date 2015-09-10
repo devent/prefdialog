@@ -16,23 +16,27 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-misc-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.miscswing.filechoosers;
+package com.anrisoftware.prefdialog.miscswing.logwindowdock;
 
-import javax.swing.JFileChooser;
+import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 
 /**
- * Open any file dialog model.
+ * Factory to create the log window dock.
  *
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 3.2
+ * @since 1.0
  */
-@SuppressWarnings("serial")
-public class OpenAnyFileDialogModel extends OpenFileDialogModel {
+public interface LogWindowDockFactory {
 
-    @Override
-    public void setFileChooser(JFileChooser chooser) {
-        super.setFileChooser(chooser);
-        chooser.setAcceptAllFileFilterUsed(false);
-    }
-
+    /**
+     * Creates the log window dock.
+     * <p>
+     * <h2>AWT Thread</h2>
+     * Should be called in the AWT event dispatch thread.
+     * </p>
+     *
+     * @return the {@link LogWindowDock}.
+     */
+    @OnAwt
+    LogWindowDock create();
 }

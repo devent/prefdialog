@@ -19,20 +19,23 @@
 package com.anrisoftware.prefdialog.miscswing.actions;
 
 import java.awt.event.ActionEvent;
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
 
 import javax.inject.Inject;
 
 /**
- * Sets the action name and mnemonic from text resource.
+ * Sets the action name and mnemonic from text resource. The action is
+ * identified by the name.
  * <p>
  * <h2>Example</h2>
  * <p>
  *
  * <pre>
  * &#064;SuppressWarnings(&quot;serial&quot;)
- * class ExitAction extends AbstractMenuAction {
+ * class ExitAction extends AbstractExecuteAction {
  * 
  *     private static final String ACTION_NAME = &quot;exit_action&quot;;
  * 
@@ -96,4 +99,19 @@ public abstract class AbstractExecuteAction extends AbstractResourcesAction
     public void actionPerformed(ActionEvent e) {
         actions.executeActions(getId());
     }
+
+    /**
+     * Returns the future task from the property change event.
+     *
+     * @param evt
+     *            the {@link PropertyChangeEvent} that have the source set to
+     *            the future task.
+     *
+     * @return the {@link Future} task.
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> Future<T> asFuture(PropertyChangeEvent evt) {
+        return (Future<T>) evt.getSource();
+    }
+
 }

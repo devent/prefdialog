@@ -18,6 +18,8 @@
  */
 package com.anrisoftware.prefdialog.miscswing.logpane;
 
+import java.util.Locale;
+
 import org.jdesktop.swingx.treetable.AbstractMutableTreeTableNode;
 
 import com.anrisoftware.resources.api.ResourcesException;
@@ -25,78 +27,96 @@ import com.anrisoftware.resources.texts.api.Texts;
 
 /**
  * Category of messages.
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
 public class CategoryNode extends AbstractMutableTreeTableNode {
 
-	private String name;
+    private String name;
 
-	private Texts texts;
+    private Texts texts;
 
-	private String nameResource;
+    private String nameResource;
 
-	private int columnCount;
+    private int columnCount;
 
-	/**
-	 * Sets the name of the category.
-	 * 
-	 * @param name
-	 *            the {@link String} name or the resource name for the category.
-	 */
-	public void setName(String name) {
-		this.nameResource = name;
-		this.name = name;
-	}
+    private Locale locale;
 
-	/**
-	 * Sets the texts resources for the category. The name is looked up in the
-	 * resources.
-	 * 
-	 * @param texts
-	 *            the {@link Texts}.
-	 */
-	public void setTexts(Texts texts) {
-		this.texts = texts;
-		updateTextsResource();
-	}
+    /**
+     * Sets the name of the category.
+     *
+     * @param name
+     *            the {@link String} name or the resource name for the category.
+     */
+    public void setName(String name) {
+        this.nameResource = name;
+        this.name = name;
+    }
 
-	private void updateTextsResource() {
-		if (texts == null) {
-			return;
-		}
-		try {
-			name = texts.getResource(nameResource).getText();
-		} catch (ResourcesException e) {
-		}
-	}
+    /**
+     * Sets the texts resources for the category. The name is looked up in the
+     * resources.
+     *
+     * @param texts
+     *            the {@link Texts}.
+     */
+    public void setTexts(Texts texts) {
+        this.texts = texts;
+        updateTextsResource();
+    }
 
-	@Override
-	public Object getValueAt(int column) {
-		if (column == 0) {
-			return name;
-		}
-		return null;
-	}
+    /**
+     * Sets the locale for the category.
+     *
+     * @param texts
+     *            the {@link Texts}.
+     *
+     * @since 3.2
+     */
+    public void setLocale(Locale locale) {
+        this.locale = locale;
+        updateTextsResource();
+    }
 
-	/**
-	 * Sets the columns of the category.
-	 * 
-	 * @param columns
-	 *            the columns count.
-	 */
-	public void setColumnCount(int columns) {
-		this.columnCount = columns;
-	}
+    private void updateTextsResource() {
+        if (texts == null) {
+            return;
+        }
+        if (locale == null) {
+            return;
+        }
+        try {
+            name = texts.getResource(nameResource, locale).getText();
+        } catch (ResourcesException e) {
+        }
+    }
 
-	@Override
-	public int getColumnCount() {
-		return columnCount;
-	}
+    @Override
+    public Object getValueAt(int column) {
+        if (column == 0) {
+            return name;
+        }
+        return null;
+    }
 
-	@Override
-	public boolean isLeaf() {
-		return false;
-	}
+    /**
+     * Sets the columns of the category.
+     *
+     * @param columns
+     *            the columns count.
+     */
+    public void setColumnCount(int columns) {
+        this.columnCount = columns;
+    }
+
+    @Override
+    public int getColumnCount() {
+        return columnCount;
+    }
+
+    @Override
+    public boolean isLeaf() {
+        return false;
+    }
 }

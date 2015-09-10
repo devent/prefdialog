@@ -38,14 +38,13 @@ public class StatusBar {
 
     /**
      * Creates the status bar.
-     *
-     * <h2>AWT Thread</h2>
      * <p>
-     * Should be called in the AWT thread.
+     * <h2>AWT Thread</h2>
+     * Should be called in the AWT event dispatch thread.
+     * </p>
      *
      * @return the {@link StatusBar}.
      */
-    @OnAwt
     public static StatusBar createStatusBar() {
         return StatusBarModule.getStatusBarFactory().create();
     }
@@ -68,8 +67,8 @@ public class StatusBar {
     /**
      * @see StatusBarFactory#create()
      */
-    @OnAwt
     @Inject
+    @OnAwt
     StatusBar(UiStatusPanel panel) {
         this.panel = panel;
         this.group = new STGroup();
@@ -182,10 +181,10 @@ public class StatusBar {
 
     /**
      * Returns the component of the status bar to be added in the main window.
-     *
-     * <h2>AWT Thread</h2>
      * <p>
-     * Should be called in the AWT thread.
+     * <h2>AWT Thread</h2>
+     * Should be called in the AWT event dispatch thread.
+     * </p>
      *
      * @return the {@link Component}.
      */

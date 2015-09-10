@@ -21,6 +21,7 @@ package com.anrisoftware.prefdialog.miscswing.logpane;
 import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -33,7 +34,11 @@ import com.google.inject.Guice;
 
 /**
  * Uses a tree table to display messages ordered in categories.
- * 
+ * <p>
+ * <h2>AWT Thread</h2>
+ * Objects of that class should be used in the AWT event dispatch thread.
+ * </p>
+ *
  * <pre>
  * pane.setColumns(columnNames);
  * 
@@ -52,15 +57,16 @@ import com.google.inject.Guice;
  * message.setValueAt(ex, 3);
  * pane.addMessage(message);
  * </pre>
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
+@OnAwt
 public class LogPane {
 
     /**
      * Creates the problems pane.
-     * 
+     *
      * @return the {@link LogPane}.
      */
     public static LogPane createLogPane() {
@@ -83,8 +89,9 @@ public class LogPane {
 
     private final List<MessageNode> messages;
 
+    private Locale locale;
+
     @Inject
-    @OnAwt
     LogPane(UiPane pane, RootNode rootNode) {
         this.pane = pane;
         this.root = rootNode;
@@ -94,15 +101,10 @@ public class LogPane {
 
     /**
      * Sets the columns of the problems pane.
-     * <p>
-     * <h2>AWT Thread</h2>
-     * <p>
-     * Should be called in the AWT thread.
-     * 
+     *
      * @param columnNames
      *            the column names.
      */
-    @OnAwt
     public void setColumns(List<Object> columnNames) {
         root.setName("root");
         root.setColumnCount(columnNames.size());
@@ -116,17 +118,11 @@ public class LogPane {
     }
 
     /**
-     * Sets the texts resources for the category. The name is looked up in the
-     * resources.
-     * <p>
-     * <h2>AWT Thread</h2>
-     * <p>
-     * Should be called in the AWT thread.
-     * 
+     * Sets the texts resources for the categories and messages.
+     *
      * @param texts
      *            the {@link Texts}.
      */
-    @OnAwt
     public void setTexts(Texts texts) {
         this.texts = texts;
         updateTextsResource();
@@ -138,14 +134,36 @@ public class LogPane {
         }
     }
 
+    /**
+     * Sets the locale for the log pane.
+     *
+     * @param locale
+     *            the {@link Locale}.
+     *
+     * @since 3.2
+     */
+    public void setLocale(Locale locale) {
+        this.locale = locale;
+        updateTextsResource();
+        for (CategoryNode node : categories) {
+            node.setLocale(locale);
+        }
+        for (MessageNode node : messages) {
+            node.setLocale(locale);
+        }
+    }
+
     private void updateTextsResource() {
         if (texts == null) {
+            return;
+        }
+        if (locale == null) {
             return;
         }
         for (int i = 0; i < columnNamesResources.size(); i++) {
             try {
                 String name = columnNamesResources.get(i);
-                name = texts.getResource(name).getText();
+                name = texts.getResource(name, locale).getText();
                 columnNames.set(i, name);
             } catch (ResourcesException e) {
             }
@@ -156,7 +174,7 @@ public class LogPane {
 
     /**
      * Returns the pane component to be added in the container.
-     * 
+     *
      * @return the {@link Component}.
      */
     public Component getComponent() {
@@ -165,15 +183,10 @@ public class LogPane {
 
     /**
      * Adds a new category to the problems pane.
-     * <p>
-     * <h2>AWT Thread</h2>
-     * <p>
-     * Should be called in the AWT thread.
-     * 
+     *
      * @param category
      *            the {@link CategoryNode}.
      */
-    @OnAwt
     public void addCategory(CategoryNode category) {
         categories.add(category);
         category.setColumnCount(root.getColumnCount());
@@ -182,15 +195,10 @@ public class LogPane {
 
     /**
      * Adds the message to the list of problems.
-     * <p>
-     * <h2>AWT Thread</h2>
-     * <p>
-     * Should be called in the AWT thread.
-     * 
+     *
      * @param message
      *            the {@link MessageNode}.
      */
-    @OnAwt
     public void addMessage(MessageNode message) {
         messages.add(message);
         model.insertNodeInto(message, message.getCategory(), 0);

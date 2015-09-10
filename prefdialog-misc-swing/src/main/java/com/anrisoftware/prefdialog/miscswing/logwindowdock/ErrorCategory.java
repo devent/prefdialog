@@ -16,23 +16,21 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-misc-swing. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.miscswing.filechoosers;
+package com.anrisoftware.prefdialog.miscswing.logwindowdock;
 
-import javax.swing.JFileChooser;
+import static com.anrisoftware.prefdialog.miscswing.logwindowdock.LogWindowDockResource.logwindow_error_category;
+
+import com.anrisoftware.prefdialog.miscswing.logpane.CategoryNode;
 
 /**
- * Open any file dialog model.
+ * Error category node.
  *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.2
  */
-@SuppressWarnings("serial")
-public class OpenAnyFileDialogModel extends OpenFileDialogModel {
+public class ErrorCategory extends CategoryNode {
 
-    @Override
-    public void setFileChooser(JFileChooser chooser) {
-        super.setFileChooser(chooser);
-        chooser.setAcceptAllFileFilterUsed(false);
-    }
-
+	ErrorCategory() {
+        setName(logwindow_error_category.name());
+	}
 }

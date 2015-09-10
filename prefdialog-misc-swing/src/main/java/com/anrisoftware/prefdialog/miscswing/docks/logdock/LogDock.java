@@ -20,6 +20,7 @@ package com.anrisoftware.prefdialog.miscswing.docks.logdock;
 
 import java.awt.Component;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -33,19 +34,19 @@ import com.anrisoftware.resources.texts.api.Texts;
 
 /**
  * Log dock. Uses a tree table to display messages ordered in categories.
- * 
+ *
  * @see LogPane
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
 @SuppressWarnings("serial")
+@OnAwt
 public class LogDock extends AbstractViewDockWindow {
 
     private final LogPane pane;
 
     @Inject
-    @OnAwt
     LogDock(LogPane pane) {
         this.pane = pane;
     }
@@ -55,32 +56,42 @@ public class LogDock extends AbstractViewDockWindow {
         return "problems-dock";
     }
 
-    @OnAwt
     public void setColumns(List<Object> columnNames) {
         pane.setColumns(columnNames);
     }
 
-    @OnAwt
+    /**
+     * Sets the texts resources for the categories and messages.
+     *
+     * @param texts
+     *            the {@link Texts}.
+     */
     public void setTexts(Texts texts) {
         pane.setTexts(texts);
     }
 
-    @OnAwt
+    /**
+     * Sets the locale for the log dock.
+     *
+     * @param locale
+     *            the {@link Locale}.
+     *
+     * @since 3.2
+     */
+    public void setLocale(Locale locale) {
+        pane.setLocale(locale);
+    }
+
     public void addCategory(CategoryNode category) {
         pane.addCategory(category);
     }
 
     /**
      * Adds the message to the list of problems.
-     * <p>
-     * <h2>AWT Thread</h2>
-     * <p>
-     * Should be called in the AWT thread.
-     * 
+     *
      * @param message
      *            the {@link MessageNode}.
      */
-    @OnAwt
     public void addMessage(MessageNode message) {
         pane.addMessage(message);
     }

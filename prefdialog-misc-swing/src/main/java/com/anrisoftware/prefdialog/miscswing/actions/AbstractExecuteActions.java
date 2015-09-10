@@ -29,7 +29,7 @@ import com.anrisoftware.resources.images.api.Images;
 import com.anrisoftware.resources.texts.api.Texts;
 
 /**
- * Manages the actions of a menu.
+ * Manages the actions and its resources of an application.
  * <p>
  * <h2>Example</h2>
  * <p>
@@ -43,22 +43,22 @@ import com.anrisoftware.resources.texts.api.Texts;
  *     &#064;Inject
  *     private ExitAction exitAction;
  * 
- *     private Map&lt;String, MenuAction&gt; actions;
+ *     private Map&lt;String, Action&gt; actions;
  * 
  *     void setTexts(TextsProvider texts) {
  *         super.setTexts(texts);
  *     }
  * 
  *     &#064;Override
- *     public Map&lt;String, MenuAction&gt; getActions() {
+ *     public Map&lt;String, Action&gt; getActions() {
  *         if (actions == null) {
  *             actions = createActions();
  *         }
  *         return actions;
  *     }
  * 
- *     private Map&lt;String, MenuAction&gt; createActions() {
- *         actions = new HashMap&lt;String, MenuAction&gt;();
+ *     private Map&lt;String, Action&gt; createActions() {
+ *         actions = new HashMap&lt;String, Action&gt;();
  *         actions.put(FILE_MENU_NAME, dataAction);
  *         actions.put(EXIT_NAME, originalDataAction);
  *         return actions;
