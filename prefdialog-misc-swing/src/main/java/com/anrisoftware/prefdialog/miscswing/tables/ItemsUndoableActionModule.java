@@ -29,6 +29,7 @@ import com.google.inject.assistedinject.FactoryModuleBuilder;
  * @see SetItemUndoableActionFactory
  * @see AddItemUndoableActionFactory
  * @see RemoveItemsUndoableActionFactory
+ * @see SetItemsUndoableActionFactory
  *
  * @author Erwin Müller, erwin.mueller@deventm.de
  * @since 3.2
@@ -46,6 +47,9 @@ public class ItemsUndoableActionModule extends AbstractModule {
         install(new FactoryModuleBuilder().implement(UndoableEdit.class,
                 RemoveItemsUndoableAction.class).build(
                 RemoveItemsUndoableActionFactory.class));
+        install(new FactoryModuleBuilder().implement(UndoableEdit.class,
+                SetItemsUndoableAction.class).build(
+                SetItemsUndoableActionFactory.class));
     }
 
 }
