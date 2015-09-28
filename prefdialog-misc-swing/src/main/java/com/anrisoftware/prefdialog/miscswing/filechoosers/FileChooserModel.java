@@ -27,6 +27,7 @@ import java.beans.VetoableChangeSupport;
 import java.io.File;
 import java.io.Serializable;
 
+import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
 /**
@@ -98,6 +99,21 @@ public interface FileChooserModel extends Serializable {
      *         canceled.
      */
     FileFilter getFileFilter();
+
+    /**
+     * Sets the file chooser dialog that will be open.
+     *
+     * @param chooser
+     *            the {@link JFileChooser}.
+     */
+    void setFileChooser(JFileChooser chooser);
+
+    /**
+     * Returns the file chooser dialog that will be open.
+     *
+     * @return the {@link JFileChooser}.
+     */
+    JFileChooser getFileChooser();
 
     /**
      * @see PropertyChangeSupport#addPropertyChangeListener(PropertyChangeListener)

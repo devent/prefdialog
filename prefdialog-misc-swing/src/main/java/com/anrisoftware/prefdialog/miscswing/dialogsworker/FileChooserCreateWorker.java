@@ -38,11 +38,11 @@ public class FileChooserCreateWorker extends
     protected JFileChooser createDialog() {
         JFileChooser chooser = new JFileChooser();
         chooser.setLocale(getLocale());
-        chooser.setDialogTitle(getDialogTItle());
+        chooser.setDialogTitle(getDialogTitle0());
         return chooser;
     }
 
-    private String getDialogTItle() {
+    private String getDialogTitle0() {
         Texts texts = getTexts();
         if (texts != null) {
             TextResource resource = texts.getResource(

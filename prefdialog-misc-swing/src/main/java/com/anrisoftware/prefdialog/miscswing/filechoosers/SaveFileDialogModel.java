@@ -62,21 +62,12 @@ public class SaveFileDialogModel implements FileChooserModel {
         this.attachFileExtension = true;
     }
 
-    /**
-     * Sets the file chooser dialog that will be open.
-     *
-     * @param chooser
-     *            the {@link JFileChooser}.
-     */
+    @Override
     public void setFileChooser(JFileChooser chooser) {
         this.chooser = chooser;
     }
 
-    /**
-     * Returns the file chooser dialog that will be open.
-     *
-     * @return the {@link JFileChooser}.
-     */
+    @Override
     public JFileChooser getFileChooser() {
         return chooser;
     }

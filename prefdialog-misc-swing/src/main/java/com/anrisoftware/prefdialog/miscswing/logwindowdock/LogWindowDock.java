@@ -19,6 +19,7 @@
 package com.anrisoftware.prefdialog.miscswing.logwindowdock;
 
 import static javax.swing.SwingUtilities.invokeLater;
+import static org.apache.commons.lang3.Validate.notNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -253,7 +254,9 @@ public class LogWindowDock {
     }
 
     private String renderMessage(Object message, Object... args) {
-        ST st = new ST(group, message.toString());
+        String messagestr = message.toString();
+        notNull(messagestr, "message");
+        ST st = new ST(group, messagestr);
         for (int i = 0; i < args.length; i += 2) {
             st.add(args[i].toString(), args[i + 1]);
         }

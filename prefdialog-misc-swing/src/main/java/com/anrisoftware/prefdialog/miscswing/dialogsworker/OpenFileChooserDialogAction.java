@@ -24,7 +24,7 @@ import java.io.File;
 import javax.inject.Inject;
 import javax.swing.JFileChooser;
 
-import com.anrisoftware.prefdialog.miscswing.filechoosers.OpenFileDialogModel;
+import com.anrisoftware.prefdialog.miscswing.filechoosers.FileChooserModel;
 
 /**
  * Opens the open file chooser dialog on the AWT event thread and waits for the
@@ -39,7 +39,7 @@ public class OpenFileChooserDialogAction extends
     @Inject
     private OpenFileChooserDialogActionLogger log;
 
-    private OpenFileDialogModel model;
+    private FileChooserModel model;
 
     private File file;
 
@@ -52,9 +52,9 @@ public class OpenFileChooserDialogAction extends
      * Sets the open file dialog model.
      *
      * @param model
-     *            the {@link OpenFileDialogModel}.
+     *            the {@link FileChooserModel}.
      */
-    public void setModel(OpenFileDialogModel model) {
+    public void setModel(FileChooserModel model) {
         this.model = model;
     }
 
