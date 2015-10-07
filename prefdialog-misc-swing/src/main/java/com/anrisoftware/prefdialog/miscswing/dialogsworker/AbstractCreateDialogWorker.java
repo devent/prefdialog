@@ -19,12 +19,13 @@
 package com.anrisoftware.prefdialog.miscswing.dialogsworker;
 
 import static javax.swing.SwingUtilities.invokeAndWait;
+import static org.apache.commons.lang3.Validate.notNull;
 
+import java.awt.Container;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Locale;
 
-import javax.swing.JComponent;
-
+import com.anrisoftware.resources.texts.api.TextResource;
 import com.anrisoftware.resources.texts.api.Texts;
 
 /**
@@ -33,7 +34,7 @@ import com.anrisoftware.resources.texts.api.Texts;
  * @author Erwin Müller, erwin.mueller@deventm.de
  * @since 3.2
  */
-public abstract class AbstractCreateDialogWorker<DialogType extends JComponent> {
+public abstract class AbstractCreateDialogWorker<DialogType extends Container> {
 
     private DialogType dialog;
 
@@ -104,6 +105,27 @@ public abstract class AbstractCreateDialogWorker<DialogType extends JComponent> 
      * @return the dialog.
      */
     protected abstract DialogType createDialog();
+
+    /**
+     * Returns the dialog title either from the specified dialog title text, or
+     * retrieved from the texts resources.
+     *
+     * @return the dialog {@link String} title.
+     *
+     * @since 3.3
+     */
+    protected final String getDialogTitleFromResource() {
+        Texts texts = getTexts();
+        if (texts != null) {
+            String resourceName = getDialogTitleResourceName();
+            notNull(resourceName, "DialogTitleResourceName");
+            TextResource resource = texts
+                    .getResource(resourceName, getLocale());
+            return resource.getText();
+        } else {
+            return getDialogTitle();
+        }
+    }
 
     private DialogType createDialog0() throws CreateDialogWorkerException,
             CreateDialogInterrupedException {

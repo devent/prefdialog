@@ -22,11 +22,10 @@ import static javax.swing.SwingUtilities.invokeLater;
 import static org.apache.commons.lang3.Validate.notNull;
 
 import java.awt.Component;
+import java.awt.Container;
 import java.util.Locale;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
-
-import javax.swing.JComponent;
 
 import com.anrisoftware.resources.texts.api.Texts;
 
@@ -36,7 +35,7 @@ import com.anrisoftware.resources.texts.api.Texts;
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.2
  */
-abstract class OpenDialogAction<DialogType extends JComponent, ResultType>
+public abstract class OpenDialogAction<DialogType extends Container, ResultType>
         implements Callable<ResultType> {
 
     private AbstractCreateDialogWorker<DialogType> dialogWorker;
@@ -72,8 +71,16 @@ abstract class OpenDialogAction<DialogType extends JComponent, ResultType>
         this.locale = locale;
     }
 
+    public Locale getLocale() {
+        return locale;
+    }
+
     public void setTexts(Texts texts) {
         this.texts = texts;
+    }
+
+    public Texts getTexts() {
+        return texts;
     }
 
     public void setDialogTitleResourceName(String name) {

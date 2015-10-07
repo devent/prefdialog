@@ -24,7 +24,6 @@ import com.anrisoftware.globalpom.reflection.beans.BeansModule;
 import com.anrisoftware.prefdialog.appdialogs.dialog.AppDialogFactory;
 import com.anrisoftware.prefdialog.appdialogs.dialog.AppDialogModule;
 import com.anrisoftware.prefdialog.appdialogs.dialogheader.DialogHeaderModule;
-import com.anrisoftware.prefdialog.miscswing.editcontextmenu.EditContextMenuModule;
 import com.anrisoftware.prefdialog.simpledialog.SimpleDialogModule;
 import com.anrisoftware.resources.images.images.ImagesResourcesModule;
 import com.anrisoftware.resources.images.mapcached.ResourcesImagesCachedMapModule;
@@ -63,9 +62,8 @@ public class AboutDialogModule extends AbstractModule {
         private static final Module[] modules = new Module[] {
                 new AboutDialogModule(), new AppDialogModule(),
                 new DialogHeaderModule(), new SimpleDialogModule(),
-                new EditContextMenuModule(), new MnemonicModule(),
-                new AnnotationsModule(), new BeansModule(),
-                new TextsResourcesDefaultModule(),
+                new MnemonicModule(), new AnnotationsModule(),
+                new BeansModule(), new TextsResourcesDefaultModule(),
                 new TemplatesResourcesModule(),
                 new TemplatesDefaultMapsModule(), new STWorkerModule(),
                 new STDefaultPropertiesModule(), new ImagesResourcesModule(),

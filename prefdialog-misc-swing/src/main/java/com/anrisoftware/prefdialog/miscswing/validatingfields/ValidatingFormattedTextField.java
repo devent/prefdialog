@@ -38,7 +38,7 @@ import com.anrisoftware.prefdialog.miscswing.tooltip.ToolTipShower;
 /**
  * Using an input verifier to verify the input on focus lost and input enter.
  * Mark the field and show a tool-tip text if the input is not valid.
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
@@ -144,13 +144,13 @@ public class ValidatingFormattedTextField extends JFormattedTextField {
 
     /**
      * Verifies the field.
-     * 
+     *
      * @param verifier
      *            the {@link InputVerifier} that verifiers the input.
-     * 
+     *
      * @param input
      *            the {@link JTextFormattedField}.
-     * 
+     *
      * @return {@code true} if the input is valid and the focus can be yield.
      */
     protected boolean verifyField(InputVerifier verifier,
@@ -175,7 +175,7 @@ public class ValidatingFormattedTextField extends JFormattedTextField {
 
     /**
      * Sets the input verifier that validated the input.
-     * 
+     *
      * @param verifier
      *            the {@link InputVerifier}.
      */
@@ -185,7 +185,7 @@ public class ValidatingFormattedTextField extends JFormattedTextField {
 
     /**
      * Returns the input verifier that validated the input.
-     * 
+     *
      * @return the {@link InputVerifier}.
      */
     public InputVerifier getVerifier() {

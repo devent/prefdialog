@@ -28,6 +28,8 @@ import javax.inject.Inject;
 import com.anrisoftware.resources.templates.api.TemplateResource;
 import com.anrisoftware.resources.templates.api.Templates;
 import com.anrisoftware.resources.templates.api.TemplatesFactory;
+import com.anrisoftware.resources.texts.api.Texts;
+import com.anrisoftware.resources.texts.api.TextsFactory;
 
 /**
  * Renders the default about text.
@@ -39,9 +41,24 @@ public class AboutTextRenderer {
 
     private Templates templates;
 
+    private Texts texts;
+
     @Inject
     void setTemplatesFactory(TemplatesFactory factory) {
         this.templates = factory.create("AboutDialog");
+    }
+
+    public Templates getTemplates() {
+        return templates;
+    }
+
+    @Inject
+    void setTextsFactory(TextsFactory factory) {
+        this.texts = factory.create("AboutDialog");
+    }
+
+    public Texts getTexts() {
+        return texts;
     }
 
     /**

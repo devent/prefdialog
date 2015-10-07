@@ -20,9 +20,6 @@ package com.anrisoftware.prefdialog.miscswing.dialogsworker;
 
 import javax.swing.JFileChooser;
 
-import com.anrisoftware.resources.texts.api.TextResource;
-import com.anrisoftware.resources.texts.api.Texts;
-
 /**
  * Creates the file choser dialog on the AWT event thread.
  *
@@ -38,19 +35,8 @@ public class FileChooserCreateWorker extends
     protected JFileChooser createDialog() {
         JFileChooser chooser = new JFileChooser();
         chooser.setLocale(getLocale());
-        chooser.setDialogTitle(getDialogTitle0());
+        chooser.setDialogTitle(getDialogTitleFromResource());
         return chooser;
-    }
-
-    private String getDialogTitle0() {
-        Texts texts = getTexts();
-        if (texts != null) {
-            TextResource resource = texts.getResource(
-                    getDialogTitleResourceName(), getLocale());
-            return resource.getText();
-        } else {
-            return getDialogTitle();
-        }
     }
 
 }
