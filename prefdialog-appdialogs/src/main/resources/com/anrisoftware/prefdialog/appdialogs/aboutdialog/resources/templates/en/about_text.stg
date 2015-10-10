@@ -6,11 +6,11 @@ $!-- args.email --!$
 <head>
 <style>
 body {
-    font-family: sans-serif;
-    font-style: normal;
-    font-size: 12pt
+    font-family: $args.body.fontFamily$;
+    font-style: $args.body.fontStyle$;
+    font-size: $args.body.fontSize$;
     font-weight: normal;
-    width: 100px;
+    width: $args.body.width$;
 }
 h1 { font-size: 130%; font-weight: bold; margin-top: 10px; margin-bottom: 1em; }
 h2 { font-size: 120%; font-weight: bold; margin-top: 10px; margin-bottom: 1em; }

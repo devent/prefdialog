@@ -20,6 +20,7 @@ package com.anrisoftware.prefdialog.appdialogs.aboutdialog;
 
 import static com.anrisoftware.prefdialog.appdialogs.aboutdialog.AboutDialogResource.about_text;
 
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
@@ -73,8 +74,26 @@ public class AboutTextRenderer {
      * @return the {@link String} text.
      */
     public String getText(Locale locale, Map<String, Object> args) {
+        setupDefaultArgs(args);
         TemplateResource template = about_text.getTemplate(templates, locale);
         template.invalidate();
         return template.getText("aboutText", "args", args);
+    }
+
+    private void setupDefaultArgs(Map<String, Object> args) {
+        putValueIfNotExists("body", new HashMap<String, Object>(), args);
+        @SuppressWarnings("unchecked")
+        Map<String, Object> body = (Map<String, Object>) args.get("body");
+        putValueIfNotExists("fontFamily", "sans-serif", body);
+        putValueIfNotExists("fontStyle", "normal", body);
+        putValueIfNotExists("fontSize", "12pt", body);
+        putValueIfNotExists("width", "400px", body);
+    }
+
+    private void putValueIfNotExists(String key, Object value,
+            Map<String, Object> args) {
+        if (!args.containsKey(key)) {
+            args.put(key, value);
+        }
     }
 }
