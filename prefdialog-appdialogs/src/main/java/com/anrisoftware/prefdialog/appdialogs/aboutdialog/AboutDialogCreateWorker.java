@@ -179,7 +179,8 @@ public class AboutDialogCreateWorker extends
         aboutDialog.createDialog();
         jdialog.setTitle(getDialogTitleFromResource());
         jdialog.pack();
-        jdialog.setSize(new Dimension(520, 420));
+        jdialog.setSize(new Dimension(580, 420));
+        jdialog.setLocationRelativeTo(owner);
         return jdialog;
     }
 
