@@ -18,9 +18,12 @@
  */
 package com.anrisoftware.prefdialog.miscswing.logwindowdock;
 
+import static com.anrisoftware.prefdialog.miscswing.actions.AppActionListenerResource.application_error_message;
 import static java.lang.String.format;
+import static org.apache.commons.lang3.Validate.notNull;
 
 import com.anrisoftware.globalpom.log.AbstractLogger;
+import com.anrisoftware.prefdialog.miscswing.statusbar.StatusBar;
 
 /**
  * Logging messages that are shown in the log window dock as nodes.
@@ -31,6 +34,8 @@ import com.anrisoftware.globalpom.log.AbstractLogger;
 public class AbstractLogWindowLogger extends AbstractLogger {
 
     private LogWindowDock logWindowDock;
+
+    private StatusBar statusBar;
 
     /**
      * Creates a logger for the specified context class.
@@ -43,14 +48,20 @@ public class AbstractLogWindowLogger extends AbstractLogger {
         super(contextClass);
     }
 
-    /**
-     * Sets the log window dock.
-     *
-     * @param dock
-     *            the {@link LogWindowDock}.
-     */
     public void setLogWindowDock(LogWindowDock dock) {
         this.logWindowDock = dock;
+    }
+
+    public LogWindowDock getLogWindowDock() {
+        return logWindowDock;
+    }
+
+    public void setStatusBar(StatusBar statusBar) {
+        this.statusBar = statusBar;
+    }
+
+    public StatusBar getStatusBar() {
+        return statusBar;
     }
 
     @Override
@@ -86,6 +97,9 @@ public class AbstractLogWindowLogger extends AbstractLogger {
      */
     public <T extends Throwable> T logException(String title, String descr,
             T ex, Object message, Object... args) {
+        notNull(logWindowDock, "logWindowDock");
+        notNull(statusBar, "statusBar");
+        statusBar.setMessage(false, application_error_message);
         logWindowDock.addErrorMessage(title, format(descr, args), ex);
         return super.logException(ex, message, args);
     }

@@ -18,7 +18,8 @@
  */
 package com.anrisoftware.prefdialog.miscswing.actions;
 
-import static com.anrisoftware.prefdialog.miscswing.actions.AbstractAppActionListener._.application_error_description;
+import static com.anrisoftware.prefdialog.miscswing.actions.AppActionListenerResource.application_error_description;
+import static org.apache.commons.lang3.Validate.notNull;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -27,6 +28,7 @@ import java.util.concurrent.Future;
 import javax.inject.Inject;
 
 import com.anrisoftware.prefdialog.miscswing.logwindowdock.LogWindowDock;
+import com.anrisoftware.prefdialog.miscswing.statusbar.StatusBar;
 
 /**
  * Retrieves the value from the future task.
@@ -37,18 +39,8 @@ import com.anrisoftware.prefdialog.miscswing.logwindowdock.LogWindowDock;
 public abstract class AbstractAppActionListener implements
         PropertyChangeListener {
 
-    private static final String CAUSE_MESSAGE_ARG = "causeMessage";
-
-    enum _ {
-
-        application_error_description
-
-    }
-
     @Inject
     private AbstractAppActionLogger log;
-
-    private LogWindowDock logWindowDock;
 
     /**
      * Sets the log window dock.
@@ -57,13 +49,47 @@ public abstract class AbstractAppActionListener implements
      *            the {@link LogWindowDock}.
      */
     public void setLogWindowDock(LogWindowDock dock) {
-        this.logWindowDock = dock;
         log.setLogWindowDock(dock);
+    }
+
+    /**
+     * Returns the log window dock.
+     *
+     * @return the {@link LogWindowDock}.
+     *
+     * @since 3.3
+     */
+    public LogWindowDock getLogWindowDock() {
+        return log.getLogWindowDock();
+    }
+
+    /**
+     * Sets the status bar.
+     *
+     * @param statusBar
+     *            the {@link StatusBar}.
+     *
+     * @since 3.3
+     */
+    public void setStatusBar(StatusBar statusBar) {
+        log.setStatusBar(statusBar);
+    }
+
+    /**
+     * Returns the status bar.
+     *
+     * @return the {@link StatusBar}.
+     *
+     * @since 3.3
+     */
+    public StatusBar getStatusBar() {
+        return log.getStatusBar();
     }
 
     @Override
     public final void propertyChange(PropertyChangeEvent evt) {
-        log.checkLogWindowDock(logWindowDock);
+        notNull(getStatusBar(), "statusBar");
+        notNull(getLogWindowDock(), "logWindowDock");
         try {
             doPropertyChange(evt);
         } catch (Throwable e) {
@@ -71,6 +97,8 @@ public abstract class AbstractAppActionListener implements
                     CAUSE_MESSAGE_ARG, e.getLocalizedMessage());
         }
     }
+
+    private static final String CAUSE_MESSAGE_ARG = "causeMessage";
 
     /**
      * Adds the exception to the errors window.

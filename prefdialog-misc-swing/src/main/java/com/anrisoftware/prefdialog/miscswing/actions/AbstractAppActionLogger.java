@@ -19,13 +19,11 @@
 package com.anrisoftware.prefdialog.miscswing.actions;
 
 import static com.anrisoftware.prefdialog.miscswing.actions.AbstractAppActionLogger._.error;
-import static com.anrisoftware.prefdialog.miscswing.actions.AbstractAppActionLogger._.log_window_dock_null;
 import static com.anrisoftware.prefdialog.miscswing.actions.AbstractAppActionLogger._.task;
 import static com.anrisoftware.prefdialog.miscswing.actions.AbstractAppActionLogger._.task_error;
 import static com.anrisoftware.prefdialog.miscswing.actions.AbstractAppActionLogger._.task_error_message;
 import static com.anrisoftware.prefdialog.miscswing.actions.AbstractAppActionLogger._.task_interrupted;
 import static com.anrisoftware.prefdialog.miscswing.actions.AbstractAppActionLogger._.task_interrupted_message;
-import static org.apache.commons.lang3.Validate.notNull;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -37,7 +35,6 @@ import com.anrisoftware.prefdialog.miscswing.logwindowdock.AbstractLogWindowLogg
 import com.anrisoftware.prefdialog.miscswing.logwindowdock.ErrorCategory;
 import com.anrisoftware.prefdialog.miscswing.logwindowdock.ErrorNode;
 import com.anrisoftware.prefdialog.miscswing.logwindowdock.ErrorNodeFactory;
-import com.anrisoftware.prefdialog.miscswing.logwindowdock.LogWindowDock;
 
 /**
  * Logging messages for {@link AbstractAppActionListener}.
@@ -60,9 +57,7 @@ class AbstractAppActionLogger extends AbstractLogWindowLogger {
 
         task_interrupted_message("Task interrupted: %s."),
 
-        task_interrupted("Task interrupted"),
-
-        log_window_dock_null("Log window dock not set");
+        task_interrupted("Task interrupted");
 
         private String name;
 
@@ -84,15 +79,6 @@ class AbstractAppActionLogger extends AbstractLogWindowLogger {
      */
     public AbstractAppActionLogger() {
         super(AbstractAppActionListener.class);
-    }
-
-    void checkLogWindowDock(LogWindowDock dock) {
-        try {
-            notNull(dock);
-        } catch (NullPointerException e) {
-            log.error(log_window_dock_null.toString(), e);
-            throw e;
-        }
     }
 
     <T> T fromFuture(Future<T> future) {
