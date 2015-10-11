@@ -27,6 +27,7 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroup;
 
@@ -223,12 +224,13 @@ public class LogWindowDock {
             final Object messageDescr, final Throwable ex, final Object... args) {
         invokeLater(new Runnable() {
 
+            @SuppressWarnings("deprecation")
             @Override
             public void run() {
                 ErrorNode error;
                 ErrorCategory category = getErrorCategory();
                 error = errorNodeFactory.create(category);
-                error.setTitle(messageTitle.toString());
+                error.setTitle(ObjectUtils.toString(messageTitle));
                 String descr = renderMessage(messageDescr, args);
                 error.setDescription(descr);
                 error.setException(ex);
