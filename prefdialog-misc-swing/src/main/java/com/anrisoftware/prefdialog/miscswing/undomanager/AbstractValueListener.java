@@ -68,6 +68,7 @@ public abstract class AbstractValueListener<ValueType, ProjectType> implements
     public void setProject(ProjectType project) {
         this.project = project;
         this.model = (DefaultListModel<ValueType>) project;
+        setValueResource(-1, null);
     }
 
     public DefaultListModel<ValueType> getModel() {
