@@ -48,6 +48,7 @@
 		<dependency>
 			<groupId>com.anrisoftware.globalpom</groupId>
 			<artifactId>globalpom-groovytestutils</artifactId>
+			<scope>test</scope>
 		</dependency>
 
 		<!-- own modules dependencies -->
