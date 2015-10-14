@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.anrisoftware.prefdialog</groupId>
 		<artifactId>prefdialog-parent</artifactId>
-		<version>3.3-SNAPSHOT</version>
+		<version>3.3</version>
 		<relativePath>../prefdialog-parent</relativePath>
 	</parent>
 
