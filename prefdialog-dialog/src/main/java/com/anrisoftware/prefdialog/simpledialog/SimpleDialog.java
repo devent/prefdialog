@@ -600,7 +600,7 @@ public class SimpleDialog {
      * Sets the error text to show inside the dialog.
      *
      * @param text
-     *            the error {@link String} text.
+     *            the error {@link String} text or {@code null}.
      *
      * @since 3.1
      */

@@ -48,6 +48,7 @@ class ApproveAction extends AbstractResourcesAction {
     @Override
     public void actionPerformed(ActionEvent evt) {
         try {
+            dialog.setErrorText(null);
             dialog.setStatus(APPROVED);
             dialog.closeDialog();
         } catch (PropertyVetoException e) {

@@ -28,7 +28,7 @@ import com.anrisoftware.prefdialog.miscswing.actions.AbstractResourcesAction;
 
 /**
  * Closes the dialog with the canceled status.
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
@@ -48,6 +48,7 @@ class CancelAction extends AbstractResourcesAction {
 	@Override
 	public void actionPerformed(ActionEvent evt) {
 		try {
+            dialog.setErrorText(null);
 			dialog.setStatus(CANCELED);
 			dialog.closeDialog();
 		} catch (PropertyVetoException e) {
