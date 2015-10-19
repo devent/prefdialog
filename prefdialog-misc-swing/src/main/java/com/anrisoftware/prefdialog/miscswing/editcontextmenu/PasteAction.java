@@ -31,8 +31,7 @@ import com.anrisoftware.prefdialog.miscswing.actions.AbstractResourcesAction;
  * @since 3.1
  */
 @SuppressWarnings("serial")
-final class PasteAction extends AbstractResourcesAction implements
-        ContextMenuAction {
+class PasteAction extends AbstractResourcesAction implements ContextMenuAction {
 
     private JTextComponent textField;
 

@@ -31,7 +31,7 @@ import com.anrisoftware.prefdialog.miscswing.actions.AbstractResourcesAction;
  * @since 1.0
  */
 @SuppressWarnings("serial")
-final class SelectAllAction extends AbstractResourcesAction implements
+class SelectAllAction extends AbstractResourcesAction implements
         ContextMenuAction {
 
     private JTextComponent textField;

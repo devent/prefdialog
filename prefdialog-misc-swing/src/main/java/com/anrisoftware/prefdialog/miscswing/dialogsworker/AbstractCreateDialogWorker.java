@@ -22,6 +22,7 @@ import static javax.swing.SwingUtilities.invokeAndWait;
 import static org.apache.commons.lang3.Validate.notNull;
 
 import java.awt.Container;
+import java.lang.ref.SoftReference;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Locale;
 
@@ -36,7 +37,7 @@ import com.anrisoftware.resources.texts.api.Texts;
  */
 public abstract class AbstractCreateDialogWorker<DialogType extends Container> {
 
-    private DialogType dialog;
+    private SoftReference<DialogType> dialog;
 
     private Locale locale;
 
@@ -79,6 +80,15 @@ public abstract class AbstractCreateDialogWorker<DialogType extends Container> {
     }
 
     /**
+     * Forces the recreation of the dialog.
+     *
+     * @since 3.4
+     */
+    public void forceRecreationDialog() {
+        this.dialog = null;
+    }
+
+    /**
      * Returns the dialog. If not already created, the dialog is created on the
      * AWT event thread.
      *
@@ -93,10 +103,10 @@ public abstract class AbstractCreateDialogWorker<DialogType extends Container> {
      */
     public synchronized DialogType getDialog()
             throws CreateDialogWorkerException, CreateDialogInterrupedException {
-        if (dialog == null) {
-            this.dialog = createDialog0();
+        if (dialog == null || dialog.get() == null) {
+            this.dialog = new SoftReference<DialogType>(createDialog0());
         }
-        return dialog;
+        return dialog.get();
     }
 
     /**
@@ -130,24 +140,33 @@ public abstract class AbstractCreateDialogWorker<DialogType extends Container> {
     private DialogType createDialog0() throws CreateDialogWorkerException,
             CreateDialogInterrupedException {
         try {
-            createDialogAWT();
+            return createDialogAWT();
         } catch (InvocationTargetException e) {
             throw new CreateDialogWorkerException(e.getCause());
         } catch (InterruptedException e) {
             throw new CreateDialogInterrupedException(e);
         }
-        return dialog;
     }
 
-    private void createDialogAWT() throws InterruptedException,
+    private DialogType createDialogAWT() throws InterruptedException,
             InvocationTargetException {
-        invokeAndWait(new Runnable() {
-
-            @Override
-            public void run() {
-                dialog = createDialog();
-            }
-        });
+        DialogCreator creator = new DialogCreator();
+        invokeAndWait(creator);
+        return creator.getDialog();
     }
 
+    private class DialogCreator implements Runnable {
+
+        private DialogType dialog;
+
+        public DialogType getDialog() {
+            return dialog;
+        }
+
+        @Override
+        public void run() {
+            dialog = createDialog();
+        }
+
+    }
 }

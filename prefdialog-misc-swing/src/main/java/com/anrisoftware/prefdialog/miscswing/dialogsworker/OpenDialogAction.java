@@ -117,8 +117,7 @@ public abstract class OpenDialogAction<DialogType extends Container, ResultType>
      */
     protected abstract ResultType openDialogAWT(DialogType dialog);
 
-    private DialogType createDialog() throws CreateDialogInterrupedException,
-            CreateDialogWorkerException {
+    private DialogType createDialog() throws CreateDialogWorkerException {
         dialogWorker.setLocale(locale);
         dialogWorker.setTexts(texts);
         dialogWorker.setDialogTitleResourceName(dialogTitleResourceName);

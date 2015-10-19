@@ -40,7 +40,7 @@ import com.anrisoftware.resources.texts.api.TextsFactory;
  * @author Erwin Müller, erwin.mueller@deventm.de
  * @since 3.1
  */
-public final class EditContextMenu {
+public class EditContextMenu {
 
     public static final String COPY_ACTION_NAME = "copy_action";
 

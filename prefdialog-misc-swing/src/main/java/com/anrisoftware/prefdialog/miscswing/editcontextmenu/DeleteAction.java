@@ -33,8 +33,7 @@ import com.anrisoftware.prefdialog.miscswing.actions.AbstractResourcesAction;
  * @since 1.0
  */
 @SuppressWarnings("serial")
-final class DeleteAction extends AbstractResourcesAction implements
-        ContextMenuAction {
+class DeleteAction extends AbstractResourcesAction implements ContextMenuAction {
 
     private JTextComponent textField;
 
