@@ -133,6 +133,6 @@ Maven
 <dependency>
     <groupId>com.anrisoftware.prefdialog</groupId>
     <artifactId>prefdialog-misc-swing</artifactId>
-    <version>3.2</version>
+    <version>3.4</version>
 </dependency>
 ---
