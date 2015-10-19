@@ -33,6 +33,8 @@ import javax.inject.Inject;
 import javax.swing.JDialog;
 
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import com.anrisoftware.prefdialog.appdialogs.dialog.AppDialog;
 import com.anrisoftware.prefdialog.appdialogs.dialog.AppDialogFactory;
@@ -109,6 +111,8 @@ public class RegisterDialog {
     private String code;
 
     private String name;
+
+    private DateTimeFormatter dateFormatter;
 
     @Inject
     @OnAwt
@@ -225,6 +229,7 @@ public class RegisterDialog {
     public void setLocale(Locale locale) {
         appDialog.setLocale(locale);
         editContextMenu.setLocale(locale);
+        updateTexts();
     }
 
     /**
@@ -398,6 +403,8 @@ public class RegisterDialog {
     }
 
     private void updateTexts() {
+        this.dateFormatter = DateTimeFormat.mediumDate()
+                .withLocale(getLocale());
         updateRegisterText();
         updateEmailText();
         updateKeyText();
@@ -417,7 +424,8 @@ public class RegisterDialog {
     private void updateRegisterText() {
         Map<String, Object> args = new HashMap<String, Object>();
         args.put("daysLeft", daysLeft);
-        args.put("registrationDate", registrationDate);
+        args.put("registrationDate", registrationDate == null ? null
+                : dateFormatter.print(registrationDate));
         args.put("registrationNeeded", daysLeft < 0);
         if (daysLeft > 1) {
             args.put("dayUnit", days_text.getTextResource().getText());
