@@ -129,12 +129,12 @@
 			<dependency>
 				<groupId>org.dockingframes</groupId>
 				<artifactId>docking-frames-core</artifactId>
-				<version>1.1.2-p14e</version>
+				<version>1.1.2-p14f</version>
 			</dependency>
 			<dependency>
 				<groupId>org.dockingframes</groupId>
 				<artifactId>docking-frames-common</artifactId>
-				<version>1.1.2-p14e</version>
+				<version>1.1.2-p14f</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
