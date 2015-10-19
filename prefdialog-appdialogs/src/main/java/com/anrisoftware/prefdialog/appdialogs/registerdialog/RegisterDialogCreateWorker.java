@@ -16,17 +16,17 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-appdialogs. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.appdialogs.aboutdialog;
+package com.anrisoftware.prefdialog.appdialogs.registerdialog;
 
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Image;
 import java.lang.ref.SoftReference;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 import javax.swing.JDialog;
+
+import org.joda.time.DateTime;
 
 import com.anrisoftware.prefdialog.miscswing.dialogsworker.AbstractCreateDialogWorker;
 import com.anrisoftware.prefdialog.miscswing.dialogsworker.CreateDialogInterrupedException;
@@ -36,20 +36,18 @@ import com.anrisoftware.resources.images.api.Images;
 import com.anrisoftware.resources.texts.api.Texts;
 
 /**
- * Creates the about dialog on the AWT event thread.
+ * Creates the register dialog on the AWT event thread.
  *
- * @see AboutDialog
+ * @see RegisterDialog
  *
  * @author Erwin Müller, erwin.mueller@deventm.de
- * @since 3.3
+ * @since 3.4
  */
-public class AboutDialogCreateWorker extends
+public class RegisterDialogCreateWorker extends
         AbstractCreateDialogWorker<JDialog> {
 
-    private final List<AboutTextEntry> aboutTexts;
-
     @Inject
-    private AboutDialogFactory aboutDialogFactory;
+    private RegisterDialogFactory registerDialogFactory;
 
     private ImageScalingWorkerFactory imageScalingWorkerFactory;
 
@@ -77,12 +75,19 @@ public class AboutDialogCreateWorker extends
 
     private Frame owner;
 
-    private SoftReference<AboutDialog> aboutDialog;
+    private long daysLeft;
 
-    @Inject
-    AboutDialogCreateWorker() {
-        this.aboutTexts = new ArrayList<AboutDialogCreateWorker.AboutTextEntry>();
-    }
+    private String email;
+
+    private String key;
+
+    private String code;
+
+    private String name;
+
+    private SoftReference<RegisterDialog> registerDialog;
+
+    private DateTime registrationDate;
 
     public void setImageScalingWorkerFactory(ImageScalingWorkerFactory factory) {
         this.imageScalingWorkerFactory = factory;
@@ -132,14 +137,39 @@ public class AboutDialogCreateWorker extends
         this.linkText = text;
     }
 
-    public void addAboutText(String name, String text) {
-        aboutTexts.add(new AboutTextEntry(name, text));
+    public void setDaysLeft(long daysLeft) {
+        this.daysLeft = daysLeft;
+        forceRecreationDialog();
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+        forceRecreationDialog();
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+        forceRecreationDialog();
+    }
+
+    public void setName(String name) {
+        this.name = name;
+        forceRecreationDialog();
+    }
+
+    public void setRegistrationDate(DateTime registrationDate) {
+        this.registrationDate = registrationDate;
+        forceRecreationDialog();
     }
 
     /**
-     * Returns the created about dialog.
+     * Returns the created registration dialog.
      *
-     * @return the {@link AboutDialog}.
+     * @return the {@link RegisterDialog}.
      *
      * @throws CreateDialogWorkerException
      *             if there was an error creating the dialog.
@@ -147,83 +177,71 @@ public class AboutDialogCreateWorker extends
      * @throws CreateDialogInterrupedException
      *             if the dialog creation on the AWT event thread was
      *             interrupted.
-     *
-     * @since 3.4
      */
-    public AboutDialog getAboutDialog() throws CreateDialogInterrupedException,
-            CreateDialogWorkerException {
-        if (aboutDialog == null || aboutDialog.get() == null) {
+    public RegisterDialog getRegisterDialog()
+            throws CreateDialogInterrupedException, CreateDialogWorkerException {
+        if (registerDialog == null || registerDialog.get() == null) {
             forceRecreationDialog();
         }
         getDialog();
-        return aboutDialog.get();
+        return registerDialog.get();
     }
 
     @Override
     protected JDialog createDialog() {
         JDialog jdialog = new JDialog(owner, true);
-        AboutDialog aboutDialog = aboutDialogFactory.create();
-        aboutDialog.setDialog(jdialog);
+        RegisterDialog dialog = registerDialogFactory.create();
+        dialog.setDialog(jdialog);
         if (imageScalingWorkerFactory != null) {
-            aboutDialog.setImageScalingWorkerFactory(imageScalingWorkerFactory);
+            dialog.setImageScalingWorkerFactory(imageScalingWorkerFactory);
         }
         if (dialogHeadersTexts != null) {
-            aboutDialog.setDialogHeadersTexts(dialogHeadersTexts);
+            dialog.setDialogHeadersTexts(dialogHeadersTexts);
         }
         if (dialogTexts != null) {
-            aboutDialog.setDialogTexts(dialogTexts);
+            dialog.setDialogTexts(dialogTexts);
         }
         if (dialogHeaderImages != null) {
-            aboutDialog.setDialogHeaderImages(dialogHeaderImages);
+            dialog.setDialogHeaderImages(dialogHeaderImages);
         }
         if (dialogImages != null) {
-            aboutDialog.setDialogImages(dialogImages);
+            dialog.setDialogImages(dialogImages);
         }
         if (logoImageName != null) {
-            aboutDialog.setLogoImageName(logoImageName);
+            dialog.setLogoImageName(logoImageName);
         }
         if (logoImage != null) {
-            aboutDialog.setLogoImage(logoImage);
+            dialog.setLogoImage(logoImage);
         }
         if (logoSize != null) {
-            aboutDialog.setLogoSize(logoSize);
+            dialog.setLogoSize(logoSize);
         }
         if (infoTextName != null) {
-            aboutDialog.setInfoTextName(infoTextName);
+            dialog.setInfoTextName(infoTextName);
         }
         if (infoText != null) {
-            aboutDialog.setInfoText(infoText);
+            dialog.setInfoText(infoText);
         }
         if (linkTextName != null) {
-            aboutDialog.setLinkTextName(linkTextName);
+            dialog.setLinkTextName(linkTextName);
         }
         if (linkText != null) {
-            aboutDialog.setLinkText(linkText);
+            dialog.setLinkText(linkText);
         }
-        aboutDialog.setLocale(getLocale());
-        for (AboutTextEntry entry : aboutTexts) {
-            aboutDialog.addAboutText(entry.name, entry.text);
-        }
-        aboutDialog.createDialog();
+        dialog.setEmail(email);
+        dialog.setKey(key);
+        dialog.setName(name);
+        dialog.setDaysLeft(daysLeft);
+        dialog.setCode(code);
+        dialog.setRegistrationDate(registrationDate);
+        dialog.setLocale(getLocale());
+        dialog.createDialog();
         jdialog.setTitle(getDialogTitleFromResource());
         jdialog.pack();
         jdialog.setSize(new Dimension(580, 420));
         jdialog.setLocationRelativeTo(owner);
-        this.aboutDialog = new SoftReference<AboutDialog>(aboutDialog);
+        this.registerDialog = new SoftReference<RegisterDialog>(dialog);
         return jdialog;
-    }
-
-    private static class AboutTextEntry {
-
-        final String name;
-
-        final String text;
-
-        public AboutTextEntry(String name, String text) {
-            this.name = name;
-            this.text = text;
-        }
-
     }
 
 }

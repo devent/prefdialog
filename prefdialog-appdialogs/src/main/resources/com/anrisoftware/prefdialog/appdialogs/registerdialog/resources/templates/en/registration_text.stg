@@ -1,5 +1,45 @@
-registrationText(args) ::= <%
-<! - args.daysLeft - !>
-<! - args.dayUnit - !>
-\<html>\<p style="text-align:justify;">This is a demo version of this program. You have still \<em><args.daysLeft> <args.dayUnit>\</em> left for a registration. Please send the key to the E-Mail address below. Shortly you will receive a code to register this product, Please fill the fields \<em>name\</em> and \<em>code\</em> with your name and the received code, respectively, to register.\<p>\</html>
-%>
+delimiters "$", "$"
+
+registrationText(args) ::= <<
+$! - args.registrationNeeded - !$
+$! - args.registrationDate - !$
+$! - args.daysLeft - !$
+$! - args.dayUnit - !$
+<html>
+<p style="text-align:justify;">
+$if(args.registrationDate)$
+$alreadyRegisteredText(args)$
+$elseif(args.registrationNeeded)$
+$registerNeededText(args)$
+$else$
+$registerText(args)$
+$endif$
+</p>
+</html>
+>>
+
+alreadyRegisteredText(args) ::= <<
+This program was registered on $args.registrationDate$ to the owner
+as specified in the <em>name</em> field with the code specified in the
+<em>code</em> field below. The key can be copied by selecting the words
+and using the context menu. The code can be pasted from the clipboard by
+using the same context menu.
+>>
+
+
+registerText(args) ::= <<
+This is a demo version of this program. You have
+still <em>$args.daysLeft$ $args.dayUnit$</em> left for a registration.
+Please send the key to the E-Mail address below. Shortly you will receive a
+code to register this product, Please fill the fields <em>name</em>
+and <em>code</em> with your name and the received code,
+respectively, to register.
+>>
+
+registerNeededText(args) ::= <<
+This is a demo version of this program.
+Please send the key to the E-Mail address below. Shortly you will receive a
+code to register this product, Please fill the fields <em>name</em>
+and <em>code</em> with your name and the received code,
+respectively, to register. The program will exit if no correct code is entered.
+>>

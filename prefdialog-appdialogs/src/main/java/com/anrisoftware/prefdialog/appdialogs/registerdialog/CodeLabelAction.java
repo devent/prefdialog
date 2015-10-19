@@ -27,7 +27,7 @@ import com.anrisoftware.prefdialog.miscswing.actions.LabelResourcesAction;
  * @since 1.0
  */
 @SuppressWarnings("serial")
-final class CodeLabelAction extends LabelResourcesAction {
+class CodeLabelAction extends LabelResourcesAction {
 
     private static final String ACTION_NAME = "code_action";
 

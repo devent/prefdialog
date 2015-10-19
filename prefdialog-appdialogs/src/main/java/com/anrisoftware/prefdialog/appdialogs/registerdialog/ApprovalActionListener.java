@@ -27,6 +27,7 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
+import java.util.Locale;
 
 import com.anrisoftware.prefdialog.appdialogs.dialog.AppDialog;
 import com.anrisoftware.prefdialog.simpledialog.SimpleDialog.Status;
@@ -46,9 +47,9 @@ class ApprovalActionListener implements ActionListener, VetoableChangeListener {
 
         code_not_set_message;
 
-        public static void loadTexts(Texts texts) {
+        public static void loadTexts(Texts texts, Locale locale) {
             for (_ value : values()) {
-                value.text = texts.getResource(value.name()).getText();
+                value.text = texts.getResource(value.name(), locale).getText();
             }
         }
 
@@ -62,6 +63,10 @@ class ApprovalActionListener implements ActionListener, VetoableChangeListener {
 
     private RegisterDialog dialog;
 
+    private Locale locale;
+
+    private Texts texts;
+
     public void setAppDialog(AppDialog dialog) {
         dialog.addApprovalAction(this);
         dialog.addVetoableChangeListener(this);
@@ -71,8 +76,14 @@ class ApprovalActionListener implements ActionListener, VetoableChangeListener {
         this.dialog = dialog;
     }
 
+    public void setLocale(Locale locale) {
+        this.locale = locale;
+        loadTexts();
+    }
+
     public void setTexts(Texts texts) {
-        _.loadTexts(texts);
+        this.texts = texts;
+        loadTexts();
     }
 
     @Override
@@ -93,6 +104,16 @@ class ApprovalActionListener implements ActionListener, VetoableChangeListener {
                         code_not_set_message.toString(), evt);
             }
         }
+    }
+
+    private void loadTexts() {
+        if (locale == null) {
+            return;
+        }
+        if (texts == null) {
+            return;
+        }
+        _.loadTexts(texts, locale);
     }
 
 }

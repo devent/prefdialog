@@ -26,6 +26,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -75,6 +76,7 @@ final class UiHeader extends JPanel {
         }
         {
             logoLabel = new JLabel("");
+            logoLabel.setHorizontalAlignment(SwingConstants.CENTER);
             logoLabel.setMinimumSize(new Dimension(128, 128));
             logoLabel.setMaximumSize(new Dimension(128, 128));
             logoLabel.setPreferredSize(new Dimension(128, 128));

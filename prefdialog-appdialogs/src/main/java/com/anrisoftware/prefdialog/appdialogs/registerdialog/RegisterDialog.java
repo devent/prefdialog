@@ -32,6 +32,8 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.swing.JDialog;
 
+import org.joda.time.DateTime;
+
 import com.anrisoftware.prefdialog.appdialogs.dialog.AppDialog;
 import com.anrisoftware.prefdialog.appdialogs.dialog.AppDialogFactory;
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
@@ -53,7 +55,7 @@ import com.anrisoftware.resources.texts.api.TextsFactory;
  * @author Erwin Müller, erwin.mueller@deventm.de
  * @since 1.0
  */
-public final class RegisterDialog {
+public class RegisterDialog {
 
     /**
      * Name text field name.
@@ -86,6 +88,8 @@ public final class RegisterDialog {
     @Inject
     private ApprovalActionListener approvalActionListener;
 
+    private DateTime registrationDate;
+
     private EditContextMenu editContextMenu;
 
     private AppDialog appDialog;
@@ -94,7 +98,7 @@ public final class RegisterDialog {
 
     private Templates templates;
 
-    private int daysLeft;
+    private long daysLeft;
 
     private String email;
 
@@ -166,6 +170,7 @@ public final class RegisterDialog {
         appDialog.createDialog();
         editContextMenu.createMenu();
         approvalActionListener.setTexts(texts);
+        approvalActionListener.setLocale(getLocale());
         approvalActionListener.setAppDialog(appDialog);
         approvalActionListener.setRegisterDialog(this);
         return this;
@@ -335,7 +340,14 @@ public final class RegisterDialog {
     }
 
     @OnAwt
-    public void setDaysLeft(int daysLeft) {
+    public void setRegistrationDate(DateTime registrationDate) {
+        this.registrationDate = registrationDate;
+        updateRegistrationFields();
+        updateTexts();
+    }
+
+    @OnAwt
+    public void setDaysLeft(long daysLeft) {
         this.daysLeft = daysLeft;
         updateTexts();
     }
@@ -405,6 +417,8 @@ public final class RegisterDialog {
     private void updateRegisterText() {
         Map<String, Object> args = new HashMap<String, Object>();
         args.put("daysLeft", daysLeft);
+        args.put("registrationDate", registrationDate);
+        args.put("registrationNeeded", daysLeft < 0);
         if (daysLeft > 1) {
             args.put("dayUnit", days_text.getTextResource().getText());
         } else {
@@ -427,4 +441,13 @@ public final class RegisterDialog {
     private void updateNameText() {
         panel.getNameField().setText(name);
     }
+
+    private void updateRegistrationFields() {
+        boolean enabled = registrationDate == null;
+        panel.getNameField().setEnabled(enabled);
+        panel.getCodeField().setEnabled(enabled);
+        appDialog.getApproveButton().setEnabled(enabled);
+        appDialog.setShowApproveButton(enabled);
+    }
+
 }
