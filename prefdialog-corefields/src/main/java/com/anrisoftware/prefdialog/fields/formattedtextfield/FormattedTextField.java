@@ -27,7 +27,10 @@ import java.lang.annotation.Annotation;
 
 import javax.inject.Inject;
 import javax.swing.JFormattedTextField;
+import javax.swing.JFormattedTextField.AbstractFormatterFactory;
 
+import com.anrisoftware.globalpom.reflection.annotationclass.AnnotationClass;
+import com.anrisoftware.globalpom.reflection.annotationclass.AnnotationClassFactory;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccess;
 import com.anrisoftware.globalpom.reflection.annotations.AnnotationAccessFactory;
 import com.anrisoftware.prefdialog.core.AbstractTitleField;
@@ -36,7 +39,7 @@ import com.google.inject.assistedinject.Assisted;
 
 /**
  * Formatted text field.
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
@@ -44,6 +47,8 @@ import com.google.inject.assistedinject.Assisted;
 public class FormattedTextField extends AbstractTitleField<JFormattedTextField> {
 
     private static final String EDITABLE_ELEMENT = "editable";
+
+    private static final String FORMATTER_FACTORY_ELEMENT = "formatterFactory";
 
     private static final Class<? extends Annotation> ANNOTATION_CLASS = com.anrisoftware.prefdialog.annotations.FormattedTextField.class;
 
@@ -55,7 +60,9 @@ public class FormattedTextField extends AbstractTitleField<JFormattedTextField> 
 
     private final FocusListener focusListener;
 
-    private AnnotationAccess fieldAnnotation;
+    private transient AnnotationAccess fieldAnnotation;
+
+    private transient AnnotationClass<?> annotationClass;
 
     /**
      * @see FormattedTextFieldFactory#create(Object, String)
@@ -93,11 +100,28 @@ public class FormattedTextField extends AbstractTitleField<JFormattedTextField> 
     }
 
     @Inject
-    void setupFormattedTextField(AnnotationAccessFactory annotationAccessFactory) {
+    void setupFormattedTextField(
+            AnnotationAccessFactory annotationAccessFactory,
+            AnnotationClassFactory classFactory) {
+        this.annotationClass = classFactory.create(getParentObject(),
+                ANNOTATION_CLASS, getAccessibleObject());
         this.fieldAnnotation = annotationAccessFactory.create(ANNOTATION_CLASS,
                 getAccessibleObject());
         setupEditable();
         setupTextField();
+        setupFormatterFactory();
+    }
+
+    private void setupFormatterFactory() {
+        AbstractFormatterFactory formatterFactory = (AbstractFormatterFactory) annotationClass
+                .forAttribute(FORMATTER_FACTORY_ELEMENT).build();
+        if (formatterFactory != null) {
+            setFormatterFactory(formatterFactory);
+        }
+    }
+
+    private void setFormatterFactory(AbstractFormatterFactory formatterFactory) {
+        validating.setFormatterFactory(formatterFactory);
     }
 
     private void setupTextField() {
@@ -124,7 +148,7 @@ public class FormattedTextField extends AbstractTitleField<JFormattedTextField> 
 
     /**
      * Sets if the field should be editable.
-     * 
+     *
      * @param editable
      *            {@code true} if the text field should be editable or
      *            {@code false} if not.
@@ -136,7 +160,7 @@ public class FormattedTextField extends AbstractTitleField<JFormattedTextField> 
 
     /**
      * Returns if the field should is editable.
-     * 
+     *
      * @return {@code true} if the text field is editable or {@code false} if
      *         not.
      */
@@ -151,7 +175,7 @@ public class FormattedTextField extends AbstractTitleField<JFormattedTextField> 
      * <h2>AWT Thread</h2>
      * <p>
      * Should be called on the AWT thread.
-     * 
+     *
      * @param valid
      *            set to {@code true} if the current input is valid.
      */

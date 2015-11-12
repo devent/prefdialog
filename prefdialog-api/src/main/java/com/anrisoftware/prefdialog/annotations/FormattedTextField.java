@@ -26,12 +26,15 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import javax.swing.JFormattedTextField;
+import javax.swing.JFormattedTextField.AbstractFormatterFactory;
+
 /**
  * Field to input formatted text. The initial value can be set and is used as
  * the initial text of the field.
  * <p>
  * Examples:
- * 
+ *
  * <pre>
  * &#064;FieldComponent
  * &#064;FormattedTextField
@@ -41,7 +44,7 @@ import java.lang.annotation.Target;
  * &#064;FormattedTextField
  * public int intField;
  * </pre>
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
  */
@@ -51,10 +54,25 @@ import java.lang.annotation.Target;
 @Documented
 public @interface FormattedTextField {
 
-	/**
-	 * If the field should be editable. Set to {@code true} if the text field
-	 * should be editable or {@code false} if not. Defaults to {@code true}.
-	 */
-	boolean editable() default true;
+    /**
+     * If the field should be editable. Set to {@code true} if the text field
+     * should be editable or {@code false} if not. Defaults to {@code true}.
+     */
+    boolean editable() default true;
 
+    /**
+     * The name of the field name to use for the custom
+     * {@link AbstractFormatterFactory}. Defaults to an empty name which means
+     * no field is set.
+     */
+    String formatterFactory() default "";
+
+    /**
+     * Sets the {@link AbstractFormatterFactory} class. The custom formatter
+     * factory must have a public standard constructor available for
+     * instantiation.
+     *
+     * @see JFormattedTextField#setFormatterFactory(javax.swing.JFormattedTextField.AbstractFormatterFactory)
+     */
+    Class<? extends AbstractFormatterFactory>[] formatterFactoryClass() default {};
 }

@@ -18,6 +18,8 @@
  */
 package com.anrisoftware.prefdialog.fields.formattedtextfield
 
+import groovy.transform.CompileStatic
+
 import java.beans.PropertyVetoException
 
 import com.anrisoftware.prefdialog.annotations.FieldComponent
@@ -29,53 +31,68 @@ import com.anrisoftware.prefdialog.annotations.FormattedTextField
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
+@CompileStatic
 class FormattedTextFieldBean {
 
-	static final NULL_VALUE = "nullStringValue"
+    static final NULL_VALUE = "nullStringValue"
 
-	static final INITIAL_VALUE = "initialStringValue"
+    static final INITIAL_VALUE = "initialStringValue"
 
-	static final NOT_EDITABLE = "notEditable"
+    static final NOT_EDITABLE = "notEditable"
 
-	static final VALIDATED = "validated"
+    static final VALIDATED = "validated"
 
-	static final VALIDATED_VALID_VALUE = "valid"
+    static final VALIDATED_VALID_VALUE = "valid"
 
-	static final VALIDATED_INVALID_VALUE = "not valid"
+    static final VALIDATED_INVALID_VALUE = "not valid"
 
-	@FieldComponent
-	@FormattedTextField
-	public String nullStringValue
+    static final FORMATTER_FACTORY_FIELD_VALUE = "formatterFactoryFieldValue"
 
-	@FieldComponent
-	@FormattedTextField
-	public int intValue
+    static final FORMATTER_FACTORY_CLASS_VALUE = "formatterFactoryClassValue"
 
-	@FieldComponent
-	@FormattedTextField
-	public int doubleValue
+    @FieldComponent
+    @FormattedTextField
+    public String nullStringValue
 
-	@FieldComponent
-	@FormattedTextField
-	public String initialStringValue = "Text"
+    @FieldComponent
+    @FormattedTextField
+    public int intValue
 
-	@FieldComponent
-	@FormattedTextField(editable = false)
-	public String notEditable = "Not Editable"
+    @FieldComponent
+    @FormattedTextField
+    public int doubleValue
 
-	private String validated = VALIDATED_VALID_VALUE
+    @FieldComponent
+    @FormattedTextField
+    public String initialStringValue = "Text"
 
-	public void setValidated(String text) {
-		if (text != VALIDATED_VALID_VALUE) {
-			throw new PropertyVetoException("Value '$text' not valid.", null)
-		}
-		this.validated = text
-	}
+    @FieldComponent
+    @FormattedTextField(editable = false)
+    public String notEditable = "Not Editable"
 
-	@FieldComponent
-	@FormattedTextField
-	public String getValidated() {
-		return validated
-	}
+    @FieldComponent
+    @FormattedTextField(formatterFactory = "customFormatterFactory")
+    public String formatterFactoryFieldValue = ""
+
+    @FieldComponent
+    @FormattedTextField(formatterFactoryClass = CustomFormatterFactory.class)
+    public String formatterFactoryClassValue = ""
+
+    private String validated = VALIDATED_VALID_VALUE
+
+    private CustomFormatterFactory customFormatterFactory = new CustomFormatterFactory()
+
+    public void setValidated(String text) {
+        if (text != VALIDATED_VALID_VALUE) {
+            throw new PropertyVetoException("Value '$text' not valid.", null)
+        }
+        this.validated = text
+    }
+
+    @FieldComponent
+    @FormattedTextField
+    public String getValidated() {
+        return validated
+    }
 }
 

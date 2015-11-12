@@ -149,6 +149,42 @@ class FormattedTextFieldTest {
         })
     }
 
+    @Test
+    void "formatter factory field value"() {
+        def title = "$NAME::formatter factory field value"
+        def fieldName = FORMATTER_FACTORY_FIELD_VALUE
+        def field = factory.create(bean, fieldName)
+        def fieldFix
+        def container = field.getAWTComponent()
+        def textA = "2008-12-23"
+
+        new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+            fieldFix = fixture.textBox fieldName
+            fieldFix.enterText textA
+            fieldFix.pressAndReleaseKeys KeyEvent.VK_ENTER
+            fieldFix.requireText textA
+            assert bean.formatterFactoryFieldValue == textA
+        })
+    }
+
+    @Test
+    void "formatter factory class value"() {
+        def title = "$NAME::formatter factory class value"
+        def fieldName = FORMATTER_FACTORY_CLASS_VALUE
+        def field = factory.create(bean, fieldName)
+        def fieldFix
+        def container = field.getAWTComponent()
+        def textA = "2008-12-23"
+
+        new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+            fieldFix = fixture.textBox fieldName
+            fieldFix.enterText textA
+            fieldFix.pressAndReleaseKeys KeyEvent.VK_ENTER
+            fieldFix.requireText textA
+            assert bean.formatterFactoryClassValue == textA
+        })
+    }
+
     static Injector injector
 
     static FormattedTextFieldFactory factory

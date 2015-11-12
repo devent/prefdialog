@@ -19,17 +19,21 @@
 
 Description
 
-  Core fields.
+    Core fields.
+
+    * {{{./formattedtextfield.html}Formatted Text Field}}
+
+[./images/formattedtextfield1.png]
 
 SCM
 
-  * {{{https://anrisoftware.com/projects/projects/prefdialog1/repository}Main Repository}}
+    * {{{https://anrisoftware.com/projects/projects/prefdialog1/repository}Main Repository}}
 
-  * git@anrisoftware.com:prefdialog.git
+    * git@anrisoftware.com:prefdialog.git
 
-  * {{{https://github.com/devent/prefdialog}Github Mirror Repository}}
+    * {{{https://github.com/devent/prefdialog}Github Mirror Repository}}
 
-  * git@anrisoftware.com:prefdialog.git
+    * git@anrisoftware.com:prefdialog.git
 
 Maven
 
@@ -37,6 +41,6 @@ Maven
 <dependency>
     <groupId>com.anrisoftware.prefdialog</groupId>
     <artifactId>prefdialog-corefields</artifactId>
-    <version>3.4</version>
+    <version>3.5</version>
 </dependency>
 ---

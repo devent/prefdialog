@@ -52,6 +52,6 @@ Maven
 <dependency>
     <groupId>com.anrisoftware.prefdialog</groupId>
     <artifactId>prefdialog-csvimportdailog</artifactId>
-    <version>3.4</version>
+    <version>3.5</version>
 </dependency>
 ---

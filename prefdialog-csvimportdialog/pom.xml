@@ -18,13 +18,13 @@
 
 	<issueManagement>
 		<system>Redmine</system>
-		<url>https://anrisoftware.com/projects/projects/prefdialog-csvimportdailog</url>
+		<url>https://anrisoftware.com/projects/projects/prefdialog1</url>
 	</issueManagement>
 
     <scm>
         <connection>scm:git:git@anrisoftware.com:prefdialog.git</connection>
         <developerConnection>scm:git:git@anrisoftware.com:prefdialog.git</developerConnection>
-        <url>https://anrisoftware.com/projects/projects/prefdialog-csvimportdailog/repository</url>
+        <url>https://anrisoftware.com/projects/projects/prefdialog1/repository</url>
     </scm>
 
     <distributionManagement>
