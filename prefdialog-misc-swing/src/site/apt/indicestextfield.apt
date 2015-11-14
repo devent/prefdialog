@@ -1,0 +1,58 @@
+~~
+~~ Copyright 2013-2015 Erwin Müller <erwin.mueller@deventm.org>
+~~
+~~ This file is part of prefdialog-misc-swing.
+~~
+~~ prefdialog-misc-swing is free software: you can redistribute it and/or modify it
+~~ under the terms of the GNU Lesser General Public License as published by the
+~~ Free Software Foundation, either version 3 of the License, or (at your
+~~ option) any later version.
+~~
+~~ prefdialog-misc-swing is distributed in the hope that it will be useful, but
+~~ WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+~~ FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+~~ details.
+~~
+~~ You should have received a copy of the GNU Lesser General Public License
+~~ along with prefdialog-misc-swing. If not, see <http://www.gnu.org/licenses/>.
+~~
+
+[./images/indicestextfield1.png]
+
+Indices Text Field
+
+    * <<<com.anrisoftware.prefdialog.miscswing.indicestextfield.IndicesTextField>>>
+
+    Custom text field to enter column or row indices. The indices are entered as
+
+        * <<<"">>>, empty;
+
+        * <<<"n">>>, one index;
+
+        * <<<"{n1,n2,n3}">>>, indices set;
+
+        * <<<"[n,k]", "]n,k]", "(n,k]",>>> etc. indices range as stated in ISO 31-11;
+
+        * See also {{{https://en.wikipedia.org/wiki/Interval_%28mathematics%29#Including_or_excluding_endpoints}Including or excluding endpoints [wikipedia.org]}}
+
+* Example
+
+    * Using Guice factory
+
+---
+injector = Guice.createInjector(new IndicesTextFieldModule());
+indicesTextFieldFactory = injector.getInstance(IndicesTextFieldFactory.class);
+JFormattedTextField indicesField = indicesTextFieldFactory.create();
+panel.add(indicesField);
+// ...
+ArrayRange range = indicesField.getValue();
+---
+
+    * Using provided factory method
+
+---
+JFormattedTextField indicesField = IndicesTextField.createIndicesTextField();
+panel.add(indicesField);
+// ...
+ArrayRange range = indicesField.getValue();
+---
