@@ -54,7 +54,7 @@ public abstract class OpenDialogAction<DialogType extends Container, ResultType>
 
     private ResultType dialogResult;
 
-    public void setDialogWorker(
+    public synchronized void setDialogWorker(
             AbstractCreateDialogWorker<DialogType> dialogWorker) {
         this.dialogWorker = dialogWorker;
     }
