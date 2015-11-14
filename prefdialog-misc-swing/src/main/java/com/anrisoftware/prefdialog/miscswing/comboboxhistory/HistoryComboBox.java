@@ -42,90 +42,90 @@ import com.google.inject.assistedinject.AssistedInject;
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class HistoryComboBox {
 
-	private final JComboBox comboBox;
+    private final JComboBox comboBox;
 
-	private final HistoryComboBoxModel model;
+    private final HistoryComboBoxModel model;
 
-	private final ActionListener actionListener;
+    private final ActionListener actionListener;
 
-	private final ListCellRenderer renderer;
+    private final ListCellRenderer renderer;
 
-	/**
-	 * @see HistoryComboBoxFactory#create(JComboBox)
-	 */
-	@AssistedInject
-	HistoryComboBox(HistoryComboBoxModelFactory modelFactory,
-			ItemsDefaultComboBoxRendererFactory rendererFactory,
-			@Assisted JComboBox comboBox) {
-		this(modelFactory, rendererFactory, comboBox,
-				new DefaultComboBoxModel(), new DefaultListCellRenderer(),
-				new ArrayList(0));
-	}
+    /**
+     * @see HistoryComboBoxFactory#create(JComboBox)
+     */
+    @AssistedInject
+    HistoryComboBox(HistoryComboBoxModelFactory modelFactory,
+            ItemsDefaultComboBoxRendererFactory rendererFactory,
+            @Assisted JComboBox comboBox) {
+        this(modelFactory, rendererFactory, comboBox,
+                new DefaultComboBoxModel(), new DefaultListCellRenderer(),
+                new ArrayList(0));
+    }
 
-	/**
-	 * @see HistoryComboBoxFactory#create(JComboBox, Collection)
-	 */
-	@AssistedInject
-	HistoryComboBox(HistoryComboBoxModelFactory modelFactory,
-			ItemsDefaultComboBoxRendererFactory rendererFactory,
-			@Assisted JComboBox comboBox, @Assisted Collection defaultItems) {
-		this(modelFactory, rendererFactory, comboBox,
-				new DefaultComboBoxModel(), new DefaultListCellRenderer(),
-				defaultItems);
-	}
+    /**
+     * @see HistoryComboBoxFactory#create(JComboBox, Collection)
+     */
+    @AssistedInject
+    HistoryComboBox(HistoryComboBoxModelFactory modelFactory,
+            ItemsDefaultComboBoxRendererFactory rendererFactory,
+            @Assisted JComboBox comboBox, @Assisted Collection defaultItems) {
+        this(modelFactory, rendererFactory, comboBox,
+                new DefaultComboBoxModel(), new DefaultListCellRenderer(),
+                defaultItems);
+    }
 
-	/**
-	 * @see HistoryComboBoxFactory#create(JComboBox, MutableComboBoxModel,
-	 *      Collection)
-	 */
-	@AssistedInject
-	HistoryComboBox(HistoryComboBoxModelFactory modelFactory,
-			ItemsDefaultComboBoxRendererFactory rendererFactory,
-			@Assisted JComboBox comboBox, @Assisted MutableComboBoxModel model,
-			@Assisted Collection defaultItems) {
-		this(modelFactory, rendererFactory, comboBox, model,
-				new DefaultListCellRenderer(), defaultItems);
-	}
+    /**
+     * @see HistoryComboBoxFactory#create(JComboBox, MutableComboBoxModel,
+     *      Collection)
+     */
+    @AssistedInject
+    HistoryComboBox(HistoryComboBoxModelFactory modelFactory,
+            ItemsDefaultComboBoxRendererFactory rendererFactory,
+            @Assisted JComboBox comboBox, @Assisted MutableComboBoxModel model,
+            @Assisted Collection defaultItems) {
+        this(modelFactory, rendererFactory, comboBox, model,
+                new DefaultListCellRenderer(), defaultItems);
+    }
 
-	/**
-	 * @see HistoryComboBoxFactory#create(JComboBox, MutableComboBoxModel,
-	 *      ListCellRenderer, Collection)
-	 */
-	@AssistedInject
-	HistoryComboBox(HistoryComboBoxModelFactory modelFactory,
-			ItemsDefaultComboBoxRendererFactory rendererFactory,
-			@Assisted JComboBox comboBox, @Assisted MutableComboBoxModel model,
-			@Assisted ListCellRenderer renderer,
-			@Assisted Collection defaultItems) {
-		this.comboBox = comboBox;
-		this.model = modelFactory.create(model, defaultItems);
-		this.renderer = rendererFactory.create(renderer);
-		this.actionListener = new ActionListener() {
+    /**
+     * @see HistoryComboBoxFactory#create(JComboBox, MutableComboBoxModel,
+     *      ListCellRenderer, Collection)
+     */
+    @AssistedInject
+    HistoryComboBox(HistoryComboBoxModelFactory modelFactory,
+            ItemsDefaultComboBoxRendererFactory rendererFactory,
+            @Assisted JComboBox comboBox, @Assisted MutableComboBoxModel model,
+            @Assisted ListCellRenderer renderer,
+            @Assisted Collection defaultItems) {
+        this.comboBox = comboBox;
+        this.model = modelFactory.create(model, defaultItems);
+        this.renderer = rendererFactory.create(renderer);
+        this.actionListener = new ActionListener() {
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				addItem();
-			}
-		};
-		setupComboBox();
-	}
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addItem();
+            }
+        };
+        setupComboBox();
+    }
 
-	private void addItem() {
-		model.addElement(comboBox.getSelectedItem());
-	}
+    private void addItem() {
+        model.addElement(comboBox.getSelectedItem());
+    }
 
-	private void setupComboBox() {
-		comboBox.setModel(model);
-		comboBox.setRenderer(renderer);
-		comboBox.addActionListener(actionListener);
-	}
+    private void setupComboBox() {
+        comboBox.setModel(model);
+        comboBox.setRenderer(renderer);
+        comboBox.addActionListener(actionListener);
+    }
 
-	/**
-	 * Returns the decorated combo box.
-	 * 
-	 * @return the {@link JComboBox}.
-	 */
-	public JComboBox getComboBox() {
-		return comboBox;
-	}
+    /**
+     * Returns the decorated combo box.
+     * 
+     * @return the {@link JComboBox}.
+     */
+    public JComboBox getComboBox() {
+        return comboBox;
+    }
 }

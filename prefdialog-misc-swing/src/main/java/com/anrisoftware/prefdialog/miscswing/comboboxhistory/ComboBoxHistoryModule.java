@@ -26,31 +26,34 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Injector;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 
+/**
+ * Installs the history combo box factory.
+ *
+ * @see HistoryComboBoxFactory
+ * @see HistoryComboBoxModelFactory
+ *
+ * @author Erwin Müller, erwin.mueller@deventm.de
+ * @since 1.0
+ */
 public class ComboBoxHistoryModule extends AbstractModule {
 
-	private static Injector injector;
+    static class InstanceHolder {
 
-	public static Injector getInjector() {
-		if (injector == null) {
-			synchronized (ComboBoxHistoryModule.class) {
-				injector = createInjector(new ComboBoxHistoryModule());
-			}
-		}
-		return injector;
-	}
+        static Injector injector = createInjector(new ComboBoxHistoryModule());
+    }
 
-	@Override
-	protected void configure() {
-		install(new FactoryModuleBuilder().implement(
-				HistoryComboBoxModel.class, HistoryComboBoxModel.class).build(
-				HistoryComboBoxModelFactory.class));
-		install(new FactoryModuleBuilder().implement(HistoryComboBox.class,
-				HistoryComboBox.class).build(HistoryComboBoxFactory.class));
-		install(new FactoryModuleBuilder().implement(ItemDefault.class,
-				ItemDefault.class).build(ItemDefaultFactory.class));
-		install(new FactoryModuleBuilder().implement(ListCellRenderer.class,
-				ItemsDefaultComboBoxRenderer.class).build(
-				ItemsDefaultComboBoxRendererFactory.class));
-	}
+    @Override
+    protected void configure() {
+        install(new FactoryModuleBuilder().implement(
+                HistoryComboBoxModel.class, HistoryComboBoxModel.class).build(
+                HistoryComboBoxModelFactory.class));
+        install(new FactoryModuleBuilder().implement(HistoryComboBox.class,
+                HistoryComboBox.class).build(HistoryComboBoxFactory.class));
+        install(new FactoryModuleBuilder().implement(ItemDefault.class,
+                ItemDefault.class).build(ItemDefaultFactory.class));
+        install(new FactoryModuleBuilder().implement(ListCellRenderer.class,
+                ItemsDefaultComboBoxRenderer.class).build(
+                ItemsDefaultComboBoxRendererFactory.class));
+    }
 
 }
