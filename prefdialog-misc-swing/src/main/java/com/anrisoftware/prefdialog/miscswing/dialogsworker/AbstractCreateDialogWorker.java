@@ -84,7 +84,7 @@ public abstract class AbstractCreateDialogWorker<DialogType extends Container> {
      *
      * @since 3.4
      */
-    public void forceRecreationDialog() {
+    public synchronized void forceRecreationDialog() {
         this.dialog = null;
     }
 
