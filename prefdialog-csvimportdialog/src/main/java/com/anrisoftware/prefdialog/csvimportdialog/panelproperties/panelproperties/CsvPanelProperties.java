@@ -23,7 +23,7 @@ import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.Locale;
 
-import com.anrisoftware.globalpom.dataimport.CsvImportProperties;
+import com.anrisoftware.globalpom.csvimport.CsvImportProperties;
 import com.anrisoftware.prefdialog.annotations.Child;
 import com.anrisoftware.prefdialog.annotations.FieldComponent;
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.advancedproperties.AdvancedProperties;

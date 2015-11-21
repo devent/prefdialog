@@ -30,10 +30,10 @@ import javax.swing.SwingUtilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.anrisoftware.globalpom.dataimport.CsvImportProperties;
-import com.anrisoftware.globalpom.dataimport.CsvImporter;
-import com.anrisoftware.globalpom.dataimport.CsvImporterFactory;
-import com.anrisoftware.globalpom.dataimport.DefaultCsvImportProperties;
+import com.anrisoftware.globalpom.csvimport.CsvImportProperties;
+import com.anrisoftware.globalpom.csvimport.CsvImporter;
+import com.anrisoftware.globalpom.csvimport.CsvImporterFactory;
+import com.anrisoftware.globalpom.csvimport.DefaultCsvImportProperties;
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelProperties;
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelPropertiesFactory;
 import com.anrisoftware.prefdialog.simpledialog.SimpleDialog;

@@ -25,10 +25,10 @@ import java.net.URI;
 
 import javax.inject.Inject;
 
-import com.anrisoftware.globalpom.dataimport.CsvImportException;
-import com.anrisoftware.globalpom.dataimport.CsvImportProperties;
-import com.anrisoftware.globalpom.dataimport.CsvImporter;
-import com.anrisoftware.globalpom.dataimport.CsvImporterFactory;
+import com.anrisoftware.globalpom.csvimport.CsvImportException;
+import com.anrisoftware.globalpom.csvimport.CsvImportProperties;
+import com.anrisoftware.globalpom.csvimport.CsvImporter;
+import com.anrisoftware.globalpom.csvimport.CsvImporterFactory;
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 import com.google.inject.Injector;
 

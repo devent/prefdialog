@@ -18,7 +18,7 @@
  */
 package com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties;
 
-import com.anrisoftware.globalpom.dataimport.CsvImportProperties;
+import com.anrisoftware.globalpom.csvimport.CsvImportProperties;
 
 /**
  * Factory to create the CSV import properties.

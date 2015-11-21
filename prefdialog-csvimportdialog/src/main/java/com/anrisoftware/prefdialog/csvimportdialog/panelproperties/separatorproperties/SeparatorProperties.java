@@ -23,7 +23,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import com.anrisoftware.globalpom.dataimport.CsvImportProperties;
+import com.anrisoftware.globalpom.csvimport.CsvImportProperties;
 import com.anrisoftware.prefdialog.annotations.CheckBox;
 import com.anrisoftware.prefdialog.annotations.ComboBox;
 import com.anrisoftware.prefdialog.annotations.FieldButton;

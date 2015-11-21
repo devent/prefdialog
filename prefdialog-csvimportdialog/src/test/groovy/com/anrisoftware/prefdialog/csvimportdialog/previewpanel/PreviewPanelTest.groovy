@@ -34,7 +34,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
 
-import com.anrisoftware.globalpom.dataimport.DefaultCsvImportPropertiesFactory
+import com.anrisoftware.globalpom.csvimport.DefaultCsvImportPropertiesFactory;
 import com.anrisoftware.globalpom.utils.TestFrameUtil
 import com.anrisoftware.globalpom.utils.TestUtils
 import com.google.inject.Injector

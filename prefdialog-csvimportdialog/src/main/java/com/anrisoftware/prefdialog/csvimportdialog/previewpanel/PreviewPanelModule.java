@@ -18,7 +18,7 @@
  */
 package com.anrisoftware.prefdialog.csvimportdialog.previewpanel;
 
-import com.anrisoftware.globalpom.dataimport.CsvImportModule;
+import com.anrisoftware.globalpom.csvimport.CsvImportModule;
 import com.anrisoftware.resources.texts.defaults.TextsResourcesDefaultModule;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;

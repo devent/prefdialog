@@ -23,8 +23,8 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import com.anrisoftware.globalpom.dataimport.CsvImportException;
-import com.anrisoftware.globalpom.dataimport.CsvImporter;
+import com.anrisoftware.globalpom.csvimport.CsvImportException;
+import com.anrisoftware.globalpom.csvimport.CsvImporter;
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 
 /**

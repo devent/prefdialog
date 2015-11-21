@@ -31,7 +31,7 @@ import org.junit.BeforeClass
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 
-import com.anrisoftware.globalpom.dataimport.CsvImporter
+import com.anrisoftware.globalpom.csvimport.CsvImporter;
 import com.anrisoftware.globalpom.utils.TestUtils
 import com.anrisoftware.globalpom.utils.frametesting.FrameTestingFactory
 import com.anrisoftware.globalpom.utils.frametesting.FrameTestingModule

@@ -28,7 +28,7 @@ import javax.inject.Singleton;
 
 import org.apache.commons.codec.Charsets;
 
-import com.anrisoftware.globalpom.dataimport.CsvImportProperties;
+import com.anrisoftware.globalpom.csvimport.CsvImportProperties;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;

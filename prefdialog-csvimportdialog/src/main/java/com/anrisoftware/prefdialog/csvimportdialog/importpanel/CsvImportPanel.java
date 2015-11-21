@@ -35,10 +35,10 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.swing.JPanel;
 
-import com.anrisoftware.globalpom.dataimport.CsvImportException;
-import com.anrisoftware.globalpom.dataimport.CsvImportProperties;
-import com.anrisoftware.globalpom.dataimport.CsvImporter;
-import com.anrisoftware.globalpom.dataimport.CsvImporterFactory;
+import com.anrisoftware.globalpom.csvimport.CsvImportException;
+import com.anrisoftware.globalpom.csvimport.CsvImportProperties;
+import com.anrisoftware.globalpom.csvimport.CsvImporter;
+import com.anrisoftware.globalpom.csvimport.CsvImporterFactory;
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.advancedproperties.UseCustomQuoteAction;
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelProperties;
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelPropertiesFactory;

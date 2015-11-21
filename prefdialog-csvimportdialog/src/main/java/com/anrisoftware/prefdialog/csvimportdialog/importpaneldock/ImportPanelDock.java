@@ -26,7 +26,7 @@ import java.beans.VetoableChangeListener;
 import javax.inject.Inject;
 import javax.swing.JPanel;
 
-import com.anrisoftware.globalpom.dataimport.CsvImportProperties;
+import com.anrisoftware.globalpom.csvimport.CsvImportProperties;
 import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanel;
 import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanelFactory;
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;

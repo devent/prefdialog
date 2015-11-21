@@ -24,7 +24,7 @@ import java.net.URI;
 
 import javax.inject.Inject;
 
-import com.anrisoftware.globalpom.dataimport.CsvImportProperties;
+import com.anrisoftware.globalpom.csvimport.CsvImportProperties;
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.advancedproperties.LineEnd;
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.advancedproperties.QuoteCharModel;
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelProperties;

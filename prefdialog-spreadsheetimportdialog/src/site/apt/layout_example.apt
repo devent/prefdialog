@@ -1,0 +1,46 @@
+~~
+~~ Copyright 2015 Erwin Müller <erwin.mueller@deventm.org>
+~~
+~~ This file is part of prefdialog-spreadsheetimportdialog.
+~~
+~~ prefdialog-spreadsheetimportdialog is free software: you can redistribute it and/or modify it
+~~ under the terms of the GNU Lesser General Public License as published by the
+~~ Free Software Foundation, either version 3 of the License, or (at your
+~~ option) any later version.
+~~
+~~ prefdialog-spreadsheetimportdialog is distributed in the hope that it will be useful, but
+~~ WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+~~ FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+~~ details.
+~~
+~~ You should have received a copy of the GNU Lesser General Public License
+~~ along with prefdialog-spreadsheetimportdialog. If not, see <http://www.gnu.org/licenses/>.
+~~
+
+Load and Save Layout Example
+
+  The current layout can be saved in a file or output stream. The saved layout
+can be loaded and set again from the file or from an input stream. The saving
+and setting of the layout should be done in the AWT event thread. A
+<<<PropertyChangeListener>>> can be set that is notified after the layout
+is successfully set.
+
+---
+import bibliothek.gui.dock.common.theme.ThemeMap;
+
+public void saveLayout(CsvImportDialog importDialog, OutputStream stream) {
+    importDialog.saveLayout("name", stream);
+}
+
+public void loadLayout(CsvImportDialog importDialog, InputStream stream) {
+    importDialog.loadLayout("name", stream);
+}
+
+public void loadLayout(CsvImportDialog importDialog, InputStream stream) {
+    importDialog.loadLayout("name", stream, new PropertyChangeListener() {
+        void propertyChange(PropertyChangeEvent evt) {
+            log.info("Layout set.");
+        }
+    });
+}
+---

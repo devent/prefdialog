@@ -1,0 +1,57 @@
+~~
+~~ Copyright 2015 Erwin Müller <erwin.mueller@deventm.org>
+~~
+~~ This file is part of prefdialog-spreadsheetimportdialog.
+~~
+~~ prefdialog-spreadsheetimportdialog is free software: you can redistribute it and/or modify it
+~~ under the terms of the GNU Lesser General Public License as published by the
+~~ Free Software Foundation, either version 3 of the License, or (at your
+~~ option) any later version.
+~~
+~~ prefdialog-spreadsheetimportdialog is distributed in the hope that it will be useful, but
+~~ WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+~~ FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+~~ details.
+~~
+~~ You should have received a copy of the GNU Lesser General Public License
+~~ along with prefdialog-spreadsheetimportdialog. If not, see <http://www.gnu.org/licenses/>.
+~~
+
+Description
+
+[./images/csvimportdialog1.png] CSV Import Dialog
+
+  Dialog to import formatted text data in a comma separated format. The
+comma can also be a tab, space, semicolon or any other character. It uses
+the {{{http://dock.javaforge.com/}Docking Frames}} framework to present the
+import properties panel and a preview panel. The preview panel loads a part
+of the data from the specified file and shows a preview how the data would
+be imported.
+
+* Usage
+
+  * {{{./opencsvimportdialog_example.html}Open CSV Import Dialog Example}} for the use of the CSV import dialog.
+
+  * {{{./settheme_example.html}Set Theme Example}} for how to set different docker themes.
+
+  * {{{./layout_example.html}Load and Save Layout Example}} for how to set the docker layout.
+
+SCM
+
+  * {{{https://anrisoftware.com/projects/projects/prefdialog1/repository}Main Repository}}
+
+  * git@anrisoftware.com:prefdialog.git
+
+  * {{{https://github.com/devent/prefdialog}Github Mirror Repository}}
+
+  * git@anrisoftware.com:prefdialog.git
+
+Maven
+
+---
+<dependency>
+    <groupId>com.anrisoftware.prefdialog</groupId>
+    <artifactId>prefdialog-csvimportdailog</artifactId>
+    <version>3.4</version>
+</dependency>
+---

@@ -1,0 +1,1 @@
+Check if the document have a header row.

@@ -20,7 +20,7 @@ package com.anrisoftware.prefdialog.csvimportdialog.previewpanel;
 
 import java.beans.PropertyVetoException;
 
-import com.anrisoftware.globalpom.dataimport.CsvImportException;
+import com.anrisoftware.globalpom.csvimport.CsvImportException;
 import com.anrisoftware.globalpom.log.AbstractLogger;
 
 /**

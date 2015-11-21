@@ -23,7 +23,7 @@ import java.beans.PropertyVetoException;
 
 import javax.inject.Inject;
 
-import com.anrisoftware.globalpom.dataimport.CsvImportProperties;
+import com.anrisoftware.globalpom.csvimport.CsvImportProperties;
 import com.anrisoftware.prefdialog.csvimportdialog.previewpanel.PreviewPanel;
 import com.anrisoftware.prefdialog.csvimportdialog.previewpanel.PreviewPanelFactory;
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;

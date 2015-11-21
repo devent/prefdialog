@@ -20,7 +20,7 @@ package com.anrisoftware.prefdialog.csvimportdialog.importpanel;
 
 import javax.swing.JPanel;
 
-import com.anrisoftware.globalpom.dataimport.CsvImportProperties;
+import com.anrisoftware.globalpom.csvimport.CsvImportProperties;
 
 /**
  * Factory to create the CSV import panel.

@@ -18,7 +18,7 @@
  */
 package com.anrisoftware.prefdialog.csvimportdialog.importpanel;
 
-import com.anrisoftware.globalpom.dataimport.CsvImportModule;
+import com.anrisoftware.globalpom.csvimport.CsvImportModule;
 import com.anrisoftware.prefdialog.core.CoreFieldComponentModule;
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelPropertiesFactory;
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelPropertiesModule;
