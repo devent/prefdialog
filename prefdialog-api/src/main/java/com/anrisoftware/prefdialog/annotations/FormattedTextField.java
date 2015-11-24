@@ -64,6 +64,8 @@ public @interface FormattedTextField {
      * The name of the field name to use for the custom
      * {@link AbstractFormatterFactory}. Defaults to an empty name which means
      * no field is set.
+     *
+     * @since 3.5
      */
     String formatterFactory() default "";
 
@@ -73,6 +75,8 @@ public @interface FormattedTextField {
      * instantiation.
      *
      * @see JFormattedTextField#setFormatterFactory(javax.swing.JFormattedTextField.AbstractFormatterFactory)
+     *
+     * @since 3.5
      */
     Class<? extends AbstractFormatterFactory>[] formatterFactoryClass() default {};
 }

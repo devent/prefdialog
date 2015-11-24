@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Locale;
 
 import javax.inject.Inject;
 import javax.swing.JDialog;
@@ -35,6 +36,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import com.anrisoftware.globalpom.csvimport.CsvImportProperties;
+import com.anrisoftware.globalpom.spreadsheetimport.SpreadsheetImportProperties;
+import com.anrisoftware.globalpom.spreadsheetimport.SpreadsheetImporterFactory;
 import com.anrisoftware.prefdialog.fields.FieldComponent;
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 import com.anrisoftware.prefdialog.miscswing.docks.api.Dock;
@@ -42,37 +45,32 @@ import com.anrisoftware.prefdialog.miscswing.docks.api.DockFactory;
 import com.anrisoftware.prefdialog.miscswing.docks.api.LayoutTask;
 import com.anrisoftware.prefdialog.simpledialog.SimpleDialog;
 import com.anrisoftware.prefdialog.spreadsheetimportdialog.importpanel.SpreadsheetImportPanel;
-import com.anrisoftware.prefdialog.spreadsheetimportdialog.importpaneldock.ImportPanelDock;
+import com.anrisoftware.prefdialog.spreadsheetimportdialog.importpaneldock.SpreadsheetImportPanelDock;
 import com.anrisoftware.prefdialog.spreadsheetimportdialog.panelproperties.panelproperties.SpreadsheetPanelProperties;
-import com.anrisoftware.prefdialog.spreadsheetimportdialog.previewpaneldock.PreviewPanelDock;
+import com.anrisoftware.prefdialog.spreadsheetimportdialog.previewpaneldock.SpreadsheetPreviewPanelDock;
 import com.anrisoftware.resources.texts.api.Texts;
 import com.anrisoftware.resources.texts.api.TextsFactory;
 import com.google.inject.Injector;
 import com.google.inject.assistedinject.Assisted;
 
 /**
- * Dialog to import CSV data.
+ * Dialog to import spreadsheet data.
  *
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 3.0
+ * @since 3.5
  */
 public class SpreadsheetImportDialog extends SimpleDialog {
 
-    private static final String IMPORT_ACTION_NAME = "import_action";
-
     /**
-     * @see #decorate(CsvImportProperties, JDialog, JFrame)
-     */
-    public static SpreadsheetImportDialog decorateCsvImportDialog(
-            CsvImportProperties properties, JDialog dialog, JFrame frame) {
-        return decorate(properties, dialog, frame);
-    }
-
-    /**
-     * Decorates the dialog with the CSV import panel and dialog actions.
+     * Decorates the dialog with the spreadsheet import panel and dialog
+     * actions.
+     * <p>
+     * <h2>AWT Thread</h2>
+     * Should be called in the AWT event dispatch thread.
+     * </p>
      *
      * @param properties
-     *            the {@link CsvImportProperties}.
+     *            the {@link SpreadsheetImportProperties}.
      *
      * @param dialog
      *            the {@link JDialog}.
@@ -80,31 +78,71 @@ public class SpreadsheetImportDialog extends SimpleDialog {
      * @param frame
      *            the {@link JFrame} owner or {@code null}.
      *
-     * @return the {@link SpreadsheetImportDialog}.
+     * @param locale
+     *            the {@link Locale}.
      *
-     * @see SpreadsheetImportDialogFactory#create(CsvImportProperties)
+     * @param importerFactory
+     *            the {@link SpreadsheetImporterFactory}.
+     *
+     * @return the {@link SpreadsheetImportDialog}.
      */
     @OnAwt
-    public static SpreadsheetImportDialog decorate(CsvImportProperties properties,
-            JDialog dialog, JFrame frame) {
+    public static SpreadsheetImportDialog decorateSpreadsheetImportDialog(
+            SpreadsheetImportProperties properties, JDialog dialog,
+            JFrame frame, Locale locale,
+            SpreadsheetImporterFactory importerFactory) {
+        return decorate(properties, dialog, frame, locale, importerFactory);
+    }
+
+    /**
+     * Decorates the dialog with the spreadsheet import panel and dialog
+     * actions.
+     * <p>
+     * <h2>AWT Thread</h2>
+     * Should be called in the AWT event dispatch thread.
+     * </p>
+     *
+     * @param properties
+     *            the {@link SpreadsheetImportProperties}.
+     *
+     * @param dialog
+     *            the {@link JDialog}.
+     *
+     * @param frame
+     *            the {@link JFrame} owner or {@code null}.
+     *
+     * @param locale
+     *            the {@link Locale}.
+     *
+     * @param importerFactory
+     *            the {@link SpreadsheetImporterFactory}.
+     *
+     * @return the {@link SpreadsheetImportDialog}.
+     */
+    @OnAwt
+    public static SpreadsheetImportDialog decorate(
+            SpreadsheetImportProperties properties, JDialog dialog,
+            JFrame frame, Locale locale,
+            SpreadsheetImporterFactory importerFactory) {
         SpreadsheetImportDialog importDialog;
         importDialog = getFactory().create(properties);
         importDialog.setDialog(dialog);
-        importDialog.createDialog(frame);
+        importDialog.setLocale(locale);
+        importDialog.createDialog(frame, importerFactory);
         return importDialog;
     }
 
-    private final CsvImportProperties properties;
+    private final SpreadsheetImportProperties properties;
 
     private final PropertyChangeListener propertyChangeListener;
 
     private final Dock dock;
 
     @Inject
-    private ImportPanelDock importPanelDock;
+    private SpreadsheetImportPanelDock importPanelDock;
 
     @Inject
-    private PreviewPanelDock previewPanelDock;
+    private SpreadsheetPreviewPanelDock previewPanelDock;
 
     @Inject
     private Injector parent;
@@ -118,11 +156,11 @@ public class SpreadsheetImportDialog extends SimpleDialog {
     private Texts texts;
 
     /**
-     * @see SpreadsheetImportDialogFactory#create(CsvImportProperties)
+     * @see SpreadsheetImportDialogFactory#create(SpreadsheetImportProperties)
      */
     @Inject
     SpreadsheetImportDialog(DockFactory dockFactory,
-            @Assisted CsvImportProperties properties) {
+            @Assisted SpreadsheetImportProperties properties) {
         this.dock = dockFactory.create();
         this.properties = properties;
         this.propertyChangeListener = new PropertyChangeListener() {
@@ -132,12 +170,18 @@ public class SpreadsheetImportDialog extends SimpleDialog {
                 previewPanelDock.setProperties(importPanelDock.getProperties());
             }
         };
-        setupDock();
     }
 
+    /**
+     * Sets the texts resources factory.
+     *
+     * @param factory
+     *            the {@link TextsFactory}.
+     */
     @Inject
-    void setTextsFactory(TextsFactory factory) {
-        this.texts = factory.create(SpreadsheetImportDialog.class.getSimpleName());
+    public void setSpreadsheetImportDialogTextsFactory(TextsFactory factory) {
+        this.texts = factory.create(SpreadsheetImportDialog.class
+                .getSimpleName());
     }
 
     /**
@@ -150,39 +194,54 @@ public class SpreadsheetImportDialog extends SimpleDialog {
         this.parent = parent;
     }
 
+    /**
+     * Sets the locale for the dock.
+     * <p>
+     * <h2>AWT Thread</h2>
+     * Should be called in the AWT event dispatch thread.
+     * </p>
+     *
+     * @param locale
+     *            the {@link Locale}.
+     */
     @Override
     @OnAwt
-    public SpreadsheetImportDialog createDialog() {
-        return createDialog(null);
+    public void setLocale(Locale locale) {
+        super.setLocale(locale);
     }
 
     /**
-     * @see #createDialog()
+     * Created the spreadsheet import dialog.
+     * <p>
+     * <h2>AWT Thread</h2>
+     * Should be called in the AWT event dispatch thread.
+     * </p>
      *
      * @param frame
      *            the parent {@link JFrame} owner or {@code null}.
+     *
+     * @param importerFactory
+     *            the {@link SpreadsheetImporterFactory}.
+     *
+     * @return this {@link SpreadsheetImportDialog}.
      */
     @OnAwt
-    public SpreadsheetImportDialog createDialog(JFrame frame) {
-        dock.createDock(frame);
-        setApproveActionName(IMPORT_ACTION_NAME);
-        importPanelDock.createPanel(parent, properties);
-        importPanelDock.addPropertyChangeListener(propertyChangeListener);
-        setFieldsPanel(dock.getAWTComponent());
-        previewPanelDock.createPanel(parent);
-        previewPanelDock.setProperties(properties);
-        dock.addViewDock(previewPanelDock);
-        dock.addEditorDock(importPanelDock);
-        setTexts(texts);
-        validListener.installDialog(this);
+    public SpreadsheetImportDialog createDialog(JFrame frame,
+            SpreadsheetImporterFactory importerFactory) {
+        createDialog0(frame, importerFactory);
         return (SpreadsheetImportDialog) super.createDialog();
     }
 
     /**
      * Returns the dock.
+     * <p>
+     * <h2>AWT Thread</h2>
+     * Should be called in the AWT event dispatch thread.
+     * </p>
      *
      * @return the {@link Dock}.
      */
+    @OnAwt
     public Dock getDock() {
         return dock;
     }
@@ -191,16 +250,16 @@ public class SpreadsheetImportDialog extends SimpleDialog {
      * Sets the properties to the dialog fields.
      *
      * @param properties
-     *            the {@link CsvImportProperties}.
+     *            the {@link SpreadsheetImportProperties}.
      *
      * @throws PropertyVetoException
      *             if one of the values of the properties are vetoed.
      */
     @OnAwt
-    public void setProperties(CsvImportProperties properties)
+    public void setProperties(SpreadsheetImportProperties properties)
             throws PropertyVetoException {
         FieldComponent<?> field = getImportPanelField();
-        SpreadsheetPanelProperties p = (SpreadsheetPanelProperties) getProperties();
+        SpreadsheetPanelProperties p = getProperties();
         propertiesWorkerFactory.create(field, p).setProperties(properties);
         previewPanelDock.setProperties(properties);
     }
@@ -208,62 +267,124 @@ public class SpreadsheetImportDialog extends SimpleDialog {
     /**
      * Sets the properties to the dialog fields. if one of the values of the
      * properties is vetoed the value is skipped.
+     * <p>
+     * <h2>AWT Thread</h2>
+     * Should be called in the AWT event dispatch thread.
+     * </p>
      *
      * @param properties
      *            the {@link CsvImportProperties}.
      */
     @OnAwt
-    public void setPropertiesNoChecks(CsvImportProperties properties) {
+    public void setPropertiesNoChecks(SpreadsheetImportProperties properties) {
         FieldComponent<?> field = getImportPanelField();
-        SpreadsheetPanelProperties p = (SpreadsheetPanelProperties) getProperties();
+        SpreadsheetPanelProperties p = getProperties();
         propertiesWorkerFactory.create(field, p).setPropertiesNoChecks(
                 properties);
         previewPanelDock.setProperties(properties);
     }
 
     /**
-     * Returns the CSV import properties.
+     * Returns the spreadsheet import properties.
+     * <p>
+     * <h2>AWT Thread</h2>
+     * Should be called in the AWT event dispatch thread.
+     * </p>
      *
-     * @return the {@link CsvImportProperties}.
+     * @return the {@link SpreadsheetPanelProperties}.
      */
-    public CsvImportProperties getProperties() {
+    @OnAwt
+    public SpreadsheetPanelProperties getProperties() {
         return importPanelDock.getImportPanel().getProperties();
     }
 
     /**
      * Returns the import panel dock.
+     * <p>
+     * <h2>AWT Thread</h2>
+     * Should be called in the AWT event dispatch thread.
+     * </p>
      *
-     * @return the {@link ImportPanelDock}.
+     * @return the {@link SpreadsheetImportPanelDock}.
      */
-    public ImportPanelDock getImportPanelDock() {
+    @OnAwt
+    public SpreadsheetImportPanelDock getImportPanelDock() {
         return importPanelDock;
     }
 
     /**
      * Returns the CSV import panel field.
+     * <p>
+     * <h2>AWT Thread</h2>
+     * Should be called in the AWT event dispatch thread.
+     * </p>
      *
      * @return the {@link FieldComponent}.
      */
+    @OnAwt
     public FieldComponent<JPanel> getImportPanelField() {
         return importPanelDock.getImportPanel().getPanel();
     }
 
     /**
-     * @see Dock#saveLayout(String, File)
+     * Saves the current layout under the specified name.
+     * <p>
+     * <h2>AWT Thread</h2>
+     * Should be called <i>outside</i> the AWT event dispatch thread.
+     * </p>
+     *
+     * @param name
+     *            the name of the perspective.
+     *
+     * @param file
+     *            the {@link File} file where to save the layout.
+     *
+     * @throws IOException
+     *             if there was I/O error saving the layout.
      */
     public void saveLayout(String name, File file) throws IOException {
         dock.saveLayout(name, file);
     }
 
     /**
-     * @see Dock#saveLayout(String, OutputStream)
+     * Saves the current layout under the specified name.
+     * <p>
+     * <h2>AWT Thread</h2>
+     * Should be called <i>outside</i> the AWT event dispatch thread.
+     * </p>
+     *
+     * @param name
+     *            the name of the layout.
+     *
+     * @param stream
+     *            the {@link OutputStream} stream where to save the layout.
+     *
+     * @throws IOException
+     *             if there was I/O error saving the layout.
      */
     public void saveLayout(String name, OutputStream stream) throws IOException {
         dock.saveLayout(name, stream);
     }
 
     /**
-     * @see Dock#loadLayout(String, File, PropertyChangeListener...)
+     * Loads the previously saved layout with the specified name.
+     * <p>
+     * <h2>AWT Thread</h2>
+     * Should be called <i>outside</i> the AWT event dispatch thread.
+     * </p>
+     *
+     * @param name
+     *            the name of the layout.
+     *
+     * @param file
+     *            the {@link File} file from where to load the layout.
+     *
+     * @param listeners
+     *            optionally, {@link PropertyChangeListener} listeners that are
+     *            informed when the layout have been loaded and set.
+     *
+     * @throws IOException
+     *             if there was I/O error loading the layout.
      */
     public void loadLayout(String name, File file,
             PropertyChangeListener... listeners) throws IOException {
@@ -272,7 +393,24 @@ public class SpreadsheetImportDialog extends SimpleDialog {
     }
 
     /**
-     * @see Dock#loadLayout(String, InputStream, PropertyChangeListener...)
+     * Loads the previously saved layout with the specified name.
+     * <p>
+     * <h2>AWT Thread</h2>
+     * Should be called <i>outside</i> the AWT event dispatch thread.
+     * </p>
+     *
+     * @param name
+     *            the name of the layout.
+     *
+     * @param stream
+     *            the {@link InputStream} stream from where to load the layout.
+     *
+     * @param listeners
+     *            optionally, {@link PropertyChangeListener} listeners that are
+     *            informed when the layout have been loaded and set.
+     *
+     * @throws IOException
+     *             if there was I/O error loading the layout.
      */
     public void loadLayout(String name, InputStream stream,
             PropertyChangeListener... listeners) throws IOException {
@@ -281,34 +419,48 @@ public class SpreadsheetImportDialog extends SimpleDialog {
     }
 
     /**
-     * @see Dock#getCurrentLayout()
+     * Returns the current active layout.
+     * <p>
+     * <h2>AWT Thread</h2>
+     * Should be called in the AWT event dispatch thread.
+     * </p>
+     *
+     * @return the {@link LayoutTask}.
      */
+    @OnAwt
     public LayoutTask getCurrentLayout() {
         return dock.getCurrentLayout();
     }
 
     /**
-     * @see Dock#setTheme(String)
+     * Sets a theme.
+     * <p>
+     * <h2>AWT Thread</h2>
+     * Should be called in the AWT event dispatch thread.
+     * </p>
+     *
+     * @param name
+     *            the theme name.
      */
+    @OnAwt
     public void setTheme(String name) {
         dock.setTheme(name);
     }
 
     @Override
+    @OnAwt
     public void openDialog() {
         importPanelDock.getImportPanel().requestFocus();
         super.openDialog();
     }
 
     @Override
+    @OnAwt
     public void restoreDialog() {
         try {
             importPanelDock.restoreInput();
         } catch (PropertyVetoException e) {
         }
-    }
-
-    private void setupDock() {
     }
 
     /**
@@ -355,6 +507,26 @@ public class SpreadsheetImportDialog extends SimpleDialog {
             VetoableChangeListener listener) {
         importPanelDock.removeVetoableChangeListener(propertyName, listener);
         super.removeVetoableChangeListener(propertyName, listener);
+    }
+
+    private static final String IMPORT_ACTION_NAME = "import_action";
+
+    private void createDialog0(JFrame frame,
+            SpreadsheetImporterFactory importerFactory) {
+        Locale locale = getLocale();
+        dock.createDock(frame);
+        setApproveActionName(IMPORT_ACTION_NAME);
+        importPanelDock.setLocale(locale);
+        importPanelDock.createPanel(parent, properties, importerFactory);
+        importPanelDock.addPropertyChangeListener(propertyChangeListener);
+        setFieldsPanel(dock.getAWTComponent());
+        previewPanelDock.setLocale(locale);
+        previewPanelDock.createPanel(parent, importerFactory);
+        previewPanelDock.setProperties(properties);
+        dock.addViewDock(previewPanelDock);
+        dock.addEditorDock(importPanelDock);
+        validListener.installDialog(this);
+        setTexts(texts);
     }
 
 }

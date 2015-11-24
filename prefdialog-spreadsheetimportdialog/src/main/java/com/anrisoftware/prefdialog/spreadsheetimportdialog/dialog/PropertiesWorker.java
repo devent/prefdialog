@@ -24,14 +24,12 @@ import java.net.URI;
 
 import javax.inject.Inject;
 
-import com.anrisoftware.globalpom.csvimport.CsvImportProperties;
+import com.anrisoftware.globalpom.spreadsheetimport.SpreadsheetImportProperties;
 import com.anrisoftware.prefdialog.fields.FieldComponent;
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 import com.anrisoftware.prefdialog.miscswing.filechoosers.FileChooserModel;
-import com.anrisoftware.prefdialog.spreadsheetimportdialog.panelproperties.advancedproperties.LineEnd;
-import com.anrisoftware.prefdialog.spreadsheetimportdialog.panelproperties.advancedproperties.QuoteCharModel;
+import com.anrisoftware.prefdialog.miscswing.indicestextfield.ArrayRange;
 import com.anrisoftware.prefdialog.spreadsheetimportdialog.panelproperties.panelproperties.SpreadsheetPanelProperties;
-import com.anrisoftware.prefdialog.spreadsheetimportdialog.panelproperties.separatorproperties.SeparatorCharModel;
 import com.google.inject.assistedinject.Assisted;
 
 /**
@@ -42,179 +40,139 @@ import com.google.inject.assistedinject.Assisted;
  */
 class PropertiesWorker {
 
-	private static final String CUSTOM_SEPARATOR_CHAR_FIELD = "customSeparatorChar";
+    private static final String FILE_FIELD = "file";
 
-	private static final String USE_CUSTOM_SEPARATOR_FIELD = "useCustomSeparator";
+    private static final String SHEET_NUMBER_FIELD = "sheetNumber";
 
-	private static final String SEPARATOR_CHAR_FIELD = "separatorChar";
+    private static final String COLUMNS_FIELD = "columns";
 
-	private static final String LINE_END_SYMBOLS_FIELD = "lineEndSymbols";
+    private static final String HAVE_HEADER_FIELD = "haveHeader";
 
-	private static final String CHARSET_FIELD = "charset";
+    private static final String START_ROW_FIELD = "startRow";
 
-	private static final String FILE_FIELD = "file";
+    private static final String END_ROW_FIELD = "endRow";
 
-	private static final String START_ROW_FIELD = "startRow";
+    private final FieldComponent<?> field;
 
-	private static final String NUM_COLS_FIELD = "numberColumns";
+    private final SpreadsheetPanelProperties panelProperties;
 
-	private static final String LOCALE_FIELD = "locale";
+    @Inject
+    private PropertiesWorkerLogger log;
 
-	private static final String CUSTOM_QUOTE_CHAR_FIELD = "customQuoteChar";
+    /**
+     * @see PropertiesWorkerFactory#create(FieldComponent,
+     *      SpreadsheetPanelProperties)
+     */
+    @Inject
+    PropertiesWorker(@Assisted FieldComponent<?> field,
+            @Assisted SpreadsheetPanelProperties panelProperties) {
+        this.field = field;
+        this.panelProperties = panelProperties;
+    }
 
-	private static final String USE_CUSTOM_QUOTE_FIELD = "useCustomQuote";
+    /**
+     * @see SpreadsheetImportDialog#setProperties(SpreadsheetImportProperties)
+     */
+    @OnAwt
+    public void setProperties(SpreadsheetImportProperties properties)
+            throws PropertyVetoException {
+        setFileProperty(properties, field);
+        setSheetNumberProperty(properties, field);
+        setColumnsProperty(properties, field);
+        setHaveHeaderProperty(properties, field);
+        setStartRowProperty(properties, field);
+        setEndRowProperty(properties, field);
+    }
 
-	private static final String QUOTE_CHAR_FIELD = "quoteChar";
+    /**
+     * @see SpreadsheetImportDialog#setProperties(SpreadsheetImportProperties)
+     */
+    @OnAwt
+    public void setPropertiesNoChecks(SpreadsheetImportProperties properties) {
+        try {
+            setFileProperty(properties, field);
+        } catch (PropertyVetoException e) {
+        }
+        try {
+            setModelFileProperty(properties);
+        } catch (PropertyVetoException e) {
+        }
+        try {
+            setSheetNumberProperty(properties, field);
+        } catch (PropertyVetoException e) {
+            log.getLog().error(null, e);
+        }
+        try {
+            setColumnsProperty(properties, field);
+        } catch (PropertyVetoException e) {
+            log.getLog().error(null, e);
+        }
+        try {
+            setHaveHeaderProperty(properties, field);
+        } catch (PropertyVetoException e) {
+            log.getLog().error(null, e);
+        }
+        try {
+            setStartRowProperty(properties, field);
+        } catch (PropertyVetoException e) {
+            log.getLog().error(null, e);
+        }
+        try {
+            setEndRowProperty(properties, field);
+        } catch (PropertyVetoException e) {
+            log.getLog().error(null, e);
+        }
+    }
 
-	private final FieldComponent<?> field;
+    private void setFileProperty(SpreadsheetImportProperties properties,
+            FieldComponent<?> field) throws PropertyVetoException {
+        FieldComponent<?> f = field.findField(FILE_FIELD);
+        URI uri = properties.getFile();
+        if (uri != null) {
+            File file = new File(uri);
+            f.setValue(file);
+        }
+    }
 
-	private final SpreadsheetPanelProperties panelProperties;
+    private void setModelFileProperty(SpreadsheetImportProperties p)
+            throws PropertyVetoException {
+        FileChooserModel model = panelProperties.getFileProperties()
+                .getFileModel();
+        URI uri = p.getFile();
+        if (uri != null) {
+            File file = new File(uri);
+            model.setFile(file);
+        }
+    }
 
-	/**
-	 * @see PropertiesWorkerFactory#create(FieldComponent, SpreadsheetPanelProperties)
-	 */
-	@Inject
-	PropertiesWorker(@Assisted FieldComponent<?> field,
-			@Assisted SpreadsheetPanelProperties panelProperties) {
-		this.field = field;
-		this.panelProperties = panelProperties;
-	}
+    private void setSheetNumberProperty(SpreadsheetImportProperties p,
+            FieldComponent<?> field) throws PropertyVetoException {
+        FieldComponent<?> f = field.findField(SHEET_NUMBER_FIELD);
+        f.setValue(p.getSheetNumber());
+    }
 
-	/**
-	 * @see SpreadsheetImportDialog#setProperties(CsvImportProperties)
-	 */
-	@OnAwt
-	public void setProperties(CsvImportProperties properties)
-			throws PropertyVetoException {
-		setCharsetProperty(properties, field);
-		setLineEndProperty(properties, field);
-		setFileProperty(properties, field);
-		setModelFileProperty(properties);
-		setLocaleProperty(properties, field);
-		setNumColsProperty(properties, field);
-		setQuoteProperty(properties, field);
-		setSeparatorProperty(properties, field);
-		setStartRowProperty(properties, field);
-	}
+    private void setColumnsProperty(SpreadsheetImportProperties p,
+            FieldComponent<?> field) throws PropertyVetoException {
+        FieldComponent<?> f = field.findField(COLUMNS_FIELD);
+        f.setValue(new ArrayRange(p.getColumns()).calculateRange());
+    }
 
-	/**
-	 * @see SpreadsheetImportDialog#setProperties(CsvImportProperties)
-	 */
-	@OnAwt
-	public void setPropertiesNoChecks(CsvImportProperties properties) {
-		try {
-			setCharsetProperty(properties, field);
-		} catch (PropertyVetoException e) {
-		}
-		try {
-			setLineEndProperty(properties, field);
-		} catch (PropertyVetoException e) {
-		}
-		try {
-			setFileProperty(properties, field);
-		} catch (PropertyVetoException e) {
-		}
-		try {
-			setModelFileProperty(properties);
-		} catch (PropertyVetoException e) {
-		}
-		try {
-			setLocaleProperty(properties, field);
-		} catch (PropertyVetoException e) {
-		}
-		try {
-			setNumColsProperty(properties, field);
-		} catch (PropertyVetoException e) {
-		}
-		try {
-			setQuoteProperty(properties, field);
-		} catch (PropertyVetoException e) {
-		}
-		try {
-			setSeparatorProperty(properties, field);
-		} catch (PropertyVetoException e) {
-		}
-		try {
-			setStartRowProperty(properties, field);
-		} catch (PropertyVetoException e) {
-		}
-	}
+    private void setHaveHeaderProperty(SpreadsheetImportProperties p,
+            FieldComponent<?> field) throws PropertyVetoException {
+        FieldComponent<?> f = field.findField(HAVE_HEADER_FIELD);
+        f.setValue(p.isHaveHeader());
+    }
 
-	private void setQuoteProperty(CsvImportProperties properties,
-			FieldComponent<?> field) throws PropertyVetoException {
-		QuoteCharModel model = panelProperties.getAdvancedProperties()
-				.getQuoteCharModel();
-		char quote = properties.getQuote();
-		FieldComponent<?> f;
-		if (model.isQuoteChar(quote)) {
-			f = field.findField(QUOTE_CHAR_FIELD);
-			f.setValue(properties.getQuote());
-		} else {
-			f = field.findField(USE_CUSTOM_QUOTE_FIELD);
-			f.setValue(true);
-			f = field.findField(CUSTOM_QUOTE_CHAR_FIELD);
-			f.setValue(properties.getQuote());
-		}
-	}
+    private void setStartRowProperty(SpreadsheetImportProperties p,
+            FieldComponent<?> field) throws PropertyVetoException {
+        FieldComponent<?> f = field.findField(START_ROW_FIELD);
+        f.setValue(p.getStartRow());
+    }
 
-	private void setNumColsProperty(CsvImportProperties properties,
-			FieldComponent<?> field) throws PropertyVetoException {
-		FieldComponent<?> f = field.findField(NUM_COLS_FIELD);
-		f.setValue(properties.getLocale());
-	}
-
-	private void setStartRowProperty(CsvImportProperties properties,
-			FieldComponent<?> field) throws PropertyVetoException {
-		FieldComponent<?> f = field.findField(START_ROW_FIELD);
-		f.setValue(properties.getStartRow());
-	}
-
-	private void setLocaleProperty(CsvImportProperties properties,
-			FieldComponent<?> field) throws PropertyVetoException {
-		FieldComponent<?> f = field.findField(LOCALE_FIELD);
-		f.setValue(properties.getLocale());
-	}
-
-	private void setFileProperty(CsvImportProperties properties,
-			FieldComponent<?> field) throws PropertyVetoException {
-		FieldComponent<?> f = field.findField(FILE_FIELD);
-		f.setValue(new File(properties.getFile()));
-	}
-
-	private void setModelFileProperty(CsvImportProperties properties)
-			throws PropertyVetoException {
-		FileChooserModel model = panelProperties.getFileProperties()
-				.getFileModel();
-		URI file = properties.getFile();
-		if (file != null) {
-			model.setFile(new File(file));
-		}
-	}
-
-	private void setCharsetProperty(CsvImportProperties properties,
-			FieldComponent<?> field) throws PropertyVetoException {
-		FieldComponent<?> f = field.findField(CHARSET_FIELD);
-		f.setValue(properties.getCharset());
-	}
-
-	private void setLineEndProperty(CsvImportProperties properties,
-			FieldComponent<?> field) throws PropertyVetoException {
-		FieldComponent<?> f = field.findField(LINE_END_SYMBOLS_FIELD);
-		LineEnd symbols = LineEnd.parse(properties.getEndOfLineSymbols());
-		f.setValue(symbols);
-	}
-
-	private void setSeparatorProperty(CsvImportProperties properties,
-			FieldComponent<?> field) throws PropertyVetoException {
-		SeparatorCharModel model = panelProperties.getSeparatorProperties()
-				.getSeparatorCharModel();
-		char separator = properties.getSeparator();
-		if (model.isSeparator(separator)) {
-			field.findField(SEPARATOR_CHAR_FIELD).setValue(separator);
-		} else {
-			field.findField(USE_CUSTOM_SEPARATOR_FIELD).setValue(true);
-			field.findField(CUSTOM_SEPARATOR_CHAR_FIELD).setValue(separator);
-		}
-	}
+    private void setEndRowProperty(SpreadsheetImportProperties p,
+            FieldComponent<?> field) throws PropertyVetoException {
+        FieldComponent<?> f = field.findField(END_ROW_FIELD);
+        f.setValue(p.getEndRow());
+    }
 
 }

@@ -44,11 +44,11 @@ public class ArrayRange implements Serializable {
 
     private int max;
 
-    ArrayRange(int[] value) {
+    public ArrayRange(int[] value) {
         this.value = copyValue(value);
     }
 
-    ArrayRange(int[] value, String text) {
+    public ArrayRange(int[] value, String text) {
         this.value = copyValue(value);
         this.str = text;
     }
@@ -81,11 +81,12 @@ public class ArrayRange implements Serializable {
         return value;
     }
 
-    String getStr() {
-        return str;
-    }
-
-    ArrayRange calculateRange() {
+    /**
+     * Calculate the array range.
+     *
+     * @return this {@link ArrayRange}.
+     */
+    public ArrayRange calculateRange() {
         if (value.length == 0) {
             continuesRange = false;
             return this;
@@ -108,7 +109,17 @@ public class ArrayRange implements Serializable {
         return this;
     }
 
-    String printRange() {
+    /**
+     * Returns the string representation of this array range.
+     */
+    public String getStr() {
+        return str;
+    }
+
+    /**
+     * Prints the array range.
+     */
+    public String printRange() {
         StringBuilder b = new StringBuilder();
         if (continuesRange) {
             printContinuesRange(b);

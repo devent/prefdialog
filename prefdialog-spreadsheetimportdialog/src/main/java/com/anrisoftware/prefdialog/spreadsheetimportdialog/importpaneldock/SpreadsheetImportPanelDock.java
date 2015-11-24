@@ -22,31 +22,37 @@ import java.awt.Component;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
+import java.util.Locale;
 
 import javax.inject.Inject;
 import javax.swing.JPanel;
 
-import com.anrisoftware.globalpom.csvimport.CsvImportProperties;
+import com.anrisoftware.globalpom.spreadsheetimport.SpreadsheetImportProperties;
+import com.anrisoftware.globalpom.spreadsheetimport.SpreadsheetImporterFactory;
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 import com.anrisoftware.prefdialog.miscswing.docks.api.DockPosition;
 import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.dock.AbstractEditorDockWindow;
 import com.anrisoftware.prefdialog.spreadsheetimportdialog.importpanel.SpreadsheetImportPanel;
 import com.anrisoftware.prefdialog.spreadsheetimportdialog.importpanel.SpreadsheetImportPanelFactory;
-import com.anrisoftware.prefdialog.spreadsheetimportdialog.importpaneldock.ImportPanelDock;
+import com.anrisoftware.prefdialog.spreadsheetimportdialog.panelproperties.panelproperties.SpreadsheetPanelProperties;
+import com.anrisoftware.resources.texts.api.TextResource;
 import com.anrisoftware.resources.texts.api.Texts;
 import com.anrisoftware.resources.texts.api.TextsFactory;
 import com.google.inject.Injector;
 
 /**
- * Dock containing the CSV import panel.
+ * Dock containing the spreadsheet import panel.
  *
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 3.0
+ * @since 3.5
  */
 @SuppressWarnings("serial")
-public class ImportPanelDock extends AbstractEditorDockWindow {
+public class SpreadsheetImportPanelDock extends AbstractEditorDockWindow {
 
-    public static final String ID = "importPanelDock";
+    /**
+     * The ID name of the import panel dock.
+     */
+    public static final String ID = "spreadsheetImportPanelDock";
 
     @Inject
     private transient SpreadsheetImportPanelFactory panelFactory;
@@ -57,57 +63,28 @@ public class ImportPanelDock extends AbstractEditorDockWindow {
 
     private Texts texts;
 
+    private Locale locale;
+
+    /**
+     * Sets the spreadsheet import panel factory.
+     *
+     * @param panelFactory
+     *            the {@link SpreadsheetImportPanelFactory}.
+     */
+    public void setPanelFactory(SpreadsheetImportPanelFactory panelFactory) {
+        this.panelFactory = panelFactory;
+    }
+
+    /**
+     * Injects the texts resources factory.
+     *
+     * @param factory
+     *            the {@link TextsFactory}.
+     */
     @Inject
     public void setTextsFactory(TextsFactory factory) {
-        this.texts = factory.create(ImportPanelDock.class.getSimpleName());
-    }
-
-    /**
-     * Sets the CSV import properties.
-     * <p>
-     * <h2>AWT Thread</h2>
-     * <p>
-     * Should be called in the AWT thread.
-     *
-     * @param injector
-     *            the parent {@link Injector}.
-     *
-     * @param properties
-     *            the {@link CsvImportProperties}.
-     *
-     * @return this {@link ImportPanelDock}.
-     */
-    @OnAwt
-    public ImportPanelDock createPanel(Injector injector,
-            CsvImportProperties properties) {
-        this.panel = new JPanel();
-        setTexts(texts);
-        importPanel = panelFactory.create(panel, properties);
-        importPanel.createPanel(injector);
-        return this;
-    }
-
-    /**
-     * Returns the CSV import panel.
-     *
-     * @return the {@link SpreadsheetImportPanel}.
-     */
-    public SpreadsheetImportPanel getImportPanel() {
-        return importPanel;
-    }
-
-    /**
-     * Restores the input of the panel to default values.
-     *
-     * @throws PropertyVetoException
-     *             if the old user input is not valid.
-     */
-    public void restoreInput() throws PropertyVetoException {
-        importPanel.retoreInput();
-    }
-
-    public CsvImportProperties getProperties() {
-        return importPanel.getProperties();
+        this.texts = factory.create(SpreadsheetImportPanelDock.class
+                .getSimpleName());
     }
 
     /**
@@ -118,12 +95,105 @@ public class ImportPanelDock extends AbstractEditorDockWindow {
      * <li>{@code "import_panel_dock_title"}</li>
      * </ul>
      *
+     * <p>
+     * <h2>AWT Thread</h2>
+     * Should be called in the AWT event dispatch thread.
+     * </p>
+     *
      * @param texts
      *            the {@link Texts}.
      */
     @OnAwt
     public void setTexts(Texts texts) {
-        setTitle(texts.getResource("import_panel_dock_title").getText());
+        this.texts = texts;
+        updateTexts();
+    }
+
+    /**
+     * Sets the locale for the dock.
+     *
+     * <p>
+     * <h2>AWT Thread</h2>
+     * Should be called in the AWT event dispatch thread.
+     * </p>
+     *
+     * @param locale
+     *            the {@link Locale}.
+     */
+    @OnAwt
+    public void setLocale(Locale locale) {
+        this.locale = locale;
+        updateTexts();
+    }
+
+    /**
+     * Sets the CSV import properties.
+     * <p>
+     * <h2>AWT Thread</h2>
+     * Should be called in the AWT event dispatch thread.
+     * </p>
+     *
+     * @param injector
+     *            the parent {@link Injector}.
+     *
+     * @param properties
+     *            the {@link SpreadsheetImportProperties}.
+     *
+     * @param importerFactory
+     *            the {@link SpreadsheetImporterFactory}.
+     *
+     * @return this {@link SpreadsheetImportPanelDock}.
+     */
+    @OnAwt
+    public SpreadsheetImportPanelDock createPanel(Injector injector,
+            SpreadsheetImportProperties properties,
+            SpreadsheetImporterFactory importerFactory) {
+        createImportPanel(injector, properties, importerFactory);
+        updateTexts();
+        return this;
+    }
+
+    /**
+     * Returns the CSV import panel.
+     * <p>
+     * <h2>AWT Thread</h2>
+     * Should be called in the AWT event dispatch thread.
+     * </p>
+     *
+     * @return the {@link SpreadsheetImportPanel}.
+     */
+    @OnAwt
+    public SpreadsheetImportPanel getImportPanel() {
+        return importPanel;
+    }
+
+    /**
+     * Restores the input of the panel to default values.
+     * <p>
+     * <h2>AWT Thread</h2>
+     * Should be called in the AWT event dispatch thread.
+     * </p>
+     *
+     * @throws PropertyVetoException
+     *             if the old user input is not valid.
+     */
+    @OnAwt
+    public void restoreInput() throws PropertyVetoException {
+        importPanel.retoreInput();
+    }
+
+    /**
+     * Returns the spreadsheet panel properties.
+     * <p>
+     * <h2>AWT Thread</h2>
+     * Should be called in the AWT event dispatch thread.
+     * </p>
+     *
+     * @return the {@link SpreadsheetImportProperties}.
+     */
+    @OnAwt
+    public SpreadsheetPanelProperties getProperties() {
+        return importPanel.getProperties();
     }
 
     @Override
@@ -228,6 +298,31 @@ public class ImportPanelDock extends AbstractEditorDockWindow {
     public void removePropertyChangeListener(String propertyName,
             PropertyChangeListener listener) {
         importPanel.removePropertyChangeListener(propertyName, listener);
+    }
+
+    private void createImportPanel(Injector injector,
+            SpreadsheetImportProperties properties,
+            SpreadsheetImporterFactory importerFactory) {
+        this.panel = new JPanel();
+        panel.setLocale(locale);
+        importPanel = panelFactory.create(panel, properties, importerFactory);
+        importPanel.setLocale(locale);
+        importPanel.createPanel(injector);
+    }
+
+    private static final String IMPORT_PANEL_DOCK_TITLE_NAME = "import_panel_dock_title";
+
+    private void updateTexts() {
+        if (texts == null) {
+            return;
+        }
+        if (locale == null) {
+            return;
+        }
+        TextResource titleResource;
+        titleResource = texts.getResource(IMPORT_PANEL_DOCK_TITLE_NAME, locale);
+        String title = titleResource.getText();
+        setTitle(title);
     }
 
 }

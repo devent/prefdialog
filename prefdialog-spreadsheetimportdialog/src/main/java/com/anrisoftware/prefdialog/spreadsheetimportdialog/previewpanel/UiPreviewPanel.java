@@ -28,17 +28,17 @@ import javax.swing.JTable;
  * Preview panel.
  *
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 3.1
+ * @since 3.5
  */
 @SuppressWarnings("serial")
 class UiPreviewPanel extends JPanel {
 
-    private final JTable dataTable;
+    final JTable dataTable;
 
     /**
      * Create the panel.
      */
-    public UiPreviewPanel() {
+    UiPreviewPanel() {
         setLayout(new BorderLayout(0, 0));
 
         JScrollPane scrollPane = new JScrollPane();
@@ -47,9 +47,5 @@ class UiPreviewPanel extends JPanel {
         dataTable = new JTable();
         scrollPane.setViewportView(dataTable);
 
-    }
-
-    public JTable getDataTable() {
-        return dataTable;
     }
 }

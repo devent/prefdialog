@@ -18,23 +18,23 @@
  */
 package com.anrisoftware.prefdialog.spreadsheetimportdialog.dialog;
 
-import com.anrisoftware.globalpom.csvimport.CsvImportProperties;
+import com.anrisoftware.globalpom.spreadsheetimport.SpreadsheetImportProperties;
 
 /**
- * Factory to create a new CSV import dialog.
- * 
+ * Factory to create a new spreadsheet import dialog.
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 3.0
+ * @since 3.5
  */
 public interface SpreadsheetImportDialogFactory {
 
-	/**
-	 * Creates the import dialog for the specified frame.
-	 * 
-	 * @param properties
-	 *            the {@link CsvImportProperties}.
-	 * 
-	 * @return the {@link SpreadsheetImportDialog}.
-	 */
-	SpreadsheetImportDialog create(CsvImportProperties properties);
+    /**
+     * Creates the import dialog.
+     *
+     * @param properties
+     *            the {@link SpreadsheetImportProperties}.
+     *
+     * @return the {@link SpreadsheetImportDialog}.
+     */
+    SpreadsheetImportDialog create(SpreadsheetImportProperties properties);
 }

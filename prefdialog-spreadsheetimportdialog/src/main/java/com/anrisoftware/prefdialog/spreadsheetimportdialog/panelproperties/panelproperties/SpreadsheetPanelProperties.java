@@ -24,6 +24,7 @@ import java.net.URI;
 import com.anrisoftware.globalpom.spreadsheetimport.SpreadsheetImportProperties;
 import com.anrisoftware.prefdialog.annotations.Child;
 import com.anrisoftware.prefdialog.annotations.FieldComponent;
+import com.anrisoftware.prefdialog.miscswing.indicestextfield.ArrayRange;
 import com.anrisoftware.prefdialog.spreadsheetimportdialog.panelproperties.fileproperties.FileProperties;
 import com.anrisoftware.prefdialog.spreadsheetimportdialog.panelproperties.importproperties.ImportProperties;
 import com.anrisoftware.prefdialog.verticalpanel.VerticalPreferencesPanel;
@@ -38,93 +39,94 @@ import com.google.inject.assistedinject.AssistedInject;
  */
 public class SpreadsheetPanelProperties implements SpreadsheetImportProperties {
 
-	private Object importPanel;
+    private Object importPanel;
 
-	private final FileProperties fileProperties;
+    private final FileProperties fileProperties;
 
-	private final ImportProperties importProperties;
+    private final ImportProperties importProperties;
 
-	/**
-	 * @see SpreadsheetPanelPropertiesFactory#create()
-	 */
-	@AssistedInject
-	SpreadsheetPanelProperties(FileProperties fileProperties,
+    /**
+     * @see SpreadsheetPanelPropertiesFactory#create()
+     */
+    @AssistedInject
+    SpreadsheetPanelProperties(FileProperties fileProperties,
             ImportProperties importProperties) {
-		this.fileProperties = fileProperties;
-		this.importProperties = importProperties;
-	}
+        this.fileProperties = fileProperties;
+        this.importProperties = importProperties;
+    }
 
-	/**
-	 * @see SpreadsheetPanelPropertiesFactory#create(SpreadsheetImportProperties)
-	 */
-	@AssistedInject
-	SpreadsheetPanelProperties(FileProperties fileProperties,
-			ImportProperties importProperties,
-			@Assisted SpreadsheetImportProperties properties) {
-		this.fileProperties = fileProperties;
-		this.importProperties = importProperties;
-		setupProperties(properties);
-	}
+    /**
+     * @see SpreadsheetPanelPropertiesFactory#create(SpreadsheetImportProperties)
+     */
+    @AssistedInject
+    SpreadsheetPanelProperties(FileProperties fileProperties,
+            ImportProperties importProperties,
+            @Assisted SpreadsheetImportProperties properties) {
+        this.fileProperties = fileProperties;
+        this.importProperties = importProperties;
+        setupProperties(properties);
+    }
 
     private void setupProperties(SpreadsheetImportProperties p) {
         if (p == null) {
-			return;
-		}
+            return;
+        }
         fileProperties.setFile(new File(p.getFile()));
         importProperties.setSheetNumber(p.getSheetNumber());
-        importProperties.setColumns(p.getColumns());
+        importProperties.setColumns(new ArrayRange(p.getColumns())
+                .calculateRange());
         importProperties.setStartRow(p.getStartRow());
         importProperties.setEndRow(p.getEndRow());
         importProperties.setHaveHeader(p.isHaveHeader());
-	}
+    }
 
-	public void setImportPanel(Object importPanel) {
-		this.importPanel = importPanel;
-	}
+    public void setImportPanel(Object importPanel) {
+        this.importPanel = importPanel;
+    }
 
-	@FieldComponent
-	@VerticalPreferencesPanel
-	public Object getImportPanel() {
-		return importPanel;
-	}
+    @FieldComponent
+    @VerticalPreferencesPanel
+    public Object getImportPanel() {
+        return importPanel;
+    }
 
-	@FieldComponent(order = 0)
-	@Child
-	public FileProperties getFileProperties() {
-		return fileProperties;
-	}
+    @FieldComponent(order = 0)
+    @Child
+    public FileProperties getFileProperties() {
+        return fileProperties;
+    }
 
-	@FieldComponent(order = 1)
-	@Child
-	public ImportProperties getImportProperties() {
-		return importProperties;
-	}
+    @FieldComponent(order = 1)
+    @Child
+    public ImportProperties getImportProperties() {
+        return importProperties;
+    }
 
-	@Override
-	public URI getFile() {
-		File file = fileProperties.getFile();
-		return file == null ? null : file.toURI();
-	}
+    @Override
+    public URI getFile() {
+        File file = fileProperties.getFile();
+        return file == null ? null : file.toURI();
+    }
 
-	@Override
+    @Override
     public int getSheetNumber() {
         return importProperties.getSheetNumber();
     }
 
     @Override
     public int[] getColumns() {
-        return importProperties.getColumns();
-	}
+        return importProperties.getColumns().getValue();
+    }
 
-	@Override
-	public int getStartRow() {
-		return importProperties.getStartRow();
-	}
+    @Override
+    public int getStartRow() {
+        return importProperties.getStartRow();
+    }
 
-	@Override
+    @Override
     public int getEndRow() {
         return importProperties.getEndRow();
-	}
+    }
 
     @Override
     public boolean isHaveHeader() {

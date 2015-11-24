@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with prefdialog-spreadsheetimportdialog. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.prefdialog.spreadsheetimportdialog.panel
+package com.anrisoftware.prefdialog.spreadsheetimportdialog.previewpanel
 
 import static com.anrisoftware.globalpom.utils.TestUtils.*
 import static com.anrisoftware.prefdialog.spreadsheetimportdialog.utils.Dependencies.*
@@ -24,12 +24,9 @@ import groovy.transform.CompileStatic
 
 import java.awt.Component
 import java.awt.Dimension
-import java.awt.event.KeyEvent
 
 import javax.swing.JFrame
-import javax.swing.JPanel
 
-import org.apache.commons.io.IOUtils
 import org.fest.swing.fixture.FrameFixture
 import org.junit.BeforeClass
 import org.junit.Rule
@@ -37,34 +34,36 @@ import org.junit.Test
 import org.junit.rules.TemporaryFolder
 
 import com.anrisoftware.globalpom.utils.TestUtils
-import com.anrisoftware.prefdialog.spreadsheetimportdialog.importpanel.SpreadsheetImportPanel
 import com.anrisoftware.prefdialog.spreadsheetimportdialog.utils.Dependencies
 
 /**
- * @see SpreadsheetImportPanel
+ * @see SpreadsheetPreviewPanel
  *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.5
  */
 @CompileStatic
-class SpreadsheetImportPanelTest {
+class SpreadsheetPreviewPanelTest {
 
     @Test
     void "show"() {
         def file = copyDocument lottoOds, tmp.newFile()
         def title = "$NAME::show"
-        def p = dep.spreadsheetPanelPropertiesFactory.create()
-        SpreadsheetImportPanel importPanel
+        def p = dep.spreadsheetImportPropertiesFactory.create()
+        p.file = file.toURI()
+        p.haveHeader = true
+        SpreadsheetPreviewPanel previewPanel
         Component container
         def frameTesting = dep.frameTestingFactory.create(title: title, size: frameSize, createComponent: { JFrame frame ->
-            importPanel = dep.spreadsheetImportPanelFactory.create(new JPanel(), p, dep.importerFactory).createPanel()
-            container = importPanel.getAWTComponent()
+            previewPanel = dep.spreadsheetPreviewPanelFactory.create()
+            previewPanel.createPanel(injector, dep.importerFactory)
+            container = previewPanel.getAWTComponent()
             frame.add(container)
         })()
         frameTesting.withFixture({ FrameFixture it ->
-            it.textBox "file-fileField" setText file.absolutePath
-            it.textBox "file-fileField" pressAndReleaseKeys KeyEvent.VK_ENTER
-            //Thread.sleep 60*1000; assert false : "Thread.sleep"
+            previewPanel.setProperties p
+        }, { FrameFixture it ->
+            previewPanel.setProperties null
         })
     }
 
@@ -77,7 +76,7 @@ class SpreadsheetImportPanelTest {
 
     static Dependencies dep
 
-    static final String NAME = SpreadsheetImportPanelTest.class.simpleName
+    static final String NAME = SpreadsheetPreviewPanelTest.class.simpleName
 
     static final Dimension frameSize = new Dimension(400, 566)
 

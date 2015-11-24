@@ -18,19 +18,18 @@
  */
 package com.anrisoftware.prefdialog.spreadsheetimportdialog.previewpanel;
 
-
 /**
  * Factory to create the preview panel.
  *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.1
  */
-public interface PreviewPanelFactory {
+public interface SpreadsheetPreviewPanelFactory {
 
     /**
      * Creates the preview panel in the specified container.
      *
-     * @return the {@link PreviewPanel}.
+     * @return the {@link SpreadsheetPreviewPanel}.
      */
-    PreviewPanel create();
+    SpreadsheetPreviewPanel create();
 }

@@ -18,7 +18,6 @@
  */
 package com.anrisoftware.prefdialog.spreadsheetimportdialog.previewpanel;
 
-import com.anrisoftware.globalpom.csvimport.CsvImportModule;
 import com.anrisoftware.resources.texts.defaults.TextsResourcesDefaultModule;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
@@ -28,44 +27,45 @@ import com.google.inject.assistedinject.FactoryModuleBuilder;
 /**
  * Installs preview panel factory and dependent modules.
  *
- * @see PreviewPanel
- * @see PreviewPanelFactory
+ * @see SpreadsheetPreviewPanel
+ * @see SpreadsheetPreviewPanelFactory
  *
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 3.1
+ * @since 3.5
  */
-public class PreviewPanelModule extends AbstractModule {
+public class SpreadsheetPreviewPanelModule extends AbstractModule {
 
     /**
      * @see #getFactory()
      */
-    public static PreviewPanelFactory getPreviewPanelFactory() {
+    public static SpreadsheetPreviewPanelFactory getPreviewPanelFactory() {
         return getFactory();
     }
 
     /**
      * Creates and returns the preview panel factory.
      *
-     * @return the {@link PreviewPanelFactory}.
+     * @return the {@link SpreadsheetPreviewPanelFactory}.
      */
-    public static PreviewPanelFactory getFactory() {
+    public static SpreadsheetPreviewPanelFactory getFactory() {
         return SingletonHolder.factory;
     }
 
     private static class SingletonHolder {
 
         public static final Injector injector = Guice.createInjector(
-                new PreviewPanelModule(), new TextsResourcesDefaultModule(),
-                new CsvImportModule());
+                new SpreadsheetPreviewPanelModule(),
+                new TextsResourcesDefaultModule());
 
-        public static final PreviewPanelFactory factory = injector
-                .getInstance(PreviewPanelFactory.class);
+        public static final SpreadsheetPreviewPanelFactory factory = injector
+                .getInstance(SpreadsheetPreviewPanelFactory.class);
 
     }
 
     @Override
     protected void configure() {
-        install(new FactoryModuleBuilder().implement(PreviewPanel.class,
-                PreviewPanel.class).build(PreviewPanelFactory.class));
+        install(new FactoryModuleBuilder().implement(
+                SpreadsheetPreviewPanel.class, SpreadsheetPreviewPanel.class)
+                .build(SpreadsheetPreviewPanelFactory.class));
     }
 }

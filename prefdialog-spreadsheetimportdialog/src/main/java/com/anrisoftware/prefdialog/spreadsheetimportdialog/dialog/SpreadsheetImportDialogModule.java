@@ -18,16 +18,15 @@
  */
 package com.anrisoftware.prefdialog.spreadsheetimportdialog.dialog;
 
-import com.anrisoftware.globalpom.csvimport.CsvImportModule;
+import com.anrisoftware.globalpom.spreadsheetimport.SpreadsheetImporterModule;
 import com.anrisoftware.prefdialog.core.CoreFieldComponentModule;
-import com.anrisoftware.prefdialog.miscswing.comboboxhistory.ComboBoxHistoryModule;
 import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.core.DockingFramesModule;
 import com.anrisoftware.prefdialog.simpledialog.SimpleDialogModule;
 import com.anrisoftware.prefdialog.spreadsheetimportdialog.importpanel.SpreadsheetImportPanel;
 import com.anrisoftware.prefdialog.spreadsheetimportdialog.importpanel.SpreadsheetImportPanelFactory;
 import com.anrisoftware.prefdialog.spreadsheetimportdialog.importpanel.SpreadsheetImportPanelModule;
 import com.anrisoftware.prefdialog.spreadsheetimportdialog.panelproperties.panelproperties.SpreadsheetPanelPropertiesFactory;
-import com.anrisoftware.prefdialog.spreadsheetimportdialog.previewpanel.PreviewPanelModule;
+import com.anrisoftware.prefdialog.spreadsheetimportdialog.previewpanel.SpreadsheetPreviewPanelModule;
 import com.anrisoftware.resources.images.images.ImagesResourcesModule;
 import com.anrisoftware.resources.images.mapcached.ResourcesImagesCachedMapModule;
 import com.anrisoftware.resources.images.scaling.ResourcesSmoothScalingModule;
@@ -100,10 +99,13 @@ public class SpreadsheetImportDialogModule extends AbstractModule {
     private static class SingletonHolder {
 
         public static final Injector injector = Guice.createInjector(
-                new SpreadsheetImportDialogModule(), new SimpleDialogModule(),
-                new CoreFieldComponentModule(), new ComboBoxHistoryModule(),
-                new DockingFramesModule(), new CsvImportModule(),
-                new TextsResourcesDefaultModule(), new ImagesResourcesModule(),
+                new SpreadsheetImportPanelModule(),
+                new SpreadsheetImporterModule(),
+                new SpreadsheetPreviewPanelModule(),
+                new SpreadsheetImportDialogModule(),
+                new CoreFieldComponentModule(), new SimpleDialogModule(),
+                new DockingFramesModule(), new TextsResourcesDefaultModule(),
+                new ImagesResourcesModule(),
                 new ResourcesImagesCachedMapModule(),
                 new ResourcesSmoothScalingModule());
 
@@ -117,9 +119,10 @@ public class SpreadsheetImportDialogModule extends AbstractModule {
     @Override
     protected void configure() {
         install(new SpreadsheetImportPanelModule());
-        install(new PreviewPanelModule());
-        install(new FactoryModuleBuilder().implement(SpreadsheetImportDialog.class,
-                SpreadsheetImportDialog.class).build(SpreadsheetImportDialogFactory.class));
+        install(new SpreadsheetPreviewPanelModule());
+        install(new FactoryModuleBuilder().implement(
+                SpreadsheetImportDialog.class, SpreadsheetImportDialog.class)
+                .build(SpreadsheetImportDialogFactory.class));
         install(new FactoryModuleBuilder().implement(PropertiesWorker.class,
                 PropertiesWorker.class).build(PropertiesWorkerFactory.class));
     }

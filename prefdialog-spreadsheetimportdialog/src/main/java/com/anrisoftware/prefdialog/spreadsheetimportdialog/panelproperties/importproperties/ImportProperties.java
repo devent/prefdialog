@@ -25,6 +25,7 @@ import com.anrisoftware.prefdialog.annotations.FieldButton;
 import com.anrisoftware.prefdialog.annotations.FieldComponent;
 import com.anrisoftware.prefdialog.annotations.FormattedTextField;
 import com.anrisoftware.prefdialog.annotations.Spinner;
+import com.anrisoftware.prefdialog.miscswing.indicestextfield.ArrayRange;
 import com.anrisoftware.prefdialog.miscswing.indicestextfield.IndicesTextFieldFormatterFactory;
 
 /**
@@ -43,7 +44,7 @@ public class ImportProperties {
 
     private int sheetNumber;
 
-    private int[] columns;
+    private ArrayRange columns;
 
     private int startRow;
 
@@ -54,7 +55,7 @@ public class ImportProperties {
     @Inject
     ImportProperties() {
         this.sheetNumber = 0;
-        this.columns = new int[] {};
+        this.columns = new ArrayRange(new int[] { 0 }, "");
         this.startRow = 0;
         this.endRow = 0;
         this.haveHeader = false;
@@ -76,11 +77,11 @@ public class ImportProperties {
 
     @FieldComponent(order = 1, toolTip = "columns_short")
     @FormattedTextField(editable = true, formatterFactory = "columnsFormatter")
-    public int[] getColumns() {
+    public ArrayRange getColumns() {
         return columns;
     }
 
-    public void setColumns(int[] columns) {
+    public void setColumns(ArrayRange columns) {
         this.columns = columns;
     }
 

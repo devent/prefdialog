@@ -23,15 +23,15 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import com.anrisoftware.globalpom.csvimport.CsvImportException;
-import com.anrisoftware.globalpom.csvimport.CsvImporter;
+import com.anrisoftware.globalpom.spreadsheetimport.SpreadsheetImportException;
+import com.anrisoftware.globalpom.spreadsheetimport.SpreadsheetImporter;
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 
 /**
  * Loads the preview data.
  *
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 1.0
+ * @since 3.5
  */
 @SuppressWarnings("serial")
 class PreviewDataTableModel extends AbstractTableModel {
@@ -53,19 +53,20 @@ class PreviewDataTableModel extends AbstractTableModel {
 
     /**
      * Updates the preview for the specified importer.
-     *
-     * <h2>AWT Thread</h2>
      * <p>
-     * Should be called in the AWT thread.
+     * <h2>AWT Thread</h2>
+     * Should be called in the AWT event dispatch thread.
+     * </p>
      *
      * @param importer
-     *            the {@link CsvImporter} or {@code null}.
+     *            the {@link SpreadsheetImporter} or {@code null}.
      *
-     * @throws CsvImportException
+     * @throws SpreadsheetImportException
      *             if there was an error loading the preview data.
      */
     @OnAwt
-    public void setImporter(CsvImporter importer) throws CsvImportException {
+    public void setImporter(SpreadsheetImporter importer)
+            throws SpreadsheetImportException {
         if (importer == null) {
             this.rows.clear();
             this.headers.clear();
@@ -74,31 +75,6 @@ class PreviewDataTableModel extends AbstractTableModel {
         } else {
             loadData(importer);
             fireTableStructureChanged();
-        }
-    }
-
-    private void loadData(CsvImporter importer) throws CsvImportException {
-        int i = 0;
-        int rowOffset = importer.getProperties().getStartRow();
-        int maxIndex = maxPrefiewRows + rowOffset;
-        rows.clear();
-        headers.clear();
-        int cols = 0;
-        while (true) {
-            List<String> values = importer.call().getValues();
-            if (values == null || i > maxIndex) {
-                this.columnCount = cols;
-                return;
-            }
-            if (i == 0 && importer.getProperties().isHaveHeader()) {
-                headers.addAll(values);
-            } else {
-                if (i >= rowOffset) {
-                    rows.add(values);
-                    cols = Math.max(cols, values.size());
-                }
-            }
-            i++;
         }
     }
 
@@ -136,4 +112,24 @@ class PreviewDataTableModel extends AbstractTableModel {
         }
         return cols.get(columnIndex);
     }
+
+    private void loadData(SpreadsheetImporter importer)
+            throws SpreadsheetImportException {
+        int i = 0;
+        rows.clear();
+        headers.clear();
+        int cols = 0;
+        importer.open();
+        if (importer.getProperties().isHaveHeader()) {
+            headers.addAll(importer.getHeaders());
+        }
+        while (importer.loadNext() && i < maxPrefiewRows) {
+            List<String> values = importer.getValues();
+            rows.add(values);
+            cols = Math.max(cols, values.size());
+            i++;
+        }
+        this.columnCount = cols;
+    }
+
 }

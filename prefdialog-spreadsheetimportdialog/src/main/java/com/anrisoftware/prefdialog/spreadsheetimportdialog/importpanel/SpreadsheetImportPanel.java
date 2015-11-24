@@ -31,6 +31,7 @@ import java.beans.VetoableChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.Locale;
 
 import javax.inject.Inject;
 import javax.swing.JPanel;
@@ -90,6 +91,8 @@ public class SpreadsheetImportPanel {
 
     private SpinnerField sheetNumberField;
 
+    private Locale locale;
+
     /**
      * @see SpreadsheetImportPanelFactory#create(JPanel,
      *      SpreadsheetImportProperties, SpreadsheetImporterFactory)
@@ -123,6 +126,21 @@ public class SpreadsheetImportPanel {
     public void setTextsFactory(TextsFactory factory) {
         this.texts = factory.create(SpreadsheetImportPanel.class
                 .getSimpleName());
+    }
+
+    /**
+     * Sets the locale for the dock.
+     * <p>
+     * <h2>AWT Thread</h2>
+     * Should be called in the AWT event dispatch thread.
+     * </p>
+     *
+     * @param locale
+     *            the {@link Locale}.
+     */
+    @OnAwt
+    public void setLocale(Locale locale) {
+        this.locale = locale;
     }
 
     /**
@@ -298,6 +316,7 @@ public class SpreadsheetImportPanel {
                 .get().getFactory(parent).create(properties, PANEL_BEAN);
         panel.createPanel(parent);
         panel.addPropertyChangeListener(VALUE_PROPERTY, valueListener);
+        panel.setLocale(locale);
         this.propertiesPanel = panel;
     }
 
@@ -323,8 +342,8 @@ public class SpreadsheetImportPanel {
             return;
         }
         try {
-            DefaultSpreadsheetImportProperties p = spreadsheetImportPropertiesFactory
-                    .create(properties);
+            DefaultSpreadsheetImportProperties p;
+            p = spreadsheetImportPropertiesFactory.create(properties);
             p.setSheetNumber(0);
             SpreadsheetImporter importer = importerFactory.create(p);
             readSheetsCount(importer);
@@ -347,13 +366,13 @@ public class SpreadsheetImportPanel {
         SpinnerModel model = sheetNumberField.getModel();
         if (model instanceof SpinnerNumberModel) {
             SpinnerNumberModel nmodel = (SpinnerNumberModel) model;
-            nmodel.setMaximum(size);
+            nmodel.setMaximum(size - 1);
             if (size == 0) {
                 nmodel.setMinimum(0);
                 nmodel.setValue(0);
             } else {
-                nmodel.setMinimum(1);
-                nmodel.setValue(1);
+                nmodel.setMinimum(0);
+                nmodel.setValue(0);
             }
         }
     }

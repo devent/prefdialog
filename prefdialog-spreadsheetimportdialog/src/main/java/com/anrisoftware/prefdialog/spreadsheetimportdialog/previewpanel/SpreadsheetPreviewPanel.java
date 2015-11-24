@@ -25,10 +25,10 @@ import java.net.URI;
 
 import javax.inject.Inject;
 
-import com.anrisoftware.globalpom.csvimport.CsvImportException;
-import com.anrisoftware.globalpom.csvimport.CsvImportProperties;
-import com.anrisoftware.globalpom.csvimport.CsvImporter;
-import com.anrisoftware.globalpom.csvimport.CsvImporterFactory;
+import com.anrisoftware.globalpom.spreadsheetimport.SpreadsheetImportException;
+import com.anrisoftware.globalpom.spreadsheetimport.SpreadsheetImportProperties;
+import com.anrisoftware.globalpom.spreadsheetimport.SpreadsheetImporter;
+import com.anrisoftware.globalpom.spreadsheetimport.SpreadsheetImporterFactory;
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 import com.google.inject.Injector;
 
@@ -36,18 +36,17 @@ import com.google.inject.Injector;
  * Preview panel.
  *
  * @author Erwin Mueller, erwin.mueller@deventm.org
- * @since 3.1
+ * @since 3.5
  */
-public class PreviewPanel {
+public class SpreadsheetPreviewPanel {
 
     @Inject
     private Injector injector;
 
     @Inject
-    private PreviewPanelLogger log;
+    private SpreadsheetPreviewPanelLogger log;
 
-    @Inject
-    private CsvImporterFactory importerFactory;
+    private SpreadsheetImporterFactory importerFactory;
 
     @Inject
     private UiPreviewPanel panel;
@@ -56,60 +55,73 @@ public class PreviewPanel {
     private PreviewDataTableModel previewDataTableModel;
 
     /**
-     * @see #createPanel(Injector)
+     * Creates the panel.
+     * <p>
+     * <h2>AWT Thread</h2>
+     * Should be called in the AWT event dispatch thread.
+     * </p>
+     *
+     * @param importerFactory
+     *            the {@link SpreadsheetImporterFactory}.
+     *
+     * @return this {@link SpreadsheetPreviewPanel}.
      */
     @OnAwt
-    public PreviewPanel createPanel() {
-        return createPanel(injector);
+    public SpreadsheetPreviewPanel createPanel(
+            SpreadsheetImporterFactory importerFactory) {
+        return createPanel(injector, importerFactory);
     }
 
     /**
      * Creates the panel from the parent Guice injector.
      * <p>
      * <h2>AWT Thread</h2>
-     * <p>
-     * Should be called in the AWT thread.
+     * Should be called in the AWT event dispatch thread.
+     * </p>
      *
      * @param parent
      *            the parent {@link Injector}.
      *
-     * @return this {@link PreviewPanel}.
+     * @param importerFactory
+     *            the {@link SpreadsheetImporterFactory}.
+     *
+     * @return this {@link SpreadsheetPreviewPanel}.
      */
     @OnAwt
-    public PreviewPanel createPanel(Injector parent) {
+    public SpreadsheetPreviewPanel createPanel(Injector parent,
+            SpreadsheetImporterFactory importerFactory) {
+        this.importerFactory = importerFactory;
         setupPanel();
         setupActions();
         return this;
     }
 
-    private void setupActions() {
-    }
-
-    private void setupPanel() {
-        panel.getDataTable().setModel(previewDataTableModel);
-    }
-
     /**
      * Returns the created preview panel.
+     * <p>
+     * <h2>AWT Thread</h2>
+     * Should be called in the AWT event dispatch thread.
+     * </p>
      *
      * @return the {@link Component}.
      */
+    @OnAwt
     public Component getAWTComponent() {
         return panel;
     }
 
     /**
-     * Sets the CSV importer properties.
-     *
-     * <h2>AWT Thread</h2>
+     * Sets the spreadsheet importer properties.
      * <p>
-     * Should be called in the AWT thread.
+     * <h2>AWT Thread</h2>
+     * Should be called in the AWT event dispatch thread.
+     * </p>
      *
      * @param properties
-     *            the {@link CsvImportProperties}.
+     *            the {@link SpreadsheetImportProperties}.
      */
     @OnAwt
-    public void setProperties(CsvImportProperties properties) {
+    public void setProperties(SpreadsheetImportProperties properties) {
         updateData(properties);
     }
 
@@ -117,8 +129,8 @@ public class PreviewPanel {
      * Sets the focus on the preview panel.
      * <p>
      * <h2>AWT Thread</h2>
-     * <p>
-     * Should be called in the AWT thread.
+     * Should be called in the AWT event dispatch thread.
+     * </p>
      */
     @OnAwt
     public void requestFocus() {
@@ -128,8 +140,8 @@ public class PreviewPanel {
      * Restores the input of the panel to default values.
      * <p>
      * <h2>AWT Thread</h2>
-     * <p>
-     * Should be called in the AWT thread.
+     * Should be called in the AWT event dispatch thread.
+     * </p>
      *
      * @throws PropertyVetoException
      *             if the old user input is not valid.
@@ -137,7 +149,14 @@ public class PreviewPanel {
     public void retoreInput() throws PropertyVetoException {
     }
 
-    private void updateData(CsvImportProperties properties) {
+    private void setupActions() {
+    }
+
+    private void setupPanel() {
+        panel.dataTable.setModel(previewDataTableModel);
+    }
+
+    private void updateData(SpreadsheetImportProperties properties) {
         if (properties == null) {
             resetDataPreview();
             return;
@@ -153,9 +172,9 @@ public class PreviewPanel {
             return;
         }
         try {
-            CsvImporter importer = importerFactory.create(properties);
+            SpreadsheetImporter importer = importerFactory.create(properties);
             previewDataTableModel.setImporter(importer);
-        } catch (CsvImportException e) {
+        } catch (SpreadsheetImportException e) {
             log.errorRead(this, e);
         }
     }
@@ -163,7 +182,7 @@ public class PreviewPanel {
     private void resetDataPreview() {
         try {
             previewDataTableModel.setImporter(null);
-        } catch (CsvImportException e) {
+        } catch (SpreadsheetImportException e) {
             log.errorRead(this, e);
         }
     }
