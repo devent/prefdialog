@@ -18,23 +18,30 @@
  */
 package com.anrisoftware.prefdialog.spreadsheetimportdialog.dialog;
 
+import java.beans.PropertyVetoException;
+
 import javax.inject.Singleton;
 
 import com.anrisoftware.globalpom.log.AbstractLogger;
 
 /**
- * Logging for {@link PropertiesWorker}.
+ * Logging for {@link OpenSpreadsheetImportDialogAction}.
  *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.5
  */
 @Singleton
-final class PropertiesWorkerLogger extends AbstractLogger {
+final class OpenSpreadsheetImportDialogActionLogger extends AbstractLogger {
 
     /**
-     * Sets the context of the logger to {@link PropertiesWorker}.
+     * Sets the context of the logger to
+     * {@link OpenSpreadsheetImportDialogAction}.
      */
-    public PropertiesWorkerLogger() {
-        super(PropertiesWorker.class);
+    public OpenSpreadsheetImportDialogActionLogger() {
+        super(OpenSpreadsheetImportDialogAction.class);
+    }
+
+    void propertyVeto(PropertyVetoException e) {
+        log.error(null, e);
     }
 }

@@ -61,7 +61,7 @@ class OpenFileChoserDialogActionTest {
             frame = jframe
             action = Dependencies.injector.getInstance(OpenFileChooserDialogAction)
             model = Dependencies.injector.getInstance(OpenFileDialogModel)
-            action.setParent jframe
+            action.setParentComponent jframe
             action.setLocale dep.locale
             action.setDialogTitle("Open File")
             action.setModel model
@@ -88,7 +88,7 @@ class OpenFileChoserDialogActionTest {
             frame = jframe
             action = Dependencies.injector.getInstance(OpenFileChooserDialogAction)
             model = Dependencies.injector.getInstance(OpenFileDialogModel)
-            action.setParent jframe
+            action.setParentComponent jframe
             action.setFile tmp
             action.setLocale dep.locale
             action.setDialogTitle("Open File")

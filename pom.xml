@@ -18,7 +18,7 @@
         <module>prefdialog-dialog</module>
         <module>prefdialog-misc-swing</module>
         <module>prefdialog-panel</module>
-		<module>prefdialog-spreadsheetimportdialog</module>
+	<module>prefdialog-spreadsheetimportdialog</module>
     </modules>
 
 </project>

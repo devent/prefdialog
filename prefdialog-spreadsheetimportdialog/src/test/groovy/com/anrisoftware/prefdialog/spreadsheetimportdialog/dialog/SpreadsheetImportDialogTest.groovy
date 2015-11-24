@@ -118,7 +118,7 @@ class SpreadsheetImportDialogTest {
         })
     }
 
-    @Test
+    //@Test
     void "manually"() {
         def title = "$NAME/manually"
         def p = dep.spreadsheetImportPropertiesFactory.create()

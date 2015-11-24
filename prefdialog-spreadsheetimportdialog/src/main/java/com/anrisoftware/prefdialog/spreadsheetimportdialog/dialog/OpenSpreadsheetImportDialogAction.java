@@ -18,45 +18,35 @@
  */
 package com.anrisoftware.prefdialog.spreadsheetimportdialog.dialog;
 
-import static org.apache.commons.lang3.Validate.notNull;
-
 import java.awt.Dimension;
-import java.io.File;
 import java.net.URI;
 
 import javax.inject.Inject;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 
-import com.anrisoftware.globalpom.spreadsheetimport.DefaultSpreadsheetImportProperties;
 import com.anrisoftware.globalpom.spreadsheetimport.SpreadsheetImportProperties;
 import com.anrisoftware.globalpom.spreadsheetimport.SpreadsheetImporterFactory;
 import com.anrisoftware.prefdialog.miscswing.dialogsworker.AbstractCreateDialogWorker;
+import com.anrisoftware.prefdialog.miscswing.dialogsworker.CreateDialogWorkerException;
+import com.anrisoftware.prefdialog.miscswing.dialogsworker.OpenDialogAction;
+import com.anrisoftware.prefdialog.simpledialog.SimpleDialog.Status;
 import com.google.inject.Injector;
 
 /**
- * Creates the spreadsheet import dialog on the AWT event thread.
+ * Opens the open spreadsheet import dialog on the AWT event thread and waits
+ * for the user to either cancel it or select a file.
  *
- * @see SpreadsheetImportDialog
- *
- * @author Erwin Müller, erwin.mueller@deventm.de
+ * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.5
  */
-public class SpreadsheetImportDialogWorker extends
-        AbstractCreateDialogWorker<JDialog> {
+public class OpenSpreadsheetImportDialogAction extends
+        OpenDialogAction<JDialog, SpreadsheetImportProperties> {
 
     @Inject
-    private SpreadsheetImportDialogFactory spreadsheetImportDialogFactory;
-
-    @Inject
-    private DefaultSpreadsheetImportProperties properties;
-
-    @Inject
-    private Injector parent;
+    private Injector injector;
 
     private Dimension size;
-
-    private JFrame frame;
 
     private URI previousFile;
 
@@ -64,7 +54,10 @@ public class SpreadsheetImportDialogWorker extends
 
     private SpreadsheetImporterFactory importerFactory;
 
-    private SpreadsheetImportDialog importDialog;
+    @Inject
+    OpenSpreadsheetImportDialogAction(SpreadsheetImportDialogWorker dialogWorker) {
+        setDialogWorker(dialogWorker);
+    }
 
     /**
      * Sets the parent Guice injector.
@@ -73,7 +66,7 @@ public class SpreadsheetImportDialogWorker extends
      *            the parent {@link Inject}.
      */
     public void setParent(Injector parent) {
-        this.parent = parent;
+        this.injector = parent;
     }
 
     /**
@@ -84,16 +77,6 @@ public class SpreadsheetImportDialogWorker extends
      */
     public void setSize(Dimension size) {
         this.size = size;
-    }
-
-    /**
-     * Sets the parent frame for the spreadsheet import dialog.
-     *
-     * @param frame
-     *            the parent {@link JFrame}.
-     */
-    public void setFrame(JFrame frame) {
-        this.frame = frame;
     }
 
     /**
@@ -126,51 +109,31 @@ public class SpreadsheetImportDialogWorker extends
         this.importerFactory = importerFactory;
     }
 
-    /**
-     * Returns the created spreadsheet import dialog.
-     *
-     * @return the {@link SpreadsheetImportDialog}.
-     */
-    public synchronized SpreadsheetImportDialog getImportDialog() {
-        notNull(importDialog, "Import dialog not created");
-        return importDialog;
+    @Override
+    protected JDialog createDialog(
+            AbstractCreateDialogWorker<JDialog> dialogWorker)
+            throws CreateDialogWorkerException {
+        SpreadsheetImportDialogWorker w = (SpreadsheetImportDialogWorker) dialogWorker;
+        w.setParent(injector);
+        w.setSize(size);
+        w.setFrame((JFrame) getParent());
+        w.setPreviousFile(previousFile);
+        w.setSavedProperties(savedProperties);
+        w.setImporterFactory(importerFactory);
+        return super.createDialog(dialogWorker);
     }
 
     @Override
-    protected JDialog createDialog() {
-        JDialog jdialog = new JDialog(frame, true);
-        jdialog.setLocale(getLocale());
-        SpreadsheetImportDialog importDialog;
-        importDialog = spreadsheetImportDialogFactory.create(savedProperties);
-        importDialog.setParent(parent);
-        importDialog.setDialog(jdialog);
-        importDialog.createDialog(frame, importerFactory);
-        setupSavedProperties(properties, savedProperties);
-        importDialog.setPropertiesNoChecks(properties);
-        importDialog.getDialog().pack();
-        importDialog.getDialog().setSize(size);
-        this.importDialog = importDialog;
-        return jdialog;
-    }
-
-    private DefaultSpreadsheetImportProperties setupSavedProperties(
-            DefaultSpreadsheetImportProperties properties,
-            SpreadsheetImportProperties savedProperties) {
-        if (previousFile != null) {
-            properties.setFile(previousFile);
+    protected SpreadsheetImportProperties openDialogAWT(JDialog dialog,
+            AbstractCreateDialogWorker<JDialog> dialogWorker) {
+        SpreadsheetImportDialogWorker w = (SpreadsheetImportDialogWorker) dialogWorker;
+        SpreadsheetImportDialog importDialog = w.getImportDialog();
+        dialog.setVisible(true);
+        if (importDialog.getStatus() == Status.APPROVED) {
+            return importDialog.getProperties();
+        } else {
+            return null;
         }
-        if (savedProperties != null) {
-            URI file = savedProperties.getFile();
-            if (file != null) {
-                properties.setFile(new File(file).getParentFile().toURI());
-            }
-            properties.setSheetNumber(savedProperties.getSheetNumber());
-            properties.setColumns(savedProperties.getColumns());
-            properties.setHaveHeader(savedProperties.isHaveHeader());
-            properties.setStartRow(savedProperties.getStartRow());
-            properties.setEndRow(savedProperties.getEndRow());
-        }
-        return properties;
     }
 
 }

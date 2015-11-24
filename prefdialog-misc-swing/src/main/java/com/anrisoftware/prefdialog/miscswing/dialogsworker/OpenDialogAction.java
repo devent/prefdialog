@@ -42,7 +42,7 @@ public abstract class OpenDialogAction<DialogType extends Container, ResultType>
 
     private CountDownLatch dialogLatch;
 
-    private Component parent;
+    private Component parentComponent;
 
     private Locale locale;
 
@@ -59,12 +59,12 @@ public abstract class OpenDialogAction<DialogType extends Container, ResultType>
         this.dialogWorker = dialogWorker;
     }
 
-    public void setParent(Component parent) {
-        this.parent = parent;
+    public void setParentComponent(Component parentComponent) {
+        this.parentComponent = parentComponent;
     }
 
     public Component getParent() {
-        return parent;
+        return parentComponent;
     }
 
     public void setLocale(Locale locale) {
@@ -100,9 +100,9 @@ public abstract class OpenDialogAction<DialogType extends Container, ResultType>
     @Override
     public synchronized ResultType call() throws Exception {
         notNull(dialogWorker, "dialogWorker");
-        DialogType dialog = createDialog();
+        DialogType dialog = createDialog(dialogWorker);
         dialogLatch = new CountDownLatch(1);
-        openDialog(dialog);
+        openDialog(dialog, dialogWorker);
         dialogLatch.await();
         return dialogResult;
     }
@@ -113,11 +113,34 @@ public abstract class OpenDialogAction<DialogType extends Container, ResultType>
      * @param dialog
      *            the dialog.
      *
+     * @param dialogWorker
+     *            the {@link AbstractCreateDialogWorker}.
+     *
      * @return the return value.
+     *
+     * @since 3.5
      */
-    protected abstract ResultType openDialogAWT(DialogType dialog);
+    protected abstract ResultType openDialogAWT(DialogType dialog,
+            AbstractCreateDialogWorker<DialogType> dialogWorker);
 
-    private DialogType createDialog() throws CreateDialogWorkerException {
+    /**
+     * Setups the dialog worker to create the dialog.
+     *
+     * @param dialogWorker
+     *            the {@link AbstractCreateDialogWorker}.
+     *
+     * @return the created dialog.
+     *
+     * @throws CreateDialogWorkerException
+     *             if there were any errors creating the dialog.
+     *
+     * @see AbstractCreateDialogWorker#getDialog()
+     *
+     * @since 3.5
+     */
+    protected DialogType createDialog(
+            AbstractCreateDialogWorker<DialogType> dialogWorker)
+            throws CreateDialogWorkerException {
         dialogWorker.setLocale(locale);
         dialogWorker.setTexts(texts);
         dialogWorker.setDialogTitleResourceName(dialogTitleResourceName);
@@ -125,12 +148,13 @@ public abstract class OpenDialogAction<DialogType extends Container, ResultType>
         return dialogWorker.getDialog();
     }
 
-    private void openDialog(final DialogType dialog) {
+    private void openDialog(final DialogType dialog,
+            final AbstractCreateDialogWorker<DialogType> dialogWorker) {
         invokeLater(new Runnable() {
 
             @Override
             public void run() {
-                dialogResult = openDialogAWT(dialog);
+                dialogResult = openDialogAWT(dialog, dialogWorker);
                 dialogLatch.countDown();
             }
 

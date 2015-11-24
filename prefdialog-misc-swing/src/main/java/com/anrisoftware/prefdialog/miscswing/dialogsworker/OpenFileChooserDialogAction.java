@@ -78,7 +78,8 @@ public class OpenFileChooserDialogAction extends
     }
 
     @Override
-    protected File openDialogAWT(JFileChooser dialog) {
+    protected File openDialogAWT(JFileChooser dialog,
+            AbstractCreateDialogWorker<JFileChooser> dialogWorker) {
         try {
             model.setFileChooser(dialog);
             model.setFile(file);

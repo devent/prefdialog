@@ -24,9 +24,6 @@ import groovy.util.logging.Slf4j
 import java.awt.Dimension
 import java.awt.event.KeyEvent
 
-import javax.swing.JDialog
-import javax.swing.SwingUtilities
-
 import org.fest.swing.fixture.DialogFixture
 import org.fest.swing.fixture.FrameFixture
 import org.junit.BeforeClass
@@ -35,38 +32,33 @@ import org.junit.Test
 import org.junit.rules.TemporaryFolder
 
 import com.anrisoftware.globalpom.utils.TestUtils
-import com.anrisoftware.prefdialog.simpledialog.SimpleDialog
 import com.anrisoftware.prefdialog.spreadsheetimportdialog.utils.Dependencies
 
 /**
- * @see SpreadsheetImportDialogWorker
+ * @see OpenSpreadsheetImportDialogAction
  *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.5
  */
 @Slf4j
-class SpreadsheetImportDialogWorkerTest {
+class OpenSpreadsheetImportDialogActionTest {
 
     @Test
     void "show dialog"() {
         def file = copyDocument lottoOds, tmp.newFile()
         def title = "$NAME/show dialog"
         def p = dep.spreadsheetImportPropertiesFactory.create()
-        SpreadsheetImportDialogWorker worker
-        SpreadsheetImportDialog importDialog
-        JDialog jdialog
+        OpenSpreadsheetImportDialogAction action
         def testing = dep.frameTestingFactory.create(title: title, size: frameSize)()
         DialogFixture dialogFix
         testing.withFixture({ FrameFixture it ->
-            worker = Dependencies.injector.getInstance SpreadsheetImportDialogWorker
-            worker.setFrame it.target
-            worker.setLocale Dependencies.locale
-            worker.setSize dialogSize
-            worker.setImporterFactory dep.importerFactory
-            worker.setSavedProperties p
-            jdialog = worker.getDialog()
-            importDialog = worker.getImportDialog()
-            SwingUtilities.invokeLater { jdialog.setVisible true }
+            action = Dependencies.injector.getInstance OpenSpreadsheetImportDialogAction
+            action.setParentComponent it.target
+            action.setLocale Dependencies.locale
+            action.setSize dialogSize
+            action.setImporterFactory dep.importerFactory
+            action.setSavedProperties p
+            Thread.start { action() }
         },{ FrameFixture it ->
             dialogFix = it.dialog()
             dialogFix.textBox "file-fileField" setText file.absolutePath
@@ -74,8 +66,6 @@ class SpreadsheetImportDialogWorkerTest {
         }, { FrameFixture it ->
             dialogFix.button "approveButton" click()
         })
-        assert importDialog.status == SimpleDialog.Status.APPROVED
-        assert importDialog.properties.file.toString() =~ ".*${file.absolutePath}"
     }
 
     @Rule
