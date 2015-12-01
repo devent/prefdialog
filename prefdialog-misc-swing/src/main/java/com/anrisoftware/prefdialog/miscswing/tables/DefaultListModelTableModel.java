@@ -37,16 +37,11 @@ import com.anrisoftware.resources.texts.api.Texts;
 
 /**
  * Table model that uses the values from a list model.
- * <p>
- * <h2>AWT Thread</h2>
- * Objects of that class should be used in the AWT event dispatch thread.
- * </p>
  *
  * @author Erwin Müller, erwin.mueller@deventm.de
  * @since 3.2
  */
 @SuppressWarnings("serial")
-@OnAwt
 public abstract class DefaultListModelTableModel<T> extends DefaultTableModel
         implements ListDataListener {
 
@@ -101,6 +96,17 @@ public abstract class DefaultListModelTableModel<T> extends DefaultTableModel
         this.locale = locale;
     }
 
+    /**
+     * Sets the list model that provides the data for the table model.
+     * <p>
+     * <h2>AWT Thread</h2>
+     * Should be called in the AWT event dispatch thread.
+     * </p>
+     *
+     * @param model
+     *            the {@link DefaultListModel} or {@code null}.
+     */
+    @OnAwt
     public void setListModel(DefaultListModel<T> model) {
         DefaultListModel<T> oldModel = this.model;
         this.model = model;
@@ -113,6 +119,17 @@ public abstract class DefaultListModelTableModel<T> extends DefaultTableModel
         }
     }
 
+    /**
+     * Sets the items window.
+     * <p>
+     * <h2>AWT Thread</h2>
+     * Should be called in the AWT event dispatch thread.
+     * </p>
+     *
+     * @param itemsWindow
+     *            the {@link ItemsWindow}.
+     */
+    @OnAwt
     public void setItemsWindow(ItemsWindow<T> itemsWindow) {
         this.itemsWindow = itemsWindow;
     }
@@ -169,7 +186,17 @@ public abstract class DefaultListModelTableModel<T> extends DefaultTableModel
         }
     }
 
+    /**
+     * Updates the table on inserted items.
+     * <p>
+     * <h2>AWT Thread</h2>
+     * Should be called in the AWT event dispatch thread.
+     * </p>
+     *
+     * @see javax.swing.event.ListDataListener#intervalAdded(javax.swing.event.ListDataEvent)
+     */
     @Override
+    @OnAwt
     public void intervalAdded(ListDataEvent e) {
         this.lockSetValue = true;
         int index0 = e.getIndex0();
@@ -178,7 +205,17 @@ public abstract class DefaultListModelTableModel<T> extends DefaultTableModel
         lockSetValue = false;
     }
 
+    /**
+     * Updates the table on removed items.
+     * <p>
+     * <h2>AWT Thread</h2>
+     * Should be called in the AWT event dispatch thread.
+     * </p>
+     *
+     * @see javax.swing.event.ListDataListener#intervalRemoved(javax.swing.event.ListDataEvent)
+     */
     @Override
+    @OnAwt
     public void intervalRemoved(ListDataEvent e) {
         this.lockSetValue = true;
         int index0 = e.getIndex0();
@@ -187,7 +224,17 @@ public abstract class DefaultListModelTableModel<T> extends DefaultTableModel
         lockSetValue = false;
     }
 
+    /**
+     * Updates the table on changed items.
+     * <p>
+     * <h2>AWT Thread</h2>
+     * Should be called in the AWT event dispatch thread.
+     * </p>
+     *
+     * @see javax.swing.event.ListDataListener#contentsChanged(javax.swing.event.ListDataEvent)
+     */
     @Override
+    @OnAwt
     public void contentsChanged(ListDataEvent e) {
         int index0 = e.getIndex0();
         int index1 = e.getIndex1();

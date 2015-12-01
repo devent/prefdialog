@@ -59,7 +59,7 @@ class SpreadsheetImportDialogWorkerTest {
         DialogFixture dialogFix
         testing.withFixture({ FrameFixture it ->
             worker = Dependencies.injector.getInstance SpreadsheetImportDialogWorker
-            worker.setFrame it.target
+            worker.setParentWindow it.target
             worker.setLocale Dependencies.locale
             worker.setSize dialogSize
             worker.setImporterFactory dep.importerFactory

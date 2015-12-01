@@ -18,20 +18,35 @@
  */
 package com.anrisoftware.prefdialog.spreadsheetimportdialog.dialog;
 
+import static java.awt.Dialog.ModalityType.APPLICATION_MODAL;
 import static org.apache.commons.lang3.Validate.notNull;
 
 import java.awt.Dimension;
+import java.awt.Window;
+import java.beans.VetoableChangeListener;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.lang.ref.SoftReference;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 import javax.inject.Inject;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 
 import com.anrisoftware.globalpom.spreadsheetimport.DefaultSpreadsheetImportProperties;
 import com.anrisoftware.globalpom.spreadsheetimport.SpreadsheetImportProperties;
 import com.anrisoftware.globalpom.spreadsheetimport.SpreadsheetImporterFactory;
 import com.anrisoftware.prefdialog.miscswing.dialogsworker.AbstractCreateDialogWorker;
+import com.anrisoftware.prefdialog.miscswing.docks.api.LayoutException;
+import com.anrisoftware.prefdialog.simpledialog.SimpleDialog;
+import com.anrisoftware.prefdialog.spreadsheetimportdialog.importpanel.SpreadsheetImportPanel;
 import com.google.inject.Injector;
 
 /**
@@ -45,6 +60,13 @@ import com.google.inject.Injector;
 public class SpreadsheetImportDialogWorker extends
         AbstractCreateDialogWorker<JDialog> {
 
+    private final List<VetoableChangeListener> vetoableChangeListeners;
+
+    private final Map<String, List<VetoableChangeListener>> namedVetoableChangeListeners;
+
+    @Inject
+    private SpreadsheetImportDialogWorkerLogger log;
+
     @Inject
     private SpreadsheetImportDialogFactory spreadsheetImportDialogFactory;
 
@@ -56,7 +78,7 @@ public class SpreadsheetImportDialogWorker extends
 
     private Dimension size;
 
-    private JFrame frame;
+    private Window parentWindow;
 
     private URI previousFile;
 
@@ -64,7 +86,14 @@ public class SpreadsheetImportDialogWorker extends
 
     private SpreadsheetImporterFactory importerFactory;
 
-    private SpreadsheetImportDialog importDialog;
+    private SoftReference<SpreadsheetImportDialog> importDialog;
+
+    private byte[] currentLayout;
+
+    SpreadsheetImportDialogWorker() {
+        this.vetoableChangeListeners = new ArrayList<VetoableChangeListener>();
+        this.namedVetoableChangeListeners = new HashMap<String, List<VetoableChangeListener>>();
+    }
 
     /**
      * Sets the parent Guice injector.
@@ -89,11 +118,11 @@ public class SpreadsheetImportDialogWorker extends
     /**
      * Sets the parent frame for the spreadsheet import dialog.
      *
-     * @param frame
-     *            the parent {@link JFrame}.
+     * @param parentWindow
+     *            the parent {@link Window}.
      */
-    public void setFrame(JFrame frame) {
-        this.frame = frame;
+    public void setParentWindow(Window parentWindow) {
+        this.parentWindow = parentWindow;
     }
 
     /**
@@ -129,28 +158,116 @@ public class SpreadsheetImportDialogWorker extends
     /**
      * Returns the created spreadsheet import dialog.
      *
-     * @return the {@link SpreadsheetImportDialog}.
+     * @return the {@link SpreadsheetImportDialog} or {@code null} if the dialog
+     *         was not created.
      */
     public synchronized SpreadsheetImportDialog getImportDialog() {
-        notNull(importDialog, "Import dialog not created");
-        return importDialog;
+        return importDialog.get();
+    }
+
+    /**
+     * Sets the current layout of the dialog.
+     */
+    public synchronized void setCurrentLayout(byte[] currentLayout) {
+        notNull(importDialog, "importDialog=null");
+        SpreadsheetImportDialog dialog = importDialog.get();
+        notNull(dialog, "dialog=null");
+        this.currentLayout = currentLayout;
+        try {
+            ByteArrayInputStream stream;
+            stream = new ByteArrayInputStream(currentLayout);
+            GZIPInputStream zstream = new GZIPInputStream(stream);
+            dialog.loadLayout("default", zstream);
+        } catch (LayoutException e) {
+            log.errorLoadLayout(dialog, e);
+        } catch (IOException e) {
+            log.errorLoadLayout(dialog, e);
+        }
+    }
+
+    /**
+     * Returns the current layout of the dialog.
+     */
+    public synchronized byte[] getCurrentLayout() {
+        notNull(importDialog, "importDialog=null");
+        SpreadsheetImportDialog dialog = importDialog.get();
+        notNull(dialog, "dialog=null");
+        try {
+            ByteArrayOutputStream stream;
+            stream = new ByteArrayOutputStream(1024);
+            GZIPOutputStream zstream = new GZIPOutputStream(stream);
+            dialog.saveLayout("default", zstream);
+            currentLayout = stream.toByteArray();
+        } catch (LayoutException e) {
+            log.errorSaveLayout(dialog, e);
+        } catch (IOException e) {
+            log.errorSaveLayout(dialog, e);
+        }
+        return currentLayout;
+    }
+
+    /**
+     * @see SpreadsheetImportPanel#addVetoableChangeListener(VetoableChangeListener)
+     * @see SimpleDialog#addVetoableChangeListener(VetoableChangeListener)
+     */
+    public void addVetoableChangeListener(VetoableChangeListener listener) {
+        vetoableChangeListeners.add(listener);
+    }
+
+    /**
+     * @see SpreadsheetImportPanel#addVetoableChangeListener(String,
+     *      VetoableChangeListener)
+     * @see SimpleDialog#addVetoableChangeListener(String,
+     *      VetoableChangeListener)
+     */
+    public void addVetoableChangeListener(String propertyName,
+            VetoableChangeListener listener) {
+        List<VetoableChangeListener> list = namedVetoableChangeListeners
+                .get(propertyName);
+        if (list == null) {
+            list = new ArrayList<VetoableChangeListener>();
+            namedVetoableChangeListeners.put(propertyName, list);
+        }
+        list.add(listener);
+    }
+
+    @Override
+    protected boolean needRecreateDialog() {
+        return super.needRecreateDialog() || importDialog == null
+                || importDialog.get() == null;
     }
 
     @Override
     protected JDialog createDialog() {
-        JDialog jdialog = new JDialog(frame, true);
+        JDialog jdialog = new JDialog(parentWindow, APPLICATION_MODAL);
         jdialog.setLocale(getLocale());
         SpreadsheetImportDialog importDialog;
         importDialog = spreadsheetImportDialogFactory.create(savedProperties);
-        importDialog.setParent(parent);
+        importDialog.setParentInjector(parent);
         importDialog.setDialog(jdialog);
-        importDialog.createDialog(frame, importerFactory);
+        importDialog.createDialog(parentWindow, importerFactory);
         setupSavedProperties(properties, savedProperties);
         importDialog.setPropertiesNoChecks(properties);
-        importDialog.getDialog().pack();
-        importDialog.getDialog().setSize(size);
-        this.importDialog = importDialog;
+        jdialog.pack();
+        jdialog.setSize(size);
+        jdialog.setTitle(getDialogTitleFromResource());
+        jdialog.setLocationRelativeTo(parentWindow);
+        insertListeners(importDialog);
+        this.importDialog = new SoftReference<SpreadsheetImportDialog>(
+                importDialog);
         return jdialog;
+    }
+
+    private void insertListeners(SpreadsheetImportDialog importDialog) {
+        for (VetoableChangeListener l : vetoableChangeListeners) {
+            importDialog.addVetoableChangeListener(l);
+        }
+        for (Map.Entry<String, List<VetoableChangeListener>> entry : namedVetoableChangeListeners
+                .entrySet()) {
+            for (VetoableChangeListener l : entry.getValue()) {
+                importDialog.addVetoableChangeListener(entry.getKey(), l);
+            }
+        }
     }
 
     private DefaultSpreadsheetImportProperties setupSavedProperties(
@@ -161,7 +278,7 @@ public class SpreadsheetImportDialogWorker extends
         }
         if (savedProperties != null) {
             URI file = savedProperties.getFile();
-            if (file != null) {
+            if (file != null && properties.getFile() == null) {
                 properties.setFile(new File(file).getParentFile().toURI());
             }
             properties.setSheetNumber(savedProperties.getSheetNumber());

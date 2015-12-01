@@ -18,7 +18,12 @@
  */
 package com.anrisoftware.prefdialog.spreadsheetimportdialog.dialog;
 
+import static javax.swing.SwingUtilities.getWindowAncestor;
+import static org.apache.commons.lang3.Validate.notNull;
+
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Window;
 import java.net.URI;
 
 import javax.inject.Inject;
@@ -54,6 +59,8 @@ public class OpenSpreadsheetImportDialogAction extends
 
     private SpreadsheetImporterFactory importerFactory;
 
+    private byte[] currentLayout;
+
     @Inject
     OpenSpreadsheetImportDialogAction(SpreadsheetImportDialogWorker dialogWorker) {
         setDialogWorker(dialogWorker);
@@ -67,6 +74,15 @@ public class OpenSpreadsheetImportDialogAction extends
      */
     public void setParent(Injector parent) {
         this.injector = parent;
+    }
+
+    /**
+     * Returns the current dialog size.
+     *
+     * @return the {@link Dimension} size.
+     */
+    public Dimension getDialogSize() {
+        return getDialogWorker().getDialogSize();
     }
 
     /**
@@ -109,6 +125,29 @@ public class OpenSpreadsheetImportDialogAction extends
         this.importerFactory = importerFactory;
     }
 
+    /**
+     * Sets the current layout of the dialog.
+     */
+    public void setCurrentLayout(byte[] currentLayout) {
+        this.currentLayout = currentLayout;
+    }
+
+    /**
+     * Returns the current layout of the dialog.
+     */
+    public byte[] getCurrentLayout() {
+        SpreadsheetImportDialogWorker worker = getDialogWorker();
+        return worker.getCurrentLayout();
+    }
+
+    /**
+     * Returns {@code true} if the dialog was opened.
+     */
+    public boolean isDialogOpened() {
+        SpreadsheetImportDialogWorker worker = getDialogWorker();
+        return worker.getImportDialog() != null;
+    }
+
     @Override
     protected JDialog createDialog(
             AbstractCreateDialogWorker<JDialog> dialogWorker)
@@ -116,7 +155,12 @@ public class OpenSpreadsheetImportDialogAction extends
         SpreadsheetImportDialogWorker w = (SpreadsheetImportDialogWorker) dialogWorker;
         w.setParent(injector);
         w.setSize(size);
-        w.setFrame((JFrame) getParent());
+        Component parent = getComponentParent();
+        if (parent instanceof JFrame) {
+            w.setParentWindow((Window) parent);
+        } else {
+            w.setParentWindow(getWindowAncestor(parent));
+        }
         w.setPreviousFile(previousFile);
         w.setSavedProperties(savedProperties);
         w.setImporterFactory(importerFactory);
@@ -124,10 +168,19 @@ public class OpenSpreadsheetImportDialogAction extends
     }
 
     @Override
-    protected SpreadsheetImportProperties openDialogAWT(JDialog dialog,
+    protected void setupDialog(JDialog dialog,
             AbstractCreateDialogWorker<JDialog> dialogWorker) {
         SpreadsheetImportDialogWorker w = (SpreadsheetImportDialogWorker) dialogWorker;
+        w.setCurrentLayout(currentLayout);
+    }
+
+    @Override
+    protected SpreadsheetImportProperties openDialogAWT(final JDialog dialog,
+            AbstractCreateDialogWorker<JDialog> dialogWorker)
+            throws CreateDialogWorkerException {
+        SpreadsheetImportDialogWorker w = (SpreadsheetImportDialogWorker) dialogWorker;
         SpreadsheetImportDialog importDialog = w.getImportDialog();
+        notNull(importDialog, "importDialog=null");
         dialog.setVisible(true);
         if (importDialog.getStatus() == Status.APPROVED) {
             return importDialog.getProperties();

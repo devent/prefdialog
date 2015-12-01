@@ -24,38 +24,40 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * Event of changes in the layout.
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
  */
 @SuppressWarnings("serial")
 public class LayoutWorkerEvent extends EventObject {
 
-	private final String name;
+    private final String name;
 
-	/**
-	 * @param name
-	 *            the name of the layout.
-	 * 
-	 * @see EventObject#EventObject(Object)
-	 */
-	public LayoutWorkerEvent(Object source, String name) {
-		super(source);
-		this.name = name;
-	}
+    /**
+     * @param name
+     *            the name of the layout.
+     *
+     * @see EventObject#EventObject(Object)
+     */
+    public LayoutWorkerEvent(Object source, String name) {
+        super(source);
+        this.name = name;
+    }
 
-	/**
-	 * Returns the layout name.
-	 * 
-	 * @return the layout name
-	 */
-	public String getName() {
-		return name;
-	}
+    /**
+     * Returns the layout name.
+     *
+     * @return the layout name
+     */
+    public String getName() {
+        return name;
+    }
 
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this).appendSuper(super.toString())
-				.append(name).toString();
-	}
+    private static final String NAME_FIELD = "name";
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).append(NAME_FIELD, name)
+                .appendSuper(super.toString()).toString();
+    }
 }

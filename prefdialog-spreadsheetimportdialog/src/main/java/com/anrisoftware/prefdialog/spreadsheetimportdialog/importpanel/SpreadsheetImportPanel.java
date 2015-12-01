@@ -44,6 +44,7 @@ import com.anrisoftware.globalpom.spreadsheetimport.SpreadsheetImportProperties;
 import com.anrisoftware.globalpom.spreadsheetimport.SpreadsheetImporter;
 import com.anrisoftware.globalpom.spreadsheetimport.SpreadsheetImporterFactory;
 import com.anrisoftware.prefdialog.fields.FieldComponent;
+import com.anrisoftware.prefdialog.fields.filechooser.FileChooserField;
 import com.anrisoftware.prefdialog.fields.spinner.SpinnerField;
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 import com.anrisoftware.prefdialog.miscswing.lockedevents.LockedPropertyChangeListener;
@@ -92,6 +93,8 @@ public class SpreadsheetImportPanel {
     private SpinnerField sheetNumberField;
 
     private Locale locale;
+
+    private FileChooserField fileField;
 
     /**
      * @see SpreadsheetImportPanelFactory#create(JPanel,
@@ -174,6 +177,8 @@ public class SpreadsheetImportPanel {
         createPropertiesPanel(parent);
         setupPanel();
         setupActions();
+        updateFile();
+        updateSheetsCount();
         return this;
     }
 
@@ -312,8 +317,9 @@ public class SpreadsheetImportPanel {
     }
 
     private void createPropertiesPanel(Injector parent) {
-        VerticalPreferencesPanelField panel = (VerticalPreferencesPanelField) fieldService
-                .get().getFactory(parent).create(properties, PANEL_BEAN);
+        VerticalPreferencesPanelField panel;
+        panel = (VerticalPreferencesPanelField) fieldService.get()
+                .getFactory(parent).create(properties, PANEL_BEAN);
         panel.createPanel(parent);
         panel.addPropertyChangeListener(VALUE_PROPERTY, valueListener);
         panel.setLocale(locale);
@@ -328,6 +334,21 @@ public class SpreadsheetImportPanel {
         container.setLayout(new BorderLayout());
         container.add(propertiesPanel.getAWTComponent(), CENTER);
         sheetNumberField = propertiesPanel.findField("sheetNumber");
+        fileField = propertiesPanel.findField("file");
+    }
+
+    private void updateFile() {
+        URI uri = properties.getFile();
+        if (uri == null) {
+            return;
+        }
+        try {
+            File file = new File(uri);
+            fileField.setValue(file);
+            properties.getFileProperties().setFile(file);
+            properties.getFileProperties().getFileModel().setFile(file);
+        } catch (PropertyVetoException e) {
+        }
     }
 
     private void updateSheetsCount() {

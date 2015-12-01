@@ -21,6 +21,7 @@ package com.anrisoftware.prefdialog.dialogaction;
 import static com.anrisoftware.prefdialog.simpledialog.SimpleDialog.Status.CANCELED;
 import static javax.swing.SwingUtilities.invokeAndWait;
 
+import java.beans.PropertyVetoException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -83,11 +84,11 @@ public abstract class AbstractDialogAction<ValueType, DialogType extends SimpleD
 
     /**
      * Sets to create the dialog as soon as every dependency is set.
-     * 
+     *
      * @param automatic
      *            set to {@code true} to create the dialog as soon as every
      *            dependency is set.
-     * 
+     *
      * @see #canCreateDialog()
      */
     public void setCreateAutomatic(boolean automatic) {
@@ -97,7 +98,7 @@ public abstract class AbstractDialogAction<ValueType, DialogType extends SimpleD
     /**
      * Returns that the dialog shoud be created as soon as every dependency is
      * set.
-     * 
+     *
      * @return {@code true} if the dialog should be created soon as every
      *         dependency is set.
      */
@@ -107,7 +108,7 @@ public abstract class AbstractDialogAction<ValueType, DialogType extends SimpleD
 
     /**
      * Sets the parent frame for the dialog.
-     * 
+     *
      * @param frame
      *            the {@link JFrame} parent.
      */
@@ -120,7 +121,7 @@ public abstract class AbstractDialogAction<ValueType, DialogType extends SimpleD
 
     /**
      * Returns the parent frame for the dialog.
-     * 
+     *
      * @return the {@link JFrame} parent.
      */
     public JFrame getFrame() {
@@ -129,10 +130,10 @@ public abstract class AbstractDialogAction<ValueType, DialogType extends SimpleD
 
     /**
      * Sets the dialog that should be created.
-     * 
+     *
      * @param dialog
      *            the {@link SimpleDialog}.
-     * 
+     *
      * @see SimpleDialog#createDialog()
      */
     public void setDialog(DialogType dialog) {
@@ -144,10 +145,10 @@ public abstract class AbstractDialogAction<ValueType, DialogType extends SimpleD
 
     /**
      * Sets the dialog factory that creates the dialog.
-     * 
+     *
      * @param dialogFactory
      *            the {@link Object} dialog factory.
-     * 
+     *
      * @see SimpleDialog#createDialog()
      */
     public void setDialogFactory(Object dialogFactory) {
@@ -159,7 +160,7 @@ public abstract class AbstractDialogAction<ValueType, DialogType extends SimpleD
 
     /**
      * Returns the dialog factory that creates the dialog.
-     * 
+     *
      * @return the {@link Object} dialog factory.
      */
     @SuppressWarnings("unchecked")
@@ -169,7 +170,7 @@ public abstract class AbstractDialogAction<ValueType, DialogType extends SimpleD
 
     /**
      * Returns the not yet created dialog.
-     * 
+     *
      * @return the {@link SimpleDialog}.
      */
     public DialogType getNotCreatedDialog() {
@@ -180,7 +181,7 @@ public abstract class AbstractDialogAction<ValueType, DialogType extends SimpleD
      * Waits for the dialog to be created and opens the dialog. Waits until the
      * user either canceled or approved the dialog. After the dialog was
      * approved a value is created and returned.
-     * 
+     *
      * @see #createValue(SimpleDialog)
      */
     @Override
@@ -209,7 +210,11 @@ public abstract class AbstractDialogAction<ValueType, DialogType extends SimpleD
     private void openDialog() {
         DialogType dialog = getDialog();
         dialog.getDialog().setLocationRelativeTo(frame);
-        dialog.openDialog();
+        try {
+            dialog.openDialog();
+        } catch (PropertyVetoException e) {
+            log.openDialogVetoed(e);
+        }
         synchronized (worker) {
             worker.notify();
         }
@@ -224,7 +229,7 @@ public abstract class AbstractDialogAction<ValueType, DialogType extends SimpleD
     /**
      * Creates the dialog. The dialog is only created if all dependencies are
      * set.
-     * 
+     *
      * @see #canCreateDialog()
      */
     public final void createDialog() {
@@ -244,7 +249,7 @@ public abstract class AbstractDialogAction<ValueType, DialogType extends SimpleD
 
     /**
      * Returns if all dependencies are set to create the dialog.
-     * 
+     *
      * @return {@code true} if the dialog can be created.
      */
     protected boolean canCreateDialog() {
@@ -270,10 +275,10 @@ public abstract class AbstractDialogAction<ValueType, DialogType extends SimpleD
      * <h2>AWT Thread</h2>
      * <p>
      * Is called in the AWT thread.
-     * 
+     *
      * @param dialog
      *            the {@link SimpleDialog}.
-     * 
+     *
      * @return the created {@link SimpleDialog}.
      */
     @OnAwt
@@ -292,9 +297,9 @@ public abstract class AbstractDialogAction<ValueType, DialogType extends SimpleD
 
     /**
      * Waits for the dialog to be created and returns it.
-     * 
+     *
      * @return the {@link SimpleDialog}.
-     * 
+     *
      * @see #createDialog()
      */
     public DialogType getDialog() {
@@ -320,7 +325,7 @@ public abstract class AbstractDialogAction<ValueType, DialogType extends SimpleD
 
     /**
      * Returns the time duration to wait for the dialog to be created.
-     * 
+     *
      * @return the time {@link Duration}.
      */
     protected Duration getDialogWaitDuration() {
@@ -336,10 +341,10 @@ public abstract class AbstractDialogAction<ValueType, DialogType extends SimpleD
 
     /**
      * Created the value if the dialog was approved.
-     * 
+     *
      * @param dialog
      *            the {@link SimpleDialog}.
-     * 
+     *
      * @return the value.
      */
     protected abstract ValueType createValue(DialogType dialog)

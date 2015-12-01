@@ -42,26 +42,26 @@ import com.google.inject.assistedinject.Assisted;
 
 /**
  * Simple dialog with approve, restore and cancel buttons.
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
 public class SimplePropertiesDialog extends SimpleDialog {
 
-	/**
-	 * Decorates the dialog.
-	 * <p>
-	 * <h2>AWT Thread</h2>
-	 * <p>
-	 * Should be called in the AWT thread.
-	 * 
-	 * @param dialog
-	 *            the {@link JDialog}.
-	 * 
-	 * @see SimplePropertiesDialogFactory#create(Object, String)
-	 * 
-	 * @return the {@link CsvImportDialog}.
-	 */
+	    /**
+     * Decorates the dialog.
+     * <p>
+     * <h2>AWT Thread</h2>
+     * <p>
+     * Should be called in the AWT thread.
+     *
+     * @param dialog
+     *            the {@link JDialog}.
+     *
+     * @see SimplePropertiesDialogFactory#create(Object, String)
+     *
+     * @return the {@link CsvImportDialog}.
+     */
 	@OnAwt
 	public static SimplePropertiesDialog decorate(JDialog dialog,
 			Object properties, String panelFieldName) {
@@ -122,58 +122,58 @@ public class SimplePropertiesDialog extends SimpleDialog {
 		}
 	}
 
-	/**
-	 * Sets the icon size for the properties dialog.
-	 * <p>
-	 * <h2>AWT Thread</h2>
-	 * <p>
-	 * Should be called in the AWT thread.
-	 * 
-	 * @param size
-	 *            the {@link IconSize}.
-	 */
+	    /**
+     * Sets the icon size for the properties dialog.
+     * <p>
+     * <h2>AWT Thread</h2>
+     * <p>
+     * Should be called in the AWT thread.
+     *
+     * @param size
+     *            the {@link IconSize}.
+     */
 	@OnAwt
 	public void setIconSize(IconSize size) {
 		getField().setIconSize(size);
 	}
 
-	/**
-	 * Returns the icon size for the properties dialog.
-	 * 
-	 * @return the {@link IconSize}.
-	 */
+	    /**
+     * Returns the icon size for the properties dialog.
+     *
+     * @return the {@link IconSize}.
+     */
 	public IconSize getIconSize() {
 		return getField().getIconSize();
 	}
 
-	/**
-	 * Sets the parent dependencies.
-	 * 
-	 * @param parent
-	 *            the parent dependencies.
-	 * 
-	 * @throws NullPointerException
-	 *             if the specified parent is {@code null}.
-	 */
+	    /**
+     * Sets the parent dependencies.
+     *
+     * @param parent
+     *            the parent dependencies.
+     *
+     * @throws NullPointerException
+     *             if the specified parent is {@code null}.
+     */
 	public void setParent(Object parent) {
 		log.checkParent(this, parent);
 		this.parent = (Injector) parent;
 	}
 
-	/**
-	 * Returns the properties field.
-	 * 
-	 * @return the {@link FieldComponent}.
-	 */
+	    /**
+     * Returns the properties field.
+     *
+     * @return the {@link FieldComponent}.
+     */
 	public FieldComponent<JPanel> getField() {
 		return panel;
 	}
 
-	/**
-	 * Returns the properties of the dialog.
-	 * 
-	 * @return the properties {@link Object}.
-	 */
+	    /**
+     * Returns the properties of the dialog.
+     *
+     * @return the properties {@link Object}.
+     */
 	public Object getProperties() {
 		return properties;
 	}
@@ -213,7 +213,7 @@ public class SimplePropertiesDialog extends SimpleDialog {
 
 	@Override
 	@OnAwt
-	public void openDialog() {
+    public void openDialog() throws PropertyVetoException {
 		panel.requestFocus();
 		super.openDialog();
 	}

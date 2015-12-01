@@ -19,11 +19,12 @@
 package com.anrisoftware.prefdialog.miscswing.docks.dockingframes.core;
 
 import java.awt.Component;
+import java.awt.Window;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Map;
@@ -31,7 +32,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 
 import javax.inject.Inject;
-import javax.swing.JFrame;
 import javax.swing.SwingWorker;
 import javax.swing.event.ChangeListener;
 
@@ -57,7 +57,11 @@ import com.anrisoftware.prefdialog.miscswing.docks.api.Dock;
 import com.anrisoftware.prefdialog.miscswing.docks.api.DockFactory;
 import com.anrisoftware.prefdialog.miscswing.docks.api.EditorDockWindow;
 import com.anrisoftware.prefdialog.miscswing.docks.api.FocusChangedEvent;
+import com.anrisoftware.prefdialog.miscswing.docks.api.LayoutException;
+import com.anrisoftware.prefdialog.miscswing.docks.api.LayoutInterruptedException;
 import com.anrisoftware.prefdialog.miscswing.docks.api.LayoutListener;
+import com.anrisoftware.prefdialog.miscswing.docks.api.LayoutLoadingException;
+import com.anrisoftware.prefdialog.miscswing.docks.api.LayoutSavingException;
 import com.anrisoftware.prefdialog.miscswing.docks.api.LayoutTask;
 import com.anrisoftware.prefdialog.miscswing.docks.api.ViewDockWindow;
 import com.anrisoftware.prefdialog.miscswing.docks.dockingframes.layoutloader.LoadLayoutWorkerFactory;
@@ -66,7 +70,7 @@ import com.anrisoftware.prefdialog.miscswing.docks.layouts.dockingframes.Default
 
 /**
  * Docking frames docks.
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
@@ -161,7 +165,7 @@ public class DockingFramesDock implements Dock {
 
     @OnAwt
     @Override
-    public Dock createDock(JFrame frame) {
+    public Dock createDock(Window frame) {
         WindowProvider provider;
         if (frame == null) {
             provider = new NullWindowProvider();
@@ -178,7 +182,7 @@ public class DockingFramesDock implements Dock {
     /**
      * Returns the theme manager so the user interface of the dock can be
      * modified.
-     * 
+     *
      * @return the {@link ThemeManager}.
      */
     public ThemeManager getThemeManager() {
@@ -220,52 +224,39 @@ public class DockingFramesDock implements Dock {
     }
 
     @Override
-    public synchronized void saveLayout(String name, File file)
-            throws IOException {
-        FileOutputStream stream = new FileOutputStream(file);
-        saveLayout(name, stream);
-        log.layoutSaved(this, name, file);
+    public synchronized void saveLayout(String name, File file,
+            PropertyChangeListener... listeners) throws LayoutException {
+        try {
+            FileOutputStream stream = new FileOutputStream(file);
+            doSaveLayout(name, stream, listeners);
+            log.layoutSaved(this, name, file);
+        } catch (FileNotFoundException e) {
+            throw new LayoutLoadingException(name, e);
+        }
     }
 
     @Override
-    public synchronized void saveLayout(String name, OutputStream stream)
-            throws IOException {
-        try {
-            SwingWorker<OutputStream, OutputStream> worker = saveFactory
-                    .create(layoutListeners, this, name, control, stream);
-            worker.execute();
-            worker.get();
-        } catch (InterruptedException e) {
-            throw log.saveLayoutInterrupted(this, name);
-        } catch (ExecutionException e) {
-            throw log.saveLayoutError(this, name, e.getCause());
-        }
+    public synchronized void saveLayout(String name, OutputStream stream,
+            PropertyChangeListener... listeners) throws LayoutException {
+        doSaveLayout(name, stream, listeners);
     }
 
     @Override
     public synchronized void loadLayout(String name, File file,
-            PropertyChangeListener... listeners) throws IOException {
-        FileInputStream stream = new FileInputStream(file);
-        loadLayout(name, stream, listeners);
-        log.layoutLoaded(this, name, file);
+            PropertyChangeListener... listeners) throws LayoutException {
+        try {
+            FileInputStream stream = new FileInputStream(file);
+            doLoadLayout(name, stream, listeners);
+            log.layoutLoaded(this, name, file);
+        } catch (FileNotFoundException e) {
+            throw new LayoutLoadingException(name, e);
+        }
     }
 
     @Override
     public synchronized void loadLayout(String name, InputStream stream,
-            PropertyChangeListener... listeners) throws IOException {
-        try {
-            SwingWorker<InputStream, InputStream> worker = loadFactory.create(
-                    layoutListeners, this, name, control, stream);
-            for (PropertyChangeListener l : listeners) {
-                worker.addPropertyChangeListener(l);
-            }
-            worker.execute();
-            worker.get();
-        } catch (InterruptedException e) {
-            throw log.loadLayoutInterrupted(this, name);
-        } catch (ExecutionException e) {
-            throw log.loadLayoutError(this, name, e.getCause());
-        }
+            PropertyChangeListener... listeners) throws LayoutException {
+        doLoadLayout(name, stream, listeners);
     }
 
     @Override
@@ -296,10 +287,10 @@ public class DockingFramesDock implements Dock {
 
     /**
      * Sets the current layout without applying it.
-     * 
+     *
      * @param currentLayout
      *            the new current layout.
-     * 
+     *
      * @throws ClassCastException
      *             if the specified task is not of type
      *             {@link DockingFramesLayoutTask}.
@@ -338,4 +329,41 @@ public class DockingFramesDock implements Dock {
     public String toString() {
         return new ToStringBuilder(this).toString();
     }
+
+    private void doSaveLayout(String name, OutputStream stream,
+            PropertyChangeListener... listeners) throws LayoutException {
+        try {
+            SwingWorker<OutputStream, OutputStream> worker = saveFactory
+                    .create(layoutListeners, this, name, control, stream);
+            for (PropertyChangeListener l : listeners) {
+                worker.addPropertyChangeListener(l);
+            }
+            worker.execute();
+            worker.get();
+        } catch (ExecutionException e) {
+            throw new LayoutSavingException(name, e.getCause());
+        } catch (InterruptedException e) {
+            throw new LayoutInterruptedException(name, e);
+        }
+
+    }
+
+    private void doLoadLayout(String name, InputStream stream,
+            PropertyChangeListener... listeners)
+            throws LayoutInterruptedException, LayoutLoadingException {
+        try {
+            SwingWorker<InputStream, InputStream> worker = loadFactory.create(
+                    layoutListeners, this, name, control, stream);
+            for (PropertyChangeListener l : listeners) {
+                worker.addPropertyChangeListener(l);
+            }
+            worker.execute();
+            worker.get();
+        } catch (InterruptedException e) {
+            throw new LayoutInterruptedException(name, e);
+        } catch (ExecutionException e) {
+            throw new LayoutLoadingException(name, e.getCause());
+        }
+    }
+
 }

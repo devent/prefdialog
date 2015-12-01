@@ -25,7 +25,6 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -43,6 +42,7 @@ import com.anrisoftware.prefdialog.fields.FieldComponent;
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 import com.anrisoftware.prefdialog.miscswing.docks.api.Dock;
 import com.anrisoftware.prefdialog.miscswing.docks.api.DockFactory;
+import com.anrisoftware.prefdialog.miscswing.docks.api.LayoutException;
 import com.anrisoftware.prefdialog.miscswing.docks.api.LayoutTask;
 import com.anrisoftware.prefdialog.simpledialog.SimpleDialog;
 import com.anrisoftware.resources.texts.api.Texts;
@@ -136,7 +136,7 @@ public class CsvImportDialog extends SimpleDialog {
     }
 
     @Inject
-    void setTextsFactory(TextsFactory factory) {
+    void setCsvImportDialogTextsFactory(TextsFactory factory) {
         this.texts = factory.create(CsvImportDialog.class.getSimpleName());
     }
 
@@ -251,14 +251,15 @@ public class CsvImportDialog extends SimpleDialog {
     /**
      * @see Dock#saveLayout(String, File)
      */
-    public void saveLayout(String name, File file) throws IOException {
+    public void saveLayout(String name, File file) throws LayoutException {
         dock.saveLayout(name, file);
     }
 
     /**
      * @see Dock#saveLayout(String, OutputStream)
      */
-    public void saveLayout(String name, OutputStream stream) throws IOException {
+    public void saveLayout(String name, OutputStream stream)
+            throws LayoutException {
         dock.saveLayout(name, stream);
     }
 
@@ -266,7 +267,7 @@ public class CsvImportDialog extends SimpleDialog {
      * @see Dock#loadLayout(String, File, PropertyChangeListener...)
      */
     public void loadLayout(String name, File file,
-            PropertyChangeListener... listeners) throws IOException {
+            PropertyChangeListener... listeners) throws LayoutException {
         dock.loadLayout(name, file, listeners);
         dock.addEditorDock(importPanelDock);
     }
@@ -275,7 +276,7 @@ public class CsvImportDialog extends SimpleDialog {
      * @see Dock#loadLayout(String, InputStream, PropertyChangeListener...)
      */
     public void loadLayout(String name, InputStream stream,
-            PropertyChangeListener... listeners) throws IOException {
+            PropertyChangeListener... listeners) throws LayoutException {
         dock.loadLayout(name, stream, listeners);
         dock.addEditorDock(importPanelDock);
     }
@@ -295,7 +296,7 @@ public class CsvImportDialog extends SimpleDialog {
     }
 
     @Override
-    public void openDialog() {
+    public void openDialog() throws PropertyVetoException {
         importPanelDock.getImportPanel().requestFocus();
         super.openDialog();
     }

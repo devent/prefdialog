@@ -22,9 +22,12 @@ import static javax.swing.SwingUtilities.invokeAndWait;
 import static org.apache.commons.lang3.Validate.notNull;
 
 import java.awt.Container;
+import java.awt.Dimension;
 import java.lang.ref.SoftReference;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Locale;
+
+import javax.inject.Inject;
 
 import com.anrisoftware.resources.texts.api.TextResource;
 import com.anrisoftware.resources.texts.api.Texts;
@@ -36,6 +39,9 @@ import com.anrisoftware.resources.texts.api.Texts;
  * @since 3.2
  */
 public abstract class AbstractCreateDialogWorker<DialogType extends Container> {
+
+    @Inject
+    private DialogSizeListener dialogSizeListener;
 
     private SoftReference<DialogType> dialog;
 
@@ -79,6 +85,10 @@ public abstract class AbstractCreateDialogWorker<DialogType extends Container> {
         return dialogTitle;
     }
 
+    public Dimension getDialogSize() {
+        return dialogSizeListener.getDialogSize();
+    }
+
     /**
      * Forces the recreation of the dialog.
      *
@@ -103,10 +113,21 @@ public abstract class AbstractCreateDialogWorker<DialogType extends Container> {
      */
     public synchronized DialogType getDialog()
             throws CreateDialogWorkerException, CreateDialogInterrupedException {
-        if (dialog == null || dialog.get() == null) {
-            this.dialog = new SoftReference<DialogType>(createDialog0());
+        if (needRecreateDialog()) {
+            this.dialog = new SoftReference<DialogType>(doCreateDialog());
         }
         return dialog.get();
+    }
+
+    /**
+     * Checks if the dialog needs to be recreated.
+     *
+     * @return {@code true} if the dialog needs to be recreated.
+     *
+     * @since 3.5
+     */
+    protected boolean needRecreateDialog() {
+        return dialog == null || dialog.get() == null;
     }
 
     /**
@@ -137,7 +158,7 @@ public abstract class AbstractCreateDialogWorker<DialogType extends Container> {
         }
     }
 
-    private DialogType createDialog0() throws CreateDialogWorkerException,
+    private DialogType doCreateDialog() throws CreateDialogWorkerException,
             CreateDialogInterrupedException {
         try {
             return createDialogAWT();
@@ -166,6 +187,7 @@ public abstract class AbstractCreateDialogWorker<DialogType extends Container> {
         @Override
         public void run() {
             dialog = createDialog();
+            dialog.addComponentListener(dialogSizeListener);
         }
 
     }

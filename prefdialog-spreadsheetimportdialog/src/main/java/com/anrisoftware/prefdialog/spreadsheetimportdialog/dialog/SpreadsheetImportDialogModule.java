@@ -99,7 +99,6 @@ public class SpreadsheetImportDialogModule extends AbstractModule {
     private static class SingletonHolder {
 
         public static final Injector injector = Guice.createInjector(
-                new SpreadsheetImportPanelModule(),
                 new SpreadsheetImporterModule(),
                 new SpreadsheetPreviewPanelModule(),
                 new SpreadsheetImportDialogModule(),

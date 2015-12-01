@@ -28,6 +28,7 @@ import static com.anrisoftware.prefdialog.dialogaction.AbstractDialogActionLogge
 import static com.anrisoftware.prefdialog.dialogaction.AbstractDialogActionLogger._.no_frame;
 import static org.apache.commons.lang3.Validate.notNull;
 
+import java.beans.PropertyVetoException;
 import java.lang.reflect.InvocationTargetException;
 
 import javax.inject.Singleton;
@@ -36,7 +37,7 @@ import com.anrisoftware.globalpom.log.AbstractLogger;
 
 /**
  * Logging messages for {@link AbstractDialogAction}.
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
  */
@@ -118,5 +119,9 @@ class AbstractDialogActionLogger extends AbstractLogger {
                 new DialogActionException(create_dialog_interrupted).add(
                         action, action), create_dialog_interrupted_message,
                 e.getLocalizedMessage());
+    }
+
+    void openDialogVetoed(PropertyVetoException e) {
+        log.error(null, e);
     }
 }

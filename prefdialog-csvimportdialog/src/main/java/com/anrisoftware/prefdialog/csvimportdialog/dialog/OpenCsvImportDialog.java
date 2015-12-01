@@ -19,6 +19,7 @@
 package com.anrisoftware.prefdialog.csvimportdialog.dialog;
 
 import java.awt.Dimension;
+import java.beans.PropertyVetoException;
 import java.io.File;
 import java.net.URI;
 
@@ -139,7 +140,11 @@ public class OpenCsvImportDialog {
      */
     public void openDialog(CsvImportDialog dialog) {
         dialog.getDialog().setLocationRelativeTo(frame);
-        dialog.openDialog();
+        try {
+            dialog.openDialog();
+        } catch (PropertyVetoException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

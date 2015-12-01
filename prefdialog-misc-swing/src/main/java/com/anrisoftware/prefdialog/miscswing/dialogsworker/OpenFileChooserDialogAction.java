@@ -83,7 +83,7 @@ public class OpenFileChooserDialogAction extends
         try {
             model.setFileChooser(dialog);
             model.setFile(file);
-            model.openDialog(getParent());
+            model.openDialog(getComponentParent());
         } catch (PropertyVetoException e) {
             log.propertyVeto(e);
         }
