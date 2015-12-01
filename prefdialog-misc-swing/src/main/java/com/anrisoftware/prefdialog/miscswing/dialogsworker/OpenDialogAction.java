@@ -18,6 +18,8 @@
  */
 package com.anrisoftware.prefdialog.miscswing.dialogsworker;
 
+import static java.awt.Cursor.DEFAULT_CURSOR;
+import static java.awt.Cursor.WAIT_CURSOR;
 import static javax.swing.SwingUtilities.invokeLater;
 import static javax.swing.SwingUtilities.isEventDispatchThread;
 import static org.apache.commons.lang3.Validate.isTrue;
@@ -31,6 +33,7 @@ import java.util.concurrent.CountDownLatch;
 
 import javax.inject.Inject;
 
+import com.anrisoftware.prefdialog.miscswing.cursor.CursorWorker;
 import com.anrisoftware.resources.texts.api.Texts;
 
 /**
@@ -44,6 +47,9 @@ public abstract class OpenDialogAction<DialogType extends Container, ResultType>
 
     @Inject
     private OpenDialogActionLogger log;
+
+    @Inject
+    private CursorWorker cursorWorker;
 
     private AbstractCreateDialogWorker<DialogType> dialogWorker;
 
@@ -73,6 +79,7 @@ public abstract class OpenDialogAction<DialogType extends Container, ResultType>
 
     public void setParentComponent(Component parentComponent) {
         this.parentComponent = parentComponent;
+        cursorWorker.setParentWindow(parentComponent);
     }
 
     public Component getComponentParent() {
@@ -118,9 +125,11 @@ public abstract class OpenDialogAction<DialogType extends Container, ResultType>
         isTrue(!isEventDispatchThread(),
                 "Cannot block the AWT event dispatch thread");
         notNull(dialogWorker, "dialogWorker");
+        cursorWorker.setCursor(WAIT_CURSOR);
         DialogType dialog = createDialog(dialogWorker);
         dialogLatch = new CountDownLatch(1);
         openDialog(dialog, dialogWorker);
+        cursorWorker.setCursor(DEFAULT_CURSOR);
         dialogLatch.await();
         return dialogResult;
     }
