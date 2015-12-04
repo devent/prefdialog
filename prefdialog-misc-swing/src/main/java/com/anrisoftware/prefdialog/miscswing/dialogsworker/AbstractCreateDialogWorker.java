@@ -149,9 +149,10 @@ public abstract class AbstractCreateDialogWorker<DialogType extends Container> {
         Texts texts = getTexts();
         if (texts != null) {
             String resourceName = getDialogTitleResourceName();
-            notNull(resourceName, "DialogTitleResourceName");
-            TextResource resource = texts
-                    .getResource(resourceName, getLocale());
+            notNull(resourceName, "DialogTitleResourceName=null");
+            Locale locale = getLocale();
+            notNull(locale, "locale=null");
+            TextResource resource = texts.getResource(resourceName, locale);
             return resource.getText();
         } else {
             return getDialogTitle();
