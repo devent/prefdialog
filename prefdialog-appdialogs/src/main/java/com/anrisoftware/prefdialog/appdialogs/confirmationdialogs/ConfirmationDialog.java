@@ -23,6 +23,7 @@ import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.event.ActionListener;
+import java.beans.PropertyVetoException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -181,7 +182,7 @@ public class ConfirmationDialog {
         simpleDialog.addRestoreAction(action);
     }
 
-    public void openDialog() {
+    public void openDialog() throws PropertyVetoException {
         simpleDialog.openDialog();
     }
 

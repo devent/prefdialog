@@ -290,9 +290,10 @@ public class AppDialog {
     }
 
     /**
+     * @throws PropertyVetoException
      * @see SimpleDialog#setVisible(boolean)
      */
-    public void setVisible(boolean visible) {
+    public void setVisible(boolean visible) throws PropertyVetoException {
         simpleDialog.setVisible(visible);
     }
 
@@ -311,9 +312,10 @@ public class AppDialog {
     }
 
     /**
+     * @throws PropertyVetoException
      * @see SimpleDialog#openDialog()
      */
-    public void openDialog() {
+    public void openDialog() throws PropertyVetoException {
         simpleDialog.openDialog();
     }
 
