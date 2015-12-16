@@ -29,31 +29,32 @@ import com.google.inject.Injector;
 
 /**
  * Makes the check box field available.
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
 @ProviderFor(FieldService.class)
 public class PreferencesPanelService implements FieldService {
 
-	/**
-	 * The field information.
-	 */
-	public static final FieldInfo INFO = new FieldInfo(PreferencesPanel.class);
+    /**
+     * The field information.
+     */
+    public static final FieldInfo INFO = new FieldInfo(PreferencesPanel.class);
 
-	@Override
-	public FieldInfo getInfo() {
-		return INFO;
-	}
+    @Override
+    public FieldInfo getInfo() {
+        return INFO;
+    }
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public FieldFactory<? extends Component> getFactory(Object... parent) {
-		return createInjector((Injector) parent[0]).getInstance(
-				FieldFactory.class);
-	}
+    @SuppressWarnings("unchecked")
+    @Override
+    public FieldFactory<? extends Component> getFactory(Object... parent) {
+        return createInjector((Injector) parent[0]).getInstance(
+                FieldFactory.class);
+    }
 
-	private Injector createInjector(Injector parent) {
-		return parent.createChildInjector(new PreferencesPanelModule());
-	}
+    private Injector createInjector(Injector parent) {
+        return parent.createChildInjector(new PreferencesPanelModule(),
+                new PreferencesPanelServiceModule());
+    }
 }

@@ -40,49 +40,49 @@ import com.google.inject.Injector
  */
 class PreferencesPanelTest {
 
-	@Test
-	void "panel with child"() {
-		def title = "$NAME::panel with child"
-		def fieldName = CHILD
-		def field = factory.create(bean, fieldName)
-		field.createPanel(injector)
-		def container = field.getAWTComponent()
+    @Test
+    void "panel with child"() {
+        def title = "$NAME::panel with child"
+        def fieldName = CHILD
+        def field = factory.create(bean, fieldName)
+        field.createPanel(injector)
+        def container = field.getAWTComponent()
 
-		new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
-		})
-	}
+        new TestFrameUtil(title, container).withFixture({ FrameFixture fixture ->
+        })
+    }
 
-	//@Test
-	void "manually"() {
-		def title = "$NAME::manually"
-		def fieldName = CHILD
-		def field = factory.create(bean, fieldName)
-		field.createPanel(injector)
-		def container = field.getAWTComponent()
-		new TestFrameUtil(title, container).withFixture({
-			Thread.sleep 60 * 1000l
-			assert false : "manually test"
-		})
-	}
+    //@Test
+    void "manually"() {
+        def title = "$NAME::manually"
+        def fieldName = CHILD
+        def field = factory.create(bean, fieldName)
+        field.createPanel(injector)
+        def container = field.getAWTComponent()
+        new TestFrameUtil(title, container).withFixture({
+            Thread.sleep 60 * 1000l
+            assert false : "manually test"
+        })
+    }
 
-	static Injector injector
+    static Injector injector
 
-	static PreferencesPanelFieldFactory factory
+    static PreferencesPanelFieldFactory factory
 
-	static final String NAME = PreferencesPanelTest.class.simpleName
+    static final String NAME = PreferencesPanelTest.class.simpleName
 
-	PreferencesPanelBean bean
+    PreferencesPanelBean bean
 
-	@BeforeClass
-	static void setupFactories() {
-		TestUtils.toStringStyle
-		injector = Guice.createInjector(new CoreFieldComponentModule())
-		factory = injector.createChildInjector(
-				new PreferencesPanelModule()).getInstance(PreferencesPanelFieldFactory)
-	}
+    @BeforeClass
+    static void setupFactories() {
+        TestUtils.toStringStyle
+        injector = Guice.createInjector(new CoreFieldComponentModule())
+        factory = injector.createChildInjector(
+                new PreferencesPanelModule()).getInstance(PreferencesPanelFieldFactory)
+    }
 
-	@Before
-	void setupBean() {
-		bean = new PreferencesPanelBean()
-	}
+    @Before
+    void setupBean() {
+        bean = new PreferencesPanelBean()
+    }
 }

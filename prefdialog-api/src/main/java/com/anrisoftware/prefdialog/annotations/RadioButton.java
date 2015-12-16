@@ -31,46 +31,51 @@ import java.lang.annotation.Target;
  * can chose one option for the group. For this single radio button an action
  * can be assigned that is called when the user clicks on the button.
  * <p>
- * 
+ *
  * <h2>Examples</h2>
- * 
+ *
  * Simple example.
- * 
+ *
  * <pre>
  * &#064;FieldComponent
  * &#064;FieldButton
  * &#064;RadioButton
  * public boolean buttonField;
  * </pre>
- * 
+ *
  * With getter and setter.
- * 
+ *
  * <pre>
  * private boolean important;
  * 
  * public void setImportant(boolean important) {
- * 	this.important = important;
+ *     this.important = important;
  * }
  * 
  * &#064;FieldComponent
  * &#064;FieldButton
  * &#064;RadioButton
  * public boolean isImportant() {
- * 	return important;
+ *     return important;
  * }
  * </pre>
- * 
+ *
  * With button group.
- * 
+ *
  * <pre>
  * &#064;FieldComponent
  * &#064;FieldButton(group = &quot;fieldGroup&quot;)
  * &#064;RadioButton
- * public boolean buttonField;
+ * public boolean buttonField0;
  * 
- * public ButtonGroup fieldGroup;
+ * &#064;FieldComponent
+ * &#064;FieldButton(group = &quot;fieldGroup&quot;)
+ * &#064;RadioButton
+ * public boolean buttonField1;
+ * 
+ * public javax.swing.ButtonGroup fieldGroup;
  * </pre>
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
  */

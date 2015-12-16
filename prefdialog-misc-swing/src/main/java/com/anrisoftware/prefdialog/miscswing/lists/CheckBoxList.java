@@ -22,104 +22,147 @@ import javax.swing.JList;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
+
 /**
  * List with check box items.
- * 
+ *
  * @see CheckListItem
  * @see CheckBoxListRenderer
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
  */
 public class CheckBoxList<E extends CheckListItem<?>> {
 
-	/**
-	 * @see #decorate(JList)
-	 */
-	public static <E extends CheckListItem<?>> CheckBoxList<E> createCheckBoxList(
-			JList<E> list) {
-		return decorate(list);
-	}
+    /**
+     * Factory to create a new check box items list.
+     *
+     * @author Erwin Müller, erwin.mueller@deventm.de
+     * @since 3.6
+     */
+    public interface CheckBoxListFactory {
 
-	/**
-	 * @see #decorate(CheckBoxListRenderer, JList)
-	 */
-	public static <E extends CheckListItem<?>> CheckBoxList<E> createCheckBoxList(
-			CheckBoxListRenderer<E> renderer, JList<E> list) {
-		return decorate(renderer, list);
-	}
+        /**
+         * Creates a new check box items list.
+         *
+         * @param list
+         *            the {@link JList} list.
+         *
+         * @return the {@link CheckListItem}.
+         */
+        @SuppressWarnings("rawtypes")
+        CheckBoxList create(JList list);
 
-	/**
-	 * @see #decorate(CheckBoxListRenderer, JList)
-	 */
-	public static <E extends CheckListItem<?>> CheckBoxList<E> decorate(
-			JList<E> list) {
-		return new CheckBoxList<E>(new CheckBoxListRenderer<E>(), list);
-	}
+        /**
+         * Creates a new check box items list.
+         *
+         * @param list
+         *            the {@link JList} list.
+         *
+         * @param renderer
+         *            the {@link CheckBoxListRenderer}.
+         *
+         * @return the {@link CheckListItem}.
+         */
+        @SuppressWarnings("rawtypes")
+        CheckBoxList create(JList list, CheckBoxListRenderer renderer);
+    }
 
-	/**
-	 * Decorate the specified list as check box list.
-	 * 
-	 * @param renderer
-	 *            the {@link CheckBoxListRenderer}.
-	 * 
-	 * @param list
-	 *            the {@link JList}.
-	 * 
-	 * @return the {@link CheckBoxList}.
-	 */
-	public static <E extends CheckListItem<?>> CheckBoxList<E> decorate(
-			CheckBoxListRenderer<E> renderer, JList<E> list) {
-		return new CheckBoxList<E>(renderer, list);
-	}
+    /**
+     * @see #decorate(JList)
+     */
+    public static <E extends CheckListItem<?>> CheckBoxList<E> createCheckBoxList(
+            JList<E> list) {
+        return decorate(list);
+    }
 
-	private final JList<E> list;
+    /**
+     * @see #decorate(CheckBoxListRenderer, JList)
+     */
+    public static <E extends CheckListItem<?>> CheckBoxList<E> createCheckBoxList(
+            JList<E> list, CheckBoxListRenderer<E> renderer) {
+        return decorate(list, renderer);
+    }
 
-	private final CheckBoxListRenderer<E> renderer;
+    /**
+     * @see #decorate(CheckBoxListRenderer, JList)
+     */
+    public static <E extends CheckListItem<?>> CheckBoxList<E> decorate(
+            JList<E> list) {
+        return new CheckBoxList<E>(list, new CheckBoxListRenderer<E>());
+    }
 
-	private final ListSelectionListener selectionListener;
+    /**
+     * Decorate the specified list as check box list.
+     *
+     * @param list
+     *            the {@link JList}.
+     *
+     * @param renderer
+     *            the {@link CheckBoxListRenderer}.
+     *
+     * @return the {@link CheckBoxList}.
+     */
+    public static <E extends CheckListItem<?>> CheckBoxList<E> decorate(
+            JList<E> list, CheckBoxListRenderer<E> renderer) {
+        return new CheckBoxList<E>(list, renderer);
+    }
 
-	/**
-	 * @see #decorate(CheckBoxListRenderer, JList)
-	 */
-	protected CheckBoxList(CheckBoxListRenderer<E> renderer, JList<E> list) {
-		this.list = list;
-		this.renderer = renderer;
-		this.selectionListener = new ListSelectionListener() {
+    private final JList<E> list;
 
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
-				if (e.getValueIsAdjusting()) {
-					return;
-				}
-				updateSelected(e.getFirstIndex(), e.getLastIndex());
-			}
-		};
-		setupList();
-	}
+    private final CheckBoxListRenderer<E> renderer;
 
-	private void updateSelected(int index0, int index1) {
-		for (int i = index0; i < index1 + 1; i++) {
-			E value = list.getModel().getElementAt(i);
-			if (list.isSelectedIndex(i)) {
-				value.setSelected(true);
-			} else {
-				value.setSelected(false);
-			}
-		}
-	}
+    private final ListSelectionListener selectionListener;
 
-	private void setupList() {
-		list.setCellRenderer(renderer);
-		list.addListSelectionListener(selectionListener);
-	}
+    @SuppressWarnings({ "rawtypes" })
+    @AssistedInject
+    protected CheckBoxList(@Assisted JList list) {
+        this(list, new CheckBoxListRenderer());
+    }
 
-	/**
-	 * Returns the decorated list.
-	 * 
-	 * @return the {@link JList}.
-	 */
-	public JList<E> getList() {
-		return list;
-	}
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @AssistedInject
+    protected CheckBoxList(@Assisted JList list,
+            @Assisted CheckBoxListRenderer renderer) {
+        this.list = list;
+        this.renderer = renderer;
+        this.selectionListener = new ListSelectionListener() {
+
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (e.getValueIsAdjusting()) {
+                    return;
+                }
+                updateSelected(e.getFirstIndex(), e.getLastIndex());
+            }
+        };
+        setupList();
+    }
+
+    private void updateSelected(int index0, int index1) {
+        for (int i = index0; i < index1 + 1; i++) {
+            E value = list.getModel().getElementAt(i);
+            if (list.isSelectedIndex(i)) {
+                value.setSelected(true);
+            } else {
+                value.setSelected(false);
+            }
+        }
+    }
+
+    private void setupList() {
+        list.setCellRenderer(renderer);
+        list.addListSelectionListener(selectionListener);
+    }
+
+    /**
+     * Returns the decorated list.
+     *
+     * @return the {@link JList}.
+     */
+    public JList<E> getList() {
+        return list;
+    }
 }

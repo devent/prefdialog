@@ -33,27 +33,27 @@ import com.google.inject.assistedinject.FactoryModuleBuilder;
 
 /**
  * Installs the preferences panel factory and dependencies.
- * 
+ *
  * @see PreferencesPanelField
  * @see FieldFactory
  * @see PreferencesPanelFieldFactory
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
-class PreferencesPanelModule extends AbstractModule {
+public class PreferencesPanelModule extends AbstractModule {
 
-	@Override
-	protected void configure() {
-		install(new FactoryModuleBuilder().implement(
-				new TypeLiteral<FieldComponent<JPanel>>() {
-				}, PreferencesPanelField.class).build(PreferencesPanelFieldFactory.class));
-		bind(FieldFactory.class).to(PreferencesPanelFieldFactory.class);
-	}
+    @Override
+    protected void configure() {
+        install(new FactoryModuleBuilder().implement(
+                new TypeLiteral<FieldComponent<JPanel>>() {
+                }, PreferencesPanelField.class).build(
+                PreferencesPanelFieldFactory.class));
+    }
 
-	@Provides
-	@Singleton
-	ServiceLoader<FieldService> getFieldServicesLoader() {
-		return ServiceLoader.load(FieldService.class);
-	}
+    @Provides
+    @Singleton
+    ServiceLoader<FieldService> getFieldServicesLoader() {
+        return ServiceLoader.load(FieldService.class);
+    }
 }
