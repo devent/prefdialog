@@ -198,13 +198,13 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
     /**
      * Sets the component of this field.
-     * 
+     *
      * @param component
      *            the {@link Component}.
-     * 
+     *
      * @param parentObject
      *            the parent object of this field.
-     * 
+     *
      * @param fieldName
      *            the name of the field in the parent object.
      */
@@ -248,7 +248,7 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
     /**
      * Returns the annotation access to access the elements of an annotation.
-     * 
+     *
      * @return the {@link AnnotationAccess}.
      */
     protected AnnotationAccess getAnnotationAccess() {
@@ -257,7 +257,7 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
     /**
      * Returns the bean access to access the fields of a object.
-     * 
+     *
      * @return the {@link BeanAccess}.
      */
     protected BeanAccess getBeanAccess() {
@@ -266,7 +266,7 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
     /**
      * Returns the bean factory to create beans.
-     * 
+     *
      * @return the {@link BeanFactory}.
      */
     protected BeanFactory getBeanFactory() {
@@ -381,7 +381,7 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
     /**
      * Returns the field or getter method of this component.
-     * 
+     *
      * @return the {@link AccessibleObject}.
      */
     public AccessibleObject getAccessibleObject() {
@@ -390,7 +390,7 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
     /**
      * Returns the parent object of this field.
-     * 
+     *
      * @return the parent {@link Object}.
      */
     protected Object getParentObject() {
@@ -399,7 +399,7 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
     /**
      * Returns the field name.
-     * 
+     *
      * @return the {@link String} field name.
      */
     protected String getFieldName() {
@@ -554,6 +554,9 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
     public void setEnabled(boolean enabled) {
         component.setEnabled(enabled);
         this.readOnly = !enabled;
+        for (FieldComponent<?> field : getFields()) {
+            field.setEnabled(enabled);
+        }
         log.enabledSet(this, enabled);
     }
 
@@ -666,7 +669,7 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
     /**
      * Sets the original value of the field. That is the value that is restored.
-     * 
+     *
      * @param value
      *            the original value {@link Object}.
      */
@@ -677,7 +680,7 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
     /**
      * Returns the original value of the field. That is the value that is
      * restored.
-     * 
+     *
      * @return the original value {@link Object}.
      */
     protected Object getOriginalValue() {
@@ -712,7 +715,7 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
     /**
      * Sets the specified value as the new value without modifying the bean
      * object field.
-     * 
+     *
      * @param value
      *            the {@link Object} value.
      */
@@ -723,10 +726,10 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
     /**
      * Sets the value to the bean object field.
-     * 
+     *
      * @param value
      *            the {@link Object} value.
-     * 
+     *
      * @throws PropertyVetoException
      *             if the value is unacceptable by the bean.
      */
@@ -746,7 +749,7 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
     /**
      * Returns the old value of this field. That is the value that was
      * previously set.
-     * 
+     *
      * @return the old value {@link Object}.
      */
     public Object getOldValue() {
@@ -830,10 +833,10 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
     /**
      * Tests if the text resource is available.
-     * 
+     *
      * @param name
      *            the {@link String} name of the text resource.
-     * 
+     *
      * @return {@code true} if the name is not {@code null} or empty and the
      *         texts resources are available, {@code false} otherwise.
      */
@@ -843,17 +846,17 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
     /**
      * Returns the text resource with the specified name and the current locale.
-     * 
+     *
      * @param name
      *            the {@link String} resource name.
-     * 
+     *
      * @param defaultText
      *            the default text for the resource.
-     * 
-     * 
+     *
+     *
      * @return the {@link String} text resource or the default text if the text
      *         resource could not be found.
-     * 
+     *
      * @see #getLocale()
      */
     protected String getTextResource(String name, String defaultText) {
@@ -867,10 +870,10 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
     /**
      * Tests if the image resource is available.
-     * 
+     *
      * @param name
      *            the {@link String} name of the image resource.
-     * 
+     *
      * @return {@code true} if the name is not {@code null} or empty and the
      *         texts resources are available, {@code false} otherwise.
      */
@@ -880,19 +883,19 @@ public abstract class AbstractFieldComponent<ComponentType extends Component>
 
     /**
      * Returns the icon resource with the specified name and the current locale.
-     * 
+     *
      * @param name
      *            the {@link String} resource name.
-     * 
+     *
      * @param size
      *            the {@link IconSize} size of the icon.
-     * 
+     *
      * @param defaultText
      *            the default {@link Icon} icon for the resource.
-     * 
+     *
      * @return the {@link Icon} icon resource or the default icon if the image
      *         resource could not be found.
-     * 
+     *
      * @see #getLocale()
      */
     protected Icon getIconResource(String name, IconSize size, Icon defaultIcon) {
