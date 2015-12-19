@@ -18,20 +18,36 @@
  */
 package com.anrisoftware.prefdialog.panel;
 
-import com.anrisoftware.prefdialog.fields.FieldFactory;
-import com.google.inject.AbstractModule;
+import static java.lang.String.format;
+
+import java.util.ServiceLoader;
+
+import javax.inject.Provider;
+import javax.inject.Singleton;
+
+import com.anrisoftware.prefdialog.fields.FieldService;
 
 /**
- * Installs preferences panel service.
+ * Provides the preferences panel service.
  *
  * @author Erwin Müller, erwin.mueller@deventm.de
  * @since 3.6
  */
-class PreferencesPanelServiceModule extends AbstractModule {
+@Singleton
+public class PreferencesPanelServiceProvider implements
+        Provider<PreferencesPanelService> {
+
+    private static final String ERROR_FIND_SERVICE_MESSAGE = "Error find service %s";
 
     @Override
-    protected void configure() {
-        bind(FieldFactory.class).to(PreferencesPanelFieldFactory.class);
+    public synchronized PreferencesPanelService get() {
+        for (FieldService service : ServiceLoader.load(FieldService.class)) {
+            if (service.getInfo().equals(PreferencesPanelService.INFO)) {
+                return (PreferencesPanelService) service;
+            }
+        }
+        throw new RuntimeException(format(ERROR_FIND_SERVICE_MESSAGE,
+                PreferencesPanelService.INFO));
     }
 
 }
