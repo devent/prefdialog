@@ -18,18 +18,15 @@
  */
 package com.anrisoftware.prefdialog.miscswing.tables;
 
-import static org.apache.commons.lang3.StringUtils.isEmpty;
-
 import java.util.Locale;
 
+import javax.inject.Inject;
 import javax.swing.DefaultListModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.undo.UndoManager;
 import javax.swing.undo.UndoableEdit;
-
-import org.apache.commons.lang3.StringUtils;
 
 import com.anrisoftware.prefdialog.miscswing.awtcheck.OnAwt;
 import com.anrisoftware.prefdialog.miscswing.itemswindow.ItemsWindow;
@@ -50,6 +47,12 @@ public abstract class DefaultListModelTableModel<T> extends DefaultTableModel
     private final Class<?>[] columnTypes;
 
     private final boolean[] columnEditable;
+
+    @Inject
+    private StringEquals stringEquals;
+
+    @Inject
+    private ValueEquals valueEquals;
 
     private DefaultListModel<T> model;
 
@@ -342,30 +345,14 @@ public abstract class DefaultListModelTableModel<T> extends DefaultTableModel
      * Compare the new string value with the old string value.
      */
     protected final boolean isStringEquals(Object newValue, String old) {
-        if (newValue == null && old == null) {
-            return true;
-        }
-        String a = null;
-        if (newValue != null) {
-            a = newValue.toString();
-        }
-        if (isEmpty(a) && isEmpty(old)) {
-            return true;
-        }
-        return StringUtils.equals(a, old);
+        return stringEquals.isStringEquals(newValue, old);
     }
 
     /**
      * Compare the new value with the old value.
      */
     protected final boolean isValueEquals(Object newValue, Object old) {
-        if (newValue == null && old == null) {
-            return true;
-        }
-        if (newValue == null) {
-            return false;
-        }
-        return newValue.equals(old);
+        return valueEquals.isValueEquals(newValue, old);
     }
 
 }
