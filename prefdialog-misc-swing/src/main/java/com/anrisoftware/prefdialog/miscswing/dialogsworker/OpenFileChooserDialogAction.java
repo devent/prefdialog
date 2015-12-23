@@ -45,7 +45,7 @@ public class OpenFileChooserDialogAction extends
 
     @Inject
     OpenFileChooserDialogAction(FileChooserCreateWorker dialogWorker) {
-        setDialogWorker(dialogWorker);
+        super(dialogWorker);
     }
 
     /**

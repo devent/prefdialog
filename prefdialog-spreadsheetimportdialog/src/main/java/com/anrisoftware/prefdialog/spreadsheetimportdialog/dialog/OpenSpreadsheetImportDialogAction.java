@@ -63,7 +63,7 @@ public class OpenSpreadsheetImportDialogAction extends
 
     @Inject
     OpenSpreadsheetImportDialogAction(SpreadsheetImportDialogWorker dialogWorker) {
-        setDialogWorker(dialogWorker);
+        super(dialogWorker);
     }
 
     /**
@@ -171,11 +171,13 @@ public class OpenSpreadsheetImportDialogAction extends
     protected void setupDialog(JDialog dialog,
             AbstractCreateDialogWorker<JDialog> dialogWorker) {
         SpreadsheetImportDialogWorker w = (SpreadsheetImportDialogWorker) dialogWorker;
-        w.setCurrentLayout(currentLayout);
+        if (currentLayout != null) {
+            w.setCurrentLayout(currentLayout);
+        }
     }
 
     @Override
-    protected SpreadsheetImportProperties openDialogAWT(final JDialog dialog,
+    protected SpreadsheetImportProperties openDialogAWT(JDialog dialog,
             AbstractCreateDialogWorker<JDialog> dialogWorker)
             throws CreateDialogWorkerException {
         SpreadsheetImportDialogWorker w = (SpreadsheetImportDialogWorker) dialogWorker;

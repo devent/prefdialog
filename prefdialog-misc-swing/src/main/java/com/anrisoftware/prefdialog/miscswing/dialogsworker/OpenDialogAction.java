@@ -45,29 +45,21 @@ import com.anrisoftware.resources.texts.api.Texts;
 public abstract class OpenDialogAction<DialogType extends Container, ResultType>
         implements Callable<ResultType> {
 
+    private final AbstractCreateDialogWorker<DialogType> dialogWorker;
+
     @Inject
     private OpenDialogActionLogger log;
 
     @Inject
     private CursorWorker cursorWorker;
 
-    private AbstractCreateDialogWorker<DialogType> dialogWorker;
-
     private CountDownLatch dialogLatch;
 
     private Component parentComponent;
 
-    private Locale locale;
-
-    private Texts texts;
-
-    private String dialogTitleResourceName;
-
-    private String dialogTitle;
-
     private ResultType dialogResult;
 
-    public synchronized void setDialogWorker(
+    protected OpenDialogAction(
             AbstractCreateDialogWorker<DialogType> dialogWorker) {
         this.dialogWorker = dialogWorker;
     }
@@ -87,27 +79,19 @@ public abstract class OpenDialogAction<DialogType extends Container, ResultType>
     }
 
     public void setLocale(Locale locale) {
-        this.locale = locale;
-    }
-
-    public Locale getLocale() {
-        return locale;
+        dialogWorker.setLocale(locale);
     }
 
     public void setTexts(Texts texts) {
-        this.texts = texts;
-    }
-
-    public Texts getTexts() {
-        return texts;
+        dialogWorker.setTexts(texts);
     }
 
     public void setDialogTitleResourceName(String name) {
-        this.dialogTitleResourceName = name;
+        dialogWorker.setDialogTitleResourceName(name);
     }
 
     public void setDialogTitle(String dialogTitle) {
-        this.dialogTitle = dialogTitle;
+        dialogWorker.setDialogTitle(dialogTitle);
     }
 
     /**
@@ -172,10 +156,6 @@ public abstract class OpenDialogAction<DialogType extends Container, ResultType>
     protected DialogType createDialog(
             AbstractCreateDialogWorker<DialogType> dialogWorker)
             throws CreateDialogWorkerException {
-        dialogWorker.setLocale(locale);
-        dialogWorker.setTexts(texts);
-        dialogWorker.setDialogTitleResourceName(dialogTitleResourceName);
-        dialogWorker.setDialogTitle(dialogTitle);
         return dialogWorker.getDialog();
     }
 
