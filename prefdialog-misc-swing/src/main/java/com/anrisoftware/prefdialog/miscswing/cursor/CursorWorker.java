@@ -19,14 +19,14 @@
 package com.anrisoftware.prefdialog.miscswing.cursor;
 
 import static java.awt.Cursor.getPredefinedCursor;
-import static javax.swing.SwingUtilities.invokeLater;
+import static javax.swing.SwingUtilities.invokeAndWait;
 import static javax.swing.SwingUtilities.isEventDispatchThread;
 
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Window;
+import java.lang.reflect.InvocationTargetException;
 
-import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
 
 /**
@@ -35,7 +35,6 @@ import javax.swing.SwingUtilities;
  * @author Erwin Müller, erwin.mueller@deventm.de
  * @since 3.5
  */
-@Singleton
 public class CursorWorker {
 
     private Component component;
@@ -62,17 +61,26 @@ public class CursorWorker {
             return;
         }
         if (!isEventDispatchThread()) {
-            invokeLater(new Runnable() {
-
-                @Override
-                public void run() {
-                    setCursor(type, parentWindow);
-                }
-
-            });
+            try {
+                setCursorAWT(type, parentWindow);
+            } catch (InvocationTargetException e) {
+            } catch (InterruptedException e) {
+            }
         } else {
             setCursor(type, parentWindow);
         }
+    }
+
+    private void setCursorAWT(final int type, final Window parentWindow)
+            throws InterruptedException, InvocationTargetException {
+        invokeAndWait(new Runnable() {
+
+            @Override
+            public void run() {
+                setCursor(type, parentWindow);
+            }
+
+        });
     }
 
     private Window getParentWindow() {
