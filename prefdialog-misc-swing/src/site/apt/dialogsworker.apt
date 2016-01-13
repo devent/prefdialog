@@ -1,0 +1,114 @@
+~~
+~~ Copyright 2013-2015 Erwin Müller <erwin.mueller@deventm.org>
+~~
+~~ This file is part of prefdialog-misc-swing.
+~~
+~~ prefdialog-misc-swing is free software: you can redistribute it and/or modify it
+~~ under the terms of the GNU Lesser General Public License as published by the
+~~ Free Software Foundation, either version 3 of the License, or (at your
+~~ option) any later version.
+~~
+~~ prefdialog-misc-swing is distributed in the hope that it will be useful, but
+~~ WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+~~ FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+~~ details.
+~~
+~~ You should have received a copy of the GNU Lesser General Public License
+~~ along with prefdialog-misc-swing. If not, see <http://www.gnu.org/licenses/>.
+~~
+
+Dialogs Worker
+
+    * <<<com.anrisoftware.prefdialog.miscswing.dialogsworker.OpenFileChooserDialogAction>>>
+
+    Opens the open file chooser dialog on the AWT event thread and waits for the
+user to either cancel it or select a file.
+
+    * Example
+
+---
+/**
+ * Opens the save as file chooser dialog.
+ *
+ * @author Erwin Müller, erwin.mueller@deventm.de
+ * @since 1.0
+ */
+public class SaveAsAction extends AbstractAppActionListener implements
+        Callable<File> {
+
+    @Inject
+    private OpenFileChooserDialogAction openFileChooserDialogAction;
+
+    @Inject
+    private ScriptResourceSaveFileDialogModel fileDialogModel;
+
+    @Inject
+    private SaveScriptResourceWorkerFactory saveScriptResourceWorkerFactory;
+
+    private AbstractAppResources appResources;
+
+    private ProjectResource resource;
+
+    public void setAppResources(AbstractAppResources resources) {
+        this.appResources = resources;
+    }
+
+    public void setProjectResource(ProjectResource resource) {
+        this.resource = resource;
+    }
+
+    public void setLocale(Locale locale) {
+        fileDialogModel.setLocale(locale);
+        openFileChooserDialogAction.setLocale(locale);
+    }
+
+    public void setTexts(Texts texts) {
+        fileDialogModel.setTexts(texts);
+        openFileChooserDialogAction.setTexts(texts);
+    }
+
+    public void setParentComponent(JFrame frame) {
+        openFileChooserDialogAction.setParentComponent(frame);
+    }
+
+    @Override
+    public File call() throws Exception {
+        OpenFileChooserDialogAction dialogAction = openFileChooserDialogAction;
+        File lastFile = appResources.getStoredProperty(LAST_DIRECTORY_PROPERTY);
+        dialogAction.setFile(lastFile);
+        dialogAction.setDialogTitleResourceName("save_as_dialog_title");
+        dialogAction.setModel(fileDialogModel);
+        File file = dialogAction.call();
+        return file;
+    }
+
+    @Override
+    protected void doPropertyChange(PropertyChangeEvent evt) throws Exception {
+        openFileImporterDialog(evt);
+    }
+
+    private void openFileImporterDialog(PropertyChangeEvent evt)
+            throws InterruptedException, ExecutionException, Exception {
+        File selectedFile;
+        selectedFile = AbstractExecuteAction.<File> asFuture(evt).get();
+        if (selectedFile != null) {
+            appResources.setStoredProperty(LAST_DIRECTORY_PROPERTY,
+                    selectedFile.getParentFile());
+            // save
+        }
+    }
+
+    private void setMessageSaveFinished(File file,
+            DefaultProjectScriptResource resource) {
+        getStatusBar().setMessage(false, save_resource_finish_message, "name",
+                resource.getName(), "file", file);
+    }
+
+    private void setMessageSavingResource(File file,
+            DefaultProjectScriptResource resource) {
+        getStatusBar().setMessage(true, saving_resource_message, "name",
+                resource.getName(), "file", file);
+    }
+
+}
+---

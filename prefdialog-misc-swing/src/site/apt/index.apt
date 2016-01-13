@@ -48,6 +48,10 @@ retains a history of added items in the model.
 
 [./images/edit_context_menu1.png]
 
+    * {{{./dialogsworker.html}Dialogs Worker}} <<<com.anrisoftware.prefdialog.miscswing.dialogsworker>>>
+
+    Utilities to create dialogs on the AWT event thread.
+
     * {{{./editcontextmenu.html}Edit Context Menu}} <<<com.anrisoftware.prefdialog.miscswing.editcontextmenu>>>
 
     Basic text context menu, with the cut, copy and paste menu items.
