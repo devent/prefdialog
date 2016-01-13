@@ -23,12 +23,14 @@ import static org.apache.commons.lang3.Validate.notNull;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Locale;
 import java.util.concurrent.Future;
 
 import javax.inject.Inject;
 
 import com.anrisoftware.prefdialog.miscswing.logwindowdock.LogWindowDock;
 import com.anrisoftware.prefdialog.miscswing.statusbar.StatusBar;
+import com.anrisoftware.resources.texts.api.Texts;
 
 /**
  * Retrieves the value from the future task.
@@ -41,6 +43,10 @@ public abstract class AbstractAppActionListener implements
 
     @Inject
     private AbstractAppActionLogger log;
+
+    private Texts texts;
+
+    private Locale locale;
 
     /**
      * Sets the log window dock.
@@ -73,6 +79,32 @@ public abstract class AbstractAppActionListener implements
      */
     public void setStatusBar(StatusBar statusBar) {
         log.setStatusBar(statusBar);
+    }
+
+    /**
+     * Sets the texts resources.
+     *
+     * @param texts
+     *            the {@link Texts}.
+     *
+     * @since 3.6
+     */
+    public void setTexts(Texts texts) {
+        this.texts = texts;
+        updateTexts();
+    }
+
+    /**
+     * Sets the texts resources locale.
+     *
+     * @param locale
+     *            the {@link Locale}.
+     *
+     * @since 3.6
+     */
+    public void setLocale(Locale locale) {
+        this.locale = locale;
+        updateTexts();
     }
 
     /**
@@ -123,20 +155,6 @@ public abstract class AbstractAppActionListener implements
     }
 
     /**
-     * Returns the future task from the property change event.
-     *
-     * @param evt
-     *            the {@link PropertyChangeEvent} that have the source set to
-     *            the future task.
-     *
-     * @return the {@link Future} task.
-     */
-    @SuppressWarnings("unchecked")
-    protected final <T> Future<T> asFuture(PropertyChangeEvent evt) {
-        return (Future<T>) evt.getSource();
-    }
-
-    /**
      * Returns the value from the future task and logs any exceptions.
      *
      * @param future
@@ -148,6 +166,29 @@ public abstract class AbstractAppActionListener implements
         return log.fromFuture(future);
     }
 
+    /**
+     * Returns the future task from the property change event.
+     *
+     * @param evt
+     *            the {@link PropertyChangeEvent} that have the source set to
+     *            the future task.
+     *
+     * @return the {@link Future} task.
+     *
+     * @since 3.6
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> Future<T> asFuture(PropertyChangeEvent evt) {
+        return (Future<T>) evt.getSource();
+    }
+
     private static final String CAUSE_MESSAGE_ARG = "causeMessage";
+
+    private void updateTexts() {
+        if (texts == null || locale == null) {
+            return;
+        }
+        AppActionListenerResource.loadTexts(texts, locale);
+    }
 
 }

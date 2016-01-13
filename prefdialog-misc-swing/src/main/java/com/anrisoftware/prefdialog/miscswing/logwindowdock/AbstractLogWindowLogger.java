@@ -99,7 +99,8 @@ public class AbstractLogWindowLogger extends AbstractLogger {
             T ex, Object message, Object... args) {
         notNull(logWindowDock, "logWindowDock");
         notNull(statusBar, "statusBar");
-        statusBar.setMessage(false, application_error_message);
+        statusBar.setMessage(false, application_error_message, "message",
+                ex.getLocalizedMessage());
         logWindowDock.addErrorMessage(title, format(descr, args), ex);
         return super.logException(ex, message, args);
     }
