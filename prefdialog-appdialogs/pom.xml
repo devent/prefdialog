@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>prefdialog-parent</artifactId>
 		<groupId>com.anrisoftware.prefdialog</groupId>
-		<version>3.6-SNAPSHOT</version>
+		<version>3.6</version>
 		<relativePath>../prefdialog-parent</relativePath>
 	</parent>
 
@@ -51,7 +51,7 @@
 		<dependency>
 			<groupId>com.anrisoftware.prefdialog</groupId>
 			<artifactId>prefdialog-corefields</artifactId>
-			<version>3.6-SNAPSHOT</version>
+			<version>3.6</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -64,22 +64,22 @@
 		<dependency>
 			<groupId>com.anrisoftware.prefdialog</groupId>
 			<artifactId>prefdialog-api</artifactId>
-			<version>3.6-SNAPSHOT</version>
+			<version>3.6</version>
 		</dependency>
 		<dependency>
 			<groupId>com.anrisoftware.prefdialog</groupId>
 			<artifactId>prefdialog-panel</artifactId>
-			<version>3.6-SNAPSHOT</version>
+			<version>3.6</version>
 		</dependency>
 		<dependency>
 			<groupId>com.anrisoftware.prefdialog</groupId>
 			<artifactId>prefdialog-misc-swing</artifactId>
-			<version>3.6-SNAPSHOT</version>
+			<version>3.6</version>
 		</dependency>
 		<dependency>
 			<groupId>com.anrisoftware.prefdialog</groupId>
 			<artifactId>prefdialog-dialog</artifactId>
-			<version>3.6-SNAPSHOT</version>
+			<version>3.6</version>
 		</dependency>
 
 		<!-- compile dependencies -->
