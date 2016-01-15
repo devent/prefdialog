@@ -173,6 +173,9 @@ public class SpreadsheetImportDialogWorker extends
         SpreadsheetImportDialog dialog = importDialog.get();
         notNull(dialog, "dialog=null");
         this.currentLayout = currentLayout;
+        if (currentLayout == null) {
+            return;
+        }
         try {
             ByteArrayInputStream stream;
             stream = new ByteArrayInputStream(currentLayout);
