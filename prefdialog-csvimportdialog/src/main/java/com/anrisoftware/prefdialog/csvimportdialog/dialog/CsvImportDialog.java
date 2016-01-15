@@ -291,6 +291,7 @@ public class CsvImportDialog extends SimpleDialog {
     /**
      * @see Dock#setTheme(String)
      */
+    @OnAwt
     public void setTheme(String name) {
         dock.setTheme(name);
     }

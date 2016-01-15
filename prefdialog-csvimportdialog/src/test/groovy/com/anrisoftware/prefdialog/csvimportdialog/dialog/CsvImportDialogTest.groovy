@@ -27,6 +27,7 @@ import java.awt.Component
 import java.awt.Dimension
 
 import javax.swing.JDialog
+import javax.swing.SwingUtilities
 
 import org.junit.BeforeClass
 import org.junit.Test
@@ -69,16 +70,16 @@ class CsvImportDialogTest {
             }])()
         testing.withFixture({
             //
-            importDialog.setTheme ThemeMap.KEY_SMOOTH_THEME
+            SwingUtilities.invokeAndWait { importDialog.setTheme ThemeMap.KEY_SMOOTH_THEME }
         }, {
             //
-            importDialog.setTheme ThemeMap.KEY_BUBBLE_THEME
+            SwingUtilities.invokeAndWait { importDialog.setTheme ThemeMap.KEY_BUBBLE_THEME }
         }, {
             //
-            importDialog.setTheme ThemeMap.KEY_BASIC_THEME
+            SwingUtilities.invokeAndWait { importDialog.setTheme ThemeMap.KEY_BASIC_THEME }
         }, {
             //
-            importDialog.setTheme ThemeMap.KEY_FLAT_THEME
+            SwingUtilities.invokeAndWait { importDialog.setTheme ThemeMap.KEY_FLAT_THEME }
         })
     }
 
