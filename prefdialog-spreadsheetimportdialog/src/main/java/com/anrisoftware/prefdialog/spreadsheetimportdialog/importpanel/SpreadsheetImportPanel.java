@@ -108,6 +108,7 @@ public class SpreadsheetImportPanel {
         this.container = container;
         this.properties = propertiesFactory.create(properties);
         this.importerFactory = importerFactory;
+        this.locale = Locale.getDefault();
         this.valueListener = lockedPropertyChangeListener(new PropertyChangeListener() {
 
             @Override
