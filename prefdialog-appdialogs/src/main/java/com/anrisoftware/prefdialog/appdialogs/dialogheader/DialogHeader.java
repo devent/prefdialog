@@ -213,10 +213,9 @@ public class DialogHeader {
 
     /**
      * Returns the component to be added.
-     *
-     * <h2>AWT Thread</h2>
      * <p>
-     * Should be called in the AWT thread.
+     * <h2>AWT Thread</h2>
+     * Should be called in the AWT event dispatch thread.
      * </p>
      *
      * @return the {@link Component}.

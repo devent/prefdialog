@@ -65,7 +65,7 @@ public abstract class OpenDialogAction<DialogType extends Container, ResultType>
     }
 
     @SuppressWarnings("unchecked")
-    public synchronized <T extends AbstractCreateDialogWorker<DialogType>> T getDialogWorker() {
+    public <T extends AbstractCreateDialogWorker<DialogType>> T getDialogWorker() {
         return (T) dialogWorker;
     }
 
@@ -82,8 +82,16 @@ public abstract class OpenDialogAction<DialogType extends Container, ResultType>
         dialogWorker.setLocale(locale);
     }
 
+    public Locale getLocale() {
+        return dialogWorker.getLocale();
+    }
+
     public void setTexts(Texts texts) {
         dialogWorker.setTexts(texts);
+    }
+
+    public Texts getTexts() {
+        return dialogWorker.getTexts();
     }
 
     public void setDialogTitleResourceName(String name) {
