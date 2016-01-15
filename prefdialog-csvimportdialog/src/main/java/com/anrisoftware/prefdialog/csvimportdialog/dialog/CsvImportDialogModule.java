@@ -19,6 +19,8 @@
 package com.anrisoftware.prefdialog.csvimportdialog.dialog;
 
 import com.anrisoftware.globalpom.csvimport.CsvImportModule;
+import com.anrisoftware.globalpom.data.DataModule;
+import com.anrisoftware.globalpom.dataimport.DataImportModule;
 import com.anrisoftware.prefdialog.core.CoreFieldComponentModule;
 import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanel;
 import com.anrisoftware.prefdialog.csvimportdialog.importpanel.CsvImportPanelFactory;
@@ -103,6 +105,7 @@ public class CsvImportDialogModule extends AbstractModule {
                 new CsvImportDialogModule(), new SimpleDialogModule(),
                 new CoreFieldComponentModule(), new ComboBoxHistoryModule(),
                 new DockingFramesModule(), new CsvImportModule(),
+                new DataModule(), new DataImportModule(),
                 new TextsResourcesDefaultModule(), new ImagesResourcesModule(),
                 new ResourcesImagesCachedMapModule(),
                 new ResourcesSmoothScalingModule());

@@ -19,6 +19,8 @@
 package com.anrisoftware.prefdialog.csvimportdialog.importpanel;
 
 import com.anrisoftware.globalpom.csvimport.CsvImportModule;
+import com.anrisoftware.globalpom.data.DataModule;
+import com.anrisoftware.globalpom.dataimport.DataImportModule;
 import com.anrisoftware.prefdialog.core.CoreFieldComponentModule;
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelPropertiesFactory;
 import com.anrisoftware.prefdialog.csvimportdialog.panelproperties.panelproperties.CsvPanelPropertiesModule;
@@ -31,65 +33,67 @@ import com.google.inject.assistedinject.FactoryModuleBuilder;
 
 /**
  * Installs CSV import panel factory and dependent modules.
- * 
+ *
  * @see CsvImportPanel
  * @see CsvImportPanelFactory
- * 
+ *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 3.0
  */
 public class CsvImportPanelModule extends AbstractModule {
 
-	/**
-	 * @see #getFactory()
-	 */
-	public static CsvImportPanelFactory getCsvImportPanelFactory() {
-		return getFactory();
-	}
+    /**
+     * @see #getFactory()
+     */
+    public static CsvImportPanelFactory getCsvImportPanelFactory() {
+        return getFactory();
+    }
 
-	/**
-	 * Creates and returns the import panel factory.
-	 * 
-	 * @return the {@link CsvImportPanelFactory}.
-	 */
-	public static CsvImportPanelFactory getFactory() {
-		return SingletonHolder.factory;
-	}
+    /**
+     * Creates and returns the import panel factory.
+     *
+     * @return the {@link CsvImportPanelFactory}.
+     */
+    public static CsvImportPanelFactory getFactory() {
+        return SingletonHolder.factory;
+    }
 
-	/**
-	 * @see #getPropertiesFactory()
-	 */
-	public static CsvPanelPropertiesFactory getCsvImportPropertiesFactory() {
-		return getPropertiesFactory();
-	}
+    /**
+     * @see #getPropertiesFactory()
+     */
+    public static CsvPanelPropertiesFactory getCsvImportPropertiesFactory() {
+        return getPropertiesFactory();
+    }
 
-	/**
-	 * Creates and returns the panel properties factory.
-	 * 
-	 * @return the {@link CsvPanelPropertiesFactory}.
-	 */
-	public static CsvPanelPropertiesFactory getPropertiesFactory() {
-		return SingletonHolder.propertiesFactory;
-	}
+    /**
+     * Creates and returns the panel properties factory.
+     *
+     * @return the {@link CsvPanelPropertiesFactory}.
+     */
+    public static CsvPanelPropertiesFactory getPropertiesFactory() {
+        return SingletonHolder.propertiesFactory;
+    }
 
-	private static class SingletonHolder {
+    private static class SingletonHolder {
 
-		public static final Injector injector = Guice.createInjector(
-				new CsvImportPanelModule(), new CoreFieldComponentModule(),
-				new TextsResourcesDefaultModule(), new ComboBoxHistoryModule(),
-				new CsvImportModule());
+        public static final Injector injector = Guice
+                .createInjector(new CsvImportPanelModule(),
+                        new CoreFieldComponentModule(),
+                        new TextsResourcesDefaultModule(),
+                        new ComboBoxHistoryModule(), new CsvImportModule(),
+                        new DataModule(), new DataImportModule());
 
-		public static final CsvImportPanelFactory factory = injector
-				.getInstance(CsvImportPanelFactory.class);
+        public static final CsvImportPanelFactory factory = injector
+                .getInstance(CsvImportPanelFactory.class);
 
-		public static final CsvPanelPropertiesFactory propertiesFactory = injector
-				.getInstance(CsvPanelPropertiesFactory.class);
-	}
+        public static final CsvPanelPropertiesFactory propertiesFactory = injector
+                .getInstance(CsvPanelPropertiesFactory.class);
+    }
 
-	@Override
-	protected void configure() {
-		install(new CsvPanelPropertiesModule());
-		install(new FactoryModuleBuilder().implement(CsvImportPanel.class,
-				CsvImportPanel.class).build(CsvImportPanelFactory.class));
-	}
+    @Override
+    protected void configure() {
+        install(new CsvPanelPropertiesModule());
+        install(new FactoryModuleBuilder().implement(CsvImportPanel.class,
+                CsvImportPanel.class).build(CsvImportPanelFactory.class));
+    }
 }

@@ -19,6 +19,8 @@
 package com.anrisoftware.prefdialog.csvimportdialog.previewpanel;
 
 import com.anrisoftware.globalpom.csvimport.CsvImportModule;
+import com.anrisoftware.globalpom.data.DataModule;
+import com.anrisoftware.globalpom.dataimport.DataImportModule;
 import com.anrisoftware.resources.texts.defaults.TextsResourcesDefaultModule;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
@@ -54,9 +56,11 @@ public class PreviewPanelModule extends AbstractModule {
 
     private static class SingletonHolder {
 
-        public static final Injector injector = Guice.createInjector(
-                new PreviewPanelModule(), new TextsResourcesDefaultModule(),
-                new CsvImportModule());
+        public static final Injector injector = Guice
+                .createInjector(new PreviewPanelModule(),
+                        new TextsResourcesDefaultModule(),
+                        new CsvImportModule(), new DataModule(),
+                        new DataImportModule());
 
         public static final PreviewPanelFactory factory = injector
                 .getInstance(PreviewPanelFactory.class);
